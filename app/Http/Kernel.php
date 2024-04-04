@@ -2,6 +2,15 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AddAcceptApplicationJsonToRequest;
+use App\Http\Middleware\CheckClientStatus;
+use App\Http\Middleware\CheckIfClientAuth;
+use App\Http\Middleware\CheckIfUserAuth;
+use App\Http\Middleware\CheckPermissions;
+use App\Http\Middleware\CheckUserPermissions;
+use App\Http\Middleware\CheckUserStatus;
+use App\Http\Middleware\ExecuteWriteRequestInTransaction;
+use App\Http\Middleware\Localization;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -36,12 +45,27 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ExecuteWriteRequestInTransaction::class,
+            Localization::class,
         ],
-
+        'user' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ExecuteWriteRequestInTransaction::class,
+            Localization::class,
+        ],
         'api' => [
+            AddAcceptApplicationJsonToRequest::class,
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ExecuteWriteRequestInTransaction::class,
+            Localization::class,
         ],
     ];
 
@@ -63,5 +87,11 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'app.permissions'  => CheckPermissions::class,
+        'app.user-permissions'  => CheckUserPermissions::class,
+        'app.user-status'  => CheckUserStatus::class,
+        'app.client-auth' => CheckIfClientAuth::class,
+        'app.client-status'  => CheckClientStatus::class,
+        'app.auth' => CheckIfUserAuth::class,
     ];
 }
