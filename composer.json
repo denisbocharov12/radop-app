@@ -6,10 +6,20 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "arius/number-formatter": "1.*",
+        "barryvdh/laravel-debugbar": "^3.13",
+        "barryvdh/laravel-dompdf": "^2.1",
+        "cknow/laravel-money": "^8.0",
         "guzzlehttp/guzzle": "^7.2",
+        "kwn/number-to-words": "^2.9",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.5",
+        "maatwebsite/excel": "^3.1",
+        "spatie/laravel-medialibrary": "^10.0.0",
+        "spatie/laravel-permission": "^6.4",
+        "spatie/laravel-query-builder": "^5.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
