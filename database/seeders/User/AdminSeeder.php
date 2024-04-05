@@ -3,7 +3,7 @@
 namespace Database\Seeders\User;
 
 use App\Models\User;
-use App\Models\UserType;
+use App\Repositories\User\UserRepository;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -11,34 +11,43 @@ use Illuminate\Support\Str;
 
 final class AdminSeeder extends Seeder
 {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+    )
+    {
+    }
+
     public function run()
     {
-        DB::table('users')->insert([
-            [
-                'name'=>'v_vlah_1',
-                'email'=>'admin@admin.com',
-                'password'=>Hash::make('2GsatyVoC'),
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10),
-                'active' => true,
-            ],
-        ]);
+        $existedUser = $this->userRepository->getByEmail('radop112@radop.md');
 
-        DB::table('profiles')->insert([
-            [
-                'first_name'=>'Иван',
-                'last_name'=>'Влах',
-                'user_id' => 1,
-                'contact_phone'=>'37376720062',
-            ],
-        ]);
+        if ($existedUser === null) {
+            DB::table('users')->insert([
+                [
+                    'name'=>'j_mihailov_1',
+                    'email'=>'admin@avtomirat.md',
+                    'password'=>Hash::make('2Gsag78NoC'),
+                    'email_verified_at' => now(),
+                    'remember_token' => Str::random(10),
+                    'status' => true,
+                    'created_at' => now()
+                ],
+            ]);
 
-        $admin = User::query()->where('email' ,'admin@admin.com')->first();
+            DB::table('profiles')->insert([
+                [
+                    'first_name'=>'Евгений',
+                    'last_name'=>'Михайлов',
+                    'user_id' => 1,
+                    'contact_phone'=>'37360218625',
+                ],
+            ]);
 
-        $fiz = UserType::query()->where('name', 'Физическое лицо')->first();
-        $admin->type()->associate($fiz);
-        $admin->save();
+            $admin = User::query()->where('email' ,'admin@avtomirat.md')->first();
 
-        $admin->assignRole(config('roles.super_admin_role_name'));
+            $admin->save();
+
+            $admin->assignRole(config('roles.super_admin_role_name'));
+        }
     }
 }
