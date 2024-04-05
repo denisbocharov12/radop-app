@@ -1,0 +1,24 @@
+<?php
+
+namespace Database\Seeders\User\RolesWithPermissions;
+
+class UserRoleSeeder  extends AbstractRoleSeeder
+{
+    protected function getRoleName(): string
+    {
+        return 'user';
+    }
+
+    protected function getGuardName(): string
+    {
+        return 'web';
+    }
+
+    public function getPermittedRoutes(): array
+    {
+        return [
+            'user.logout',
+
+        ];
+    }
+}
