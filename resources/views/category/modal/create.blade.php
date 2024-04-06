@@ -45,40 +45,40 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div><div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Статус</label>
+                                        <label class="form-label" for="summary">Краткое описание</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
-                                                <option value="">Статус</option>
-                                                <option value="true">Активная</option>
-                                                <option value="false">Неактивная</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div><div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Статус</label>
-                                        <div class="form-control-wrap">
-                                            <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
-                                                <option value="">Статус</option>
-                                                <option value="true">Активная</option>
-                                                <option value="false">Неактивная</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div><div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Статус</label>
-                                        <div class="form-control-wrap">
-                                            <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
-                                                <option value="">Статус</option>
-                                                <option value="true">Активная</option>
-                                                <option value="false">Неактивная</option>
-                                            </select>
+                                            <input type="text" required class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">
+                                            @error('summary')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="summary">Заказ</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control @error('order') error @enderror" id="order" name="order" placeholder="Заказ">
+                                            @error('order')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+{{--                                <div class="col-md-6">--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label class="form-label" for="name">Название категории</label>--}}
+{{--                                        <div class="form-control-wrap">--}}
+{{--                                            <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" placeholder="Категория">--}}
+{{--                                            @error('name')--}}
+{{--                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>

@@ -7,7 +7,7 @@ namespace App\Data\Category;
  * @property int $parentId
  * @property string $name
  * @property string $summary
- * @property string $status
+ * @property bool $status
  * @property int $order
  */
 final class CategoryData
@@ -20,7 +20,7 @@ final class CategoryData
     public ?int $order;
 
     public function __construct(
-        string  $onec_id,
+        ?string  $onec_id,
         ?int    $parentId,
         string  $name,
         ?string $summary,

@@ -21,7 +21,7 @@ class CategoryRequest extends FormRequest
             'parent_id' => ['nullable', 'integer'],
             'name' => ['required', 'string'],
             'summary' => ['nullable', 'string'],
-            'status' => ['required', 'boolean'],
+            'status' => ['required', 'string'],
             'order' => ['nullable', 'integer'],
         ];
     }
