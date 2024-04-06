@@ -24,7 +24,7 @@ final class CheckUserStatus
          * @var User|null $user
          */
         $user = Auth::user();
-        if ($user === null || !$user->active) {
+        if ($user === null || !$user->status) {
             throw new AccessDeniedHttpException(Response::HTTP_FORBIDDEN);
         }
         return $next($request);

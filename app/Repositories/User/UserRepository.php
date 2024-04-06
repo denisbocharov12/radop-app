@@ -65,7 +65,7 @@ final class UserRepository
     public function getActiveById(int $userId): ?User
     {
         return User::where('id', $userId)
-            ->where('active', 1)
+            ->where('status', 1)
             ->first()
         ;
     }

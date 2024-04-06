@@ -24,9 +24,9 @@ final class AdminSeeder extends Seeder
         if ($existedUser === null) {
             DB::table('users')->insert([
                 [
-                    'name'=>'j_mihailov_1',
-                    'email'=>'admin@avtomirat.md',
-                    'password'=>Hash::make('2Gsag78NoC'),
+                    'name'=>'radop_112',
+                    'email'=>'radop112@radop.md',
+                    'password'=>Hash::make('8GsoPkag38oC'),
                     'email_verified_at' => now(),
                     'remember_token' => Str::random(10),
                     'status' => true,
@@ -36,14 +36,14 @@ final class AdminSeeder extends Seeder
 
             DB::table('profiles')->insert([
                 [
-                    'first_name'=>'Евгений',
-                    'last_name'=>'Михайлов',
+                    'first_name'=>'Admin',
+                    'last_name'=>'Admin',
                     'user_id' => 1,
-                    'contact_phone'=>'37360218625',
+//                    'contact_phone'=>'373',
                 ],
             ]);
 
-            $admin = User::query()->where('email' ,'admin@avtomirat.md')->first();
+            $admin = User::query()->where('email' ,'radop112@radop.md')->first();
 
             $admin->save();
 
