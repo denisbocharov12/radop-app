@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Services\Category;
 
 use App\Data\Category\CategoryData;
+use App\Exceptions\Attachments\AttachmentNotFoundException;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryUniqueNameException;
 use App\Http\Requests\Category\CategoryDeleteRequest;
 use App\Http\Requests\Category\CategoryRequest;
+use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\Category;
+use App\Models\Product;
+use App\Repositories\Attachments\AttachmentsRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Services\Attachments\AttachmentsManager;
 use App\Services\EntityStatusManager;
@@ -18,16 +22,19 @@ final class CategoryManager
 {
     private CategoryRepository $categoryRepository;
     private AttachmentsManager $attachmentsManager;
+    private AttachmentsRepository $attachmentsRepository;
     private EntityStatusManager $entityStatusManager;
 
     public function __construct(
         CategoryRepository  $categoryRepository,
         AttachmentsManager  $attachmentsManager,
+        attachmentsRepository $attachmentsRepository,
         EntityStatusManager $entityStatusManager,
     )
     {
         $this->categoryRepository = $categoryRepository;
         $this->attachmentsManager = $attachmentsManager;
+        $this->attachmentsRepository = $attachmentsRepository;
         $this->entityStatusManager = $entityStatusManager;
     }
 
@@ -84,5 +91,17 @@ final class CategoryManager
         }
 
         $category->delete();
+    }
+
+    public function deleteMediaFromCategory(ModelMediaDeleteRequest $request, Category $category): void
+    {
+        $existedAttachment = $this->attachmentsRepository->getById($category, (int)$request->id);
+
+        if ($existedAttachment === null)
+        {
+            throw new AttachmentNotFoundException();
+        }
+
+        $this->attachmentsManager->deleteAttachmentsFromModel($category, (int)$request->id);
     }
 }

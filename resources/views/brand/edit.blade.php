@@ -9,35 +9,22 @@
                     <div class="nk-block nk-block-lg">
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование категории {{$category->name}}</h4>
+                                <h4 class="title nk-block-title">Редактирование бренда {{$brand->title}}</h4>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-inner">
-                                <form action="{{route('category.update', $category)}}" enctype="multipart/form-data" method="POST" class="form-validate is-alter">
+                                <form action="{{route('brand.update', $brand)}}" enctype="multipart/form-data" method="POST" class="form-validate is-alter">
                                     @csrf
                                     <div class="row g-gs">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="name">Название категории</label>
+                                                <label class="form-label" for="title">Название бренда</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" value="{{$category->name}}" placeholder="Категория">
-                                                    @error('name')
+                                                    <input type="text" required class="form-control @error('title') error @enderror" id="title" name="title" value="{{$brand->title}}" placeholder="Бренд">
+                                                    @error('title')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Родительская категория</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" name="parent_id" id="parent_id" data-placeholder="Родительская категория">
-                                                        <option value="">Родительская категория</option>
-                                                        @foreach($categories as $item)
-                                                            <option {{$category->parent_id == $item->id ? 'selected' : ''}}  value="{{$item->id}}">{{$item->name}}</option>
-                                                        @endforeach
-                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -47,18 +34,18 @@
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
                                                         <option value="">Статус</option>
-                                                        <option {{$category->status == true ? 'selected' : ''}} value="true">Активная</option>
-                                                        <option {{$category->status == false ? 'selected' : ''}} value="false">Неактивная</option>
+                                                        <option {{$brand->status == true ? 'selected' : ''}} value="true">Активная</option>
+                                                        <option {{$brand->status == false ? 'selected' : ''}} value="false">Неактивная</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="summary">Краткое описание</label>
+                                                <label class="form-label" for="name">Описание бренда</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea type="text" class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">{{$category->summary}}</textarea>
-                                                    @error('summary')
+                                                    <textarea type="text" name="description" class="form-control no-resize @error('description') error @enderror" id="description">{{$brand->description}}</textarea>
+                                                    @error('description')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>
@@ -78,12 +65,12 @@
                                         <div class="nk-block-head nk-block-head-sm">
                                             <div class="nk-block-between g-3">
                                                 <div class="nk-block-head-content">
-                                                    <h3 class="nk-block-title page-title">Изображения категории</h3>
+                                                    <h3 class="nk-block-title page-title">Изображения бренда</h3>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row g-gs">
-                                            @foreach($category->getMedia('media') as $image)
+                                            @foreach($brand->getMedia('media') as $image)
                                                 <div class="col-sm-6 col-lg-4 col-xxl-3" id="model-media-{{$image->id}}">
                                                     <div class="gallery card card-bordered">
                                                         <a class="gallery-image popup-image" href="{{$image->getUrl()}}">
@@ -96,7 +83,7 @@
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$category->id}}" class="model-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
+                                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$brand->id}}" class="model-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,7 +93,7 @@
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>
-                                                    <button type="submit" class="btn btn-primary">Обновить категорию</button>
+                                                    <button type="submit" class="btn btn-primary">Обновить бренд</button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -126,7 +113,7 @@
             e.preventDefault();
             var image_id = $(this).data('id');
             var token = "{{csrf_token()}}";
-            var path = "{{route('category.media.delete', $category)}}";
+            var path = "{{route('brand.media.delete', $brand)}}";
             $.ajax({
                 url: path,
                 type: "POST",

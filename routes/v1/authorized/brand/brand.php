@@ -31,4 +31,8 @@ Route::prefix('brands')->name('brand.')->group(function () {
         ->delete('destroy', [BrandController::class, 'destroy'])
         ->name('delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('{brand}/media/delete', [BrandController::class, 'deleteMedia'])
+        ->name('media.delete')
+    ;
 });
