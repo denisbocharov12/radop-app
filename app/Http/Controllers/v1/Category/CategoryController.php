@@ -46,7 +46,7 @@ class CategoryController extends Controller
         $categoryData = $this->categoryDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->categoryManager->store($categoryData);
+            $this->categoryManager->store($categoryData, $request);
 
             return redirect()->route('category.index');
         } catch (CategoryUniqueNameException $e) {
@@ -68,10 +68,10 @@ class CategoryController extends Controller
         $categoryData = $this->categoryDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->categoryManager->update($categoryData, $category);
+            $this->categoryManager->update($categoryData, $category, $request);
 
             return redirect()->route('category.index');
-        } catch (CategoryUniqueNameException $e) {
+        } catch (CategoryUniqueNameException) {
             throw new CategoryUniqueNameValidationException();
         }
     }

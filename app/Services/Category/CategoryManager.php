@@ -51,12 +51,12 @@ final class CategoryManager
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
     }
 
-    public function update(CategoryData $categoryData, Category $category): void
+    public function update(CategoryData $categoryData, Category $category, CategoryRequest $request): void
     {
         if ($category->name !== $categoryData->name) {
             $existedCategory = $this->categoryRepository->getByName($categoryData->name);
 
-            if ($existedCategory === null) {
+            if ($existedCategory !== null) {
                 throw new CategoryUniqueNameException();
             }
         }
@@ -67,9 +67,10 @@ final class CategoryManager
             'name' => $categoryData->name,
             'parent_id' => $categoryData->parentId,
             'status' => $status,
-//            'order' => $categoryData->order,
             'summary' => $categoryData->summary
         ]);
+
+        $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
     }
 
     public function delete(CategoryDeleteRequest $request): void

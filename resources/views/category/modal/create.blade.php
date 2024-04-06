@@ -7,7 +7,7 @@
                 <h5 class="title">Добавить категорию</h5>
                 <div class="tab-content">
                     <div class="tab-pane active" id="subject-create">
-                        <form action="{{route('category.store')}}" method="POST">
+                        <form action="{{route('category.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row gy-4">
                                 <div class="col-md-6">

@@ -64,6 +64,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Фотография категории</label>
+                                                <div class="form-control-wrap">
+                                                    <div class="form-file">
+                                                        <input type="file" name="attachments[]" multiple="" class="form-file-input" id="categoryAttachments">
+                                                        <label class="form-file-label" for="categoryAttachments">Выбрать</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="nk-block-head nk-block-head-sm">
                                             <div class="nk-block-between g-3">
                                                 <div class="nk-block-head-content">
