@@ -16,6 +16,7 @@ final class CategoryDataMapper
             $request->summary,
             $request->status,
             $request->order,
+            $request->attachments
         );
     }
 }

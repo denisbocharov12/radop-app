@@ -53,6 +53,45 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="summary">Краткое описание</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea type="text" class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">{{$category->summary}}</textarea>
+                                                    @error('summary')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="nk-block-head nk-block-head-sm">
+                                            <div class="nk-block-between g-3">
+                                                <div class="nk-block-head-content">
+                                                    <h3 class="nk-block-title page-title">Изображения категории</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-gs">
+                                            @foreach($category->getMedia('media') as $image)
+                                                <div class="col-sm-6 col-lg-4 col-xxl-3" id="model-media-{{$image->id}}">
+                                                    <div class="gallery card card-bordered">
+                                                        <a class="gallery-image popup-image" href="{{$image->getUrl()}}">
+                                                            <img class="w-100 rounded-top" src="{{$image->getUrl()}}" alt="">
+                                                        </a>
+                                                        <div class="gallery-body card-inner align-center justify-between flex-wrap g-2">
+                                                            <div class="user-card">
+                                                                <div class="user-info">
+                                                                    <span class="lead-text">#{{$image->id}} - {{$image->name}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$category->id}}" class="product-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>

@@ -5,6 +5,7 @@
             <div class="nk-tb-col"><span class="sub-text">Название</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Родительская категория</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Краткое описание</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
         </div><!-- .nk-tb-item -->
@@ -25,6 +26,9 @@
                     @else
                         <span class="tb-status text-danger">Неактивная</span>
                     @endif
+                </div>
+                <div class="nk-tb-col">
+                    <span>{{$category->summary}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools">
                     <ul class="nk-tb-actions gx-2">

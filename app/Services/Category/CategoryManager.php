@@ -8,25 +8,30 @@ use App\Data\Category\CategoryData;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryUniqueNameException;
 use App\Http\Requests\Category\CategoryDeleteRequest;
+use App\Http\Requests\Category\CategoryRequest;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
-//use App\Services\EntityStatusManager;
+use App\Services\Attachments\AttachmentsManager;
+use App\Services\EntityStatusManager;
 
 final class CategoryManager
 {
     private CategoryRepository $categoryRepository;
-//    private EntityStatusManager $entityStatusManager;
+    private AttachmentsManager $attachmentsManager;
+    private EntityStatusManager $entityStatusManager;
 
     public function __construct(
-        CategoryRepository $categoryRepository,
-//        EntityStatusManager $entityStatusManager
+        CategoryRepository  $categoryRepository,
+        AttachmentsManager  $attachmentsManager,
+        EntityStatusManager $entityStatusManager,
     )
     {
         $this->categoryRepository = $categoryRepository;
-//        $this->entityStatusManager = $entityStatusManager;
+        $this->attachmentsManager = $attachmentsManager;
+        $this->entityStatusManager = $entityStatusManager;
     }
 
-    public function store(CategoryData $categoryData): void
+    public function store(CategoryData $categoryData, CategoryRequest $request): void
     {
         $existedCategory = $this->categoryRepository->getByName($categoryData->name);
 
@@ -34,19 +39,21 @@ final class CategoryManager
             throw new CategoryUniqueNameException();
         }
 
-//        $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
+        $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
 
-        Category::create([
-           'name' => $categoryData->name,
-           'parent_id' => $categoryData->parentId,
-//           'status' => $status
+        $category = Category::create([
+            'name' => $categoryData->name,
+            'parent_id' => $categoryData->parentId,
+            'status' => $status,
+            'summary' => $categoryData->summary
         ]);
+
+        $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
     }
 
     public function update(CategoryData $categoryData, Category $category): void
     {
-        if ($category->name !== $categoryData->name)
-        {
+        if ($category->name !== $categoryData->name) {
             $existedCategory = $this->categoryRepository->getByName($categoryData->name);
 
             if ($existedCategory === null) {
@@ -54,12 +61,14 @@ final class CategoryManager
             }
         }
 
-//        $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
+        $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
 
         $category->update([
             'name' => $categoryData->name,
             'parent_id' => $categoryData->parentId,
-//            'status' => $status
+            'status' => $status,
+//            'order' => $categoryData->order,
+            'summary' => $categoryData->summary
         ]);
     }
 
@@ -69,8 +78,7 @@ final class CategoryManager
 
         $category = $this->categoryRepository->getById($categoryId);
 
-        if ($category === null)
-        {
+        if ($category === null) {
             throw new CategoryNotFoundException();
         }
 

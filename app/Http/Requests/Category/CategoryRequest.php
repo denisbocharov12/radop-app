@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $summary
  * @property bool $status
  * @property int $order
+ * @property array $attachments
  */
 class CategoryRequest extends FormRequest
 {
@@ -23,6 +24,8 @@ class CategoryRequest extends FormRequest
             'summary' => ['nullable', 'string'],
             'status' => ['required', 'string'],
             'order' => ['nullable', 'integer'],
+            'attachments' => ['nullable', 'array', 'max:10'],
+            'attachments.*' => ['required', 'max:10000', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

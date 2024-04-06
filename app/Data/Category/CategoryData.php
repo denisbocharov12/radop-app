@@ -9,6 +9,7 @@ namespace App\Data\Category;
  * @property string $summary
  * @property bool $status
  * @property int $order
+ * @property array $attachments
  */
 final class CategoryData
 {
@@ -18,6 +19,7 @@ final class CategoryData
     public ?string $summary;
     public string $status;
     public ?int $order;
+    public ?array $attachments;
 
     public function __construct(
         ?string  $onec_id,
@@ -25,7 +27,8 @@ final class CategoryData
         string  $name,
         ?string $summary,
         string  $status,
-        ?int    $order
+        ?int    $order,
+        ?array  $attachments
     )
     {
         $this->onec_id = $onec_id;
@@ -34,5 +37,6 @@ final class CategoryData
         $this->summary = $summary;
         $this->status = $status;
         $this->order = $order;
+        $this->attachments = $attachments;
     }
 }

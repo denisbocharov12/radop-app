@@ -50,35 +50,26 @@
                                     <div class="form-group">
                                         <label class="form-label" for="summary">Краткое описание</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">
+                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
+{{--                                            <input type="text" required class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">--}}
                                             @error('summary')
+                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="summary">Заказ</label>
+                                        <label class="form-label">Фотография категории</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('order') error @enderror" id="order" name="order" placeholder="Заказ">
-                                            @error('order')
-                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                            @enderror
+                                            <div class="form-file">
+                                                <input type="file" name="attachments[]" multiple="" class="form-file-input" id="categoryAttachments">
+                                                <label class="form-file-label" for="categoryAttachments">Выбрать</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-{{--                                <div class="col-md-6">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label class="form-label" for="name">Название категории</label>--}}
-{{--                                        <div class="form-control-wrap">--}}
-{{--                                            <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" placeholder="Категория">--}}
-{{--                                            @error('name')--}}
-{{--                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>--}}
-{{--                                            @enderror--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>
