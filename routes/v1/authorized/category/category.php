@@ -26,4 +26,8 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->delete('destroy', [CategoryController::class, 'destroy'])
         ->name('delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('{category}/media/delete', [CategoryController::class, 'deleteMedia'])
+        ->name('media.delete')
+    ;
 });

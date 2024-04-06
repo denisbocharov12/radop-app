@@ -7,9 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property int $onec_id
  * @property string $title
- * @property string $slug
+// * @property string $slug
  * @property string $description
  * @property bool $status
+ * @property array $attachments
  */
 class BrandRequest extends FormRequest
 {
@@ -18,9 +19,11 @@ class BrandRequest extends FormRequest
         return [
             'onec_id' => ['nullable', 'string'],
             'title' => ['required', 'string'],
-            'slug' => ['required', 'string'],
+//            'slug' => ['required', 'string'],
             'description' => ['nullable', 'string'],
-            'status' => ['required', 'string']
+            'status' => ['required', 'string'],
+            'attachments' => ['nullable', 'array', 'max:10'],
+            'attachments.*' => ['required', 'max:10000', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

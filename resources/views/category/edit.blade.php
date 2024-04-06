@@ -96,7 +96,7 @@
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$category->id}}" class="product-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
+                                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$category->id}}" class="model-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -119,4 +119,29 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).on('click','.model-media-delete',function (e) {
+            e.preventDefault();
+            var image_id = $(this).data('id');
+            var token = "{{csrf_token()}}";
+            var path = "{{route('category.media.delete', $category)}}";
+            $.ajax({
+                url: path,
+                type: "POST",
+                dataType:"JSON",
+                data:{
+                    id: image_id,
+                    _token: token
+                },
+                success:function (response) {
+                    if(response.status) {
+                        $('#model-media-'+image_id).fadeOut();
+                    } else {
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

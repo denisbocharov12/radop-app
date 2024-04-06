@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\v1\Category;
 
+use App\Exceptions\Attachments\AttachmentNotFoundException;
+use App\Exceptions\Attachments\AttachmentNotFoundValidationException;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\CategoryUniqueNameException;
@@ -11,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Mappers\CategoryDataMapper;
 use App\Http\Requests\Category\CategoryDeleteRequest;
 use App\Http\Requests\Category\CategoryRequest;
+use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\Category;
 use App\Services\Category\CategoryManager;
 use App\Repositories\Category\CategoryRepository;
@@ -88,6 +91,17 @@ class CategoryController extends Controller
             return response()->json(['id' => $request->category_id]);
         } catch (CategoryNotFoundException $e) {
             throw new CategoryNotFoundValidationException();
+        }
+    }
+
+    public function deleteMedia(ModelMediaDeleteRequest $request, Category $category)
+    {
+        try {
+            $this->categoryManager->deleteMediaFromCategory($request, $category);
+
+            return response()->json(['status' => true]);
+        } catch (AttachmentNotFoundException $e) {
+            throw new AttachmentNotFoundValidationException();
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\v1\Brand;
 
+use App\Exceptions\Attachments\AttachmentNotFoundException;
+use App\Exceptions\Attachments\AttachmentNotFoundValidationException;
 use App\Exceptions\Brand\BrandNotFoundException;
 use App\Exceptions\Brand\BrandNotFoundValidationException;
 use App\Exceptions\Brand\BrandUniqueNameException;
@@ -11,10 +13,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Mappers\BrandDataMapper;
 use App\Http\Requests\Brand\BrandDeleteRequest;
 use App\Http\Requests\Brand\BrandRequest;
+use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\Brand;
 use App\Repositories\Brand\BrandRepository;
 use App\Services\Brand\BrandManager;
-use Illuminate\Http\Request;
 
 final class BrandController extends Controller
 {
@@ -47,7 +49,7 @@ final class BrandController extends Controller
         $brandData = $this->brandDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->brandManager->store($brandData);
+            $this->brandManager->store($brandData, $request);
 
             return redirect()->route('brand.index');
         } catch (BrandUniqueNameException $e) {
@@ -67,7 +69,7 @@ final class BrandController extends Controller
         $brandData = $this->brandDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->brandManager->update($brandData, $brand);
+            $this->brandManager->update($brandData, $brand, $request);
 
             return redirect()->route('brand.index');
         } catch (BrandUniqueNameException $e) {
@@ -88,6 +90,16 @@ final class BrandController extends Controller
             return response()->json(['id' => $request->brand_id]);
         } catch (BrandNotFoundException $e) {
             throw new BrandNotFoundValidationException();
+        }
+    }
+    public function deleteMedia(ModelMediaDeleteRequest $request, Brand $brand)
+    {
+        try {
+            $this->brandManager->deleteMediaFromBrand($request, $brand);
+
+            return response()->json(['status' => true]);
+        } catch (AttachmentNotFoundException $e) {
+            throw new AttachmentNotFoundValidationException();
         }
     }
 }

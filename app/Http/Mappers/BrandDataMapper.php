@@ -12,9 +12,10 @@ final class BrandDataMapper
         return new BrandData(
             $request->onec_id,
             $request->title,
-            $request->slug,
+//            $request->slug,
             $request->description,
-            $request->status
+            $request->status,
+            $request->attachments
         );
     }
 }

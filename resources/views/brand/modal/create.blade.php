@@ -7,7 +7,7 @@
                 <h5 class="title">Добавить бренд</h5>
                 <div class="tab-content">
                     <div class="tab-pane active" id="subject-create">
-                        <form action="{{route('brand.store')}}" method="POST">
+                        <form action="{{route('brand.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row gy-4">
                                 <div class="col-md-6">
@@ -27,9 +27,32 @@
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
                                                 <option value="">Статус</option>
-                                                <option value="true">Активная</option>
-                                                <option value="false">Неактивная</option>
+                                                <option value="true">Активный</option>
+                                                <option value="false">Неактивный</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">Описание бренда</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" class="form-control no-resize" id="description">{{old('description')}}</textarea>
+{{--                                            <textarea type="text" required class="form-control @error('description') error @enderror" id="description" name="description" placeholder="Описание">--}}
+                                            @error('description')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Фотография бренда</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="attachments[]" multiple="" class="form-file-input" id="brandAttachments">
+                                                <label class="form-file-label" for="brandAttachments">Выбрать</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
