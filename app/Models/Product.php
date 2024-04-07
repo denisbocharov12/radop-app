@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 final class Product extends Model implements HasMedia
 {
@@ -18,6 +19,7 @@ final class Product extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
     use Sluggable;
+    use HasTranslations;
 
     protected $fillable = [
         'onec_id',
@@ -36,6 +38,8 @@ final class Product extends Model implements HasMedia
         'price' => MoneyCast::class,
         'sale_price' => MoneyCast::class,
     ];
+
+    public $translatable = ['title'];
 
     /**
      * Return the sluggable configuration array for this model.

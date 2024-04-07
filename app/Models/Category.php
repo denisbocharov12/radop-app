@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 final class Category extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
     use SoftDeletes;
+    use HasTranslations;
 
     protected $fillable = [
         'onec_id',
@@ -25,6 +27,11 @@ final class Category extends Model implements HasMedia
         'status',
         'order',
         'deleted_at',
+    ];
+
+    public $translatable = [
+        'name',
+        'summary',
     ];
 
     /**

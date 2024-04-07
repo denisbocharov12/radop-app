@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('onec_id')->nullable();
-            $table->string('title');
+            $table->text('title');
             $table->string('slug');
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);

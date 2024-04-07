@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductProfile extends Model
+final class ProductProfile extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -25,6 +25,11 @@ class ProductProfile extends Model
 
     protected $casts = [
         'iur_price' => MoneyCast::class,
+    ];
+
+    public $translatable = [
+        'summary',
+        'description'
     ];
 
     /**

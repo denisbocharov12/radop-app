@@ -13,8 +13,8 @@ return new class extends Migration
             $table->id();
             $table->string('onec_id')->nullable();
             $table->foreignIdFor(Category::class, 'parent_id')->nullable();
-            $table->string('name',255);
-            $table->mediumText('summary')->nullable();
+            $table->text('name');
+            $table->text('summary')->nullable();
             $table->boolean('status')->default(true);
             $table->integer('order')->nullable();
             $table->softDeletes();
