@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('product_id');
             $table->string('sku')->nullable();
-            $table->mediumText('summary')->nullable();
-            $table->longText('description')->nullable();
+            $table->text('summary')->nullable();
+            $table->text('description')->nullable();
             $table->float('iur_price', 32)->nullable();
             $table->text('upp_sale')->nullable();
             $table->string('condition')->default('regular');

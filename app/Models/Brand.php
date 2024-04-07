@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 final class Brand extends Model implements HasMedia
 {
@@ -15,6 +16,7 @@ final class Brand extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
     use Sluggable;
+    use HasTranslations;
 
     protected $fillable = [
         'onec_id',
@@ -22,6 +24,11 @@ final class Brand extends Model implements HasMedia
         'slug',
         'description',
         'status'
+    ];
+
+    public $translatable = [
+        'title',
+        'description',
     ];
 
     /**
