@@ -19,9 +19,10 @@ class MoneyCast implements CastsAttributes
      * @param  array<mixed, mixed>  $attributes
      * @return float
      */
-    public function get($model, string $key, $value, array $attributes): float
+    public function get($model, string $key, $value, array $attributes): string
     {
-        return (float) Money::MDL($value, true)->formatByDecimal();
+//        return (float) Money::MDL($value, true)->formatByDecimal();
+        return (string)$value;
     }
 
     /**

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('stock')->default(0);
             $table->string('unit')->nullable();
-            $table->float('price', 32)->default(0);
-            $table->float('sale_price', 32)->nullable();
+            $table->string('price')->default(0);
+            $table->string('sale_price')->nullable();
             $table->boolean('status')->default(true);
             $table->foreignIdFor(Brand::class, 'brand_id')->nullable();
             $table->softDeletes();

@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="stock">Кол-во на складе</label>
                                         <div class="form-control-wrap">
-                                            <input type="number" class="form-control" id="stock" name="stock" placeholder="234">
+                                            <input type="number" class="form-control" id="stock" required name="stock" placeholder="234">
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="category_id">Категория</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" data-search="on" name="category_id" id="category_id" data-placeholder="Выберите категорию">
+                                            <select class="form-select js-select2" data-search="on" required name="category_id" id="category_id" data-placeholder="Выберите категорию">
                                                 <option value="">Категория</option>
                                                 @foreach($categories as $category)
                                                     <option value="{{$category->id}}">{{$category->name}}</option>

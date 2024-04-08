@@ -21,16 +21,17 @@
                     <span>{{$product->title}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$product->brand->title}}</span>
+                    <span>{{$brands->firstWhere('id', $product->brand_id)->title}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$product->category->name}}</span>
+{{--                    <span>{{$category = $categories->firstWhere('id', $product->category_id)}}</span>--}}
+{{--                    {{dd($category = $categories->firstWhere('id', $product->category_id))}}--}}
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$product->price}} {{$product->currency}}</span>
+                    <span>{{$product->price}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$product->sale_price}} {{$product->currency}}</span>
+                    <span>{{$product->sale_price}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$product->stock}} {{$product->unit}}</span>

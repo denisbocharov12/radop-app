@@ -27,6 +27,7 @@ class ProductData
     public ?int $brand_id;
     public ?int $category_id;
     public ?array $attachments;
+
     public function __construct(
         ?string $onec_id,
         string  $title,
@@ -38,8 +39,7 @@ class ProductData
         ?int    $brand_id,
         ?int    $category_id,
         ?array  $attachments
-    )
-    {
+    ) {
         $this->onec_id = $onec_id;
         $this->title = $title;
         $this->stock = $stock;

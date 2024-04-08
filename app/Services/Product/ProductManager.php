@@ -31,12 +31,12 @@ class ProductManager
     private EntityStatusManager $entityStatusManager;
 
     public function __construct(
-        CategoryRepository $categoryRepository,
-        ProductRepository $productRepository,
-        BrandRepository $brandRepository,
-        AttachmentsManager $attachmentsManager,
+        CategoryRepository    $categoryRepository,
+        ProductRepository     $productRepository,
+        BrandRepository       $brandRepository,
+        AttachmentsManager    $attachmentsManager,
         AttachmentsRepository $attachmentsRepository,
-        EntityStatusManager $entityStatusManager
+        EntityStatusManager   $entityStatusManager
     )
     {
         $this->categoryRepository = $categoryRepository;
@@ -49,13 +49,13 @@ class ProductManager
 
     public function store(ProductData $productData, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getById($productData->categoryId);
+        $existedCategory = $this->categoryRepository->getById($productData->category_id);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getById($productData->brandId);
+        $existedBrand = $this->brandRepository->getById($productData->brand_id);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
@@ -66,18 +66,15 @@ class ProductManager
         $product = Product::create([
             'title' => $productData->title,
             'slug' => Str::slug($productData->title),
-            'description' => $productData->description,
-            'category_id' => $existedCategory->id,
-            'brand_id' => $existedBrand->id,
-            'status' => $status,
             'stock' => $productData->stock,
-            'price' => $productData->price,
-            'sale_price' => $productData->salePrice,
             'unit' => $productData->unit,
-            'currency' => $productData->currency
+            'price' => $productData->price,
+            'sale_price' => $productData->sale_price,
+            'status' => $status,
+            'brand_id' => $existedBrand->id,
+            'category_id' => $existedCategory->id,
         ]);
-
-        $product->slug = Str::slug($productData->title).'-'.$product->id;
+        $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
@@ -85,13 +82,13 @@ class ProductManager
 
     public function update(ProductData $productData, Product $product, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getById($productData->categoryId);
+        $existedCategory = $this->categoryRepository->getById($productData->category_id);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getById($productData->brandId);
+        $existedBrand = $this->brandRepository->getById($productData->brand_id);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
@@ -101,18 +98,16 @@ class ProductManager
 
         $product->update([
             'title' => $productData->title,
-            'description' => $productData->description,
-            'category_id' => $existedCategory->id,
-            'brand_id' => $existedBrand->id,
-            'status' => $status,
             'stock' => $productData->stock,
-            'price' => $productData->price,
-            'sale_price' => $productData->salePrice,
             'unit' => $productData->unit,
-            'currency' => $productData->currency
+            'price' => $productData->price,
+            'sale_price' => $productData->sale_price,
+            'status' => $status,
+            'brand_id' => $existedBrand->id,
+            'category_id' => $existedCategory->id,
         ]);
-        //dd($product->price);
-        $product->slug = Str::slug($productData->title).'-'.$product->id;
+
+        $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
@@ -124,8 +119,7 @@ class ProductManager
 
         $product = $this->productRepository->getById($productId);
 
-        if ($product === null)
-        {
+        if ($product === null) {
             throw new ProductNotFoundException();
         }
 
@@ -136,8 +130,7 @@ class ProductManager
     {
         $existedAttachment = $this->attachmentsRepository->getById($product, (int)$request->id);
 
-        if ($existedAttachment === null)
-        {
+        if ($existedAttachment === null) {
             throw new AttachmentNotFoundException();
         }
 

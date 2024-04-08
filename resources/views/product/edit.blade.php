@@ -50,17 +50,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="currency">Валюта цены</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('currency') error @enderror"  value="{{$product->currency}}" id="currency" name="currency" placeholder="MDL">
-                                                    @error('currency')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="form-label" for="currency">Валюта цены</label>--}}
+{{--                                                <div class="form-control-wrap">--}}
+{{--                                                    <input type="text" required class="form-control @error('currency') error @enderror"  value="{{$product->currency}}" id="currency" name="currency" placeholder="MDL">--}}
+{{--                                                    @error('currency')--}}
+{{--                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>--}}
+{{--                                                    @enderror--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="unit">Единица измерения</label>
@@ -172,7 +172,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$product->id}}" class="product-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
+                                                <a id="model-media-delete-{{$image->id}}" href="#" data-id="{{$image->id}}" data-model-id="{{$product->id}}" class="model-media-delete product-media-delete btn btn-p-0 btn-nofocus" title="Удалить"><em class="icon ni ni-trash"></em></a>
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +190,6 @@
         $(document).on('click','.model-media-delete',function (e) {
             e.preventDefault();
             var image_id = $(this).data('id');
-            var model_id = $(this).data('model-id');
             var token = "{{csrf_token()}}";
             var path = "{{route('product.media.delete', $product)}}";
             $.ajax({
@@ -199,7 +198,6 @@
                 dataType:"JSON",
                 data:{
                     id: image_id,
-                    product_id: model_id,
                     _token: token
                 },
                 success:function (response) {
