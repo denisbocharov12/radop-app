@@ -8,6 +8,9 @@ final class ONECManager
 {
     public function getOneCIdForCreate(Model $model): string
     {
-        return config('product_onec.onec_id').$model->id;
+        $modelName = class_basename($model);
+        $modelPrefix = mb_substr(strtolower($modelName), 0, 3);
+
+        return $modelPrefix.config('product_onec.onec_id').$model->id;
     }
 }
