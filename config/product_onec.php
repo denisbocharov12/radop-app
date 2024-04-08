@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'onec_id' => env('ONECID', 'w9999'),
+    'onec_id' => env('ONECID', '9999'),
 ];
