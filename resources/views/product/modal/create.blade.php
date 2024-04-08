@@ -1,0 +1,137 @@
+<!-- @@ Lead Add Modal @e -->
+<div class="modal fade" role="dialog" id="addProduct">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+            <div class="modal-body modal-body-md">
+                <h5 class="title">Добавить товар</h5>
+                <ul class="nk-nav nav nav-tabs">
+                </ul><!-- .nav-tabs -->
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <form action="{{route('product.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">Название товара</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control @error('title') error @enderror" id="title" name="title" placeholder="Видеокамера 720HD">
+                                            @error('title')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="price">Цена</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control" id="price" name="price" placeholder="560">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sale_price">Цена на скидке</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="sale_price" name="sale_price" placeholder="254">
+                                        </div>
+                                    </div>
+                                </div>
+{{--                                <div class="col-md-6">--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        <label class="form-label" for="currency">Валюта цены</label>--}}
+{{--                                        <div class="form-control-wrap">--}}
+{{--                                            <input type="text" required class="form-control" id="currency" name="currency" placeholder="MDL">--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="unit">Единица измерения</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="unit" name="unit" placeholder="штук.">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="stock">Кол-во на складе</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control" id="stock" name="stock" placeholder="234">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="category_id">Категория</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" data-search="on" name="category_id" id="category_id" data-placeholder="Выберите категорию">
+                                                <option value="">Категория</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="brand_id">Брэнд</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" data-search="on" required name="brand_id" id="brand_id" data-placeholder="Выберите брэнд">
+                                                <option value="">Брэнд</option>
+                                                @foreach($brands as $brand)
+                                                    <option value="{{$brand->id}}">{{$brand->title}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="status">Статус</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
+                                                <option value="">Статус</option>
+                                                <option value="true">Активная</option>
+                                                <option value="false">Неактивная</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">Описание товара</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" class="form-control no-resize" id="description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Фотографии к товару</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="attachments[]" multiple="" class="form-file-input" id="productAttachments">
+                                                <label class="form-file-label" for="productAttachments">Выбрать</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li>
+                                            <button type="submit"  class="btn btn-primary">Создать товар</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- .tab-pane -->
+                </div><!-- .tab-content -->
+            </div><!-- .modal-body -->
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
