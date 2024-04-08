@@ -17,6 +17,7 @@ use App\Repositories\Attachments\AttachmentsRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Services\Attachments\AttachmentsManager;
 use App\Services\EntityStatusManager;
+use App\Services\ONEC\ONECManager;
 
 final class CategoryManager
 {
@@ -30,6 +31,7 @@ final class CategoryManager
         AttachmentsManager  $attachmentsManager,
         attachmentsRepository $attachmentsRepository,
         EntityStatusManager $entityStatusManager,
+        private readonly ONECManager $ONECManager,
     )
     {
         $this->categoryRepository = $categoryRepository;
@@ -53,6 +55,12 @@ final class CategoryManager
             'parent_id' => $categoryData->parentId,
             'status' => $status,
             'summary' => $categoryData->summary
+        ]);
+
+        $categoryOneCId = $this->ONECManager->getOneCIdForCreate($category);
+
+        $category->update([
+           'onec_id' => $categoryOneCId
         ]);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
