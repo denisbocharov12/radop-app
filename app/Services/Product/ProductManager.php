@@ -19,6 +19,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Attachments\AttachmentsManager;
 use App\Services\EntityStatusManager;
+use App\Services\ONEC\ONECManager;
 use Illuminate\Support\Str;
 
 class ProductManager
@@ -36,7 +37,8 @@ class ProductManager
         BrandRepository       $brandRepository,
         AttachmentsManager    $attachmentsManager,
         AttachmentsRepository $attachmentsRepository,
-        EntityStatusManager   $entityStatusManager
+        EntityStatusManager   $entityStatusManager,
+        private readonly ONECManager $ONECManager,
     )
     {
         $this->categoryRepository = $categoryRepository;
@@ -76,6 +78,12 @@ class ProductManager
         ]);
         $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
+
+        $productOneCId = $this->ONECManager->getOneCIdForCreate($product);
+
+        $product->update([
+            'onec_id' => $productOneCId
+        ]);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }

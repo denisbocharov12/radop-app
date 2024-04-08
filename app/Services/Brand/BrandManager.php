@@ -16,6 +16,7 @@ use App\Repositories\Attachments\AttachmentsRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Services\Attachments\AttachmentsManager;
 use App\Services\EntityStatusManager;
+use App\Services\ONEC\ONECManager;
 use Illuminate\Support\Str;
 
 final class BrandManager
@@ -29,7 +30,8 @@ final class BrandManager
         BrandRepository     $brandRepository,
         EntityStatusManager $entityStatusManager,
         AttachmentsManager $attachmentsManager,
-        AttachmentsRepository $attachmentsRepository
+        AttachmentsRepository $attachmentsRepository,
+        private readonly ONECManager $ONECManager,
     )
     {
         $this->brandRepository = $brandRepository;
@@ -57,6 +59,12 @@ final class BrandManager
 
         $brand->slug = Str::slug($brandData->title) . '-' . $brand->id;
         $brand->save();
+
+        $brandOneCId = $this->ONECManager->getOneCIdForCreate($brand);
+
+        $brand->update([
+            'onec_id' => $brandOneCId
+        ]);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $brand);
 
