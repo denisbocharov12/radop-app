@@ -4,6 +4,7 @@ namespace App\Repositories\Product;
 
 use App\Filters\ProductSearchFilter;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\TransferProduct;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -73,11 +74,10 @@ final class ProductRepository
         ;
     }
 
-    public function getProductByTransferIdAndProductId(int $transferProductId)
+    public function getProductCategoryByProductOnecId(string $productOnecId): ?ProductCategory
     {
-        return TransferProduct::query()
-            ->where('id', $transferProductId)
-            ->first()
+        return ProductCategory::where('product_id', $productOnecId)
+            ->get()
         ;
     }
 }

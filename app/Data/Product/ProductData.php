@@ -10,34 +10,34 @@ namespace App\Data\Product;
  * @property float $price
  * @property float $sale_price
  * @property bool $status
- * @property int $brand_id
- * @property int $category_id
+ * @property string $brand_id
+ * @property array $category_id
  * @property string $currency
  * @property array $attachments
  */
-class ProductData
+final class ProductData
 {
     public ?string $onec_id;
     public string $title;
     public ?int $stock;
-    public ?int $unit;
+    public ?string $unit;
     public float $price;
     public ?float $sale_price;
     public string $status;
-    public ?int $brand_id;
-    public ?int $category_id;
+    public ?string $brand_id;
+    public ?array $category_id;
     public ?array $attachments;
 
     public function __construct(
         ?string $onec_id,
         string  $title,
         ?int    $stock,
-        ?int    $unit,
+        ?string    $unit,
         float   $price,
         ?float  $sale_price,
         string  $status,
-        ?int    $brand_id,
-        ?int    $category_id,
+        ?string    $brand_id,
+        ?array    $category_id,
         ?array  $attachments
     ) {
         $this->onec_id = $onec_id;

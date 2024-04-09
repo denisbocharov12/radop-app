@@ -42,6 +42,11 @@ final class BrandRepository
         return Brand::query()->find($brandId);
     }
 
+    public function getByOnecId($brandId): ?Brand
+    {
+        return Brand::where('onec_Id', $brandId)->first();
+    }
+
     public function getByTitle(string $name): ?Brand
     {
         return Brand::query()->where('title', $name)->first();
