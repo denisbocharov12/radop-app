@@ -47,6 +47,11 @@ class CategoryRepository
         return Category::query()->find($categoryId);
     }
 
+    public function getByOnecId($categoryId): ?Category
+    {
+        return Category::where('onec_id', $categoryId)->first();
+    }
+
     public function getParentCategories(): Collection
     {
         return Category::query()->where('parent_id')->get();

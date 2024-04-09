@@ -13,6 +13,7 @@ use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductMediaDeleteRequest;
 use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Repositories\Attachments\AttachmentsRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -51,13 +52,13 @@ class ProductManager
 
     public function store(ProductData $productData, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getById($productData->category_id);
+        $existedCategory = $this->categoryRepository->getByOnecId($productData->category_id);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getById($productData->brand_id);
+        $existedBrand = $this->brandRepository->getByOnecId($productData->brand_id);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
@@ -73,10 +74,11 @@ class ProductManager
             'price' => $productData->price,
             'sale_price' => $productData->sale_price,
             'status' => $status,
-            'brand_id' => $existedBrand->id,
-            'category_id' => $existedCategory->id,
+            'brand_id' => $existedBrand->onec_id,
         ]);
+
         $product->slug = Str::slug($productData->title) . '-' . $product->id;
+
         $product->save();
 
         $productOneCId = $this->ONECManager->getOneCIdForCreate($product);
@@ -84,6 +86,8 @@ class ProductManager
         $product->update([
             'onec_id' => $productOneCId
         ]);
+
+        $this->attachCategoriesToProduct($product, $productData->category_id);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }
@@ -131,6 +135,8 @@ class ProductManager
             throw new ProductNotFoundException();
         }
 
+        $this->detachCategoriesFromProduct($product);
+
         $product->delete();
     }
 
@@ -143,5 +149,44 @@ class ProductManager
         }
 
         $this->attachmentsManager->deleteAttachmentsFromModel($product, (int)$request->id);
+    }
+
+    private function attachCategoriesToProduct(Product $product, array $categories): void
+    {
+        foreach ($categories as $category)
+        {
+            ProductCategory::create([
+                'product_id' => $product->onec_id,
+                'category_id' => $category
+            ]);
+        }
+    }
+
+    private function syncCategoriesToProduct(Product $product, array $categories): void
+    {
+        $existedProductCategories = $this->productRepository->getProductCategoryByProductOnecId($product->onec_id);
+
+        foreach ($existedProductCategories as $item)
+        {
+            $item->delete();
+        }
+
+        foreach ($categories as $category)
+        {
+            ProductCategory::create([
+                'product_id' => $product->onec_id,
+                'category_id' => $category
+            ]);
+        }
+    }
+
+    private function detachCategoriesFromProduct(Product $product): void
+    {
+        $existedProductCategories = $this->productRepository->getProductCategoryByProductOnecId($product->onec_id);
+
+        foreach ($existedProductCategories as $item)
+        {
+            $item->delete();
+        }
     }
 }

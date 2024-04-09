@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('price')->default(0);
             $table->string('sale_price')->nullable();
             $table->boolean('status')->default(true);
-            $table->foreignIdFor(Brand::class, 'brand_id')->nullable();
+            $table->string( 'brand_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

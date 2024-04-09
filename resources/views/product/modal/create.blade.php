@@ -39,14 +39,6 @@
                                         </div>
                                     </div>
                                 </div>
-{{--                                <div class="col-md-6">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label class="form-label" for="currency">Валюта цены</label>--}}
-{{--                                        <div class="form-control-wrap">--}}
-{{--                                            <input type="text" required class="form-control" id="currency" name="currency" placeholder="MDL">--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label" for="unit">Единица измерения</label>
@@ -67,10 +59,10 @@
                                     <div class="form-group">
                                         <label class="form-label" for="category_id">Категория</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" data-search="on" required name="category_id" id="category_id" data-placeholder="Выберите категорию">
+                                            <select class="form-select js-select2" data-search="on" required name="category_id[]" id="category_id" multiple data-placeholder="Выберите категорию">
                                                 <option value="">Категория</option>
                                                 @foreach($categories as $category)
-                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    <option value="{{$category->onec_id}}">{{$category->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -83,7 +75,7 @@
                                             <select class="form-select js-select2" data-search="on" required name="brand_id" id="brand_id" data-placeholder="Выберите брэнд">
                                                 <option value="">Брэнд</option>
                                                 @foreach($brands as $brand)
-                                                    <option value="{{$brand->id}}">{{$brand->title}}</option>
+                                                    <option value="{{$brand->onec_id}}">{{$brand->title}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

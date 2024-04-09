@@ -50,17 +50,6 @@
                                                 </div>
                                             </div>
                                         </div>
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label class="form-label" for="currency">Валюта цены</label>--}}
-{{--                                                <div class="form-control-wrap">--}}
-{{--                                                    <input type="text" required class="form-control @error('currency') error @enderror"  value="{{$product->currency}}" id="currency" name="currency" placeholder="MDL">--}}
-{{--                                                    @error('currency')--}}
-{{--                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>--}}
-{{--                                                    @enderror--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="unit">Единица измерения</label>
@@ -87,10 +76,15 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="category_id">Категория</label>
                                                 <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" data-search="on" required name="category_id" id="category_id" data-placeholder="Выберите категорию">
+                                                    <select class="form-select js-select2" data-search="on" required name="category_id[]" multiple id="category_id" data-placeholder="Выберите категорию">
                                                         <option value="">Категория</option>
                                                         @foreach($categories as $category)
-                                                            <option {{$product->category_id == $category->id ? 'selected' : ''}} value="{{$category->id}}">{{$category->name}}</option>
+
+                                                            @php
+                                                            $existedProductCategory = \App\Models\ProductCategory::where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();
+                                                            @endphp
+
+                                                            <option {{$existedProductCategory->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
