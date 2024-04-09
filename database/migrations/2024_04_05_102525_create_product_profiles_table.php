@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('sku')->nullable();
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
-            $table->float('iur_price', 32)->nullable();
+            $table->string('iur_price')->nullable();
             $table->text('upp_sale')->nullable();
             $table->string('condition')->default('regular');
             $table->softDeletes();

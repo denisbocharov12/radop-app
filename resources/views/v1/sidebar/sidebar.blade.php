@@ -68,6 +68,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                            </li>
                             @endhasrole
 
                             @hasrole('admin')
