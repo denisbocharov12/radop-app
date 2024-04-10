@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Translatable\HasTranslations;
 
 final class AttributeValue extends Model
 {
     use HasFactory;
+    use HasTranslations;
 
     protected $fillable = [
         'attribute_onec_id',
@@ -16,6 +18,8 @@ final class AttributeValue extends Model
         'value',
         'price'
     ];
+
+    public $translatable = ['value'];
 
     /**
      * @return HasOne<Attribute, AttributeValue>
