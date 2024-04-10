@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -79,5 +80,21 @@ final class Product extends Model implements HasMedia
     public function data(): HasOne
     {
         return $this->hasOne(ProductProfile::class, 'product_id', 'onec_id')->withTrashed();
+    }
+
+    /**
+     * @return BelongsToMany<Attribute>
+     */
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class, 'product_attributes', 'product_id','attribute_id','onec_id','onec_id');
+    }
+
+    /**
+     * @return HasMany<AttributeValue, Product>
+     */
+    public function values(): HasMany
+    {
+        return $this->hasMany(AttributeValue::class, 'product_onec_id', 'onec_id');
     }
 }
