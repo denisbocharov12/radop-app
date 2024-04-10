@@ -81,7 +81,13 @@
                                                         @foreach($categories as $category)
 
                                                             @php
-                                                            $existedProductCategory = \App\Models\ProductCategory::where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();
+                                                            if (count($product->categories) > 1) {
+                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();
+                                                            }
+                                                            else {
+                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->first();
+                                                            }
+
                                                             @endphp
 
                                                             <option {{$existedProductCategory->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>
@@ -97,7 +103,7 @@
                                                     <select class="form-select js-select2" data-search="on" required name="brand_id" id="brand_id" data-placeholder="Выберите брэнд">
                                                         <option value="">Брэнд</option>
                                                         @foreach($brands as $brand)
-                                                            <option {{$product->brand_id == $brand->id ? 'selected' : ''}}  value="{{$brand->id}}">{{$brand->title}}</option>
+                                                            <option {{$product->brand_id === $brand->onec_id ? 'selected' : ''}}  value="{{$brand->onec_id}}">{{$brand->title}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
