@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 final class Attribute extends Model
 {
     use HasFactory;
+    use HasTranslations;
 
     protected $fillable = [
         'onec_id',
         'name',
         'status'
     ];
+
+    public $translatable = ['name'];
 
     /**
      * @return HasMany<AttributeValue, Attribute>
