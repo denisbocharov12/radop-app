@@ -69,7 +69,6 @@ class ProductManager
 
         $product = Product::create([
             'title' => $productData->title,
-            'slug' => Str::slug($productData->title),
             'stock' => $productData->stock,
             'unit' => $productData->unit,
             'price' => $productData->price,
@@ -107,13 +106,13 @@ class ProductManager
 
     public function update(ProductData $productData, Product $product, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getById($productData->category_id);
+        $existedCategory = $this->categoryRepository->getByOnecId($productData->category_id);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getById($productData->brand_id);
+        $existedBrand = $this->brandRepository->getByOnecId($productData->brand_id);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
@@ -128,12 +127,13 @@ class ProductManager
             'price' => $productData->price,
             'sale_price' => $productData->sale_price,
             'status' => $status,
-            'brand_id' => $existedBrand->id,
-            'category_id' => $existedCategory->id,
+            'brand_id' => $existedBrand->onec_id,
         ]);
 
         $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
+
+        $this->syncCategoriesToProduct($product, $productData->category_id);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }

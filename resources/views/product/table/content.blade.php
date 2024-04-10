@@ -21,10 +21,11 @@
                     <span>{{$product->title}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$brands->firstWhere('onec_id', $product->brand_id)->title}}</span>
+                    <span>{{$product->brand->title}}</span>
                 </div>
                 <div class="nk-tb-col">
-{{--                    <span>{{$categories->firstWhere('onec_id', $product->category_id)->name}}</span>--}}
+{{--                    <span>{{$category = $categories->firstWhere('id', $product->category_id)}}</span>--}}
+{{--                    {{dd($category = $categories->firstWhere('id', $product->category_id))}}--}}
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$product->price}}</span>
