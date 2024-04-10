@@ -16,6 +16,12 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property int $category_id
  * @property string $currency
  * @property array $attachments
+ * @property string $sku
+ * @property string $summary
+ * @property string $description
+ * @property array $upp_sale
+ * @property string $iur_price
+ * @property string $condition
  */
 class ProductRequest extends FormRequest
 {
@@ -33,6 +39,12 @@ class ProductRequest extends FormRequest
             'category_id' => ['nullable', 'array'],
             'attachments' => ['nullable', 'array', 'max:10'],
             'attachments.*' => ['required', 'max:10000', 'mimes:png,jpg,jpeg'],
+            'sku' => ['nullable', 'string'],
+            'summary' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'upp_sale' => ['nullable', 'array'],
+            'iur_price' => ['nullable', 'numeric'],
+            'condition' => ['required', 'string'],
         ];
     }
 }

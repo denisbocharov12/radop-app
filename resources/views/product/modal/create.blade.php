@@ -57,6 +57,48 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="sku">SKU</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="sku" name="sku" placeholder="sku">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="upp_sale">Похожие товары</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" data-search="on" multiple name="upp_sale[]" id="upp_sale" data-placeholder="Похожие товары">
+                                                <option value="">Похожие товары</option>
+                                                @foreach($products as $item)
+                                                    <option value="{{$item->onec_id}}">{{$item->title}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="condition">Состояние</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" data-search="on" required name="condition" id="condition" data-placeholder="Выберите состояние">
+                                                <option value="">Состояние</option>
+                                                @foreach($productConditions as $item => $condition)
+                                                    <option value="{{$item}}">{{$condition}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sku">SKU</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="sku" name="sku" placeholder="sku">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="category_id">Категория</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" data-search="on" required name="category_id[]" id="category_id" multiple data-placeholder="Выберите категорию">
@@ -90,6 +132,17 @@
                                                 <option value="true">Активная</option>
                                                 <option value="false">Неактивная</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="summary">Краткое описание товара</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
+                                            @error('summary')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>

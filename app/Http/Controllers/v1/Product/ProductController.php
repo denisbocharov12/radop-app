@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1\Product;
 
+use App\Enums\ProductConditions;
 use App\Exceptions\Attachments\AttachmentNotFoundException;
 use App\Exceptions\Attachments\AttachmentNotFoundValidationException;
 use App\Exceptions\Brand\BrandNotFoundException;
@@ -37,7 +38,8 @@ class ProductController extends Controller
         ProductManager $productManager,
         ProductDataMapper $productDataMapper,
         CategoryRepository $categoryRepository,
-        BrandRepository $brandRepository
+        BrandRepository $brandRepository,
+        private readonly ProductConditions $productConditions,
     )
     {
         $this->productRepository = $productRepository;
@@ -55,11 +57,14 @@ class ProductController extends Controller
         $categories = $this->categoryRepository->getAll();
         $brands = $this->brandRepository->getAll();
 
+        $productConditions = $this->productConditions->getAll();
+
         return view('product.index', compact([
             'products',
             'categories',
             'brands',
-            'query'
+            'query',
+            'productConditions',
         ]));
     }
 

@@ -19,7 +19,13 @@ final class ProductDataMapper
             $request->status,
             $request->brand_id,
             $request->category_id,
-            $request->attachments
+            $request->attachments,
+            $request->sku,
+            $request->summary,
+            $request->description,
+            $request->upp_sale,
+            $request->iur_price,
+            $request->condition,
         );
     }
 }
