@@ -21,7 +21,7 @@
                     <span>{{$product->title}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$brands->firstWhere('id', $product->brand_id)->title}}</span>
+                    <span>{{$product->brand->title}}</span>
                 </div>
                 <div class="nk-tb-col">
 {{--                    <span>{{$category = $categories->firstWhere('id', $product->category_id)}}</span>--}}

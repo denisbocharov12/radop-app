@@ -74,7 +74,7 @@ final class ProductRepository
         ;
     }
 
-    public function getProductCategoryByProductOnecId(string $productOnecId): ?ProductCategory
+    public function getProductCategoryByProductOnecId(string $productOnecId): ?Collection
     {
         return ProductCategory::where('product_id', $productOnecId)
             ->get()
