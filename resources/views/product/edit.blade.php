@@ -43,7 +43,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="sale_price">Цена на скидке</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('sale_price') error @enderror" value="{{$product->sale_price}}" id="sale_price" name="sale_price" placeholder="254">
+                                                    <input type="text" class="form-control @error('sale_price') error @enderror" value="{{$product->sale_price}}" id="sale_price" name="sale_price" placeholder="254">
                                                     @error('sale_price')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -69,6 +69,44 @@
                                                     @error('stock')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="sku">SKU</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="sku" name="sku" placeholder="sku" value="{{$product->data->sku}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="upp_sale">Похожие товары</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" multiple name="upp_sale[]" id="upp_sale" data-placeholder="Похожие товары">
+                                                        <option value="">Похожие товары</option>
+                                                        @foreach($products as $p)
+                                                            @if(in_array($p->onec_id, json_decode($product->data->upp_sale)))
+                                                                <option selected value="{{$p->onec_id}}">{{$p->title}}</option>
+                                                            @else
+                                                                <option value="{{$p->onec_id}}">{{$p->title}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="condition">Состояние</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" required name="condition" id="condition" data-placeholder="Выберите состояние">
+                                                        <option value="">Состояние</option>
+                                                        @foreach($productConditions as $item => $condition)
+                                                            <option {{$product->data->condition === $item ? 'selected' : ''}} value="{{$item}}">{{$condition}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,11 +159,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="summary">Краткое описание товара</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea name="summary" class="form-control no-resize" id="summary">{{$product->data->summary}}</textarea>
+                                                    @error('summary')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="description">Описание товара</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="description" class="form-control no-resize" id="description">{{$product->description}}</textarea>
+                                                    <textarea name="description" class="form-control no-resize" id="description">{{$product->data->description}}</textarea>
                                                 </div>
                                             </div>
                                         </div>

@@ -104,7 +104,7 @@ class ProductManager
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }
 
-    public function update(ProductData $productData, Product $product, ProductRequest $request): void
+    public function update(ProductData $productData, Product $product, ProductProfile $productProfile, ProductRequest $request): void
     {
         $existedCategory = $this->categoryRepository->getByOnecId($productData->category_id);
 
@@ -132,6 +132,20 @@ class ProductManager
 
         $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
+
+        $productOneCId = $this->ONECManager->getOneCIdForCreate($product);
+
+        $productProfile->update([
+            'product_id' => $productOneCId,
+            'sku' => $productData->sku,
+            'summary' => $productData->summary,
+            'description' => $productData->description,
+            'upp_sale' => json_encode($productData->upp_sale),
+            'iur_price' => $productData->iur_price,
+            'condition' => $productData->condition,
+        ]);
+        dd($productProfile);
+        $productProfile->save();
 
         $this->syncCategoriesToProduct($product, $productData->category_id);
 

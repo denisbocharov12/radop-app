@@ -91,14 +91,6 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="sku">SKU</label>
-                                        <div class="form-control-wrap">
-                                            <input type="text" class="form-control" id="sku" name="sku" placeholder="sku">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label class="form-label" for="category_id">Категория</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" data-search="on" required name="category_id[]" id="category_id" multiple data-placeholder="Выберите категорию">

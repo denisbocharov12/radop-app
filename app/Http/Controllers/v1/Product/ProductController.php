@@ -20,6 +20,7 @@ use App\Http\Requests\Product\ProductIndexRequest;
 use App\Http\Requests\Product\ProductMediaDeleteRequest;
 use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductProfile;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
@@ -34,11 +35,11 @@ class ProductController extends Controller
     private BrandRepository $brandRepository;
 
     public function __construct(
-        ProductRepository $productRepository,
-        ProductManager $productManager,
-        ProductDataMapper $productDataMapper,
-        CategoryRepository $categoryRepository,
-        BrandRepository $brandRepository,
+        ProductRepository                  $productRepository,
+        ProductManager                     $productManager,
+        ProductDataMapper                  $productDataMapper,
+        CategoryRepository                 $categoryRepository,
+        BrandRepository                    $brandRepository,
         private readonly ProductConditions $productConditions,
     )
     {
@@ -87,16 +88,18 @@ class ProductController extends Controller
     {
         $categories = $this->categoryRepository->getAll();
         $brands = $this->brandRepository->getAll();
+        $products = $this->productRepository->getAllExcluded($product->id);
+        $productConditions = $this->productConditions->getAll();
 
-        return view('product.edit', compact(['product', 'categories','brands']));
+        return view('product.edit', compact(['product', 'products', 'categories', 'brands', 'productConditions',]));
     }
 
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductRequest $request, Product $product, ProductProfile $productProfile)
     {
         $productData = $this->productDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->productManager->update($productData, $product, $request);
+            $this->productManager->update($productData, $product, $productProfile, $request );
 
             return redirect()->route('product.index');
         } catch (CategoryNotFoundException $e) {
@@ -108,8 +111,7 @@ class ProductController extends Controller
 
     public function destroy(ProductDeleteRequest $request)
     {
-        if (!$request->ajax())
-        {
+        if (!$request->ajax()) {
             throw new NotAjaxRequestException();
         }
 
