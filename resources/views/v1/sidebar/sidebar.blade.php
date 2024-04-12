@@ -81,10 +81,12 @@
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><em class="icon ni ni-truck"></em></span>
-                            <span class="nk-menu-text">Техника</span>
+                        @hasrole('admin')
+                        <a href="{{route('coupon.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-percent"></em></span>
+                            <span class="nk-menu-text">Купоны</span>
                         </a>
+                        @endhasrole
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
                             <li class="nk-menu-item">
