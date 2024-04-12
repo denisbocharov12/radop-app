@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->nullable();
             $table->string('code')->unique();
-            $table->enum('type',['fixed','percent'])->default('fixed');
+            $table->string('type')->default('fixed');
             $table->string('value')->default(0);
             $table->boolean('status')->default(true);
             $table->string('minimal_total')->nullable();
