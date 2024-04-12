@@ -87,8 +87,12 @@
                                                     <select class="form-select js-select2" data-search="on" multiple name="upp_sale[]" id="upp_sale" data-placeholder="Похожие товары">
                                                         <option value="">Похожие товары</option>
                                                         @foreach($products as $p)
-                                                            @if(in_array($p->onec_id, json_decode($product->data->upp_sale)))
-                                                                <option selected value="{{$p->onec_id}}">{{$p->title}}</option>
+                                                            @if(is_array(json_decode($product->data->upp_sale)))
+                                                                @if(in_array($p->onec_id, json_decode($product->data->upp_sale)))
+                                                                    <option selected value="{{$p->onec_id}}">{{$p->title}}</option>
+                                                                @else
+                                                                    <option value="{{$p->onec_id}}">{{$p->title}}</option>
+                                                                @endif
                                                             @else
                                                                 <option value="{{$p->onec_id}}">{{$p->title}}</option>
                                                             @endif

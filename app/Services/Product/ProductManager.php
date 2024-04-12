@@ -144,7 +144,7 @@ class ProductManager
             'iur_price' => $productData->iur_price,
             'condition' => $productData->condition,
         ]);
-        dd($productProfile);
+
         $productProfile->save();
 
         $this->syncCategoriesToProduct($product, $productData->category_id);
