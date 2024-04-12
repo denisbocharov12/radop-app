@@ -14,6 +14,7 @@ use App\Http\Requests\Product\ProductMediaDeleteRequest;
 use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductProfile;
 use App\Repositories\Attachments\AttachmentsRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -86,6 +87,18 @@ class ProductManager
             'onec_id' => $productOneCId
         ]);
 
+        $productProfile = ProductProfile::create([
+            'product_id' => $productOneCId,
+            'sku' => $productData->sku,
+            'summary' => $productData->summary,
+            'description' => $productData->description,
+            'upp_sale' => json_encode($productData->upp_sale),
+            'iur_price' => $productData->iur_price,
+            'condition' => $productData->condition,
+        ]);
+
+        $productProfile->save();
+
         $this->attachCategoriesToProduct($product, $productData->category_id);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
@@ -119,6 +132,17 @@ class ProductManager
 
         $product->slug = Str::slug($productData->title) . '-' . $product->id;
         $product->save();
+
+        $product->data->update([
+            'sku' => $productData->sku,
+            'summary' => $productData->summary,
+            'description' => $productData->description,
+            'upp_sale' => json_encode($productData->upp_sale),
+            'iur_price' => $productData->iur_price,
+            'condition' => $productData->condition,
+        ]);
+
+        $product->data->save();
 
         $this->syncCategoriesToProduct($product, $productData->category_id);
 

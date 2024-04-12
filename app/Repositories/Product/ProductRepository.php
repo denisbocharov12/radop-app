@@ -47,6 +47,11 @@ final class ProductRepository
         return Product::query()->get();
     }
 
+    public function getAllExcluded(int $productId): Collection
+    {
+        return Product::query()->whereNot('id', $productId)->get();
+    }
+
     public function getProductsByCategoryId($categoryId): Collection
     {
         return Product::query()->where('category_id', $categoryId)->get();

@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use Database\Seeders\Product\BrandSeeder;
+use Database\Seeders\Product\CategorySeeder;
 use Database\Seeders\User\AdminSeeder;
 use Database\Seeders\User\PermissionSeeder;
 use Database\Seeders\User\RolesSeeder;
@@ -17,6 +20,8 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             AdminSeeder::class,
             UserTypeSeeder::class,
+            BrandSeeder::class,
+            CategorySeeder::class
         ]);
     }
 }
