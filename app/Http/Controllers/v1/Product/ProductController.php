@@ -94,12 +94,12 @@ class ProductController extends Controller
         return view('product.edit', compact(['product', 'products', 'categories', 'brands', 'productConditions',]));
     }
 
-    public function update(ProductRequest $request, Product $product, ProductProfile $productProfile)
+    public function update(ProductRequest $request, Product $product)
     {
         $productData = $this->productDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->productManager->update($productData, $product, $productProfile, $request );
+            $this->productManager->update($productData, $product, $request );
 
             return redirect()->route('product.index');
         } catch (CategoryNotFoundException $e) {
