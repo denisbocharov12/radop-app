@@ -3,11 +3,15 @@
 namespace App\Services\Coupon;
 
 use App\Data\Coupon\CouponData;
+use App\Exceptions\Coupon\CouponNotFoundException;
 use App\Exceptions\Coupon\CouponUniqueNameException;
+use App\Http\Requests\Coupon\CouponDeleteRequest;
 use App\Http\Requests\Coupon\CouponRequest;
 use App\Models\Coupon;
 use App\Repositories\Coupon\CouponRepository;
 use App\Services\EntityStatusManager;
+use Illuminate\Support\Str;
+
 
 class CouponManager
 {
@@ -25,10 +29,13 @@ class CouponManager
 
     public function store(CouponData $couponData, CouponRequest $request): void
     {
-        $existedCoupon = $this->couponRepository->getById($couponData->code);
-
-        if ($existedCoupon !== null) {
-            throw new CouponUniqueNameException();
+        if ($couponData->code === null) {
+            $couponData->code = Str::random(10);
+        } else {
+            $existedCoupon = $this->couponRepository->getByCode($couponData->code);
+            if ($existedCoupon !== null) {
+                throw new CouponUniqueNameException();
+            }
         }
 
         $status = $this->entityStatusManager->getEntityStatusFromRequest($couponData->status);
@@ -43,9 +50,10 @@ class CouponManager
             'start_date' => $couponData->start_date,
             'end_date' => $couponData->end_date
         ]);
+
     }
 
-    public function update(CouponData $couponData, Coupon $coupon, CouponRequest $request): void
+    public function update(CouponData $couponData, Coupon $coupon): void
     {
         if ($coupon->code !== $couponData->code) {
             $existedCoupon = $this->couponRepository->getByCode($couponData->code);
@@ -56,6 +64,7 @@ class CouponManager
         }
 
         $status = $this->entityStatusManager->getEntityStatusFromRequest($couponData->status);
+
 
         $coupon->update([
             'user_id' => $couponData->user_id,

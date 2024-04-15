@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1\Coupon;
 
+use App\Enums\CouponTypes;
 use App\Exceptions\Coupon\CouponNotFoundException;
 use App\Exceptions\Coupon\CouponNotFoundValidationException;
 use App\Exceptions\Coupon\CouponUniqueNameException;
@@ -26,6 +27,7 @@ class CouponController extends Controller
         CouponManager $couponManager,
         CouponDataMapper $couponDataMapper,
         CouponRepository $couponRepository,
+        private readonly CouponTypes $couponTypes,
     )
     {
         $this->couponManager = $couponManager;
@@ -37,8 +39,11 @@ class CouponController extends Controller
     {
         $coupons = $this->couponRepository->getAllPaginatedWithFilters();
 
+        $couponTypes = $this->couponTypes->getAll();
+
         return view('coupon.index', compact([
-            'coupons'
+            'coupons',
+            'couponTypes'
         ]));
     }
 
@@ -49,7 +54,7 @@ class CouponController extends Controller
         try {
             $this->couponManager->store($categoryData, $request);
 
-            return redirect()->route('category.index');
+            return redirect()->route('coupon.index');
         } catch (CouponUniqueNameException $e) {
             throw new CouponUniqueNameValidationException();
         }
@@ -57,8 +62,13 @@ class CouponController extends Controller
 
     public function edit(Coupon $coupon)
     {
+        $couponTypes = $this->couponTypes->getAll();
+        $coupons = $this->couponRepository->getAll();
+
         return view('coupon.edit', compact([
-            'coupon'
+            'coupon',
+            'coupons',
+            'couponTypes',
         ]));
     }
 

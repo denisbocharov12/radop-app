@@ -96,5 +96,11 @@
             var path = "{{route('coupon.delete')}}";
             askToDeleteCoupon(model_id, token, path)
         });
+        $(document).ready(function() {
+            $("#start_date").datepicker();
+        });
+        $(document).ready(function() {
+            $("#end_date").datepicker();
+        });
     </script>
 @endsection

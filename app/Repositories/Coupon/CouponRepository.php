@@ -35,7 +35,7 @@ class CouponRepository
 
     public function getByCode($couponCode): ?Coupon
     {
-        return Coupon::query()->find($couponCode);
+        return Coupon::where('code', $couponCode)->first();
     }
 
     public function getAll() : Collection

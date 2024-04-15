@@ -21,7 +21,7 @@ class CouponRequest extends FormRequest
         return [
             'user_id' => ['nullable', 'integer'],
             'value' => ['required', 'string'],
-            'code' => ['required', 'string'],
+            'code' => ['nullable', 'string'],
             'type' => ['required', 'string'],
             'minimal_total' => ['nullable', 'string'],
             'status' => ['required', 'string'],

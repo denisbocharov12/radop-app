@@ -2,10 +2,13 @@
     <div class="nk-tb-list nk-tb-ulist">
         <div class="nk-tb-item nk-tb-head">
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Название</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Родительская категория</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Код</span></div>
+{{--            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Код</span></div>--}}
+            <div class="nk-tb-col"><span class="sub-text">Тип</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Краткое описание</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Минимальная сумма</span></div>
+{{--            <div class="nk-tb-col"><span class="sub-text">Начало срока</span></div>--}}
+{{--            <div class="nk-tb-col"><span class="sub-text">Краткое описание</span></div>--}}
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
         </div><!-- .nk-tb-item -->
@@ -15,10 +18,14 @@
                     <span>#{{$coupon->id}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$coupon->name}}</span>
+                    <span>{{$coupon->code}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$coupon->parent->name ?? ''}}</span>
+                    @if ($coupon->type === 'percent')
+                        <span>Процентная ставка</span>
+                    @elseif ($coupon->type === 'fixed')
+                        <span>Фиксированная ставка</span>
+                    @endif
                 </div>
                 <div class="nk-tb-col">
                     @if($coupon->status)
@@ -28,7 +35,7 @@
                     @endif
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$coupon->summary}}</span>
+                    <span>{{$coupon->minimal_total}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools">
                     <ul class="nk-tb-actions gx-2">

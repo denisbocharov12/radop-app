@@ -16,7 +16,7 @@ final class CouponData
 {
     public ?int $user_id;
     public string $value;
-    public string $code;
+    public ?string $code;
     public string $type;
     public ?string $minimal_total;
     public string $status;
@@ -26,7 +26,7 @@ final class CouponData
     public function __construct(
         ?int    $user_id,
         string  $value,
-        string  $code,
+        ?string  $code,
         string  $type,
         ?string $minimal_total,
         string  $status,

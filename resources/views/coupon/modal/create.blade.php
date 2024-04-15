@@ -12,12 +12,38 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="name">Название категории</label>
+                                        <label class="form-label" for="condition">Тип</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" placeholder="Категория">
-                                            @error('name')
-                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                            @enderror
+                                            <select class="form-select js-select2" data-search="on" required name="type" id="type" data-placeholder="Тип">
+                                                <option value="">Тип</option>
+                                                @foreach($couponTypes as $item => $condition)
+                                                    <option value="{{$item}}">{{$condition}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="value">Значение %</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control" id="value" required name="value" placeholder="Значение %">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="minimal_total">Минимальная сумма для активации купона</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control" id="minimal_total" required name="minimal_total" placeholder="Мин. сумма">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="unit">Код</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="code" name="code" placeholder="Код">
                                         </div>
                                     </div>
                                 </div>
@@ -25,7 +51,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Статус</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
+                                            <select class="form-select js-select2" required name="status" id="status"
+                                                    data-placeholder="Выберите статус">
                                                 <option value="">Статус</option>
                                                 <option value="true">Активный</option>
                                                 <option value="false">Неактивный</option>
@@ -35,14 +62,17 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="summary">Краткое описание</label>
+                                        <label class="form-label">Начало действия купона</label>
                                         <div class="form-control-wrap">
-                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
-{{--                                            <input type="text" required class="form-control @error('summary') error @enderror" id="summary" name="summary" placeholder="Краткое описание">--}}
-                                            @error('summary')
-                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
-                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                            @enderror
+                                            <input type="text" class="form-control" name="start_date" id="start_date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Конец действия купона</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="end_date" id="end_date">
                                         </div>
                                     </div>
                                 </div>
@@ -61,3 +91,4 @@
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
+
