@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+final class Order extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+
+    protected $fillable = [
+        'order_number',
+        'first_name',
+        'last_name',
+        'phone',
+        'email',
+        'address',
+        'note',
+        'user_id',
+        'manager_id',
+        'deleted_at',
+        'payment_method',
+        'payment_status',
+        'status',
+        'subtotal',
+        'discount',
+        'total',
+        'delivery_charge',
+    ];
+
+    /**
+     * @return BelongsTo<User, Order>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
+    }
+
+    /**
+     * @return BelongsTo<User, Order>
+     */
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_id')->withTrashed();
+    }
+
+    /**
+     * @return HasMany<OrderItem>
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+}
