@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,13 @@ final class Order extends Model
         'discount',
         'total',
         'delivery_charge',
+    ];
+
+    protected $casts = [
+        'subtotal' => MoneyCast::class,
+        'discount' => MoneyCast::class,
+        'total' => MoneyCast::class,
+        'delivery_charge' => MoneyCast::class,
     ];
 
     /**
