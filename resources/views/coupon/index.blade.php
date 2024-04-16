@@ -11,7 +11,7 @@
                             <div class="nk-block-head-content">
                                 <h3 class="nk-block-title page-title">Купоны</h3>
                                 <div class="nk-block-des text-soft">
-{{--                                    <p>Количество: {{ $coupons->total() }} @choice('Ед.|Едц.', $coupons->total())</p>--}}
+                                    <p>Количество: {{ $coupons->total() }} @choice('Ед.|Едц.', $coupons->total())</p>
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
@@ -61,10 +61,10 @@
                 dropdownParent: $(".modal")
             });
         });
-        function askToDeleteCoupon(model_id, token, path)
+        function askToDeleteCoupon(coupon_id, token, path)
         {
             Swal.fire({
-                title: 'Вы хотите удалить купон - #'+model_id+' ?',
+                title: 'Вы хотите удалить купон - #'+coupon_id+' ?',
                 showDenyButton: true,
                 showCancelButton: true,
                 cancelButtonText: 'Отмена',
@@ -77,30 +77,30 @@
                         type: "DELETE",
                         dataType:"JSON",
                         data:{
-                            coupon_id: model_id,
+                            coupon_id: coupon_id,
                             _token: token
                         }
                     });
-                    Swal.fire('Купон '+model_id+' успешно удален', '', 'success');
-                    $('#coupon-id-'+model_id).fadeOut(1000);
+                    Swal.fire('Купон '+coupon_id+' успешно удален', '', 'success');
+                    $('#coupon-id-'+coupon_id).fadeOut(1000);
                 } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление купонаа '+model_id, '', 'info')
+                    Swal.fire('Вы отменили удаление купонаа '+coupon_id, '', 'info')
                 }
             })
         }
 
-        $(document).on('click','.model-delete',function (e) {
+        $(document).on('click','.coupon-delete',function (e) {
             e.preventDefault();
-            var model_id = $(this).data('id');
+            var coupon_id = $(this).data('id');
             var token = "{{csrf_token()}}";
             var path = "{{route('coupon.delete')}}";
-            askToDeleteCoupon(model_id, token, path)
+            askToDeleteCoupon(coupon_id, token, path)
         });
-        $(document).ready(function() {
-            $("#start_date").datepicker();
-        });
-        $(document).ready(function() {
-            $("#end_date").datepicker();
-        });
+        // $(document).ready(function() {
+        //     $("#start_date").datepicker();
+        // });
+        // $(document).ready(function() {
+        //     $("#end_date").datepicker();
+        // });
     </script>
 @endsection

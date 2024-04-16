@@ -80,14 +80,14 @@ class CouponManager
 
     public function delete(CouponDeleteRequest $request): void
     {
-        $couponCode = $request->code;
+        $couponCode = $request->coupon_id;
 
-        $brand = $this->couponRepository->getByCode($couponCode->code);
+        $coupon = $this->couponRepository->getById($couponCode);
 
-        if ($brand === null) {
+        if ($coupon === null) {
             throw new CouponNotFoundException();
         }
 
-        $brand->delete();
+        $coupon->delete();
     }
 }

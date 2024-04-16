@@ -12,6 +12,19 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="user_id">ID пользователя</label>
+                                        <div class="form-control-wrap">
+                                            <select class="form-select js-select2" data-search="on" name="user_id" id="user_id" data-placeholder="ID пользователя">
+                                                <option value="">ID пользователя</option>
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="condition">Тип</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" data-search="on" required name="type" id="type" data-placeholder="Тип">
@@ -64,7 +77,10 @@
                                     <div class="form-group">
                                         <label class="form-label">Начало действия купона</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control" name="start_date" id="start_date">
+                                            <div class="form-icon form-icon-right">
+                                                <em class="icon ni ni-calendar-alt"></em>
+                                            </div>
+                                            <input type="text" id="start_date" name="start_date" value="{{old('start_date')}}" class="form-control date-picker" data-date-format="dd.mm.yyyy">
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +88,10 @@
                                     <div class="form-group">
                                         <label class="form-label">Конец действия купона</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control" name="end_date" id="end_date">
+                                            <div class="form-icon form-icon-right">
+                                                <em class="icon ni ni-calendar-alt"></em>
+                                            </div>
+                                            <input type="text" id="end_date" name="end_date" value="{{old('end_date')}}" class="form-control date-picker" data-date-format="dd.mm.yyyy">
                                         </div>
                                     </div>
                                 </div>

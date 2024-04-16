@@ -14,35 +14,31 @@
                         </div>
                         <div class="card">
                             <div class="card-inner">
-                                <form action="{{route('category.update', $coupon)}}" method="POST" class="form-validate is-alter">
+                                <form action="{{route('coupon.update', $coupon)}}" method="POST" class="form-validate is-alter">
                                     @csrf
                                     <div class="row g-gs">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="user_id">ID пользователя</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="user_id" id="user_id" data-placeholder="ID пользователя">
+                                                        <option value="">ID пользователя</option>
+                                                        @foreach($users as $user)
+                                                            <option {{$coupon->user_id == $user->id ? 'selected' : ''}}  value="{{$user->id}}">{{$user->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="value">Тип купона</label>
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" data-search="on" name="type" id="type" data-placeholder="Тип купона">
                                                         <option value="">Тип купона</option>
-                                                    @if($coupon->type === $couponTypes['percent'])
-                                                        <option {{"selected"}} value={{$coupon->type}}>Процентная ставка</option>
-                                                        <option value={{$coupon->type}}>Фиксированная ставка</option>
-                                                    @else
-                                                        <option {{"selected"}} value={{$coupon->type}}>Фиксированная ставка</option>
-                                                        <option value={{$coupon->type}}>Процентная ставка</option>
-                                                    @endif
+                                                        <option value="percent" {{ $coupon->type === 'percent' ? 'selected' : '' }}>Процентная ставка</option>
+                                                        <option value="fixed" {{ $coupon->type === 'fixed' ? 'selected' : '' }}>Фиксированная ставка</option>
                                                     </select>
-
-{{--                                                    @dd($couponTypes['percent'])--}}
-{{--                                                    @if ($coupon->type === $couponTypes['percent']){--}}
-{{--                                                    <option class="selected">Процентная ставка</option>--}}
-{{--                                                }--}}
-{{--                                                    @else ($coupon->type === $couponTypes['fixed']){--}}
-{{--                                                    <option>Фиксированная ставка</option>--}}
-
-{{--                                                    <input type="number" required class="form-control @error('type') error @enderror" value="{{$coupon->type}}" id="type" name="type">--}}
-{{--                                                    @error('type')--}}
-{{--                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>--}}
-{{--                                                    @enderror--}}
                                                 </div>
                                             </div>
                                         </div>
@@ -95,7 +91,14 @@
                                             <div class="form-group">
                                                 <label class="form-label">Начало действия купона</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" name="start_date" id="start_date" value="{{$coupon->start_date}}">
+                                                    <div class="form-icon form-icon-right">
+                                                        <em class="icon ni ni-calendar-alt"></em>
+                                                    </div>
+                                                    @if($coupon->start_date !== null)
+                                                        <input type="text" id="start_date" value="{{$coupon->start_date->format('d.m.Y')}}" name="start_date" class="form-control date-picker" data-date-format="dd.mm.yyyy">
+                                                    @else
+                                                        <input type="text" id="start_date" name="start_date" value="{{old('start_date')}}" class="form-control date-picker" data-date-format="dd.mm.yyyy">
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +106,14 @@
                                             <div class="form-group">
                                                 <label class="form-label">Конец действия купона</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" name="end_date" id="end_date" value="{{$coupon->end_date}}">
+                                                    <div class="form-icon form-icon-right">
+                                                        <em class="icon ni ni-calendar-alt"></em>
+                                                    </div>
+                                                    @if($coupon->end_date !== null)
+                                                        <input type="text" id="end_date" value="{{$coupon->end_date->format('d.m.Y')}}" name="end_date" class="form-control date-picker" data-date-format="dd.mm.yyyy">
+                                                    @else
+                                                        <input type="text" id="end_date" name="end_date" value="{{old('end_date')}}" class="form-control date-picker" data-date-format="dd.mm.yyyy">
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

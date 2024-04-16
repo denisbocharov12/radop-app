@@ -93,4 +93,9 @@ final class UserRepository
     {
         return UserType::all();
     }
+
+    public function getAll() : Collection
+    {
+        return User::query()->get();
+    }
 }

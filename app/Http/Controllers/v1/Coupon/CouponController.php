@@ -14,6 +14,7 @@ use App\Http\Requests\Coupon\CouponDeleteRequest;
 use App\Http\Requests\Coupon\CouponRequest;
 use App\Models\Coupon;
 use App\Repositories\Coupon\CouponRepository;
+use App\Repositories\User\UserRepository;
 use App\Services\Coupon\CouponManager;
 
 
@@ -22,17 +23,20 @@ class CouponController extends Controller
     private CouponManager $couponManager;
     private CouponDataMapper $couponDataMapper;
     private CouponRepository $couponRepository;
+    private UserRepository $userRepository;
 
     public function __construct(
         CouponManager $couponManager,
         CouponDataMapper $couponDataMapper,
         CouponRepository $couponRepository,
+        UserRepository $userRepository,
         private readonly CouponTypes $couponTypes,
     )
     {
         $this->couponManager = $couponManager;
         $this->couponDataMapper = $couponDataMapper;
         $this->couponRepository = $couponRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -40,10 +44,12 @@ class CouponController extends Controller
         $coupons = $this->couponRepository->getAllPaginatedWithFilters();
 
         $couponTypes = $this->couponTypes->getAll();
+        $users = $this->userRepository->getAll();
 
         return view('coupon.index', compact([
             'coupons',
-            'couponTypes'
+            'couponTypes',
+            'users'
         ]));
     }
 
@@ -64,11 +70,13 @@ class CouponController extends Controller
     {
         $couponTypes = $this->couponTypes->getAll();
         $coupons = $this->couponRepository->getAll();
+        $users = $this->userRepository->getAll();
 
         return view('coupon.edit', compact([
             'coupon',
             'coupons',
             'couponTypes',
+            'users',
         ]));
     }
 
