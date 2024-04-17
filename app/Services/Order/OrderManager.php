@@ -4,6 +4,8 @@ namespace App\Services\Order;
 
 use App\Data\Order\OrderData;
 use App\Enums\OrderPaymentMethods;
+use App\Exceptions\Order\OrderNotFoundException;
+use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
@@ -58,6 +60,19 @@ final class OrderManager
             'total' => $orderData->total,
             'delivery_charge' => $orderData->delivery_charge,
         ]);
+    }
+
+    public function delete(OrderDeleteRequest $request): void
+    {
+        $orderId = (int)$request->order_id;
+
+        $order = $this->orderRepository->getById($orderId);
+
+        if ($order === null) {
+            throw new OrderNotFoundException();
+        }
+
+        $order->delete();
     }
 
 }

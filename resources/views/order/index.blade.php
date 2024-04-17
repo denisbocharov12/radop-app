@@ -51,10 +51,10 @@
             });
         });
 
-        function askToDeleteProduct(product_id, token, path)
+        function askToDeleteOrder(model_id, token, path)
         {
             Swal.fire({
-                title: 'Вы хотите удалить товар - #'+product_id+' ?',
+                title: 'Вы хотите удалить заказ - #'+model_id+' ?',
                 showDenyButton: true,
                 showCancelButton: true,
                 cancelButtonText: 'Отмена',
@@ -67,25 +67,24 @@
                         type: "DELETE",
                         dataType:"JSON",
                         data:{
-                            product_id: product_id,
+                            order_id: model_id,
                             _token: token
                         }
                     });
-                    Swal.fire('Товар '+product_id+' успешно удален', '', 'success');
-                    $('#product-id-'+product_id).fadeOut(1000);
+                    Swal.fire('Заказ '+model_id+' успешно удален', '', 'success');
+                    $('#order-id-'+model_id).fadeOut(1000);
                 } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление товара '+product_id, '', 'info')
+                    Swal.fire('Вы отменили удаление заказа '+model_id, '', 'info')
                 }
             })
         }
 
-        $(document).on('click','.product-delete',function (e) {
+        $(document).on('click','.model-delete',function (e) {
             e.preventDefault();
-            var product_id = $(this).data('id');
+            var model_id = $(this).data('id');
             var token = "{{csrf_token()}}";
-            var path = "{{route('product.delete')}}";
-            askToDeleteProduct(product_id, token, path)
+            var path = "{{route('order.delete')}}";
+            askToDeleteOrder(model_id, token, path)
         });
-
     </script>
 @endsection

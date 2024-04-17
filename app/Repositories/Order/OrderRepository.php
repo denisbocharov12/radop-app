@@ -28,10 +28,10 @@ class OrderRepository
             ;
     }
 
-//    public function getById($couponId): ?Order
-//    {
-//        return Order::query()->find($couponId);
-//    }
+    public function getById($orderId): ?Order
+    {
+        return Order::query()->find($orderId);
+    }
 //
 //    public function getByCode($couponCode): ?Order
 //    {

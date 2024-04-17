@@ -84,7 +84,7 @@
                     Swal.fire('Купон '+coupon_id+' успешно удален', '', 'success');
                     $('#coupon-id-'+coupon_id).fadeOut(1000);
                 } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление купонаа '+coupon_id, '', 'info')
+                    Swal.fire('Вы отменили удаление купона '+coupon_id, '', 'info')
                 }
             })
         }
@@ -96,11 +96,5 @@
             var path = "{{route('coupon.delete')}}";
             askToDeleteCoupon(coupon_id, token, path)
         });
-        // $(document).ready(function() {
-        //     $("#start_date").datepicker();
-        // });
-        // $(document).ready(function() {
-        //     $("#end_date").datepicker();
-        // });
     </script>
 @endsection

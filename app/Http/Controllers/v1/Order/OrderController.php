@@ -5,8 +5,12 @@ namespace App\Http\Controllers\v1\Order;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
+use App\Exceptions\NotAjaxRequestException;
+use App\Exceptions\Order\OrderNotFoundException;
+use App\Exceptions\Order\OrderNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\OrderDataMapper;
+use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
@@ -72,6 +76,22 @@ class OrderController extends Controller
             return redirect()->route('order.index');
         } catch (OrderUniqueNameException $e) {
             throw new OrderUniqueNameValidationException();
+        }
+    }
+
+    public function destroy(OrderDeleteRequest $request)
+    {
+        if (!$request->ajax())
+        {
+            throw new NotAjaxRequestException();
+        }
+
+        try {
+            $this->orderManager->delete($request);
+
+            return response()->json(['id' => $request->order_id]);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
         }
     }
 }
