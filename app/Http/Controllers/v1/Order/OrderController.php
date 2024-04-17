@@ -53,14 +53,12 @@ class OrderController extends Controller
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $paymentStatus = $this->orderPaymentStatus->getAll();
         $orderStatus = $this->orderStatus->getAll();
-        $orderItems = Order::with('products.product')->find($order->id);
 
         return view('order.edit', compact([
             'order',
             'paymentMethods',
             'paymentStatus',
             'orderStatus',
-            'orderItems',
         ]));
     }
 
