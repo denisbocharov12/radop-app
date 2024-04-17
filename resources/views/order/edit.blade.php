@@ -194,34 +194,36 @@
                                 </form>
                             </div>
                         </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Товары в заказе</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Название товара</th>
+                                        <th>Количество</th>
+                                        <th>Цена</th>
+                                        <th>Итого</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($order->products as $item)
+                                        <tr>
+                                            <td>{{ $item->product}}</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ $item->price }}</td>
+                                            <td>{{ $order->total }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div><!-- .nk-block -->
                 </div>
             </div>
         </div>
     </div>
 @endsection
-{{--@section('scripts')--}}
-{{--    <script>--}}
-{{--        $(document).on('click','.model-media-delete',function (e) {--}}
-{{--            e.preventDefault();--}}
-{{--            var image_id = $(this).data('id');--}}
-{{--            var token = "{{csrf_token()}}";--}}
-{{--            var path = "{{route('brand.media.delete', $brand)}}";--}}
-{{--            $.ajax({--}}
-{{--                url: path,--}}
-{{--                type: "POST",--}}
-{{--                dataType:"JSON",--}}
-{{--                data:{--}}
-{{--                    id: image_id,--}}
-{{--                    _token: token--}}
-{{--                },--}}
-{{--                success:function (response) {--}}
-{{--                    if(response.status) {--}}
-{{--                        $('#model-media-'+image_id).fadeOut();--}}
-{{--                    } else {--}}
-{{--                    }--}}
-{{--                }--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
-{{--@endsection--}}
