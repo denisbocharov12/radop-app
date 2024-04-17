@@ -12,7 +12,7 @@
             </div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
-            <div class="nk-tb-item" id="brand-id-{{$order->id}}">
+            <div class="nk-tb-item" id="order-id-{{$order->id}}">
                 <div class="nk-tb-col">
                     <span>#{{$order->id}}</span>
                 </div>

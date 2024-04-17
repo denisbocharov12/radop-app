@@ -211,10 +211,10 @@
                                     <tbody>
                                     @foreach ($order->products as $item)
                                         <tr>
-                                            <td>{{ $item->product}}</td>
+                                            <td>{{ $item->product->title}}</td>
                                             <td>{{ $item->quantity }}</td>
-                                            <td>{{ $item->price }}</td>
-                                            <td>{{ $order->total }}</td>
+                                            <td>{{ $item->price }} MDL</td>
+                                            <td>{{ $order->total }} MDL</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
