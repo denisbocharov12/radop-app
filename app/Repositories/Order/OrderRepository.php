@@ -32,11 +32,11 @@ class OrderRepository
     {
         return Order::query()->find($orderId);
     }
-//
-//    public function getByCode($couponCode): ?Order
-//    {
-//        return Order::where('code', $couponCode)->first();
-//    }
+
+    public function getByOrderNumber($orderCode): ?Order
+    {
+        return Order::where('order_number', $orderCode)->first();
+    }
 //
 //    public function getAll() : Collection
 //    {

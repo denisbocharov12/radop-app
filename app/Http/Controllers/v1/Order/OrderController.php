@@ -8,6 +8,8 @@ use App\Enums\OrderStatus;
 use App\Exceptions\NotAjaxRequestException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderNotFoundValidationException;
+use App\Exceptions\Order\OrderUniqueCodeException;
+use App\Exceptions\Order\OrderUniqueCodeValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\OrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
@@ -82,8 +84,8 @@ class OrderController extends Controller
             $this->orderManager->update($orderData, $order, $request);
 
             return redirect()->route('order.index');
-        } catch (OrderUniqueNameException $e) {
-            throw new OrderUniqueNameValidationException();
+        } catch (OrderUniqueCodeException $e) {
+            throw new OrderUniqueCodeValidationException();
         }
     }
 

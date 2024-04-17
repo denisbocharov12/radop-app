@@ -3,44 +3,56 @@
 namespace App\Services\Order;
 
 use App\Data\Order\OrderData;
-use App\Enums\OrderPaymentMethods;
+use App\Exceptions\Order\ManagerNotFoundException;
 use App\Exceptions\Order\OrderNotFoundException;
+use App\Exceptions\Order\OrderUniqueCodeException;
+use App\Exceptions\Order\UserNotFoundException;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
+use App\Repositories\User\UserRepository;
 
 final class OrderManager
 {
     private OrderRepository $orderRepository;
+    private UserRepository $userRepository;
 
     public function __construct(
         OrderRepository $orderRepository,
+        UserRepository $userRepository
     )
     {
         $this->orderRepository = $orderRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function update(OrderData $orderData, Order $order, OrderRequest $request): void
     {
-//        if ($category->name !== $categoryData->name) {
-//            $existedCategory = $this->categoryRepository->getByName($categoryData->name);
-//
-//            if ($existedCategory !== null) {
-//                throw new CategoryUniqueNameException();
-//            }
-//        }
+        if ($order->order_number !== $orderData->order_number) {
+            $existedOrder = $this->orderRepository->getByOrderNumber($orderData->order_number);
 
-//        $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
+            if ($existedOrder !== null) {
+                throw new OrderUniqueCodeException();
+            }
+        }
 
-//        $order->update([
-//            'name' => $categoryData->name,
-//            'parent_id' => $categoryData->parentId,
-//            'status' => $status,
-//            'summary' => $categoryData->summary
-//        ]);
+        if ($order->user_id !== $orderData->user_id) {
+            $existedUser = $this->userRepository->getById($orderData->user_id);
 
-//        $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
+            if ($existedUser === null) {
+                throw new UserNotFoundException();
+            }
+        }
+
+        if ($order->manager_id !== $orderData->manager_id) {
+            $existedManager = $this->userRepository->getById($orderData->manager_id);
+
+            if ($existedManager === null) {
+                throw new ManagerNotFoundException();
+            }
+        }
+
         $order->update([
             'order_number' => $orderData->order_number,
             'first_name' => $orderData->first_name,
