@@ -48,6 +48,14 @@
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        @hasrole('manager')
+                        <a href="{{route('order.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>
+                            <span class="nk-menu-text">Заказы</span>
+                        </a>
+                        @endhasrole
+                    </li><!-- .nk-menu-item -->
 {{--                    <li class="nk-menu-item has-sub">--}}
 {{--                        <a href="#" class="nk-menu-link nk-menu-toggle">--}}
 {{--                            <span class="nk-menu-icon"><em class="icon ni ni-task-fill-c"></em></span>--}}
