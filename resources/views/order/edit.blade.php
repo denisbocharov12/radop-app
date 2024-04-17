@@ -19,6 +19,36 @@
                                     <div class="row g-gs">
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label class="form-label" for="user_id">Пользователь</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="user_id" id="user_id" data-placeholder="Пользователь">
+                                                        <option value="">Пользователь</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : '' }}>
+                                                                {{ $user->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="manager_id">Менеджер</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="manager_id" id="manager_id" data-placeholder="Менеджер">
+                                                        <option value="">Менеджер</option>
+                                                        @foreach ($managers as $manager)
+                                                            <option value="{{ $manager->id }}" {{ $order->manager_id == $manager->id ? 'selected' : '' }}>
+                                                                {{ $manager->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label class="form-label" for="order_number">Номер заказа</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('order_number') error @enderror" id="order_number" name="order_number" value="{{$order->order_number}}" placeholder="Номер заказа">

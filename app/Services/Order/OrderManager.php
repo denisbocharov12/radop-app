@@ -41,7 +41,6 @@ final class OrderManager
 //        ]);
 
 //        $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $category);
-
         $order->update([
             'order_number' => $orderData->order_number,
             'first_name' => $orderData->first_name,

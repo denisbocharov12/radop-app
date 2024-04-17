@@ -13,7 +13,9 @@ use App\Http\Mappers\OrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
+use App\Models\User;
 use App\Repositories\Order\OrderRepository;
+use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
 
 class OrderController extends Controller
@@ -24,7 +26,7 @@ class OrderController extends Controller
     private OrderPaymentMethods $orderPaymentMethods;
     private OrderPaymentStatus $orderPaymentStatus;
     private OrderStatus $orderStatus;
-
+    private UserRepository $userRepository;
 
     public function __construct(
         OrderDataMapper $orderDataMapper,
@@ -32,7 +34,8 @@ class OrderController extends Controller
         OrderManager $orderManager,
         OrderPaymentMethods $orderPaymentMethods,
         OrderPaymentStatus $orderPaymentStatus,
-        OrderStatus $orderStatus
+        OrderStatus $orderStatus,
+        UserRepository $userRepository
     )
     {
         $this->orderDataMapper = $orderDataMapper;
@@ -41,6 +44,7 @@ class OrderController extends Controller
         $this->orderPaymentMethods = $orderPaymentMethods;
         $this->orderPaymentStatus = $orderPaymentStatus;
         $this->orderStatus = $orderStatus;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -57,12 +61,16 @@ class OrderController extends Controller
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $paymentStatus = $this->orderPaymentStatus->getAll();
         $orderStatus = $this->orderStatus->getAll();
+        $users = $this->userRepository->getUsers();
+        $managers = $this->userRepository->getManagers();
 
         return view('order.edit', compact([
             'order',
             'paymentMethods',
             'paymentStatus',
             'orderStatus',
+            'users',
+            'managers'
         ]));
     }
 

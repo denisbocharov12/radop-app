@@ -83,10 +83,14 @@ final class UserRepository
         return User::query()->get()->last();
     }
 
-    public function getWorkedUsers(): ?Collection
+    public function getUsers(): ?Collection
     {
-        //return User::get();
-        return User::role('worker')->get();
+        return User::role('user')->get();
+    }
+
+    public function getManagers(): ?Collection
+    {
+        return User::role('manager')->get();
     }
 
     public function getAllTypes(): ?Collection

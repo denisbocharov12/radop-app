@@ -7,8 +7,10 @@ use Database\Seeders\Product\BrandSeeder;
 use Database\Seeders\Product\CategorySeeder;
 use Database\Seeders\Product\OrderSeeder;
 use Database\Seeders\User\AdminSeeder;
+use Database\Seeders\User\ManagerSeeder;
 use Database\Seeders\User\PermissionSeeder;
 use Database\Seeders\User\RolesSeeder;
+use Database\Seeders\User\UserSeeder;
 use Database\Seeders\UserType\UserTypeSeeder;
 use Illuminate\Database\Seeder;
 
@@ -23,7 +25,9 @@ class DatabaseSeeder extends Seeder
             UserTypeSeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            ManagerSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

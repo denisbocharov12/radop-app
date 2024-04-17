@@ -20,8 +20,7 @@ final class ManagerSeeder extends Seeder
                 'password' => Hash::make('123456789'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
-                'active' => true,
-                'filial_id' => 1
+                'status' => true,
             ],
         ]);
 
@@ -30,14 +29,14 @@ final class ManagerSeeder extends Seeder
                 'first_name' => 'Man',
                 'last_name' => 'Manager',
                 'user_id' => 2,
-                'contact_phone' => '37376720062',
+                'phone' => '37376720062',
             ],
         ]);
 
         $manager = User::query()->where('email', 'manager@manager.com')->first();
 
         $fiz = UserType::query()->where('name', 'Физическое лицо')->first();
-        $manager->type()->associate($fiz);
+//        $manager->type()->associate($fiz);
         $manager->save();
 
         $manager->assignRole('manager');
