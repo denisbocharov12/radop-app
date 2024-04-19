@@ -26,6 +26,8 @@ class OrderSeeder extends seeder
                 'discount' => '10',
                 'total' => '90',
                 'delivery_charge' => '10',
+                'city' => 'New York',
+                'user_type' => 'fiz',
         ];
 
         Order::create($order);
