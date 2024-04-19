@@ -36,7 +36,7 @@ final class ManagerSeeder extends Seeder
         $manager = User::query()->where('email', 'manager@manager.com')->first();
 
         $fiz = UserType::query()->where('name', 'Физическое лицо')->first();
-//        $manager->type()->associate($fiz);
+        $manager->type()->associate($fiz);
         $manager->save();
 
         $manager->assignRole('manager');

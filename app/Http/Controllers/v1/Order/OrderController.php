@@ -65,6 +65,7 @@ class OrderController extends Controller
         $orderStatus = $this->orderStatus->getAll();
         $users = $this->userRepository->getUsers();
         $managers = $this->userRepository->getManagers();
+        $userTypes = $this->userRepository->getAllTypes();
 
         return view('order.edit', compact([
             'order',
@@ -72,7 +73,8 @@ class OrderController extends Controller
             'paymentStatus',
             'orderStatus',
             'users',
-            'managers'
+            'managers',
+            'userTypes',
         ]));
     }
 

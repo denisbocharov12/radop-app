@@ -49,6 +49,21 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label class="form-label" for="user_type">Тип пользователя</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="user_type" id="user_type" data-placeholder="Тип пользователя">
+                                                        <option value="">Тип пользователя</option>
+                                                        @foreach ($userTypes as $type)
+                                                            <option value="{{ $type->key_name }}" {{ $order->user_type == $type->key_name ? 'selected' : '' }}>
+                                                                {{ $type->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label class="form-label" for="order_number">Номер заказа</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('order_number') error @enderror" id="order_number" name="order_number" value="{{$order->order_number}}" placeholder="Номер заказа">
@@ -104,9 +119,20 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="address">Номер телефона</label>
+                                                <label class="form-label" for="address">Адрес</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('address') error @enderror" id="address" name="address" value="{{$order->address}}" placeholder="Адрес">
+                                                    @error('address')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="city">Город</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('city') error @enderror" id="city" name="city" value="{{$order->city}}" placeholder="Город">
                                                     @error('address')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror

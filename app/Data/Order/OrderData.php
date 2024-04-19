@@ -9,6 +9,8 @@ namespace App\Data\Order;
  * @property string $email
  * @property string $phone
  * @property string $address
+ * @property string $user_type
+ * @property string $city
  * @property string $note
  * @property int $user_id
  * @property int $manager_id
@@ -28,7 +30,9 @@ final class OrderData
     public string $email;
     public string $phone;
     public string $address;
-    public string $note;
+    public string $user_type;
+    public string $city;
+    public ?string $note;
     public ?int $user_id;
     public ?int $manager_id;
     public string $payment_method;
@@ -46,7 +50,9 @@ final class OrderData
         string $email,
         string $phone,
         string $address,
-        string $note,
+        string $user_type,
+        string $city,
+        ?string $note,
         ?int    $user_id,
         ?int    $manager_id,
         string $payment_method,
@@ -63,6 +69,8 @@ final class OrderData
         $this->email = $email;
         $this->phone = $phone;
         $this->address = $address;
+        $this->user_type = $user_type;
+        $this->city = $city;
         $this->note = $note;
         $this->user_id = $user_id;
         $this->manager_id = $manager_id;

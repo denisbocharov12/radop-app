@@ -33,13 +33,13 @@ final class UserSeeder extends Seeder
             ],
         ]);
 
-        $manager = User::query()->where('email', 'user@user.com')->first();
+        $user = User::query()->where('email', 'user@user.com')->first();
 
         $fiz = UserType::query()->where('name', 'Физическое лицо')->first();
-//        $manager->type()->associate($fiz);
-        $manager->save();
+        $user->type()->associate($fiz);
+        $user->save();
 
-        $manager->assignRole('user');
+        $user->assignRole('user');
 
     }
 }

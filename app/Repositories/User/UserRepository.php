@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\QueryBuilder;

@@ -61,4 +61,9 @@ final class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'manager_id')->withTrashed();
     }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(UserType::class, 'type_id');
+    }
 }

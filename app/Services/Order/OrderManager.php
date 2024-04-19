@@ -60,6 +60,8 @@ final class OrderManager
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,
+            'user_type' => $orderData->user_type,
+            'city' => $orderData->city,
             'note' => $orderData->note,
             'user_id' => $orderData->user_id,
             'manager_id' => $orderData->manager_id,
