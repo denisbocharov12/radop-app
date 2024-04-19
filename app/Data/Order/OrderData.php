@@ -21,6 +21,14 @@ namespace App\Data\Order;
  * @property string $discount
  * @property string $total
  * @property string $delivery_charge
+ * @property string $company_name
+ * @property string $reserve_phone
+ * @property string $bank
+ * @property string $idno
+ * @property string $tva
+ * @property string $registered_city
+ * @property string $iur_address
+ * @property string $shipping_address
  */
 final class OrderData
 {
@@ -42,6 +50,14 @@ final class OrderData
     public ?string $discount;
     public ?string $total;
     public ?string $delivery_charge;
+    public ?string $company_name;
+    public ?string $reserve_phone;
+    public ?string $bank;
+    public ?string $idno;
+    public ?string $tva;
+    public ?string $registered_city;
+    public ?string $iur_address;
+    public ?string $shipping_address;
 
     public function __construct(
         string $order_number,
@@ -61,7 +77,15 @@ final class OrderData
         ?string $subtotal,
         ?string $discount,
         ?string $total,
-        ?string $delivery_charge
+        ?string $delivery_charge,
+        ?string $company_name,
+        ?string $reserve_phone,
+        ?string $bank,
+        ?string $idno,
+        ?string $tva,
+        ?string $registered_city,
+        ?string $iur_address,
+        ?string $shipping_address
     ){
         $this->order_number = $order_number;
         $this->first_name = $first_name;
@@ -81,5 +105,13 @@ final class OrderData
         $this->discount = $discount;
         $this->total = $total;
         $this->delivery_charge = $delivery_charge;
+        $this->company_name = $company_name;
+        $this->reserve_phone = $reserve_phone;
+        $this->bank = $bank;
+        $this->idno = $idno;
+        $this->tva = $tva;
+        $this->registered_city = $registered_city;
+        $this->iur_address = $iur_address;
+        $this->shipping_address = $shipping_address;
     }
 }

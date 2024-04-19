@@ -27,7 +27,15 @@ final class OrderDataMapper
             $request->subtotal,
             $request->discount,
             $request->total,
-            $request->delivery_charge
+            $request->delivery_charge,
+            $request->company_name,
+            $request->reserve_phone,
+            $request->bank,
+            $request->idno,
+            $request->tva,
+            $request->registered_city,
+            $request->iur_address,
+            $request->shipping_address
         );
     }
 }

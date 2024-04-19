@@ -73,6 +73,6 @@ final class Order extends Model
      */
     public function profile(): HasOne
     {
-        return $this->belongsTo(OrderProfile::class)->withTrashed();
+        return $this->hasOne(OrderProfile::class);
     }
 }

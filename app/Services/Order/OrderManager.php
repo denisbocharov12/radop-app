@@ -73,6 +73,19 @@ final class OrderManager
             'total' => $orderData->total,
             'delivery_charge' => $orderData->delivery_charge,
         ]);
+
+        if ($orderData->user_type === 'iur'){
+            $order->profile->update([
+                'company_name' => $orderData->company_name,
+                'reserve_phone' => $orderData->reserve_phone,
+                'bank' => $orderData->bank,
+                'idno' => $orderData->idno,
+                'tva' => $orderData->tva,
+                'registered_city' => $orderData->registered_city,
+                'iur_address' => $orderData->iur_address,
+                'shipping_address' => $orderData->shipping_address
+            ]);
+        }
     }
 
     public function delete(OrderDeleteRequest $request): void

@@ -23,6 +23,14 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $discount
  * @property string $total
  * @property string $delivery_charge
+ * @property string $company_name
+ * @property string $reserve_phone
+ * @property string $bank
+ * @property string $idno
+ * @property string $tva
+ * @property string $registered_city
+ * @property string $iur_address
+ * @property string $shipping_address
  */
 class OrderRequest extends FormRequest
 {
@@ -47,6 +55,14 @@ class OrderRequest extends FormRequest
             'discount' => ['nullable', 'string'],
             'total' => ['nullable', 'string'],
             'delivery_charge' => ['nullable', 'string'],
+            'company_name' => ['nullable', 'string'],
+            'reserve_phone' => ['nullable', 'string'],
+            'bank' => ['nullable', 'string'],
+            'idno' => ['nullable', 'string'],
+            'tva' => ['nullable', 'string'],
+            'registered_city' => ['nullable', 'string'],
+            'iur_address' => ['nullable', 'string'],
+            'shipping_address' => ['nullable', 'string']
         ];
     }
 }
