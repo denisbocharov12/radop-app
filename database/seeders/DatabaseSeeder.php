@@ -6,6 +6,7 @@ use App\Models\Category;
 use Database\Seeders\Product\BrandSeeder;
 use Database\Seeders\Product\CategorySeeder;
 use Database\Seeders\Product\OrderSeeder;
+use Database\Seeders\Product\ProductSeeder;
 use Database\Seeders\User\AdminSeeder;
 use Database\Seeders\User\ManagerSeeder;
 use Database\Seeders\User\PermissionSeeder;
@@ -27,7 +28,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             OrderSeeder::class,
             ManagerSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            ProductSeeder::class
         ]);
     }
 }
