@@ -133,7 +133,7 @@
                                                 <label class="form-label" for="city">Город</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('city') error @enderror" id="city" name="city" value="{{$order->city}}" placeholder="Город">
-                                                    @error('address')
+                                                    @error('city')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>
