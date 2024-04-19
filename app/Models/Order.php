@@ -33,6 +33,8 @@ final class Order extends Model
         'discount',
         'total',
         'delivery_charge',
+        'city',
+        'user_type',
     ];
 
     protected $casts = [
