@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('address');
+            $table->string('user_type'); // fiz/iur or from UserType Model
+            $table->string('city');
 
             $table->string('note')->nullable();
 

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('attribute_onec_id');
             $table->string('product_onec_id');
-            $table->string('value');
+            $table->text('value');
             $table->string('price')->nullable();
             $table->timestamps();
         });
