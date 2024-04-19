@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Order extends Model
@@ -32,6 +33,8 @@ final class Order extends Model
         'discount',
         'total',
         'delivery_charge',
+        'city',
+        'user_type',
     ];
 
     protected $casts = [
@@ -63,5 +66,13 @@ final class Order extends Model
     public function products(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * @return HasOne<OrderProfile, Order>
+     */
+    public function profile(): HasOne
+    {
+        return $this->belongsTo(OrderProfile::class)->withTrashed();
     }
 }
