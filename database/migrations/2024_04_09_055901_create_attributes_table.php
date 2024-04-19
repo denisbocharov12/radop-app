@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('onec_id')->nullable();
-            $table->string('name');
+            $table->text('name');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
