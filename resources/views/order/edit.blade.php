@@ -62,163 +62,160 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if($order->user_type === 'iur')
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="company_name">Название компании</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('company_name') error @enderror" id="company_name" name="company_name" value="{{$order->profile->company_name}}" placeholder="Название компании">
-                                                        @error('company_name')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="company_name">Название компании</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('company_name') error @enderror" id="company_name" name="company_name" value="{{$order->profile?->company_name}}" placeholder="Название компании">
+                                                    @error('company_name')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="bank">Банк</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('bank') error @enderror" id="bank" name="bank" value="{{$order->profile->bank}}" placeholder="Банк">
-                                                        @error('bank')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="bank">Банк</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('bank') error @enderror" id="bank" name="bank" value="{{$order->profile?->bank}}" placeholder="Банк">
+                                                    @error('bank')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="idno">Банковский код IDNO</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('idno') error @enderror" id="idno" name="idno" value="{{$order->profile->idno}}" placeholder="Банковский код IDNO">
-                                                        @error('idno')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="idno">Банковский код IDNO</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('idno') error @enderror" id="idno" name="idno" value="{{$order->profile?->idno}}" placeholder="Банковский код IDNO">
+                                                    @error('idno')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="tva">TVA</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('tva') error @enderror" id="tva" name="tva" value="{{$order->profile->tva}}" placeholder="TVA">
-                                                        @error('tva')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="tva">TVA</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('tva') error @enderror" id="tva" name="tva" value="{{$order->profile?->tva}}" placeholder="TVA">
+                                                    @error('tva')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="registered_city">Город</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('registered_city') error @enderror" id="registered_city" name="registered_city" value="{{$order->profile->registered_city}}" placeholder="Город">
-                                                        @error('registered_city')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="registered_city">Город</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('registered_city') error @enderror" id="registered_city" name="registered_city" value="{{$order->profile?->registered_city}}" placeholder="Город">
+                                                    @error('registered_city')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="iur_address">Юридический адрес</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('iur_address') error @enderror" id="iur_address" name="iur_address" value="{{$order->profile->iur_address}}" placeholder="Юридический адрес">
-                                                        @error('iur_address')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="iur_address">Юридический адрес</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('iur_address') error @enderror" id="iur_address" name="iur_address" value="{{$order->profile?->iur_address}}" placeholder="Юридический адрес">
+                                                    @error('iur_address')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="shipping_address">Адрес доставки</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('shipping_address') error @enderror" id="shipping_address" name="shipping_address" value="{{$order->profile->shipping_address}}" placeholder="Адрес доставки">
-                                                        @error('shipping_address')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="shipping_address">Адрес доставки</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('shipping_address') error @enderror" id="shipping_address" name="shipping_address" value="{{$order->profile?->shipping_address}}" placeholder="Адрес доставки">
+                                                    @error('shipping_address')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="reserve_phone">Номер телефона</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" class="form-control @error('reserve_phone') error @enderror" id="reserve_phone" name="reserve_phone" value="{{$order->profile->reserve_phone}}" placeholder="Номер телефона">
-                                                        @error('reserve_phone')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="reserve_phone">Номер телефона</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('reserve_phone') error @enderror" id="reserve_phone" name="reserve_phone" value="{{$order->profile?->reserve_phone}}" placeholder="Номер телефона">
+                                                    @error('reserve_phone')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                        @elseif ($order->user_type === 'fiz')
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="first_name">Имя</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" value="{{$order->first_name}}" placeholder="Имя">
-                                                        @error('first_name')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="first_name">Имя</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" value="{{$order->first_name}}" placeholder="Имя">
+                                                    @error('first_name')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="last_name">Фамилия</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" value="{{$order->last_name}}" placeholder="Фамилия">
-                                                        @error('last_name')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="last_name">Фамилия</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" value="{{$order->last_name}}" placeholder="Фамилия">
+                                                    @error('last_name')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="email">Email</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('email') error @enderror" id="email" name="email" value="{{$order->email}}" placeholder="Email">
-                                                        @error('email')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="email">Email</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('email') error @enderror" id="email" name="email" value="{{$order->email}}" placeholder="Email">
+                                                    @error('email')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="phone">Номер телефона</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('phone') error @enderror" id="phone" name="phone" value="{{$order->phone}}" placeholder="phone">
-                                                        @error('phone')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="phone">Номер телефона</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('phone') error @enderror" id="phone" name="phone" value="{{$order->phone}}" placeholder="phone">
+                                                    @error('phone')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="address">Адрес</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('address') error @enderror" id="address" name="address" value="{{$order->address}}" placeholder="Адрес">
-                                                        @error('address')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="address">Адрес</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('address') error @enderror" id="address" name="address" value="{{$order->address}}" placeholder="Адрес">
+                                                    @error('address')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="city">Город</label>
-                                                    <div class="form-control-wrap">
-                                                        <input type="text" required class="form-control @error('city') error @enderror" id="city" name="city" value="{{$order->city}}" placeholder="Город">
-                                                        @error('city')
-                                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="city">Город</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('city') error @enderror" id="city" name="city" value="{{$order->city}}" placeholder="Город">
+                                                    @error('city')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="order_number">Номер заказа</label>
