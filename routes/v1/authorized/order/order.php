@@ -30,4 +30,12 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->get('download-pdf', [OrderController::class, 'GeneratePDF'])
         ->name('download.pdf')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('view-invoice', [OrderController::class, 'ViewInvoice'])
+        ->name('view.invoice')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('download-invoice', [OrderController::class, 'GenerateInvoice'])
+        ->name('download.invoice')
+    ;
 });

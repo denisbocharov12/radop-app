@@ -43,8 +43,10 @@
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
                                         <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer"></em><span>Скачать инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть PDF</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>
                                     </ul>
                                 </div>
                             </div>

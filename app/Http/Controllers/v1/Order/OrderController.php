@@ -114,14 +114,41 @@ class OrderController extends Controller
         $id = $request->input('order');
         $order = Order::where('id', $id)->get();
         $order_items = OrderItem::where('order_id', $id)->get();
-        $pdf = PDF::loadView('order.invoice', compact(['order','order_items']));
+        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
         return $pdf->stream();
     }
     public function GeneratePDF(Request $request){
         $id = $request->input('order');
         $order = Order::where('id', $id)->get();
         $order_items = OrderItem::where('order_id', $id)->get();
-        $pdf = PDF::loadView('order.invoice', compact(['order','order_items']));
+        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
         return $pdf->download('order.pdf');
+    }
+    public function GenerateInvoice(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $manager = User::where('id',$order[0]->manager_id)->first();
+        if(empty($manager)){
+            $manager = new User();
+            $manager->first_name = 'Менеджер';
+            $manager->last_name = 'по продажам RadopMD';
+        }
+        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+        return $pdf->download();
+
+    }
+    public function ViewInvoice(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $manager = User::where('id',$order[0]->manager_id)->first();
+        if(empty($manager)){
+            $manager = new User();
+            $manager->first_name = 'Менеджер';
+            $manager->last_name = 'по продажам RadopMD';
+        }
+        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+        return $pdf->stream();
     }
 }
