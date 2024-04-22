@@ -15,10 +15,13 @@ use App\Http\Mappers\OrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
+use PDF;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -105,5 +108,20 @@ class OrderController extends Controller
         } catch (OrderNotFoundException $e) {
             throw new OrderNotFoundValidationException();
         }
+    }
+
+    public function PDFView(Request $request) {
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $pdf = PDF::loadView('order.invoice', compact(['order','order_items']));
+        return $pdf->stream();
+    }
+    public function GeneratePDF(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $pdf = PDF::loadView('order.invoice', compact(['order','order_items']));
+        return $pdf->download('order.pdf');
     }
 }

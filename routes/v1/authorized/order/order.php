@@ -22,5 +22,12 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->delete('destroy', [OrderController::class, 'destroy'])
         ->name('delete')
     ;
-
+    Route::middleware(['app.permissions'])
+        ->get('view-pdf', [OrderController::class, 'PDFView'])
+        ->name('view.pdf')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('download-pdf', [OrderController::class, 'GeneratePDF'])
+        ->name('download.pdf')
+    ;
 });

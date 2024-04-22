@@ -43,6 +43,8 @@
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
                                         <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer"></em><span>Скачать инвойс</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -50,6 +52,13 @@
                     </ul>
                 </div>
             </div><!-- .nk-tb-item -->
+{{--            <td class="nk-tb-col" style="padding-right: 5px; text-align: center">--}}
+{{--                <div class="tb-odr-btns d-none d-sm-inline">--}}
+{{--                    <a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}" class="btn btn-dim btn-sm btn-primary">Просмотреть</a>--}}
+{{--                </div>--}}
+{{--                <a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}" class="btn btn-pd-auto d-sm-none"><em class="icon ni ni-chevron-right"></em></a>--}}
+{{--            </td>--}}
+{{--            <a data-id="{{$order->id}}" class="order-pdf-generate" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer-fill"></em><span>Скачать инвойс</span></a>--}}
         @endforeach
     </div><!-- .nk-tb-list -->
 </div><!-- .card-inner -->
