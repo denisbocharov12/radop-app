@@ -1,0 +1,154 @@
+<?php
+
+namespace App\Http\Controllers\v1\Order;
+
+use App\Enums\OrderPaymentMethods;
+use App\Enums\OrderPaymentStatus;
+use App\Enums\OrderStatus;
+use App\Exceptions\NotAjaxRequestException;
+use App\Exceptions\Order\OrderNotFoundException;
+use App\Exceptions\Order\OrderNotFoundValidationException;
+use App\Exceptions\Order\OrderUniqueCodeException;
+use App\Exceptions\Order\OrderUniqueCodeValidationException;
+use App\Http\Controllers\Controller;
+use App\Http\Mappers\OrderDataMapper;
+use App\Http\Requests\Order\OrderDeleteRequest;
+use App\Http\Requests\Order\OrderRequest;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
+use App\Repositories\Order\OrderRepository;
+use App\Repositories\User\UserRepository;
+use App\Services\Order\OrderManager;
+use PDF;
+use Illuminate\Http\Request;
+
+class OrderController extends Controller
+{
+    private OrderDataMapper $orderDataMapper;
+    private OrderRepository $orderRepository;
+    private OrderManager $orderManager;
+    private OrderPaymentMethods $orderPaymentMethods;
+    private OrderPaymentStatus $orderPaymentStatus;
+    private OrderStatus $orderStatus;
+    private UserRepository $userRepository;
+
+    public function __construct(
+        OrderDataMapper $orderDataMapper,
+        OrderRepository $orderRepository,
+        OrderManager $orderManager,
+        OrderPaymentMethods $orderPaymentMethods,
+        OrderPaymentStatus $orderPaymentStatus,
+        OrderStatus $orderStatus,
+        UserRepository $userRepository
+    )
+    {
+        $this->orderDataMapper = $orderDataMapper;
+        $this->orderRepository = $orderRepository;
+        $this->orderManager = $orderManager;
+        $this->orderPaymentMethods = $orderPaymentMethods;
+        $this->orderPaymentStatus = $orderPaymentStatus;
+        $this->orderStatus = $orderStatus;
+        $this->userRepository = $userRepository;
+    }
+
+    public function index()
+    {
+        $orders = $this->orderRepository->getAllPaginatedWithFilters();
+
+        return view('order.index', compact([
+            'orders',
+        ]));
+    }
+
+    public function edit(Order $order)
+    {
+        $paymentMethods = $this->orderPaymentMethods->getAll();
+        $paymentStatus = $this->orderPaymentStatus->getAll();
+        $orderStatus = $this->orderStatus->getAll();
+        $users = $this->userRepository->getUsers();
+        $managers = $this->userRepository->getManagers();
+        $userTypes = $this->userRepository->getAllTypes();
+
+        return view('order.edit', compact([
+            'order',
+            'paymentMethods',
+            'paymentStatus',
+            'orderStatus',
+            'users',
+            'managers',
+            'userTypes',
+        ]));
+    }
+
+    public function update(OrderRequest $request, Order $order)
+    {
+        $orderData = $this->orderDataMapper->mapFromRequestToNormalized($request);
+
+        try {
+            $this->orderManager->update($orderData, $order, $request);
+
+            return redirect()->route('order.index');
+        } catch (OrderUniqueCodeException $e) {
+            throw new OrderUniqueCodeValidationException();
+        }
+    }
+
+    public function destroy(OrderDeleteRequest $request)
+    {
+        if (!$request->ajax())
+        {
+            throw new NotAjaxRequestException();
+        }
+
+        try {
+            $this->orderManager->delete($request);
+
+            return response()->json(['id' => $request->order_id]);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
+        }
+    }
+
+    public function PDFView(Request $request) {
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
+        return $pdf->stream();
+    }
+    public function GeneratePDF(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
+        return $pdf->download('order.pdf');
+    }
+    public function GenerateInvoice(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $manager = User::where('id',$order[0]->manager_id)->first();
+        if(empty($manager)){
+            $manager = new User();
+            $manager->first_name = 'Менеджер';
+            $manager->last_name = 'по продажам RadopMD';
+        }
+        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+        return $pdf->download();
+
+    }
+    public function ViewInvoice(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $manager = User::where('id',$order[0]->manager_id)->first();
+        if(empty($manager)){
+            $manager = new User();
+            $manager->first_name = 'Менеджер';
+            $manager->last_name = 'по продажам RadopMD';
+        }
+        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+        return $pdf->stream();
+    }
+}

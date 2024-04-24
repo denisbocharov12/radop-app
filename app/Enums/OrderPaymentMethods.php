@@ -24,7 +24,7 @@ final class OrderPaymentMethods
         return [
             'cash' => 'Наличные',
             'card' => 'Онлайн',
-            'card_delivery' => 'Онлайн при доставку',
+            'card_delivery' => 'Онлайн при доставке',
         ];
     }
 }

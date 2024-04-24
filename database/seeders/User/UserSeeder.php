@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-final class ManagerSeeder extends Seeder
+final class UserSeeder extends Seeder
 {
     public function run()
     {
         DB::table('users')->insert([
             [
-                'name' => 'm_manager_1',
-                'email' => 'manager@manager.com',
+                'name' => 'user_1',
+                'email' => 'user@user.com',
                 'password' => Hash::make('123456789'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
@@ -26,20 +26,20 @@ final class ManagerSeeder extends Seeder
 
         DB::table('profiles')->insert([
             [
-                'first_name' => 'Man',
-                'last_name' => 'Manager',
-                'user_id' => 2,
-                'phone' => '37376720062',
+                'first_name' => 'User',
+                'last_name' => 'User',
+                'user_id' => 3,
+                'phone' => '373767444462',
             ],
         ]);
 
-        $manager = User::query()->where('email', 'manager@manager.com')->first();
+        $user = User::query()->where('email', 'user@user.com')->first();
 
         $fiz = UserType::query()->where('name', 'Физическое лицо')->first();
-        $manager->type()->associate($fiz);
-        $manager->save();
+        $user->type()->associate($fiz);
+        $user->save();
 
-        $manager->assignRole('manager');
+        $user->assignRole('user');
 
     }
 }

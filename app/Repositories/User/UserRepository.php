@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -83,10 +84,14 @@ final class UserRepository
         return User::query()->get()->last();
     }
 
-    public function getWorkedUsers(): ?Collection
+    public function getUsers(): ?Collection
     {
-        //return User::get();
-        return User::role('worker')->get();
+        return User::role('user')->get();
+    }
+
+    public function getManagers(): ?Collection
+    {
+        return User::role('manager')->get();
     }
 
     public function getAllTypes(): ?Collection

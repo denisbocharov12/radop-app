@@ -9,9 +9,9 @@
                     <div class="nk-block-head nk-block-head-sm">
                         <div class="nk-block-between">
                             <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Купоны</h3>
+                                <h3 class="nk-block-title page-title">Заказы</h3>
                                 <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $coupons->total() }} @choice('Ед.|Едц.', $coupons->total())</p>
+                                    <p>Количество: {{ $orders->total() }} @choice('единица|едц.', $orders->total())</p>
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
@@ -20,16 +20,6 @@
                                     <div class="toggle-expand-content" data-content="pageMenu">
                                         <ul class="nk-block-tools g-3">
                                             <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
-                                            <li class="nk-block-tools-opt">
-                                                <div class="drodown">
-                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul class="link-list-opt no-bdr">
-                                                            <li><a href="" data-bs-toggle="modal" data-bs-target="#addModel"><span>Добавить купон</span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div><!-- .toggle-wrap -->
@@ -40,9 +30,9 @@
                     <div class="nk-block">
                         <div class="card card-bordered card-stretch">
                             <div class="card-inner-group">
-                                @include('coupon.table.head')
-                                @include('coupon.table.content')
-                                @include('coupon.table.footer')
+                                @include('order.table.head')
+                                @include('order.table.content')
+                                @include('order.table.footer')
                             </div><!-- .card-inner-group -->
                         </div><!-- .card -->
                     </div><!-- .nk-block -->
@@ -51,7 +41,6 @@
         </div>
     </div>
     <!-- content @e -->
-    @include('coupon.modal.create')
 @endsection
 
 @section('scripts')
@@ -61,10 +50,11 @@
                 dropdownParent: $(".modal")
             });
         });
-        function askToDeleteCoupon(coupon_id, token, path)
+
+        function askToDeleteOrder(model_id, token, path)
         {
             Swal.fire({
-                title: 'Вы хотите удалить купон - #'+coupon_id+' ?',
+                title: 'Вы хотите удалить заказ - #'+model_id+' ?',
                 showDenyButton: true,
                 showCancelButton: true,
                 cancelButtonText: 'Отмена',
@@ -77,24 +67,24 @@
                         type: "DELETE",
                         dataType:"JSON",
                         data:{
-                            coupon_id: coupon_id,
+                            order_id: model_id,
                             _token: token
                         }
                     });
-                    Swal.fire('Купон '+coupon_id+' успешно удален', '', 'success');
-                    $('#coupon-id-'+coupon_id).fadeOut(1000);
+                    Swal.fire('Заказ '+model_id+' успешно удален', '', 'success');
+                    $('#order-id-'+model_id).fadeOut(1000);
                 } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление купона '+coupon_id, '', 'info')
+                    Swal.fire('Вы отменили удаление заказа '+model_id, '', 'info')
                 }
             })
         }
 
-        $(document).on('click','.coupon-delete',function (e) {
+        $(document).on('click','.model-delete',function (e) {
             e.preventDefault();
-            var coupon_id = $(this).data('id');
+            var model_id = $(this).data('id');
             var token = "{{csrf_token()}}";
-            var path = "{{route('coupon.delete')}}";
-            askToDeleteCoupon(coupon_id, token, path)
+            var path = "{{route('order.delete')}}";
+            askToDeleteOrder(model_id, token, path)
         });
     </script>
 @endsection
