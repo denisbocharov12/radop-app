@@ -19,7 +19,7 @@ final class BrandRepository
             ->allowedFilters([
 
             ])
-            ->defaultSort('-id')
+            ->defaultSort('id')
             ->allowedSorts([
                 'id',
             ])

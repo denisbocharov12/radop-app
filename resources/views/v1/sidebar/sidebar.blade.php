@@ -118,6 +118,21 @@
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        @hasrole('admin')
+                        <a href="{{route('import-export-data.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-upload"></em></span>
+                            <span class="nk-menu-text">Импорт</span>
+                        </a>
+                        @endhasrole
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                {{--                                <a href="{{route('technic.index')}}" class="nk-menu-link"><span class="nk-menu-text">Вся техника</span></a>--}}
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
 {{--                    <li class="nk-menu-item has-sub">--}}
 {{--                        <a href="#" class="nk-menu-link nk-menu-toggle">--}}
 {{--                            <span class="nk-menu-icon"><em class="icon ni ni-clip"></em></span>--}}
