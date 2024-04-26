@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 final class Category extends Model implements HasMedia
 {
@@ -21,7 +22,15 @@ final class Category extends Model implements HasMedia
     use HasTranslations;
     use HasRecursiveRelationships;
 
-    protected $appends = ['parents'];
+    public function getParentKeyName(): string
+    {
+        return 'parent_id';
+    }
+
+    public function getLocalKeyName(): string
+    {
+        return 'onec_id';
+    }
 
     protected $fillable = [
         'onec_id',

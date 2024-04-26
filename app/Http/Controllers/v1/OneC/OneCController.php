@@ -98,17 +98,8 @@ class OneCController extends Controller
                         if ($existedCategory !== null)
                         {
                             $currentCategory = Category::query()->where('onec_id', $item)->first();
-
-                            $parentsCollection = collect();
-
-                            $parentCategoryFromCurrent = $currentCategory->parent;
-
-                            while (!empty($parentCategoryFromCurrent)) {
-                                $parentsCollection->push($parentCategoryFromCurrent);
-                                $parentCategoryFromCurrent = $parentCategoryFromCurrent->parent;
-                            }
-
-                            dd($parentsCollection);
+                            $parentCats = $currentCategory->ancestorsAndSelf();
+//                            dd($parentCats);
 
                             foreach ($parentCats as $parentCategory){
                                 DB::table('product_categories')->insert([
