@@ -9,9 +9,7 @@ use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductAttributes;
-use App\Models\ProductImage;
-use App\Models\Value;
+use App\Models\ProductAttribute;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,9 +72,9 @@ class OneCController extends Controller
 
         if(isset($json['Product'])){
             DB::table('product_categories')->truncate();
+
             foreach ($json['Product'] as $product){
                 if(!empty($product['id'])) {
-
                     $status = $product['status'] ? true : false;
 
                     $data = array(
@@ -95,18 +93,26 @@ class OneCController extends Controller
                     ], $data);
 
                     foreach ($product['category_id'] as $item){
-
                         $existedCategory = Category::query()->where('onec_id', $item)->first();
 
                         if ($existedCategory !== null)
                         {
                             $currentCategory = Category::query()->where('onec_id', $item)->first();
 
-                            $parentCats = $currentCategory->parents->push($currentCategory);
+                            $parentsCollection = collect();
+
+                            $parentCategoryFromCurrent = $currentCategory->parent;
+
+                            while (!empty($parentCategoryFromCurrent)) {
+                                $parentsCollection->push($parentCategoryFromCurrent);
+                                $parentCategoryFromCurrent = $parentCategoryFromCurrent->parent;
+                            }
+
+                            dd($parentsCollection);
 
                             foreach ($parentCats as $parentCategory){
                                 DB::table('product_categories')->insert([
-                                    'category_id'=>$parentCategory->onec_id,
+                                    'category_id'=>$parentCategory->id,
                                     'product_id'=>$product_model->id
                                 ]);
                             }
@@ -166,8 +172,8 @@ class OneCController extends Controller
             foreach ($json['Characteristics'] as $attribute){
                 if(!empty($attribute['id'])) {
                     $data = array(
-                        'name' => $attribute['name_ru'],
-                        'slug' => Str::slug($attribute['name_ru']),
+                        'name' => $attribute['name_ro'],
+                        'slug' => Str::slug($attribute['name_ro']),
                         'onec_id' => $attribute['id']
                     );
                     Attribute::updateOrCreate([
@@ -193,37 +199,41 @@ class OneCController extends Controller
         $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
 
         if(isset($json['ProductCharacteristics'])){
+            DB::beginTransaction();
 
-            AttributeValue::query()->truncate();
-            ProductAttributes::query()->truncate();
+            try {
+                AttributeValue::query()->truncate();
+                ProductAttribute::query()->truncate();
 
-            foreach ($json['ProductCharacteristics'] as $attributeValue){
-                if(!empty($attributeValue['product_id'])) {
+                foreach ($json['ProductCharacteristics'] as $attributeValue){
+                    if(!empty($attributeValue['product_id'])) {
 
-                    $productId = Product::query()
-                        ->where('onec_id', $attributeValue['product_id'])
-                        ->first()->id;
+                        $productId = Product::query()
+                            ->where('onec_id', $attributeValue['product_id'])
+                            ->first()->id;
 
+                        AttributeValue::query()->create([
+                            'attribute_onec_id' => $attributeValue['characteristic_id'],
+                            'product_onec_id' => $attributeValue['product_id'],
+                            'value' => $attributeValue['name_ro']
+                        ]);
 
-                    AttributeValue::query()->create([
-                        'attribute_id' => $attributeValue['characteristic_id'],
-                        'product_onec_id' => $attributeValue['product_id'],
-                        'value' => $attributeValue['name_ru']
-                    ]);
+                        $attributeId = Attribute::query()
+                            ->where('onec_id', $attributeValue['characteristic_id'])
+                            ->first()->id;
 
-                    $attributeId = Attribute::query()
-                        ->where('onec_id', $attributeValue['characteristic_id'])
-                        ->first()->id;
-
-
-                    ProductAttributes::query()->create([
-                        'product_id' => $productId,
-                        'attribute_id' => $attributeId
-                    ]);
+                        ProductAttribute::query()->create([
+                            'product_id' => $productId,
+                            'attribute_id' => $attributeId
+                        ]);
+                    }
                 }
+                toastr()->success('Успешный импорт значений аттрибутов');
+                return redirect()->route('import-export-data.index');
+            } catch (\Exception $e){
+                DB::rollBack();
+                return redirect()->back()->withErrors('Произошла ошибка при импорте значений аттрибутов');
             }
-            toastr()->success('Успешный импорт значений аттрибутов');
-            return redirect()->route('import-export-data');
         } else {
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
@@ -252,7 +262,7 @@ class OneCController extends Controller
 
             }
             toastr()->success('Синхронизация изображений успещно завершена');
-            return redirect()->route('import-export-data');
+            return redirect()->route('import-export-data.index');
         } else {
             return redirect()->back()->withErrors('This file is invalid for structure');
         }

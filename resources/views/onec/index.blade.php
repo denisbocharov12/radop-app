@@ -82,7 +82,7 @@
                                 <div class="card">
                                     <div class="card-inner">
                                         <h5 class="card-title">Импорт значений аттрибутов</h5>
-                                        <form action="{{route('import-export-data.attribute.values')}}" enctype="multipart/form-data" method="POST">
+                                        <form action="{{route('import-export-data.values')}}" enctype="multipart/form-data" method="POST">
                                             @csrf
                                             <div class="form-group">
                                                 <div class="form-control-wrap">
