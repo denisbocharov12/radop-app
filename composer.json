@@ -25,6 +25,7 @@
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-query-builder": "^5.7",
         "spatie/laravel-translatable": "^6.6",
+        "staudenmeir/laravel-adjacency-list": "*",
         "xenon/shoppingcart": "^2.6",
         "yoeunes/toastr": "^2.3"
     },
