@@ -94,6 +94,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
+                            </li>
                             @endhasrole
 
                             @hasrole('admin')

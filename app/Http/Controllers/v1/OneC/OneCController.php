@@ -202,10 +202,6 @@ class OneCController extends Controller
                 foreach ($json['ProductCharacteristics'] as $attributeValue){
                     if(!empty($attributeValue['product_id'])) {
 
-                        $productId = Product::query()
-                            ->where('onec_id', $attributeValue['product_id'])
-                            ->first()->id;
-
                         AttributeValue::query()->create([
                             'attribute_onec_id' => $attributeValue['characteristic_id'],
                             'product_onec_id' => $attributeValue['product_id'],
@@ -217,7 +213,7 @@ class OneCController extends Controller
                             ->first()->id;
 
                         ProductAttribute::query()->create([
-                            'product_id' => $productId,
+                            'product_id' => $attributeValue['product_id'],
                             'attribute_id' => $attributeId
                         ]);
                     }
