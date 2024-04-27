@@ -76,7 +76,10 @@ class OneCController extends Controller
             try {
                 DB::beginTransaction();
 
+                Product::query()->truncate();
                 ProductCategory::query()->truncate();
+                ProductProfile::query()->truncate();
+
                 foreach ($json['Product'] as $product){
                     if(!empty($product['id'])) {
                         $status = $product['status'] ? true : false;
