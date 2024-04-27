@@ -76,6 +76,7 @@ class OneCController extends Controller
             try {
                 DB::beginTransaction();
 
+                Product::query()->truncate();
                 ProductCategory::query()->truncate();
                 foreach ($json['Product'] as $product){
                     if(!empty($product['id'])) {
