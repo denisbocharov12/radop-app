@@ -73,39 +73,47 @@ class OneCController extends Controller
         $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
 
         if(isset($json['Product'])){
-            DB::table('product_categories')->truncate();
+            try {
+                DB::beginTransaction();
 
-            foreach ($json['Product'] as $product){
-                if(!empty($product['id'])) {
-                    $status = $product['status'] ? true : false;
+                ProductCategory::query()->truncate();
+                foreach ($json['Product'] as $product){
+                    if(!empty($product['id'])) {
+                        $status = $product['status'] ? true : false;
 
-                    $data = array(
-                        'title' => $product['name_ru'],
-                        'slug' => Str::slug($product['name_ru']) . '-' . $product['id'],
-                        'price' => $product['price'],
-                        'status' => $status,
-                        'stock' => $product['stock'],
-                        'brand_id' => $product['brand_id']
-                    );
+                        $data = array(
+                            'title' => $product['name_ru'],
+                            'slug' => Str::slug($product['name_ru']) . '-' . $product['id'],
+                            'price' => $product['price'],
+                            'status' => $status,
+                            'stock' => $product['stock'],
+                            'brand_id' => $product['brand_id']
+                        );
 
-                    Product::updateOrCreate([
-                        'onec_id' => $product['id']
-                    ], $data);
+                        Product::updateOrCreate([
+                            'onec_id' => $product['id']
+                        ], $data);
 
-                    ProductProfile::updateOrCreate([
-                        'product_id' => $product['id']
-                    ], []);
+                        ProductProfile::updateOrCreate([
+                            'product_id' => $product['id']
+                        ], []);
 
-                    foreach ($product['category_id'] as $item){
-                        ProductCategory::create([
-                            'category_id'=>$item,
-                            'product_id'=>$product['id']
-                        ]);
+                        foreach ($product['category_id'] as $item){
+                            ProductCategory::create([
+                                'category_id'=>$item,
+                                'product_id'=>$product['id']
+                            ]);
+                        }
                     }
                 }
+                toastr()->success('Успешный импорт номенклатуры');
+                return redirect()->route('import-export-data.index');
             }
-            toastr()->success('Успешный импорт номенклатуры');
-            return redirect()->route('import-export-data.index');
+            catch (\Exception $e){
+                DB::rollBack();
+                return redirect()->back()->withErrors('Ошибка при импорте номенклатуры');
+            }
+
         } else {
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
