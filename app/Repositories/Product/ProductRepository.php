@@ -23,7 +23,7 @@ final class ProductRepository
             ->allowedFilters([
                 AllowedFilter::custom('search', new ProductSearchFilter()),
             ])
-            ->defaultSort('-id')
+            ->defaultSort('id')
             ->allowedSorts([
                 'id',
             ])

@@ -65,7 +65,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="stock">Кол-во на складе</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="number" class="form-control @error('stock') error @enderror" id="stock" value="{{$product->stock}}" name="stock" placeholder="234">
+                                                    <input required type="number" class="form-control @error('stock') error @enderror" id="stock" value="{{$product->stock}}" name="stock" placeholder="234">
                                                     @error('stock')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -76,7 +76,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="sku">SKU</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" id="sku" name="sku" placeholder="sku" value="{{$product->data->sku}}">
+                                                    <input required type="text" class="form-control" id="sku" name="sku" placeholder="sku" value="{{$product->data?->sku}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +87,7 @@
                                                     <select class="form-select js-select2" data-search="on" multiple name="upp_sale[]" id="upp_sale" data-placeholder="Похожие товары">
                                                         <option value="">Похожие товары</option>
                                                         @foreach($products as $p)
-                                                            @if(is_array(json_decode($product->data->upp_sale)))
+                                                            @if(is_array(json_decode($product->data?->upp_sale)))
                                                                 @if(in_array($p->onec_id, json_decode($product->data->upp_sale)))
                                                                     <option selected value="{{$p->onec_id}}">{{$p->title}}</option>
                                                                 @else
@@ -108,7 +108,7 @@
                                                     <select class="form-select js-select2" data-search="on" required name="condition" id="condition" data-placeholder="Выберите состояние">
                                                         <option value="">Состояние</option>
                                                         @foreach($productConditions as $item => $condition)
-                                                            <option {{$product->data->condition === $item ? 'selected' : ''}} value="{{$item}}">{{$condition}}</option>
+                                                            <option {{$product->data?->condition === $item ? 'selected' : ''}} value="{{$item}}">{{$condition}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -123,7 +123,7 @@
                                                         @foreach($categories as $category)
 
                                                             @php
-                                                            if (count($product->categories) > 1) {
+                                                            if (count($product?->categories) > 1) {
                                                                 $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();
                                                             }
                                                             else {
@@ -132,7 +132,7 @@
 
                                                             @endphp
 
-                                                            <option {{$existedProductCategory->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>
+                                                            <option {{$existedProductCategory?->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -167,7 +167,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="summary">Краткое описание товара</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="summary" class="form-control no-resize" id="summary">{{$product->data->summary}}</textarea>
+                                                    <textarea name="summary" class="form-control no-resize" id="summary">{{$product->data?->summary}}</textarea>
                                                     @error('summary')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -178,7 +178,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="description">Описание товара</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="description" class="form-control no-resize" id="description">{{$product->data->description}}</textarea>
+                                                    <textarea name="description" class="form-control no-resize" id="description">{{$product->data?->description}}</textarea>
                                                 </div>
                                             </div>
                                         </div>

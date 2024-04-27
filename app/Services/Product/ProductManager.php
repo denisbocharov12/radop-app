@@ -142,7 +142,6 @@ class ProductManager
             'condition' => $productData->condition,
         ]);
 
-        $product->data->save();
 
         $this->syncCategoriesToProduct($product, $productData->category_id);
 

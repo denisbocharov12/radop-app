@@ -10,6 +10,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\ProductCategory;
+use App\Models\ProductProfile;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,41 +80,31 @@ class OneCController extends Controller
                     $status = $product['status'] ? true : false;
 
                     $data = array(
-//                        'title_full' => $product['name_ru'],
                         'title' => $product['name_ru'],
                         'slug' => Str::slug($product['name_ru']) . '-' . $product['id'],
-//                        'cat_id' => json_encode($product['category_id'], true),
                         'price' => $product['price'],
                         'status' => $status,
                         'stock' => $product['stock'],
                         'brand_id' => $product['brand_id']
                     );
 
-                    $product_model = Product::updateOrCreate([
+                    Product::updateOrCreate([
                         'onec_id' => $product['id']
                     ], $data);
 
+                    ProductProfile::updateOrCreate([
+                        'product_id' => $product['id']
+                    ], []);
+
                     foreach ($product['category_id'] as $item){
-                        $existedCategory = Category::query()->where('onec_id', $item)->first();
-
-                        if ($existedCategory !== null)
-                        {
-                            $currentCategory = Category::query()->where('onec_id', $item)->first();
-                            $parentCats = $currentCategory->ancestorsAndSelf();
-//                            dd($parentCats);
-
-                            foreach ($parentCats as $parentCategory){
-                                DB::table('product_categories')->insert([
-                                    'category_id'=>$parentCategory->id,
-                                    'product_id'=>$product_model->id
-                                ]);
-                            }
-                        }
-
+                        ProductCategory::create([
+                            'category_id'=>$item,
+                            'product_id'=>$product['id']
+                        ]);
                     }
                 }
             }
-            toastr()->success('Успешный импорт категорий');
+            toastr()->success('Успешный импорт номенклатуры');
             return redirect()->route('import-export-data.index');
         } else {
             return redirect()->back()->withErrors('This file is invalid for structure');
