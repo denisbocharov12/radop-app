@@ -24,8 +24,11 @@
                     <span>{{$product->brand->title}}</span>
                 </div>
                 <div class="nk-tb-col">
-{{--                    <span>{{$category = $categories->firstWhere('id', $product->category_id)}}</span>--}}
-{{--                    {{dd($category = $categories->firstWhere('id', $product->category_id))}}--}}
+                    <ul>
+                        @foreach ($product->categories as $category)
+                            <li>{{ $category->name }}</li>
+                        @endforeach
+                    </ul>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$product->price}}</span>
@@ -34,7 +37,7 @@
                     <span>{{$product->sale_price}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$product->stock}} {{$product->unit}}</span>
+                    <span>{{$product->stock}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     @if($product->status)
