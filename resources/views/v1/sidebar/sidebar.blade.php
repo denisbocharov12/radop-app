@@ -94,6 +94,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
+                            </li>
                             @endhasrole
 
                             @hasrole('admin')
@@ -114,6 +117,21 @@
                             @hasrole('admin')
                             <li class="nk-menu-item">
 {{--                                <a href="{{route('technic.index')}}" class="nk-menu-link"><span class="nk-menu-text">Вся техника</span></a>--}}
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        @hasrole('admin')
+                        <a href="{{route('import-export-data.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-upload"></em></span>
+                            <span class="nk-menu-text">Импорт</span>
+                        </a>
+                        @endhasrole
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                {{--                                <a href="{{route('technic.index')}}" class="nk-menu-link"><span class="nk-menu-text">Вся техника</span></a>--}}
                             </li>
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->

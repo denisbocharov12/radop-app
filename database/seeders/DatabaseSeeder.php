@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             AdminSeeder::class,
             UserTypeSeeder::class,
-            BrandSeeder::class,
-            CategorySeeder::class,
-            OrderSeeder::class,
+//            BrandSeeder::class,
+//            CategorySeeder::class,
+//            OrderSeeder::class,
             ManagerSeeder::class,
             UserSeeder::class,
-            ProductSeeder::class
+//            ProductSeeder::class
         ]);
     }
 }

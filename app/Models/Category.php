@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 final class Category extends Model implements HasMedia
 {
@@ -18,6 +20,17 @@ final class Category extends Model implements HasMedia
     use InteractsWithMedia;
     use SoftDeletes;
     use HasTranslations;
+    use HasRecursiveRelationships;
+
+    public function getParentKeyName(): string
+    {
+        return 'parent_id';
+    }
+
+    public function getLocalKeyName(): string
+    {
+        return 'onec_id';
+    }
 
     protected $fillable = [
         'onec_id',
@@ -33,6 +46,20 @@ final class Category extends Model implements HasMedia
         'name',
         'summary',
     ];
+
+    public function getParentsAttribute()
+    {
+        $parents = collect([]);
+
+        $parent = $this->parent;
+
+        while(!is_null($parent)) {
+            $parents->push($parent);
+            $parent = $parent->parent;
+        }
+
+        return $parents;
+    }
 
     /**
      * @return BelongsTo<Category, Category>
