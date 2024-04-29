@@ -103,4 +103,14 @@ final class UserRepository
     {
         return User::query()->get();
     }
+
+    public function getAllUsersWithoutManager() : Collection
+    {
+        return User::query()->role('user')->where('manager_id', null)->get();
+    }
+
+    public function getUserById(int $userId) : User
+    {
+        return User::query()->role('user')->where('id', $userId)->first();
+    }
 }
