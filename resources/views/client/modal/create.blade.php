@@ -12,10 +12,10 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="firstName">Имя</label>
+                                        <label class="form-label" for="first_name">Имя</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('firstName') error @enderror" id="firstName" name="firstName" placeholder="Имя">
-                                            @error('firstName')
+                                            <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" placeholder="Имя">
+                                            @error('first_name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -23,10 +23,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="lastName">Фамилия</label>
+                                        <label class="form-label" for="last_name">Фамилия</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('lastName') error @enderror" id="lastName" name="lastName" placeholder="Фамилия">
-                                            @error('lastName')
+                                            <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Фамилия">
+                                            @error('last_name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -66,6 +66,27 @@
                                         <label class="form-label" for="$phone">Мобильный телефон</label>
                                         <div class="form-control-wrap">
                                             <input type="text" required class="form-control" id="$phone" name="$phone" placeholder="373 777 77 777">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="type_id">Роль</label>
+                                        <div class="form-control-wrap">
+                                            <select required class="form-select js-select2" data-search="on" name="type_id" id="type_id" data-placeholder="Тип пользователя">
+                                                <option value="">Выбрать роль</option>
+                                                @foreach($userTypes as $userType)
+                                                    @if($userType->key_name === 'iur')
+                                                        <option value="{{$userType->id}}">
+                                                            Юр. лицо
+                                                        </option>
+                                                    @elseif($userType->key_name === 'fiz')
+                                                        <option value="{{$userType->id}}">
+                                                            Физ. лицо
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

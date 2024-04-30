@@ -5,8 +5,8 @@ namespace App\Http\Requests\Client;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $firstName
- * @property string $lastName
+ * @property string $first_name
+ * @property string $last_name
  * @property string $email
  * @property string $phone
  * @property string $role
@@ -16,14 +16,15 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $organization_name
  * @property string $cod_fiscal
  * @property string $contact_name
+ * @property string $type_id
  */
 class ClientRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'firstName' => ['nullable', 'string'],
-            'lastName' => ['nullable', 'string'],
+            'first_name' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
             'email' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
             'role' => ['required', 'string'],
@@ -33,6 +34,7 @@ class ClientRequest extends FormRequest
             'organization_name' => ['nullable', 'string'],
             'cod_fiscal' => ['nullable', 'string'],
             'contact_name' => ['nullable', 'string'],
+            'type_id' => ['required', 'integer'],
         ];
     }
 }

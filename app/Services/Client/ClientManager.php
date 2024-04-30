@@ -41,23 +41,13 @@ class ClientManager
             throw new DuplicatedUserEmailException();
         }
 
-//        if ($clientData->filialId !== null) {
-//            $existedFilial = $this->filialRepository->getById($clientData->filialId);
-//
-//            if ($existedFilial === null) {
-//                throw new FilialNotFoundException();
-//            }
-//        }
-
         $user = User::create([
             'name' => $userName,
             'email' => $clientData->email,
             'password' => Hash::make($clientData->password),
             'email_verified_at' => now(),
             'status' => $status,
-//            'type_id' => $clientData->type_id,
-//            'manager_id' => $clientData->manager_id,
-//            'filial_id' => $clientData->filialId
+            'type_id' => $clientData->typeId,
         ]);
 
         $user->assignRole($clientData->role);
@@ -70,10 +60,9 @@ class ClientManager
             'last_name' => $clientData->lastName,
             'contact_phone' => $clientData->phone,
             'address' => $clientData->address,
-            'organization_name' => $clientData->organization_name,
-            'cod_fiscal' => $clientData->cod_fiscal,
-            'contact_name' => $clientData->contact_name,
-//            'location_name' => 'Комрат'
+            'organization_name' => $clientData->organizationName,
+            'cod_fiscal' => $clientData->codFiscal,
+            'contact_name' => $clientData->contactName,
         ]);
 
     }

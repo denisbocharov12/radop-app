@@ -10,8 +10,8 @@ final class ClientDataMapper
     public function mapFromRequestToNormalized(ClientRequest $request): ClientData
     {
         return new ClientData(
-            $request->firstName,
-            $request->lastName,
+            $request->first_name,
+            $request->last_name,
             $request->email,
             $request->phone,
             $request->role,
@@ -21,6 +21,7 @@ final class ClientDataMapper
             $request->organization_name,
             $request->cod_fiscal,
             $request->contact_name,
+            $request->type_id
         );
     }
 }

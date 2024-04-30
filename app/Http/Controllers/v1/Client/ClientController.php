@@ -37,10 +37,12 @@ class ClientController extends Controller
     {
         $users = $this->userRepository->getUsers();
         $roles = $this->userRepository->getAllRoles();
+        $userTypes = $this->userRepository->getAllUserTypes();
 
         return view('client.index', compact([
             'users',
-            'roles'
+            'roles',
+            'userTypes'
         ]));
     }
 
