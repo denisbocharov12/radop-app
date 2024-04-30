@@ -16,7 +16,7 @@
                                 </div>
                             </div>
                             <div class="nk-block-head-content">
-                                <a href="{{route('user.index')}}" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Все пользователи</span></a>
+                                <a href="{{route('client.index')}}" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-left"></em><span>Все пользователи</span></a>
                             </div>
                         </div>
                     </div><!-- .nk-block-head -->
@@ -108,33 +108,26 @@
                                                                 $manager = \App\Models\User::role('manager')->where('id',$user->manager_id)->first();
                                                             @endphp
                                                             <div class="profile-ud-item">
-                                                                <div class="profile-ud wider"><span class="profile-ud-label">Менеджер</span><span class="profile-ud-value">{{$manager->first_name}} {{$manager->last_name}}</span></div>
+                                                                <div class="profile-ud wider"><span class="profile-ud-label">Менеджер</span><span class="profile-ud-value">{{$manager->profile->first_name}} {{$manager->profile->last_name}}</span></div>
                                                             </div>
                                                         @else
                                                             <div class="profile-ud-item">
                                                                 <div class="profile-ud wider"><span class="profile-ud-label">Менеджер</span><span class="profile-ud-value"><a href="{{route('manager.edit', $user->id)}}" class="btn btn-dim btn-primary">Назначить менеджера</a></span></div>
                                                             </div>
                                                         @endif
-{{--                                                        <div class="profile-ud-item">--}}
-{{--                                                            <div class="profile-ud wider">--}}
-{{--                                                                <span class="profile-ud-label">Менеджер</span>--}}
-{{--                                                                <div class="profile-ud-item">--}}
-{{--                                                                    <div class="profile-ud wider"><span class="profile-ud-label">Менеджер</span><span class="profile-ud-value"><a href="{{route('admin.manage.edit', $user->id)}}" class="btn btn-dim btn-primary">Назначить менеджера</a></span></div>--}}
-{{--                                                                </div>--}}
-{{--                                                                <span class="profile-ud-value">Физ. лицо</span>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div>--}}
-                                                        @if($user->type_id == 2)
-                                                            <div class="profile-ud-item">
-                                                                <div class="profile-ud wider"><span class="profile-ud-label">Название компании</span><span class="profile-ud-value">{{$user->company_name}}</span></div>
-                                                            </div>
-                                                            <div class="profile-ud-item">
-                                                                <div class="profile-ud wider"><span class="profile-ud-label">Фискальный код</span><span class="profile-ud-value" style="font-weight: bolder">{{$user->cod_fiscal}}</span></div>
-                                                            </div>
-                                                            <div class="profile-ud-item">
-                                                                <div class="profile-ud wider"><span class="profile-ud-label">Контактное лицо</span><span class="profile-ud-value">{{$user->first_name}} {{$user->last_name}}</span></div>
-                                                            </div>
-                                                        @endif
+                                                        @foreach($userTypes as $userType)
+                                                            @if($userType->key_name === 'fiz')
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider"><span class="profile-ud-label">Название компании</span><span class="profile-ud-value">{{$user->profile->organization_name}}</span></div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider"><span class="profile-ud-label">Фискальный код</span><span class="profile-ud-value" style="font-weight: bolder">{{$user->profile->cod_fiscal}}</span></div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider"><span class="profile-ud-label">Контактное лицо</span><span class="profile-ud-value">{{$user->profile->contact_name}}</span></div>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
                                                     </div><!-- .profile-ud-list -->
                                                 </div><!-- .nk-block -->
 

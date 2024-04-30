@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\v1\Manager\ManagerController;
+use App\Http\Controllers\v1\AssignManager\AssignManagerController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('managers')->name('manager.')->group(function () {
     Route::middleware(['app.permissions'])
-        ->get('/', [ManagerController::class, 'index'])
+        ->get('/', [AssignManagerController::class, 'index'])
         ->name('index')
     ;
     Route::middleware(['app.permissions'])
-        ->post('/', [ManagerController::class, 'store'])
+        ->post('/', [AssignManagerController::class, 'store'])
         ->name('store')
     ;
     Route::middleware(['app.permissions'])
-        ->get('{user}/edit', [ManagerController::class, 'edit'])
+        ->get('{user}/edit', [AssignManagerController::class, 'edit'])
         ->name('edit')
     ;
     Route::middleware(['app.permissions'])
-        ->post('manager/update', [ManagerController::class, 'update'])
+        ->post('manager/update', [AssignManagerController::class, 'update'])
         ->name('update')
     ;
 });

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\v1\Manager;
+namespace App\Http\Controllers\v1\AssignManager;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 
-class ManagerController extends Controller
+class AssignManagerController extends Controller
 {
     private UserRepository $userRepository;
 
@@ -25,11 +25,6 @@ class ManagerController extends Controller
         ]));
     }
 
-    public function store(Request $request)
-    {
-
-    }
-
     public function edit($id)
     {
         $user = $this->userRepository->getUserById($id);
@@ -41,8 +36,13 @@ class ManagerController extends Controller
         ]));
     }
 
-    public function update()
+    public function update(User $user, Request $request)
     {
+        $user_id = $request->user;
+        $manager_id = $request->manager_id;
 
+        User::role('user')->where('id',$user_id)->first()->update(['manager_id'=>$manager_id]);
+
+        return redirect()->route('manager.index');
     }
 }

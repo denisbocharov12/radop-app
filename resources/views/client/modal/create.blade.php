@@ -12,10 +12,10 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="first_name">Имя</label>
+                                        <label class="form-label" for="firstName">Имя</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" placeholder="Имя">
-                                            @error('first_name')
+                                            <input type="text" required class="form-control @error('firstName') error @enderror" id="firstName" name="firstName" placeholder="Имя">
+                                            @error('firstName')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -23,10 +23,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="last_name">Фамилия</label>
+                                        <label class="form-label" for="lastName">Фамилия</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Имя">
-                                            @error('last_name')
+                                            <input type="text" required class="form-control @error('lastName') error @enderror" id="lastName" name="lastName" placeholder="Фамилия">
+                                            @error('lastName')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -34,20 +34,20 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Роль</label>
+                                        <label class="form-label" for="role">Роль</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" data-search="on" name="role" id="role" data-placeholder="Роль">
+                                            <select required class="form-select js-select2" data-search="on" name="role" id="role" data-placeholder="Выбрать роль">
                                                 <option value="">Выбрать роль</option>
                                                 @foreach($roles as $role)
-                                                    <option value="{{$role->name}}">
-                                                        @if($role->name === 'user')
+                                                    @if($role->name === 'user')
+                                                        <option value="{{$role->name}}">
                                                             Пользователь
-                                                        @elseif($role->name === 'manager')
+                                                        </option>
+                                                    @elseif($role->name === 'manager')
+                                                        <option value="{{$role->name}}">
                                                             Менеджер
-                                                        @elseif($role->name === 'accountant')
-                                                            Бухгалтер
-                                                        @endif
-                                                    </option>
+                                                        </option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </div>
@@ -55,14 +55,41 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Филиал</label>
+                                        <label class="form-label" for="address">Адрес</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select js-select2" data-search="on" name="filial_id" id="filial_id" data-placeholder="Без Филиала">
-                                                <option value="">Без филиала</option>
-                                                @foreach($filials as $filial)
-                                                    <option value="{{$filial->id}}">{{$filial->name}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="text" class="form-control" id="address" placeholder="Ул. Пушкина 22" name="address">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="$phone">Мобильный телефон</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control" id="$phone" name="$phone" placeholder="373 777 77 777">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="organization_name">Название организации</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="organization_name" placeholder="Название организации" name="organization_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="cod_fiscal">Фискальный код</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="cod_fiscal" placeholder="1234567891234" name="cod_fiscal">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="contact_name">Контактное лицо</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="contact_name" placeholder="Контактное лицо" name="contact_name">
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +100,7 @@
                                             <div class="form-icon form-icon-right">
                                                 <em class="icon ni ni-mail"></em>
                                             </div>
-                                            <input type="text" class="form-control" id="email" placeholder="example@mail.ru" name="email">
+                                            <input required type="text" class="form-control" id="email" placeholder="example@mail.ru" name="email">
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +114,7 @@
                                                 <em class="passcode-icon icon-show icon ni ni-eye"></em>
                                                 <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                             </a>
-                                            <input style="border-color: #a52834" type="password" class="form-control" id="password" name="password" placeholder="Новый пароль">
+                                            <input required style="border-color: #a52834" type="password" class="form-control" id="password" name="password" placeholder="Новый пароль">
                                             @error('password')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
@@ -96,15 +123,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="mobile_phone">Мобильный телефон</label>
-                                        <div class="form-control-wrap">
-                                            <input type="text" required class="form-control" id="mobile_phone" name="mobile_phone" placeholder="373 777 77 777">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Статус</label>
+                                        <label class="form-label" for="status">Статус</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
                                                 <option value="true">Активный</option>
