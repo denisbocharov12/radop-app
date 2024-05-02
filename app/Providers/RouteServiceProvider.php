@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::
         middleware(['user', 'app.client-status'])
-            ->as('user.')
+            ->as('theme.user.')
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/user/authorized')) as $file) {
                     require $file->getPathname();
