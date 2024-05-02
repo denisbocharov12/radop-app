@@ -14,7 +14,7 @@ RUN apk add --no-cache \
     openssl \
     supervisor
 
-RUN apk add --no-cache \
+RUN apk add --no-cache php82 \
     php82-fpm \
     php82-opcache \
     php82-dev \
