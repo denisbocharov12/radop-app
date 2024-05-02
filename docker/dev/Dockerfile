@@ -15,7 +15,6 @@ RUN apk add --no-cache \
     supervisor
 
 RUN apk add --no-cache \
-    php82 \
     php82-fpm \
     php82-opcache \
     php82-dev \
@@ -42,17 +41,17 @@ RUN apk add --no-cache \
     php82-xmlreader \
     php82-simplexml \
     php82-ldap \
-    php82-pecl-imagick \
     php82-openssl \
     php82-sodium \
     php82-session \
+    php82-exif \
+    php82-pecl-imagick \
+    php82-pecl-xdebug \
     php82-pecl-yaml \
     php82-pecl-memcached \
     php82-pecl-redis \
     php82-pecl-msgpack \
-    php82-pecl-igbinary \
-    php82-exif \
-    php82-intl
+    php82-pecl-igbinary
 
 RUN usermod -u ${UID} nginx && groupmod -g ${GID} nginx
 
@@ -73,7 +72,7 @@ RUN mkdir -p /var/www/html && \
     chmod -R g+rw /var/cache/nginx /var/lib/nginx /var/log/nginx /etc/php81/php-fpm.d && \
     ln -s /usr/bin/php81 /usr/bin/php
 
-COPY docker/common/nginx/php-fpm-pool.conf /etc/php81/php-fpm.d/www.conf
+COPY docker/common/nginx/php-fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY docker/common/nginx/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/common/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/common/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
