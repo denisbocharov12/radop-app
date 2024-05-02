@@ -384,9 +384,6 @@ $(document).ready(function () {
 
     $rootSingle.slick("slickGoTo", goToSingleSlide);
   });
-  $(".product-slider-main .product-image").zoom({
-    magnify: 0.5,
-  });
 });
 
 const ham_open = $("#hamburger-open");
@@ -555,4 +552,7 @@ $(document).ready(function () {
     minimumResultsForSearch: -1,
   });
   $(".qty-select .product-qty-page").select2({});
+  $(".icon-block a.user").click(function(){
+      Fancybox.show([{ src: "#loginModal", type: "inline" }]);
+  })
 });

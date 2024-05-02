@@ -16,7 +16,6 @@ namespace App\Data\Client;
  * @property string $contactName
  * @property int $typeId
  */
-
 final class ClientData
 {
     public function __construct(

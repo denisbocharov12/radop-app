@@ -55,6 +55,11 @@ final class ProductRepository
         return Product::query()->find($productId);
     }
 
+    public function getBySlug(string $slug): ?Product
+    {
+        return Product::where('slug', $slug)->first();
+    }
+
     public function getByIdWithTrashed($productId): ?Product
     {
         return Product::withTrashed()->find($productId);
