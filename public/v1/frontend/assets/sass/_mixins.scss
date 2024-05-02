@@ -1,0 +1,13 @@
+
+@mixin md($width) {
+  @media (max-width: #{$width}px) {
+    @content;
+  }
+}
+
+@mixin land($height) {
+  @media (max-height: #{$height}px) and (orientation: landscape) {
+    @content;
+  }
+}
+

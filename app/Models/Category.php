@@ -66,7 +66,7 @@ final class Category extends Model implements HasMedia
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'parent_id')->withTrashed();
+        return $this->belongsTo(Category::class, 'parent_id', 'onec_id')->withTrashed();
     }
 
     /**
@@ -75,7 +75,7 @@ final class Category extends Model implements HasMedia
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('children')->withTrashed();
+        return $this->hasMany(Category::class, 'parent_id', 'onec_id')->with('children')->withTrashed();
     }
 
     /**

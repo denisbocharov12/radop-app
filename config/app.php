@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
-
+use App\Providers\Theme\PropertyServiceProvider;
 return [
 
     /*
@@ -199,6 +199,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+
+        PropertyServiceProvider::class,
     ],
 
     /*

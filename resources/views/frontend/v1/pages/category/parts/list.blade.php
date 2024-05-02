@@ -1,0 +1,80 @@
+@if(count($existedCategory->products) < 1)
+    @include('frontend.v1.pages.category.parts.not-found')
+@endif
+@foreach($existedCategory->products()->paginate(config('theme-pagination.paginationCount')) as $product)
+    <div class="col-lg-4 col-md-4 col-6 product-item-category">
+        <div class="product-wrap drop-shadow">
+            <div class="product-wrap-main">
+                @if($product->productData)
+                    @if($product->productData->sale_price !== null)
+                        <a href="#" class="product-label">
+                            <div class="product-label-wrap">
+                                <span class="product-label-span">- {{round((($product->price - $product->productData->sale_price) / $product->price) * 100, 2)}}%</span>
+                            </div>
+                        </a>
+                    @else
+                    @endif
+                @else
+                @endif
+                @include('frontend.v1.pages.category.parts.product-category-image')
+                <div class="product-item-title-wrap">
+                    <h3 class="product_item_name">
+                        <a href="">{{$product->title}} ({{$product->onec_id}})</a>
+                    </h3>
+                    <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                </div>
+{{--                <div class="rating-css">--}}
+{{--                    <div class="star-icon">--}}
+{{--                        <i class="fa fa-star"></i>--}}
+{{--                        <i class="fa fa-star"></i>--}}
+{{--                        <i class="fa fa-star"></i>--}}
+{{--                        <i class="fa fa-star"></i>--}}
+{{--                        <i class="fa fa-star"></i>--}}
+{{--                    </div>--}}
+{{--                    <span class="rating_count">103</span>--}}
+{{--                </div>--}}
+            </div>
+            <div class="add_to_cart_wrap">
+                <div class="wrap">
+                    @if($product->productData !== null)
+                        @if($product->productData->sale_price !== null)
+                            <span class="price">{{$product->productData->sale_price}} MDL</span>
+                            <span class="old_price">{{$product->price}} MDL</span>
+                        @else
+                            <span class="price">{{$product->price}} MDL</span>
+                        @endif
+                    @else
+                        <span class="price">{{$product->price}} MDL</span>
+                    @endif
+                </div>
+                <div class="details-wrap">
+                    {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
+                    <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                        @if($product->stock > 0)
+                            В наличии
+                        @else
+                            Нет в наличии
+                        @endif
+                    </span>
+                </div>
+                <div class="qty-add-to-cart">
+                    <div class="qty-select">
+                        <select name="product-{{$product->id}}-qty" class="product-qty" id="product-{{$product->id}}-qty">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">В корзину</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
