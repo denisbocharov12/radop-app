@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\User\RolesWithPermissions;
 
-class UserRoleSeeder  extends AbstractRoleSeeder
+class UserRoleSeeder extends AbstractRoleSeeder
 {
     protected function getRoleName(): string
     {
@@ -17,8 +17,7 @@ class UserRoleSeeder  extends AbstractRoleSeeder
     public function getPermittedRoutes(): array
     {
         return [
-            'user.logout',
-
+            'theme.logout',
         ];
     }
 }

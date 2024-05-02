@@ -19,8 +19,10 @@ class CheckIfClientAuth
     public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('user')->check()) {
-            return redirect(RouteServiceProvider::CLIENT_HOME);
+            //return redirect(RouteServiceProvider::CLIENT_HOME);
+            return $next($request);
         }
+
         return $next($request);
     }
 }

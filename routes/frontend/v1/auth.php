@@ -1,8 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\v1\User\Auth\ThemeUserLoginController;
 
 Route::middleware('app.client-auth')->
-    post('/login', [ThemeUserLoginController::class, 'login'])->name('login')
+    get('/', [ThemeUserLoginController::class, 'login'])->name('login')
 ;

@@ -9,10 +9,6 @@ use Illuminate\Support\Collection;
 
 final class ThemeCategoryManager
 {
-
-
-
-
     public function getBreadcrumbsForCategory(Category $category): ?Collection
     {
         $breadcrumbsCollection = collect();
