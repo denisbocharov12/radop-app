@@ -28,7 +28,7 @@ final class UserSeeder extends Seeder
             [
                 'first_name' => 'User',
                 'last_name' => 'User',
-                'user_id' => 3,
+                'user_id' => 2,
                 'phone' => '373767444462',
             ],
         ]);

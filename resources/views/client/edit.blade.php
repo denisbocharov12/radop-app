@@ -44,15 +44,13 @@
                                                 <label class="form-label">Роль</label>
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" name="role" id="role" data-placeholder="Роль">
-                                                        <option value="">Родительская категория</option>
+                                                        <option value="">Роль</option>
                                                         @foreach($roles as $role)
                                                             <option {{$role->name == $user->roles->first()->name ? 'selected' : ''}} value="{{$role->name}}">
                                                                 @if($role->name === 'user')
                                                                     Пользователь
                                                                 @elseif($role->name === 'manager')
                                                                     Менеджер
-                                                                @elseif($role->name === 'accountant')
-                                                                    Бухгалтер
                                                                 @endif
                                                             </option>
                                                         @endforeach

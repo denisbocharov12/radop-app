@@ -18,6 +18,8 @@ class UserRoleSeeder extends AbstractRoleSeeder
     {
         return [
             'theme.logout',
+            'theme.account.index',
+            'theme.account.update',
         ];
     }
 }

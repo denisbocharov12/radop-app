@@ -35,7 +35,7 @@
                                                     <select class="form-select js-select2" name="parent_id" id="parent_id" data-placeholder="Родительская категория">
                                                         <option value="">Родительская категория</option>
                                                         @foreach($categories as $item)
-                                                            <option {{$category->parent_id == $item->id ? 'selected' : ''}}  value="{{$item->id}}">{{$item->name}}</option>
+                                                            <option {{$category->parent_id == $item->onec_id ? 'selected' : ''}}  value="{{$item->onec_id}}">{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
