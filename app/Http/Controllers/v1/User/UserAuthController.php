@@ -10,7 +10,7 @@ use App\Services\Auth\LoginManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserAuthController extends Controller
+final class UserAuthController extends Controller
 {
     private LoginManager $loginManager;
     private LoginDataMapper $loginDataMapper;

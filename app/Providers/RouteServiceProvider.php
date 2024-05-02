@@ -23,21 +23,21 @@ class RouteServiceProvider extends ServiceProvider
 
     public function map(): void
     {
-        Route::prefix('api')
-            ->as('api.')
-            ->middleware(['api', 'auth:sanctum', 'verified', 'app.user-status'])
-            ->group(static function () {
-                foreach (File::allFiles(base_path('routes/api')) as $file) {
-                    require $file->getPathname();
-                }
-            })
-        ;
-
-        Route::prefix('api')
-            ->as('api.')
-            ->middleware('api')
-            ->group(base_path('routes/api.php'))
-        ;
+//        Route::prefix('api')
+//            ->as('api.')
+//            ->middleware(['api', 'auth:sanctum', 'verified', 'app.user-status'])
+//            ->group(static function () {
+//                foreach (File::allFiles(base_path('routes/api')) as $file) {
+//                    require $file->getPathname();
+//                }
+//            })
+//        ;
+//
+//        Route::prefix('api')
+//            ->as('api.')
+//            ->middleware('api')
+//            ->group(base_path('routes/api.php'))
+//        ;
 
         Route::middleware(['user'])
             ->as('user.')
@@ -71,6 +71,15 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['web','auth:sanctum', 'verified', 'app.user-status'])
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/v1/authorized')) as $file) {
+                    require $file->getPathname();
+                }
+            })
+        ;
+
+        Route::middleware(['web'])
+            ->as('theme.')
+            ->group(static function () {
+                foreach (File::allFiles(base_path('routes/frontend/v1')) as $file) {
                     require $file->getPathname();
                 }
             })

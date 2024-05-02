@@ -32,6 +32,24 @@ final class ProductRepository
         ;
     }
 
+    public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator
+    {
+        $query = Product::query();
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+                AllowedFilter::custom('search', new ProductSearchFilter()),
+            ])
+            ->defaultSort('id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->where('')
+            ->paginate(self::COUNT_OF_PAGINATION)
+            ->appends(request()->query())
+        ;
+    }
+
     public function getById($productId): ?Product
     {
         return Product::query()->find($productId);
