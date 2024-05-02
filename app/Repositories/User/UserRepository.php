@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -84,9 +85,20 @@ final class UserRepository
         return User::query()->get()->last();
     }
 
-    public function getUsers(): ?Collection
+    public function getUsers(): LengthAwarePaginator
     {
-        return User::role('user')->get();
+        $query = User::query()->role('user');
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+
+            ])
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+            ;
     }
 
     public function getManagers(): ?Collection
@@ -102,5 +114,25 @@ final class UserRepository
     public function getAll() : Collection
     {
         return User::query()->get();
+    }
+
+    public function getAllUsersWithoutManager() : Collection
+    {
+        return User::query()->role('user')->where('manager_id', null)->get();
+    }
+
+    public function getUserById(int $userId) : User
+    {
+        return User::query()->role('user')->where('id', $userId)->first();
+    }
+
+    public function getAllRoles(): Collection
+    {
+        return Role::query()->get()->except(1);
+    }
+
+    public function getAllUserTypes(): Collection
+    {
+        return UserType::query()->get();
     }
 }
