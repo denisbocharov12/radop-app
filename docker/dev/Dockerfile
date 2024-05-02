@@ -1,4 +1,4 @@
-FROM nginx:1.23.0-alpine
+FROM nginx:1.25.2-alpine
 
 ARG UID=1000
 ARG GID=1000
@@ -10,6 +10,8 @@ RUN apk add --no-cache \
     git \
     grep \
     dcron \
+    tzdata \
+    su-exec \
     shadow \
     openssl \
     supervisor
