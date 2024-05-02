@@ -69,15 +69,15 @@ RUN mkdir -p /var/www/html && \
     touch /var/log/nginx/access.log && \
     touch /var/log/nginx/error.log && \
     chown -R nginx:nginx /var/cache/nginx /var/lib/nginx /var/log/nginx && \
-    chmod -R g+rw /var/cache/nginx /var/lib/nginx /var/log/nginx /etc/php81/php-fpm.d && \
-    ln -s /usr/bin/php81 /usr/bin/php
+    chmod -R g+rw /var/cache/nginx /var/lib/nginx /var/log/nginx /etc/php82/php-fpm.d && \
+    ln -s /usr/bin/php82 /usr/bin/php
 
 COPY docker/common/nginx/php-fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY docker/common/nginx/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/common/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/common/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
 
-COPY docker/dev/conf/php.ini /etc/php81/conf.d/50-settings.ini
+COPY docker/dev/conf/php.ini /etc/php82/conf.d/50-settings.ini
 COPY docker/dev/entrypoint.sh /sbin/entrypoint.sh
 
 RUN chmod +x /sbin/entrypoint.sh
