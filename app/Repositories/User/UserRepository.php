@@ -85,9 +85,20 @@ final class UserRepository
         return User::query()->get()->last();
     }
 
-    public function getUsers(): ?Collection
+    public function getUsers(): LengthAwarePaginator
     {
-        return User::role('user')->get();
+        $query = User::query()->role('user');
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+
+            ])
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+            ;
     }
 
     public function getManagers(): ?Collection

@@ -3,6 +3,7 @@
 namespace App\Services\Client;
 
 use App\Data\Client\ClientData;
+use App\Data\Client\ClientUpdateData;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Requests\User\UserDeleteRequest;
@@ -67,9 +68,29 @@ class ClientManager
 
     }
 
-    public function update()
+    public function update(ClientUpdateData $clientData, User $user)
     {
+        $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
 
+        $user->update([
+            'email' => $clientData->email,
+            'status' => $status,
+            'type_id' => $clientData->typeId,
+        ]);
+
+        $user->assignRole($clientData->role);
+
+        $user->save();
+
+        $user->profile->update([
+            'first_name' => $clientData->firstName,
+            'last_name' => $clientData->lastName,
+            'phone' => $clientData->phone,
+            'address' => $clientData->address,
+            'organization_name' => $clientData->organizationName,
+            'cod_fiscal' => $clientData->codFiscal,
+            'contact_name' => $clientData->contactName,
+        ]);
     }
 
     public function delete(UserDeleteRequest $request): void

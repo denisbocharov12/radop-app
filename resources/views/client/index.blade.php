@@ -11,7 +11,7 @@
                             <div class="nk-block-head-content">
                                 <h3 class="nk-block-title page-title">Пользователи</h3>
                                 <div class="nk-block-des text-soft">
-                                    {{--                                    <p>Количество: {{ $users->total() }} @choice('Пользователь|Пользователей', $users->total())</p>--}}
+                                    <p>Количество: {{ $users->total() }} @choice('Пользователь|Пользователей', $users->total())</p>
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
@@ -54,7 +54,7 @@
         </div>
     </div>
     <!-- content @e -->
-        @include('client.modal.create')
+    @include('client.modal.create')
 @endsection
 
 @section('scripts')

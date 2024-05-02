@@ -44,7 +44,7 @@
                     @endif
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-{{--                    <span>{{$user->profile->contact_phone}}</span>--}}
+                    <span>{{$user->profile->phone}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools">
                     <ul class="nk-tb-actions gx-2">
@@ -54,6 +54,7 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('client.show', $user)}}"><em class="icon ni ni-eye"></em><span>Просмотреть</span></a></li>
+                                        <li><a href="{{route('client.edit', $user)}}" data-id="{{$user->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
                                         <li><a href="#" class="model-delete" id="model-delete-{{$user->id}}" data-id="{{$user->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
                                     </ul>
                                 </div>

@@ -62,14 +62,61 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">Филиал</label>
+                                                <label class="form-label" for="address">Адрес</label>
                                                 <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" name="filial_id" id="filial_id" data-placeholder="Без Филиала">
-                                                        <option value="">Без филиала</option>
-                                                        @foreach($filials as $filial)
-                                                            <option {{$filial->id ===  $user->filial_id ? 'selected' : ''}} value="{{$filial->id}}">{{$filial->name}}</option>
+                                                    <input type="text" class="form-control" id="address" value="{{$user->profile->address}}" placeholder="Ул. Пушкина 22" name="address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="phone">Мобильный телефон</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control" id="phone" value="{{$user->profile->phone}}" name="phone" placeholder="373 777 77 777">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+{{--                                                @dd($userTypes)--}}
+                                                <label class="form-label">Тип пользователя</label>
+                                                <div class="form-control-wrap">
+                                                    <select required class="form-select js-select2" data-search="on" name="type_id" id="type_id" data-placeholder="Тип пользователя">
+                                                        <option value="">Выбрать роль</option>
+                                                        @foreach($userTypes as $userType)
+                                                            <option {{$userType->id == $user->type_id ? 'selected' : ''}} value="{{$userType->id}}">
+                                                                @if($userType->key_name === 'fiz')
+                                                                    Физ. лицо
+                                                                @elseif($userType->key_name === 'iur')
+                                                                    Юр. лицо
+                                                                @endif
+                                                            </option>
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="organization_name">Название организации</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="organization_name" value="{{$user->profile->organization_name}}" placeholder="Название организации" name="organization_name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="cod_fiscal">Фискальный код</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="cod_fiscal" value="{{$user->profile->cod_fiscal}}" placeholder="1234567891234" name="cod_fiscal">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="contact_name">Контактное лицо</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="contact_name" value="{{$user->profile->contact_name}}" placeholder="Контактное лицо" name="contact_name">
                                                 </div>
                                             </div>
                                         </div>
@@ -86,19 +133,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="mobile_phone">Мобильный телефон</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control" value="{{$user->profile->contact_phone}}" id="mobile_phone" name="mobile_phone" placeholder="373 777 77 777">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label class="form-label">Статус</label>
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
-                                                        <option {{$user->active == true ? 'selected' : ''}} value="true">Активный</option>
-                                                        <option {{$user->active == false ? 'selected' : ''}} value="false">Неактивный</option>
+                                                        <option {{$user->status == true ? 'selected' : ''}} value="true">Активный</option>
+                                                        <option {{$user->status == false ? 'selected' : ''}} value="false">Неактивный</option>
                                                     </select>
                                                 </div>
                                             </div>

@@ -15,8 +15,16 @@ Route::prefix('clients')->name('client.')->group(function () {
         ->name('store')
     ;
     Route::middleware(['app.permissions'])
+        ->get('{user}/edit', [ClientController::class, 'edit'])
+        ->name('edit')
+    ;
+    Route::middleware(['app.permissions'])
         ->get('{user}/show', [ClientController::class, 'show'])
         ->name('show')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('{user}/update', [ClientController::class, 'update'])
+        ->name('update')
     ;
     Route::middleware(['app.permissions'])
         ->delete('destroy', [ClientController::class, 'destroy'])

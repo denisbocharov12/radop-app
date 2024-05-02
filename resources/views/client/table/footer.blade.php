@@ -1,3 +1,3 @@
 <div class="card-inner">
-{{--    {{$users->links()}}--}}
+    {{$users->links()}}
 </div><!-- .card-inner -->

@@ -9,7 +9,9 @@ use App\Exceptions\User\UserNotFoundException;
 use App\Exceptions\User\UserNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\ClientDataMapper;
+use App\Http\Mappers\ClientUpdateDataMapper;
 use App\Http\Requests\Client\ClientRequest;
+use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\User;
 use App\Repositories\User\UserRepository;
@@ -21,16 +23,19 @@ class ClientController extends Controller
     private UserRepository $userRepository;
     private ClientDataMapper $clientDataMapper;
     private ClientManager $clientManager;
+    private ClientUpdateDataMapper $clientUpdateDataMapper;
 
     public function __construct(
-        UserRepository $userRepository,
+        UserRepository   $userRepository,
         ClientDataMapper $clientDataMapper,
-        ClientManager $clientManager
+        ClientManager    $clientManager,
+        ClientUpdateDataMapper $clientUpdateDataMapper
     )
     {
         $this->userRepository = $userRepository;
         $this->clientDataMapper = $clientDataMapper;
         $this->clientManager = $clientManager;
+        $this->clientUpdateDataMapper = $clientUpdateDataMapper;
     }
 
     public function index()
@@ -58,6 +63,35 @@ class ClientController extends Controller
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
         }
+    }
+
+    public function update(User $user, ClientUpdateRequest $request)
+    {
+        $clientData = $this->clientUpdateDataMapper->mapFromRequestToNormalized($request);
+
+        try {
+
+            $this->clientManager->update($clientData, $user);
+
+            return redirect()->route('client.index');
+
+        } catch (DuplicatedUserEmailException $e) {
+            throw new DuplicatedUserEmailValidationException();
+        }
+
+    }
+
+    public function edit(User $user)
+    {
+        $users = $this->userRepository->getUsers();
+        $roles = $this->userRepository->getAllRoles();
+        $userTypes = $this->userRepository->getAllUserTypes();
+
+        return view('client.edit', compact([
+            'roles',
+            'userTypes',
+            'user'
+        ]));
     }
 
     public function show(User $user)

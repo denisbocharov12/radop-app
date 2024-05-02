@@ -63,15 +63,15 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="$phone">Мобильный телефон</label>
+                                        <label class="form-label" for="phone">Мобильный телефон</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control" id="$phone" name="$phone" placeholder="373 777 77 777">
+                                            <input type="text" required class="form-control" id="phone" name="phone" placeholder="373 777 77 777">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="type_id">Роль</label>
+                                        <label class="form-label" for="type_id">Тип пользователя</label>
                                         <div class="form-control-wrap">
                                             <select required class="form-select js-select2" data-search="on" name="type_id" id="type_id" data-placeholder="Тип пользователя">
                                                 <option value="">Выбрать роль</option>
