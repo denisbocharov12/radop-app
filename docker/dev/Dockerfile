@@ -15,44 +15,44 @@ RUN apk add --no-cache \
     supervisor
 
 RUN apk add --no-cache \
-    php81 \
-    php81-fpm \
-    php81-opcache \
-    php81-dev \
-    php81-gd \
-    php81-curl \
-    php81-pdo \
-    php81-pdo_mysql \
-    php81-mysqli \
-    php81-mysqlnd \
-    php81-mbstring \
-    php81-xml \
-    php81-zip \
-    php81-bcmath \
-    php81-soap \
-    php81-intl \
-    php81-phar \
-    php81-json \
-    php81-tokenizer \
-    php81-dom \
-    php81-fileinfo \
-    php81-ctype \
-    php81-iconv \
-    php81-xmlwriter \
-    php81-xmlreader \
-    php81-simplexml \
-    php81-ldap \
-    php81-pecl-imagick \
-    php81-openssl \
-    php81-sodium \
-    php81-session \
-    php81-pecl-yaml \
-    php81-pecl-memcached \
-    php81-pecl-redis \
-    php81-pecl-msgpack \
-    php81-pecl-igbinary \
-    php81-exif \
-    php81-intl
+    php82 \
+    php82-fpm \
+    php82-opcache \
+    php82-dev \
+    php82-gd \
+    php82-curl \
+    php82-pdo \
+    php82-pdo_mysql \
+    php82-mysqli \
+    php82-mysqlnd \
+    php82-mbstring \
+    php82-xml \
+    php82-zip \
+    php82-bcmath \
+    php82-soap \
+    php82-intl \
+    php82-phar \
+    php82-json \
+    php82-tokenizer \
+    php82-dom \
+    php82-fileinfo \
+    php82-ctype \
+    php82-iconv \
+    php82-xmlwriter \
+    php82-xmlreader \
+    php82-simplexml \
+    php82-ldap \
+    php82-pecl-imagick \
+    php82-openssl \
+    php82-sodium \
+    php82-session \
+    php82-pecl-yaml \
+    php82-pecl-memcached \
+    php82-pecl-redis \
+    php82-pecl-msgpack \
+    php82-pecl-igbinary \
+    php82-exif \
+    php82-intl
 
 RUN usermod -u ${UID} nginx && groupmod -g ${GID} nginx
 
