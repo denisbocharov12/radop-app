@@ -15,7 +15,7 @@
     <!-- Font-icon -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/font-icon/font/css/radop.css" />
     <!-- End Font-icon -->
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/fancybox/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/select2/select2.min.css" />
     <!-- Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick-theme.css" />

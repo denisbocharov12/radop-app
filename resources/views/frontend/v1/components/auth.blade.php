@@ -5,7 +5,7 @@
             <h3>Панель управления</h3>
         </div>
         <a class="p-3 bg-light d-block rounded-1 mb-2" href="">Профиль</a>
-        <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.logout')}}">Выйти</a>
+        <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">Выйти</a>
         <div class="account-helpers-wrap mt-4">
             <a href="#" class="helper-account-activate">Активировать аккаунт</a>
             <a href="#" class="helper-account-psw">Забыли пароль?</a>
@@ -37,7 +37,7 @@
             <div class="login-separator">
                 <p>или</p>
             </div>
-            <a href="" class="login-btn login-btn-any register"> Регистрациая </a>
+            <a href="{{route('user.registration.index')}}" class="login-btn login-btn-any register"> Регистрациая </a>
             <button type="button" class="login-btn login-btn-any login-btn-google">
                 Войти с
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

@@ -6,6 +6,7 @@ namespace App\Repositories\User;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserActivation;
 use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -111,6 +112,11 @@ final class UserRepository
         return UserType::all();
     }
 
+    public function getTypeById(int $id): ?UserType
+    {
+        return UserType::find($id);
+    }
+
     public function getAll() : Collection
     {
         return User::query()->get();
@@ -134,5 +140,10 @@ final class UserRepository
     public function getAllUserTypes(): Collection
     {
         return UserType::query()->get();
+    }
+
+    public function getUserActivationByToken(string $token): ?UserActivation
+    {
+        return UserActivation::where('token', $token)->where('status', false)->first();
     }
 }

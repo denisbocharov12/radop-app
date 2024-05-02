@@ -17,7 +17,7 @@ class UserRoleSeeder extends AbstractRoleSeeder
     public function getPermittedRoutes(): array
     {
         return [
-            'theme.logout',
+            'theme.user.logout',
         ];
     }
 }

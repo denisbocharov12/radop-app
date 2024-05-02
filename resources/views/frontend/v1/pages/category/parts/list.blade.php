@@ -5,44 +5,26 @@
     <div class="col-lg-4 col-md-4 col-6 product-item-category">
         <div class="product-wrap drop-shadow">
             <div class="product-wrap-main">
-                @if($product->productData)
-                    @if($product->productData->sale_price !== null)
-                        <a href="#" class="product-label">
-                            <div class="product-label-wrap">
-                                <span class="product-label-span">- {{round((($product->price - $product->productData->sale_price) / $product->price) * 100, 2)}}%</span>
-                            </div>
-                        </a>
-                    @else
-                    @endif
-                @else
+                @if($product->sale_price !== '')
+                    <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                        <div class="product-label-wrap">
+                            <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                        </div>
+                    </a>
                 @endif
                 @include('frontend.v1.pages.category.parts.product-category-image')
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="">{{$product->title}} ({{$product->onec_id}})</a>
+                        <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
                     </h3>
                     <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                 </div>
-{{--                <div class="rating-css">--}}
-{{--                    <div class="star-icon">--}}
-{{--                        <i class="fa fa-star"></i>--}}
-{{--                        <i class="fa fa-star"></i>--}}
-{{--                        <i class="fa fa-star"></i>--}}
-{{--                        <i class="fa fa-star"></i>--}}
-{{--                        <i class="fa fa-star"></i>--}}
-{{--                    </div>--}}
-{{--                    <span class="rating_count">103</span>--}}
-{{--                </div>--}}
             </div>
             <div class="add_to_cart_wrap">
                 <div class="wrap">
-                    @if($product->productData !== null)
-                        @if($product->productData->sale_price !== null)
-                            <span class="price">{{$product->productData->sale_price}} MDL</span>
-                            <span class="old_price">{{$product->price}} MDL</span>
-                        @else
-                            <span class="price">{{$product->price}} MDL</span>
-                        @endif
+                    @if($product->sale_price !== '')
+                        <span class="price">{{$product->sale_price}} MDL</span>
+                        <span class="old_price">{{$product->price}} MDL</span>
                     @else
                         <span class="price">{{$product->price}} MDL</span>
                     @endif
