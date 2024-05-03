@@ -25,24 +25,6 @@
                 </div>
             </div>
         </div>
-        <div class="container container-flaer">
-            <div class="row">
-                <div class="col-12 col-lg-6 col-flaer">
-                    <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/1416x504?text=Demo" alt="" />
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6 col-flaer">
-                    <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/1416x504?text=Demo" alt="" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
     <section class="section-standart">
         <div class="container container-flaer container-flaer-m0">

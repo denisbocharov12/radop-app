@@ -21,26 +21,27 @@
 {{--    @else--}}
 {{--    @endif--}}
 {{--</div>--}}
+@php
+    $dir = public_path() . config('media-files.DIR_PATH');
+    $files = glob($dir . "$product->onec_id*");
 
+    $imagesArray = [];
+
+    foreach ($files as $key => $file) {
+        $imagesArray[] = str_replace('/var/www/html/public/', '', $file);
+    }
+@endphp
 <div class="product-slider-main">
-    <a href="https://placehold.co/600x900?text=Demo 1" class="product-image" data-fancybox="gallery">
-        <img src="https://placehold.co/600x900?text=Demo 1" alt="Demo 1">
-    </a>
-    <a href="https://placehold.co/600x900?text=Demo 2" class="product-image" data-fancybox="gallery">
-        <img src="https://placehold.co/600x900?text=Demo 2" alt="Demo 2">
-    </a>
-    <a href="https://placehold.co/600x900?text=Demo 3" class="product-image" data-fancybox="gallery">
-        <img src="https://placehold.co/600x900?text=Demo 3" alt="Demo 3">
-    </a>
+    @foreach($imagesArray as $key => $file)
+        <a href="/{{$file}}" class="product-image" data-fancybox="gallery">
+            <img src="/{{$file}}" alt="{{$product->title}}">
+        </a>
+    @endforeach
 </div>
 <div class="product-slider-thumb">
-    <div class="product-image slick-current slick-active">
-        <img src="https://placehold.co/600x900?text=Demo" alt="Demo">
-    </div>
-    <div class="product-image">
-        <img src="https://placehold.co/600x900?text=Demo" alt="Demo">
-    </div>
-    <div class="product-image">
-        <img src="https://placehold.co/600x900?text=Demo" alt="Demo">
-    </div>
+    @foreach($imagesArray as $key => $file)
+        <a href="/{{$file}}" class="product-image @if($key == 0) current slick-active @endif" >
+            <img src="/{{$file}}" alt="{{$product->title}}">
+        </a>
+    @endforeach
 </div>
