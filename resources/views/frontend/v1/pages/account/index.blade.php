@@ -35,6 +35,7 @@
                                                 id="first_name"
                                                 placeholder="Имя"
                                                 value="{{$user->profile->first_name}}"
+                                                required
                                             />
                                         </li>
                                         <li class="my-account-details-form__item">
@@ -50,6 +51,7 @@
                                                 id="last_name"
                                                 placeholder="Фамилия"
                                                 value="{{$user->profile->last_name}}"
+                                                required
                                             />
                                         </li>
                                         <li class="my-account-details-form__item">
@@ -80,6 +82,7 @@
                                                 id="address"
                                                 placeholder="Ул. Пушкина 22"
                                                 value="{{$user->profile->address}}"
+                                                required
                                             />
                                         </li>
                                         <li class="my-account-details-form__item">
@@ -95,6 +98,7 @@
                                                 id="phone"
                                                 placeholder="+373 777 77 777"
                                                 value="{{$user->profile->phone}}"
+                                                required
                                             />
                                         </li>
                                         <li class="my-account-details-form__item">
@@ -110,8 +114,41 @@
                                                 id="email"
                                                 placeholder="example@mail.ru"
                                                 value="{{$user->email}}"
+                                                required
                                             />
                                         </li>
+                                        @if($user->type->key_name == 'iur')
+                                            <li class="my-account-details-form__item">
+                                                <label
+                                                    class="my-account-details-form__label"
+                                                    for="organization_name"
+                                                >Название компании</label
+                                                >
+                                                <input
+                                                    class="my-account-details-form__input"
+                                                    type="text"
+                                                    name="organization_name"
+                                                    id="organization_name"
+                                                    placeholder="Название компании"
+                                                    value="{{$user->profile->organization_name}}"
+                                                />
+                                            </li>
+                                            <li class="my-account-details-form__item">
+                                                <label
+                                                    class="my-account-details-form__label"
+                                                    for="contact_name"
+                                                >Контактное лицо</label
+                                                >
+                                                <input
+                                                    class="my-account-details-form__input"
+                                                    type="text"
+                                                    name="contact_name"
+                                                    id="contact_name"
+                                                    placeholder="Контактное лицо"
+                                                    value="{{$user->profile->contact_name}}"
+                                                />
+                                            </li>
+                                        @endif
                                     </ul>
                                     <button
                                         class="my-account-details-form__button"
@@ -122,42 +159,43 @@
                                 </form>
                             </div>
                         </li>
-                        <li class="my-account-details__item">
-                            <h3 class="my-account-details__name">Email адрес</h3>
-                            <div class="my-account-details__inner">
-                                <div class="my-account-details__text">
-                                    Мы сохраняем данную информацию для удобства
-                                    использования нашей платформы. Все права защищены
-                                    сосгласно Политике конфиденциальности
-                                </div>
-                                <form class="my-account-details-form" action="#">
-                                    <ul class="my-account-details-form__list">
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="email"
-                                            >Email</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="email"
-                                                name="email"
-                                                id="email"
-                                                placeholder="example@mail.ru"
-                                                value="{{$user->email}}"
-                                            />
-                                        </li>
-                                    </ul>
-                                    <button
-                                        class="my-account-details-form__button"
-                                        type="submit"
-                                    >
-                                        Сохранить
-                                    </button>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="my-account-details__item">
+
+{{--                        <li class="my-account-details__item">--}}
+{{--                            <h3 class="my-account-details__name">Email адрес</h3>--}}
+{{--                            <div class="my-account-details__inner">--}}
+{{--                                <div class="my-account-details__text">--}}
+{{--                                    Мы сохраняем данную информацию для удобства--}}
+{{--                                    использования нашей платформы. Все права защищены--}}
+{{--                                    сосгласно Политике конфиденциальности--}}
+{{--                                </div>--}}
+{{--                                <form class="my-account-details-form" action="#">--}}
+{{--                                    <ul class="my-account-details-form__list">--}}
+{{--                                        <li class="my-account-details-form__item">--}}
+{{--                                            <label--}}
+{{--                                                class="my-account-details-form__label"--}}
+{{--                                                for="email"--}}
+{{--                                            >Email</label--}}
+{{--                                            >--}}
+{{--                                            <input--}}
+{{--                                                class="my-account-details-form__input"--}}
+{{--                                                type="email"--}}
+{{--                                                name="email"--}}
+{{--                                                id="email"--}}
+{{--                                                placeholder="example@mail.ru"--}}
+{{--                                                value="{{$user->email}}"--}}
+{{--                                            />--}}
+{{--                                        </li>--}}
+{{--                                    </ul>--}}
+{{--                                    <button--}}
+{{--                                        class="my-account-details-form__button"--}}
+{{--                                        type="submit"--}}
+{{--                                    >--}}
+{{--                                        Сохранить--}}
+{{--                                    </button>--}}
+{{--                                </form>--}}
+{{--                            </div>--}}
+{{--                        </li>--}}
+{{--                        <li class="my-account-details__item">--}}
                             <h3 class="my-account-details__name">Пароль</h3>
                             <div class="my-account-details__inner">
                                 <div class="my-account-details__text">

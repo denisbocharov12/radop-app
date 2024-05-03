@@ -17,6 +17,7 @@ class PermissionSeeder extends Seeder
         'theme.logout',
         'theme.account.index',
         'theme.account.update',
+        'theme.orders.index'
     ];
 
     public function run(): void

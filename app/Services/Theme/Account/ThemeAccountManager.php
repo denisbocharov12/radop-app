@@ -20,6 +20,14 @@ final class ThemeAccountManager
             'last_name' => $clientData->lastName,
             'phone' => $clientData->phone,
             'address' => $clientData->address,
+            'cod_fiscal' => $clientData->codFiscal
         ]);
+
+        if($user->type->key_name == 'iur'){
+            $user->profile->update([
+                'organization_name' => $clientData->organizationName,
+                'contact_name' => $clientData-> contactName
+            ]);
+        };
     }
 }
