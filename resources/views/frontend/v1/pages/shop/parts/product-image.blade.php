@@ -20,7 +20,7 @@
 @php
     $dir = __DIR__ . config('media-files.DIR_PATH');
     $files = glob($dir . "$product->onec_id*");
-    echo $files, $dir;
+    print_r( $files, $dir);
 @endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($files) > 2)
