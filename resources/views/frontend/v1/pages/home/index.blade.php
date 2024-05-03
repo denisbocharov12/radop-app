@@ -902,11 +902,13 @@
             <div class="row">
                 <div class="col-12 col-slider">
                     <div class="wrap-slider" id="partners-slider">
-                        <div class="item">
-                            <a href="#">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/runpay.svg" alt="" />
-                            </a>
-                        </div>
+                        @foreach($themeBrands as $brand)
+                            <div class="item">
+                                <a href="#">
+                                    <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" />
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
