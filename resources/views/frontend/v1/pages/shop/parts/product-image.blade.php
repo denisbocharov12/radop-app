@@ -32,10 +32,10 @@
         @foreach($imagesArray as $key => $file)
             @switch($key)
                 @case(0)
-                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />
+                <img class="primary-image" src="/{{$file}}" alt="{{$file}}" />
                 @break
                 @case(1)
-                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />
+                <img class="secondary-image" src="/{{$file}}" alt="{{$file}}" />
                 @break
             @endswitch
         @endforeach
