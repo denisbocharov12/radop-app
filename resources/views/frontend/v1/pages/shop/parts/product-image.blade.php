@@ -26,23 +26,21 @@
     foreach ($files as $key => $file) {
         $imagesArray[] = str_replace('/var/www/html/public/', '', $file);
     }
-
-    var_dump( $files, $dir);
 @endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($imagesArray) > 1)
         @foreach($imagesArray as $key => $file)
             @switch($key)
                 @case(0)
-                <img class="primary-image" src="cert/{{$file}}" alt="{{$file}}" />
+                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />
                 @break
                 @case(1)
-                <img class="secondary-image" src="cert/{{$file}}" alt="{{$file}}" />
+                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />
                 @break
             @endswitch
         @endforeach
-    @else
-        <img class="primary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />
+    @elseif(count($imagesArray) == 1)
+        <img class="secondary-image" src="{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
     @endif
 </a>
 

@@ -17,8 +17,33 @@
 {{--        @endforeach--}}
 {{--    @endif--}}
 {{--</a>--}}
+@php
+    $dir = public_path() . config('media-files.DIR_PATH');
+    $files = glob($dir . "$product->onec_id*");
 
+    $imagesArray = [];
+
+    foreach ($files as $key => $file) {
+        $imagesArray[] = str_replace('/var/www/html/public/', '', $file);
+    }
+@endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
-    <img class="secondary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />
-    <img class="primary-image" src="https://placehold.co/600x600?text=Demo 2" alt="" />
+    @if(count($imagesArray) > 1)
+        @foreach($imagesArray as $key => $file)
+            @switch($key)
+                @case(0)
+                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />
+                @break
+                @case(1)
+                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />
+                @break
+            @endswitch
+        @endforeach
+    @elseif(count($imagesArray) == 1)
+        <img class="secondary-image" src="{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
+    @endif
 </a>
+{{--<a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">--}}
+{{--    <img class="secondary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />--}}
+{{--    <img class="primary-image" src="https://placehold.co/600x600?text=Demo 2" alt="" />--}}
+{{--</a>--}}
