@@ -58,8 +58,8 @@
                         <hr />
                         <div class="product-description">
                             <p>
-                                @if($product->productData)
-                                    {{$product->productData->summary}}
+                                @if($product->data)
+                                    {{$product->data->summary}}
                                 @endif
                             </p>
                         </div>
