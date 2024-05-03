@@ -18,9 +18,11 @@
 {{--    @endif--}}
 {{--</a>--}}
 @php
-    $dir = __DIR__ . config('media-files.DIR_PATH');
+    $dir = public_path() . config('media-files.DIR_PATH');
+    $dir2 = assert('/cert');
     $files = glob($dir . "$product->onec_id*");
-    var_dump( $files, $dir);
+    $files2 = glob($dir2 . "$product->onec_id*");
+    var_dump( $files, $dir, $dir2);
 @endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($files) > 2)
