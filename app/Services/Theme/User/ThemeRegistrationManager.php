@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Services\Theme\User;
+
+use App\Data\Theme\User\ThemeUserRegistrationData;
+use App\Events\UserActivationSendEmailEvent;
+use App\Exceptions\User\DuplicatedUserEmailException;
+use App\Exceptions\User\UserActivationIsActiveException;
+use App\Exceptions\User\UserTypeNotFoundException;
+use App\Models\Profile;
+use App\Models\User;
+use App\Models\UserActivation;
+use App\Repositories\User\UserRepository;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+final class ThemeRegistrationManager
+{
+    private const USER_ROLE = 'user';
+
+    public function __construct(
+        private readonly UserRepository $userRepository,
+    )
+    {
+    }
+
+    public function store(ThemeUserRegistrationData $themeUserRegistrationData): User
+    {
+        $lastUserNumber = User::query()->get()->last()->id + 1;
+
+        $userName =  strtolower($themeUserRegistrationData->firstName[0].'_'.$themeUserRegistrationData->lastName.'_user_'.$lastUserNumber);
+
+        $existedUserEmail = $this->userRepository->getFirstByEmailWithTrashed($themeUserRegistrationData->email);
+
+        if ($existedUserEmail !== null) {
+            throw new DuplicatedUserEmailException();
+        }
+
+        $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
+
+        if ($existedType === null) {
+            throw new UserTypeNotFoundException();
+        }
+
+        $user = User::create([
+            'name' => $userName,
+            'email' => $themeUserRegistrationData->email,
+            'password' => Hash::make($themeUserRegistrationData->password),
+            'email_verified_at' => now(),
+            'status' => false,
+            'type_id' => $themeUserRegistrationData->typeId,
+        ]);
+
+        $user->assignRole(self::USER_ROLE);
+
+        $user->save();
+
+        Profile::create([
+            'user_id' => $user->id,
+            'first_name' => $themeUserRegistrationData->firstName,
+            'last_name' => $themeUserRegistrationData->lastName,
+            'phone' => $themeUserRegistrationData->phone,
+            'address' => $themeUserRegistrationData->address,
+            'organization_name' => $themeUserRegistrationData->organizationName,
+            'cod_fiscal' => $themeUserRegistrationData->codFiscal,
+            'contact_name' => $themeUserRegistrationData->contactName,
+        ]);
+
+        return $user;
+    }
+
+    public function generateActivationToken(User $user): void
+    {
+        $token = Str::random(60);
+
+        $activationToken = UserActivation::create([
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'token' => $token,
+            'status' => false,
+            'created_at' => Carbon::now()
+        ]);
+
+        event(new UserActivationSendEmailEvent($user,$token));
+    }
+
+    public function activateUser($token): void
+    {
+        $existedUserActivation = $this->userRepository->getUserActivationByToken($token);
+
+        if ($existedUserActivation === null) {
+            throw new UserActivationIsActiveException();
+        }
+
+        $existedUserActivation->update([
+            'status' => false
+        ]);
+
+        $existedUser = $this->userRepository->getById($existedUserActivation->user_id);
+
+        $existedUser->update([
+            'status' => false
+        ]);
+    }
+}

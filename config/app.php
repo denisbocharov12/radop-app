@@ -197,8 +197,8 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+        Darryldecode\Cart\CartServiceProvider::class,
 
         PropertyServiceProvider::class,
     ],
@@ -217,8 +217,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
     ])->toArray(),
 
 ];

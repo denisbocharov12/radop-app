@@ -37,6 +37,11 @@ final class BrandRepository
         return Brand::query()->get();
     }
 
+    public function getLimited(): Collection
+    {
+        return Brand::all()->take(10);
+    }
+
     public function getById($brandId): ?Brand
     {
         return Brand::query()->find($brandId);

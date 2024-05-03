@@ -25,7 +25,7 @@ class CheckClientStatus
          */
         $user = Auth::guard('user')->user();
 
-        if ($user === null || !$user->active) {
+        if ($user === null || !$user->status) {
             throw new AccessDeniedHttpException('Access Denied', null, Response::HTTP_FORBIDDEN);
         }
         return $next($request);

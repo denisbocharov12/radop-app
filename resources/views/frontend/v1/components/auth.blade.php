@@ -37,7 +37,7 @@
             <div class="login-separator">
                 <p>или</p>
             </div>
-            <a href="" class="login-btn login-btn-any register"> Регистрациая </a>
+            <a href="{{route('user.registration.index')}}" class="login-btn login-btn-any register"> Регистрациая </a>
             <button type="button" class="login-btn login-btn-any login-btn-google">
                 Войти с
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
