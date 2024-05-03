@@ -57,8 +57,8 @@ final class ONECManager
                         $status = $product['status'] ? true : false;
 
                         $data = [
-                            'title' => $product['name_ru'],
-                            'slug' => Str::slug($product['name_ru']) . '-' . $product['id'],
+                            'title' => $product['name_ru_full'],
+                            'slug' => Str::slug($product['name_ru_full']) . '-' . $product['id'],
                             'price' => $product['price'],
                             'status' => $status,
                             'stock' => $product['stock'],
