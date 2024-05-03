@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'DIR_PATH' => '/media/',
+    'DIR_PATH' => '/cert/',
 ];
