@@ -19,28 +19,23 @@
 {{--</a>--}}
 @php
     $dir = __DIR__ . config('media-files.DIR_PATH');
-    $files = glob($dir . "image*");
-    $fileNames = [];
-
-    foreach ($files as $key=>$file) {
-        $fileNames[] = str_replace($dir, '', $file);
-    }
+    $files = glob($dir . "$product->onec_id*");
 
 @endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
-    @if(count($fileNames) > 2)
-        @foreach($fileNames as $key => $file)
+    @if(count($files) > 2)
+        @foreach($files as $key => $file)
             @switch($key)
                 @case(0)
-                <img class="primary-image" src="{{'/media/'.$file}}" alt="{{$file}}" />
+                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />
                 @break
                 @case(1)
-                <img class="secondary-image" src="{{'/media/'.$file}}" alt="{{$file}}" />
+                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />
                 @break
             @endswitch
         @endforeach
     @else
-        <img class="primary-image" src="{{$files[0]}}" alt="" />
+        <img class="primary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />
     @endif
 
 
