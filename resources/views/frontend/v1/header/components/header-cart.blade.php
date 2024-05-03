@@ -2,13 +2,16 @@
     <a href="#" class="cart icon-block-link">
         Корзина
         <i class="icon-cart-radop"></i>
-        <span class="count">{{Cart::instance('cart')->count()}}</span>
+        @php
+            $sessionId = config('shopping_cart.default_session_id');
+
+            if (auth()->guard('user')->user()) {
+                $sessionId = auth()->guard('user')->user()->id;
+            }
+        @endphp
+        <span class="count mini-cart-count">{{\Cart::session($sessionId)->getContent()->count()}}</span>
     </a>
     <div class="wrap-shopping-cart">
-        <div class="heading-shopping-cart">
-            <span class="sc-subtotal">К оплате: <span class="fw-600">{{Cart::instance('cart')->total()}} MDL</span></span>
-            <span class="sc-count">{{Cart::instance('cart')->count()}} ед.</span>
-        </div>
         <div class="contents-shopping-cart" id="cart-update">
             @include('frontend.v1.components.mini-cart')
         </div>

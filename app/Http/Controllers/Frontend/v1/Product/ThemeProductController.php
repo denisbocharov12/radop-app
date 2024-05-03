@@ -12,7 +12,6 @@ use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Product\ThemeProductManager;
 use Illuminate\Http\Request;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 final class ThemeProductController extends Controller
 {
@@ -39,10 +38,38 @@ final class ThemeProductController extends Controller
 
     public function addToCart(AddToCartRequest $request)
     {
+
         $addToCartData = $this->addToCartDataMapper->mapFromRequestToNormalized($request);
 
         try {
             $response = $this->themeProductManager->addToCart($addToCartData, $request);
+
+            return response()->json($response);
+
+        } catch (ProductNotFoundException) {
+            throw new ProductNotFoundException();
+        }
+    }
+
+    public function updateCart(AddToCartRequest $request)
+    {
+
+        $addToCartData = $this->addToCartDataMapper->mapFromRequestToNormalized($request);
+
+        try {
+            $response = $this->themeProductManager->updateCart($addToCartData, $request);
+
+            return response()->json($response);
+
+        } catch (ProductNotFoundException) {
+            throw new ProductNotFoundException();
+        }
+    }
+
+    public function deleteCartItem(Request $request)
+    {
+        try {
+            $response = $this->themeProductManager->deleteCartItem($request->input('product_id'), $request);
 
             return response()->json($response);
 

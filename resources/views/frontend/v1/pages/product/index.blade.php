@@ -96,5 +96,57 @@
             selector : '.slick-slide:not(.slick-cloned)',
             hash     : false
         });
+
+        $(document).on('click','.product-add-to-cart-btn',function (e) {
+            e.preventDefault();
+            var product_id = $(this).data('id');
+            var product_qty = $('.qty-item-'+product_id).val();
+            var token = "{{csrf_token()}}";
+            var path = "{{route('theme.product.store')}}";
+            $.ajax({
+                url: path,
+                type: "POST",
+                dataType:"JSON",
+                data:{
+                    product_id: product_id,
+                    product_qty: product_qty,
+                    _token: token
+                },
+                beforeSend:function () {
+                    $('#add-to-cart-'+product_id).html('Loading ...<i class="fa fa-spin fa-spinner"></i>');
+                },
+                complete:function () {
+                    $('#add-to-cart-'+product_id).html('Add to Cart <i class="fa fa-shopping-cart"></i>');
+                },
+                success:function (response) {
+                    if (response['status'] == true){
+                        $('#cart-update').html(response['cart']);
+                        $('.mini-cart-count').html(response['cart_count']);
+                        $('.mini-cart-subtotal').html(response['total']);
+                        $('#cart-page').html(response['cart-page']);
+                    }
+                    if (response['status'] == "not_in_stock"){
+                        toastr["warning"]("Данного товара нет в наличии больше указанной цифры...")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                    }
+                }
+            });
+        })
     </script>
 @endsection

@@ -101,7 +101,7 @@
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
-                    toastr["success"](response['msg'])
+                    //toastr["success"](response['msg'])
                 }
             }
         });
@@ -109,15 +109,15 @@
 
     $(document).on('click','.remove-cart-btn',function (e) {
         e.preventDefault();
-        var cart_id = $(this).data('id');
+        var product_id = $(this).data('id');
         var token = "{{csrf_token()}}";
-        {{--var path = "{{route('cart.delete')}}";--}}
+        var path = "{{route('theme.product.delete')}}";
         $.ajax({
             url: path,
             type: "POST",
             dataType:"JSON",
             data:{
-                cart_id: cart_id,
+                product_id: product_id,
                 _token: token
             },
             success:function (response) {
@@ -126,7 +126,7 @@
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
-                    toastr["success"](response['msg'])
+                    //toastr["success"](response['msg'])
                 }
             }
         });
@@ -231,23 +231,21 @@
 
     $(document).on('click', '.btn-quantity', function (e) {
         e.preventDefault();
-        //var id = this.parentNode.parentNode.querySelector('input[type=number]').attr('data-id');
         var rowId = $(this).parent('.input-group-btn').parent('.sc-product-qty').find('input[type=number]').data("id");
-        var productStock = $('#update-cart-'+rowId).data('product-stock');
-        update_mini_cart(rowId, productStock);
+        update_mini_cart(rowId);
     });
-    function update_mini_cart(rowId,productStock) {
+
+    function update_mini_cart(rowId) {
         var product_qty =  $('#qty-item-'+rowId).val();
         var token = '{{csrf_token()}}';
-        {{--var path = "{{route('cart.update')}}";--}}
+        var path = "{{route('theme.product.update')}}";
         $.ajax({
             url: path,
             type: 'POST',
             data:{
                 _token: token,
                 product_qty: product_qty,
-                rowId: rowId,
-                productStock: productStock
+                product_id: rowId,
             },
             success: function (response) {
                 if(response['status']){
