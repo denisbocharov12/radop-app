@@ -9,8 +9,8 @@ use App\Exceptions\Product\ProductNotFoundException;
 use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 final class ThemeProductManager
 {
@@ -45,6 +45,12 @@ final class ThemeProductManager
             throw new ProductNotFoundException();
         }
 
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
         $productId = $existedProduct->id;
 
         (int)$productQty = $addToCartData->productQty;
@@ -60,16 +66,16 @@ final class ThemeProductManager
 
         $cartArray = [];
 
-        foreach (Cart::instance('cart')->content() as $item)
+        foreach (\Cart::session($sessionId)->getContent() as $item)
         {
-            $cartArray[$item->rowId] = $item->id;
+            $cartArray[$item->id] = $item->id;
         }
 
         $productKey = array_search($productId, $cartArray);
 
         if (in_array($productId, $cartArray))
         {
-            $exProduct = Cart::get($productKey);
+            $exProduct = \Cart::session($sessionId)->get($productKey);
 
             if ($productStock < (int)$exProduct->qty + (int)$productQty)
             {
@@ -78,10 +84,10 @@ final class ThemeProductManager
                 $result = false;
             } else
             {
-                $result = $this->addToInstance($productId,$existedProduct,$productQty,$price);
+                $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
             }
         } else {
-            $result = $this->addToInstance($productId,$existedProduct,$productQty,$price);
+            $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
         if ($result)
@@ -89,8 +95,8 @@ final class ThemeProductManager
             $response['status'] = true;
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
-            $response['total'] = Cart::instance('cart')->subtotal();
-            $response['cart_count'] = Cart::instance('cart')->count();
+            $response['total'] = \Cart::session($sessionId)->getSubTotal();
+            $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
             $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
 
             if ($request->ajax()){
@@ -104,9 +110,118 @@ final class ThemeProductManager
         return $response;
     }
 
-    private function addToInstance(int $productId, Product $existedProduct, $productQty, $price)
+    private function addToInstance(Product $existedProduct, $productQty, $price, $sessionId)
+    {
+        return \Cart::session($sessionId)->add(
+            array(
+                'id' => $existedProduct->id,
+                'name' => $existedProduct->title,
+                'price' => (float)$price,
+                'quantity' => $productQty,
+                'attributes' => array(),
+                'associatedModel' => $existedProduct
+            )
+        );
+    }
+
+    public function updateCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
 
-        return Cart::instance('cart')->add($productId,$existedProduct->title,$productQty,$price)->associate('Product');
+        $existedProduct = $this->productRepository->getById($addToCartData->productId);
+
+        if ($existedProduct === null)
+        {
+            throw new ProductNotFoundException();
+        }
+
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        $productId = $existedProduct->id;
+
+        (int)$productQty = $addToCartData->productQty;
+
+        $productStock = $existedProduct->stock;
+
+        $price = $existedProduct->price;
+
+        if ($existedProduct->sale_price !== '')
+        {
+            $price = $existedProduct->sale_price;
+        }
+
+        $cartArray = [];
+
+        foreach (\Cart::session($sessionId)->getContent() as $item)
+        {
+            $cartArray[$item->id] = $item->id;
+        }
+
+        $productKey = array_search($productId, $cartArray);
+
+        if (in_array($productId, $cartArray))
+        {
+            $exProduct = \Cart::session($sessionId)->get($productKey);
+
+            if ($productStock < (int)$exProduct->qty + (int)$productQty)
+            {
+                $response['msg'] = 'У нас нет столько товара на складе';
+                $response['status'] = 'not_in_stock';
+                $result = false;
+            } else
+            {
+                $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
+            }
+        } else {
+            $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
+        }
+
+        if ($result)
+        {
+            $response['status'] = true;
+            $response['product_id'] = $productId;
+            $response['product_title'] = $existedProduct->title;
+            $response['total'] = \Cart::session($sessionId)->getSubTotal();
+            $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
+            $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
+
+            if ($request->ajax()){
+                $cart = view('frontend.v1.components.mini-cart')->render();
+                $response['cart'] = $cart;
+                $cart_page = view('frontend.v1.components.cart-page')->render();
+                $response['cart-page'] = $cart_page;
+            }
+        }
+
+        return $response;
+    }
+
+    public function deleteCartItem(string $productId, Request $request): array
+    {
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        \Cart::session($sessionId)->remove($productId);
+
+        $response['status'] = true;
+        $response['total'] = \Cart::session($sessionId)->getSubTotal();
+        $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
+        $response['msg']= 'Товар успешно удален';
+
+        if ($request->ajax())
+        {
+            $cart = view('frontend.v1.components.mini-cart')->render();
+            $response['cart'] = $cart;
+            $cart_page = view('frontend.v1.components.cart-page')->render();
+            $response['cart-page'] = $cart_page;
+        }
+
+        return $response;
     }
 }

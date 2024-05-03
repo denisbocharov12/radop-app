@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^2.1",
         "cknow/laravel-money": "^8.0",
         "cviebrock/eloquent-sluggable": "^10.0",
+        "darryldecode/cart": "~4.0",
         "guzzlehttp/guzzle": "^7.2",
         "joedixon/laravel-translation": "^2.2",
         "kwn/number-to-words": "^2.9",
@@ -26,7 +27,6 @@
         "spatie/laravel-query-builder": "^5.7",
         "spatie/laravel-translatable": "^6.6",
         "staudenmeir/laravel-adjacency-list": "*",
-        "xenon/shoppingcart": "^2.6",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {
