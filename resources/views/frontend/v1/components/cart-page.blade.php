@@ -19,6 +19,7 @@
 {{--                                    @break--}}
 {{--                                @endswitch--}}
 {{--                            @endforeach--}}
+                            <img class="sc-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
                         </a>
                         <h5 class="item-title">
                             {{$item->associatedModel->title}}
@@ -58,14 +59,14 @@
                             </div>
                         </div>
 
-{{--                        <div class="price-wrap">--}}
-{{--                            @if($product->sale_price !== '')--}}
-{{--                                <span class="price">{{$product->sale_price}} MDL</span>--}}
-{{--                                <span class="old_price">{{$product->price}} MDL</span>--}}
-{{--                            @else--}}
-{{--                                <span class="price">{{$product->price}} MDL</span>--}}
-{{--                            @endif--}}
-{{--                        </div>--}}
+                        <div class="price-wrap">
+                            @if($item->associatedModel->sale_price !== '')
+                                <span class="price">{{$item->associatedModel->sale_price}} MDL</span>
+                                <span class="old_price">{{$item->associatedModel->price}} MDL</span>
+                            @else
+                                <span class="price">{{$item->associatedModel->price}} MDL</span>
+                            @endif
+                        </div>
                     </div>
                     <div class="delete-cart-item">
                         <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
@@ -75,71 +76,71 @@
         @endforeach
     </div>
 </div>
-{{--<div class="col-lg-3 col-cart-total">--}}
-{{--    <div class="shopping-cart-total-wrap">--}}
-{{--        @if(!session()->has('coupon'))--}}
-{{--            <div class="shopping-cart-bonus-code-wrap">--}}
-{{--                <form action="" id="coupon-form" method="post" class="cs-form">--}}
-{{--                    @csrf--}}
-{{--                    <div class="form-control-sc">--}}
-{{--                        <input--}}
-{{--                            type="text"--}}
-{{--                            class="cart-input"--}}
-{{--                            placeholder="Введите код для скидки"--}}
-{{--                            name="code"--}}
-{{--                        />--}}
-{{--                        <button type="submit" class="cart-btn-code">Применить</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--        @endif--}}
-{{--        <div class="shopping-cart-total">--}}
-{{--            <div class="total-heading">--}}
-{{--                <h3>Счёт к оплате</h3>--}}
-{{--            </div>--}}
-{{--            @if(session()->has('coupon'))--}}
-{{--                <div class="sc-details-wrap">--}}
-{{--                    <ul class="details-ul">--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Кол-во: </span><span class="right">{{Cart::instance('cart')->count()}} ед.</span>--}}
-{{--                        </li>--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Сумма: </span><span class="right">{{Cart::instance('cart')->subtotal()}} MDL</span>--}}
-{{--                        </li>--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Скидка: </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--                <div class="total-wrap">--}}
-{{--                    <p class="total-text">К оплате:</p>--}}
-{{--                    <span>{{number_format((float)str_replace(',','', Cart::instance('cart')->total()) - session('coupon')['value'],2)}} MDL</span>--}}
-{{--                </div>--}}
-{{--            @else--}}
-{{--                <div class="sc-details-wrap">--}}
-{{--                    <ul class="details-ul">--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Кол-во: </span><span class="right">{{Cart::instance('cart')->count()}} ед.</span>--}}
-{{--                        </li>--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Сумма: </span><span class="right">{{Cart::instance('cart')->subtotal()}} MDL</span>--}}
-{{--                        </li>--}}
-{{--                        <li class="item">--}}
-{{--                            <span class="left">Скидка: </span><span class="right">0.00 MDL</span>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--                <div class="total-wrap">--}}
-{{--                    <p class="total-text">К оплате:</p>--}}
-{{--                    <span>{{Cart::instance('cart')->total()}} MDL</span>--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--            <div class="sc-buttons-wrap">--}}
-{{--                <a href="" class="sc-btn-checkout sc-btn">Оформить заказ</a>--}}
-{{--                <a href="" class="sc-btn-continuie sc-btn">Продолжить покупки</a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <hr>--}}
+<div class="col-lg-3 col-cart-total">
+    <div class="shopping-cart-total-wrap">
+        @if(!session()->has('coupon'))
+            <div class="shopping-cart-bonus-code-wrap">
+                <form action="" id="coupon-form" method="post" class="cs-form">
+                    @csrf
+                    <div class="form-control-sc">
+                        <input
+                            type="text"
+                            class="cart-input"
+                            placeholder="Введите код для скидки"
+                            name="code"
+                        />
+                        <button type="submit" class="cart-btn-code">Применить</button>
+                    </div>
+                </form>
+            </div>
+        @endif
+        <div class="shopping-cart-total">
+            <div class="total-heading">
+                <h3>Счёт к оплате</h3>
+            </div>
+            @if(session()->has('coupon'))
+                <div class="sc-details-wrap">
+                    <ul class="details-ul">
+                        <li class="item">
+                            <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                        </li>
+                        <li class="item">
+                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getContent()->getTotal()}} MDL</span>
+                        </li>
+                        <li class="item">
+                            <span class="left">Скидка: </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="total-wrap">
+                    <p class="total-text">К оплате:</p>
+                    <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getContent()->getTotal()) - session('coupon')['value'],2)}} MDL</span>
+                </div>
+            @else
+                <div class="sc-details-wrap">
+                    <ul class="details-ul">
+                        <li class="item">
+                            <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                        </li>
+                        <li class="item">
+                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getSubTotal()}} MDL</span>
+                        </li>
+                        <li class="item">
+                            <span class="left">Скидка: </span><span class="right">0.00 MDL</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="total-wrap">
+                    <p class="total-text">К оплате:</p>
+                    <span>{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                </div>
+            @endif
+            <div class="sc-buttons-wrap">
+                <a href="#" class="sc-btn-checkout sc-btn">Оформить заказ</a>
+                <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">Продолжить покупки</a>
+            </div>
+        </div>
+        <hr>
 {{--        <div class="product-appseil-wrap">--}}
 {{--            <div class="product-appseil">--}}
 {{--                <div class="product-image">--}}
@@ -208,5 +209,5 @@
 {{--                </div>--}}
 {{--            </div>--}}
 {{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
+    </div>
+</div>
