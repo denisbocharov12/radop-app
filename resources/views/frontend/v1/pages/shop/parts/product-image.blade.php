@@ -17,26 +17,29 @@
 {{--        @endforeach--}}
 {{--    @endif--}}
 {{--</a>--}}
-@php
-    $dir = __DIR__ . config('media-files.DIR_PATH');
-    $files = glob($dir . "$product->onec_id*");
-    var_dump( $files, $dir);
-@endphp
+{{--@php--}}
+{{--    $dir = __DIR__ . config('media-files.DIR_PATH');--}}
+{{--    $files = glob($dir . "$product->onec_id*");--}}
+{{--    var_dump( $files, $dir);--}}
+{{--@endphp--}}
+{{--<a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">--}}
+{{--    @if(count($files) > 2)--}}
+{{--        @foreach($files as $key => $file)--}}
+{{--            @switch($key)--}}
+{{--                @case(0)--}}
+{{--                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />--}}
+{{--                @break--}}
+{{--                @case(1)--}}
+{{--                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />--}}
+{{--                @break--}}
+{{--            @endswitch--}}
+{{--        @endforeach--}}
+{{--    @else--}}
+{{--        <img class="primary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />--}}
+{{--    @endif--}}
+{{--</a>--}}
+
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
-    @if(count($files) > 2)
-        @foreach($files as $key => $file)
-            @switch($key)
-                @case(0)
-                <img class="primary-image" src="{{$file}}" alt="{{$file}}" />
-                @break
-                @case(1)
-                <img class="secondary-image" src="{{$file}}" alt="{{$file}}" />
-                @break
-            @endswitch
-        @endforeach
-    @else
-        <img class="primary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />
-    @endif
-
-
+    <img class="secondary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />
+    <img class="primary-image" src="https://placehold.co/600x600?text=Demo 2" alt="" />
 </a>
