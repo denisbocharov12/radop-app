@@ -59,7 +59,7 @@ class ClientManager
             'user_id' => $user->id,
             'first_name' => $clientData->firstName,
             'last_name' => $clientData->lastName,
-            'contact_phone' => $clientData->phone,
+            'phone' => $clientData->phone,
             'address' => $clientData->address,
             'organization_name' => $clientData->organizationName,
             'cod_fiscal' => $clientData->codFiscal,

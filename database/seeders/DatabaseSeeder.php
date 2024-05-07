@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RolesSeeder::class,
             AdminSeeder::class,
-            //UserTypeSeeder::class,
+//            UserTypeSeeder::class,
 //            BrandSeeder::class,
 //            CategorySeeder::class,
 //            OrderSeeder::class,
-            //ManagerSeeder::class,
-            //UserSeeder::class,
+//            ManagerSeeder::class,
+//            UserSeeder::class,
 //            ProductSeeder::class
         ]);
     }
