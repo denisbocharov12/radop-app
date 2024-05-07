@@ -2,39 +2,39 @@
 
 namespace App\Services\ONEC;
 
+use App\Jobs\AttributeImportJsonJob;
+use App\Jobs\AttributeValueImportJsonJob;
+use App\Jobs\BrandImportJsonJob;
+use App\Jobs\CategoryImportJsonJob;
+use App\Jobs\DescriptionImportJsonJob;
+use App\Jobs\ProductImportJsonJob;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Bus;
 
 final class ONECManager
 {
 
-    public function importCategories($json)
+    public function importCategories($json): bool
     {
         if (isset($json['Categories'])) {
-            foreach ($json['Categories'] as $category) {
-                if (!empty($category['id'])) {
-                    $isParent = !empty($category['parent_id']) ? false : true;
-                    $categoryId = !empty($category['parent_id']) ? $category['parent_id'] : null;
+            $categoriesData = $json['Categories'];
+            $header = [];
+            $batch  = Bus::batch([]);
 
-                    $data = [
-                        'name' => $category['name_ro'],
-                        'slug' => $category['id'],
-                        'is_parent' => $isParent,
-                        'parent_id' => $categoryId,
-                    ];
+            $categoryChunks = array_chunk($categoriesData, 200);
 
-                    Category::updateOrCreate(['onec_id' => $category['id']], $data);
-                }
+            foreach ($categoryChunks as $categoryChunk) {
+                $batch->add(new CategoryImportJsonJob($categoryChunk, $header));
             }
+
+            $batch->name('Import Categories')->dispatch();
 
             return true;
         }
@@ -42,45 +42,30 @@ final class ONECManager
         return false;
     }
 
-    public function importNomenclature($json)
+    public function importNomenclature($json): bool
     {
         if (isset($json['Product'])) {
             try {
                 DB::beginTransaction();
 
-                Product::query()->truncate();
                 ProductCategory::query()->truncate();
                 ProductProfile::query()->truncate();
 
-                foreach ($json['Product'] as $product) {
-                    if (!empty($product['id'])) {
-                        $status = $product['status'] ? true : false;
+                $productsData = $json['Product'];
+                $header = [];
+                $batch  = Bus::batch([]);
 
-                        $data = [
-                            'title' => $product['name_ru_full'],
-                            'slug' => Str::slug($product['name_ru_full']) . '-' . $product['id'],
-                            'price' => $product['price'],
-                            'status' => $status,
-                            'stock' => $product['stock'],
-                            'brand_id' => $product['brand_id'],
-                        ];
+                $productChunks = array_chunk($productsData, 200);
 
-                        Product::updateOrCreate(['onec_id' => $product['id']], $data);
-
-                        ProductProfile::updateOrCreate(['product_id' => $product['id']], []);
-
-                        foreach ($product['category_id'] as $item) {
-                            ProductCategory::create([
-                                'category_id' => $item,
-                                'product_id' => $product['id'],
-                            ]);
-                        }
-                    }
+                foreach ($productChunks as $productChunk) {
+                    $batch->add(new ProductImportJsonJob($productChunk, $header));
                 }
+
+                $batch->name('Import Products')->dispatch();
 
                 return true;
             } catch (\Exception $e) {
-                DB::rollBack();
+                DB::rollback();
 
                 return false;
             }
@@ -89,100 +74,100 @@ final class ONECManager
         return false;
     }
 
-    public function importBrands($json)
+    public function importBrands($json): bool
     {
         if (isset($json['Brands'])) {
-            foreach ($json['Brands'] as $brand) {
-                if (!empty($brand['id'])) {
-                    $data = [
-                        'title' => $brand['name_ro'],
-                        'slug' => Str::slug($brand['name_ro']) . '-' . $brand['id'],
-                        'onec_id' => $brand['id'],
-                    ];
 
-                    Brand::updateOrCreate(['onec_id' => $brand['id']], $data);
-                }
+            $brandsData = $json['Brands'];
+            $header = [];
+            $batch  = Bus::batch([]);
+
+            $brandChunks = array_chunk($brandsData, 200);
+
+            foreach ($brandChunks as $brandChunk) {
+                $batch->add(new BrandImportJsonJob($brandChunk, $header));
             }
+
+            $batch->name('Import Brands')->dispatch();
+
             return true;
         }
 
         return false;
     }
 
-    public function importAttributes($json)
+    public function importAttributes($json): bool
     {
         if (isset($json['Characteristics'])) {
-            foreach ($json['Characteristics'] as $attribute) {
-                if (!empty($attribute['id'])) {
-                    $data = [
-                        'name' => $attribute['name_ro'],
-                        'slug' => Str::slug($attribute['name_ro']),
-                        'onec_id' => $attribute['id'],
-                    ];
 
-                    Attribute::updateOrCreate([
-                        'onec_id' => $attribute['id']
-                    ], $data);
-                }
+            $attributesData = $json['Characteristics'];
+            $header = [];
+            $batch  = Bus::batch([]);
+
+            $attributeChunks = array_chunk($attributesData, 200);
+
+            foreach ($attributeChunks as $attributeChunk) {
+                $batch->add(new AttributeImportJsonJob($attributeChunk, $header));
             }
+
+            $batch->name('Import Attributes')->dispatch();
+
             return true;
         }
+
         return false;
     }
 
-    public function importAttributeValues($json)
+    public function importAttributeValues($json): bool
     {
         if (isset($json['ProductCharacteristics'])) {
             DB::beginTransaction();
 
-            try {
-                AttributeValue::query()->truncate();
-                ProductAttribute::query()->truncate();
+            AttributeValue::query()->truncate();
+            ProductAttribute::query()->truncate();
 
-                foreach ($json['ProductCharacteristics'] as $attributeValue) {
-                    if (!empty($attributeValue['product_id'])) {
-                        AttributeValue::query()->create([
-                            'attribute_onec_id' => $attributeValue['characteristic_id'],
-                            'product_onec_id' => $attributeValue['product_id'],
-                            'value' => $attributeValue['name_ro'],
-                        ]);
+            $attributeValuesData = $json['ProductCharacteristics'];
+            $header = [];
+            $batch  = Bus::batch([]);
 
-                        $attributeId = Attribute::query()
-                            ->where('onec_id', $attributeValue['characteristic_id'])
-                            ->first()->id;
+            $attributeValueChunks = array_chunk($attributeValuesData, 800);
 
-                        ProductAttribute::query()->create([
-                            'product_id' => $attributeValue['product_id'],
-                            'attribute_id' => $attributeId,
-                        ]);
-                    }
-                }
+            foreach ($attributeValueChunks as $attributeValueChunk) {
 
-                return true;
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                return false;
+                $batch->add(new AttributeValueImportJsonJob($attributeValueChunk, $header));
             }
+
+            $batch->name('Import Attribute Values')->dispatch();
+
         }
 
         return false;
     }
 
-    public function importProductsImages($json)
+    public function importProductDescriptions($json): bool
     {
-        if (isset($json['Photos'])) {
-            ProductImage::query()->truncate();
+        if (isset($json['Description'])) {
+            try {
 
-            foreach ($json['Photos'] as $photo) {
-                ProductImage::create([
-                    'image_path' => '/images/' . $photo['filename'],
-                    'product_id' => $photo['id'],
-                    'title' => 'product-' . Str::slug($photo['id']),
-                ]);
+                $descriptionsData = $json['Description'];
+                $header = [];
+                $batch  = Bus::batch([]);
+
+                $descriptionsChunks = array_chunk($descriptionsData, 800);
+
+                foreach ($descriptionsChunks as $descriptionChunk) {
+                    $batch->add(new DescriptionImportJsonJob($descriptionChunk, $header));
+                }
+
+                $batch->name('Import Descriptions')->dispatch();
+
+                return true;
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return false;
             }
 
-            return true;
         }
 
         return false;

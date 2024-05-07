@@ -31,7 +31,7 @@ Route::prefix('data-import-export')->name('import-export-data.')->group(function
         ->name('values')
     ;
     Route::middleware(['app.permissions'])
-        ->post('/importProductsImages', [OneCController::class, 'importProductsImages'])
-        ->name('images')
+        ->post('/description', [OneCController::class, 'importDescriptions'])
+        ->name('description')
     ;
 });

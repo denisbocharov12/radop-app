@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
+use App\Repositories\Onec\OnecRepository;
 use App\Services\ONEC\ONECManager;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class OneCController extends Controller
     private ONECManager $ONECManager;
 
     public function __construct(
-        ONECManager $ONECManager
+        ONECManager $ONECManager,
+        private readonly OnecRepository $onecRepository,
     )
     {
         $this->ONECManager = $ONECManager;
@@ -33,7 +35,21 @@ class OneCController extends Controller
 
     public function index()
     {
-        return view('onec.index');
+        $productBatch = $this->onecRepository->getProductImportBatches();
+        $categoryBatch = $this->onecRepository->getCategoryImportBatches();
+        $brandBatch = $this->onecRepository->getBrandImportBatches();
+        $attributeBatch = $this->onecRepository->getAttributeImportBatches();
+        $attributeValueBatch = $this->onecRepository->getAttributeValueImportBatches();
+        $descriptionBatch = $this->onecRepository->getDescriptionImportBatches();
+
+        return view('onec.index', compact([
+            'productBatch',
+            'categoryBatch',
+            'brandBatch',
+            'attributeBatch',
+            'attributeValueBatch',
+            'descriptionBatch'
+        ]));
     }
 
     public function importCategories(OneCRequest $request)
@@ -69,7 +85,7 @@ class OneCController extends Controller
         $result = $this->ONECManager->importNomenclature($json);
 
         if ($result) {
-            toastr()->success('Успешный импорт номенклатуры');
+            toastr()->success('Импорт номенклатуры добавлен в очередь.');
             return redirect()->route('import-export-data.index');
         } else {
             return redirect()->back()->withErrors('Ошибка при импорте номенклатуры');
@@ -116,9 +132,14 @@ class OneCController extends Controller
         }
     }
 
-    public function importAttributeValues(OneCRequest $request)
+    public function importAttributeValues(Request $request)
     {
         $importFile = $request->file('attachment');
+
+        if ($importFile === null)
+        {
+            return redirect()->route('import-export-data.index');
+        }
 
         if (!$importFile->isValid()) {
             return redirect()->back()->withErrors('This file is invalid for structure');
@@ -136,9 +157,14 @@ class OneCController extends Controller
         }
     }
 
-    public function importProductsImages(OneCRequest $request)
+    public function importDescriptions(Request $request)
     {
         $importFile = $request->file('attachment');
+
+        if ($importFile === null)
+        {
+            return redirect()->route('import-export-data.index');
+        }
 
         if (!$importFile->isValid()) {
             return redirect()->back()->withErrors('This file is invalid for structure');
@@ -146,64 +172,14 @@ class OneCController extends Controller
 
         $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
 
-        $result = $this->ONECManager->importProductsImages($json);
+        $result = $this->ONECManager->importProductDescriptions($json);
 
         if ($result) {
-            toastr()->success('Синхронизация изображений успешно завершена');
+            toastr()->success('Успешный импорт описания');
             return redirect()->route('import-export-data.index');
         } else {
-            return redirect()->back()->withErrors('This file is invalid for structure');
+            return redirect()->back()->withErrors('Произошла ошибка при импорте значений аттрибутов');
         }
-    }
-
-    protected function importPrice()
-    {
-        $import_price_path = public_path('/1c/price.json');
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($import_price_path)), true);
-        try {
-            if (isset($json['Prices'])) {
-                foreach ($json['Prices'] as $product) {
-                    if (!empty($product['id'])) {
-                        $product_data = Product::where('onec_id', $product['id'])->first();
-                        $product_data->price = $product['price'];
-                        $product_data->stock = $product['qwty'];
-                        $product_data->save();
-                    }
-                }
-            } else {
-                return false;
-            }
-        } catch (\Illuminate\Database\QueryException $exception) {
-            $errorInfo = $exception->errorInfo;
-            toastr()->error($errorInfo, 'Error');
-            return redirect()->route('admin');
-        }
-
-    }
-
-    protected function detalizationProducts()
-    {
-        $import_nom_path = public_path('/1c/nom.json');
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($import_nom_path)), true);
-        if (isset($json['Product'])) {
-            foreach ($json['Product'] as $product) {
-                if (!empty($product['id'])) {
-                    foreach ($product['category_id'] as $c) {
-                        if (!Category::where('onec_id', $c)->first()->is_parent) {
-                            $parentcatid = Category::where('onec_id', $c)->first()->category_id;
-                            Product::where('onec_id', $product['id'])->update([
-                                'cat_id' => $parentcatid,
-                                'child_cat_id' => $c
-                            ]);
-                        }
-                    }
-                }
-            }
-        } else {
-            return false;
-            //return redirect()->route('import-export-data')->with('error','Что-то пошло не так...');
-        }
-
     }
 
     private function remove_utf8_bom($text)

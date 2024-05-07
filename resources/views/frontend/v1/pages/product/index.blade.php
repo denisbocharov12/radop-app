@@ -11,7 +11,7 @@
                             <h1>{{$product->title}}</h1>
                         </div>
                         <div class="product-sku">
-                            <span>SKU: {{$product->onec_id}} / {{$product->data->sku}}</span>
+                            <span>SKU: {{$product->onec_id}}</span>
                         </div>
                         <div class="product-details-wrap">
                             <div class="product-stock-status">
@@ -85,7 +85,278 @@
                     </div>
                 </div>
             </div>
-            {{--Tabs --}}
+{{--            @include('frontend.v1.pages.product.parts.tabs')--}}
+        </div>
+    </section>
+    <section class="section-standart section-catalog mb-5">
+        <div class="container">
+            <div class="row-catalog row">
+                <div class="col-heading">
+                    <div class="heading">
+                        <h1>Похожие товары</h1>
+                    </div>
+                </div>
+                <div class="col catalog-slider">
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product_item">
+                        <div class="product-wrap drop-shadow">
+                            <div class="product-wrap-main">
+                                <a href="#" class="product-label">
+                                    <div class="product-label-wrap">
+                                        <span class="product-label-span">- 37%</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="wrap-image">
+                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
+                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
+                                </a>
+                                <div class="product-item-title-wrap">
+                                    <h3 class="product_item_name">
+                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
+                                        60/Pack (GSM609-BLK)
+                                    </h3>
+                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                </div>
+                                <div class="rating-css">
+                                    <div class="star-icon">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <span class="rating_count">103</span>
+                                </div>
+                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="wrap">
+                                    <span class="price">120 MDL</span>
+                                    <span class="old_price">145 MDL</span>
+                                </div>
+                                <div class="details-wrap">
+                                    <span class="qty-box">24 шт / упаковка</span>
+                                    <span class="stock in-stock">В наличии</span>
+                                </div>
+                                <a href="#" class="add_to_cart_btn">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 @endsection

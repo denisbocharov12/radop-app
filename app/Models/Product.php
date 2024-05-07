@@ -31,6 +31,7 @@ final class Product extends Model implements HasMedia
         'price',
         'sale_price',
         'status',
+        'site_status',
         'brand_id',
         'deleted_at'
     ];

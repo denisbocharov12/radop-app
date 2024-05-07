@@ -22,14 +22,7 @@
 {{--    @endif--}}
 {{--</div>--}}
 @php
-    $dir = public_path() . config('media-files.DIR_PATH');
-    $files = glob($dir . "$product->onec_id*");
-
-    $imagesArray = [];
-
-    foreach ($files as $key => $file) {
-        $imagesArray[] = str_replace('/var/www/html/public/', '', $file);
-    }
+    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 @endphp
 <div class="product-slider-main">
     @foreach($imagesArray as $key => $file)
