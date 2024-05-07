@@ -51,16 +51,17 @@
                                             Параметры заказа
                                             <i class="icon-arrow-down"></i>
                                             <ul class="order-dropdown">
-                                                <li class="order-dropdown__item">
-                                                    <a class="order-dropdown__link" href="#"
-                                                    >Редактировать</a
-                                                    >
-                                                </li>
+{{--                                                <li class="order-dropdown__item">--}}
+{{--                                                    <a class="order-dropdown__link" href="#"--}}
+{{--                                                    >Редактировать</a--}}
+{{--                                                    >--}}
+{{--                                                </li>--}}
                                                 <li class="order-dropdown__item">
                                                     <a class="order-dropdown__link"
-                                                       data-id="<?php echo e($order->id); ?>"
-                                                       href="<?php echo e(route('order.view.invoice',['download'=>'pdf','order'=>$order->id])); ?>">
-                                                        Просмотреть инвойс</a>
+                                                       data-id="{{$order->id}}"
+                                                       href="{{route('theme.orders.view.invoice',['download'=>'pdf','order'=>$order->id])}}">
+                                                        Просмотреть инвойс
+                                                    </a>
                                                 </li>
                                                 <li class="order-dropdown__item">
                                                     <a class="order-dropdown__link" href="#"

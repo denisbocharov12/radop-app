@@ -177,17 +177,17 @@
                 </tr>
                 @foreach($order_items as $key=>$item)
                     <tr>
-                        <td>{{$item['id']}}</td>
+                        <td>{{$key+1}}</td>
                         <td>{{\App\Models\Product::where('id',$item['product_id'])->first()->title}}</td>
                         <td>buc.</td>
                         <td>{{\App\Models\Product::where('id',$item['product_id'])->first()->onec_id}}</td>
                         <td>{{$item['quantity']}}</td>
                         <td>{{$item['price']}} MDL</td>
-                        <td>{{$item['price']* $item['quantity']}} MDL</td>
+                        <td>{{$item['price'] * $item['quantity']}} MDL</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2"style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого:</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого:</span></td>
                     <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{\App\Models\OrderItem::where('order_id',$order[0]['id'])->count()}}</span></td>
                     <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order[0]['subtotal']}}</span></td>
                 </tr>

@@ -10,6 +10,10 @@ Route::prefix('orders')->name('orders.')->group(function () {
         ->get('/', [ThemeOrderController::class, 'index'])
         ->name('index')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('view-invoice', [ThemeOrderController::class, 'ViewInvoice'])
+        ->name('view.invoice')
+    ;
 //    Route::middleware('app.user-permissions')
 //        ->post('/{user}/update', [ThemeAccountController::class, 'update'])
 //        ->name('update')
