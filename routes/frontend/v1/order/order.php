@@ -14,8 +14,8 @@ Route::prefix('orders')->name('orders.')->group(function () {
         ->get('view-invoice', [ThemeOrderController::class, 'ViewInvoice'])
         ->name('view.invoice')
     ;
-//    Route::middleware('app.user-permissions')
-//        ->post('/{user}/update', [ThemeAccountController::class, 'update'])
-//        ->name('update')
-//    ;
+    Route::middleware(['app.permissions'])
+        ->get('download-invoice', [ThemeOrderController::class, 'GenerateInvoice'])
+        ->name('download.invoice')
+    ;
 });

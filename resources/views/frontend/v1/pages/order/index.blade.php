@@ -64,9 +64,11 @@
                                                     </a>
                                                 </li>
                                                 <li class="order-dropdown__item">
-                                                    <a class="order-dropdown__link" href="#"
-                                                    >Скачать</a
-                                                    >
+                                                    <a class="order-dropdown__link"
+                                                       data-id="{{$order->id}}"
+                                                       href="{{route('theme.orders.download.invoice',['download'=>'pdf','order'=>$order->id])}}">
+                                                        Скачать инвойс
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </div>

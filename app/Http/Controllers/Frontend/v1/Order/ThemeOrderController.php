@@ -48,4 +48,19 @@ final class ThemeOrderController extends Controller
         $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
         return $pdf->stream();
     }
+
+    public function GenerateInvoice(Request $request){
+        $id = $request->input('order');
+        $order = Order::where('id', $id)->get();
+        $order_items = OrderItem::where('order_id', $id)->get();
+        $manager = User::where('id',$order[0]->manager_id)->first();
+        if(empty($manager)){
+            $manager = new User();
+            $manager->first_name = 'Менеджер';
+            $manager->last_name = 'по продажам RadopMD';
+        }
+        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+        return $pdf->download();
+
+    }
 }
