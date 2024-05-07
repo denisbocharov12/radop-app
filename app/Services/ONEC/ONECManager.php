@@ -48,7 +48,7 @@ final class ONECManager
             try {
                 DB::beginTransaction();
 
-                Product::query()->truncate();
+                //Product::query()->truncate();
                 ProductCategory::query()->truncate();
                 ProductProfile::query()->truncate();
 
