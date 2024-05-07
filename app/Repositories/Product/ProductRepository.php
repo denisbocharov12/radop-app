@@ -55,6 +55,11 @@ final class ProductRepository
         return Product::query()->find($productId);
     }
 
+    public function getByOnecId(string $onecId): ?Product
+    {
+        return Product::where('onec_id', $onecId)->first();
+    }
+
     public function getBySlug(string $slug): ?Product
     {
         return Product::where('slug', $slug)->first();

@@ -11,7 +11,7 @@
                             <h1>{{$product->title}}</h1>
                         </div>
                         <div class="product-sku">
-                            <span>SKU: {{$product->onec_id}} / {{$product->data->sku}}</span>
+                            <span>SKU: {{$product->onec_id}}</span>
                         </div>
                         <div class="product-details-wrap">
                             <div class="product-stock-status">
