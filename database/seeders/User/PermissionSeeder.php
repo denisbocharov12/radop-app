@@ -10,10 +10,13 @@ use Spatie\Permission\Models\Permission;
 class PermissionSeeder extends Seeder
 {
     private array $permittedRoutes = [
+
     ];
 
     private array $userPermittedRoutes = [
-        'theme.user.logout',
+        'theme.logout',
+        'theme.account.index',
+        'theme.account.update',
     ];
 
     public function run(): void
