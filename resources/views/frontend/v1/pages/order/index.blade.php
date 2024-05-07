@@ -13,7 +13,12 @@
                                 <div class="order__block">
                                     <p class="order__number">Заказ №{{$order->order_number}}</p>
                                     <p class="order__product">
-                                        Бумага для принтера 250 л. 100/box (590321092)...
+                                        {{--                                        @dd($products->where('id',$order->products->first()['product_id'])->first()->title)--}}
+                                        {{--                                        Бумага для принтера 250 л. 100/box (590321092)...--}}
+                                        <span
+                                            style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                            {{$products->where('id',$order->products->first()['product_id'])->first()->title}} ...
+                                        </span>
                                     </p>
                                     <p class="order__date">
                                         От:
@@ -31,12 +36,12 @@
                                                 @endif
                                             @endforeach
                                         </p>
-                                        <p class="order__delivery">
-                                            <i class="icon-time"></i>Ожидается:22 дня и 4 часа
-                                        </p>
-                                        <a class="order__link" href="#">
-                                            Отслеживать заказ
-                                        </a>
+{{--                                        <p class="order__delivery">--}}
+{{--                                            <i class="icon-time"></i>Ожидается:22 дня и 4 часа--}}
+{{--                                        </p>--}}
+{{--                                        <a class="order__link" href="#">--}}
+{{--                                            Отслеживать заказ--}}
+{{--                                        </a>--}}
                                     </div>
                                     <div class="order__box">
                                         <button class="order__button" type="button">
@@ -52,13 +57,14 @@
                                                     >
                                                 </li>
                                                 <li class="order-dropdown__item">
-                                                    <a class="order-dropdown__link" href="#"
-                                                    >Скачать</a
-                                                    >
+                                                    <a class="order-dropdown__link"
+                                                       data-id="<?php echo e($order->id); ?>"
+                                                       href="<?php echo e(route('order.view.invoice',['download'=>'pdf','order'=>$order->id])); ?>">
+                                                        Просмотреть инвойс</a>
                                                 </li>
                                                 <li class="order-dropdown__item">
                                                     <a class="order-dropdown__link" href="#"
-                                                    >Распечатать</a
+                                                    >Скачать</a
                                                     >
                                                 </li>
                                             </ul>

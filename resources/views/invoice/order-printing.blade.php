@@ -177,13 +177,13 @@
                 </tr>
                 @foreach($order_items as $key=>$item)
                     <tr>
-                        <td>{{$key+1}}</td>
-                        <td>{{\App\Models\Product::where('onec_id',$item['product_id'])->first()->title_full}}</td>
+                        <td>{{$item['id']}}</td>
+                        <td>{{\App\Models\Product::where('id',$item['product_id'])->first()->title}}</td>
                         <td>buc.</td>
-                        <td>{{\App\Models\Product::where('onec_id',$item['product_id'])->first()->onec_id}}</td>
+                        <td>{{\App\Models\Product::where('id',$item['product_id'])->first()->onec_id}}</td>
                         <td>{{$item['quantity']}}</td>
                         <td>{{$item['price']}} MDL</td>
-                        <td>{{$item['price']*$item['quantity']}} MDL</td>
+                        <td>{{$item['price']* $item['quantity']}} MDL</td>
                     </tr>
                 @endforeach
                 <tr>
