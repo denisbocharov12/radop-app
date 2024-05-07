@@ -182,6 +182,11 @@ class OneCController extends Controller
         }
     }
 
+    public function importImages()
+    {
+        return redirect()->route('import-export-data.index');
+    }
+
     private function remove_utf8_bom($text)
     {
         $bom = pack('H*', 'EFBBBF');
