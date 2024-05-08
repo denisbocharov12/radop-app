@@ -35,7 +35,7 @@ final class AttributeValueImportJsonJob implements ShouldQueue
                 AttributeValue::create([
                     'attribute_onec_id' => $attributeValue['characteristic_id'],
                     'product_onec_id' => $attributeValue['product_id'],
-                    'value' => $attributeValue['name_ro'],
+                    'value' => isset($attributeValue['name_ro']) ? $attributeValue['name_ro'] : '',
                 ]);
 
                 $attribute = Attribute::where('onec_id', $attributeValue['characteristic_id'])

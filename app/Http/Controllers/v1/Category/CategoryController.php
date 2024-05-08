@@ -17,6 +17,7 @@ use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\Category;
 use App\Services\Category\CategoryManager;
 use App\Repositories\Category\CategoryRepository;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -35,12 +36,15 @@ class CategoryController extends Controller
         $this->categoryDataMapper = $categoryDataMapper;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->query('filter');
+
         $categories = $this->categoryRepository->getAllPaginatedWithFilters();
 
         return view('category.index', compact([
             'categories',
+            'query'
         ]));
     }
 

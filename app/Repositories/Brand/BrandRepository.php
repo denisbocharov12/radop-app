@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Brand;
 
+use App\Filters\BrandSearchFilter;
 use App\Models\Brand;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class BrandRepository
@@ -17,7 +19,7 @@ final class BrandRepository
 
         return QueryBuilder::for($query)
             ->allowedFilters([
-
+                AllowedFilter::custom('search', new BrandSearchFilter()),
             ])
             ->defaultSort('id')
             ->allowedSorts([
