@@ -32,6 +32,7 @@ final class ProductSearchFilter implements Filter
         $query->where(function ($query) use ($value, $brandsIds, $categoryIds) {
             $query
                 ->where('products.title', 'like', "%{$value}%")
+                ->orWhere('products.onec_id', 'like', "%{$value}%")
                 ->orWhereIn('products.brand_id', $brandsIds)
                 ->orWhereIn('products.category_id', $categoryIds)
             ;

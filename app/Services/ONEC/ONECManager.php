@@ -130,7 +130,7 @@ final class ONECManager
             $header = [];
             $batch  = Bus::batch([]);
 
-            $attributeValueChunks = array_chunk($attributeValuesData, 800);
+            $attributeValueChunks = array_chunk($attributeValuesData, 400);
 
             foreach ($attributeValueChunks as $attributeValueChunk) {
 
