@@ -18,14 +18,7 @@
 {{--    @endif--}}
 {{--</a>--}}
 @php
-    $dir = public_path() . config('media-files.DIR_PATH');
-    $files = glob($dir . "$product->onec_id*");
-
-    $imagesArray = [];
-
-    foreach ($files as $key => $file) {
-        $imagesArray[] = str_replace('/var/www/html/public/', '', $file);
-    }
+    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 @endphp
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($imagesArray) > 1)

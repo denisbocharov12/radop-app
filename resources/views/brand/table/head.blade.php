@@ -1,7 +1,8 @@
-<div class="card-inner position-relative card-tools-toggle">
+<form action="{{route('brand.index')}}" method="GET" class="card-inner position-relative card-tools-toggle">
+    @csrf
     <div class="card-title-group">
         <div class="card-tools">
-
+            <input type="text" name="filter[search]" style="padding: 0" value="{{isset($query['search']) ? $query['search'] : ''}}" class="form-control border-transparent form-focus-none" placeholder="Поиск по ...">
         </div><!-- .card-tools -->
         <div class="card-tools me-n1">
             <ul class="btn-toolbar gx-1">
@@ -44,13 +45,4 @@
             </ul><!-- .btn-toolbar -->
         </div><!-- .card-tools -->
     </div><!-- .card-title-group -->
-    <div class="card-search search-wrap" data-search="search">
-        <div class="card-body">
-            <div class="search-content">
-                <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
-                <input type="text" name="search" class="form-control border-transparent form-focus-none" placeholder="Search by ...">
-                <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
-            </div>
-        </div>
-    </div><!-- .card-search -->
-</div><!-- .card-inner -->
+</form><!-- .card-inner -->

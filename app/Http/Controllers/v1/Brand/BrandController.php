@@ -17,6 +17,7 @@ use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\Brand;
 use App\Repositories\Brand\BrandRepository;
 use App\Services\Brand\BrandManager;
+use Illuminate\Http\Request;
 
 final class BrandController extends Controller
 {
@@ -35,12 +36,14 @@ final class BrandController extends Controller
         $this->brandDataMapper = $brandDataMapper;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->query('filter');
         $brands = $this->brandRepository->getAllPaginatedWithFilters();
 
         return view('brand.index', compact([
             'brands',
+            'query'
         ]));
     }
 
