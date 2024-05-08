@@ -6,7 +6,7 @@ use App\Enums\CouponTypes;
 use App\Exceptions\Coupon\CouponNotFoundException;
 use App\Exceptions\Coupon\CouponNotFoundValidationException;
 use App\Exceptions\Coupon\CouponUniqueNameException;
-use App\Exceptions\Coupon\OrderUniqueNameValidationException;
+use App\Exceptions\Coupon\CouponUniqueNameValidationException;
 use App\Exceptions\NotAjaxRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\CouponDataMapper;
@@ -62,7 +62,7 @@ class CouponController extends Controller
 
             return redirect()->route('coupon.index');
         } catch (CouponUniqueNameException $e) {
-            throw new OrderUniqueNameValidationException();
+            throw new CouponUniqueNameValidationException();
         }
     }
 
@@ -89,7 +89,7 @@ class CouponController extends Controller
 
             return redirect()->route('coupon.index');
         } catch (CouponUniqueNameException $e) {
-            throw new OrderUniqueNameValidationException();
+            throw new CouponUniqueNameValidationException();
         }
     }
 
