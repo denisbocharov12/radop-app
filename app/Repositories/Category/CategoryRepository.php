@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Category;
 
+use App\Filters\CategorySearchFilter;
 use App\Models\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CategoryRepository
@@ -17,7 +19,7 @@ class CategoryRepository
 
         return QueryBuilder::for($query)
             ->allowedFilters([
-
+                AllowedFilter::custom('search', new CategorySearchFilter()),
             ])
             ->defaultSort('id')
             ->allowedSorts([
