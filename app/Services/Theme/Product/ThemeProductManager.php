@@ -124,6 +124,19 @@ final class ThemeProductManager
         );
     }
 
+    private function updateInstance(Product $existedProduct, $productQty, $price, $sessionId)
+    {
+        return \Cart::session($sessionId)->update(
+            $existedProduct->id,
+            array(
+                'quantity' => array(
+                    'relative' => false,
+                    'value' => $productQty
+                ),
+            )
+        );
+    }
+
     public function updateCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
 
@@ -173,10 +186,10 @@ final class ThemeProductManager
                 $result = false;
             } else
             {
-                $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
+                $result = $this->updateInstance($existedProduct,$productQty,$price, $sessionId);
             }
         } else {
-            $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
+            $result = $this->updateInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
         if ($result)

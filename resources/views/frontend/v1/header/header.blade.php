@@ -57,7 +57,7 @@
                                     <li class="item">
                                         <a href="#" class="sc-product-item">
                                             <div class="product-info">
-                                                <img class="sc-image" src="assets/example-content/test.jpg" alt="" />
+                                                <img class="sc-image" src="" alt="" />
                                                 <div class="sc-item-info-wrap">
                                                     <p class="sc-title">
                                                         Lorem ipsum dolor sit amet, consectetur adipisicing.

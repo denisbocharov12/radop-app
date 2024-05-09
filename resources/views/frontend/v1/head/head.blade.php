@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/bootstrap/bootstrap.min.css">
     <!-- FontAwesome -->
     <link href="{{asset('/v1/frontend/assets')}}/libs/bootsrap-font/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- End  FontAwesome-->
     <!-- Font-icon -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/font-icon/font/css/radop.css" />
