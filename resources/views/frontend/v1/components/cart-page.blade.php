@@ -5,21 +5,24 @@
         $sessionId = auth()->guard('user')->user()->id;
     }
 @endphp
+
 <div class="col-lg-9 col-cart-contents">
     <div class="cart-items-wrap">
         @foreach(\Cart::session($sessionId)->getContent() as $item)
+            @php
+                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+            @endphp
             <div class="cart-item drop-shadow">
                 <div class="cart-item-wrap">
                     <div class="cart-product">
                         <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
-{{--                            @foreach($item->model->images as $key=>$photo)--}}
-{{--                                @switch($key)--}}
-{{--                                    @case(0)--}}
-{{--                                    <img src="{{asset('storage').$item->model->images->first()->image_path}}" alt="{{$item->associatedModel->title}}" class="sc-image"/>--}}
-{{--                                    @break--}}
-{{--                                @endswitch--}}
-{{--                            @endforeach--}}
-                            <img class="sc-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
+                            @foreach($imagesArray as $key => $file)
+                                @switch($key)
+                                    @case(0)//
+                                    <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                    @break
+                                @endswitch
+                            @endforeach
                         </a>
                         <h5 class="item-title">
                             {{$item->associatedModel->title}}
@@ -66,6 +69,7 @@
                             @else
                                 <span class="price">{{$item->associatedModel->price}} MDL</span>
                             @endif
+                            <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} MDL )</span>
                         </div>
                     </div>
                     <div class="delete-cart-item">
@@ -80,7 +84,7 @@
     <div class="shopping-cart-total-wrap">
         @if(!session()->has('coupon'))
             <div class="shopping-cart-bonus-code-wrap">
-                <form action="" id="coupon-form" method="post" class="cs-form">
+                <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
                     @csrf
                     <div class="form-control-sc">
                         <input
@@ -105,7 +109,7 @@
                             <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getContent()->getTotal()}} MDL</span>
+                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                         </li>
                         <li class="item">
                             <span class="left">Скидка: </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
@@ -114,7 +118,7 @@
                 </div>
                 <div class="total-wrap">
                     <p class="total-text">К оплате:</p>
-                    <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getContent()->getTotal()) - session('coupon')['value'],2)}} MDL</span>
+                    <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} MDL</span>
                 </div>
             @else
                 <div class="sc-details-wrap">
@@ -123,7 +127,7 @@
                             <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getSubTotal()}} MDL</span>
+                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                         </li>
                         <li class="item">
                             <span class="left">Скидка: </span><span class="right">0.00 MDL</span>
@@ -140,74 +144,5 @@
                 <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">Продолжить покупки</a>
             </div>
         </div>
-        <hr>
-{{--        <div class="product-appseil-wrap">--}}
-{{--            <div class="product-appseil">--}}
-{{--                <div class="product-image">--}}
-{{--                    <a href="#" class="product-link">--}}
-{{--                        <img src="{{asset('frontend')}}/assets/example-content/appseil-1.jpg" alt="" />--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--                <div class="product-info">--}}
-{{--                    <div class="product-info-head">--}}
-{{--                        <h5 class="product-title">--}}
-{{--                            Бумага для печати и индивидуальных творчеких работ RED 500 шт.--}}
-{{--                        </h5>--}}
-{{--                        <div class="rating-css">--}}
-{{--                            <div class="star-icon">--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                            </div>--}}
-{{--                            <span class="rating_count">103</span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="product-add-to-cart">--}}
-{{--                        <div class="wrap">--}}
-{{--                            <span class="price">120 MDL</span>--}}
-{{--                            <span class="old_price">145 MDL</span>--}}
-{{--                        </div>--}}
-{{--                        <div class="add-to-cart-wrap">--}}
-{{--                            <a href="#" class="add_to_cart_btn">В корзину</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="product-appseil">--}}
-{{--                <div class="product-image">--}}
-{{--                    <a href="#" class="product-link">--}}
-{{--                        <img src="{{asset('frontend')}}/assets/example-content/appseil-2.jpg" alt="" />--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--                <div class="product-info">--}}
-{{--                    <div class="product-info-head">--}}
-{{--                        <h5 class="product-title">--}}
-{{--                            Бумага для печати и индивидуальных творчеких работ RED 500 шт.--}}
-{{--                        </h5>--}}
-{{--                        <div class="rating-css">--}}
-{{--                            <div class="star-icon">--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                                <i class="fa fa-star"></i>--}}
-{{--                            </div>--}}
-{{--                            <span class="rating_count">103</span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="product-add-to-cart">--}}
-{{--                        <div class="wrap">--}}
-{{--                            <span class="price">120 MDL</span>--}}
-{{--                            <span class="old_price">145 MDL</span>--}}
-{{--                        </div>--}}
-{{--                        <div class="add-to-cart-wrap">--}}
-{{--                            <a href="#" class="add_to_cart_btn">В корзину</a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
     </div>
 </div>

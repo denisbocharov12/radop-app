@@ -94,7 +94,7 @@
         $(document).on('click', '.coupon-btn', function (e) {
             e.preventDefault();
             var code = $('input[name=code]').val();
-            $('.coupon-btn').html('<i style="margin-right: 3px" class="fa fa-spin fa-spinner"></i> Loading');
+            $('.coupon-btn').html('<i style="margin-right: 3px" class="fa fa-spin fa-spinner"></i>');
             $('#coupon-form').submit();
         })
     </script>
