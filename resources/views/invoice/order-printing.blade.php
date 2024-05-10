@@ -155,10 +155,10 @@
                     <p><span style="font-weight: bold">Автор:</span> {{$manager->first_name}} {{$manager->last_name}}</p>
                 </div>
                 <div class="otgruz" style="margin-top: 15px">
-                    <p>Отгрузка товара <span style="font-weight: bold">{{$order[0]['order_number']}}</span>  от {{$order[0]['created_at']->format('d.m.Y')}} </p>
+                    <p>Отгрузка товара <span style="font-weight: bold">{{$order['order_number']}}</span>  от {{$order['created_at']->format('d.m.Y')}} </p>
                 </div>
                 <div class="client" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">Клиент:</span> {{$order[0]['first_name']}} {{$order[0]['last_name']}} / {{$order[0]['address']}} / {{$order[0]['phone']}}</p>
+                    <p><span style="font-weight: bold">Клиент:</span> {{$order['first_name']}} {{$order['last_name']}} / {{$order['address']}} / {{$order['phone']}}</p>
                 </div>
                 <div class="sclad" style="margin-top: 30px">
                     <p style="font-weight: bold; font-size: 16px;">Склад: 1.ОСН. (Основной склад)</p>
@@ -188,8 +188,8 @@
                 @endforeach
                 <tr>
                     <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого:</span></td>
-                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{\App\Models\OrderItem::where('order_id',$order[0]['id'])->count()}}</span></td>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order[0]['subtotal']}}</span></td>
+                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{\App\Models\OrderItem::where('order_id',$order['id'])->count()}}</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order['subtotal']}}</span></td>
                 </tr>
                 </tbody>
             </table>

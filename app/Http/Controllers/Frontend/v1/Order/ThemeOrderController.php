@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend\v1\Order;
 
 use App\Enums\OrderStatus;
+use App\Exceptions\Order\UserIsNotCustomerException;
+use App\Exceptions\Order\UserIsNotCustomerValidationException;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -36,31 +38,47 @@ final class ThemeOrderController extends Controller
     }
 
     public function ViewInvoice(Request $request){
+        $user = Auth::guard('user')->user();
+
         $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
+        $order = Order::where('id', $id)->first();
         $order_items = OrderItem::where('order_id', $id)->get();
-        $manager = User::where('id',$order[0]->manager_id)->first();
+        $manager = User::where('id',$order->manager_id)->first();
+
         if(empty($manager)){
             $manager = new User();
             $manager->first_name = 'Менеджер';
             $manager->last_name = 'по продажам RadopMD';
         }
-        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
-        return $pdf->stream();
+
+        if ($user->can('view', $order)){
+            $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+            return $pdf->download();
+        } else {
+            throw new UserIsNotCustomerValidationException();
+        }
     }
 
-    public function GenerateInvoice(Request $request){
+    public function GenerateInvoice(Request $request, Order $order){
+        $user = Auth::guard('user')->user();
+
         $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
+        $order = Order::where('id', $id)->first();
         $order_items = OrderItem::where('order_id', $id)->get();
-        $manager = User::where('id',$order[0]->manager_id)->first();
+        $manager = User::where('id',$order->manager_id)->first();
+
         if(empty($manager)){
             $manager = new User();
             $manager->first_name = 'Менеджер';
             $manager->last_name = 'по продажам RadopMD';
         }
-        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
-        return $pdf->download();
+
+        if ($user->can('view', $order)){
+            $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
+            return $pdf->download();
+        } else {
+            throw new UserIsNotCustomerValidationException();
+        }
 
     }
 }

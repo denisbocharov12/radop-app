@@ -9,6 +9,7 @@ use App\Models\User;
 
 final class ThemeAccountManager
 {
+    private const IUR_TYPE = 'iur';
     public function update(ThemeAccountData $clientData, User $user)
     {
         $user->update([
@@ -23,7 +24,7 @@ final class ThemeAccountManager
             'cod_fiscal' => $clientData->codFiscal
         ]);
 
-        if($user->type->key_name == 'iur'){
+        if($user->type->key_name === self::IUR_TYPE){
             $user->profile->update([
                 'organization_name' => $clientData->organizationName,
                 'contact_name' => $clientData-> contactName

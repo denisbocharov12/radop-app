@@ -8,13 +8,17 @@
                 @include('frontend.v1.pages.account.sidebar')
                 <div class="my-orders">
                     <ul class="my-orders__list">
+                        @if(!$user->orders->count())
+                            <div class="no-orders text-center">
+                                <p>На данный момент у вас нет заказов</p>
+                                <a href="{{ route('theme.shop.index') }}" class="btn btn-primary mt-3">Перейти в каталог</a>
+                            </div>
+                        @endif
                         @foreach($user->orders as $order)
                             <li class="my-orders__item order">
                                 <div class="order__block">
                                     <p class="order__number">Заказ №{{$order->order_number}}</p>
                                     <p class="order__product">
-                                        {{--                                        @dd($products->where('id',$order->products->first()['product_id'])->first()->title)--}}
-                                        {{--                                        Бумага для принтера 250 л. 100/box (590321092)...--}}
                                         <span
                                             style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                                             {{$products->where('id',$order->products->first()['product_id'])->first()->title}} ...
