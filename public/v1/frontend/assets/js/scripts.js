@@ -549,7 +549,7 @@ $(function () {
 $(document).ready(function () {
   $(".filter-select").select2();
   $(".product-qty").select2({
-    minimumResultsForSearch: -1,
+
   });
   $(".qty-select .product-qty-page").select2({});
   $(".icon-block a.user").click(function(){
