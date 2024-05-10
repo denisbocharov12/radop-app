@@ -23,19 +23,19 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->name('delete')
     ;
     Route::middleware(['app.permissions'])
-        ->get('view-pdf', [OrderController::class, 'PDFView'])
+        ->get('/{order}/view-pdf', [OrderController::class, 'viewPDF'])
         ->name('view.pdf')
     ;
     Route::middleware(['app.permissions'])
-        ->get('download-pdf', [OrderController::class, 'GeneratePDF'])
+        ->get('/{order}/download-pdf', [OrderController::class, 'downloadPDF'])
         ->name('download.pdf')
     ;
     Route::middleware(['app.permissions'])
-        ->get('view-invoice', [OrderController::class, 'ViewInvoice'])
+        ->get('/{order}/view-invoice', [OrderController::class, 'viewInvoice'])
         ->name('view.invoice')
     ;
     Route::middleware(['app.permissions'])
-        ->get('download-invoice', [OrderController::class, 'GenerateInvoice'])
+        ->get('/{order}/download-invoice', [OrderController::class, 'downloadInvoice'])
         ->name('download.invoice')
     ;
 });

@@ -11,11 +11,11 @@ Route::prefix('orders')->name('orders.')->group(function () {
         ->name('index')
     ;
     Route::middleware(['app.user-permissions'])
-        ->get('view-invoice', [ThemeOrderController::class, 'ViewInvoice'])
+        ->get('/{order}/view-invoice', [ThemeOrderController::class, 'viewInvoice'])
         ->name('view.invoice')
     ;
     Route::middleware(['app.user-permissions'])
-        ->get('download-invoice', [ThemeOrderController::class, 'GenerateInvoice'])
+        ->get('/{order}/download-invoice', [ThemeOrderController::class, 'downloadInvoice'])
         ->name('download.invoice')
     ;
 });

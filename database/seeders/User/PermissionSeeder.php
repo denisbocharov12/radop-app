@@ -20,6 +20,7 @@ class PermissionSeeder extends Seeder
         'theme.orders.index',
         'theme.orders.view.invoice',
         'theme.orders.download.invoice',
+        'theme.account.password.update'
     ];
 
     public function run(): void

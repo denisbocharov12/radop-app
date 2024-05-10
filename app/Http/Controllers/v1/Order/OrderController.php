@@ -110,45 +110,36 @@ class OrderController extends Controller
         }
     }
 
-    public function PDFView(Request $request) {
-        $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
-        $order_items = OrderItem::where('order_id', $id)->get();
-        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
-        return $pdf->stream();
-    }
-    public function GeneratePDF(Request $request){
-        $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
-        $order_items = OrderItem::where('order_id', $id)->get();
-        $pdf = PDF::loadView('pdf.invoice', compact(['order','order_items']));
-        return $pdf->download('order.pdf');
-    }
-    public function GenerateInvoice(Request $request){
-        $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
-        $order_items = OrderItem::where('order_id', $id)->get();
-        $manager = User::where('id',$order[0]->manager_id)->first();
-        if(empty($manager)){
-            $manager = new User();
-            $manager->first_name = 'Менеджер';
-            $manager->last_name = 'по продажам RadopMD';
+    public function viewPDF(Order $order) {
+        try {
+            return $this->orderManager->viewPDF($order);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
         }
-        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
-        return $pdf->download();
+    }
 
-    }
-    public function ViewInvoice(Request $request){
-        $id = $request->input('order');
-        $order = Order::where('id', $id)->get();
-        $order_items = OrderItem::where('order_id', $id)->get();
-        $manager = User::where('id',$order[0]->manager_id)->first();
-        if(empty($manager)){
-            $manager = new User();
-            $manager->first_name = 'Менеджер';
-            $manager->last_name = 'по продажам RadopMD';
+    public function downloadPDF(Order $order){
+        try {
+            return $this->orderManager->downloadPDF($order);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
         }
-        $pdf = PDF::loadView('invoice.order-printing', compact(['order','order_items','manager']));
-        return $pdf->stream();
     }
+
+    public function viewInvoice(Order $order){
+        try {
+            return $this->orderManager->viewInvoice($order);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
+        }
+    }
+
+    public function downloadInvoice(Order $order){
+        try {
+            return $this->orderManager->downloadInvoice($order);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
+        }
+    }
+
 }

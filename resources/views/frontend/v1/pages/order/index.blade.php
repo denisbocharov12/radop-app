@@ -1,7 +1,7 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
-    <section class="my-account">
+    <section class="my-account" style="margin-bottom: 100px">
         <div class="container">
             <h1 class="my-account__title title">Мой аккаунт</h1>
             <div class="my-account__wrapper">
@@ -21,7 +21,7 @@
                                     <p class="order__product">
                                         <span
                                             style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                            {{$products->where('id',$order->products->first()['product_id'])->first()->title}} ...
+                                            {{$products->where('id',$order->products->first()->product_id)->first()->title}} ...
                                         </span>
                                     </p>
                                     <p class="order__date">
@@ -63,14 +63,14 @@
                                                 <li class="order-dropdown__item">
                                                     <a class="order-dropdown__link"
                                                        data-id="{{$order->id}}"
-                                                       href="{{route('theme.orders.view.invoice',['download'=>'pdf','order'=>$order->id])}}">
+                                                       href="{{route('theme.orders.view.invoice', $order)}}">
                                                         Просмотреть инвойс
                                                     </a>
                                                 </li>
                                                 <li class="order-dropdown__item">
                                                     <a class="order-dropdown__link"
                                                        data-id="{{$order->id}}"
-                                                       href="{{route('theme.orders.download.invoice',['download'=>'pdf','order'=>$order->id])}}">
+                                                       href="{{route('theme.orders.download.invoice', $order)}}">
                                                         Скачать инвойс
                                                     </a>
                                                 </li>

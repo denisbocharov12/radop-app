@@ -12,9 +12,11 @@ use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
+use PDF;
 
 final class OrderManager
 {
+    private const IUR_TYPE = 'iur';
     private OrderRepository $orderRepository;
     private UserRepository $userRepository;
 
@@ -74,7 +76,7 @@ final class OrderManager
             'delivery_charge' => $orderData->delivery_charge,
         ]);
 
-        if ($orderData->user_type === 'iur'){
+        if ($orderData->user_type === self::IUR_TYPE){
             $order->profile->update([
                 'company_name' => $orderData->company_name,
                 'reserve_phone' => $orderData->reserve_phone,
@@ -99,6 +101,66 @@ final class OrderManager
         }
 
         $order->delete();
+    }
+
+    public function viewPDF(Order $order)
+    {
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null){
+            throw new OrderNotFoundException();
+        }
+
+        $pdf = PDF::loadView('pdf.invoice', compact([
+            'order'
+        ]));
+
+        return $pdf->stream();
+    }
+
+    public function downloadPDF(Order $order)
+    {
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null){
+            throw new OrderNotFoundException();
+        }
+
+        $pdf = PDF::loadView('pdf.invoice', compact([
+            'order'
+        ]));
+
+        return $pdf->download();
+    }
+
+    public function viewInvoice(Order $order)
+    {
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null){
+            throw new OrderNotFoundException();
+        }
+
+        $pdf = PDF::loadView('invoice.order-printing', compact([
+            'order'
+        ]));
+
+        return $pdf->stream();
+    }
+
+    public function downloadInvoice(Order $order)
+    {
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null){
+            throw new OrderNotFoundException();
+        }
+
+        $pdf = PDF::loadView('invoice.order-printing', compact([
+            'order'
+        ]));
+
+        return $pdf->download();
     }
 
 }
