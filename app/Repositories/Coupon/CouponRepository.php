@@ -44,7 +44,7 @@ final class CouponRepository
         return Coupon::where('code', $couponCode)->where('status', true)->first();
     }
 
-    public function getActiveBetweenStartAndEndDateByCode(string $couponCode, Carbon $date): Coupon
+    public function getActiveBetweenStartAndEndDateByCode(string $couponCode, Carbon $date): ?Coupon
     {
         return Coupon::where('code', $couponCode)
             ->where('start_date', '<=', $date)

@@ -11,7 +11,7 @@ return [
     | Supported: "file", "database"
     |
     */
-    'driver' => 'file',
+    'driver' => 'database',
 
     /*
     |--------------------------------------------------------------------------
@@ -23,7 +23,12 @@ return [
     |
     */
     'route_group_config' => [
-        'middleware' => 'web',
+        'middleware' => [
+            'web',
+            'auth:sanctum',
+            'verified',
+            'app.user-status',
+        ],
     ],
 
     /*
@@ -56,7 +61,7 @@ return [
     | Define the URL used to access the language management too.
     |
     */
-    'ui_url' => 'languages',
+    'ui_url' => 'admin/languages',
 
     /*
     |--------------------------------------------------------------------------
