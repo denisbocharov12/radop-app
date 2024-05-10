@@ -27,6 +27,7 @@ final class CheckUserStatus
         if ($user === null || !$user->status) {
             throw new AccessDeniedHttpException(Response::HTTP_FORBIDDEN);
         }
+
         return $next($request);
     }
 }

@@ -82,22 +82,20 @@
 </div>
 <div class="col-lg-3 col-cart-total">
     <div class="shopping-cart-total-wrap">
-        @if(!session()->has('coupon'))
-            <div class="shopping-cart-bonus-code-wrap">
-                <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
-                    @csrf
-                    <div class="form-control-sc">
-                        <input
-                            type="text"
-                            class="cart-input"
-                            placeholder="Введите код для скидки"
-                            name="code"
-                        />
-                        <button type="submit" class="cart-btn-code">Применить</button>
-                    </div>
-                </form>
-            </div>
-        @endif
+        <div class="shopping-cart-bonus-code-wrap">
+            <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
+                @csrf
+                <div class="form-control-sc">
+                    <input
+                        type="text"
+                        class="cart-input"
+                        placeholder="Введите код для скидки"
+                        name="code"
+                    />
+                    <button type="submit" class="cart-btn-code">Применить</button>
+                </div>
+            </form>
+        </div>
         <div class="shopping-cart-total">
             <div class="total-heading">
                 <h3>Счёт к оплате</h3>

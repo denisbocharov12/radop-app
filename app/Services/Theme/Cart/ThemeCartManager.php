@@ -42,11 +42,16 @@ final class ThemeCartManager
             throw new CouponNotFoundException();
         }
 
+        if ($existedCoupon->user_id !== null)
+        {
+            throw new CouponOwnerException();
+        }
+
         if ($authUser !== null && $existedCoupon->user_id !== null) {
             $this->checkForCouponOwner($existedCoupon, $authUser);
         }
 
-        if ($existedCoupon->startDate !== null && $existedCoupon->end_date !== null)
+        if ($existedCoupon->start_date !== null && $existedCoupon->end_date !== null)
         {
             $this->checkForCouponStartAndEndDate($existedCoupon);
         }
@@ -91,6 +96,7 @@ final class ThemeCartManager
 
         if ($coupon->minimal_total > $cartTotal)
         {
+            Session()->forget('coupon');
             throw new CouponMinimalValueException();
         }
     }
@@ -101,6 +107,7 @@ final class ThemeCartManager
 
         if ($existedUser === null)
         {
+            Session()->forget('coupon');
             throw new UserNotFoundException();
         }
 
@@ -115,6 +122,7 @@ final class ThemeCartManager
 
         if ($dateCoupon === null)
         {
+            Session()->forget('coupon');
             throw new CouponOwnerException();
         }
     }
@@ -123,11 +131,12 @@ final class ThemeCartManager
     {
         if ($coupon->user_id !== $user->id)
         {
+            Session()->forget('coupon');
             throw new CouponOwnerException();
         }
     }
 
-    private function discount(Coupon $coupon, $total): int
+    private function discount(Coupon $coupon, $total): float
     {
         if ($coupon->type === $this->couponTypes->getFixedType())
         {
@@ -136,7 +145,7 @@ final class ThemeCartManager
 
         if ($coupon->type === $this->couponTypes->getPercentType())
         {
-            return intval($coupon->value) / 100 * intval($total);
+            return intval($coupon->value) / 100 * $total;
         }
 
         return 0;
