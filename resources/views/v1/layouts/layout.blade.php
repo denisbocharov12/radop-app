@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ App::currentLocale() }}" class="js">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="js">
 @include('v1.head.head')
 <body class="nk-body bg-lighter npc-general has-sidebar ">
 <div class="nk-app-root">
