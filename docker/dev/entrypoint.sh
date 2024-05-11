@@ -9,7 +9,7 @@ then
     cp .env.example .env
 fi
 #convert .env into Unix format
-dos2unix .env
+#dos2unix .env
 source .env
 
 if [[ ! -d "storage" ]]
