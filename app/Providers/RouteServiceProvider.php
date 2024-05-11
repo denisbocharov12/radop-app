@@ -78,7 +78,12 @@ class RouteServiceProvider extends ServiceProvider
         ;
 
         Route::middleware([
-            'web'
+            'web',
+            'localeSessionRedirect',
+            'localizationRedirect',
+            'localize',
+            'localeCookieRedirect',
+            'localeViewPath'
             ])
             ->prefix(LaravelLocalization::setLocale())
             ->as('theme.')

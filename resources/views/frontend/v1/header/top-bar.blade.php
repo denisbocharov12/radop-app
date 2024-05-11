@@ -36,8 +36,12 @@
                     </ul>
                 </div>
                 <div class="header-location">
-                    <a href="#" class="location"><img src="{{asset('/v1/frontend/assets')}}/images/romania.svg" alt="" /> RO</a>
-                    <a href="#" class="location"><img src="{{asset('/v1/frontend/assets')}}/images/russia.svg" alt="" /> RU</a>
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        <a class="location" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            <img src="{{asset('/v1/frontend/assets')}}/images/{{ $localeCode }}.svg" alt="" />
+                            {{ strtoupper($localeCode) }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
