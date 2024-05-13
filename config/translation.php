@@ -11,7 +11,7 @@ return [
     | Supported: "file", "database"
     |
     */
-    'driver' => 'database',
+    'driver' => 'file',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | when finding missing translations.
     |
     */
-    'translation_methods' => ['trans', '__'],
+    'translation_methods' => ['trans', '__',],
 
     /*
     |--------------------------------------------------------------------------

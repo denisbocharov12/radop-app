@@ -11,7 +11,7 @@
                             <div class="nk-block-head-content">
                                 <h3 class="nk-block-title page-title">Атрибуты</h3>
                                 <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $attributes->total() }} @choice('Ед.|Едц.', $attributes->total())</p>
+                                    <p>Количество: {{ $attributes->total() }} Едц.</p>
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
