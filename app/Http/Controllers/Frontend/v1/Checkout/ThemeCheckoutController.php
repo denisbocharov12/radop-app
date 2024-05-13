@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Checkout;
 
 use App\Enums\OrderPaymentMethods;
+use App\Events\OrderCreatedSendEmailEvent;
 use App\Exceptions\Checkout\ManagerNotFoundException;
 use App\Exceptions\Checkout\ManagerNotFoundValidationException;
 use App\Exceptions\Checkout\OrderErrorException;
@@ -41,10 +42,19 @@ final class ThemeCheckoutController
         try {
             $order = $this->themeCheckoutManager->store($orderData, $user);
 
+            event(new OrderCreatedSendEmailEvent($order));
+
+            return redirect()->route('theme.thankyou.index');
         } catch (ManagerNotFoundException) {
             throw new ManagerNotFoundValidationException();
         } catch (OrderErrorException) {
             throw new OrderErrorValidationException();
         }
     }
+
+    public function thank()
+    {
+        return view('frontend.v1.pages.thankyou.index');
+    }
+
 }

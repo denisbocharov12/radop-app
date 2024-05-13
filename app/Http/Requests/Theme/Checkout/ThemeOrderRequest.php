@@ -14,6 +14,14 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $note
  * @property string $payment_method
  * @property string $delivery_charge
+ * @property string $company_name
+ * @property string $reserve_phone
+ * @property string $bank
+ * @property string $idno
+ * @property string $tva
+ * @property string $registered_city
+ * @property string $iur_address
+ * @property string $shipping_address
  */
 final class ThemeOrderRequest extends FormRequest
 {
@@ -29,6 +37,14 @@ final class ThemeOrderRequest extends FormRequest
             'note' => ['nullable', 'string'],
             'payment_method' => ['required', 'string'],
             'delivery_charge' => ['nullable', 'string'],
+            'company_name' => ['nullable', 'string'],
+            'reserve_phone' => ['nullable', 'string'],
+            'bank' => ['nullable', 'string'],
+            'idno' => ['nullable', 'string'],
+            'tva' => ['nullable', 'string'],
+            'registered_city' => ['nullable', 'string'],
+            'iur_address' => ['nullable', 'string'],
+            'shipping_address' => ['nullable', 'string']
         ];
     }
 }
