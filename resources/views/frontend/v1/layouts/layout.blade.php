@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ App::currentLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('frontend.v1.head.head')
 <body>
 @include('frontend.v1.search.search-overlay')

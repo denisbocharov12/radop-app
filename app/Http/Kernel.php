@@ -46,7 +46,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             ExecuteWriteRequestInTransaction::class,
-            Localization::class,
+            //Localization::class,
         ],
         'user' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -57,7 +57,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             ExecuteWriteRequestInTransaction::class,
-            Localization::class,
+            //Localization::class,
         ],
         'api' => [
             AddAcceptApplicationJsonToRequest::class,
@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             ExecuteWriteRequestInTransaction::class,
-            Localization::class,
+            //Localization::class,
         ],
     ];
 
@@ -93,5 +93,11 @@ class Kernel extends HttpKernel
         'app.client-auth' => CheckIfClientAuth::class,
         'app.client-status'  => CheckClientStatus::class,
         'app.auth' => CheckIfUserAuth::class,
+
+        'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
     ];
 }

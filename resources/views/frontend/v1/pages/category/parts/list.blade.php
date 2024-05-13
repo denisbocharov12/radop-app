@@ -42,16 +42,9 @@
                 <div class="qty-add-to-cart">
                     <div class="qty-select">
                         <select name="product-{{$product->id}}-qty" class="product-qty" id="product-{{$product->id}}-qty">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
+                            @for($i=1; $i<=$product->stock; $i++)
+                                <option value="{{$i}}">{{$i}}</option>
+                            @endfor
                         </select>
                     </div>
                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">В корзину</a>

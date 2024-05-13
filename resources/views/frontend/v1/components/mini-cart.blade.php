@@ -8,18 +8,20 @@
 @if(\Cart::session($sessionId)->getContent()->count() > 0)
         <ul class="content-shopping-cart">
             @foreach(\Cart::session($sessionId)->getContent() as $item)
+                @php
+                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+                @endphp
                 <li class="item">
                     <div class="sc-product-item">
                         <div class="product-info">
                             <a href="{{route('theme.product.index', $item->associatedModel->slug)}}" >
-{{--                                @foreach($item->model->images as $key=>$photo)--}}
-{{--                                    @switch($key)--}}
-{{--                                        @case(0)--}}
-{{--                                        <img src="{{asset('storage').$item->model->images->first()->image_path}}" alt="{{$item->model->title}}" class="sc-image"/>--}}
-{{--                                        @break--}}
-{{--                                    @endswitch--}}
-{{--                                @endforeach--}}
-                                <img src="https://placehold.co/600x900?text=Demo" alt="{{$item->associatedModel->title}}" class="sc-image">
+                                @foreach($imagesArray as $key => $file)
+                                    @switch($key)
+                                        @case(0)//
+                                        <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                        @break
+                                    @endswitch
+                                @endforeach
                             </a>
                             <div class="sc-item-info-wrap">
                                 <p class="sc-title">

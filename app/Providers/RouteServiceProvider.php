@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -68,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
         ;
 
         Route::prefix('admin')
-            ->middleware(['web','auth:sanctum', 'verified', 'app.user-status'])
+            ->middleware(['web','auth:sanctum', 'verified'])
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/v1/authorized')) as $file) {
                     require $file->getPathname();
@@ -76,7 +77,15 @@ class RouteServiceProvider extends ServiceProvider
             })
         ;
 
-        Route::middleware(['web'])
+        Route::middleware([
+            'web',
+            'localeSessionRedirect',
+            'localizationRedirect',
+            'localize',
+            'localeCookieRedirect',
+            'localeViewPath'
+            ])
+            ->prefix(LaravelLocalization::setLocale())
             ->as('theme.')
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/frontend/v1')) as $file) {

@@ -7,8 +7,8 @@
             </div>
             <div class="nk-header-brand d-xl-none">
                 <a href="#" class="logo-link">
-                    <img class="logo-light logo-img" src="{{asset('/v1/dashboard')}}/assets/images/Logo_Final_Megasil.svg" alt="logo">
-                    <img class="logo-dark logo-img" src="{{asset('/v1/dashboard')}}/assets/images/Logo_Final_Megasil.svg" alt="logo-dark">
+                    <img class="logo-light logo-img" src="{{asset('/v1/dashboard')}}/assets/images/logo_colored_radop.svg" alt="logo">
+                    <img class="logo-dark logo-img" src="{{asset('/v1/dashboard')}}/assets/images/logo_colored_radop.svg" alt="logo-dark">
                 </a>
             </div><!-- .nk-header-brand -->
 
