@@ -2,7 +2,7 @@
     <li class="my-account-selects__item">
         <a
             class="my-account-selects__link"
-            href="{{route('theme.account.index')}}"
+            href="{{route('theme.user.account.index')}}"
         >
             <i class="icon-account"></i>Аккаунт</a
         >
@@ -13,7 +13,7 @@
 {{--        </a>--}}
 {{--    </li>--}}
     <li class="my-account-selects__item">
-        <a class="my-account-selects__link" href="{{route('theme.orders.index')}}"
+        <a class="my-account-selects__link" href="{{route('theme.user.orders.index')}}"
         ><i class="icon-your-order"></i>Мои заказы</a
         >
     </li>

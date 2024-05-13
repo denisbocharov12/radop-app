@@ -14,13 +14,13 @@ class PermissionSeeder extends Seeder
     ];
 
     private array $userPermittedRoutes = [
-        'theme.logout',
-        'theme.account.index',
-        'theme.account.update',
-        'theme.orders.index',
-        'theme.orders.view.invoice',
-        'theme.orders.download.invoice',
-        'theme.account.password.update'
+        'theme.user.logout',
+        'theme.user.account.index',
+        'theme.user.account.update',
+        'theme.user.orders.index',
+        'theme.user.orders.view.invoice',
+        'theme.user.orders.download.invoice',
+        'theme.user.account.password.update',
     ];
 
     public function run(): void

@@ -19,7 +19,7 @@
                                     использования нашей платформы. Все права защищены
                                     сосгласно Политике конфиденциальности
                                 </div>
-                                <form class="my-account-details-form" action="{{route('theme.account.update', auth()->guard('user')->user())}}" method="POST">
+                                <form class="my-account-details-form" action="{{route('theme.user.account.update', auth()->guard('user')->user())}}" method="POST">
                                     @csrf
                                     <ul class="my-account-details-form__list">
                                         <li class="my-account-details-form__item">
@@ -166,7 +166,7 @@
                                     использования нашей платформы. Все права защищены
                                     сосгласно Политике конфиденциальности
                                 </div>
-                                <form class="my-account-details-form" action="{{route('theme.account.password.update')}}" method="POST">
+                                <form class="my-account-details-form" action="{{route('theme.user.account.password.update')}}" method="POST">
                                     @csrf
                                     <div class="password-requirements">
                                         <h3>Используйте в своём новом пароле следующие символы:</h3>
@@ -190,6 +190,7 @@
                                             >Текущий пароль</label
                                             >
                                             <input
+                                                required
                                                 class="my-account-details-form__input my-account-details-form-password"
                                                 type="password"
                                                 name="current_password"
@@ -204,6 +205,7 @@
                                             >Новый пароль</label
                                             >
                                             <input
+                                                required
                                                 class="my-account-details-form__input my-account-details-form-password"
                                                 type="password"
                                                 name="password"
@@ -218,6 +220,7 @@
                                             >Подтверждение пароля</label
                                             >
                                             <input
+                                                required
                                                 class="my-account-details-form__input my-account-details-form-password"
                                                 type="password"
                                                 name="confirm_password"

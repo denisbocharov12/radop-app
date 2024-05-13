@@ -41,7 +41,7 @@ final class ThemeAccountController extends Controller
         try {
             $this->themeAccountManager->update($clientData, $user);
 
-            return redirect()->route('theme.account.index');
+            return redirect()->route('theme.user.account.index');
 
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
@@ -57,7 +57,7 @@ final class ThemeAccountController extends Controller
         try {
             $this->themeAccountManager->changePassword($user, $passwordData);
 
-            return redirect()->route('theme.account.index')->with('success', 'Пароль успешно обновлен');
+            return redirect()->route('theme.user.account.index')->with('success', 'Пароль успешно обновлен');
         } catch (UserNewPasswordDoesNotMatch $e) {
             throw new UserNewPasswordDoesNotMatchException();
         }
