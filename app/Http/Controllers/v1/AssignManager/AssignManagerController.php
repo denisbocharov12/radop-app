@@ -41,7 +41,9 @@ class AssignManagerController extends Controller
         $user_id = $request->user;
         $manager_id = $request->manager_id;
 
-        User::role('user')->where('id',$user_id)->first()->update(['manager_id'=>$manager_id]);
+        User::role('user')->where('id',$user_id)->first()->update([
+            'manager_id'=>$manager_id
+        ]);
 
         return redirect()->route('manager.index');
     }

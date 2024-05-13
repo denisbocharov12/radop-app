@@ -17,7 +17,18 @@ class ManagerRoleSeeder extends AbstractRoleSeeder
     public function getPermittedRoutes(): array
     {
         return [
-
+            'dashboard.index',
+            'order.index',
+            'category.index',
+            'brand.index',
+            'product.index',
+            'attribute.index',
+            'coupon.index',
+            'client.index',
+            'client.show',
+            'manager.index',
+            'manager.edit',
+            'manager.update'
         ];
     }
 }

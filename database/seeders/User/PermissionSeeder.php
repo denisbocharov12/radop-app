@@ -10,7 +10,18 @@ use Spatie\Permission\Models\Permission;
 class PermissionSeeder extends Seeder
 {
     private array $permittedRoutes = [
-
+        'dashboard.index',
+        'order.index',
+        'category.index',
+        'brand.index',
+        'product.index',
+        'attribute.index',
+        'coupon.index',
+        'client.index',
+        'client.show',
+        'manager.index',
+        'manager.edit',
+        'manager.update'
     ];
 
     private array $userPermittedRoutes = [

@@ -8,15 +8,14 @@
             <div class="nk-tb-col"><span class="sub-text">Номер заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Адресс</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
+            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
-            <div class="nk-tb-item" id="order-id-{{$order->id}}">
-                <div class="nk-tb-col">
+            <div class="nk-tb-item" id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}">
+                <div class="nk-tb-col order-details">
                     <span>#{{$order->id}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->first_name}} {{$order->last_name}}</span>
                 </div>
                 <div class="nk-tb-col">
@@ -25,16 +24,16 @@
                 <div class="nk-tb-col">
                     <span>{{$order->email}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->order_number}}</span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$order->payment_status}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->address}}</span>
                 </div>
-                <div class="nk-tb-col nk-tb-col-tools">
+                <div class="nk-tb-col nk-tb-col-tools order-details">
                     <ul class="nk-tb-actions gx-2">
                         <li>
                             <div class="drodown">

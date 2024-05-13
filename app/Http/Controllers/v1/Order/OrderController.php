@@ -15,13 +15,11 @@ use App\Http\Mappers\OrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\User;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
+use Illuminate\Support\Facades\Auth;
 use PDF;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -54,10 +52,14 @@ class OrderController extends Controller
 
     public function index()
     {
+        $userId = Auth::guard()->user()->id;
         $orders = $this->orderRepository->getAllPaginatedWithFilters();
+
+        $user = $this->userRepository->getById($userId);
 
         return view('order.index', compact([
             'orders',
+            'user'
         ]));
     }
 
