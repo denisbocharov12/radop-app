@@ -11,7 +11,7 @@
                             <div class="nk-block-head-content">
                                 <h3 class="nk-block-title page-title">Купоны</h3>
                                 <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $coupons->total() }} @choice('Ед.|Едц.', $coupons->total())</p>
+                                    <p>Количество: {{ $coupons->total() }} Едц.</p>
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">

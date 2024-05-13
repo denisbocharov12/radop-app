@@ -82,6 +82,9 @@
 </div>
 <div class="col-lg-3 col-cart-total">
     <div class="shopping-cart-total-wrap">
+        <div class="shopping-cart-bonus-code-info" style="background-color: #0293b2; padding: 12.5px; margin-bottom: 15px; border-radius: 15px">
+            <p class="info-text" style="color: #e2e8f0; text-align: center; font-size: 14px">При обновлении товара, активированный купон будет недействителен и удален.</p>
+        </div>
         <div class="shopping-cart-bonus-code-wrap">
             <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
                 @csrf
@@ -138,7 +141,7 @@
                 </div>
             @endif
             <div class="sc-buttons-wrap">
-                <a href="#" class="sc-btn-checkout sc-btn">Оформить заказ</a>
+                <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn">Оформить заказ</a>
                 <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">Продолжить покупки</a>
             </div>
         </div>
