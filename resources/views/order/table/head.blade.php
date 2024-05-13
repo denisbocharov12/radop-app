@@ -1,5 +1,11 @@
 <div class="card-inner position-relative card-tools-toggle">
     <div class="card-title-group">
+        @hasrole('manager')
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="filterOrdersSwitch">
+            <label class="form-check-label" for="filterOrdersSwitch">Фильтровать мои заказы</label>
+        </div>
+        @endhasrole
         <div class="card-tools">
 
         </div><!-- .card-tools -->

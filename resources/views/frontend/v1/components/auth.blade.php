@@ -4,7 +4,7 @@
         <div class="login-head">
             <h3>Панель управления</h3>
         </div>
-        <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.account.index')}}">Профиль</a>
+        <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.account.index')}}">Профиль</a>
         <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">Выйти</a>
         <div class="account-helpers-wrap mt-4">
             <a href="#" class="helper-account-activate">Активировать аккаунт</a>

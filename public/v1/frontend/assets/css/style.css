@@ -4101,7 +4101,7 @@ header .section-header .row-main .header-account .nav-drill.nav-is-toggled::afte
   transition: all 0.3s;
 }
 .order-dropdown--active {
-  height: 100px;
+  height: 66px;
   padding: 5px 0;
   border: 1px solid #c4c4c4;
 }

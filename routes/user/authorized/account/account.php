@@ -14,4 +14,8 @@ Route::prefix('account')->name('account.')->group(function () {
         ->post('/{user}/update', [ThemeAccountController::class, 'update'])
         ->name('update')
     ;
+    Route::middleware('app.user-permissions')
+        ->post('/update-password', [ThemeAccountController::class, 'changePassword'])
+        ->name('password.update')
+    ;
 });

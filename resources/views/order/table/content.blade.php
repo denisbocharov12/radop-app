@@ -8,15 +8,14 @@
             <div class="nk-tb-col"><span class="sub-text">Номер заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Адресс</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
+            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
-            <div class="nk-tb-item" id="order-id-{{$order->id}}">
-                <div class="nk-tb-col">
+            <div class="nk-tb-item" id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}">
+                <div class="nk-tb-col order-details">
                     <span>#{{$order->id}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->first_name}} {{$order->last_name}}</span>
                 </div>
                 <div class="nk-tb-col">
@@ -25,16 +24,16 @@
                 <div class="nk-tb-col">
                     <span>{{$order->email}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->order_number}}</span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$order->payment_status}}</span>
                 </div>
-                <div class="nk-tb-col">
+                <div class="nk-tb-col order-details">
                     <span>{{$order->address}}</span>
                 </div>
-                <div class="nk-tb-col nk-tb-col-tools">
+                <div class="nk-tb-col nk-tb-col-tools order-details">
                     <ul class="nk-tb-actions gx-2">
                         <li>
                             <div class="drodown">
@@ -43,10 +42,10 @@
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
                                         <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть PDF</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf', $order)}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть PDF</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf', $order)}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice', $order)}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -54,13 +53,6 @@
                     </ul>
                 </div>
             </div><!-- .nk-tb-item -->
-{{--            <td class="nk-tb-col" style="padding-right: 5px; text-align: center">--}}
-{{--                <div class="tb-odr-btns d-none d-sm-inline">--}}
-{{--                    <a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}" class="btn btn-dim btn-sm btn-primary">Просмотреть</a>--}}
-{{--                </div>--}}
-{{--                <a data-id="{{$order->id}}" href="{{route('order.view.pdf',['download'=>'pdf','order'=>$order->id])}}" class="btn btn-pd-auto d-sm-none"><em class="icon ni ni-chevron-right"></em></a>--}}
-{{--            </td>--}}
-{{--            <a data-id="{{$order->id}}" class="order-pdf-generate" href="{{route('order.download.pdf',['download'=>'pdf','order'=>$order->id])}}"><em class="icon ni ni-printer-fill"></em><span>Скачать инвойс</span></a>--}}
         @endforeach
     </div><!-- .nk-tb-list -->
 </div><!-- .card-inner -->

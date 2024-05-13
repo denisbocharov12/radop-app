@@ -2,6 +2,17 @@
 
 namespace App\Data\Theme\Account;
 
+/**
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property string $phone
+ * @property string $address
+ * @property string $organization_name
+ * @property string $cod_fiscal
+ * @property string $contact_name
+ */
+
 final class ThemeAccountData
 {
     public function __construct(

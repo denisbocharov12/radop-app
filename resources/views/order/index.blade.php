@@ -86,5 +86,37 @@
             var path = "{{route('order.delete')}}";
             askToDeleteOrder(model_id, token, path)
         });
+
+        document.getElementById('filterOrdersSwitch').addEventListener('change', () => {
+            const managerId = {{ $user->id }};
+            const orderItems = document.querySelectorAll('.nk-tb-item');
+            const isChecked = document.getElementById('filterOrdersSwitch').checked;
+
+            orderItems.forEach(function(item) {
+                const orderManagerId = item.getAttribute('data-manager-id');
+
+                if (orderManagerId) { // Проверка наличия атрибута data-manager-id
+                    const orderDetails = item.querySelectorAll('.order-details');
+
+                    if (isChecked) {
+                        if (orderManagerId == managerId) {
+                            item.style.display = 'table-row';
+                            orderDetails.forEach(function(detail) {
+                                detail.style.display = 'table-cell';
+                            });
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        item.style.display = 'table-row';
+                        orderDetails.forEach(function(detail) {
+                            detail.style.display = 'table-cell';
+                        });
+                    }
+                } else { // Если атрибут data-manager-id отсутствует, не скрываем элемент
+                    item.style.display = 'table-row';
+                }
+            });
+        });
     </script>
 @endsection

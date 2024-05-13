@@ -152,13 +152,13 @@
                     <img style="width: 100px; display: flex; align-items: center;justify-content: center" src="https://floradelivery.md/wp-content/uploads/2022/03/logo-white-1.jpg" alt="">
                 </div>
                 <div class="autor" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">Автор:</span> {{$manager->first_name}} {{$manager->last_name}}</p>
+                    <p><span style="font-weight: bold">Автор:</span> {{$order->manager?->first_name}} {{$order->manager?->last_name}}</p>
                 </div>
                 <div class="otgruz" style="margin-top: 15px">
-                    <p>Отгрузка товара <span style="font-weight: bold">{{$order[0]['order_number']}}</span>  от {{$order[0]['created_at']->format('d.m.Y')}} </p>
+                    <p>Отгрузка товара <span style="font-weight: bold">{{$order->order_number}}</span>  от {{$order->created_at->format('d.m.Y')}} </p>
                 </div>
                 <div class="client" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">Клиент:</span> {{$order[0]['first_name']}} {{$order[0]['last_name']}} / {{$order[0]['address']}} / {{$order[0]['phone']}}</p>
+                    <p><span style="font-weight: bold">Клиент:</span> {{$order->first_name}} {{$order->last_name}} / {{$order->address}} / {{$order->phone}}</p>
                 </div>
                 <div class="sclad" style="margin-top: 30px">
                     <p style="font-weight: bold; font-size: 16px;">Склад: 1.ОСН. (Основной склад)</p>
@@ -175,21 +175,21 @@
                     <td>Цена</td>
                     <td>Сумма в НДС</td>
                 </tr>
-                @foreach($order_items as $key=>$item)
+                @foreach($order->products as $key=>$item)
                     <tr>
                         <td>{{$key+1}}</td>
-                        <td>{{\App\Models\Product::where('onec_id',$item['product_id'])->first()->title_full}}</td>
+                        <td>{{\App\Models\Product::where('id',$item->product_id)->first()->title}}</td>
                         <td>buc.</td>
-                        <td>{{\App\Models\Product::where('onec_id',$item['product_id'])->first()->onec_id}}</td>
-                        <td>{{$item['quantity']}}</td>
-                        <td>{{$item['price']}} MDL</td>
-                        <td>{{$item['price']*$item['quantity']}} MDL</td>
+                        <td>{{\App\Models\Product::where('id',$item->product_id)->first()->onec_id}}</td>
+                        <td>{{$item->quantity}}</td>
+                        <td>{{$item->price}} MDL</td>
+                        <td>{{$item->price * $item->quantity}} MDL</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2"style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого:</span></td>
-                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{\App\Models\OrderItem::where('order_id',$order[0]['id'])->count()}}</span></td>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order[0]['subtotal']}}</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order->subtotal}} MDL</span></td>
+                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Скидка: {{$order->discount}} MDL</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого: {{$order->total}} MDL</span></td>
                 </tr>
                 </tbody>
             </table>

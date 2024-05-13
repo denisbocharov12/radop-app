@@ -205,18 +205,18 @@
                 <div class="invoice-contact">
                     <span class="overline-title">Инвойс к</span>
                     <div class="invoice-contact-info">
-                        <h4 class="title">{{$order[0]['first_name']}} {{$order[0]['last_name']}}</h4>
+                        <h4 class="title">{{$order->first_name}} {{$order->last_name}}</h4>
                         <ul class="list-plain">
-                            <li><em class="icon ni ni-map-pin-fill fs-18px"></em><span>{{$order[0]['address']}}</span></li>
-                            <li><em class="icon ni ni-call-fill fs-14px"></em><span>{{$order[0]['phone']}}</span></li>
+                            <li><em class="icon ni ni-map-pin-fill fs-18px"></em><span>{{$order->address}}</span></li>
+                            <li><em class="icon ni ni-call-fill fs-14px"></em><span>{{$order->phone}}</span></li>
                         </ul>
                     </div>
                 </div>
                 <div class="invoice-desc">
                     <h3 class="title">Invoice</h3>
                     <ul class="list-plain">
-                        <li class="invoice-id"><span>Invoice ID</span>:<span>{{$order[0]['order_number']}}</span></li>
-                        <li class="invoice-date"><span>Date</span>:<span>{{$order[0]['created_at']}}</span></li>
+                        <li class="invoice-id"><span>Invoice ID</span>:<span>{{$order->order_number}}</span></li>
+                        <li class="invoice-date"><span>Date</span>:<span>{{$order->created_at}}</span></li>
                     </ul>
                 </div>
             </div><!-- .invoice-head -->
@@ -233,13 +233,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($order_items as $item)
+                        @foreach($order->products as $item)
                             <tr>
-                                <td>{{$item['product_id']}}</td>
-                                <td>Description in v2</td>
-                                <td>{{$item['price']}} MDL</td>
-                                <td>{{$item['quantity']}}</td>
-                                <td>{{$item['price']*$item['quantity']}} MDL</td>
+                                <td>{{$item->product_id}}</td>
+                                <td>{{$order->note}}</td>
+                                <td>{{$item->price}} MDL</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->price * $item->quantity}} MDL</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -247,29 +247,29 @@
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2">Всего</td>
-                            <td>{{$order[0]['subtotal']}} MDL</td>
+                            <td>{{$order->subtotal}} MDL</td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2">Доставка</td>
-                            @if($order[0]['delivery_charge'] == null)
+                            @if($order->delivery_charge == null)
                                 <td>Бесплатно</td>
                             @else
-                                <td>{{$order[0]['delivery_charge']}} MDL</td>
+                                <td>{{$order->delivery_charge}} MDL</td>
                             @endif
 
                         </tr>
-                        @if($order[0]['discount'] > 0)
+                        @if($order->discount > 0)
                             <tr>
                                 <td colspan="2"></td>
                                 <td colspan="2">Скидка</td>
-                                <td>{{$order[0]['discount']}} MDL</td>
+                                <td>{{$order->discount}} MDL</td>
                             </tr>
                         @endif
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2">К оплате</td>
-                            <td>{{number_format((float)str_replace(',','', $order[0]['total']) + (float)str_replace(',','',$order[0]['delivery_charge']),2)}} MDL</td>
+                            <td>{{number_format((float)str_replace(',','', $order->total) + (float)str_replace(',','',$order->delivery_charge),2)}} MDL</td>
                         </tr>
                         </tfoot>
                     </table>
