@@ -16,7 +16,7 @@
             @include('frontend.v1.components.mini-cart')
         </div>
         <div class="bottom-shopping-cart">
-            <a href="#" class="btn-shopping-cart">Продолжить покупки</a>
+            <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart">Продолжить покупки</a>
             <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red">Оформить заказ</a>
         </div>
     </div>

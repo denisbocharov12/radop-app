@@ -4,7 +4,47 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Checkout;
 
+use App\Enums\OrderPaymentMethods;
+use App\Exceptions\Checkout\ManagerNotFoundException;
+use App\Exceptions\Checkout\ManagerNotFoundValidationException;
+use App\Exceptions\Checkout\OrderErrorException;
+use App\Exceptions\Checkout\OrderErrorValidationException;
+use App\Http\Mappers\Theme\ThemeOrderDataMapper;
+use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
+use App\Services\Theme\Checkout\ThemeCheckoutManager;
+use Illuminate\Support\Facades\Auth;
+
 final class ThemeCheckoutController
 {
+    public function __construct(
+        private readonly ThemeCheckoutManager $themeCheckoutManager,
+        private readonly ThemeOrderDataMapper $themeOrderDataMapper,
+        private readonly OrderPaymentMethods $orderPaymentMethods,
+    )
+    {
+    }
 
+    public function index()
+    {
+        $paymentMethods = $this->orderPaymentMethods->getAll();
+
+        return view('frontend.v1.pages.checkout.index', compact([
+            'paymentMethods'
+        ]));
+    }
+
+    public function store(ThemeOrderRequest $request)
+    {
+        $orderData = $this->themeOrderDataMapper->mapFromRequestToNormalized($request);
+        $user = Auth::guard('user')->user();
+
+        try {
+            $order = $this->themeCheckoutManager->store($orderData, $user);
+
+        } catch (ManagerNotFoundException) {
+            throw new ManagerNotFoundValidationException();
+        } catch (OrderErrorException) {
+            throw new OrderErrorValidationException();
+        }
+    }
 }

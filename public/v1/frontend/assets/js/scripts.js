@@ -551,6 +551,9 @@ $(document).ready(function () {
   $(".product-qty").select2({
 
   });
+  $(".select-2-container").select2({
+
+  });
   $(".qty-select .product-qty-page").select2({});
   $(".icon-block a.user").click(function(){
       Fancybox.show([{ src: "#loginModal", type: "inline" }]);
