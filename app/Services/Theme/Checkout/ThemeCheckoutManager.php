@@ -40,11 +40,13 @@ final class ThemeCheckoutManager
         $managerId = null;
         $userId = null;
         $discount = Session::get('coupon.value');
+        $userType = 'fiz';
 
         if ($user !== null) {
             $authUser = $this->checkForExistedUser($user->id);
             $userId = $authUser->id;
             $managerId = $user->manager_id;
+            $userType = $authUser->type->name;
         }
 
         if (!array_key_exists($orderData->payment_method, $this->orderPaymentMethods->getAll()))
@@ -67,19 +69,30 @@ final class ThemeCheckoutManager
             'delivery_charge' => $orderData->delivery_charge,
             'user_id' => $userId,
             'manager_id' => $managerId,
+            'user_type' => $userType,
             'subtotal' => $this->getCartSubtotalValue(),
             'total' => $this->getCartSubtotalValue() - $discount,
             'discount' => $discount
         ]);
 
         $orderProfile = OrderProfile::create([
-           'order_id' => $order->id
+            'order_id' => $order->id,
+            'company_name' => $orderData->company_name,
+            'reserve_phone' => $orderData->reserve_phone,
+            'bank' => $orderData->bank,
+            'idno' => $orderData->idno,
+            'tva' => $orderData->tva,
+            'registered_city' => $orderData->registered_city,
+            'iur_address' => $orderData->iur_address,
+            'shipping_address' => $orderData->shipping_address
         ]);
 
         $this->addProductsToOrder($order);
 
         Session()->forget('coupon');
         \Cart::session($sessionId)->clear();
+
+        return $order;
     }
 
     private function addProductsToOrder(Order $order): void
@@ -119,7 +132,7 @@ final class ThemeCheckoutManager
     {
         $latestOrder = Order::count() + 1;
 
-        $orderNumber = 'ORD-'.str_pad($latestOrder, 6, "0", STR_PAD_LEFT);
+        $orderNumber = 'ORD-'.str_pad((string)$latestOrder, 6, "0", STR_PAD_LEFT);
 
         return $orderNumber;
     }
