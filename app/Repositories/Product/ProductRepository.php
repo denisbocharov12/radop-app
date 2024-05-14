@@ -50,6 +50,7 @@ final class ProductRepository
             ;
     }
 
+
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator
     {
         $query = Product::query();
