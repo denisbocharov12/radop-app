@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Frontend\v1\Category;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
@@ -18,12 +19,15 @@ final class ThemeCategoryController extends Controller
         private readonly CategoryRepository $categoryRepository,
         private readonly ProductRepository $productRepository,
         private readonly ThemeCategoryManager $themeCategoryManager,
+        private readonly BrandRepository $brandRepository,
     )
     {
     }
 
     public function index(Request $request, string $onecId)
     {
+        $query = $request->query('filter');
+
         $existedCategory = $this->categoryRepository->getByOnecId($onecId);
 
         if ($existedCategory === null) {
@@ -31,10 +35,13 @@ final class ThemeCategoryController extends Controller
         }
 
         $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
+        $brands = $this->brandRepository->getAll();
 
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
-            'breadcrumbs'
+            'breadcrumbs',
+            'query',
+            'brands'
         ]));
     }
 

@@ -41,11 +41,7 @@
                 </div>
                 <div class="qty-add-to-cart">
                     <div class="qty-select">
-                        <select name="product-{{$product->id}}-qty" class="product-qty" id="product-{{$product->id}}-qty">
-                            @for($i=1; $i<=$product->stock; $i++)
-                                <option value="{{$i}}">{{$i}}</option>
-                            @endfor
-                        </select>
+                        <input type="number" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
                     </div>
                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
