@@ -20,7 +20,6 @@
 @php
     $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 @endphp
-
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($imagesArray) > 1)
         @foreach($imagesArray as $key => $file)
