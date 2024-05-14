@@ -4,8 +4,8 @@
             <div class="col-12 col-breadcrumb">
                 <nav>
                     <ol class="breadcrumb text-white">
-                        <li class="breadcrumb-item"><a href="{{route('theme.home')}}">Главная</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('theme.shop.index')}}">Каталог</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('theme.shop.index')}}">{{__('theme.shop')}}</a></li>
                         <li class="breadcrumb-item">
                             <a
                                 class="active"

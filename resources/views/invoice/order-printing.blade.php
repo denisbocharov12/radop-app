@@ -152,28 +152,28 @@
                     <img style="width: 100px; display: flex; align-items: center;justify-content: center" src="https://floradelivery.md/wp-content/uploads/2022/03/logo-white-1.jpg" alt="">
                 </div>
                 <div class="autor" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">Автор:</span> {{$order->manager?->first_name}} {{$order->manager?->last_name}}</p>
+                    <p><span style="font-weight: bold">{{__('theme.author')}}</span> {{$order->manager?->first_name}} {{$order->manager?->last_name}}</p>
                 </div>
                 <div class="otgruz" style="margin-top: 15px">
-                    <p>Отгрузка товара <span style="font-weight: bold">{{$order->order_number}}</span>  от {{$order->created_at->format('d.m.Y')}} </p>
+                    <p>{{__('theme.shipment')}} <span style="font-weight: bold">{{$order->order_number}}</span> {{__('theme.from')}}{{$order->created_at->format('d.m.Y')}} </p>
                 </div>
                 <div class="client" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">Клиент:</span> {{$order->first_name}} {{$order->last_name}} / {{$order->address}} / {{$order->phone}}</p>
+                    <p><span style="font-weight: bold">{{__('theme.client')}}</span> {{$order->first_name}} {{$order->last_name}} / {{$order->address}} / {{$order->phone}}</p>
                 </div>
                 <div class="sclad" style="margin-top: 30px">
-                    <p style="font-weight: bold; font-size: 16px;">Склад: 1.ОСН. (Основной склад)</p>
+                    <p style="font-weight: bold; font-size: 16px;">{{__('theme.warehouse')}}</p>
                 </div>
             </div>
             <table class="iksweb" style="margin-top: 10px">
                 <tbody>
                 <tr>
                     <td>№</td>
-                    <td>Наименование</td>
-                    <td>Ед</td>
-                    <td>Код</td>
-                    <td>Кол-во</td>
-                    <td>Цена</td>
-                    <td>Сумма в НДС</td>
+                    <td>{{__('theme.product-name')}}</td>
+                    <td>{{__('theme.unit')}}</td>
+                    <td>{{__('theme.code')}}</td>
+                    <td>{{__('theme.quantity')}}</td>
+                    <td>{{__('theme.price')}}</td>
+                    <td>{{__('theme.summary-with')}}</td>
                 </tr>
                 @foreach($order->products as $key=>$item)
                     <tr>
@@ -187,18 +187,18 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Всего: {{$order->subtotal}} MDL</span></td>
-                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Скидка: {{$order->discount}} MDL</span></td>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">Итого: {{$order->total}} MDL</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.subtotal')}}{{$order->subtotal}} MDL</span></td>
+                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.discount')}}{{$order->discount}} MDL</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.total')}}{{$order->total}} MDL</span></td>
                 </tr>
                 </tbody>
             </table>
             <div class="footer" style="margin-top: 30px">
                 <div class="otp" style="display: table; float: left; ">
-                    <p>Отспустил: ____________________</p>
+                    <p>{{__('theme.dismissed')}} ____________________</p>
                 </div>
                 <div class="otp" style="display: table;float: left; margin-left: 70px">
-                    <p>Получил: _____________________</p>
+                    <p>{{__('theme.received')}} _____________________</p>
                 </div>
             </div>
         </div><!-- .invoice-wrap -->

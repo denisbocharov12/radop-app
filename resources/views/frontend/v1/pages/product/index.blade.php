@@ -16,9 +16,9 @@
                         <div class="product-details-wrap">
                             <div class="product-stock-status">
                                 @if($product->stock < 1)
-                                    <span class="status out-of-stock"> Нет в наличии </span>
+                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>
                                 @else
-                                    <span class="status in-stock"> В наличии </span>
+                                    <span class="status in-stock">{{__('theme.in-stock')}}</span>
                                 @endif
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                         <hr />
                         <div class="product-add-to-cart-wrap">
                             <div class="qty-select">
-                                <label for="product-qty-page" class="qty-label">Количество</label>
+                                <label for="product-qty-page" class="qty-label">{{__('theme.quantity')}}</label>
                                 <select name="qty" id="product-qty-page" class="product-qty-page qty-item-{{$product->id}}">
                                     @for($i=1; $i<=$product->stock; $i++)
                                         <option value="{{$i}}">{{$i}}</option>
@@ -46,13 +46,13 @@
                                 </select>
                             </div>
                             <div class="product-add-to-cart">
-                                <a href="#" data-id="{{$product->id}}" class="product-add-to-cart-btn">В корзину</a>
+                                <a href="#" data-id="{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>
                             </div>
                         </div>
                         <hr />
                         <div class="product-add-to-wishlist-wrap">
                             <a href="#" class="add-to-wishlist-btn"
-                            ><i class="icon-heart"></i> Добавить в список желаний</a
+                            ><i class="icon-heart"></i>{{__('theme.add-to-wishlist')}}</a
                             >
                         </div>
                         <hr />
@@ -64,12 +64,12 @@
                             </p>
                         </div>
                         <div class="product-details-wrap">
-                            <h4 class="details-heading">Детали товара:</h4>
+                            <h4 class="details-heading">{{__('theme.product-details')}}:</h4>
                             <div class="details-list-wrap">
                                 <ul class="ul-details">
                                     @if($product->brand !== null)
                                         <li class="item">
-                                            <span class="left">Брэнд:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
+                                            <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
                                         </li>
                                     @endif
                                     @foreach($product->values as $value)
@@ -93,7 +93,7 @@
             <div class="row-catalog row">
                 <div class="col-heading">
                     <div class="heading">
-                        <h1>Похожие товары</h1>
+                        <h1>{{__('theme.similar-products')}}</h1>
                     </div>
                 </div>
                 <div class="col catalog-slider">

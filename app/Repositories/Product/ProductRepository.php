@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Filters\ProductSearchFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductProfile;
 use App\Models\TransferProduct;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -30,6 +31,14 @@ final class ProductRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
         ;
+    }
+
+    public function getAllPopularProducts($condition): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', 'popular')->get();
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)->get();
     }
 
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator

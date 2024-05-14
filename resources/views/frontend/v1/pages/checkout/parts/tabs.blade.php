@@ -58,7 +58,7 @@
                                         <span class="qty-box">24 шт / упаковка</span>
                                         <span class="stock in-stock">В наличии</span>
                                     </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
+                                    <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                                         <span class="qty-box">24 шт / упаковка</span>
                                         <span class="stock in-stock">В наличии</span>
                                     </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
+                                    <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
                             </div>
                         </div>

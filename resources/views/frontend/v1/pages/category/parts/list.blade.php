@@ -33,9 +33,9 @@
                     {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
                     <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                         @if($product->stock > 0)
-                            В наличии
+                            {{__('theme.in-stock')}}
                         @else
-                            Нет в наличии
+                            {{__('theme.out-of-stock')}}
                         @endif
                     </span>
                 </div>

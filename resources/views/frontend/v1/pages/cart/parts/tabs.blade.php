@@ -15,241 +15,64 @@
             <div class="vertical-tabs-content-wrap col-lg-9">
                 <div class="vertical-tabs-content active">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
+                        @foreach($popularProducts as $product)
+                            <div class="product_item">
+                                <div class="product-wrap drop-shadow">
+                                    <div class="product-wrap-main">
+                                        <a href="#" class="product-label">
+                                            <div class="product-label-wrap">
+                                                <span class="product-label-span">- 37%</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="wrap-image">
+                                            <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
+                                            <img
+                                                class="secondary-image"
+                                                src="https://placehold.co/120x120?text=Demo 1"
+                                                alt=""
+                                            />
+                                        </a>
+                                        <div class="product-item-title-wrap">
+                                            <h3 class="product_item_name">
+                                                {{$product->title}}
+                                            </h3>
+                                            <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
                                         </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                        <div class="rating-css">
+                                            <div class="star-icon">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <span class="rating_count"></span>
                                         </div>
-                                        <span class="rating_count">103</span>
                                     </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
+                                    <div class="add_to_cart_wrap">
+                                        <div class="wrap">
+                                            @if($product->sale_price != null)
+                                                <span class="price">{{$product->sale_price}} MDL</span>
+                                                <span class="old_price">{{$product->price}} MDL</span>
+                                            @else
+                                                <span class="price">{{$product->price}} MDL</span>
+                                            @endif
                                         </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                        <div class="details-wrap">
+{{--                                            <span class="qty-box">24 шт / упаковка</span>--}}
+                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                            @if($product->stock > 0)
+                                                    {{__('theme.in-stock')}}
+                                                @else
+                                                    {{__('theme.out-of-stock')}}
+                                                @endif
+                                            </span>
                                         </div>
-                                        <span class="rating_count">103</span>
+                                        <a href="#" class="add_to_cart_btn">В корзину</a>
                                     </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="vertical-tabs-content"></div>

@@ -40,7 +40,15 @@ class RouteServiceProvider extends ServiceProvider
 //            ->group(base_path('routes/api.php'))
 //        ;
 
-        Route::middleware(['user'])
+        Route::middleware([
+            'user',
+            'localeSessionRedirect',
+            'localizationRedirect',
+            'localize',
+            'localeCookieRedirect',
+            'localeViewPath'
+            ])
+            ->prefix(LaravelLocalization::setLocale())
             ->as('user.')
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/user')) as $file) {
@@ -49,8 +57,16 @@ class RouteServiceProvider extends ServiceProvider
             })
         ;
 
-        Route::
-        middleware(['user', 'app.client-status'])
+        Route::middleware([
+            'user',
+            'app.client-status',
+            'localeSessionRedirect',
+            'localizationRedirect',
+            'localize',
+            'localeCookieRedirect',
+            'localeViewPath'
+            ])
+            ->prefix(LaravelLocalization::setLocale())
             ->as('theme.user.')
             ->group(static function () {
                 foreach (File::allFiles(base_path('routes/user/authorized')) as $file) {

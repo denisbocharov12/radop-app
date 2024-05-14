@@ -7,7 +7,7 @@
                     <div class="wrap-footer-menu">
                         <h5>Меню навигации</h5>
                         <ul class="footer-menu">
-                            <li class="item"><a href="#">Главная</a></li>
+                            <li class="item"><a href="#">{{__('theme.home')}}</a></li>
                             <li class="item"><a href="#">Мой аккаунт</a></li>
                             <li class="item"><a href="#">Магазин</a></li>
                             <li class="item"><a href="#">Корзина</a></li>

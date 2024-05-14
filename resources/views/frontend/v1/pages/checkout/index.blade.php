@@ -22,7 +22,7 @@
                         </div>
                         <div class="continue-shopping">
                             <a href="{{route('theme.shop.index')}}" class="link"
-                            >Продолжить покупки <i class="fa fa-arrow-right"></i
+                            >{{__('theme.сontinue-shopping')}}<i class="fa fa-arrow-right"></i
                                 ></a>
                         </div>
                     </div>
@@ -190,10 +190,10 @@
                                 @endif
                                 <div class="sc-buttons-wrap">
                                     <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit"
-                                    >Оформить заказ</a
+                                    >{{__('theme.place-order')}}</a
                                     >
                                     <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn"
-                                    >Продолжить покупки</a
+                                    >{{__('theme.сontinue-shopping')}}</a
                                     >
                                 </div>
                             </div>

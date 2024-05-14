@@ -33,9 +33,9 @@
                     {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
                     <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                         @if($product->stock > 0)
-                            В наличии
+                            {{__('theme.in-stock')}}
                         @else
-                            Нет в наличии
+                            {{__('theme.out-of-stock')}}
                         @endif
                     </span>
                 </div>
@@ -47,7 +47,7 @@
                             @endfor
                         </select>
                     </div>
-                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">В корзину</a>
+                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
             </div>
         </div>
