@@ -33,6 +33,7 @@
             @endswitch
         @endforeach
     @elseif(count($imagesArray) == 1)
+        <img class="primary-image" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
         <img class="secondary-image" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
     @endif
 </a>
