@@ -20,15 +20,16 @@
 @php
     $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 @endphp
+
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if(count($imagesArray) > 1)
         @foreach($imagesArray as $key => $file)
             @switch($key)
-                @case(0)//
-                <img class="primary-image" src="{{config('app.url')}}/{{$file}}" alt="{{$file}}" />
+                @case(0)
+                <img class="primary-image" src="{{config('app.url')}}//{{$file}}" alt="{{$file}}" />
                 @break
                 @case(1)
-                <img class="secondary-image" src="{{config('app.url')}}/{{$file}}" alt="{{$file}}" />
+                <img class="secondary-image" src="{{config('app.url')}}//{{$file}}" alt="{{$file}}" />
                 @break
             @endswitch
         @endforeach
@@ -37,6 +38,7 @@
         <img class="secondary-image" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
     @endif
 </a>
+
 {{--<a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">--}}
 {{--    <img class="secondary-image" src="https://placehold.co/600x600?text=Demo 1" alt="" />--}}
 {{--    <img class="primary-image" src="https://placehold.co/600x600?text=Demo 2" alt="" />--}}

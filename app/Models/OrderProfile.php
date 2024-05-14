@@ -11,6 +11,7 @@ final class OrderProfile extends Model
     use HasFactory;
 
     protected $fillable = [
+        'order_id',
         'company_name',
         'reserve_phone',
         'bank',
