@@ -5,13 +5,13 @@
                 <div class="wrap-top-menu">
                     <ul class="top-menu-list">
                         <li class="item">
-                            <a class="link" href="#">Доставка и оплата</a>
+                            <a class="link" href="#">{{__('theme.delivery')}}</a>
                         </li>
                         <li class="item">
-                            <a class="link" href="#">Контакты</a>
+                            <a class="link" href="#">{{__('theme.contact')}}</a>
                         </li>
                         <li class="item">
-                            <a class="link" href="#">О компании</a>
+                            <a class="link" href="#">{{__('theme.about-us')}}</a>
                         </li>
                     </ul>
                 </div>

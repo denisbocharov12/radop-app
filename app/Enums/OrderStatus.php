@@ -32,11 +32,11 @@ final class OrderStatus
     public function getAll(): array
     {
         return [
-            'pending' => 'Получен',
-            'processing' => 'В обработке',
-            'sent' => 'Отправлен',
-            'delivered' => 'Доставлен',
-            'canceled' => 'Отмененый',
+            'pending' => __('theme.pending'),
+            'processing' => __('theme.processing'),
+            'sent' => __('theme.sent'),
+            'delivered' => __('theme.delivered'),
+            'canceled' => __('theme.canceled'),
         ];
     }
 }

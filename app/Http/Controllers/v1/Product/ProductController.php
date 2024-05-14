@@ -91,7 +91,13 @@ class ProductController extends Controller
         $products = $this->productRepository->getAllExcluded($product->id);
         $productConditions = $this->productConditions->getAll();
 
-        return view('product.edit', compact(['product', 'products', 'categories', 'brands', 'productConditions',]));
+        return view('product.edit', compact([
+            'product',
+            'products',
+            'categories',
+            'brands',
+            'productConditions'
+        ]));
     }
 
     public function update(ProductRequest $request, Product $product)

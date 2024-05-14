@@ -1,6 +1,6 @@
 <div class="cart-block icon-block mini-shopping-cart">
     <a href="#" class="cart icon-block-link">
-        Корзина
+        {{__('theme.cart')}}
         <i class="icon-cart-radop"></i>
         @php
             $sessionId = config('shopping_cart.default_session_id');
@@ -16,8 +16,8 @@
             @include('frontend.v1.components.mini-cart')
         </div>
         <div class="bottom-shopping-cart">
-            <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart">Продолжить покупки</a>
-            <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red">Оформить заказ</a>
+            <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart">{{__('theme.сontinue-shopping')}}</a>
+            <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red">{{__('theme.place-order')}}</a>
         </div>
     </div>
 </div>
