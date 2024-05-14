@@ -6,6 +6,7 @@ use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductProfile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -32,6 +33,7 @@ final class ProductRepository
         ;
     }
 
+
     public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
     {
         $query = Product::query();
@@ -47,6 +49,14 @@ final class ProductRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
             ;
+
+    public function getAllPopularProducts($condition): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', 'popular')->get();
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)->get();
+
     }
 
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator

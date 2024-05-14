@@ -5,7 +5,7 @@
         data-src="#loginModal"
         href="javascript:;"
     >
-        Аккаунт
+        {{__('theme.account')}}
         <i class="icon-user-radop"></i>
     </a>
 </div>

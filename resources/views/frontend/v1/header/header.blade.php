@@ -21,7 +21,7 @@
                 <div class="header-search col col-md col-xl col-lg">
                     <div class="wrap">
                         <form action="#">
-                            <input type="text" class="search" name="search" placeholder="Искать на сайте" />
+                            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
                     </div>
@@ -108,8 +108,8 @@
                                 </ul>
                             </div>
                             <div class="bottom-shopping-cart">
-                                <a href="#" class="btn-shopping-cart">Продолжить покупки</a>
-                                <a href="#" class="btn-shopping-cart red">Оформить заказ</a>
+                                <a href="#" class="btn-shopping-cart">{{__('theme.сontinue-shopping')}}</a>
+                                <a href="#" class="btn-shopping-cart red">{{__('theme.place-order')}}</a>
                             </div>
                         </div>
                     </div>

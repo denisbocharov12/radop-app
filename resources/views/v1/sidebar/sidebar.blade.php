@@ -157,6 +157,14 @@
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        @hasrole('admin')
+                        <a href="{{route('languages.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-text"></em></span>
+                            <span class="nk-menu-text">Переводы</span>
+                        </a>
+                        @endhasrole
+                    </li><!-- .nk-menu-item -->
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-sidebar-menu -->
         </div><!-- .nk-sidebar-content -->

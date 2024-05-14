@@ -141,8 +141,8 @@
                 </div>
             @endif
             <div class="sc-buttons-wrap">
-                <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn">Оформить заказ</a>
-                <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">Продолжить покупки</a>
+                <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn">{{__('theme.place-order')}}</a>
+                <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
             </div>
         </div>
     </div>

@@ -1,19 +1,19 @@
 @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->hasRole('user'))
 <div class="login-modal-wrap">
     <div class="login-head">
-        <h3>Панель управления</h3>
+        <h3>{{__('theme.сontrol-panel')}}</h3>
     </div>
-    <a class="p-3 bg-light d-block rounded-1 mb-2" href="">Профиль</a>
-    <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">Выйти</a>
+    <a class="p-3 bg-light d-block rounded-1 mb-2" href="">{{__('theme.profile')}}</a>
+    <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">{{__('theme.logout')}}</a>
     <div class="account-helpers-wrap mt-4">
-        <a href="#" class="helper-account-activate">Активировать аккаунт</a>
-        <a href="#" class="helper-account-psw">Забыли пароль?</a>
+        <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
+        <a href="#" class="helper-account-psw">{{__('theme.forget-password')}}</a>
     </div>
 </div>
 @else
     <div class="login-modal-wrap">
         <div class="login-head">
-            <h3>Войти в аккаунт</h3>
+            <h3>{{__('theme.log-in-account')}}</h3>
         </div>
         <div class="login-form-wrap">
             <form action="{{route('user.login')}}" id="form-login-modal" method="POST" class="form-login">
@@ -25,7 +25,7 @@
                         type="password"
                         name="password"
                         class="input-login input-password"
-                        placeholder="Пароль"
+                        placeholder="{{__('theme.password')}}"
                     />
                 </div>
                 <div class="form-block-wrap">
@@ -34,11 +34,11 @@
             </form>
         </div>
         <div class="login-separator">
-            <p>или</p>
+            <p>{{__('theme.or')}}</p>
         </div>
         <a href="{{route('user.registration.index')}}" class="login-btn login-btn-any register"> Регистрациая </a>
         <button type="button" class="login-btn login-btn-any login-btn-google">
-            Войти с
+            {{__('theme.enter-with')}}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                     <path
@@ -64,8 +64,8 @@
         <div class="login-separator no-text">
         </div>
         <div class="account-helpers-wrap">
-            <a href="#" class="helper-account-activate">Активировать аккаунт</a>
-            <a href="#" class="helper-account-psw">Забыли пароль?</a>
+            <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
+            <a href="#" class="helper-account-psw">{{__('theme.forget-password')}}</a>
         </div>
     </div>
 @endif

@@ -3,21 +3,19 @@
 @section('content')
     <section class="my-account" style="margin-bottom: 100px">
         <div class="container">
-            <h1 class="my-account__title title">Мой аккаунт</h1>
+            <h1 class="my-account__title title">{{__('theme.my-account')}}</h1>
             <div class="my-account__wrapper">
                 @include('frontend.v1.pages.account.sidebar')
                 <div class="my-account-details">
-                    <h2 class="my-account-details__title">Детали аккаунта</h2>
+                    <h2 class="my-account-details__title">{{__('theme.account-details')}}</h2>
                     <ul class="my-account-details__list">
                         <li class="my-account-details__item">
                             <h3 class="my-account-details__name">
-                                Персональная информация
+                                {{__('theme.personal-information')}}
                             </h3>
                             <div class="my-account-details__inner">
                                 <div class="my-account-details__text">
-                                    Мы сохраняем данную информацию для удобства
-                                    использования нашей платформы. Все права защищены
-                                    сосгласно Политике конфиденциальности
+                                    {{__('theme.personal-information-save')}}
                                 </div>
                                 <form class="my-account-details-form" action="{{route('theme.user.account.update', auth()->guard('user')->user())}}" method="POST">
                                     @csrf
@@ -26,14 +24,14 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="first_name"
-                                            >Имя</label
+                                            >{{__('theme.first-name')}}</label
                                             >
                                             <input
                                                 class="my-account-details-form__input"
                                                 type="text"
                                                 name="first_name"
                                                 id="first_name"
-                                                placeholder="Имя"
+                                                placeholder="{{__('theme.first-name')}}"
                                                 value="{{$user->profile->first_name}}"
                                                 required
                                             />
@@ -42,14 +40,14 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="last_name"
-                                            >Фамилия</label
+                                            >{{__('theme.second-name')}}</label
                                             >
                                             <input
                                                 class="my-account-details-form__input"
                                                 type="text"
                                                 name="last_name"
                                                 id="last_name"
-                                                placeholder="Фамилия"
+                                                placeholder="{{__('theme.second-name')}}"
                                                 value="{{$user->profile->last_name}}"
                                                 required
                                             />
@@ -58,14 +56,14 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="cod_fiscal"
-                                            >Фискальный код</label
+                                            >{{__('theme.cod-fiscal')}}</label
                                             >
                                             <input
                                                 class="my-account-details-form__input"
                                                 type="text"
                                                 name="cod_fiscal"
                                                 id="cod_fiscal"
-                                                placeholder="Фискальный код"
+                                                placeholder="{{__('theme.cod-fiscal')}}"
                                                 value="{{$user->profile->cod_fiscal}}"
                                             />
                                         </li>
@@ -73,14 +71,14 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="address"
-                                            >Адрес</label
+                                            >{{__('theme.address')}}</label
                                             >
                                             <input
                                                 class="my-account-details-form__input"
                                                 type="text"
                                                 name="address"
                                                 id="address"
-                                                placeholder="Ул. Пушкина 22"
+                                                placeholder="{{__('theme.address')}}"
                                                 value="{{$user->profile->address}}"
                                                 required
                                             />
@@ -89,14 +87,14 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="phone"
-                                            >Номер телефона</label
+                                            >{{__('theme.phone-number')}}</label
                                             >
                                             <input
                                                 class="my-account-details-form__input"
                                                 type="tel"
                                                 name="phone"
                                                 id="phone"
-                                                placeholder="+373 777 77 777"
+                                                placeholder="{{__('theme.phone-number')}}"
                                                 value="{{$user->profile->phone}}"
                                                 required
                                             />
@@ -154,31 +152,29 @@
                                         class="my-account-details-form__button"
                                         type="submit"
                                     >
-                                        Сохранить
+                                        {{__('theme.save')}}
                                     </button>
                                 </form>
                             </div>
                         </li>
-                            <h3 class="my-account-details__name">Пароль</h3>
+                            <h3 class="my-account-details__name">{{__('theme.password')}}</h3>
                             <div class="my-account-details__inner">
                                 <div class="my-account-details__text">
-                                    Мы сохраняем данную информацию для удобства
-                                    использования нашей платформы. Все права защищены
-                                    сосгласно Политике конфиденциальности
+                                    {{__('theme.personal-information-save')}}
                                 </div>
                                 <form class="my-account-details-form" action="{{route('theme.user.account.password.update')}}" method="POST">
                                     @csrf
                                     <div class="password-requirements">
-                                        <h3>Используйте в своём новом пароле следующие символы:</h3>
+                                        <h3>{{__('theme.password-recommendations')}}:</h3>
                                         <ul class="mt-3">
                                             <li>
-                                                <i class="fas fa-check"></i> Английские прописные буквы (A - Z)
+                                                {{__('theme.password-recommendations-uppercase')}}
                                             </li>
                                             <li>
-                                                <i class="fas fa-check"></i> Английские строчные символы (a - z)
+                                                {{__('theme.password-recommendations-lowercase')}}
                                             </li>
                                             <li>
-                                                <i class="fas fa-check"></i> Цифры (0 - 9)
+                                                {{__('theme.password-recommendations-numbers')}}
                                             </li>
                                         </ul>
                                     </div>
@@ -187,7 +183,7 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="current_password"
-                                            >Текущий пароль</label
+                                            >{{__('theme.current-password')}}</label
                                             >
                                             <input
                                                 required
@@ -202,7 +198,7 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="password"
-                                            >Новый пароль</label
+                                            >{{__('theme.new-password')}}</label
                                             >
                                             <input
                                                 required
@@ -217,7 +213,7 @@
                                             <label
                                                 class="my-account-details-form__label"
                                                 for="confirm_password"
-                                            >Подтверждение пароля</label
+                                            >{{__('theme.confirm-password')}}</label
                                             >
                                             <input
                                                 required
@@ -233,7 +229,7 @@
                                         class="my-account-details-form__button"
                                         type="submit"
                                     >
-                                        Сохранить
+                                        {{__('theme.save')}}
                                     </button>
                                 </form>
                             </div>

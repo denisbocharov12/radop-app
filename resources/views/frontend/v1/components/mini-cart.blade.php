@@ -73,6 +73,6 @@
         </div>
     @else
         <p class="text-center">
-            Корзина пуста
+            {{__('theme.empty-cart')}}
         </p>
     @endif

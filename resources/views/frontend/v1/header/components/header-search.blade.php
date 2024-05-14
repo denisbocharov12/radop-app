@@ -2,8 +2,8 @@
     <div class="wrap">
         <form action="{{route('theme.search.index')}}" method="GET">
             @csrf
-            <input type="text" class="search" name="search" placeholder="Искать на сайте" />
-            <button type="submit" class="btn-search">Найти <i class="icon-search"></i></button>
+            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
+            <button type="submit" class="btn-search">{{__('theme.search')}}<i class="icon-search"></i></button>
         </form>
     </div>
 </div>
