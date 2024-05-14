@@ -1761,6 +1761,7 @@ header {
 .section-product .col-product-images .product-slider-main .product-image {
   position: relative;
   cursor: zoom-in;
+    border: 2px solid #ededed;
 }
 .section-product .col-product-images .product-slider-main .product-image img {
   position: relative;
@@ -1768,9 +1769,10 @@ header {
   top: 0;
   right: 0;
   bottom: 0;
-  object-fit: cover;
-  width: 50%;
-  margin: auto;
+  object-fit: contain;
+    margin: auto;
+    min-height: 400px;
+    max-height: 400px;
 }
 .section-product .col-product-images .product-slider-thumb {
   margin-top: 10px;
@@ -1784,6 +1786,18 @@ header {
 .section-product .col-product-images .product-slider-thumb .product-image {
   position: relative;
   cursor: pointer;
+
+}
+.section-product .col-product-images .product-slider-thumb .product-image img{
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    object-fit: contain;
+    margin: auto;
+    min-height: 200px;
+    max-height: 200px;
 }
 .product-appseil-wrap .product-appseil {
   display: flex;
@@ -3675,6 +3689,10 @@ header .section-header .row-main .header-account .nav-drill.nav-is-toggled::afte
     display: flex;
     justify-content: center;
   }
+    .section-product .col-product-images .product-slider-thumb .product-image img{
+        min-height: 100px;
+        max-height: 100px;
+    }
 }
 
 .my-account__title {
