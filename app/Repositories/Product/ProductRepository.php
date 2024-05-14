@@ -3,9 +3,9 @@
 namespace App\Repositories\Product;
 
 use App\Filters\ProductSearchFilter;
+use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Models\TransferProduct;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -30,6 +30,23 @@ final class ProductRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
         ;
+    }
+
+    public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
+    {
+        $query = Product::query();
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+            ])
+            ->defaultSort('id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+            ->appends(request()->query())
+            ;
     }
 
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator
