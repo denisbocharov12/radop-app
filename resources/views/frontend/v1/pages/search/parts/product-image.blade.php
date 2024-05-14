@@ -26,15 +26,15 @@
         @foreach($imagesArray as $key => $file)
             @switch($key)
                 @case(0)
-                <img class="primary-image" src="/{{$file}}" alt="{{$file}}" />
+                <img class="primary-image" src="{{config('app.url')}}//{{$file}}" alt="{{$file}}" />
                 @break
                 @case(1)
-                <img class="secondary-image" src="/{{$file}}" alt="{{$file}}" />
+                <img class="secondary-image" src="{{config('app.url')}}//{{$file}}" alt="{{$file}}" />
                 @break
             @endswitch
         @endforeach
     @elseif(count($imagesArray) == 1)
-        <img class="secondary-image" src="{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
+        <img class="secondary-image" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$imagesArray[0]}}" />
     @endif
 </a>
 
