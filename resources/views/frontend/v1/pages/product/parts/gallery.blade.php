@@ -1,26 +1,3 @@
-{{--<div class="product-slider-main">--}}
-{{--    @if(count($product->images) > 0)--}}
-{{--        @foreach($product->images as $key=>$photo)--}}
-{{--            <div class="product-image {{$key==0 ? 'slick-current slick-active' : ''}}">--}}
-{{--                <img src="{{asset('storage').$photo->image_path}}" alt="">--}}
-{{--            </div>--}}
-{{--        @endforeach--}}
-{{--    @else--}}
-{{--        <div class="product-image">--}}
-{{--            <img src="https://placehold.co/600x900?text=Demo" alt="Demo">--}}
-{{--        </div>--}}
-{{--    @endif--}}
-{{--</div>--}}
-{{--<div class="product-slider-thumb">--}}
-{{--    @if(count($product->images) > 0)--}}
-{{--        @foreach($product->images as $key=>$photo)--}}
-{{--            <div class="product-image {{$key==0 ? 'slick-current slick-active' : ''}}">--}}
-{{--                <img src="{{asset('storage').$photo->image_path}}" alt="">--}}
-{{--            </div>--}}
-{{--        @endforeach--}}
-{{--    @else--}}
-{{--    @endif--}}
-{{--</div>--}}
 @php
     $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 @endphp
