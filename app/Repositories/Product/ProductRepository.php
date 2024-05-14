@@ -6,6 +6,7 @@ use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductProfile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
