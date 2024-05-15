@@ -13,7 +13,7 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Категории</p>
+                            <p class="theme-widget-title">{{__('theme.category')}}</p>
                             <div class="filter-widget-wrap">
                                 @if(!empty($themeParentCategories))
                                     <ul class="accordion theme-category-list">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Брэнд</p>
+                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">
                                 @foreach($brands as $brand)
                                     <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && in_array($query['brand'], $brand->id) ? 'checked' : ''}} id="brand-{{$brand->id}}" name="filter[brand][]" value="{{$brand->id}}">

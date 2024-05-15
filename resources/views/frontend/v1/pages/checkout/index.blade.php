@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-12 col-checkout-heading">
                         <div class="heading">
-                            <h1>Оформление заказа</h1>
+                            <h1>{{__('theme.order-placement')}}</h1>
                         </div>
                         <div class="continue-shopping">
                             <a href="{{route('theme.shop.index')}}" class="link"
@@ -34,7 +34,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="first_name">Имя</label>
+                                            <label for="first_name">{{__('theme.first-name')}}</label>
                                             <input
                                                 type="text"
                                                 name="first_name"
@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="last_name">Фамилия</label>
+                                            <label for="last_name">{{__('theme.second-name')}}</label>
                                             <input
                                                 type="text"
                                                 name="last_name"
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="phone">Номер телефона</label>
+                                            <label for="phone">{{__('theme.phone-number')}}</label>
                                             <input
                                                 type="text"
                                                 id="phone"
@@ -86,21 +86,21 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="city">Выберите город</label>
+                                            <label for="city">{{__('theme.select-city')}}</label>
                                             <select
                                                 name="city"
                                                 id="city"
                                                 class="select-2-container"
                                             >
-                                                <option value="chisinau">Кишинёв</option>
-                                                <option value="comrat">Комрат</option>
-                                                <option value="belti">Бельцы</option>
+                                                <option value="chisinau">{{__('theme.chisinau')}}</option>
+                                                <option value="comrat">{{__('theme.comrat')}}</option>
+                                                <option value="belti">{{__('theme.balti')}}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="address">Введите полный адрес</label>
+                                            <label for="address">{{__('theme.full-address')}}</label>
                                             <input
                                                 type="text"
                                                 name="address"
@@ -114,7 +114,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="payment_method">Выберите способ оплаты</label>
+                                            <label for="payment_method">{{__('theme.payment-method')}}</label>
                                             <select
                                                 name="payment_method"
                                                 id="payment_method"
@@ -131,7 +131,7 @@
                                 <div class="row">
                                     <div class="col-12 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="note">Комментарий</label>
+                                            <label for="note">{{__('theme.comment')}}</label>
                                             <textarea
                                                 name="note"
                                                 id="note"
@@ -143,14 +143,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 col-checkout-heading flex-column" >
-                                        <h5 class="d-flex w-100 fw-bold">Для Юр. лиц:</h5>
+                                        <h5 class="d-flex w-100 fw-bold">{{__('theme.iur-person')}}</h5>
                                         <span  style="margin-top: 5px;border-bottom: 1px solid #C9C9C9; display: flex; width: 100%"></span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="company_name">Название компании</label>
+                                            <label for="company_name">{{__('theme.company-name')}}</label>
                                             <input
                                                 type="text"
                                                 name="company_name"
@@ -162,7 +162,7 @@
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="reserve_phone">Резервный телефон</label>
+                                            <label for="reserve_phone">{{__('theme.backup-phone')}}</label>
                                             <input
                                                 type="text"
                                                 name="reserve_phone"
@@ -176,7 +176,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="bank">Банк</label>
+                                            <label for="bank">{{__('theme.bank')}}</label>
                                             <input
                                                 type="text"
                                                 name="bank"
@@ -214,7 +214,7 @@
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="registered_city">Город регистрации</label>
+                                            <label for="registered_city">{{__('theme.registered-city')}}</label>
                                             <input
                                                 type="text"
                                                 name="registered_city"
@@ -228,7 +228,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="iur_address">Юр. адрес</label>
+                                            <label for="iur_address">{{__('theme.iur-address')}}</label>
                                             <input
                                                 type="text"
                                                 name="iur_address"
@@ -240,7 +240,7 @@
                                     </div>
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="shipping_address">Адрес доставки</label>
+                                            <label for="shipping_address">{{__('theme.shipping-address')}}</label>
                                             <input
                                                 type="text"
                                                 name="shipping_address"
@@ -258,42 +258,42 @@
                         <div class="shopping-cart-total-wrap">
                             <div class="shopping-cart-total">
                                 <div class="total-heading">
-                                    <h3>Счёт к оплате</h3>
+                                    <h3>{{__('theme.invoice-payable')}}</h3>
                                 </div>
                                 @if(session()->has('coupon'))
                                     <div class="sc-details-wrap">
                                         <ul class="details-ul">
                                             <li class="item">
-                                                <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                                                <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">Скидка: </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
+                                                <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="total-wrap">
-                                        <p class="total-text">К оплате:</p>
+                                        <p class="total-text">{{__('theme.for-payment')}}</p>
                                         <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} MDL</span>
                                     </div>
                                 @else
                                     <div class="sc-details-wrap">
                                         <ul class="details-ul">
                                             <li class="item">
-                                                <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                                                <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">Скидка: </span><span class="right">0.00 MDL</span>
+                                                <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 MDL</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="total-wrap">
-                                        <p class="total-text">К оплате:</p>
+                                        <p class="total-text">{{__('theme.for-payment')}}</p>
                                         <span>{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                                     </div>
                                 @endif
@@ -316,7 +316,7 @@
             <div class="container pt-5 pb-5">
                 <div class="row">
                     <div class="col-12 pt-4 pb-2 d-flex" style="justify-content: center; align-items: center; flex-direction: column">
-                        <h5 style="margin-top: 30px; font-size: 30px; font-weight: 600; color: #394360">Упс... Корзина пуста :(</h5>
+                        <h5 style="margin-top: 30px; font-size: 30px; font-weight: 600; color: #394360">{{__('theme.empty-cart')}}</h5>
                     </div>
                 </div>
             </div>

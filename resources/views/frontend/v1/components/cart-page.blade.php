@@ -83,7 +83,7 @@
 <div class="col-lg-3 col-cart-total">
     <div class="shopping-cart-total-wrap">
         <div class="shopping-cart-bonus-code-info" style="background-color: #0293b2; padding: 12.5px; margin-bottom: 15px; border-radius: 15px">
-            <p class="info-text" style="color: #e2e8f0; text-align: center; font-size: 14px">При обновлении товара, активированный купон будет недействителен и удален.</p>
+            <p class="info-text" style="color: #e2e8f0; text-align: center; font-size: 14px">{{__('theme.coupon-text')}}</p>
         </div>
         <div class="shopping-cart-bonus-code-wrap">
             <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
@@ -92,51 +92,51 @@
                     <input
                         type="text"
                         class="cart-input"
-                        placeholder="Введите код для скидки"
+                        placeholder="{{__('theme.discount-code')}}"
                         name="code"
                     />
-                    <button type="submit" class="cart-btn-code">Применить</button>
+                    <button type="submit" class="cart-btn-code">{{__('theme.apply')}}</button>
                 </div>
             </form>
         </div>
         <div class="shopping-cart-total">
             <div class="total-heading">
-                <h3>Счёт к оплате</h3>
+                <h3>{{__('theme.invoice-payable')}}</h3>
             </div>
             @if(session()->has('coupon'))
                 <div class="sc-details-wrap">
                     <ul class="details-ul">
                         <li class="item">
-                            <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                         </li>
                         <li class="item">
-                            <span class="left">Скидка: </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
                         </li>
                     </ul>
                 </div>
                 <div class="total-wrap">
-                    <p class="total-text">К оплате:</p>
+                    <p class="total-text">{{__('theme.for-payment')}}</p>
                     <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} MDL</span>
                 </div>
             @else
                 <div class="sc-details-wrap">
                     <ul class="details-ul">
                         <li class="item">
-                            <span class="left">Кол-во: </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">Сумма: </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                         </li>
                         <li class="item">
-                            <span class="left">Скидка: </span><span class="right">0.00 MDL</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 MDL</span>
                         </li>
                     </ul>
                 </div>
                 <div class="total-wrap">
-                    <p class="total-text">К оплате:</p>
+                    <p class="total-text">{{__('theme.for-payment')}}</p>
                     <span>{{\Cart::session($sessionId)->getTotal()}} MDL</span>
                 </div>
             @endif

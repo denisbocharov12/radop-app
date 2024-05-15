@@ -7,13 +7,13 @@
                 <div class="col-12 col-md-3 col-theme-filters">
                     <form action="{{route('theme.shop.index')}}" method="GET">
                         <div class="theme-wg-wrap">
-                                                    <p class="theme-widget-title">Поиск</p>
+                                                    <p class="theme-widget-title">{{__('theme.search')}}</p>
                                                     <div class="filter-widget-wrap">
-                                                        <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="Введите SKU товара либо название" class="search">
+                                                        <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
                                                     </div>
                                                 </div>
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Категории</p>
+                            <p class="theme-widget-title">{{__('theme.category')}}</p>
                             <div class="filter-widget-wrap">
                                 @if(!empty($themeParentCategories))
                                     <ul class="accordion theme-category-list">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Брэнд</p>
+                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">
                                 @foreach($brands as $brand)
                                     <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && in_array($query['brand'], $brand->id) ? 'checked' : ''}} id="brand-{{$brand->id}}" name="filter[brand][]" value="{{$brand->id}}">
@@ -33,7 +33,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <button type="submit" class="theme-wg-btn">Фильтр</button>
+                        <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
