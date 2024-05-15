@@ -5,7 +5,7 @@
     @if(count($imagesArray) > 1)
         @foreach($imagesArray as $key => $file)
             @switch($key)
-                @case(0)//
+                @case(0)
                 <img class="primary-image" src="{{config('app.url')}}/{{$file}}" loading="lazy"  alt="{{$product->title}}" />
                 @break
                 @case(1)
