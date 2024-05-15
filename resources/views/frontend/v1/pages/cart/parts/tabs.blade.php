@@ -2,7 +2,7 @@
     <div class="container">
         <div class="col-heading">
             <div class="heading">
-                <h1>Продолжите покупки</h1>
+                <h1>{{__('theme.сontinue-shopping')}}</h1>
             </div>
         </div>
         <hr />
@@ -19,11 +19,13 @@
                             <div class="product_item">
                                 <div class="product-wrap drop-shadow">
                                     <div class="product-wrap-main">
-                                        <a href="#" class="product-label">
-                                            <div class="product-label-wrap">
-                                                <span class="product-label-span">- 37%</span>
-                                            </div>
-                                        </a>
+                                        @if($product->sale_price !== '')
+                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                                <div class="product-label-wrap">
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                </div>
+                                            </a>
+                                        @endif
                                         <a href="#" class="wrap-image">
                                             <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
                                             <img
@@ -38,20 +40,10 @@
                                             </h3>
                                             <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
                                         </div>
-                                        <div class="rating-css">
-                                            <div class="star-icon">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <span class="rating_count"></span>
-                                        </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
-                                            @if($product->sale_price != null)
+                                            @if($product->sale_price !== '')
                                                 <span class="price">{{$product->sale_price}} MDL</span>
                                                 <span class="old_price">{{$product->price}} MDL</span>
                                             @else
@@ -68,7 +60,7 @@
                                                 @endif
                                             </span>
                                         </div>
-                                        <a href="#" class="add_to_cart_btn">В корзину</a>
+                                        <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                     </div>
                                 </div>
                             </div>

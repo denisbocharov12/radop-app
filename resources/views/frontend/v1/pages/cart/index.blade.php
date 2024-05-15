@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-12 col-cart-heading">
                         <div class="heading">
-                            <h1>Корзина</h1>
+                            <h1>{{__('theme.cart')}}</h1>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="container pt-5 pb-5">
                 <div class="row">
                     <div class="col-12 pt-4 pb-2 d-flex" style="justify-content: center; align-items: center; flex-direction: column">
-                        <h5 style="margin-top: 30px; font-size: 30px; font-weight: 600; color: #394360">Упс... Корзина пуста :(</h5>
+                        <h5 style="margin-top: 30px; font-size: 30px; font-weight: 600; color: #394360">{{__('theme.empty-cart')}}</h5>
                     </div>
                 </div>
             </div>

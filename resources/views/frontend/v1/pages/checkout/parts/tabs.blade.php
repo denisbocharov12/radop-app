@@ -2,7 +2,7 @@
     <div class="container">
         <div class="col-heading">
             <div class="heading">
-                <h1>Продолжите покупки</h1>
+                <h1>{{__('theme.сontinue-shopping')}}</h1>
             </div>
         </div>
         <hr />

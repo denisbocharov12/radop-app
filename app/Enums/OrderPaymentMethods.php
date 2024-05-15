@@ -22,9 +22,9 @@ final class OrderPaymentMethods
     public function getAll(): array
     {
         return [
-            'cash' => 'Наличные',
-            'card' => 'Онлайн',
-            'card_delivery' => 'Онлайн при доставке',
+            'cash' => __('theme.cash'),
+            'card' => __('theme.card'),
+            'card_delivery' => __('theme.card_delivery'),
         ];
     }
 }
