@@ -2848,6 +2848,20 @@ header {
 .section-category .row-category-list {
   margin-top: 15px;
 }
+.section-category .row-category-list .col-theme-filters .theme-wg-btn {
+    padding: 10px 25px;
+    border-radius: 8px;
+    background-color: #0068a7;
+    transition: all 0.4s;
+    color: #fff;
+    font-weight: 500;
+    border: 0;
+    outline: none;
+    margin-bottom: 10px;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-btn:hover {
+    background-color: #005991;
+}
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap {
     margin-bottom: 20px;
 }
@@ -2863,6 +2877,7 @@ header {
     border: 1px solid #ededed;
     border-radius: 8px;
 }
+
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap input.search {
     width: 100%;
 }
@@ -2956,7 +2971,28 @@ header {
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .theme-category-list ul.inner .inner .inner li > a {
     padding-left: 25px;
 }
-
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow {
+    max-height: 400px;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow .theme-checkbox + label {
+    width: 50%;
+    flex: 0 0 50%;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar {
+    width: 4px;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar-thumb {
+    background: #888;
+}
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 .product-item-category {
   margin-bottom: 30px;

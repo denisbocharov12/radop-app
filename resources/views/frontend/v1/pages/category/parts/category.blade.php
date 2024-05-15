@@ -26,7 +26,7 @@
                         </div>
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">Брэнд</p>
-                            <div class="filter-widget-wrap">
+                            <div class="filter-widget-wrap filter-wrap-overflow">
                                 @foreach($brands as $brand)
                                     <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && in_array($query['brand'], $brand->id) ? 'checked' : ''}} id="brand-{{$brand->id}}" name="filter[brand][]" value="{{$brand->id}}">
                                     <label for="brand-{{$brand->id}}">{{$brand->title}}</label>
