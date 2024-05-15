@@ -49,7 +49,8 @@ final class ProductRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
             ;
-
+    }
+    
     public function getAllPopularProducts($condition): Collection
     {
         $popularProductProfiles = ProductProfile::where('condition', 'popular')->get();
