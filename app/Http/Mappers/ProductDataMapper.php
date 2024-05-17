@@ -17,6 +17,7 @@ final class ProductDataMapper
             $request->price,
             $request->sale_price,
             $request->status,
+            $request->site_status,
             $request->brand_id,
             $request->category_id,
             $request->attachments,

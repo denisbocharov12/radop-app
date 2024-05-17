@@ -163,6 +163,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="site_status">Статус сайта</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" required name="site_status" id="site_status" data-placeholder="Выберите статус сайта">
+                                                        <option value="">Статус</option>
+                                                        <option {{$product->site_status == true ? 'selected' : ''}} value="true">Активный</option>
+                                                        <option {{$product->site_status == false ? 'selected' : ''}} value="false">Неактивный</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="summary">Краткое описание товара</label>

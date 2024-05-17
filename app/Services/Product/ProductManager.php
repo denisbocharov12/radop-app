@@ -53,27 +53,29 @@ class ProductManager
 
     public function store(ProductData $productData, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getByOnecId($productData->category_id);
+        $existedCategory = $this->categoryRepository->getByOnecId($productData->categoryId);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getByOnecId($productData->brand_id);
+        $existedBrand = $this->brandRepository->getByOnecId($productData->brandId);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
         }
 
         $status = $this->entityStatusManager->getEntityStatusFromRequest($productData->status);
+        $siteStatus = $this->entityStatusManager->getEntityStatusFromRequest($productData->siteStatus);
 
         $product = Product::create([
             'title' => $productData->title,
             'stock' => $productData->stock,
             'unit' => $productData->unit,
             'price' => $productData->price,
-            'sale_price' => $productData->sale_price,
+            'sale_price' => $productData->salePrice,
             'status' => $status,
+            'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
         ]);
 
@@ -92,41 +94,43 @@ class ProductManager
             'sku' => $productData->sku,
             'summary' => $productData->summary,
             'description' => $productData->description,
-            'upp_sale' => json_encode($productData->upp_sale),
-            'iur_price' => $productData->iur_price,
+            'upp_sale' => json_encode($productData->uppSale),
+            'iur_price' => $productData->iurPrice,
             'condition' => $productData->condition,
         ]);
 
         $productProfile->save();
 
-        $this->attachCategoriesToProduct($product, $productData->category_id);
+        $this->attachCategoriesToProduct($product, $productData->categoryId);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }
 
     public function update(ProductData $productData, Product $product, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getByOnecId($productData->category_id);
+        $existedCategory = $this->categoryRepository->getByOnecId($productData->categoryId);
 
         if ($existedCategory === null) {
             throw new CategoryNotFoundException();
         }
 
-        $existedBrand = $this->brandRepository->getByOnecId($productData->brand_id);
+        $existedBrand = $this->brandRepository->getByOnecId($productData->brandId);
 
         if ($existedBrand === null) {
             throw new BrandNotFoundException();
         }
 
         $status = $this->entityStatusManager->getEntityStatusFromRequest($productData->status);
+        $siteStatus = $this->entityStatusManager->getEntityStatusFromRequest($productData->siteStatus);
 
         $product->update([
             'title' => $productData->title,
             'stock' => $productData->stock,
             'unit' => $productData->unit,
             'price' => $productData->price,
-            'sale_price' => $productData->sale_price,
+            'sale_price' => $productData->salePrice,
             'status' => $status,
+            'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
         ]);
 
@@ -137,13 +141,13 @@ class ProductManager
             'sku' => $productData->sku,
             'summary' => $productData->summary,
             'description' => $productData->description,
-            'upp_sale' => json_encode($productData->upp_sale),
-            'iur_price' => $productData->iur_price,
+            'upp_sale' => json_encode($productData->uppSale),
+            'iur_price' => $productData->iurPrice,
             'condition' => $productData->condition,
         ]);
 
 
-        $this->syncCategoriesToProduct($product, $productData->category_id);
+        $this->syncCategoriesToProduct($product, $productData->categoryId);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }

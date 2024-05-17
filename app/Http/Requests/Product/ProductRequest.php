@@ -11,10 +11,10 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property int $unit
  * @property float $price
  * @property float $sale_price
- * @property bool $status
+ * @property string $status
+ * @property string $site_status
  * @property int $brand_id
- * @property int $category_id
- * @property string $currency
+ * @property array $category_id
  * @property array $attachments
  * @property string $sku
  * @property string $summary
@@ -35,6 +35,7 @@ class ProductRequest extends FormRequest
             'price' => ['numeric', 'required'],
             'sale_price' => ['numeric', 'nullable'],
             'status' => ['required', 'string'],
+            'site_status' => ['required', 'string'],
             'brand_id' => ['nullable', 'string'],
             'category_id' => ['nullable', 'array'],
             'attachments' => ['nullable', 'array', 'max:10'],
