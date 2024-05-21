@@ -15,7 +15,9 @@ use App\Http\Mappers\OrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
+use App\Models\Product;
 use App\Repositories\Order\OrderRepository;
+use App\Repositories\Product\ProductRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +65,7 @@ class OrderController extends Controller
         ]));
     }
 
-    public function edit(Order $order)
+    public function edit(Order $order, Product $product)
     {
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $paymentStatus = $this->orderPaymentStatus->getAll();
@@ -80,6 +82,7 @@ class OrderController extends Controller
             'users',
             'managers',
             'userTypes',
+            'product'
         ]));
     }
 

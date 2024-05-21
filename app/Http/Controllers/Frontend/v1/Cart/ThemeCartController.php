@@ -25,7 +25,6 @@ final class ThemeCartController extends Controller
     public function __construct(
         private readonly ThemeCartManager $themeCartManager,
         private readonly ThemeCouponDataMapper $themeCouponDataMapper,
-        private readonly ProductConditions $productConditions,
         private readonly ProductRepository $productRepository,
     )
     {
@@ -33,8 +32,7 @@ final class ThemeCartController extends Controller
 
     public function index()
     {
-        $popularCondition =  $this->productConditions->getPopularCondition();
-        $popularProducts = $this->productRepository->getAllPopularProducts($popularCondition);
+        $popularProducts = $this->productRepository->getAllPopularProducts();
 
         return view('frontend.v1.pages.cart.index', compact([
             'popularProducts'

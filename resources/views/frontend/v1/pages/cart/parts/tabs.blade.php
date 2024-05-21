@@ -29,28 +29,12 @@
                                                 </div>
                                             </a>
                                         @endif
-
-                                        <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
-                                            @if(count($imagesArray) > 1)
-                                                @foreach($imagesArray as $key => $file)
-                                                    @switch($key)
-                                                        @case(0)
-                                                        <img class="primary-image" src="{{config('app.url')}}/{{$file}}" loading="lazy" alt="{{$product->title}}" />
-                                                        @break
-                                                        @case(1)
-                                                        <img class="secondary-image" src="{{config('app.url')}}/{{$file}}" loading="lazy" alt="{{$product->title}}" />
-                                                        @break
-                                                    @endswitch
-                                                @endforeach
-                                            @elseif(count($imagesArray) == 1)
-                                                <img class="primary-image" style="display: block;" loading="lazy" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" />
-                                            @endif
-                                        </a>
+                                        @include('frontend.v1.pages.shop.parts.product-image')
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
-                                                {{$product->title}}
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
                                             </h3>
-                                            <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
@@ -63,15 +47,21 @@
                                             @endif
                                         </div>
                                         <div class="details-wrap">
+                                            {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
                                             <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                                            @if($product->stock > 0)
+                                                @if($product->stock > 0)
                                                     {{__('theme.in-stock')}}
                                                 @else
                                                     {{__('theme.out-of-stock')}}
                                                 @endif
                                             </span>
                                         </div>
-                                        <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                        <div class="qty-add-to-cart">
+                                            <div class="qty-select">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                            </div>
+                                            <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

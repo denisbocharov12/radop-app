@@ -25,8 +25,14 @@ final class CouponRepository
             ->allowedSorts([
                 'id',
             ])
-            ->paginate(self::COUNT_OF_PAGINATION)
-        ;
+            ->paginate(self::COUNT_OF_PAGINATION);
+    }
+
+    public function getAllByUserId($user_id): Collection
+    {
+        return Coupon::where('user_id', $user_id)
+            ->where('status', true)
+            ->get();
     }
 
     public function getById($couponId): ?Coupon
@@ -49,11 +55,10 @@ final class CouponRepository
         return Coupon::where('code', $couponCode)
             ->where('start_date', '<=', $date)
             ->where('end_date', '>=', $date)
-            ->first()
-        ;
+            ->first();
     }
 
-    public function getAll() : Collection
+    public function getAll(): Collection
     {
         return Coupon::query()->get();
     }

@@ -32,6 +32,7 @@ class PermissionSeeder extends Seeder
         'theme.user.orders.view.invoice',
         'theme.user.orders.download.invoice',
         'theme.user.account.password.update',
+        'theme.user.coupon.index'
     ];
 
     public function run(): void
