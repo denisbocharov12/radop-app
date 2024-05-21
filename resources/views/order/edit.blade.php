@@ -349,18 +349,19 @@
                                         <th>Название товара</th>
                                         <th>Количество</th>
                                         <th>Цена</th>
-                                        <th>Итого</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach ($order->products as $item)
                                         <tr>
-                                            <td>{{ $item->product->title}}</td>
-                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ $product->where('id',$item->product_id)->first()->title }}</td>
+                                            <td>{{ $item->quantity }} шт.</td>
                                             <td>{{ $item->price }} MDL</td>
-                                            <td>{{ $order->total }} MDL</td>
                                         </tr>
                                     @endforeach
+                                    <td>Итого</td>
+                                    <td>{{ $order->products->sum('quantity') }} шт.</td>
+                                    <td>{{ $order->total }} MDL</td>
                                     </tbody>
                                 </table>
                             </div>

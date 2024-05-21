@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;

@@ -24,6 +24,7 @@ class UserRoleSeeder extends AbstractRoleSeeder
             'theme.user.orders.view.invoice',
             'theme.user.orders.download.invoice',
             'theme.user.account.password.update',
+            'theme.user.coupon.index'
         ];
     }
 }
