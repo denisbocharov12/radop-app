@@ -24,4 +24,5 @@
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.css" />
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css" />
 </head>
