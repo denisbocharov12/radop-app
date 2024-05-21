@@ -7,21 +7,11 @@
             <i class="icon-account"></i>{{__('theme.account')}}</a
         >
     </li>
-{{--    <li class="my-account-selects__item">--}}
-{{--        <a class="my-account-selects__link" href="#">--}}
-{{--            <i class="icon-location-1"></i>Мои адреса--}}
-{{--        </a>--}}
-{{--    </li>--}}
     <li class="my-account-selects__item">
         <a class="my-account-selects__link" href="{{route('theme.user.orders.index')}}"
         ><i class="icon-your-order"></i>{{__('theme.my-orders')}}</a
         >
     </li>
-{{--    <li class="my-account-selects__item">--}}
-{{--        <a class="my-account-selects__link" href="#"--}}
-{{--        ><i class="icon-settings"></i>Настройки</a--}}
-{{--        >--}}
-{{--    </li>--}}
 </ul>
 @section('scripts')
     <script>

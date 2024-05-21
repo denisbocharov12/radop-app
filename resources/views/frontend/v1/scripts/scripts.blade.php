@@ -92,7 +92,7 @@
                 $('#add-to-cart-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete:function () {
-                $('#add-to-cart-'+product_id).html('В корзину');
+                $('#add-to-cart-'+product_id).html('{{__('theme.add-to-cart')}}');
             },
             success:function (response) {
                 if (response['status']){

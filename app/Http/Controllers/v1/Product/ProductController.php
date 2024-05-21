@@ -105,7 +105,7 @@ class ProductController extends Controller
         $productData = $this->productDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->productManager->update($productData, $product, $request );
+            $this->productManager->update($productData, $product, $request);
 
             return redirect()->route('product.index');
         } catch (CategoryNotFoundException $e) {

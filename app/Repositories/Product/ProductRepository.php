@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Product;
 
+use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Product;
@@ -14,7 +15,14 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class ProductRepository
 {
+    public function __construct(
+        private readonly ProductConditions $productConditions
+    )
+    {
+    }
+
     private const COUNT_OF_PAGINATION = 12;
+    private const COUNT_OF_PRODUCTS_FOR_FRONTEND = 10;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
     {
@@ -50,16 +58,44 @@ final class ProductRepository
             ->appends(request()->query())
             ;
     }
-    
-    public function getAllPopularProducts($condition): Collection
+
+    public function getAllPopularProducts(): Collection
     {
-        $popularProductProfiles = ProductProfile::where('condition', 'popular')->get();
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
+
         $productIds = $popularProductProfiles->pluck('product_id');
 
-        return Product::whereIn('onec_id', $productIds)->get();
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
 
     }
 
+    public function getAllNewProducts(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+
+    }
+
+    public function getAllDiscountProducts(): Collection
+    {
+        return Product::where('sale_price', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+
+    }
 
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator
     {

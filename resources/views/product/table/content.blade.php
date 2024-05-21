@@ -9,6 +9,7 @@
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Цена на скидке</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Кол-во</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус сайта</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
         </div><!-- .nk-tb-item -->
@@ -41,6 +42,13 @@
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     @if($product->status)
+                        <span class="tb-status text-success">Активный</span>
+                    @else
+                        <span class="tb-status text-danger">Неактивный</span>
+                    @endif
+                </div>
+                <div class="nk-tb-col tb-col-lg">
+                    @if($product->site_status)
                         <span class="tb-status text-success">Активный</span>
                     @else
                         <span class="tb-status text-danger">Неактивный</span>
