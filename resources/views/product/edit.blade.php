@@ -242,9 +242,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="/{{$file}}" class="product-image" data-fancybox="gallery">
-                                    <img src="/{{$file}}" alt="{{$product->title}}">
-                                </a>
                             @endforeach
 {{--                            @foreach($product->getMedia('media') as $image)--}}
 {{--                                <div class="col-sm-6 col-lg-4 col-xxl-3" id="model-media-{{$image->id}}">--}}
