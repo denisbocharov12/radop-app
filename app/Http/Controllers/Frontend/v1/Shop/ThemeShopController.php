@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\AttributeValue;
+use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ final class ThemeShopController extends Controller
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
+        private readonly AttributeRepository $attributeRepository,
     )
     {
     }
@@ -23,11 +26,13 @@ final class ThemeShopController extends Controller
 
         $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd();
         $brands = $this->brandRepository->getAll();
+        $attributes = $this->attributeRepository->getAll();
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
-            'brands'
+            'brands',
+            'attributes'
         ]));
     }
 }

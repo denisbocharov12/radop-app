@@ -9,13 +9,16 @@
         <div class="row wrap-vertical-tabs">
             <ul class="vertical-tabs col-lg-3">
                 <li class="chosen">Популярное</li>
-                <li>Недавно просмотренные</li>
-                <li>Похожие товары</li>
+                <li>На скидке</li>
+                <li>Рекомендуемые</li>
             </ul>
             <div class="vertical-tabs-content-wrap col-lg-9">
                 <div class="vertical-tabs-content active">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
                         @foreach($popularProducts as $product)
+                            @php
+                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+                            @endphp
                             <div class="product_item">
                                 <div class="product-wrap drop-shadow">
                                     <div class="product-wrap-main">
@@ -26,13 +29,22 @@
                                                 </div>
                                             </a>
                                         @endif
-                                        <a href="#" class="wrap-image">
-                                            <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                            <img
-                                                class="secondary-image"
-                                                src="https://placehold.co/120x120?text=Demo 1"
-                                                alt=""
-                                            />
+
+                                        <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
+                                            @if(count($imagesArray) > 1)
+                                                @foreach($imagesArray as $key => $file)
+                                                    @switch($key)
+                                                        @case(0)
+                                                        <img class="primary-image" src="{{config('app.url')}}/{{$file}}" loading="lazy" alt="{{$product->title}}" />
+                                                        @break
+                                                        @case(1)
+                                                        <img class="secondary-image" src="{{config('app.url')}}/{{$file}}" loading="lazy" alt="{{$product->title}}" />
+                                                        @break
+                                                    @endswitch
+                                                @endforeach
+                                            @elseif(count($imagesArray) == 1)
+                                                <img class="primary-image" style="display: block;" loading="lazy" src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" />
+                                            @endif
                                         </a>
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
@@ -51,7 +63,6 @@
                                             @endif
                                         </div>
                                         <div class="details-wrap">
-{{--                                            <span class="qty-box">24 шт / упаковка</span>--}}
                                             <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                             @if($product->stock > 0)
                                                     {{__('theme.in-stock')}}

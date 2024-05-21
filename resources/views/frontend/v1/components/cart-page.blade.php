@@ -18,7 +18,7 @@
                         <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
                             @foreach($imagesArray as $key => $file)
                                 @switch($key)
-                                    @case(0)//
+                                    @case(0)
                                     <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
                                     @break
                                 @endswitch
