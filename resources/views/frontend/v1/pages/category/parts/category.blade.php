@@ -13,6 +13,29 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="theme-wg-wrap">
+                            <p class="theme-widget-title">По цене</p>
+                            <div class="filter-widget-wrap">
+                                <div class="price-input">
+                                    <div class="field">
+                                        <span>Min</span>
+                                        <input type="number" class="input-min" value="2500">
+                                    </div>
+                                    <div class="separator">-</div>
+                                    <div class="field">
+                                        <span>Max</span>
+                                        <input type="number" class="input-max" value="7500">
+                                    </div>
+                                </div>
+                                <div class="slider">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="range-input">
+                                    <input type="range" class="range-min" min="0" max="10000" value="2500" step="10">
+                                    <input type="range" class="range-max" min="0" max="10000" value="7500" step="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.category')}}</p>
                             <div class="filter-widget-wrap">
                                 @if(!empty($themeParentCategories))
@@ -28,11 +51,21 @@
                             <p class="theme-widget-title">{{__('theme.brand')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">
                                 @foreach($brands as $brand)
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && in_array($query['brand'], $brand->id) ? 'checked' : ''}} id="brand-{{$brand->id}}" name="filter[brand][]" value="{{$brand->id}}">
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
                                     <label for="brand-{{$brand->id}}">{{$brand->title}}</label>
                                 @endforeach
                             </div>
                         </div>
+                        <div class="theme-wg-wrap">
+                            <p class="theme-widget-title">Аттрибуты</p>
+                            <div class="filter-widget-wrap filter-wrap-overflow">
+                                @foreach($brands as $brand)
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
+                                    <label for="brand-{{$brand->id}}">{{$brand->title}}</label>
+                                @endforeach
+                            </div>
+                        </div>
+                        <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">

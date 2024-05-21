@@ -4,8 +4,11 @@ namespace App\Repositories\Product;
 
 use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
+use App\Filters\Theme\ThemeAttributeFilter;
+use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Order;
+use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
@@ -32,6 +35,7 @@ final class ProductRepository
         return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('search', new ProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
             ])
             ->defaultSort('id')
             ->allowedSorts([
@@ -45,11 +49,14 @@ final class ProductRepository
 
     public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
     {
-        $query = Product::query();
+        $query = Product::query()->with(['values']);
 
         return QueryBuilder::for($query)
             ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
             ->defaultSort('id')
             ->allowedSorts([
@@ -57,7 +64,7 @@ final class ProductRepository
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
-            ;
+        ;
     }
 
     public function getAllPopularProducts(): Collection
