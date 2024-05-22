@@ -12,6 +12,7 @@ use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\Checkout\OrderErrorValidationException;
 use App\Http\Mappers\Theme\ThemeOrderDataMapper;
 use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
+use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Checkout\ThemeCheckoutManager;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ final class ThemeCheckoutController
         private readonly ThemeCheckoutManager $themeCheckoutManager,
         private readonly ThemeOrderDataMapper $themeOrderDataMapper,
         private readonly OrderPaymentMethods $orderPaymentMethods,
+        private readonly ProductRepository $productRepository,
     )
     {
     }
@@ -28,9 +30,15 @@ final class ThemeCheckoutController
     public function index()
     {
         $paymentMethods = $this->orderPaymentMethods->getAll();
+        $popularProducts = $this->productRepository->getAllPopularProducts();
+        $discountProducts = $this->productRepository->getAllDiscountProducts();
+        $featuredProducts = $this->productRepository->getAllFeaturedProducts();
 
         return view('frontend.v1.pages.checkout.index', compact([
-            'paymentMethods'
+            'paymentMethods',
+            'popularProducts',
+            'discountProducts',
+            'featuredProducts'
         ]));
     }
 
@@ -54,7 +62,15 @@ final class ThemeCheckoutController
 
     public function thank()
     {
-        return view('frontend.v1.pages.thankyou.index');
+        $popularProducts = $this->productRepository->getAllPopularProducts();
+        $discountProducts = $this->productRepository->getAllDiscountProducts();
+        $featuredProducts = $this->productRepository->getAllFeaturedProducts();
+
+        return view('frontend.v1.pages.thankyou.index', compact([
+            'popularProducts',
+            'discountProducts',
+            'featuredProducts'
+        ]));
     }
 
 }

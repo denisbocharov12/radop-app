@@ -2428,12 +2428,7 @@ border-radius: 50%;
 .wrap-vertical-tabs .vertical-tabs li.chosen::before {
 border-color: #0068a7;
 }
-.wrap-vertical-tabs .vertical-tabs-content {
-display: none;
-}
-.wrap-vertical-tabs .vertical-tabs-content.active {
-display: block;
-}
+
 
 .invite-register-wrap {
 border: 1px solid #e2e7ec;

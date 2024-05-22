@@ -92,7 +92,6 @@ final class ProductRepository
             ->where('site_status', true)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
-
     }
 
     public function getAllDiscountProducts(): Collection
@@ -102,7 +101,19 @@ final class ProductRepository
             ->where('site_status', true)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
+    }
 
+    public function getAllFeaturedProducts(): Collection
+    {
+        $featuredProductProfiles = ProductProfile::where('condition', $this->productConditions->getFeaturedCondition())->get();
+
+        $productIds = $featuredProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
     }
 
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator

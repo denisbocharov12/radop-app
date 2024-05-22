@@ -7,13 +7,13 @@
                 <div class="col-12 col-md-3 col-theme-filters">
                     <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET">
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Поиск</p>
+                            <p class="theme-widget-title">{{__('theme.search')}}</p>
                             <div class="filter-widget-wrap">
-                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="Введите SKU товара либо название" class="search">
+                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
                             </div>
                         </div>
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">По цене</p>
+                            <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">
                                 <div class="price-input">
                                     @php
@@ -22,12 +22,12 @@
                                         $queryPriceTo = $query['price']['to'] ?? null;
                                     @endphp
                                     <div class="field">
-                                        <span>Min</span>
+                                        <span>{{__('theme.min')}}</span>
                                         <input type="number" class="input-min" name="filter[price][from]" @if(is_array($queryPrice) && isset($queryPriceFrom) ) value="{{$queryPriceFrom}}" @else value="{{$queryPriceFrom}}"  @endif>
                                     </div>
                                     <div class="separator">-</div>
                                     <div class="field">
-                                        <span>Max</span>
+                                        <span>{{__('theme.max')}}</span>
                                         <input type="number" class="input-max" name="filter[price][to]"  @if(is_array($queryPrice) && isset($queryPriceTo) ) value="{{$queryPriceTo}}" @else value="{{$queryPriceTo}}"  @endif" >
                                     </div>
                                 </div>

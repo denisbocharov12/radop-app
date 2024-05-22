@@ -2102,10 +2102,12 @@ header {
   border-color: #0068a7;
 }
 .wrap-vertical-tabs .vertical-tabs-content {
-  display: none;
+    height: 0;
+    visibility: hidden;
 }
 .wrap-vertical-tabs .vertical-tabs-content.active {
-  display: block;
+    height: auto;
+    visibility: visible;
 }
 
 .invite-register-wrap {

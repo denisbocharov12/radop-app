@@ -331,5 +331,17 @@
             e.preventDefault();
             $('form#checkout').submit();
         });
+        $(document).ready(function() {
+            // Добавляем класс active к первому элементу vertical-tabs-content при загрузке страницы
+            $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(0).addClass('active');
+
+            $('.vertical-tabs li').click(function() {
+                var tabIndex = $(this).index();
+                // $('.vertical-tabs li').removeClass('chosen');
+                // $(this).addClass('chosen');
+                $('.vertical-tabs-content-wrap .vertical-tabs-content').removeClass('active');
+                $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(tabIndex).addClass('active');
+            });
+        });
     </script>
 @endsection

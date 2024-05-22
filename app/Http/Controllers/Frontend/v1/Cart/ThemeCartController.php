@@ -33,9 +33,13 @@ final class ThemeCartController extends Controller
     public function index()
     {
         $popularProducts = $this->productRepository->getAllPopularProducts();
+        $discountProducts = $this->productRepository->getAllDiscountProducts();
+        $featuredProducts = $this->productRepository->getAllFeaturedProducts();
 
         return view('frontend.v1.pages.cart.index', compact([
-            'popularProducts'
+            'popularProducts',
+            'discountProducts',
+            'featuredProducts'
         ]));
     }
 
