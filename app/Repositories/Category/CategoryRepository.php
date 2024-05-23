@@ -3,7 +3,12 @@
 namespace App\Repositories\Category;
 
 use App\Filters\CategorySearchFilter;
+use App\Filters\Theme\ThemeAttributeFilter;
+use App\Filters\Theme\ThemeBrandsFilter;
+use App\Filters\Theme\ThemePriceFilter;
+use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -26,6 +31,27 @@ class CategoryRepository
                 'id',
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
+        ;
+    }
+
+    public function getAllPaginatedWithFiltersToFrontEnd(Category $category): LengthAwarePaginator
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
+            ->defaultSort('id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+            ->withQueryString()
+            ->appends(request()->query())
         ;
     }
 

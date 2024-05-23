@@ -146,4 +146,9 @@ final class UserRepository
     {
         return UserActivation::where('token', $token)->where('status', false)->first();
     }
+
+    public function getManagerById(int $id): User
+    {
+        return User::find($id);
+    }
 }

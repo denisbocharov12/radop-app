@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\OrderCreatedSendEmailEvent;
+use App\Events\OrderCreatedSendManagerEmailEvent;
 use App\Events\UserActivationSendEmailEvent;
+use App\Listeners\SendManagerOrderEmailListener;
 use App\Listeners\SendUserActivationEmailListener;
 use App\Listeners\SendUserOrderEmailListener;
 use Illuminate\Auth\Events\Registered;
@@ -29,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
 
         OrderCreatedSendEmailEvent::class => [
             SendUserOrderEmailListener::class
+        ],
+
+        OrderCreatedSendManagerEmailEvent::class => [
+            SendManagerOrderEmailListener::class
         ]
     ];
 

@@ -1,7 +1,25 @@
-$('a.link-megamenu').on("click", function (e) {
-  e.preventDefault();
-  $(this).toggleClass('active');
-  $(this).next('.megamenu-wrap').toggleClass('open');
+// $('a.link-megamenu').on("click", function (e) {
+//   e.preventDefault();
+//
+//   $(this).toggleClass('active');
+//   $(this).next('.megamenu-wrap').toggleClass('open');
+// });
+
+
+$('a.link-megamenu').click(function(e){
+    e.preventDefault();
+    $(this).toggleClass('active');
+    $(this).parents().find('.active').not(this).removeClass('active');
+
+    $(this).parents().find('.open').removeClass('open');
+    if ($(this).hasClass('active')) {
+        $(this).next('.megamenu-wrap').toggleClass('open');
+    }
+});
+
+$('main').click(function (){
+    $('.megamenu-wrap').removeClass('open');
+    $('a.link-megamenu').removeClass('active');
 });
 
 document.addEventListener("DOMContentLoaded", () => {

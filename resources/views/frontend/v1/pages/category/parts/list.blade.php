@@ -1,7 +1,7 @@
-@if(count($existedCategory->products) < 1)
+@if(count($products) < 1)
     @include('frontend.v1.pages.category.parts.not-found')
 @endif
-@foreach($existedCategory->products()->paginate(config('theme-pagination.paginationCount')) as $product)
+@foreach($products as $product)
     <div class="col-lg-4 col-md-4 col-6 product-item-category">
         <div class="product-wrap drop-shadow">
             <div class="product-wrap-main">

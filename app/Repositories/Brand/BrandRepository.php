@@ -39,6 +39,11 @@ final class BrandRepository
         return Brand::query()->get();
     }
 
+    public function getAllToFrontEnd(): Collection
+    {
+        return Brand::query()->where('status', true)->get();
+    }
+
     public function getLimited(): Collection
     {
         return Brand::all()->take(10);

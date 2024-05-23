@@ -6,6 +6,7 @@ use App\Models\AttributeValue;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filters\Filter;
 
 final class ThemeAttributeFilter implements Filter
@@ -19,16 +20,15 @@ final class ThemeAttributeFilter implements Filter
     {
 
         $attributeIds = AttributeValue::query()
-            ->whereIn('onec_id', $value)
+            ->whereIn('id', $value)
             ->get()
             ->pluck('id')
         ;
-        dd($attributeIds);
-        if ($value !== null)
-            $query->where(function ($query) use ($value) {
-                $query
-                    ->whereIn('products.brand_id',  $value)
-                ;
-            });
+
+        if ($value !== null && !empty($value))
+            $query
+                ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
+                ->whereIn('attribute_values.id', $attributeIds)
+            ;
     }
 }

@@ -4,10 +4,7 @@
             @if(count($products) < 1)
                 @include('frontend.v1.pages.search.parts.not-found')
             @else
-                <div class="col-3">
-
-                </div>
-                <div class="col-9">
+                <div class="col-12">
                     <div class="row">
                         @include('frontend.v1.pages.search.parts.list')
                     </div>

@@ -24,11 +24,11 @@
                                     <ul class="coupon__details">
                                         <li class="coupon__detail">
                                             <span class="coupon__detail-label">{{ __('theme.start-date') }}:</span>
-                                            <time datetime="{{ $coupon->start_date->format('Y-m-d') }}">{{ $coupon->start_date->format('d.m.Y') }}</time>
+                                            <time datetime="{{ $coupon?->start_date->format('Y-m-d') }}">{{ $coupon?->start_date->format('d.m.Y') }}</time>
                                         </li>
                                         <li class="coupon__detail">
                                             <span class="coupon__detail-label">{{ __('theme.end-date') }}:</span>
-                                            <time datetime="{{ $coupon->end_date->format('Y-m-d') }}">{{ $coupon->end_date->format('d.m.Y') }}</time>
+                                            <time datetime="{{ $coupon?->end_date->format('Y-m-d') }}">{{ $coupon?->end_date->format('d.m.Y') }}</time>
                                         </li>
                                         <li class="coupon__detail">
                                             <span class="coupon__detail-label">{{ __('theme.discount-type') }}:</span>
