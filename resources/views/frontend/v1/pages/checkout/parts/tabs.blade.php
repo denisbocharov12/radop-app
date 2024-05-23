@@ -8,252 +8,176 @@
         <hr />
         <div class="row wrap-vertical-tabs">
             <ul class="vertical-tabs col-lg-3">
-                <li class="chosen">Популярное</li>
-                <li>Недавно просмотренные</li>
-                <li>Похожие товары</li>
+                <li class="chosen">{{__('theme.popular-products')}}</li>
+                <li>{{__('theme.on-discount')}}</li>
+                <li>{{__('theme.recommended')}}</li>
             </ul>
             <div class="vertical-tabs-content-wrap col-lg-9">
-                <div class="vertical-tabs-content active">
+                <div class="vertical-tabs-content">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
+                        @foreach($popularProducts as $product)
+                            @php
+                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+                            @endphp
+                            <div class="product_item">
+                                <div class="product-wrap drop-shadow">
+                                    <div class="product-wrap-main">
+                                        @if($product->sale_price !== '')
+                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                                <div class="product-label-wrap">
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @include('frontend.v1.pages.shop.parts.product-image')
+                                        <div class="product-item-title-wrap">
+                                            <h3 class="product_item_name">
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                            </h3>
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                                         </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
                                     </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                    <div class="add_to_cart_wrap">
+                                        <div class="wrap">
+                                            @if($product->sale_price !== '')
+                                                <span class="price">{{$product->sale_price}} MDL</span>
+                                                <span class="old_price">{{$product->price}} MDL</span>
+                                            @else
+                                                <span class="price">{{$product->price}} MDL</span>
+                                            @endif
                                         </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
+                                        <div class="details-wrap">
+                                            {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
+                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                                @if($product->stock > 0)
+                                                    {{__('theme.in-stock')}}
+                                                @else
+                                                    {{__('theme.out-of-stock')}}
+                                                @endif
+                                            </span>
                                         </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                        <div class="qty-add-to-cart">
+                                            <div class="qty-select">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                            </div>
+                                            <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                         </div>
-                                        <span class="rating_count">103</span>
                                     </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product_item">
-                            <div class="product-wrap drop-shadow">
-                                <div class="product-wrap-main">
-                                    <a href="#" class="product-label">
-                                        <div class="product-label-wrap">
-                                            <span class="product-label-span">- 37%</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="wrap-image">
-                                        <img class="primary-image" src="https://placehold.co/120x120?text=Demo 1" alt="" />
-                                        <img
-                                            class="secondary-image"
-                                            src="https://placehold.co/120x120?text=Demo 1"
-                                            alt=""
-                                        />
-                                    </a>
-                                    <div class="product-item-title-wrap">
-                                        <h3 class="product_item_name">
-                                            BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                            60/Pack (GSM609-BLK)
-                                        </h3>
-                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="rating-css">
-                                        <div class="star-icon">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <span class="rating_count">103</span>
-                                    </div>
-                                </div>
-                                <div class="add_to_cart_wrap">
-                                    <div class="wrap">
-                                        <span class="price">120 MDL</span>
-                                        <span class="old_price">145 MDL</span>
-                                    </div>
-                                    <div class="details-wrap">
-                                        <span class="qty-box">24 шт / упаковка</span>
-                                        <span class="stock in-stock">В наличии</span>
-                                    </div>
-                                    <a href="#" class="add_to_cart_btn">В корзину</a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-                <div class="vertical-tabs-content"></div>
-                <div class="vertical-tabs-content"></div>
+                <div class="vertical-tabs-content">
+                    <div class="col cart-catalog-slider" style="margin-top: 0">
+                        @foreach($discountProducts as $product)
+                            @php
+                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+                            @endphp
+                            <div class="product_item">
+                                <div class="product-wrap drop-shadow">
+                                    <div class="product-wrap-main">
+                                        @if($product->sale_price !== '')
+                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                                <div class="product-label-wrap">
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @include('frontend.v1.pages.shop.parts.product-image')
+                                        <div class="product-item-title-wrap">
+                                            <h3 class="product_item_name">
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                            </h3>
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="add_to_cart_wrap">
+                                        <div class="wrap">
+                                            @if($product->sale_price !== '')
+                                                <span class="price">{{$product->sale_price}} MDL</span>
+                                                <span class="old_price">{{$product->price}} MDL</span>
+                                            @else
+                                                <span class="price">{{$product->price}} MDL</span>
+                                            @endif
+                                        </div>
+                                        <div class="details-wrap">
+                                            {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
+                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                                @if($product->stock > 0)
+                                                    {{__('theme.in-stock')}}
+                                                @else
+                                                    {{__('theme.out-of-stock')}}
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="qty-add-to-cart">
+                                            <div class="qty-select">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                            </div>
+                                            <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="vertical-tabs-content">
+                    <div class="col cart-catalog-slider" style="margin-top: 0">
+                        @foreach($featuredProducts as $product)
+                            @php
+                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+                            @endphp
+                            <div class="product_item">
+                                <div class="product-wrap drop-shadow">
+                                    <div class="product-wrap-main">
+                                        @if($product->sale_price !== '')
+                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                                <div class="product-label-wrap">
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @include('frontend.v1.pages.shop.parts.product-image')
+                                        <div class="product-item-title-wrap">
+                                            <h3 class="product_item_name">
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                            </h3>
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="add_to_cart_wrap">
+                                        <div class="wrap">
+                                            @if($product->sale_price !== '')
+                                                <span class="price">{{$product->sale_price}} MDL</span>
+                                                <span class="old_price">{{$product->price}} MDL</span>
+                                            @else
+                                                <span class="price">{{$product->price}} MDL</span>
+                                            @endif
+                                        </div>
+                                        <div class="details-wrap">
+                                            {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
+                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                                @if($product->stock > 0)
+                                                    {{__('theme.in-stock')}}
+                                                @else
+                                                    {{__('theme.out-of-stock')}}
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div class="qty-add-to-cart">
+                                            <div class="qty-select">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                            </div>
+                                            <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
