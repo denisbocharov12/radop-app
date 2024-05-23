@@ -15,7 +15,6 @@ final class ThemeShopController extends Controller
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
-        private readonly AttributeRepository $attributeRepository,
     )
     {
     }
@@ -25,14 +24,12 @@ final class ThemeShopController extends Controller
         $query = $request->query('filter');
 
         $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd();
-        $brands = $this->brandRepository->getAll();
-        $attributes = $this->attributeRepository->getAll();
+        $brands = $this->brandRepository->getAllToFrontEnd();
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
             'brands',
-            'attributes'
         ]));
     }
 }

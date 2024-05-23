@@ -46,6 +46,25 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="theme-wg-wrap">
+                            <p class="theme-widget-title">Аттрибуты</p>
+                            <div class="filter-widget-wrap filter-wrap-overflow">
+                                @if(!empty($attributes))
+                                    @foreach($attributes as $key => $attributeValues)
+                                        <p style="font-weight: bold; margin: 5px 0; display: flex; width: 100%">{{$key}}</p>
+                                        @foreach($attributeValues as $attribute)
+                                            @php
+                                                $attribute = \App\Models\AttributeValue::find($attribute['id']);
+
+                                            @endphp
+
+                                            <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->id, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{$attribute->id}}">
+                                            <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                        @endforeach
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.brand')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">
                                 @foreach($brands as $brand)
@@ -62,7 +81,7 @@
                         @include('frontend.v1.pages.category.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">
-                        {{$existedCategory->products()->paginate(config('theme-pagination.paginationCount'))->links()}}
+                        {{$products->links()}}
                     </div>
                 </div>
             @endif

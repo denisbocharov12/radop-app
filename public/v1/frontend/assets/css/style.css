@@ -1438,8 +1438,10 @@ header {
   padding: 30px;
 }
 .col-slider .wrap-slider .item img {
-  width: 80%;
-  margin: auto;
+    width: 180px;
+    margin: auto;
+    height: 100px;
+    object-fit: contain;
 }
 
 .section-breadcrumb {

@@ -7,6 +7,7 @@ use App\Data\Theme\Order\ThemeOrderData;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
+use App\Events\OrderCreatedSendManagerEmailEvent;
 use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Models\Order;
@@ -92,6 +93,16 @@ final class ThemeCheckoutManager
         Session()->forget('coupon');
         \Cart::session($sessionId)->clear();
 
+        if ($managerId !== null)
+        {
+            $existedManager = $this->userRepository->getManagerById($managerId);
+
+            if ($existedManager->email !== null)
+            {
+                event(new OrderCreatedSendManagerEmailEvent($existedManager));
+            }
+        }
+
         return $order;
     }
 
@@ -130,7 +141,14 @@ final class ThemeCheckoutManager
 
     private function getLatestOrderNumber(): string
     {
-        $latestOrder = Order::count() + 1;
+        $latestOrder = 1;
+
+        $orderCount = Order::withTrashed()->count();
+
+        if($orderCount !== 0)
+        {
+            $latestOrder = Order::withTrashed()->get()->last()->id + 1;
+        }
 
         $orderNumber = 'ORD-'.str_pad((string)$latestOrder, 6, "0", STR_PAD_LEFT);
 

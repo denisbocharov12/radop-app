@@ -2,7 +2,7 @@
     @include('frontend.v1.pages.shop.parts.not-found')
 @endif
 @foreach($products as $product)
-    <div class="col-lg-4 col-md-4 col-6 product-item-category">
+    <div class="col-lg-3 col-md-4 col-6 product-item-category">
         <div class="product-wrap drop-shadow">
             <div class="product-wrap-main">
                 @if($product->sale_price !== '')

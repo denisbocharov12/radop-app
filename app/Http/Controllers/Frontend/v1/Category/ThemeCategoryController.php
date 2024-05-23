@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Frontend\v1\Category;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
@@ -20,6 +21,7 @@ final class ThemeCategoryController extends Controller
         private readonly ProductRepository $productRepository,
         private readonly ThemeCategoryManager $themeCategoryManager,
         private readonly BrandRepository $brandRepository,
+        private readonly AttributeRepository $attributeRepository,
     )
     {
     }
@@ -34,14 +36,19 @@ final class ThemeCategoryController extends Controller
             throw new CategoryNotFoundValidationException();
         }
 
+        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory);
+
         $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
-        $brands = $this->brandRepository->getAll();
+        $brands = $this->brandRepository->getAllToFrontEnd();
+        $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
 
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
+            'products',
             'breadcrumbs',
             'query',
-            'brands'
+            'brands',
+            'attributes'
         ]));
     }
 

@@ -9,9 +9,9 @@
                         <div class="theme-wg-wrap">
                            <p class="theme-widget-title">{{__('theme.search')}}</p>
                            <div class="filter-widget-wrap">
-                                                        <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
-                                                    </div>
-                            </div>
+                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
+                           </div>
+                        </div>
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">
@@ -45,29 +45,6 @@
 {{--                                @endif--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
-                        <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Аттрибуты</p>
-                            <div class="filter-widget-wrap filter-wrap-overflow">
-                                @foreach($attributes as $attribute)
-                                    @if(!empty($attribute->values))
-                                        <p style="font-weight: bold; margin: 5px 0; display: flex; width: 100%">{{$attribute->name}}</p>
-                                        @php
-                                            $values = \App\Models\AttributeValue::where('attribute_onec_id', $attribute->onec_id)->get()->groupBy('value');
-                                        @endphp
-                                        {{--                                        @dd($values)--}}
-                                        @foreach($values as $key => $attribute)
-                                            @php
-                                                $attribute = \App\Models\AttributeValue::where('value->'.str_replace('_', '-', app()->getLocale()), $key)->first();
-
-                                            @endphp
-
-                                            <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->attribute_onec_id, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->attribute_onec_id}}" name="filter[attribute][]" value="{{$attribute->attribute_onec_id}}">
-                                            <label for="attribute-{{$attribute->attribute_onec_id}}">{{$attribute->value}}</label>
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            </div>
-                        </div>
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.brand')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">

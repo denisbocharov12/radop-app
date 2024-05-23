@@ -70,7 +70,7 @@
                                     @endif
                                     @foreach($product->values as $value)
                                         <li class="item">
-                                            <span class="left">{{$value->attribute->name}}</span><span class="right">{{$value->value}}</span>
+                                            <span class="left">{{$value->attribute?->name}}</span><span class="right">{{$value->value}}</span>
                                         </li>
                                     @endforeach
                                 </ul>
