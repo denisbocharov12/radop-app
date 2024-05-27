@@ -237,9 +237,9 @@
                             <tr>
                                 <td>{{$item->product_id}}</td>
                                 <td>{{$order->note}}</td>
-                                <td>{{$item->price}} MDL</td>
+                                <td>{{$item->price}} {{__('theme.MDL')}}</td>
                                 <td>{{$item->quantity}}</td>
-                                <td>{{$item->price * $item->quantity}} MDL</td>
+                                <td>{{$item->price * $item->quantity}} {{__('theme.MDL')}}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -247,7 +247,7 @@
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2">Всего</td>
-                            <td>{{$order->subtotal}} MDL</td>
+                            <td>{{$order->subtotal}} {{__('theme.MDL')}}</td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
@@ -255,7 +255,7 @@
                             @if($order->delivery_charge == null)
                                 <td>Бесплатно</td>
                             @else
-                                <td>{{$order->delivery_charge}} MDL</td>
+                                <td>{{$order->delivery_charge}} {{__('theme.MDL')}}</td>
                             @endif
 
                         </tr>
@@ -263,13 +263,13 @@
                             <tr>
                                 <td colspan="2"></td>
                                 <td colspan="2">Скидка</td>
-                                <td>{{$order->discount}} MDL</td>
+                                <td>{{$order->discount}} {{__('theme.MDL')}}</td>
                             </tr>
                         @endif
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2">К оплате</td>
-                            <td>{{number_format((float)str_replace(',','', $order->total) + (float)str_replace(',','',$order->delivery_charge),2)}} MDL</td>
+                            <td>{{number_format((float)str_replace(',','', $order->total) + (float)str_replace(',','',$order->delivery_charge),2)}} {{__('theme.MDL')}}</td>
                         </tr>
                         </tfoot>
                     </table>

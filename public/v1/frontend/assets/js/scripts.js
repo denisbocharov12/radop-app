@@ -565,6 +565,17 @@ $(function () {
   });
 });
 $(document).ready(function () {
+    $('.product-qty-input').change(function (){
+        var qtyCount = $(this).val();
+        var productId = $(this).data('product-id');
+        var productPrice = $(this).data('price');
+
+        var changedElement = $('#product-card-summary-'+productId);
+        var result = qtyCount*productPrice;
+
+        changedElement.html(result.toFixed(2));
+
+    });
   $(".filter-select").select2();
   $(".product-qty").select2({
 

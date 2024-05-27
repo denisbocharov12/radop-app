@@ -29,10 +29,10 @@
                     <div class="product-wrap">
                         <div class="product-price-wrap">
                             @if($product->sale_price !== '')
-                                <span class="price">{{$product->sale_price}} MDL</span>
-                                <span class="old_price">{{$product->price}} MDL</span>
+                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                             @else
-                                <span class="price">{{$product->price}} MDL</span>
+                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                             @endif
                         </div>
                         <hr />
@@ -59,24 +59,39 @@
                                 @endif
                             </p>
                         </div>
-                        <div class="product-details-wrap">
-                            <h4 class="details-heading">{{__('theme.product-details')}}:</h4>
-                            <div class="details-list-wrap">
-                                <ul class="ul-details">
-                                    @if($product->brand !== null)
-                                        <li class="item">
-                                            <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
-                                        </li>
-                                    @endif
-                                    @foreach($product->values as $value)
-                                        <li class="item">
-                                            <span class="left">{{$value->attribute?->name}}</span><span class="right">{{$value->value}}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                    <div class="tabs">
+                        <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
+                        <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="details">
+                            <div class="product-details-wrap">
+                                <div class="details-list-wrap">
+                                    <ul class="ul-details">
+                                        @if($product->brand !== null)
+                                            <li class="item">
+                                                <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
+                                            </li>
+                                        @endif
+                                        @foreach($product->values as $value)
+                                            <li class="item">
+                                                <span class="left">{{$value->attribute?->name}}</span><span class="right">{{$value->value}}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <hr />
+                        <div class="tab-pane" id="description">
+                            <div class="product-description-wrap">
+                                @if($product->data->description === null)
+                                    <h4 class="description-heading">{{__('theme.no-description')}}</h4>
+                                @else
+                                    <h4 class="description-heading">{{$product->data->description}}</h4>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     {{--UppSale--}}
                     </div>
                 </div>
@@ -93,264 +108,54 @@
                     </div>
                 </div>
                 <div class="col catalog-slider">
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
+                    @foreach($similarProducts as $product)
+                        <div class="product_item product-item-category">
+                            <div class="product-wrap drop-shadow">
+                                <div class="product-wrap-main">
+                                    @if($product->sale_price !== '')
+                                        <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                            <div class="product-label-wrap">
+                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
+                                            </div>
+                                        </a>
+                                    @endif
+                                    @include('frontend.v1.pages.shop.parts.product-image')
+                                    <div class="product-item-title-wrap">
+                                        <h3 class="product_item_name">
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                        </h3>
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                                     </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
                                 </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                <div class="add_to_cart_wrap">
+                                    <div class="wrap">
+                                        @if($product->sale_price !== '')
+                                            <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                            <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                        @else
+                                            <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                        @endif
                                     </div>
-                                    <span class="rating_count">103</span>
-                                </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
+                                    <div class="details-wrap">
+                                        {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
+                                        <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                                @if($product->stock > 0)
+                                                {{__('theme.in-stock')}}
+                                            @else
+                                                {{__('theme.out-of-stock')}}
+                                            @endif
+                                            </span>
                                     </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                    <div class="qty-add-to-cart">
+                                        <div class="qty-select">
+                                            <input type="number" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                        </div>
+                                        <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn m-0">{{__('theme.add-to-cart')}}</a>
                                     </div>
-                                    <span class="rating_count">103</span>
                                 </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <span class="rating_count">103</span>
-                                </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <span class="rating_count">103</span>
-                                </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <span class="rating_count">103</span>
-                                </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product_item">
-                        <div class="product-wrap drop-shadow">
-                            <div class="product-wrap-main">
-                                <a href="#" class="product-label">
-                                    <div class="product-label-wrap">
-                                        <span class="product-label-span">- 37%</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="wrap-image">
-                                    <img class="primary-image" src="assets/example-content/test.jpg" alt="" />
-                                    <img class="secondary-image" src="assets/example-content/test2.jpg" alt="" />
-                                </a>
-                                <div class="product-item-title-wrap">
-                                    <h3 class="product_item_name">
-                                        BIC Round Stic Xtra-Life Ballpoint Pen, Medium Point, 1.0mm, Black Ink,
-                                        60/Pack (GSM609-BLK)
-                                    </h3>
-                                    <a href="#" class="add_to_wishlist"><i class="icon-heart"></i></a>
-                                </div>
-                                <div class="rating-css">
-                                    <div class="star-icon">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <span class="rating_count">103</span>
-                                </div>
-                            </div>
-                            <div class="add_to_cart_wrap">
-                                <div class="wrap">
-                                    <span class="price">120 MDL</span>
-                                    <span class="old_price">145 MDL</span>
-                                </div>
-                                <div class="details-wrap">
-                                    <span class="qty-box">24 шт / упаковка</span>
-                                    <span class="stock in-stock">В наличии</span>
-                                </div>
-                                <a href="#" class="add_to_cart_btn">В корзину</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -415,5 +220,28 @@
                 }
             });
         })
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    // Удаляем класс 'active' со всех вкладок и кнопок
+                    tabButtons.forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    tabPanes.forEach(function(pane) {
+                        pane.classList.remove('active');
+                    });
+
+                    // Добавляем класс 'active' к выбранной вкладке и кнопке
+                    this.classList.add('active');
+                    const targetPane = document.getElementById(targetTab);
+                    targetPane.classList.add('active');
+                });
+            });
+        });
     </script>
 @endsection

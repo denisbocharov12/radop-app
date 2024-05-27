@@ -33,13 +33,13 @@
                     <div class="wrap">
                         @if($product->productData)
                             @if($product->productData->sale_price)
-                                <span class="price">{{$product->productData->sale_price}} MDL</span>
-                                <span class="old_price">{{$product->price}}MDL</span>
+                                <span class="price">{{$product->productData->sale_price}} {{__('theme.MDL')}}</span>
+                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                             @else
-                                <span class="price">{{$product->price}} MDL</span>
+                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                             @endif
                         @else
-                            <span class="price">{{$product->price}} MDL</span>
+                            <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                         @endif
                     </div>
                     <div class="add-to-cart-wrap">

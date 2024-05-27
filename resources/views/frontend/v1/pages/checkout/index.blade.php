@@ -41,6 +41,7 @@
                                                 class="form-control-ch-input"
                                                 required
                                                 id="first_name"
+                                                value="{{$user?->profile?->first_name}}"
                                             />
                                         </div>
                                     </div>
@@ -53,6 +54,7 @@
                                                 class="form-control-ch-input"
                                                 required
                                                 id="last_name"
+                                                value="{{$user?->profile?->last_name}}"
                                             />
                                         </div>
                                     </div>
@@ -67,6 +69,7 @@
                                                 class="form-control-ch-input"
                                                 required
                                                 id="email"
+                                                value="{{$user?->email}}"
                                             />
                                         </div>
                                     </div>
@@ -79,6 +82,7 @@
                                                 name="phone"
                                                 class="form-control-ch-input"
                                                 required
+                                                value="{{$user?->profile?->phone}}"
                                             />
                                         </div>
                                     </div>
@@ -107,6 +111,7 @@
                                                 class="form-control-ch-input"
                                                 required
                                                 id="address"
+                                                value="{{$user?->profile?->address}}"
                                             />
                                         </div>
                                     </div>
@@ -267,16 +272,16 @@
                                                 <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
+                                                <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="total-wrap">
                                         <p class="total-text">{{__('theme.for-payment')}}</p>
-                                        <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} MDL</span>
+                                        <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
                                     </div>
                                 @else
                                     <div class="sc-details-wrap">
@@ -285,16 +290,16 @@
                                                 <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 MDL</span>
+                                                <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 {{__('theme.MDL')}}</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="total-wrap">
                                         <p class="total-text">{{__('theme.for-payment')}}</p>
-                                        <span>{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                                        <span>{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                                     </div>
                                 @endif
                                 <div class="sc-buttons-wrap">

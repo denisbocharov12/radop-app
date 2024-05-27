@@ -69,7 +69,7 @@
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
                                         </a>
                                     @endif
@@ -84,10 +84,10 @@
                                 <div class="add_to_cart_wrap">
                                     <div class="wrap">
                                         @if($product->sale_price !== '')
-                                            <span class="price">{{$product->sale_price}} MDL</span>
-                                            <span class="old_price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                            <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @else
-                                            <span class="price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @endif
                                     </div>
                                     <div class="details-wrap">
@@ -130,7 +130,7 @@
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
                                         </a>
                                     @endif
@@ -145,10 +145,10 @@
                                 <div class="add_to_cart_wrap">
                                     <div class="wrap">
                                         @if($product->sale_price !== '')
-                                            <span class="price">{{$product->sale_price}} MDL</span>
-                                            <span class="old_price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                            <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @else
-                                            <span class="price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @endif
                                     </div>
                                     <div class="details-wrap">
@@ -191,7 +191,7 @@
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
                                         </a>
                                     @endif
@@ -206,10 +206,10 @@
                                 <div class="add_to_cart_wrap">
                                     <div class="wrap">
                                         @if($product->sale_price !== '')
-                                            <span class="price">{{$product->sale_price}} MDL</span>
-                                            <span class="old_price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                            <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @else
-                                            <span class="price">{{$product->price}} MDL</span>
+                                            <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                         @endif
                                     </div>
                                     <div class="details-wrap">

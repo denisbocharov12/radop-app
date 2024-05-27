@@ -117,6 +117,21 @@ final class ProductRepository
             ->get();
     }
 
+    public function getAllSimilarProducts(Product $product): Collection
+    {
+        $productCategoryId = $product->categories->first()->onec_id;
+
+        $similarProductCategory = ProductCategory::where('category_id', $productCategoryId)->get();
+
+        $productIds = $similarProductCategory->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+    }
+
     public function getThemeAllPaginatedWithFiltersByCategoryOnecId(string $onecId): LengthAwarePaginator
     {
         $query = Product::query();

@@ -31,8 +31,11 @@ final class ThemeProductController extends Controller
             throw new ProductNotFoundValidationException();
         }
 
+        $similarProducts = $this->productRepository->getAllSimilarProducts($product);
+
         return view('frontend.v1.pages.product.index', compact([
             'product',
+            'similarProducts',
         ]));
     }
 
