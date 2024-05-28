@@ -39,11 +39,22 @@
                         <div class="product-add-to-cart-wrap">
                             <div class="qty-select">
                                 <label for="product-qty-page" class="qty-label">{{__('theme.quantity')}}</label>
-                                <input type="number" value="1" min="1" max="{{$product->stock}}" name="qty" id="product-qty-page" class="product-qty-page-input qty-item-{{$product->id}}">
+                                <input type="number" name="product-{{$product->id}}-qty" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input product-qty-page-input qty-item-{{$product->id}}">
                             </div>
                             <div class="product-add-to-cart">
                                 <a href="#" data-id="{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>
                             </div>
+                        </div>
+                        <div class="product-card-summary">
+                            <p><span class="summary-title">{{__('theme.total')}}</span>
+                                <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
+                            @if($product->sale_price !== '')
+                                        {{$product->sale_price}}
+                                    @else
+                                        {{$product->price}}
+                                    @endif
+                        </span> {{__('theme.MDL')}}
+                            </p>
                         </div>
                         <hr />
                         <div class="product-add-to-wishlist-wrap">
@@ -122,9 +133,12 @@
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                                         </h3>
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                    </div>
+                                    <div class="product-item-article-wrap">
+                                        <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
                                     </div>
                                 </div>
                                 <div class="add_to_cart_wrap">
@@ -146,9 +160,20 @@
                                             @endif
                                             </span>
                                     </div>
+                                    <div class="product-card-summary">
+                                        <p><span class="summary-title">{{__('theme.total')}}</span>
+                                            <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
+                                                @if($product->sale_price !== '')
+                                                    {{$product->sale_price}}
+                                                @else
+                                                    {{$product->price}}
+                                                @endif
+                                            </span> {{__('theme.MDL')}}
+                                        </p>
+                                    </div>
                                     <div class="qty-add-to-cart">
                                         <div class="qty-select">
-                                            <input type="number" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                            <input type="number" name="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
                                         </div>
                                         <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn m-0">{{__('theme.add-to-cart')}}</a>
                                     </div>
