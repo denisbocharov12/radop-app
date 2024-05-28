@@ -182,14 +182,14 @@
                         <td>buc.</td>
                         <td>{{\App\Models\Product::where('id',$item->product_id)->first()->onec_id}}</td>
                         <td>{{$item->quantity}}</td>
-                        <td>{{$item->price}} MDL</td>
-                        <td>{{$item->price * $item->quantity}} MDL</td>
+                        <td>{{$item->price}} {{__('theme.MDL')}}</td>
+                        <td>{{$item->price * $item->quantity}} {{__('theme.MDL')}}</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.subtotal')}}{{$order->subtotal}} MDL</span></td>
-                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.discount')}}{{$order->discount}} MDL</span></td>
-                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.total')}}{{$order->total}} MDL</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.subtotal')}}{{$order->subtotal}} {{__('theme.MDL')}}</span></td>
+                    <td colspan="3" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.discount')}}{{$order->discount}} {{__('theme.MDL')}}</span></td>
+                    <td colspan="2" style="text-align: right"><span style="font-weight: bold;margin-right: 7.5px">{{__('theme.total')}}{{$order->total}} {{__('theme.MDL')}}</span></td>
                 </tr>
                 </tbody>
             </table>

@@ -64,12 +64,12 @@
 
                         <div class="price-wrap">
                             @if($item->associatedModel->sale_price !== '')
-                                <span class="price">{{$item->associatedModel->sale_price}} MDL</span>
-                                <span class="old_price">{{$item->associatedModel->price}} MDL</span>
+                                <span class="price">{{$item->associatedModel->sale_price}} {{__('theme.MDL')}}</span>
+                                <span class="old_price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
                             @else
-                                <span class="price">{{$item->associatedModel->price}} MDL</span>
+                                <span class="price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
                             @endif
-                            <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} MDL )</span>
+                            <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} {{__('theme.MDL')}} )</span>
                         </div>
                     </div>
                     <div class="delete-cart-item">
@@ -110,16 +110,16 @@
                             <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                         </li>
                         <li class="item">
-                            <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} MDL</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="total-wrap">
                     <p class="total-text">{{__('theme.for-payment')}}</p>
-                    <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} MDL</span>
+                    <span>{{number_format((float)str_replace(',','', \Cart::session($sessionId)->getTotal()) - session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
                 </div>
             @else
                 <div class="sc-details-wrap">
@@ -128,16 +128,16 @@
                             <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                         </li>
                         <li class="item">
-                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                         </li>
                         <li class="item">
-                            <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 MDL</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 {{__('theme.MDL')}}</span>
                         </li>
                     </ul>
                 </div>
                 <div class="total-wrap">
                     <p class="total-text">{{__('theme.for-payment')}}</p>
-                    <span>{{\Cart::session($sessionId)->getTotal()}} MDL</span>
+                    <span>{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
                 </div>
             @endif
             <div class="sc-buttons-wrap">

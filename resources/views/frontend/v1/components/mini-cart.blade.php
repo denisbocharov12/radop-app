@@ -61,14 +61,14 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="sc-price">{{number_format($item->price * $item->quantity, 2)}} MDL</span>
+                        <span class="sc-price">{{number_format($item->price * $item->quantity, 2)}} {{__('theme.MDL')}}</span>
                         <div data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></div>
                     </div>
                 </li>
             @endforeach
         </ul>
         <div class="heading-shopping-cart mb-3 mt-3">
-            <span class="sc-subtotal">{{__('theme.for-payment')}} <span class="fw-600">{{\Cart::session($sessionId)->getTotal()}} MDL</span></span>
+            <span class="sc-subtotal">{{__('theme.for-payment')}} <span class="fw-600">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span></span>
             <span class="sc-count">{{\Cart::session($sessionId)->getContent()->count()}} {{__('theme.unit')}}</span>
         </div>
     @else

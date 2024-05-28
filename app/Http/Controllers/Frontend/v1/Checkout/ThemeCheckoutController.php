@@ -29,6 +29,8 @@ final class ThemeCheckoutController
 
     public function index()
     {
+        $user = Auth::guard('user')->user();
+
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $popularProducts = $this->productRepository->getAllPopularProducts();
         $discountProducts = $this->productRepository->getAllDiscountProducts();
@@ -38,7 +40,8 @@ final class ThemeCheckoutController
             'paymentMethods',
             'popularProducts',
             'discountProducts',
-            'featuredProducts'
+            'featuredProducts',
+            'user'
         ]));
     }
 

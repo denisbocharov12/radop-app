@@ -25,25 +25,28 @@
                                         @if($product->sale_price !== '')
                                             <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                                 <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                                 </div>
                                             </a>
                                         @endif
                                         @include('frontend.v1.pages.shop.parts.product-image')
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                                             </h3>
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                        <div class="product-item-article-wrap">
+                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
                                             @if($product->sale_price !== '')
-                                                <span class="price">{{$product->sale_price}} MDL</span>
-                                                <span class="old_price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @else
-                                                <span class="price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
                                         <div class="details-wrap">
@@ -80,25 +83,28 @@
                                         @if($product->sale_price !== '')
                                             <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                                 <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                                 </div>
                                             </a>
                                         @endif
                                         @include('frontend.v1.pages.shop.parts.product-image')
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                                             </h3>
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                        <div class="product-item-article-wrap">
+                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
                                             @if($product->sale_price !== '')
-                                                <span class="price">{{$product->sale_price}} MDL</span>
-                                                <span class="old_price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @else
-                                                <span class="price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
                                         <div class="details-wrap">
@@ -135,25 +141,28 @@
                                         @if($product->sale_price !== '')
                                             <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                                 <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100, 2)}}%</span>
+                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                                 </div>
                                             </a>
                                         @endif
                                         @include('frontend.v1.pages.shop.parts.product-image')
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}} ({{$product->onec_id}})</a>
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                                             </h3>
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        </div>
+                                        <div class="product-item-article-wrap">
+                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
                                             @if($product->sale_price !== '')
-                                                <span class="price">{{$product->sale_price}} MDL</span>
-                                                <span class="old_price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
+                                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @else
-                                                <span class="price">{{$product->price}} MDL</span>
+                                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
                                         <div class="details-wrap">

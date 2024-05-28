@@ -356,12 +356,12 @@
                                         <tr>
                                             <td>{{ $product->where('id',$item->product_id)->first()->title }}</td>
                                             <td>{{ $item->quantity }} шт.</td>
-                                            <td>{{ $item->price }} MDL</td>
+                                            <td>{{ $item->price }} {{__('theme.MDL')}}</td>
                                         </tr>
                                     @endforeach
                                     <td>Итого</td>
                                     <td>{{ $order->products->sum('quantity') }} шт.</td>
-                                    <td>{{ $order->total }} MDL</td>
+                                    <td>{{ $order->total }} {{__('theme.MDL')}}</td>
                                     </tbody>
                                 </table>
                             </div>
