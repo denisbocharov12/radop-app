@@ -2908,8 +2908,8 @@ textarea {
 }
 
 .section-product .col-product-info .product-wrap {
-    position: sticky;
-    top: 80px;
+    position: relative;
+    top: 0px;
 }
 
 .section-product .col-product-info .product-price-wrap {
