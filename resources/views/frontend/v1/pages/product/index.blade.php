@@ -80,13 +80,6 @@
                             >
                         </div>
                         <hr />
-                        <div class="product-description">
-                            <p>
-                                @if($product->data)
-                                    {{$product->data->summary}}
-                                @endif
-                            </p>
-                        </div>
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
                         <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>
@@ -112,10 +105,10 @@
                         </div>
                         <div class="tab-pane" id="description">
                             <div class="product-description-wrap">
-                                @if($product->data->description === null)
+                                @if($product->data->summary === null)
                                     <h4 class="description-heading">{{__('theme.no-description')}}</h4>
                                 @else
-                                    <h4 class="description-heading">{{$product->data->description}}</h4>
+                                    <p class="description">{{$product->data?->summary}}</p>
                                 @endif
                             </div>
                         </div>
