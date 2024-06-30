@@ -44,7 +44,10 @@ final class ProductImportJsonJob implements ShouldQueue
             $status = $product['status'] ? true : false;
 
             $data = [
-                'title' => $product['name_ru_full'],
+                'title' => [
+                    'ro' => $product['name_ro_full'],
+                    'ru' => $product['name_ru_full'],
+                ],
                 'slug' => Str::slug($product['name_ru_full']) . '-' . $product['id'],
                 'price' => $product['price'],
                 'status' => $status,

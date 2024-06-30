@@ -56,6 +56,23 @@
                         </span> {{__('theme.MDL')}}
                             </p>
                         </div>
+                        <div class="product-card-summary-cart mt-2">
+                            <p>
+                                <span class="summary-title">В корзине:</span>
+                                <span class="product-card-summary-cart-title" >
+                                                @php
+                                                    $sessionId = config('shopping_cart.default_session_id');
+
+                                                    if (auth()->guard('user')->user()) {
+                                                        $sessionId = auth()->guard('user')->user()->id;
+                                                    }
+
+                                                    $item = \Cart::session($sessionId)->get($product->id);
+                                                @endphp
+                                    {{$item?->quantity ?? 0}}
+                                            </span> {{__('theme.unit')}}
+                            </p>
+                        </div>
                         <hr />
                         <div class="product-add-to-wishlist-wrap">
                             <a href="#" class="add-to-wishlist-btn"
@@ -131,11 +148,11 @@
                                         </a>
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
                                             <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                                         </h3>
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                                     </div>
                                     <div class="product-item-article-wrap">
                                         <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>

@@ -37,7 +37,10 @@ final class DescriptionImportJsonJob implements ShouldQueue
 
                 if ($existedProduct !== null) {
                     $existedProduct->data->update([
-                        'summary' => $description['descr_ru']
+                        'summary' => [
+                            'ru' => $description['descr_ru'],
+                            'ro' => $description['descr_ro'],
+                        ]
                     ]);
                 }
 

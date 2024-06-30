@@ -18,16 +18,6 @@
                     <h5 class="product-title">
                         {{$product->title}}
                     </h5>
-                    {{--                                            <div class="rating-css">--}}
-                    {{--                                                <div class="star-icon">--}}
-                    {{--                                                    <i class="fa fa-star"></i>--}}
-                    {{--                                                    <i class="fa fa-star"></i>--}}
-                    {{--                                                    <i class="fa fa-star"></i>--}}
-                    {{--                                                    <i class="fa fa-star"></i>--}}
-                    {{--                                                    <i class="fa fa-star"></i>--}}
-                    {{--                                                </div>--}}
-                    {{--                                                <span class="rating_count">103</span>--}}
-                    {{--                                            </div>--}}
                 </div>
                 <div class="product-add-to-cart">
                     <div class="wrap">
