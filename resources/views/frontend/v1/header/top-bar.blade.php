@@ -1,7 +1,17 @@
 <section class="section-top-bar">
     <div class="container">
         <div class="row row-top">
-            <div class="col-lg-6 col-top-menu">
+            <div class="col-lg-7 col-top-menu">
+                <div class="wrap-top-working-hours">
+                    <div class="dv-line">
+                        <span class="sp-title">Будние дни:</span>
+                        <span class="sp-detail">8:00 - 17:00</span>
+                    </div>
+                    <div class="dv-line">
+                        <span class="sp-title">Выходные:</span>
+                        <span class="sp-detail">Закрыто</span>
+                    </div>
+                </div>
                 <div class="wrap-top-menu">
                     <ul class="top-menu-list">
                         <li class="item">
@@ -16,7 +26,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-6 col-select-language col-contacts">
+            <div class="col-lg-5 col-select-language col-contacts">
                 <div class="header-top-bar-contacts">
                     <ul class="list">
                         <li class="item">

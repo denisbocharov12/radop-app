@@ -5,7 +5,7 @@
         data-src="#loginModal"
         href="javascript:;"
     >
-        {{__('theme.account')}}
+        Вход / Регистрация
         <i class="icon-user-radop"></i>
     </a>
 </div>

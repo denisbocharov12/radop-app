@@ -1,7 +1,5 @@
 <div class="cart-block icon-block mini-shopping-cart">
     <a href="#" class="cart icon-block-link">
-        {{__('theme.cart')}}
-        <i class="icon-cart-radop"></i>
         @php
             $sessionId = config('shopping_cart.default_session_id');
 
@@ -9,7 +7,12 @@
                 $sessionId = auth()->guard('user')->user()->id;
             }
         @endphp
-        <span class="count mini-cart-count">{{\Cart::session($sessionId)->getContent()->count()}}</span>
+        <div class="wrap-cart-block-info">
+            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}} товар</span>
+            <span>/</span>
+            <span class="summ">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
+        </div>
+        <i class="icon-shopping-cart"></i>
     </a>
     <div class="wrap-shopping-cart">
         <div class="contents-shopping-cart" id="cart-update">
