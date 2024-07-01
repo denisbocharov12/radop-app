@@ -360,10 +360,8 @@ $(document).ready(function () {
       dots: false,
       focusOnSelect: false,
       infinite: false,
-      prevArrow:
-        '<button class="slick-prev slick-arrow" type="button"><i class="fa fa-chevron-left"></i></button>',
-      nextArrow:
-        '<button class="slick-next slick-arrow" type="button"><i class="fa fa-chevron-right"></i></button>',
+      prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+      nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
       responsive: [
         {
           breakpoint: 1024,
