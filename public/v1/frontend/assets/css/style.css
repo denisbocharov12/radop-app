@@ -3228,6 +3228,36 @@ textarea {
     max-height: 200px;
 }
 
+.section-product .col-product-images .product-slider-thumb .slick-arrow {
+    position: absolute;
+    background-color: #0059910f;
+    border-radius: 100%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.section-product .col-product-images .product-slider-thumb .slick-arrow:before,
+.section-product .col-product-images .product-slider-thumb .slick-arrow:after {
+    color: #0068a7;
+    opacity: 1;
+}
+
+.section-product .col-product-images .product-slider-thumb .slick-arrow.prev-arrow {
+    left: 20px;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.section-product .col-product-images .product-slider-thumb .slick-arrow.next-arrow {
+    right: 20px;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
 .product-appseil-wrap .product-appseil {
     display: flex;
     align-items: flex-start;
