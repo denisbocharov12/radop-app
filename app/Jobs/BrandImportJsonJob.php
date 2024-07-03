@@ -33,14 +33,17 @@ final class BrandImportJsonJob implements ShouldQueue
         }
 
         foreach ($this->importData as $brand) {
-            if (!empty($brand['id'])) {
+            if (!empty($brand->id)) {
                 $data = [
-                    'onec_id' => $brand['id'],
-                    'title' => $brand['name_ro'],
-                    'slug' => Str::slug($brand['name_ro']) . '-' . $brand['id'],
+                    'onec_id' => $brand->id,
+                    'title' => [
+                        'ro' => isset($brand->name_ro) ? $brand->name_ro: '',
+                        'ru' => isset($brand->name_ru) ? $brand->name_ru: '',
+                    ],
+                    'slug' => Str::slug($brand->name_ro) . '-' . $brand->id,
                 ];
 
-                Brand::updateOrCreate(['onec_id' => $brand['id']], $data);
+                Brand::updateOrCreate(['onec_id' => $brand->id], $data);
             }
         }
     }

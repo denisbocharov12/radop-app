@@ -33,17 +33,20 @@ final class CategoryImportJsonJob implements ShouldQueue
 
         foreach ($this->importData as $category) {
 
-            $isParent = !empty($category['parent_id']) ? false : true;
-            $categoryId = !empty($category['parent_id']) ? $category['parent_id'] : null;
+            $isParent = !empty($category->parent_id) ? false : true;
+            $categoryId = !empty($category->parent_id) ? $category->parent_id : null;
 
             $data = [
-                'name' => $category['name_ro'],
-                'slug' => $category['id'],
+                'name' => [
+                    'ro' => isset($category->name_ro) ? $category->name_ro: '',
+                    'ru' => isset($category->name_ru) ? $category->name_ru: '',
+                ],
+                'slug' => $category->id,
                 'is_parent' => $isParent,
                 'parent_id' => $categoryId,
             ];
 
-            Category::updateOrCreate(['onec_id' => $category['id']], $data);
+            Category::updateOrCreate(['onec_id' => $category->id], $data);
         }
     }
 }
