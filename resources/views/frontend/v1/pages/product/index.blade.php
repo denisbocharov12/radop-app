@@ -91,7 +91,7 @@
                                     <ul class="ul-details">
                                         @if($product->brand !== null)
                                             <li class="item">
-                                                <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
+                                                <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold"><a href="{{route('theme.brand.index', $product->brand_id)}}">{{$product->brand->title}}</a></span>
                                             </li>
                                         @endif
                                         @foreach($product->values as $value)
