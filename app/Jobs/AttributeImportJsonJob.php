@@ -33,15 +33,18 @@ final class AttributeImportJsonJob implements ShouldQueue
         }
 
         foreach ($this->importData as $attribute) {
-            if (!empty($attribute['id'])) {
+            if (!empty($attribute->id)) {
                 $data = [
-                    'name' => $attribute['name_ro'],
-                    'slug' => Str::slug($attribute['name_ro']),
-                    'onec_id' => $attribute['id'],
+                    'name' => [
+                        'ro' => isset($attribute->name_ro) ? $attribute->name_ro : '',
+                        'ru' => isset($attribute->name_ru) ? $attribute->name_ru : '',
+                    ],
+                    'slug' => Str::slug($attribute->name_ro),
+                    'onec_id' => $attribute->id,
                 ];
 
                 Attribute::updateOrCreate([
-                    'onec_id' => $attribute['id']
+                    'onec_id' => $attribute->id
                 ], $data);
             }
         }

@@ -30,21 +30,24 @@ final class AttributeValueImportJsonJob implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->importData as $attributeValue) {
-            if (!empty($attributeValue['product_id'])) {
+            if (!empty($attributeValue->product_id)) {
 
                 AttributeValue::create([
-                    'attribute_onec_id' => $attributeValue['characteristic_id'],
-                    'product_onec_id' => $attributeValue['product_id'],
-                    'value' => isset($attributeValue['name_ro']) ? $attributeValue['name_ro'] : '',
+                    'attribute_onec_id' => $attributeValue->characteristic_id,
+                    'product_onec_id' => $attributeValue->product_id,
+                    'value' => [
+                        'ro' => isset($attributeValue->name_ro) ? $attributeValue->name_ro : '',
+                        'ru' => isset($attributeValue->name_ru) ? $attributeValue->name_ru : '',
+                    ],
                 ]);
 
-                $attribute = Attribute::where('onec_id', $attributeValue['characteristic_id'])
+                $attribute = Attribute::where('onec_id', $attributeValue->characteristic_id)
                     ->first();
 
                 if ($attribute !== null)
                 {
                     ProductAttribute::query()->create([
-                        'product_id' => $attributeValue['product_id'],
+                        'product_id' => $attributeValue->product_id,
                         'attribute_id' => $attribute->id,
                     ]);
                 }

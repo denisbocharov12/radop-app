@@ -8,6 +8,7 @@ use App\Jobs\BrandImportJsonJob;
 use App\Jobs\CategoryImportJsonJob;
 use App\Jobs\DescriptionImportJsonJob;
 use App\Jobs\ProductImportJsonJob;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
@@ -23,8 +24,8 @@ final class ONECManager
 
     public function importCategories($json): bool
     {
-        if (isset($json['Categories'])) {
-            $categoriesData = $json['Categories'];
+        if (isset($json->Categories)) {
+            $categoriesData = $json->Categories;
             $header = [];
             $batch  = Bus::batch([]);
 
@@ -44,18 +45,18 @@ final class ONECManager
 
     public function importNomenclature($json): bool
     {
-        if (isset($json['Product'])) {
+        if (isset($json->Product)) {
             try {
                 DB::beginTransaction();
 
                 ProductCategory::query()->truncate();
                 ProductProfile::query()->truncate();
 
-                $productsData = $json['Product'];
+                $productsData = $json->Product;
                 $header = [];
                 $batch  = Bus::batch([]);
 
-                $productChunks = array_chunk($productsData, 200);
+                $productChunks = array_chunk($productsData, 100);
 
                 foreach ($productChunks as $productChunk) {
                     $batch->add(new ProductImportJsonJob($productChunk, $header));
@@ -76,9 +77,9 @@ final class ONECManager
 
     public function importBrands($json): bool
     {
-        if (isset($json['Brands'])) {
+        if (isset($json->Brands)) {
 
-            $brandsData = $json['Brands'];
+            $brandsData = $json->Brands;
             $header = [];
             $batch  = Bus::batch([]);
 
@@ -98,9 +99,9 @@ final class ONECManager
 
     public function importAttributes($json): bool
     {
-        if (isset($json['Characteristics'])) {
+        if (isset($json->Characteristics)) {
 
-            $attributesData = $json['Characteristics'];
+            $attributesData = $json->Characteristics;
             $header = [];
             $batch  = Bus::batch([]);
 
@@ -120,13 +121,13 @@ final class ONECManager
 
     public function importAttributeValues($json): bool
     {
-        if (isset($json['ProductCharacteristics'])) {
+        if (isset($json->ProductCharacteristics)) {
             DB::beginTransaction();
 
             AttributeValue::query()->truncate();
             ProductAttribute::query()->truncate();
 
-            $attributeValuesData = $json['ProductCharacteristics'];
+            $attributeValuesData = $json->ProductCharacteristics;
             $header = [];
             $batch  = Bus::batch([]);
 
@@ -146,10 +147,10 @@ final class ONECManager
 
     public function importProductDescriptions($json): bool
     {
-        if (isset($json['Description'])) {
+        if (isset($json->Description)) {
             try {
 
-                $descriptionsData = $json['Description'];
+                $descriptionsData = $json->Description;
                 $header = [];
                 $batch  = Bus::batch([]);
 

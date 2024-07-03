@@ -32,14 +32,14 @@ final class DescriptionImportJsonJob implements ShouldQueue
         }
 
         foreach ($this->importData as $description) {
-            if (!empty($description['id'])) {
-                $existedProduct = $productRepository->getByOnecId($description['id']);
+            if (!empty($description->id)) {
+                $existedProduct = $productRepository->getByOnecId($description->id);
 
                 if ($existedProduct !== null) {
                     $existedProduct->data->update([
                         'summary' => [
-                            'ru' => $description['descr_ru'],
-                            'ro' => $description['descr_ro'],
+                            'ru' => isset($description->descr_ru) ? $description->descr_ru : '',
+                            'ro' => isset($description->descr_ro) ? $description->descr_ro : '',
                         ]
                     ]);
                 }
