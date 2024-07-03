@@ -60,7 +60,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importCategories($json);
 
@@ -80,7 +80,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importNomenclature($json);
 
@@ -100,7 +100,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importBrands($json);
 
@@ -120,7 +120,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importAttributes($json);
 
@@ -145,7 +145,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importAttributeValues($json);
 
@@ -170,7 +170,7 @@ class OneCController extends Controller
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
 
-        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)), true);
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importProductDescriptions($json);
 

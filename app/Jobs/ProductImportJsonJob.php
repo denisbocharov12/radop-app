@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
@@ -40,32 +41,41 @@ final class ProductImportJsonJob implements ShouldQueue
         }
 
         foreach ($this->importData as $product) {
-
-            $status = $product['status'] ? true : false;
+            $status = $product->status ? true : false;
 
             $data = [
                 'title' => [
-                    'ro' => $product['name_ro_full'],
-                    'ru' => $product['name_ru_full'],
+                    'ro' => isset($product->name_ro_full) ? $product->name_ro_full : '',
+                    'ru' => isset($product->name_ru_full) ? $product->name_ru_full : '',
                 ],
-                'slug' => Str::slug($product['name_ru_full']) . '-' . $product['id'],
-                'price' => $product['price'],
+                'slug' => Str::slug($product->name_ru_full) . '-' . $product->id,
+                'price' => $product->price,
                 'status' => $status,
-                'stock' => $product['stock'],
-                'brand_id' => $product['brand_id'],
+                'stock' => $product->stock,
+                'brand_id' => $product->brand_id,
             ];
 
-            Product::updateOrCreate(['onec_id' => $product['id']], $data);
+            Product::updateOrCreate(['onec_id' => $product->id], $data);
 
-            ProductProfile::updateOrCreate(['product_id' => $product['id']], [
-                'sku' => $product['id']
+            ProductProfile::updateOrCreate(['product_id' => $product->id], [
+                'sku' => $product->id
             ]);
 
-            foreach ($product['category_id'] as $item) {
-                ProductCategory::create([
-                    'category_id' => $item,
-                    'product_id' => $product['id'],
-                ]);
+            foreach ($product->category_id as $item) {
+
+                if (Category::where('onec_id', $item)->first() !== null) {
+
+                    $ancestorsAndSelf = Category::where('onec_id', $item)->first()->ancestorsAndSelf->pluck('onec_id')->toArray();
+
+                    foreach ($ancestorsAndSelf as $categoryId)
+                    {
+                        ProductCategory::create([
+                            'category_id' => $categoryId,
+                            'product_id' => $product->id,
+                        ]);
+                    }
+                }
+
             }
         }
     }
