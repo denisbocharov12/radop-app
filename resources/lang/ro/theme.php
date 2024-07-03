@@ -63,6 +63,7 @@ return array (
   'iur-person' => 'Pentru persoanele juridice:',
   'last-name' => '',
   'log-in-account' => 'Conectați-vă la contul dvs.',
+  'login-registration' => 'Login / Înregistrare',
   'logout' => 'Ieșiți din cont',
   'max' => 'Maxim',
   'min' => 'Minim',

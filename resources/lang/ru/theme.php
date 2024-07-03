@@ -63,6 +63,7 @@ return array (
   'iur-person' => 'Для Юр. лиц:',
   'last-name' => '',
   'log-in-account' => 'Войти в аккаунт',
+  'login-registration' => 'Вход / Регистрация',
   'logout' => 'Выйти',
   'max' => 'Максимум',
   'min' => 'Минимум',

@@ -22,6 +22,7 @@ body {
 
 .wrapper.theme-wrapper {
     background-image: url("../images/pattern.jpg");
+    background-attachment: fixed;
 }
 
 .wrapper.theme-wrapper .theme-container-wrapper {
