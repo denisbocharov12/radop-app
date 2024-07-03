@@ -8,7 +8,7 @@
             }
         @endphp
         <div class="wrap-cart-block-info">
-            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}} товар</span>
+            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}} {{__('theme.product')}}</span>
             <span>/</span>
             <span class="summ">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
         </div>

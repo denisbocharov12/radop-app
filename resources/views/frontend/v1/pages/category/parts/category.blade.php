@@ -46,7 +46,7 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">Аттрибуты</p>
+                            <p class="theme-widget-title">{{__('theme.attributes')}}</p>
                             <div class="filter-widget-wrap filter-wrap-overflow">
                                 @if(!empty($attributes))
                                     @foreach($attributes as $key => $attributeValues)

@@ -58,7 +58,7 @@
                         </div>
                         <div class="product-card-summary-cart mt-2">
                             <p>
-                                <span class="summary-title">В корзине:</span>
+                                <span class="summary-title">{{__('theme.in-cart')}} </span>
                                 <span class="product-card-summary-cart-title" >
                                                 @php
                                                     $sessionId = config('shopping_cart.default_session_id');
