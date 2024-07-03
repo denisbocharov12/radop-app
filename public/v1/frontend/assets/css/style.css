@@ -7269,3 +7269,31 @@ hr {
         margin-bottom: 20px;
     }
 }
+
+.brand-block {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border: 1px solid #e2e7ec;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.brand-block:hover {
+    background-color: #f0f0f0;
+}
+
+.brand-logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: bold;
+}
