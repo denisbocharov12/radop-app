@@ -4,12 +4,12 @@
             <div class="col-lg-7 col-top-menu">
                 <div class="wrap-top-working-hours">
                     <div class="dv-line">
-                        <span class="sp-title">Будние дни:</span>
+                        <span class="sp-title">{{__('theme.weekdays')}}</span>
                         <span class="sp-detail">8:00 - 17:00</span>
                     </div>
                     <div class="dv-line">
-                        <span class="sp-title">Выходные:</span>
-                        <span class="sp-detail">Закрыто</span>
+                        <span class="sp-title">{{__('theme.weekend')}}</span>
+                        <span class="sp-detail">{{__('theme.closed')}}</span>
                     </div>
                 </div>
                 <div class="wrap-top-menu">

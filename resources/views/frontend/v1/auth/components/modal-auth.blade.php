@@ -5,7 +5,7 @@
     </div>
     <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.account.index')}}">{{__('theme.profile')}}</a>
     <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.orders.index')}}">{{__('theme.my-orders')}}</a>
-    <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.orders.index')}}">{{__('theme.my-orders')}}</a>
+    <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.coupon.index')}}">{{__('theme.my-coupons')}}</a>
     <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">{{__('theme.logout')}}</a>
     <div class="account-helpers-wrap mt-4">
         <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>

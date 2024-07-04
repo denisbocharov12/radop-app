@@ -1,5 +1,5 @@
 @if(count($products) < 1)
-    @include('frontend.v1.pages.category.parts.not-found')
+    @include('frontend.v1.pages.brand.parts.not-found')
 @endif
 @foreach($products as $product)
     <div class="col-lg-4 col-md-4 col-6 product-item-category">
@@ -12,8 +12,9 @@
                         </div>
                     </a>
                 @endif
-                @include('frontend.v1.pages.category.parts.product-category-image')
-                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                @include('frontend.v1.pages.brand.parts.product-brand-image')
+                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}"
+                   data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
                         <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
@@ -56,7 +57,7 @@
                 <div class="product-card-summary-cart mt-2">
                     <p>
                         <span class="summary-title">{{__('theme.in-cart')}}</span>
-                        <span class="product-card-summary-cart-title" >
+                        <span class="product-card-summary-cart-title">
                             @php
                                 $sessionId = config('shopping_cart.default_session_id');
 
@@ -72,9 +73,13 @@
                 </div>
                 <div class="qty-add-to-cart">
                     <div class="qty-select">
-                        <input type="number" name="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                        <input type="number" name="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}"
+                               data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
+                               class="product-qty-input" value="1" min="1" max="{{$product->stock}}"
+                               id="product-{{$product->id}}-qty">
                     </div>
-                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}"
+                       class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
             </div>
         </div>

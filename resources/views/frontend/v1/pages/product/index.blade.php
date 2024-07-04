@@ -58,7 +58,7 @@
                         </div>
                         <div class="product-card-summary-cart mt-2">
                             <p>
-                                <span class="summary-title">В корзине:</span>
+                                <span class="summary-title">{{__('theme.in-cart')}} </span>
                                 <span class="product-card-summary-cart-title" >
                                                 @php
                                                     $sessionId = config('shopping_cart.default_session_id');
@@ -80,6 +80,10 @@
                             >
                         </div>
                         <hr />
+                        <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">
+                            <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">
+                            <span class="brand-name">{{$product->brand->title}}</span>
+                        </a>
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
                         <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>
@@ -89,11 +93,6 @@
                             <div class="product-details-wrap">
                                 <div class="details-list-wrap">
                                     <ul class="ul-details">
-                                        @if($product->brand !== null)
-                                            <li class="item">
-                                                <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold">{{$product->brand->title}}</span>
-                                            </li>
-                                        @endif
                                         @foreach($product->values as $value)
                                             <li class="item">
                                                 <span class="left">{{$value->attribute?->name}}</span><span class="right">{{$value->value}}</span>

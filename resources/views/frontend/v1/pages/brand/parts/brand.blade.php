@@ -1,11 +1,11 @@
 <section class="section-standart section-category pt-0">
     <div class="container">
         <div class="row row-category-list">
-            @if(count($existedCategory->products) < 1)
-                @include('frontend.v1.pages.category.parts.not-found')
-            @else
+{{--            @if(count($existedBrand->product) < 1)--}}
+{{--                @include('frontend.v1.pages.category.parts.not-found')--}}
+{{--            @else--}}
                 <div class="col-12 col-md-3 col-theme-filters">
-                    <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET">
+                    <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.search')}}</p>
                             <div class="filter-widget-wrap">
@@ -78,13 +78,13 @@
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
                     <div class="row">
-                        @include('frontend.v1.pages.category.parts.list')
+                        @include('frontend.v1.pages.brand.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">
                         {{$products->links()}}
                     </div>
                 </div>
-            @endif
+{{--            @endif--}}
 
         </div>
     </div>

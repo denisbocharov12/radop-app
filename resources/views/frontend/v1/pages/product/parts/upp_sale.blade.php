@@ -33,7 +33,7 @@
                         @endif
                     </div>
                     <div class="add-to-cart-wrap">
-                        <a href="#" data-id="{{$product->id}}" data-qty="1" class="add_to_cart_btn product-appseil-btn">В корзину</a>
+                        <a href="#" data-id="{{$product->id}}" data-qty="1" class="add_to_cart_btn product-appseil-btn">{{__('theme.add-to-cart')}}</a>
                     </div>
                 </div>
             </div>
