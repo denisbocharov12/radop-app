@@ -71,7 +71,7 @@ final class BrandRepository
 
     public function getAllPaginatedWithFiltersToFrontEnd(Brand $brand): LengthAwarePaginator
     {
-        $query = $brand->product();
+        $query = $brand->products();
 
         return QueryBuilder::for($query)
             ->allowedFilters([
