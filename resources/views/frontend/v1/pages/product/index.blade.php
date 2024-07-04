@@ -93,11 +93,6 @@
                             <div class="product-details-wrap">
                                 <div class="details-list-wrap">
                                     <ul class="ul-details">
-                                        @if($product->brand !== null)
-                                            <li class="item">
-                                                <span class="left">{{__('theme.brand')}}:</span><span class="right" style="font-weight: bold"><a href="{{route('theme.brand.index', $product->brand_id)}}">{{$product->brand->title}}</a></span>
-                                            </li>
-                                        @endif
                                         @foreach($product->values as $value)
                                             <li class="item">
                                                 <span class="left">{{$value->attribute?->name}}</span><span class="right">{{$value->value}}</span>

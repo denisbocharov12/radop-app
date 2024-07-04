@@ -2024,6 +2024,7 @@ textarea {
     background-color: #0068a7;
     color: #fff;
     font-size: 14px;
+    align-content: center;
 }
 
 .section-header .row-main .header-account .mini-shopping-cart .wrap-shopping-cart .bottom-shopping-cart a.btn-shopping-cart:hover {
@@ -2626,7 +2627,7 @@ textarea {
 }
 
 .product_item a.add_to_wishlist i {
-    color: #0068a7;
+    color: #b9b9b9;
 }
 
 .product_item a.add_to_wishlist:hover i {
@@ -4860,7 +4861,7 @@ textarea {
 }
 
 .product-item-category a.add_to_wishlist i {
-    color: #0068a7;
+    color: #b9b9b9;
 }
 
 .product-item-category a.add_to_wishlist:hover i {
