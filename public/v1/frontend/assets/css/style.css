@@ -2041,7 +2041,7 @@ textarea {
 }
 
 .section-slider {
-    background-color: #eff3f6;
+    background-color: #FFFFFF;
     margin-top: 40px;
 }
 
@@ -3101,7 +3101,7 @@ textarea {
 .section-product .col-product-info .product-details-wrap .details-list-wrap .ul-details .item span {
     background-color: #fff;
     z-index: 1;
-    padding: 2px 0;
+    padding: 2px;
 }
 
 .section-product .col-product-info .product-details-wrap .details-list-wrap .ul-details .item .left {
@@ -7277,10 +7277,9 @@ hr {
     text-decoration: none;
     color: black;
     padding: 10px;
-    border: 1px solid #e2e7ec;
     border-radius: 10px;
     transition: background-color 0.3s;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin-bottom: 15px;
 }
 
@@ -7289,9 +7288,7 @@ hr {
 }
 
 .brand-logo {
-    width: 60px;
-    height: 60px;
-    margin-right: 10px;
+    max-width: 100px;
 }
 
 .brand-name {

@@ -180,6 +180,23 @@
                                             </span> {{__('theme.MDL')}}
                                         </p>
                                     </div>
+                                    <div class="product-card-summary-cart mt-2">
+                                        <p>
+                                            <span class="summary-title">{{__('theme.in-cart')}}</span>
+                                            <span class="product-card-summary-cart-title" >
+                                                @php
+                                                    $sessionId = config('shopping_cart.default_session_id');
+
+                                                    if (auth()->guard('user')->user()) {
+                                                        $sessionId = auth()->guard('user')->user()->id;
+                                                    }
+
+                                                    $item = \Cart::session($sessionId)->get($product->id);
+                                                @endphp
+                                                                    {{$item?->quantity ?? 0}}
+                                            </span> {{__('theme.unit')}}
+                                        </p>
+                                    </div>
                                     <div class="qty-add-to-cart">
                                         <div class="qty-select">
                                             <input type="number" name="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
