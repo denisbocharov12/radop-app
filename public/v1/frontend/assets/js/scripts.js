@@ -613,6 +613,13 @@ $(document).ready(function () {
         var href = $(this).attr('href');
         window.location = href;
     });
+
+    Fancybox.bind('[data-fancybox-product]', {
+        hash : false,
+        Carousel : {
+            infinite: false,
+        }
+    });
 });
 
 

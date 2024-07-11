@@ -95,7 +95,7 @@ final class ThemeProductManager
             $response['status'] = true;
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
-            $response['total'] = \Cart::session($sessionId)->getSubTotal();
+            $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
             $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
 
@@ -197,7 +197,7 @@ final class ThemeProductManager
             $response['status'] = true;
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
-            $response['total'] = \Cart::session($sessionId)->getSubTotal();
+            $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
             $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
 

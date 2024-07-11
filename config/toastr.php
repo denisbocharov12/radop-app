@@ -23,5 +23,7 @@ return array(
     | ],
     */
 
-    'options' => array(),
+    'options' => array(
+        'positionClass' => "toast-bottom-right",
+    ),
 );

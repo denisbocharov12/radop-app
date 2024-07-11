@@ -68,7 +68,7 @@
             @endforeach
         </ul>
         <div class="heading-shopping-cart mb-3 mt-3">
-            <span class="sc-subtotal">{{__('theme.for-payment')}} <span class="fw-600">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span></span>
+            <span class="sc-subtotal">{{__('theme.for-payment')}} <span class="fw-600">{{round(\Cart::session($sessionId)->getTotal(), 2)}} {{__('theme.MDL')}}</span></span>
             <span class="sc-count">{{\Cart::session($sessionId)->getContent()->count()}} {{__('theme.unit')}}</span>
         </div>
     @else

@@ -4633,7 +4633,7 @@ textarea {
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .price-input {
     width: 100%;
     display: flex;
-    margin: 10px 0 35px;
+    margin: 10px 0 10px;
     align-items: center;
 }
 
@@ -4832,7 +4832,9 @@ textarea {
 .product-item-category .wrap-image img:last-child {
     display: none;
 }
-
+.product-item-category .wrap-image-with-gallery a{
+    cursor: zoom-in;
+}
 .product-item-category .product-item-title-wrap {
     display: flex;
     align-items: flex-start;
