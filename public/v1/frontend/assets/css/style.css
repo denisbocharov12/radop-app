@@ -4834,10 +4834,11 @@ textarea {
 }
 .product-item-category .wrap-image-with-gallery{
     position: relative;
-    height: 180px;
 }
 .product-item-category .wrap-image-with-gallery a{
     cursor: zoom-in;
+    display: block;
+    height: 180px;
 }
 .product-item-category .wrap-image-with-gallery a img{
     display: block;
