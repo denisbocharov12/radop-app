@@ -2799,7 +2799,6 @@ textarea {
 }
 
 .section-breadcrumb {
-    padding: 15px;
     margin-top: 25px;
 }
 
@@ -7312,4 +7311,5 @@ hr {
 .brand-name {
     font-size: 18px;
     font-weight: bold;
+    margin-left: 15px;
 }

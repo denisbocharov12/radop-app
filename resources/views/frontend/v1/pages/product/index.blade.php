@@ -84,7 +84,6 @@
                         <hr />
                         <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">
                             <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">
-                            <span class="brand-name">{{$product->brand->title}}</span>
                         </a>
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>

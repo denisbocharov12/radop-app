@@ -51,7 +51,7 @@ final class BrandRepository
 
     public function getLimited(): Collection
     {
-        return Brand::all()->take(10);
+        return Brand::all()->where('status', true)->take(10);
     }
 
     public function getById($brandId): ?Brand
