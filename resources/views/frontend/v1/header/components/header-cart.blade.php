@@ -7,10 +7,10 @@
                 $sessionId = auth()->guard('user')->user()->id;
             }
         @endphp
-        <div class="wrap-cart-block-info">
-            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}} {{__('theme.product')}}</span>
+        <div class="wrap-cart-block-info header-cart-widget">
+            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}}</span> <span>{{__('theme.product')}}</span>
             <span>/</span>
-            <span class="summ">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
+            <span class="summ">{{round(\Cart::session($sessionId)->getTotal(), 2)}}</span> <span>{{__('theme.MDL')}}</span>
         </div>
         <i class="icon-shopping-cart"></i>
     </a>

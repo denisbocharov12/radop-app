@@ -28,53 +28,56 @@
                             {{$item->associatedModel->title}}
                         </h5>
                     </div>
-                    <div class="cart-item-info">
-                        <div class="sc-product-qty qty-block">
-                            <div class="input-group-btn">
-                                <button
-                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                    class="sc-product-decrement btn-quantity-cart minus"
-                                    type="button"
-                                    id="button-minus"
-                                >
-                                    -
-                                </button>
+                    <div class="cart-item-info-wrap d-flex align-items-center">
+                        <div class="cart-item-info">
+                            <div class="sc-product-qty qty-block">
+                                <div class="input-group-btn">
+                                    <button
+                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                        class="sc-product-decrement btn-quantity-cart minus"
+                                        type="button"
+                                        id="button-minus"
+                                    >
+                                        -
+                                    </button>
+                                </div>
+                                <input
+                                    data-id="{{$item->id}}"
+                                    id="qty-item-cart-{{$item->id}}"
+                                    type="number"
+                                    min="1"
+                                    placeholder="1"
+                                    value="{{$item->quantity}}"
+                                    class="sc-qty"
+                                />
+                                <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-page-{{$item->id}}">
+                                <div class="input-group-btn">
+                                    <button
+                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                        class="sc-product-increment btn-quantity-cart plus"
+                                        type="button"
+                                        id="button-plus"
+                                    >
+                                        +
+                                    </button>
+                                </div>
                             </div>
-                            <input
-                                data-id="{{$item->id}}"
-                                id="qty-item-cart-{{$item->id}}"
-                                type="number"
-                                min="1"
-                                placeholder="1"
-                                value="{{$item->quantity}}"
-                                class="sc-qty"
-                            />
-                            <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-page-{{$item->id}}">
-                            <div class="input-group-btn">
-                                <button
-                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                    class="sc-product-increment btn-quantity-cart plus"
-                                    type="button"
-                                    id="button-plus"
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </div>
 
-                        <div class="price-wrap">
-                            @if($item->associatedModel->sale_price !== '')
-                                <span class="price">{{$item->associatedModel->sale_price}} {{__('theme.MDL')}}</span>
-                                <span class="old_price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
-                            @else
-                                <span class="price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
-                            @endif
-                            <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} {{__('theme.MDL')}} )</span>
+                            <div class="price-wrap">
+                                @if($item->associatedModel->sale_price !== '')
+                                    <span class="price">{{$item->associatedModel->sale_price}} {{__('theme.MDL')}}</span>
+                                    <span class="old_price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
+                                @else
+                                    <span class="price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
+                                @endif
+                                <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} {{__('theme.MDL')}} )</span>
+                            </div>
+                        </div>
+                        <div class="delete-cart-item">
+                            <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
                         </div>
                     </div>
-                    <div class="delete-cart-item">
-                        <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
-                    </div>
+
                 </div>
             </div>
         @endforeach

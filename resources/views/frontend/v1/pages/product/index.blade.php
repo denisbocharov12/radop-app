@@ -11,7 +11,9 @@
                             <h1>{{$product->title}}</h1>
                         </div>
                         <div class="product-sku">
-                            <span>SKU: {{$product->onec_id}}</span>
+                            <div class="product-item-article-wrap">
+                                <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                            </div>
                         </div>
                         <div class="product-details-wrap">
                             <div class="product-stock-status">
@@ -42,7 +44,7 @@
                                 <input type="number" name="product-{{$product->id}}-qty" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input product-qty-page-input qty-item-{{$product->id}}">
                             </div>
                             <div class="product-add-to-cart">
-                                <a href="#" data-id="{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>
+                                <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>
                             </div>
                         </div>
                         <div class="product-card-summary">
@@ -236,17 +238,20 @@
                     _token: token
                 },
                 beforeSend:function () {
-                    $('#add-to-cart-'+product_id).html('Loading ...<i class="fa fa-spin fa-spinner"></i>');
+                    $('#add-to-cart-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
                 },
                 complete:function () {
-                    $('#add-to-cart-'+product_id).html('Add to Cart <i class="fa fa-shopping-cart"></i>');
+                    $('#add-to-cart-'+product_id).html('{{__('theme.add-to-cart')}}');
                 },
                 success:function (response) {
                     if (response['status'] == true){
                         $('#cart-update').html(response['cart']);
                         $('.mini-cart-count').html(response['cart_count']);
                         $('.mini-cart-subtotal').html(response['total']);
+                        $('.header-cart-widget .count').html(response['cart_count']);
+                        $('.header-cart-widget .summ').html(response['total']);
                         $('#cart-page').html(response['cart-page']);
+                        toastr["success"](response['msg']);
                     }
                     if (response['status'] == "not_in_stock"){
                         toastr["warning"]("Данного товара нет в наличии больше указанной цифры...")
@@ -255,7 +260,7 @@
                             "debug": false,
                             "newestOnTop": false,
                             "progressBar": false,
-                            "positionClass": "toast-top-right",
+                            "positionClass": "toast-bottom-right",
                             "preventDuplicates": false,
                             "onclick": null,
                             "showDuration": "300",
