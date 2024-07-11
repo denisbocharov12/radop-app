@@ -4832,8 +4832,23 @@ textarea {
 .product-item-category .wrap-image img:last-child {
     display: none;
 }
+.product-item-category .wrap-image-with-gallery{
+    position: relative;
+    height: 180px;
+}
 .product-item-category .wrap-image-with-gallery a{
     cursor: zoom-in;
+}
+.product-item-category .wrap-image-with-gallery a img{
+    display: block;
+    border-radius: 5px;
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    object-fit: contain;
+    height: 100%;
 }
 .product-item-category .product-item-title-wrap {
     display: flex;
