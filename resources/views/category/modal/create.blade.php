@@ -12,9 +12,20 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="name">Название категории (RO)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control @error('name_ro') error @enderror" id="name_ro" name="name_ro" placeholder="Категория">
+                                            @error('name_ro')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="name">Название категории</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" placeholder="Категория">
+                                            <input type="text" required class="form-control @error('name') error @enderror" id="name_ru" name="name_ru" placeholder="Категория">
                                             @error('name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror

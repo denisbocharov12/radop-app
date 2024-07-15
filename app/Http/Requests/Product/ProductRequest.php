@@ -6,7 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property string $onec_id
- * @property string $title
+ * @property string $title_ro
+ * @property string $title_ru
  * @property int $stock
  * @property int $unit
  * @property float $price
@@ -29,7 +30,8 @@ class ProductRequest extends FormRequest
     {
         return [
             'onec_id' => ['nullable', 'string'],
-            'title' => ['required', 'string'],
+            'title_ro' => ['required', 'string'],
+            'title_ru' => ['required', 'string'],
             'stock' => ['nullable', 'integer'],
             'unit' => ['nullable', 'string'],
             'price' => ['numeric', 'required'],

@@ -19,10 +19,21 @@
                                     <div class="row g-gs">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="name">Название категории</label>
+                                                <label class="form-label" for="name">Название категории (RO)</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" value="{{$category->name}}" placeholder="Категория">
-                                                    @error('name')
+                                                    <input type="text" required class="form-control @error('name_ro') error @enderror" id="name_ro" name="name_ro" value="{{$category->getTranslation('name', 'ro')}}" placeholder="Категория">
+                                                    @error('name_ro')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="name">Название категории (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('name_ru') error @enderror" id="name_ru" name="name_ru" value="{{$category->getTranslation('name', 'ru')}}" placeholder="Категория">
+                                                    @error('name_ru')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>

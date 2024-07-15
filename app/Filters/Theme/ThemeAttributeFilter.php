@@ -18,17 +18,17 @@ final class ThemeAttributeFilter implements Filter
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
-
-        $attributeIds = AttributeValue::query()
-            ->whereIn('id', $value)
-            ->get()
-            ->pluck('id')
-        ;
+//        $attributeIds = AttributeValue::query()
+//            ->whereIn('id', $value)
+//            ->get()
+//            ->pluck('id')
+//        ;
 
         if ($value !== null && !empty($value))
             $query
                 ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
-                ->whereIn('attribute_values.id', $attributeIds)
+                ->whereIn('attribute_values.product_onec_id', $value)
+//                ->whereIn('attribute_values.id', $value)
             ;
     }
 }

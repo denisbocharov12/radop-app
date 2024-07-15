@@ -42,7 +42,7 @@ final class CategoryManager
 
     public function store(CategoryData $categoryData, CategoryRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getByName($categoryData->name);
+        $existedCategory = $this->categoryRepository->getByName($categoryData->name_ro);
 
         if ($existedCategory !== null) {
             throw new CategoryUniqueNameException();
@@ -51,7 +51,10 @@ final class CategoryManager
         $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
 
         $category = Category::create([
-            'name' => $categoryData->name,
+            'name' => [
+                'ro' => $categoryData->name_ro,
+                'ru' => $categoryData->name_ru,
+            ],
             'parent_id' => $categoryData->parentId,
             'status' => $status,
             'summary' => $categoryData->summary
@@ -68,8 +71,8 @@ final class CategoryManager
 
     public function update(CategoryData $categoryData, Category $category, CategoryRequest $request): void
     {
-        if ($category->name !== $categoryData->name) {
-            $existedCategory = $this->categoryRepository->getByName($categoryData->name);
+        if ($category->name !== $categoryData->name_ro) {
+            $existedCategory = $this->categoryRepository->getByName($categoryData->name_ro);
 
             if ($existedCategory !== null) {
                 throw new CategoryUniqueNameException();
@@ -79,7 +82,10 @@ final class CategoryManager
         $status = $this->entityStatusManager->getEntityStatusFromRequest($categoryData->status);
 
         $category->update([
-            'name' => $categoryData->name,
+            'name' => [
+                'ro' => $categoryData->name_ro,
+                'ru' => $categoryData->name_ru,
+            ],
             'parent_id' => $categoryData->parentId,
             'status' => $status,
             'summary' => $categoryData->summary

@@ -4,7 +4,8 @@ namespace App\Data\Product;
 
 /**
  * @property string $onecId
- * @property string $title
+ * @property string $title_ro
+ * @property string $title_en
  * @property int $stock
  * @property int $unit
  * @property float $price
@@ -25,7 +26,8 @@ final class ProductData
 {
     public function __construct(
         public readonly ?string $onecId,
-        public readonly string $title,
+        public readonly string $title_ro,
+        public readonly string $title_ru,
         public readonly ?int $stock,
         public readonly ?int $unit,
         public readonly float $price,

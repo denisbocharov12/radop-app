@@ -27,12 +27,36 @@ final class AttributeRepository
                 'id',
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
-            ;
+        ;
     }
 
     public function getAll(): Collection
     {
         return Attribute::query()->get();
+    }
+
+    public function getAllToShop(): ?array
+    {
+        $collect = array();
+
+        $join = DB::table('attribute_values')
+            ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+            ->get()
+            ->keyBy('value')
+        ;
+
+        foreach ($join as $key => $value)
+        {
+            $keyName = Attribute::where('onec_id', $value->attribute_onec_id)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+
+            if (array_key_exists($keyName, $collect)) {
+                array_push($collect[$keyName], (array)$value);
+            } else {
+                $collect[$keyName][] = (array)$value;
+            }
+        }
+
+        return $collect;
     }
 
     public function getAllByCategoryId(string $id): ?array

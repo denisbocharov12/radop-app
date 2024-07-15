@@ -12,7 +12,8 @@ final class CategoryDataMapper
         return new CategoryData(
             $request->onec_id,
             $request->parent_id,
-            $request->name,
+            $request->name_ro,
+            $request->name_ru,
             $request->summary,
             $request->status,
             $request->order,

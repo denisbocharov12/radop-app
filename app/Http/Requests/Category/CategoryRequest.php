@@ -7,7 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property string $onec_id
  * @property int $parent_id
- * @property string $name
+ * @property string $name_ro
+ * @property string $name_ru
  * @property string $summary
  * @property bool $status
  * @property int $order
@@ -20,7 +21,8 @@ class CategoryRequest extends FormRequest
         return [
             'onec_id' => ['nullable', 'string'],
             'parent_id' => ['nullable', 'integer'],
-            'name' => ['required', 'string'],
+            'name_ro' => ['required', 'string'],
+            'name_ru' => ['required', 'string'],
             'summary' => ['nullable', 'string'],
             'status' => ['required', 'string'],
             'order' => ['nullable', 'integer'],
