@@ -620,6 +620,28 @@ $(document).ready(function () {
             infinite: false,
         }
     });
+
+    $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
+
+        var content = $(this).next('.theme-toggle-item-content');
+
+        if (content.is(':hidden')) {
+            content.slideDown('200').css('display', 'flex');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
+        } else {
+            content.slideUp('200');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(-90deg)');
+        }
+
+    });
+
+    let inputs = $('.theme-toggle-item-content').children('.theme-checkbox');
+
+    inputs.each(function(){
+       if ($(this).is(':checked')) {
+           $(this).parent('.theme-toggle-item-content').css('display', 'flex');
+       }
+    });
 });
 
 
