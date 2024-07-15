@@ -27,7 +27,8 @@ final class ThemeAttributeFilter implements Filter
         if ($value !== null && !empty($value))
             $query
                 ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
-                ->whereIn('attribute_values.id', $value)
+                ->whereIn('attribute_values.product_onec_id', $value)
+//                ->whereIn('attribute_values.id', $value)
             ;
     }
 }
