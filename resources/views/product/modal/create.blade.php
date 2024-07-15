@@ -14,10 +14,21 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="title">Название товара</label>
+                                        <label class="form-label" for="title">Название товара (RO)</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('title') error @enderror" id="title" name="title" placeholder="Видеокамера 720HD">
-                                            @error('title')
+                                            <input type="text" required class="form-control @error('title_ro') error @enderror" id="title_ro" name="title_ro" placeholder="Видеокамера 720HD">
+                                            @error('title_ro')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">Название товара (RU)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control @error('title_ru') error @enderror" id="title_ru" name="title_ru" placeholder="Видеокамера 720HD">
+                                            @error('title_ru')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>

@@ -69,7 +69,10 @@ class ProductManager
         $siteStatus = $this->entityStatusManager->getEntityStatusFromRequest($productData->siteStatus);
 
         $product = Product::create([
-            'title' => $productData->title,
+            'title' => [
+                'ro' => $productData->title_ro,
+                'ru' => $productData->title_ru
+            ],
             'stock' => $productData->stock,
             'unit' => $productData->unit,
             'price' => $productData->price,
@@ -79,7 +82,7 @@ class ProductManager
             'brand_id' => $existedBrand->onec_id,
         ]);
 
-        $product->slug = Str::slug($productData->title) . '-' . $product->id;
+        $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;
 
         $product->save();
 
@@ -124,7 +127,10 @@ class ProductManager
         $siteStatus = $this->entityStatusManager->getEntityStatusFromRequest($productData->siteStatus);
 
         $product->update([
-            'title' => $productData->title,
+            'title' => [
+                'ro' => $productData->title_ro,
+                'ru' => $productData->title_ru
+            ],
             'stock' => $productData->stock,
             'unit' => $productData->unit,
             'price' => $productData->price,
@@ -134,7 +140,7 @@ class ProductManager
             'brand_id' => $existedBrand->onec_id,
         ]);
 
-        $product->slug = Str::slug($productData->title) . '-' . $product->id;
+        $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;
         $product->save();
 
         $product->data->update([

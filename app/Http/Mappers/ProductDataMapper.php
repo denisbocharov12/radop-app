@@ -11,7 +11,8 @@ final class ProductDataMapper
     {
         return new ProductData(
             $request->onec_id,
-            $request->title,
+            $request->title_ro,
+            $request->title_ru,
             $request->stock,
             $request->unit,
             $request->price,
