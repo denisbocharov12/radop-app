@@ -24,9 +24,20 @@
                                 @endswitch
                             @endforeach
                         </a>
-                        <h5 class="item-title">
-                            {{$item->associatedModel->title}}
-                        </h5>
+                        <div class="theme-cart-title-price-wrap">
+                            <h5 class="item-title">
+                                {{$item->associatedModel->title}}
+                            </h5>
+                            <div class="price-wrap">
+                                @if($item->associatedModel->sale_price !== '')
+                                    <span class="price">{{$item->associatedModel->sale_price}} {{__('theme.MDL')}}</span>
+                                    <span class="old_price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
+                                @else
+                                    <span class="price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
+                                @endif
+                                <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} {{__('theme.MDL')}} )</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="cart-item-info-wrap d-flex align-items-center">
                         <div class="cart-item-info">
@@ -61,16 +72,6 @@
                                         +
                                     </button>
                                 </div>
-                            </div>
-
-                            <div class="price-wrap">
-                                @if($item->associatedModel->sale_price !== '')
-                                    <span class="price">{{$item->associatedModel->sale_price}} {{__('theme.MDL')}}</span>
-                                    <span class="old_price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
-                                @else
-                                    <span class="price">{{$item->associatedModel->price}} {{__('theme.MDL')}}</span>
-                                @endif
-                                <span class="total-price" style="margin-left: 5px; font-weight: bold; font-style: italic">( {{$item->quantity * $item->price}} {{__('theme.MDL')}} )</span>
                             </div>
                         </div>
                         <div class="delete-cart-item">

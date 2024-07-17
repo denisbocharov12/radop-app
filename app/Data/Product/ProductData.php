@@ -16,7 +16,8 @@ namespace App\Data\Product;
  * @property array $categoryId
  * @property array $attachments
  * @property string $sku
- * @property string $summary
+ * @property string $summary_ro
+ * @property string $summary_ru
  * @property string $description
  * @property array $uppSale
  * @property string $iurPrice
@@ -38,7 +39,8 @@ final class ProductData
         public readonly ?array $categoryId,
         public readonly ?array $attachments,
         public readonly ?string $sku,
-        public readonly ?string $summary,
+        public readonly ?string $summary_ro,
+        public readonly ?string $summary_ru,
         public readonly ?string $description,
         public readonly ?array $uppSale,
         public readonly ?string $iurPrice,

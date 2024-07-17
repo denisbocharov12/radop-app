@@ -95,7 +95,10 @@ class ProductManager
         $productProfile = ProductProfile::create([
             'product_id' => $productOneCId,
             'sku' => $productData->sku,
-            'summary' => $productData->summary,
+            'summary' => [
+                'ro' => $productData->summary_ro,
+                'ru' => $productData->summary_ru,
+            ],
             'description' => $productData->description,
             'upp_sale' => json_encode($productData->uppSale),
             'iur_price' => $productData->iurPrice,
@@ -145,7 +148,10 @@ class ProductManager
 
         $product->data->update([
             'sku' => $productData->sku,
-            'summary' => $productData->summary,
+            'summary' => [
+                'ro' => $productData->summary_ro,
+                'ru' => $productData->summary_ru,
+            ],
             'description' => $productData->description,
             'upp_sale' => json_encode($productData->uppSale),
             'iur_price' => $productData->iurPrice,

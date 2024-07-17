@@ -50,7 +50,7 @@
 
                                                     @endphp
 
-                                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->product_onec_id, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{$attribute->product_onec_id}}">
+                                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{$attribute->value}}">
                                                     <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
                                                 @endforeach
                                             </div>
