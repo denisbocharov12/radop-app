@@ -18,7 +18,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property array $category_id
  * @property array $attachments
  * @property string $sku
- * @property string $summary
+ * @property string $summary_ru
+ * @property string $summary_ro
  * @property string $description
  * @property array $upp_sale
  * @property string $iur_price
@@ -43,7 +44,8 @@ class ProductRequest extends FormRequest
             'attachments' => ['nullable', 'array', 'max:10'],
             'attachments.*' => ['required', 'max:10000', 'mimes:png,jpg,jpeg'],
             'sku' => ['nullable', 'string'],
-            'summary' => ['nullable', 'string'],
+            'summary_ro' => ['nullable', 'string'],
+            'summary_ru' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'upp_sale' => ['nullable', 'array'],
             'iur_price' => ['nullable', 'numeric'],

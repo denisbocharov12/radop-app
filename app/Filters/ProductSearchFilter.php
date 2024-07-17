@@ -23,18 +23,11 @@ final class ProductSearchFilter implements Filter
             ->pluck('id')
         ;
 
-        $categoryIds = Category::query()
-            ->where('name', 'like', "%{$value}%")
-            ->get()
-            ->pluck('id')
-        ;
-
-        $query->where(function ($query) use ($value, $brandsIds, $categoryIds) {
+        $query->where(function ($query) use ($value, $brandsIds) {
             $query
                 ->where('products.title', 'like', "%{$value}%")
                 ->orWhere('products.onec_id', 'like', "%{$value}%")
                 ->orWhereIn('products.brand_id', $brandsIds)
-                ->orWhereIn('products.category_id', $categoryIds)
             ;
         });
     }

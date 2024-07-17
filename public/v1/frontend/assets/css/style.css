@@ -5118,7 +5118,13 @@ textarea {
     text-decoration: underline;
     font-size: 12px;
 }
-
+.theme-cart-title-price-wrap{
+    display: flex;
+    flex-direction: column;
+}
+.theme-cart-title-price-wrap .price-wrap{
+    margin-left: 5px;
+}
 #loginModal {
     padding: 30px;
     width: 500px;

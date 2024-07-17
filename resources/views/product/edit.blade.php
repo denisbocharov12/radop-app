@@ -188,10 +188,21 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="summary">Краткое описание товара</label>
+                                                <label class="form-label" for="summary_ro">Краткое описание товара (RO)</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="summary" class="form-control no-resize" id="summary">{{$product->data?->summary}}</textarea>
-                                                    @error('summary')
+                                                    <textarea name="summary_ro" class="form-control no-resize" id="summary_ro">{{$product->data?->summary_ro}}</textarea>
+                                                    @error('summary_ro')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="summary_ru">Краткое описание товара (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea name="summary_ru" class="form-control no-resize" id="summary_ru">{{$product->data?->summary_ru}}</textarea>
+                                                    @error('summary_ru')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>
@@ -199,7 +210,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="description">Описание товара</label>
+                                                <label class="form-label" for="description">Описание товара *(Не используется)</label>
                                                 <div class="form-control-wrap">
                                                     <textarea name="description" class="form-control no-resize" id="description">{{$product->data?->description}}</textarea>
                                                 </div>

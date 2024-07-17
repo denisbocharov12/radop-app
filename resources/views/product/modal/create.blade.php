@@ -142,8 +142,19 @@
                                     <div class="form-group">
                                         <label class="form-label" for="summary">Краткое описание товара</label>
                                         <div class="form-control-wrap">
-                                            <textarea name="summary" class="form-control no-resize" id="summary">{{old('summary')}}</textarea>
-                                            @error('summary')
+                                            <textarea name="summary_ro" class="form-control no-resize" id="summary_ro">{{old('summary_ro')}}</textarea>
+                                            @error('summary_ro')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="summary">Краткое описание товара</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="summary_ru" class="form-control no-resize" id="summary_ru">{{old('summary_ru')}}</textarea>
+                                            @error('summary_ru')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
                                         </div>
