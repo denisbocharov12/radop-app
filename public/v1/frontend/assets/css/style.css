@@ -5124,6 +5124,7 @@ textarea {
 }
 .theme-cart-title-price-wrap .price-wrap{
     margin-left: 5px;
+    margin-top: 5px;
 }
 #loginModal {
     padding: 30px;
