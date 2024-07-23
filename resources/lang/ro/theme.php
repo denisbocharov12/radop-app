@@ -9,6 +9,7 @@ return array (
   'account-details' => 'Detalii de cont',
   'activate-account' => 'Activați contul',
   'add-to-cart' => 'În coș',
+  'add-to-cart-with-success' => 'a fost adăugat cu succes în coșul dvs.',
   'add-to-wishlist' => 'Adăugați la lista de dorințe',
   'address' => 'Adresa',
   'apply' => 'Aplicați',
