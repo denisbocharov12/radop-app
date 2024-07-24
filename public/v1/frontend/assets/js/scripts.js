@@ -564,9 +564,9 @@ $(function () {
 });
 $(document).ready(function () {
     $('.btn-quantity-product').click(function (){
-        var qtyCount = $('.product-qty-item').val();
-        var productId = $('.product-qty-item').data('product-id');
-        var productPrice = $('.product-qty-item').data('price');
+        var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
+        var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
+        var productPrice = $(this).parent().parent('.qty-block').find('.product-qty-item').data('price');
 
         var changedElement = $('#product-card-summary-'+productId);
         var result = qtyCount*productPrice;
