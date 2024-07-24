@@ -151,7 +151,9 @@ final class ProductRepository
 
     public function getAllBySearch(string $value): LengthAwarePaginator
     {
-        return Product::where('products.title', 'like', "%{$value}%")
+        return Product::where('status', true)
+            ->where('site_status', true)
+            ->where('products.title', 'like', "%{$value}%")
             ->orWhere('products.onec_id', 'like', "%{$value}%")
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())

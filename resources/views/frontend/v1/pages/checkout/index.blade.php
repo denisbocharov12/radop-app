@@ -96,9 +96,9 @@
                                                 id="city"
                                                 class="select-2-container"
                                             >
-                                                <option value="chisinau">{{__('theme.chisinau')}}</option>
-                                                <option value="comrat">{{__('theme.comrat')}}</option>
-                                                <option value="belti">{{__('theme.balti')}}</option>
+                                                @foreach($cities as $city)
+                                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

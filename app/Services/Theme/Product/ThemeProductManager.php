@@ -97,7 +97,7 @@ final class ThemeProductManager
             $response['product_title'] = $existedProduct->title;
             $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
-            $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
+            $response['msg']= __('theme.product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
 
             if ($request->ajax()){
                 $cart = view('frontend.v1.components.mini-cart')->render();
@@ -199,7 +199,7 @@ final class ThemeProductManager
             $response['product_title'] = $existedProduct->title;
             $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
-            $response['msg']= 'Товар ' .$existedProduct->title. ' успешно добавлен в корзину';
+            $response['msg']= __('theme.product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
 
             if ($request->ajax()){
                 $cart = view('frontend.v1.components.mini-cart')->render();

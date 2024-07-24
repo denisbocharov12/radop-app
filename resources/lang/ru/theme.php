@@ -9,6 +9,7 @@ return array (
   'account-details' => 'Детали аккаунта',
   'activate-account' => 'Активировать аккаунт',
   'add-to-cart' => 'В корзину',
+  'add-to-cart-with-success' => 'успешно добавлен в корзину',
   'add-to-wishlist' => 'Добавить в список желаний',
   'address' => 'Адрес',
   'apply' => 'Применить',
