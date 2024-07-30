@@ -422,19 +422,6 @@
             </div>
         </div>
     </section>
-    <section class="section-standart">
-        <div class="container container-flaer container-flaer-m0">
-            <div class="row">
-                <div class="col-12 col-flaer">
-                    <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/1110x120?text=Demo" alt="" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <section class="section-standart section-slider">
         <div class="container">
             <div class="row">
