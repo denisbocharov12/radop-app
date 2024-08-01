@@ -5,43 +5,43 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer">
                     <div class="wrap-footer-menu">
-                        <h5>Меню навигации</h5>
+                        <h5>{{__('theme.navigation-menu')}}</h5>
                         <ul class="footer-menu">
                             <li class="item"><a href="#">{{__('theme.home')}}</a></li>
-                            <li class="item"><a href="#">Мой аккаунт</a></li>
-                            <li class="item"><a href="#">Магазин</a></li>
-                            <li class="item"><a href="#">Корзина</a></li>
-                            <li class="item"><a href="#">Оформление заказа</a></li>
+                            <li class="item"><a href="#">{{__('theme.my-account')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.shop')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.cart')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.order-placement')}}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer">
                     <div class="wrap-footer-menu">
-                        <h5>Помощь</h5>
+                        <h5>{{__('theme.help')}}</h5>
                         <ul class="footer-menu">
-                            <li class="item"><a href="#">Как сделать заказ</a></li>
-                            <li class="item"><a href="#">Доставка</a></li>
-                            <li class="item"><a href="#">Опалата</a></li>
-                            <li class="item"><a href="#">Контакты</a></li>
-                            <li class="item"><a href="#">Безопасность</a></li>
+                            <li class="item"><a href="#">{{__('theme.how-to-order')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.delivery')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.payment')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.contact')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.security')}}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer">
                     <div class="wrap-footer-menu">
-                        <h5>О компании</h5>
+                        <h5>{{__('theme.about-company')}}</h5>
                         <ul class="footer-menu">
-                            <li class="item"><a href="#">О нас</a></li>
-                            <li class="item"><a href="#">Вакансии</a></li>
-                            <li class="item"><a href="#">Контакты</a></li>
-                            <li class="item"><a href="#">Реквизиты</a></li>
-                            <li class="item"><a href="#">Развитие</a></li>
+                            <li class="item"><a href="#">{{__('theme.about-us')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.vacancies')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.contact')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.requisites')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.development')}}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer">
                     <div class="wrap-legacy">
-                        <p>© Все права зашищены согласно <a href="#">Политике конфиденциальности</a></p>
+                        <p>© {{__('theme.all-rights-reserved-according-to')}} <a href="#">{{__('theme.privacy-policy')}}</a></p>
                     </div>
                     <div class="wrap-social">
                         <a href="#" class="social-link">
