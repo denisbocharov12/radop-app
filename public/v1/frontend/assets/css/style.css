@@ -20,10 +20,6 @@ body {
     line-height: 1;
 }
 
-.wrapper.theme-wrapper {
-    background-image: url("../images/pattern.jpg");
-    background-attachment: fixed;
-}
 
 .wrapper.theme-wrapper .theme-container-wrapper {
     background-color: white;
@@ -2517,6 +2513,7 @@ textarea {
     width: 100%;
     height: 100%;
     position: relative;
+    height: 225px;
 }
 
 .container-flaer .col-flaer .flaer-wrap .link-flaer img {
