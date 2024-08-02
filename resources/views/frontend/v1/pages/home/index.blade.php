@@ -32,21 +32,21 @@
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/350x220?text=Demo" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/350x220?text=Demo" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="https://placehold.co/350x220?text=Demo" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt="" />
                         </a>
                     </div>
                 </div>
