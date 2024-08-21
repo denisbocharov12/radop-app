@@ -6,6 +6,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-7 col-product-images">
+                    @include('frontend.v1.pages.product.parts.gallery')
+                </div>
+                <div class="col-12 col-lg-5 col-product-info">
                     <div class="product-info-wrap">
                         <div class="product-name">
                             <h1>{{$product->title}}</h1>
@@ -25,9 +28,6 @@
                             </div>
                         </div>
                     </div>
-                    @include('frontend.v1.pages.product.parts.gallery')
-                </div>
-                <div class="col-12 col-lg-5 col-product-info">
                     <div class="product-wrap">
                         <div class="product-price-wrap">
                             @if($product->sale_price !== '')

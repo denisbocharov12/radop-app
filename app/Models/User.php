@@ -66,4 +66,12 @@ final class User extends Authenticatable
     {
         return $this->belongsTo(UserType::class, 'type_id');
     }
+
+    /**
+     * @return HasMany<Favorite>
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
 }

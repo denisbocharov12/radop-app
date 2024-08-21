@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Category;
 
-use App\Exceptions\Category\CityNotFoundValidationException;
+use App\Exceptions\Category\CategoryNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -33,7 +32,7 @@ final class ThemeCategoryController extends Controller
         $existedCategory = $this->categoryRepository->getByOnecId($onecId);
 
         if ($existedCategory === null) {
-            throw new CityNotFoundValidationException();
+            throw new CategoryNotFoundException();
         }
 
         $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory);
@@ -51,5 +50,4 @@ final class ThemeCategoryController extends Controller
             'attributes'
         ]));
     }
-
 }
