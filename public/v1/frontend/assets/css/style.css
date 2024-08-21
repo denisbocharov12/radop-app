@@ -4900,12 +4900,12 @@ textarea {
     object-fit: contain;
     height: 100%;
 }
-.product-item .wrap-image-with-gallery a{
+.product_item .wrap-image-with-gallery a{
     cursor: zoom-in;
     display: block;
     height: 180px;
 }
-.product-item .wrap-image-with-gallery a img{
+.product_item .wrap-image-with-gallery a img{
     display: block;
     border-radius: 5px;
     position: relative;
