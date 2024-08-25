@@ -15,6 +15,8 @@ return array (
   'address' => 'Adresa',
   'all-rights-reserved-according-to' => 'Toate drepturile rezervate în conformitate cu',
   'apply' => 'Aplicați',
+  'assortment' => 'SORTIMENT',
+  'assortment-text' => 'Suntem specializati in comercializarea en-gros a unei game variate de hartie xerox, rechizite de birou si papetarie, echipamente de birou si alte produse conexe. Compania colaboreaza cu producatori renumiti din Germania, Austria, India, Polonia, Lituania, Cehia, Rusia, Ucraina astfel incat sa ofere clientilor sai produse de cea mai buna calitate.',
   'attributes' => 'Atributele',
   'author' => 'Autor:',
   'backup-phone' => 'Telefon de rezervă',
@@ -75,6 +77,13 @@ return array (
   'log-in-account' => 'Conectați-vă la contul dvs.',
   'login-registration' => 'Login / Înregistrare',
   'logout' => 'Ieșiți din cont',
+  'main-directives' => 'DIRECTII PRINCIPALE ALE ACTIVITATII NOASTRE',
+  'main-directives-1' => 'Distribuirea en-gros de bunuri pentru birou, scoala si creativitate si livrarea acestora la destinatie.
+                        Distributia produselor noastre si in toate retelele de supermarketuri din tara, cum ar fi: METRO Cash&Carry, LOCAL, Green Hills, Velmart, Nr 1, Linella, Bonus.
+                        Producem si vindem cu ridicata role pentru casa de marcat, hartie perforata, hartie in rulou, toate tipurile de caiete, hartie notite, mape din carton, agende si calendare, s.a.
+                        Marcam produsele noastre cu propriul brand RADOP-OPT.
+                        Efectuam fabricarea prin contract de produse sub marcile comerciale ale partenerilor nostri.',
+  'main-directives-2' => 'De 18 ani suntem participanti fideli la licitatiile nationale. Printre clientii nostri se numara: Mobiasbanca SA, VICTORIABANKA SA, Fincombank SA, Inspectoratul General de Politie, CNAS, Posta Moldovei, Banca Nationala a Moldovei, Moldtelecom s.a.',
   'max' => 'Maxim',
   'min' => 'Minim',
   'minimal_total' => 'Suma minimă pentru activarea cuponului',
@@ -121,9 +130,13 @@ return array (
   'product' => 'produs',
   'product-details' => 'Detaliile produsului',
   'product-name' => 'Denumire',
+  'production' => 'PRODUCERE',
+  'production-text' => 'Producem toate tipurile de role pentru casa de marcat, hartie perforata, hartie rulou, hartie notite, caiete, mape carton, agende, s.a. Efectuam comenzi pentru produse tiparite, executam comenzi pentru branding folosind diverse metode de aplicare.',
   'profile' => 'Profil',
   'quantity' => 'Cantitate',
   'quantity-shortly' => 'Cantitate:',
+  'rating' => 'Raiting',
+  'rating-text' => 'Avem 30 ani de activitate in domeniu si suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca.',
   'received' => 'A primit',
   'recommended' => 'Recomandate',
   'registered-city' => 'Orașul de înregistrare',

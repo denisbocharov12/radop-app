@@ -21,7 +21,7 @@
                             <a class="link" href="#">{{__('theme.contact')}}</a>
                         </li>
                         <li class="item">
-                            <a class="link" href="#">{{__('theme.about-us')}}</a>
+                            <a class="link" href="{{route('theme.about-us')}}">{{__('theme.about-us')}}</a>
                         </li>
                     </ul>
                 </div>
