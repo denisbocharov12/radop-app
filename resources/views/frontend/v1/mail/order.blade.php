@@ -21,23 +21,24 @@
                 <a href="{{ route('theme.home') }}" class="site-logo" style="margin-top: 20px;">
                     <img src="{{asset('/v1/frontend/assets/images/logo.svg')}}" alt="Radop Logo" style="max-width: 150px;" />
                 </a>
-                <p>Adresa: Sarmizegetusa, 15 Chisinau</p>
+                <p>{{ __('theme.address')}}: Sarmizegetusa, 15 Chisinau</p>
                 <p>Tel. 022-78-21-00</p>
             </div>
         </div>
 
         <div class="invoice-details" style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-size: 32px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; color: #333333;">Cont de plata</h1>
-            <p style="font-size: 18px; color: #555555;"><strong>Cont de plata №:</strong> {{ $order->order_number }}</p>
-            <p style="font-size: 18px; color: #555555;"><strong>Data:</strong> {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
+            <h1 style="font-size: 32px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; color: #333333;">{{ __('theme.payment-account')}}</h1>
+            <p style="font-size: 18px; color: #555555;"><strong>{{ __('theme.payment-account')}} №:</strong> {{ $order->order_number }}</p>
+            <p style="font-size: 18px; color: #555555;"><strong>{{ __('theme.data')}}</strong> {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
         </div>
 
         <table class="invoice-table" style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
             <thead style="background-color: #f0f0f0;">
             <tr>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">Can-tea</th>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">Titlu</th>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">Preț</th>
+                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.quantity-shortly')}}</th>
+                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.title')}}</th>
+                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.price')}}</th>
+                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.total')}}</th>
             </tr>
             </thead>
             <tbody>
@@ -46,10 +47,20 @@
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->quantity }}</td>
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ \App\Models\Product::find($product->product_id)->title }}</td>
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price }} {{ __('theme.MDL') }}</td>
+                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price * $product->quantity}} {{ __('theme.MDL') }}</td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        <div class="total-amount" style="text-align: right; margin-bottom: 20px; font-size: 18px;">
+            <strong>{{ __('theme.summary')}}</strong>
+            @php
+                $totalAmount = $products->sum(function($product) {
+                    return $product->price * $product->quantity;
+                });
+            @endphp
+            {{ $totalAmount }} {{ __('theme.MDL')}}
+        </div>
         {{--            <div class="invoice-terms">--}}
         {{--                <h4>Terms</h4>--}}
         {{--                <ul>--}}
