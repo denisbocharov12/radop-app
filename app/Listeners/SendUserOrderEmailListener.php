@@ -16,6 +16,6 @@ final class SendUserOrderEmailListener
 
     public function handle(OrderCreatedSendEmailEvent $event): void
     {
-        Mail::to($event->order->email)->send(new OrderCreatedMail());
+        Mail::to($event->order->email)->send(new OrderCreatedMail($event->order));
     }
 }
