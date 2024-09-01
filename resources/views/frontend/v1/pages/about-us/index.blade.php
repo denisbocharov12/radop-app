@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-md-6 order-md-1">
                     <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/raiting.png" alt="RAITING" class="img-fluid">
+                        <img src="{{asset('/v1/frontend/assets')}}/images/raiting.jpg" alt="RAITING" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-6 order-md-1">
                     <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/producere.png" alt="PRODUCERE" class="img-fluid">
+                        <img src="{{asset('/v1/frontend/assets')}}/images/producere.jpg" alt="PRODUCERE" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/directii.png" alt="DIRECTII" class="img-fluid">
+                        <img src="{{asset('/v1/frontend/assets')}}/images/directii.jpg" alt="DIRECTII" class="img-fluid">
                     </div>
                 </div>
             </div>
