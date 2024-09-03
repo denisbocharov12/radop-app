@@ -4820,7 +4820,46 @@ textarea {
     padding: 10px;
     border-radius: 10px;
 }
-
+.slick-track{
+    margin-top: 21px;
+    margin-bottom: 21px;
+}
+.product-item-category .product-wrap .product-label-s-wrap {
+    display: inline-block;
+    width: auto;
+    position: absolute;
+    top: -20px;
+    left: 5px;
+    padding: 4px 15px;
+    background-color: #0a2d6c;
+    color: white;
+    border-radius: 18px 18px 0 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.product-item-category .product-wrap .product-label-s-wrap.product-label-s-wrap-right
+{
+    left: 65px;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-on_sale{
+    background-color: #c70303;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-new{
+    background-color: #20b600;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-popular{
+    background-color: #dec209;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-featured{
+    background-color: #e37900;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-hot{
+    background-color: #ff1d1d;
+}
+.product-item-category .product-wrap .product-label-s-wrap.s-winter{
+    background-color: #1dc3ff;
+}
 .product-item-category a {
     display: flex;
     align-items: flex-start;

@@ -4,6 +4,7 @@
 @foreach($products as $product)
     <div class="col-lg-3 col-md-4 col-6 product-item-category">
         <div class="product-wrap drop-shadow">
+            @include('frontend.v1.pages.product.components.label')
             <div class="product-wrap-main">
                 @if($product->sale_price !== '')
                     <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">

@@ -65,6 +65,7 @@
                     @foreach($popularProducts as $product)
                         <div class="product_item product-item-category">
                             <div class="product-wrap drop-shadow">
+                                @include('frontend.v1.pages.product.components.label')
                                 <div class="product-wrap-main">
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
@@ -188,6 +189,7 @@
                     @foreach($newProducts as $product)
                         <div class="product_item product-item-category">
                             <div class="product-wrap drop-shadow">
+                                @include('frontend.v1.pages.product.components.label')
                                 <div class="product-wrap-main">
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
@@ -311,6 +313,7 @@
                     @foreach($discountProducts as $product)
                         <div class="product_item product-item-category">
                             <div class="product-wrap drop-shadow">
+                                @include('frontend.v1.pages.product.components.label')
                                 <div class="product-wrap-main">
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
