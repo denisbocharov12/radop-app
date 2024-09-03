@@ -9,7 +9,7 @@
 </div>
 @endif
 
-@if($product->data->condition === 'new' && $product->sale_price === '')
+@if($product?->data->condition === 'new' && $product->sale_price === '')
     <div class="
     product-label-s-wrap
     s-new
@@ -20,7 +20,7 @@
     </div>
 @endif
 
-@if($product->data->condition === 'popular' && $product->sale_price === '')
+@if($product?->data->condition === 'popular' && $product->sale_price === '')
     <div class="
     product-label-s-wrap
     s-popular
@@ -31,7 +31,7 @@
     </div>
 @endif
 
-@if($product->data->condition === 'featured' && $product->sale_price === '')
+@if($product?->data->condition === 'featured' && $product->sale_price === '')
     <div class="
     product-label-s-wrap
     s-featured
@@ -42,7 +42,7 @@
     </div>
 @endif
 
-@if($product->data->condition === 'hot' && $product->sale_price === '')
+@if($product?->data->condition === 'hot' && $product->sale_price === '')
     <div class="
     product-label-s-wrap
     s-hot
@@ -53,7 +53,7 @@
     </div>
 @endif
 
-@if($product->data->condition === 'winter' && $product->sale_price === '')
+@if($product?->data->condition === 'winter' && $product->sale_price === '')
     <div class="
     product-label-s-wrap
     s-winter
@@ -64,7 +64,7 @@
     </div>
 @endif
 
-@if($product->sale_price !== '' && $product->data->condition === 'new')
+@if($product->sale_price !== '' && $product?->data->condition === 'new')
     <div class="
     product-label-s-wrap
     product-label-s-wrap-right
@@ -76,7 +76,7 @@
     </div>
 @endif
 
-@if($product->sale_price !== '' && $product->data->condition === 'popular')
+@if($product->sale_price !== '' && $product?->data->condition === 'popular')
     <div class="
     product-label-s-wrap
     product-label-s-wrap-right
@@ -88,7 +88,7 @@
     </div>
 @endif
 
-@if($product->sale_price !== '' && $product->data->condition === 'featured')
+@if($product->sale_price !== '' && $product?->data->condition === 'featured')
     <div class="
     product-label-s-wrap
     product-label-s-wrap-right
@@ -100,7 +100,7 @@
     </div>
 @endif
 
-@if($product->sale_price !== '' && $product->data->condition === 'hot')
+@if($product->sale_price !== '' && $product?->data->condition === 'hot')
     <div class="
     product-label-s-wrap
     product-label-s-wrap-right
@@ -112,7 +112,7 @@
     </div>
 @endif
 
-@if($product->sale_price !== '' && $product->data->condition === 'winter')
+@if($product->sale_price !== '' && $product?->data->condition === 'winter')
     <div class="
     product-label-s-wrap
     product-label-s-wrap-right
