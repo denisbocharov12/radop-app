@@ -6048,6 +6048,7 @@ hr {
 }
 .gratitude__{
     text-align: center;
+    margin-bottom: 20px;
 }
 .gratitude__row {
     display: flex;
