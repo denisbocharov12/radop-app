@@ -4849,7 +4849,7 @@ textarea {
     background-color: #20b600;
 }
 .product-item-category .product-wrap .product-label-s-wrap.s-popular{
-    background-color: #dec209;
+    background-color: #1f7bf9;
 }
 .product-item-category .product-wrap .product-label-s-wrap.s-featured{
     background-color: #e37900;
@@ -6044,8 +6044,11 @@ hr {
     font-weight: 400;
     font-weight: 300;
     margin-bottom: calc(15px + 15 * (100vw - 320px) / 1120);
+    text-align: center;
 }
-
+.gratitude__{
+    text-align: center;
+}
 .gratitude__row {
     display: flex;
 }
