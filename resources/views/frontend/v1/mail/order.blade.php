@@ -19,7 +19,7 @@
                 {{--                    </p>--}}
                 <!-- Site Logo -->
                 <a href="{{ route('theme.home') }}" class="site-logo" style="margin-top: 20px;">
-                    <img src="{{asset('/v1/frontend/assets/images/logo.svg')}}" alt="Radop Logo" style="max-width: 150px;" />
+                    <img src="{{ $message->embed(public_path('/v1/frontend/assets/images/logo.svg')) }}" alt="Radop Logo" style="max-width: 150px;" />
                 </a>
                 <p>{{ __('theme.address')}}: Sarmizegetusa, 15 Chisinau</p>
                 <p>Tel. 022-78-21-00</p>
@@ -35,8 +35,8 @@
         <table class="invoice-table" style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
             <thead style="background-color: #f0f0f0;">
             <tr>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.quantity-shortly')}}</th>
                 <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.title')}}</th>
+                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.quantity-shortly')}}</th>
                 <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.price')}}</th>
                 <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.total')}}</th>
             </tr>
@@ -44,8 +44,8 @@
             <tbody>
             @foreach($products as $product)
                 <tr>
-                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->quantity }}</td>
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ \App\Models\Product::find($product->product_id)->title }}</td>
+                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->quantity }}</td>
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price }} {{ __('theme.MDL') }}</td>
                     <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price * $product->quantity}} {{ __('theme.MDL') }}</td>
                 </tr>
