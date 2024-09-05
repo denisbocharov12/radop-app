@@ -10,16 +10,10 @@
                 </p>
                 {{--                    <p><strong>Reference:</strong> UX Design & Development for Android App.</p>--}}
             </div>
-            <div class="client-info" style="width: 45%; text-align: right;">
-                {{--                    <h3>Acme LLP</h3>--}}
-                {{--                    <p>--}}
-                {{--                        477 Blackwell Street,<br>--}}
-                {{--                        Dry Creek, Alaska<br>--}}
-                {{--                        India--}}
-                {{--                    </p>--}}
+            <div class="client-info" style="width: 66%; text-align: right;">
                 <!-- Site Logo -->
                 <a href="{{ route('theme.home') }}" class="site-logo" style="margin-top: 20px;">
-                    <img src="{{ $message->embed(public_path('/v1/frontend/assets/images/logo.svg')) }}" alt="Radop Logo" style="max-width: 150px;" />
+                    <img src="{{ $message->embed(public_path('/v1/frontend/assets/images/logo_svg_radop.png')) }}" alt="Radop Logo" style="max-width: 150px;" />
                 </a>
                 <p>{{ __('theme.address')}}: Sarmizegetusa, 15 Chisinau</p>
                 <p>Tel. 022-78-21-00</p>
