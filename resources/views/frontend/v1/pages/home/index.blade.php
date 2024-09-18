@@ -8,17 +8,12 @@
                     <div id="main-banner">
                         <div class="item">
                             <a href="#">
-                                <img src="https://placehold.co/1110x325?text=Demo" alt="" />
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_1.png" alt="" />
                             </a>
                         </div>
                         <div class="item">
                             <a href="#">
-                                <img src="https://placehold.co/1110x325?text=Demo" alt="" />
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="#">
-                                <img src="https://placehold.co/1110x325?text=Demo" alt="" />
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_2.png" alt="" />
                             </a>
                         </div>
                     </div>
@@ -32,21 +27,21 @@
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.png" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.png" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.png" alt="" />
                         </a>
                     </div>
                 </div>
