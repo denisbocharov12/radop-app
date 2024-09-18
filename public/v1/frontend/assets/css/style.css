@@ -4758,6 +4758,7 @@ textarea {
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-checkbox + label{
     width: 50%;
     flex: 0 0 50%;
+    flex-wrap: wrap;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar {
@@ -4823,6 +4824,10 @@ textarea {
 .slick-track{
     margin-top: 21px;
     margin-bottom: 21px;
+}
+.col-product-images .slick-track{
+    margin-top: 0;
+    margin-bottom: 0;
 }
 .product-item-category .product-wrap .product-label-s-wrap {
     display: inline-block;
