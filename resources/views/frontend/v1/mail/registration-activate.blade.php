@@ -12,15 +12,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Activate your account...') }}</div>
                 <div class="card-body">
                     @if (session('resent'))
                             {{ __('A fresh verification link has been sent to your email address.') }}
                         </div>
                     @endif
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }},
-                    <a href="{{route('user.registration.activation', $token) }}">Activate Account</a>
+                    {{ __('Înregistrarea pe site-ul www.radop.md a avut succes. Confirmați înregistrarea. Dacă nu ați făcut-o, ignorați acest mesaj.') }}
+                    <a href="{{route('user.registration.activation', $token)}}">{{__('Click aici')}}</a>
                 </div>
             </div>
         </div>

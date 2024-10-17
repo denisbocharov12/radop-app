@@ -24,7 +24,7 @@ final class OrderCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Radop Moldova - Order Created',
+            subject: 'Radop Moldova - Felicitări, comanda dumneavoastră №'.$this->order->order_number.' a fost plasată cu succes!',
         );
     }
 

@@ -1,5 +1,5 @@
 <div class="cart-block icon-block mini-shopping-cart">
-    <a href="#" class="cart icon-block-link">
+    <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">
         @php
             $sessionId = config('shopping_cart.default_session_id');
 

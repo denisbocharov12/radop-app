@@ -94,13 +94,13 @@ final class ThemeRegistrationManager
         }
 
         $existedUserActivation->update([
-            'status' => false
+            'status' => true
         ]);
 
         $existedUser = $this->userRepository->getById($existedUserActivation->user_id);
 
         $existedUser->update([
-            'status' => false
+            'status' => true
         ]);
     }
 }

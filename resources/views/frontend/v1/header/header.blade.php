@@ -7,7 +7,7 @@
                         <img src="{{asset('/v1/frontend/assets')}}/images/logo-white.svg" alt="" />
                     </a>
                 </div>
-                <div class="header-menu col-lg">
+                <div class="header-menu">
                     <div class="header-main-menu">
                         <ul class="menu w-100 justify-content-center">
                             @if(!empty($themeParentCategories))

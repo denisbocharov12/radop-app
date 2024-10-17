@@ -27,6 +27,7 @@ final class User extends Authenticatable
         'status',
         'type_id',
         'manager_id',
+        'email_verified_at',
     ];
 
     protected $hidden = [

@@ -48,12 +48,13 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog">
+    <section class="section-standart section-catalog section-home">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
-                    <div class="heading">
+                    <div class="heading heading-with-btn">
                         <h1>{{__('theme.popular-products')}}</h1>
+                        <a class="section-home-btn" href="#">Смотреть все</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">
@@ -172,12 +173,13 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog">
+    <section class="section-standart section-catalog section-home">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
-                    <div class="heading">
+                    <div class="heading heading-with-btn">
                         <h1>{{__('theme.new-products')}}</h1>
+                        <a class="section-home-btn" href="#">Смотреть все</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">
@@ -296,12 +298,13 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog">
+    <section class="section-standart section-catalog section-home">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
-                    <div class="heading">
+                    <div class="heading heading-with-btn">
                         <h1>{{__('theme.on-discount')}}</h1>
+                        <a class="section-home-btn" href="#">Смотреть все</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">
