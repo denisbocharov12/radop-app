@@ -15,7 +15,10 @@
     </div>
     @else
         <div class="login-modal-wrap">
-            <div class="login-head">
+            <div class="login-logo d-flex align-items-center justify-content-center">
+                <img style="width: 90px; height: auto" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
+            </div>
+            <div class="login-head d-flex align-items-center justify-content-center">
                 <h3>{{__('theme.log-in-account')}}</h3>
             </div>
             <div class="login-form-wrap">

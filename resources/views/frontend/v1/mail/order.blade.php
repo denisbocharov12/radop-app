@@ -4,9 +4,9 @@
             <div class="company-info" style="width: 45%;">
                 <h3>'RADOP-OPT' SRL</h3>
                 <p>
-                    Cont de decontare<br>
-                    MD25MO2251ASV04499907100 la <br>
-                    BC Mobiasbanca-OTP Group SA MOBBMD22
+                    MD94ML000000002251419173   la <br>
+                    BC Moldindconbank SA  MOLDMD2X <br>
+                    Cod MOLDMD2X
                 </p>
                 {{--                    <p><strong>Reference:</strong> UX Design & Development for Android App.</p>--}}
             </div>
