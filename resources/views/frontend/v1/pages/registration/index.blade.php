@@ -154,29 +154,43 @@
                                 <input type="hidden" name="type_id" value="{{$userTypeIur->id}}">
                                 <div class="form-content">
                                     <div class="left">
+{{--                                        <div class="form-control form-control-direction">--}}
+{{--                                            <input--}}
+{{--                                                class=""--}}
+{{--                                                type="text"--}}
+{{--                                                name="first_name"--}}
+{{--                                                id="first_name_iur"--}}
+{{--                                                placeholder="Имя"--}}
+{{--                                            />--}}
+{{--                                            @error('first_name')--}}
+{{--                                            <span class="invalid-feedback d-block" role="alert">--}}
+{{--                                                        <strong>{{ $message }}</strong>--}}
+{{--                                                    </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                        <div class="form-control form-control-direction">--}}
+{{--                                            <input--}}
+{{--                                                class=""--}}
+{{--                                                type="text"--}}
+{{--                                                name="last_name"--}}
+{{--                                                id="last_name_iur"--}}
+{{--                                                placeholder="Фамилия"--}}
+{{--                                            />--}}
+{{--                                            @error('last_name')--}}
+{{--                                            <span class="invalid-feedback d-block" role="alert">--}}
+{{--                                                        <strong>{{ $message }}</strong>--}}
+{{--                                                    </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
                                         <div class="form-control form-control-direction">
                                             <input
                                                 class=""
                                                 type="text"
-                                                name="first_name"
-                                                id="first_name_iur"
-                                                placeholder="Имя"
+                                                name="organization_name"
+                                                id="organization_name"
+                                                placeholder="Название компании"
                                             />
-                                            @error('first_name')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-control form-control-direction">
-                                            <input
-                                                class=""
-                                                type="text"
-                                                name="last_name"
-                                                id="last_name_iur"
-                                                placeholder="Фамилия"
-                                            />
-                                            @error('last_name')
+                                            @error('organization_name')
                                             <span class="invalid-feedback d-block" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -200,23 +214,9 @@
                                             <input
                                                 class=""
                                                 type="text"
-                                                name="organization_name"
-                                                id="organization_name"
-                                                placeholder="SRL"
-                                            />
-                                            @error('organization_name')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-control form-control-direction">
-                                            <input
-                                                class=""
-                                                type="text"
                                                 name="contact_name"
                                                 id="contact_name"
-                                                placeholder="Ivan N."
+                                                placeholder="Контактное лицо"
                                             />
                                             @error('contact_name')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -260,7 +260,7 @@
                                                 type="text"
                                                 name="cod_fiscal"
                                                 id="cod_fiscal"
-                                                placeholder="Code"
+                                                placeholder="Фискальный код"
                                             />
                                             @error('cod_fiscal')
                                             <span class="invalid-feedback d-block" role="alert">

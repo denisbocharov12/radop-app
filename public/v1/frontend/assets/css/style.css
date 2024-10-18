@@ -1370,8 +1370,13 @@ textarea {
     margin-right: 0px !important;
     height: 100%;
     border-right: 1px solid #fff;
-
+    width: inherit;
 }
+
+.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu a{
+    justify-content: center;
+}
+
 header .section-header .row-main .header-menu .col-lg{
 
 }
@@ -1423,7 +1428,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-header .row-main .header-menu .header-main-menu ul.menu .item .link {
     padding: 15px 0;
     color: #fff;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     letter-spacing: 1px;
 }
 
@@ -1568,22 +1573,25 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content a.heading {
     color: #000;
-    font-weight: 500;
+    font-weight: 600!important;
     padding: 7.5px 5px;
     display: inline-block;
 }
-
+.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content a.heading:hover{
+    text-decoration: underline!important;
+}
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item {
     padding: 5px;
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link {
     color: #000;
-    font-weight: 400;
+    font-weight: 500!important;
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link:hover {
     color: #e82d25;
+    text-decoration: underline!important;
 }
 
 .section-header .row-main .header-search .wrap {
