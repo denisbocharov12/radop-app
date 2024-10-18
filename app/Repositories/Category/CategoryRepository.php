@@ -48,6 +48,7 @@ class CategoryRepository
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
+                'onec_id'
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
