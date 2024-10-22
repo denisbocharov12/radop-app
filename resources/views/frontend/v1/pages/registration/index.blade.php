@@ -7,8 +7,8 @@
                 <div class="col-12 col-register-wrap">
                     <div id="tabs">
                         <div class="tab-block">
-                            <div class="tab active">Физическое лицо</div>
-                            <div class="tab">Юридическое лицо</div>
+                            <div class="tab active">{{__('theme.physical-person')}}</div>
+                            <div class="tab">{{__('theme.legal-person')}}</div>
                         </div>
                         <div class="tabContent">
                             <form id="form-fiz-submit" action="{{route('user.registration.store')}}" method="POST">
@@ -16,7 +16,7 @@
                                 @php
                                     $userTypeFiz = \App\Models\UserType::where('key_name', 'fiz')->first();
                                 @endphp
-                                <input type="hidden" name="type_id" value="{{$userTypeFiz->id}}">
+{{--                                <input type="hidden" name="type_id" value="{{$userTypeFiz->id}}">--}}
                                 <div class="form-content">
                                     <div class="left">
                                         <div class="form-control form-control-direction">
@@ -25,7 +25,7 @@
                                                 type="text"
                                                 name="first_name"
                                                 id="first_name_fiz"
-                                                placeholder="Имя"
+                                                placeholder="{{__('theme.first-name')}}"
                                             />
                                             @error('first_name')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -39,7 +39,7 @@
                                                 type="text"
                                                 name="last_name"
                                                 id="last_name_fiz"
-                                                placeholder="Фамилия"
+                                                placeholder="{{__('theme.second-name')}}"
                                             />
                                             @error('last_name')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -53,7 +53,7 @@
                                                 type="text"
                                                 name="address"
                                                 id="address_fiz"
-                                                placeholder="Адрес"
+                                                placeholder="{{__('theme.address')}}"
                                             />
                                             @error('address')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -69,7 +69,7 @@
                                                 type="text"
                                                 name="phone"
                                                 id="phone_fiz"
-                                                placeholder="Мобильный телефон начиная с 373"
+                                                placeholder="{{__('theme.phone-number')}}"
                                             />
                                             @error('phone')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -98,7 +98,7 @@
                                                 type="password"
                                                 name="password"
                                                 id="password_fiz"
-                                                placeholder="Пароль"
+                                                placeholder="{{__('theme.password')}}"
                                             />
                                             @error('password')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -120,14 +120,14 @@
                                                 checked
                                             />
                                             <label for="policy_fiz"
-                                            >Я согласен с
+                                            >{{__('theme.agree-with')}}
                                                 <a
-                                                    data-fancybox
-                                                    data-src="#rules-register-page"
-                                                    data-touch="false"
-                                                    href="javascript:;"
+                                                        data-fancybox
+                                                        data-src="#rules-register-page"
+                                                        data-touch="false"
+                                                        href="javascript:;"
                                                 >
-                                                    условиями использования
+                                                    {{__('theme.terms-of-use')}}
                                                 </a></label
                                             >
                                         </div>
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="block-botton">
                                     <button id="form_submit_fiz" type="submit" class="btn">
-                                        Зарегистрироваться
+                                        {{__('theme.sign-up')}}
                                     </button>
                                 </div>
                             </form>
@@ -151,7 +151,7 @@
                                 @php
                                     $userTypeIur = \App\Models\UserType::where('key_name', 'iur')->first();
                                 @endphp
-                                <input type="hidden" name="type_id" value="{{$userTypeIur->id}}">
+{{--                                <input type="hidden" name="type_id" value="{{$userTypeIur->id}}">--}}
                                 <div class="form-content">
                                     <div class="left">
 {{--                                        <div class="form-control form-control-direction">--}}
@@ -188,7 +188,7 @@
                                                 type="text"
                                                 name="organization_name"
                                                 id="organization_name"
-                                                placeholder="Название компании"
+                                                placeholder="{{__('theme.company-name')}}"
                                             />
                                             @error('organization_name')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -202,7 +202,7 @@
                                                 type="text"
                                                 name="address"
                                                 id="address_iur"
-                                                placeholder="Адрес"
+                                                placeholder="{{__('theme.address')}}"
                                             />
                                             @error('address')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -216,7 +216,7 @@
                                                 type="text"
                                                 name="contact_name"
                                                 id="contact_name"
-                                                placeholder="Контактное лицо"
+                                                placeholder="{{__('theme.contact-person')}}"
                                             />
                                             @error('contact_name')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -232,7 +232,7 @@
                                                 type="text"
                                                 name="phone"
                                                 id="phone_iur"
-                                                placeholder="Мобильный телефон начиная с 373"
+                                                placeholder="{{__('theme.phone-number')}}"
                                             />
                                             @error('phone')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -260,7 +260,7 @@
                                                 type="text"
                                                 name="cod_fiscal"
                                                 id="cod_fiscal"
-                                                placeholder="Фискальный код"
+                                                placeholder="{{__('theme.fiscal-code')}}"
                                             />
                                             @error('cod_fiscal')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -275,7 +275,7 @@
                                                 type="password"
                                                 name="password"
                                                 id="password_iur"
-                                                placeholder="Пароль"
+                                                placeholder="{{__('theme.password')}}"
                                             />
                                             @error('password')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -297,14 +297,14 @@
                                                 checked
                                             />
                                             <label for="policy_iur"
-                                            >Я согласен с
+                                            >{{__('theme.agree-with')}}
                                                 <a
                                                     data-fancybox
                                                     data-src="#rules-register-page"
                                                     data-touch="false"
                                                     href="javascript:;"
                                                 >
-                                                    условиями использования
+                                                    {{__('theme.terms-of-use')}}
                                                 </a></label
                                             >
                                         </div>
@@ -317,7 +317,7 @@
                                 </div>
                                 <div class="block-botton">
                                     <button id="form_submit_iur" type="submit" class="btn">
-                                        Зарегистрироваться
+                                        {{__('theme.sign-up')}}
                                     </button>
                                 </div>
                             </form>

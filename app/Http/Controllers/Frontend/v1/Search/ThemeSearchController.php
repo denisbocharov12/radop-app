@@ -25,6 +25,7 @@ final class ThemeSearchController extends Controller
 
         return view('frontend.v1.pages.search.index', compact([
             'products',
+            'themeSearchData',
         ]));
     }
 }
