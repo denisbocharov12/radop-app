@@ -25,6 +25,13 @@ body {
     background-color: white;
 }
 
+.wrapper.theme-wrapper .theme-container-wrapper-sticky {
+    background-color: white;
+    position: sticky;
+    z-index: 999;
+    top: 0;
+}
+
 .wrapper.theme-wrapper #main .container {
     padding: 0;
 }
@@ -743,18 +750,39 @@ footer .section-footer .col-site-footer .wrap-footer-menu h5 {
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item {
-    margin-top: 5px;
-    display: flex;
+    margin-top: 7.5px;
 }
-
+footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item .footer-text{
+    margin-bottom: 2.5px;
+}
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item a {
     color: #42505e;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item {
+    display: flex;
+    flex-direction: column;
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item a:hover {
     color: #e82d25;
+    text-decoration: underline!important;
 }
-
+footer .section-footer .link-logo img{
+    height: 100px;
+    width: auto;
+}
+footer .section-footer .link-logo{
+    margin-bottom: 10px;
+    display: inline-block;
+}
+footer .section-footer .footer-text{
+    color: #42505e;
+    font-size: 14px;
+}
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item:first-child {
     margin-top: 0;
 }
@@ -801,8 +829,8 @@ header {
     font-family: "Trebuchet MS", sans-serif;
     display: block;
     position: sticky;
-    z-index: 999;
-    top: 0;
+    z-index: 99;
+    top: 120px;
     background-color: #fff;
 }
 
@@ -935,7 +963,104 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
     text-align: center;
     color: #fff;
 }
+.section-header.section-header-top .wrap-header-account-with-contacts .header-location {
+    display: flex;
+    align-items: center;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-location .location {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    margin-left: 10px;
+    color: #0068a7;
+    border-right: 1px solid #d9dee2;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-location .location img {
+    max-width: 10px;
+    margin-right: 3px;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-location .location:last-child {
+    border-right: 0px;
+    padding-right: 0;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-location .location:hover {
+    text-decoration: underline!important;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts{
+    display: flex;
+    margin-bottom: 12.5px;
+    justify-content: flex-end;
+    width: auto;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts {
+    margin-right: 10px;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list {
+    display: flex;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item {
+    margin-right: 10px;
+    display: flex;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link {
+    color: #0068a7;
+    display: flex;
+    align-items: center;
+    margin-right: 7.5px;
+    padding-right: 7.5px;
+    border-right: 1px solid #0068a7;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link:last-child{
+    border-right: 0;
+    margin-right: 15px;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link svg {
+    margin-right: 4px;
+    fill: #0068a7;
+    width: 18px;
+    height: 18px;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link:hover {
+    color: #e82d25;
+    text-decoration: underline!important;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link:hover svg {
+    fill: #e82d25;
+}
+.section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item:last-child {
+    margin-right: 0;
+}
 
+.section-header.section-header-top .header-with-menu{
+    height: 78px;
+}
+.section-header .row-main .header-account{
+    height: 78px;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu{
+    margin-bottom: 12.5px;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list {
+    display: flex;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item {
+    margin-right: 7.5px;
+    padding-right: 7.5px;
+    border-right: 1px solid #0068a7;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item:last-child {
+    border-right: 0;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item a.link {
+    color: #0068a7;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item a.link:hover {
+    text-decoration: underline !important;
+}
+.section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item:last-child {
+    margin-right: 0px;
+}
 header .section-header .row-main .header-account .nav-is-toggled::after {
     opacity: 1;
     visibility: visible;
@@ -1339,6 +1464,7 @@ textarea {
 }
 .section-header.section-header-top{
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 .section-header .row-main {
     align-items: center;
@@ -1767,8 +1893,9 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-account {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-direction: column;
 }
 
 .section-header .row-main .header-account .icon-block {
@@ -1784,7 +1911,10 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 8px 15px;
     border-radius: 10px;
 }
-
+.section-header .row-main .header-account .icon-block a.icon-block-link:hover{
+    background-color: #eff3f6;
+    text-decoration: underline!important;
+}
 .section-header .row-main .header-account .icon-block a.icon-block-link i {
     font-size: 22px;
     color: #0068a7;
@@ -1800,7 +1930,8 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-header .row-main .header-account .icon-block a.icon-block-link.wishlist:hover {
-    background-color: #00599120;
+    background-color: #eff3f6;
+    text-decoration: underline!important;
 }
 
 .section-header .row-main .header-account .icon-block a.icon-block-link.cart {
@@ -6598,9 +6729,23 @@ hr {
         display: block;
     }
 }
+@media (max-width: 1200px) {
+    .section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item a.link{
+        font-size: 14px;
+    }
+    .section-header .row-main .header-account .icon-block a.icon-block-link{
+        font-size: 14px;
+    }
+    .section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link{
+        font-size: 14px;
+    }
+}
 @media (min-width: 992px) {
+    header .section-header .row-main .header-account.header-account-responsive{
+        display: none;
+    }
     .container {
-        max-width: 960px;
+        max-width: 1080px;
     }
 
     .container-lg {
@@ -6972,6 +7117,13 @@ hr {
     }
 }
 @media (max-width: 992px) {
+    header{
+        top: 0
+    }
+    header .section-header .row-main .header-account{
+        flex-direction: row;
+        height: auto;
+    }
     .my-account-details__inner {
         column-gap: 30px;
     }

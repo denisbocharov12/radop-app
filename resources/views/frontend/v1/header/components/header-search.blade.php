@@ -1,4 +1,5 @@
-<div class="header-search col col-md col-xl col-lg">
+<div class="header-search header-with-menu col col-md col-xl col-lg">
+    @include('frontend.v1.header.components.top-bar')
     <div class="wrap">
         <form action="{{route('theme.search.index')}}" method="GET">
             @csrf
