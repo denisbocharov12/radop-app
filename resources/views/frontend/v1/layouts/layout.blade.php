@@ -5,8 +5,10 @@
 <div class="wrapper theme-wrapper">
     <div class="container theme-container-wrapper">
     @include('frontend.v1.search.search-overlay')
-    @include('frontend.v1.header.top-bar')
-    @include('frontend.v1.header.header-top')
+    </div>
+    <div class="container theme-container-wrapper theme-container-wrapper-sticky">
+{{--        @include('frontend.v1.header.top-bar')--}}
+        @include('frontend.v1.header.header-top')
     </div>
     @include('frontend.v1.header.header')
     <div class="container theme-container-wrapper">

@@ -26,7 +26,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="header-account col-auto col-sm-auto col-md-auto col-lg-auto">
+                <div class="header-account header-account-responsive col-auto col-sm-auto col-md-auto col-lg-auto">
                     <div class="login-registration-block icon-block">
                         <a
                             class="user icon-block-link"
