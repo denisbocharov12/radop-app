@@ -1,7 +1,10 @@
 <div style="display: none; max-width: 500px" id="loginModal">
     @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->hasRole('user'))
     <div class="login-modal-wrap">
-        <div class="login-head">
+        <div class="login-logo d-flex align-items-center justify-content-center">
+            <img style="width: 90px; height: auto" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
+        </div>
+        <div class="login-head d-flex align-items-center justify-content-center">
             <h3>{{__('theme.сontrol-panel')}}</h3>
         </div>
         <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.account.index')}}">{{__('theme.profile')}}</a>

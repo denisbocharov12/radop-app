@@ -75,15 +75,15 @@
 {{--                                @endif--}}
 {{--                            </div>--}}
                         </div>
-                        <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
-                            <div class="filter-widget-wrap filter-wrap-overflow">
-                                @foreach($brands as $brand)
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
-                                    <label for="brand-{{$brand->id}}">{{$brand->title}}</label>
-                                @endforeach
-                            </div>
-                        </div>
+{{--                        <div class="theme-wg-wrap">--}}
+{{--                            <p class="theme-widget-title">{{__('theme.brand')}}</p>--}}
+{{--                            <div class="filter-widget-wrap filter-wrap-overflow">--}}
+{{--                                @foreach($brands as $brand)--}}
+{{--                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">--}}
+{{--                                    <label for="brand-{{$brand->id}}">{{$brand->title}}</label>--}}
+{{--                                @endforeach--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>
