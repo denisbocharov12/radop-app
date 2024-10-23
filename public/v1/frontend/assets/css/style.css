@@ -4925,8 +4925,8 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow .theme-checkbox + label,
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-checkbox + label{
-    width: 50%;
-    flex: 0 0 50%;
+    width: 100%;
+    flex: 0 0 100%;
     flex-wrap: wrap;
 }
 
