@@ -33,9 +33,9 @@
                         <ul class="footer-menu">
                             <li class="item"><a href="#">{{__('theme.about-us')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.delivery')}}</a></li>
-                            <li class="item"><a href="#">Новости</a></li>
-                            <li class="item"><a href="#">Условия использования</a></li>
-                            <li class="item"><a href="#">Политика конфиденциальности</a></li>
+                            <li class="item"><a href="#">{{__('theme.news')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.term-of-use')}}</a></li>
+                            <li class="item"><a href="#">{{__('theme.confidentiality-policy')}}</a></li>
 {{--                            <li class="item"><a href="#">{{__('theme.home')}}</a></li>--}}
 {{--                            <li class="item"><a href="#">{{__('theme.my-account')}}</a></li>--}}
 {{--                            <li class="item"><a href="#">{{__('theme.shop')}}</a></li>--}}
@@ -50,29 +50,29 @@
                         <ul class="footer-menu">
                             <li class="item">
                                 <div class="d-flex">
-                                    <a href="#"><i class="icon-point"></i> Кишинёв, ул. Сармизеджетуса 15</a>
+                                    <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}Кишинёв, ул. Сармизеджетуса 15</a>
                                 </div>
                             </li>
                             <li class="item">
-                                <p class="footer-text">Отдел продаж:</p>
+                                <p class="footer-text">{{__('theme.sales-department')}}:</p>
                                 <div class="d-flex align-items-center">
                                     <a href="tel:+37322782100">+373 22 78 21 00</a> <a href="mailto:sales@radop.md">sales@radop.md</a>
                                 </div>
                             </li>
                             <li class="item">
-                                <p class="footer-text">Отдел закупок:</p>
+                                <p class="footer-text">{{__('theme.procurement-department')}}:</p>
                                 <div class="d-flex align-items-center">
                                     <a href="tel:+37322782102">+ 373 22 78 21 02</a> <a href="mailto:office@radop.md">office@radop.md</a>
                                 </div>
                             </li>
                             <li class="item">
-                                <p class="footer-text">Тендерный отдел:</p>
+                                <p class="footer-text">{{__('theme.tender-department')}}:</p>
                                 <div class="d-flex align-items-center">
                                     <a href="tel:+37322782101">+373 22 78 21 01</a> <a href="mailto:sales@radop.md">sales@radop.md</a>
                                 </div>
                             </li>
                             <li class="item">
-                                <p class="footer-text">Бухгалтерия:</p>
+                                <p class="footer-text">{{__('theme.accounting')}}:</p>
                                 <div class="d-flex align-items-center">
                                     <a href="tel:+37322782103">+ 373 22 78 21 03</a> <a href="mailto:cont@radop.md">cont@radop.md</a>
                                 </div>
@@ -101,7 +101,7 @@
 {{--                </div>--}}
                 <div class="col-12 col-sm-6 col-lg-2 col-site-footer">
                     <div class="wrap-footer-menu">
-                        <h5>Рабочие часы</h5>
+                        <h5>{{__('theme.working-hours')}}</h5>
                         <ul class="footer-menu">
                             <li class="item">
                                 <p class="footer-text">
