@@ -4,7 +4,7 @@
             <a class="link" href="{{route('theme.about-us')}}">{{__('theme.about-us')}}</a>
         </li>
         <li class="item">
-            <a class="link" href="#">Акции</a>
+            <a class="link" href="#">{{__('theme.promotion')}}</a>
         </li>
         <li class="item">
             <a class="link" href="#">{{__('theme.delivery')}}</a>
