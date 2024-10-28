@@ -13,7 +13,7 @@
         <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">{{__('theme.logout')}}</a>
         <div class="account-helpers-wrap mt-4">
             <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
-            <a href="javascript:;" class="helper-account-psw">{{__('theme.forget-password')}}</a>
+            <a href="#" class="helper-account-psw">{{__('theme.forget-password')}}</a>
         </div>
     </div>
     @else
@@ -74,7 +74,7 @@
             </div>
             <div class="account-helpers-wrap">
                 <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
-                <a href="javascript:;" class="helper-account-psw">{{__('theme.forget-password')}}</a>
+                <a href="{{route('theme.passwords.forget')}}" class="helper-account-psw">{{__('theme.forget-password')}}</a>
             </div>
         </div>
     @endif

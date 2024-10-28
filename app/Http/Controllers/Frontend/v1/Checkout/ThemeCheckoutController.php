@@ -13,6 +13,7 @@ use App\Exceptions\Checkout\OrderErrorValidationException;
 use App\Http\Mappers\Theme\ThemeOrderDataMapper;
 use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
 use App\Repositories\City\CityRepository;
+use App\Repositories\DeliveryMethod\DeliveryMethodRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Checkout\ThemeCheckoutManager;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,8 @@ final class ThemeCheckoutController
         private readonly OrderPaymentMethods $orderPaymentMethods,
         private readonly ProductRepository $productRepository,
         private readonly CityRepository $cityRepository,
-    )
-    {
+        private readonly DeliveryMethodRepository $deliveryMethodRepository,
+    ) {
     }
 
     public function index()
@@ -37,6 +38,7 @@ final class ThemeCheckoutController
         $popularProducts = $this->productRepository->getAllPopularProducts();
         $discountProducts = $this->productRepository->getAllDiscountProducts();
         $featuredProducts = $this->productRepository->getAllFeaturedProducts();
+        $deliveryMethods = $this->deliveryMethodRepository->getAll();
         $cities = $this->cityRepository->getAll();
 
         return view('frontend.v1.pages.checkout.index', compact([
@@ -44,6 +46,7 @@ final class ThemeCheckoutController
             'popularProducts',
             'discountProducts',
             'featuredProducts',
+            'deliveryMethods',
             'cities',
             'user',
         ]));

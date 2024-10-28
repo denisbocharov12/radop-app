@@ -12,6 +12,7 @@ namespace App\Data\Theme\Order;
  * @property string $city
  * @property string $note
  * @property string $payment_method
+ * @property string $delivery_method
  * @property string $delivery_charge
  * @property string $company_name
  * @property string $reserve_phone
@@ -33,6 +34,7 @@ final class ThemeOrderData
         public readonly string $city,
         public readonly ?string $note,
         public readonly string $payment_method,
+        public readonly string $delivery_method,
         public readonly ?string $delivery_charge,
         public readonly ?string $company_name,
         public readonly ?string $reserve_phone,

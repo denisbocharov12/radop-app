@@ -67,6 +67,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('deliveryMethod.index')}}" class="nk-menu-link"><span class="nk-menu-text">Методы доставки</span></a>
+                            </li>
                             @endhasrole
 
                             @hasrole('manager')

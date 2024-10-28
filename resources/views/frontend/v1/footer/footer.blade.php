@@ -50,7 +50,7 @@
                         <ul class="footer-menu">
                             <li class="item">
                                 <div class="d-flex">
-                                    <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}Кишинёв, ул. Сармизеджетуса 15</a>
+                                    <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}</a>
                                 </div>
                             </li>
                             <li class="item">

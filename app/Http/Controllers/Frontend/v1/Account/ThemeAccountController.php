@@ -31,7 +31,7 @@ final class ThemeAccountController extends Controller
 
         return view('frontend.v1.pages.account.index', compact([
             'user'
-    ]));
+        ]));
     }
 
     public function update(User $user, ThemeAccountRequest $request)

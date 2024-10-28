@@ -65,6 +65,7 @@ final class ThemeCheckoutManager
             'city' => $orderData->city,
             'note' => $orderData->note,
             'payment_method' => $orderData->payment_method,
+            'delivery_method' => $orderData->delivery_method,
             'payment_status' => $this->orderPaymentStatus->getUnpaidPaymentStatus(),
             'status' => $this->orderStatus->getProcessingStatus(),
             'delivery_charge' => $orderData->delivery_charge,

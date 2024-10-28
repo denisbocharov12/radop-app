@@ -13,6 +13,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $city
  * @property string $note
  * @property string $payment_method
+ * @property string $delivery_method
  * @property string $delivery_charge
  * @property string $company_name
  * @property string $reserve_phone
@@ -36,6 +37,7 @@ final class ThemeOrderRequest extends FormRequest
             'city' => ['required', 'string'],
             'note' => ['nullable', 'string'],
             'payment_method' => ['required', 'string'],
+            'delivery_method' => ['required', 'string'],
             'delivery_charge' => ['nullable', 'string'],
             'company_name' => ['nullable', 'string'],
             'reserve_phone' => ['nullable', 'string'],
