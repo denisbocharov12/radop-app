@@ -30,4 +30,13 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->post('{category}/media/delete', [CategoryController::class, 'deleteMedia'])
         ->name('media.delete')
     ;
+
+    Route::middleware(['app.permissions'])
+        ->get('/sorts', [CategoryController::class, 'sortIndex'])
+        ->name('sort.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts', [CategoryController::class, 'sortOrder'])
+        ->name('sort.order')
+    ;
 });
