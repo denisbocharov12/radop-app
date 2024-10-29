@@ -622,7 +622,8 @@ display: none;
 max-height: 620px;
 position: absolute;
 right: calc(var(--bs-gutter-x) / 2);
-top: calc(100% + 9px);
+/*top: calc(100% + 9px);*/
+    top: 100%;
 box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
 background-color: #fff;
 padding: 25px 0 0;
@@ -633,7 +634,7 @@ width: fit-content;
 left: 0;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap::after {
-content: "";
+content: none;
 position: absolute;
 /* Абсолютное позиционирование */
 left: 86px;

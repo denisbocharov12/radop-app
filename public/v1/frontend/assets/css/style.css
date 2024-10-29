@@ -989,7 +989,7 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
 }
 .section-header.section-header-top .wrap-header-account-with-contacts{
     display: flex;
-    margin-bottom: 12.5px;
+    margin-bottom: 15px;
     justify-content: flex-end;
     width: auto;
 }
@@ -1502,7 +1502,10 @@ textarea {
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu a{
     justify-content: center;
 }
-
+header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu a.link.link-megamenu.active{
+    background-color: white;
+    color: #0068a7;
+}
 header .section-header .row-main .header-menu .col-lg{
 
 }
@@ -2951,7 +2954,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .row-catalog {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .col-slider .wrap-slider .item {
