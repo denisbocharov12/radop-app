@@ -8,9 +8,6 @@
                         <a href="{{route('theme.home')}}" class="link-logo">
                             <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
                         </a>
-                        <p class="footer-text">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid aperiam assumenda aut, autem culpa cupiditate, dolore eligendi enim eveniet facilis fugiat impedit.
-                        </p>
                         <div class="wrap-social">
                             <a href="#" class="social-link">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/facebook.svg" alt="" />
@@ -50,7 +47,7 @@
                         <ul class="footer-menu">
                             <li class="item">
                                 <div class="d-flex">
-                                    <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}Кишинёв, ул. Сармизеджетуса 15</a>
+                                    <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}</a>
                                 </div>
                             </li>
                             <li class="item">

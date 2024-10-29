@@ -66,6 +66,11 @@ class CategoryRepository
         return Category::query()->get();
     }
 
+    public function getAllSortedByOrder(): Collection
+    {
+        return Category::query()->orderBy('order')->get();
+    }
+
     public function getAllWithTrashed(): Collection
     {
         return Category::withTrashed()->get();

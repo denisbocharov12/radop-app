@@ -108,4 +108,28 @@ class CategoryController extends Controller
             throw new AttachmentNotFoundValidationException();
         }
     }
+
+    public function sortIndex()
+    {
+        $categories = $this->categoryRepository->getAllSortedByOrder();
+
+        return view('category.sorts', compact([
+            'categories',
+        ]));
+    }
+
+    public function sortOrder(Request $request)
+    {
+        $categories = $this->categoryRepository->getAllSortedByOrder();
+
+        foreach ($categories as $category) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $category->id) {
+                    $category->update(['order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Категории успешно отсортированы']);
+    }
 }

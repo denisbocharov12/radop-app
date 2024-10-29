@@ -75,7 +75,6 @@
 {{--                                @endif--}}
 {{--                            </div>--}}
                         </div>
-
 {{--                        <div class="theme-wg-wrap">--}}
 {{--                            <p class="theme-widget-title">{{__('theme.brand')}}</p>--}}
 {{--                            <div class="filter-widget-wrap filter-wrap-overflow">--}}
