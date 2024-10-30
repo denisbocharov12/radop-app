@@ -8,7 +8,7 @@
                     <div id="main-banner">
                         <div class="item">
                             <a href="#">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_1.png" alt="" />
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_1.jpg" alt="" />
                             </a>
                         </div>
                         <div class="item">
@@ -26,22 +26,22 @@
             <div class="row">
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.png" alt="" />
+                        <a href="https://prod.radop.md/ru/category/6" class="link-flaer">
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.png" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="#" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.png" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt="" />
                         </a>
                     </div>
                 </div>
