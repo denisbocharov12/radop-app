@@ -25,13 +25,17 @@ final class ThemeProductController extends Controller
 
     public function index(Request $request, string $slug)
     {
+        $similarProducts = null;
+
         $product = $this->productRepository->getBySlug($slug);
 
         if ($product === null) {
             throw new ProductNotFoundValidationException();
         }
 
-        $similarProducts = $this->productRepository->getAllSimilarProducts($product);
+        if (!$product->categories->isEmpty()) {
+            $similarProducts = $this->productRepository->getAllSimilarProducts($product);
+        }
 
         return view('frontend.v1.pages.product.index', compact([
             'product',
