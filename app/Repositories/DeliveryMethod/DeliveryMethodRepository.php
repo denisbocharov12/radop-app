@@ -29,9 +29,9 @@ class DeliveryMethodRepository
         return DeliveryMethod::query()->where('id', '!=' ,$deliveryMethod->id)->get();
     }
 
-    public function getAll(): Collection
+    public function getAllActive(): Collection
     {
-        return DeliveryMethod::query()->get();
+        return DeliveryMethod::query()->where('status', true)->get();
     }
 
     public function getById($deliveryMethodId): ?DeliveryMethod
