@@ -25,11 +25,12 @@ body {
     background-color: white;
 }
 
-.wrapper.theme-wrapper .theme-container-wrapper-sticky {
+.theme-wrapper-bg-white.theme-wrapper-sticky {
     background-color: white;
     position: sticky;
     z-index: 999;
     top: 0;
+    border-bottom: 3px solid #0068a7;
 }
 
 .wrapper.theme-wrapper #main .container {
@@ -828,9 +829,8 @@ header {
     vertical-align: baseline;
     font-family: "Trebuchet MS", sans-serif;
     display: block;
-    position: sticky;
+    position: relative;
     z-index: 99;
-    top: 120px;
     background-color: #fff;
 }
 
@@ -1482,7 +1482,7 @@ textarea {
 }
 
 .section-header .row-main .header-logo .link-logo img {
-    height: 90px;
+    height: 78px;
     width: auto;
 }
 
