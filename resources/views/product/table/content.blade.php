@@ -22,7 +22,7 @@
                     <span>{{$product->title}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
-                    <span>{{$product->brand->title}}</span>
+                    <span>{{$product->brand?->title}}</span>
                 </div>
                 <div class="nk-tb-col">
                     <ul>

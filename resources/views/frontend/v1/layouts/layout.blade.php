@@ -6,9 +6,11 @@
     <div class="container theme-container-wrapper">
     @include('frontend.v1.search.search-overlay')
     </div>
-    <div class="container theme-container-wrapper theme-container-wrapper-sticky">
-{{--        @include('frontend.v1.header.top-bar')--}}
-        @include('frontend.v1.header.header-top')
+    <div class="theme-wrapper-bg-white theme-wrapper-sticky">
+        <div class="container theme-container-wrapper theme-container-wrapper-sticky">
+            {{--        @include('frontend.v1.header.top-bar')--}}
+            @include('frontend.v1.header.header-top')
+        </div>
     </div>
     @include('frontend.v1.header.header')
     <div class="container theme-container-wrapper">

@@ -16,7 +16,7 @@
                                 @php
                                     $userTypeFiz = \App\Models\UserType::where('key_name', 'fiz')->first();
                                 @endphp
-{{--                                <input type="hidden" name="type_id" value="{{$userTypeFiz->id}}">--}}
+                                <input type="hidden" name="type_id" value="{{$userTypeFiz->id}}">
                                 <div class="form-content">
                                     <div class="left">
                                         <div class="form-control form-control-direction">
@@ -151,7 +151,7 @@
                                 @php
                                     $userTypeIur = \App\Models\UserType::where('key_name', 'iur')->first();
                                 @endphp
-{{--                                <input type="hidden" name="type_id" value="{{$userTypeIur->id}}">--}}
+                                <input type="hidden" name="type_id" value="{{$userTypeIur->id}}">
                                 <div class="form-content">
                                     <div class="left">
 {{--                                        <div class="form-control form-control-direction">--}}
