@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
+use App\Events\PasswordChangedEmailEvent;
 use App\Events\PasswordResetEmailEvent;
 use App\Events\UserActivationSendEmailEvent;
+use App\Listeners\PasswordChangedEmailListener;
 use App\Listeners\PasswordResetEmailListener;
 use App\Listeners\SendManagerOrderEmailListener;
 use App\Listeners\SendUserActivationEmailListener;
@@ -41,6 +43,10 @@ class EventServiceProvider extends ServiceProvider
         PasswordResetEmailEvent::class => [
             PasswordResetEmailListener::class
         ],
+
+        PasswordChangedEmailEvent::class => [
+            PasswordChangedEmailListener::class
+        ]
     ];
 
     /**

@@ -7,7 +7,7 @@
 
         <div class="message" style="margin-bottom: 40px; text-align: center;">
             <p style="font-size: 18px; color: #555555;">{{__('emails.password_reset_action')}}</p>
-            <a href="{{ config('app.url') }}/auth/reset-password?token={{ $token }}" style="display: inline-block; margin-top: 20px; padding: 15px 25px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">{{__('emails.password_reset_button_text')}}</a>
+            <a href="{{ config('app.url') }}/auth/reset-password/{{ $token }}" style="display: inline-block; margin-top: 20px; padding: 15px 25px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">{{__('emails.password_reset_button_text')}}</a>
         </div>
 
         <div class="footer" style="text-align: center; font-size: 14px; color: #777777; border-top: 1px solid #eaeaea; padding-top: 20px;">

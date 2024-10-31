@@ -12,8 +12,8 @@ use App\Exceptions\User\UserNotFoundException;
 use App\Exceptions\User\UserNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\ThemePasswordResetDataMapper;
-use App\Http\Requests\PasswordReset\PasswordResetRequest;
 use App\Http\Requests\Theme\PasswordReset\PasswordForgetRequest;
+use App\Http\Requests\Theme\PasswordReset\PasswordResetRequest;
 use App\Services\ResetPassword\ResetPasswordManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,6 +26,11 @@ final class ResetPasswordController extends Controller
     ) {
     }
 
+    public function authReset($token)
+    {
+        return view('frontend.v1.pages.resetPassword.index', compact(['token']));
+    }
+
     /**
      * @throws UserNotFoundValidationException
      */
@@ -34,7 +39,7 @@ final class ResetPasswordController extends Controller
         try {
             $this->resetPasswordManager->sendResetPasswordMail($request->email);
 
-            return redirect()->back();
+            return redirect()->route('theme.home');
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
         }
@@ -47,7 +52,7 @@ final class ResetPasswordController extends Controller
         try {
             $this->resetPasswordManager->reset($passwordResetData);
 
-            return redirect()->back();
+            return redirect()->route('theme.home');
         } catch (PasswordResetException) {
             throw new NotFoundHttpException(trans(PasswordResetErrorCodes::NOT_FOUND->value));
         } catch (UserNotFoundException) {

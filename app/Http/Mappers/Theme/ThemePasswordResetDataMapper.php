@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Mappers\Theme;
 
 use App\Data\Auth\PasswordResetData;
-use App\Http\Requests\PasswordReset\PasswordResetRequest;
+use App\Http\Requests\Theme\PasswordReset\PasswordResetRequest;
 
 final class ThemePasswordResetDataMapper
 {
