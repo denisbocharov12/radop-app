@@ -72,9 +72,6 @@
                     </p>
                 </div>
                 <div class="qty-add-to-cart">
-{{--                    <div class="qty-select">--}}
-{{--                        <input type="number" name="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">--}}
-{{--                    </div>--}}
                     <div class="sc-product-qty qty-block">
                         <div class="input-group-btn">
                             <button

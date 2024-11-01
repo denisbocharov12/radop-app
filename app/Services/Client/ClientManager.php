@@ -13,6 +13,7 @@ use App\Repositories\User\UserRepository;
 use App\Services\EntityStatusManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ClientManager
 {
@@ -105,5 +106,20 @@ class ClientManager
 
         $user->delete();
         $user->profile()->delete();
+    }
+
+    public function generateNewPassword(User $user): array
+    {
+        $password = Str::random(10);
+
+        $user->update([
+            'password' => Hash::make($password),
+        ]);
+
+        $data = $user->toArray();
+        $data['profile'] = $user->profile->toArray();
+        $data['password'] = $password;
+
+        return $data;
     }
 }

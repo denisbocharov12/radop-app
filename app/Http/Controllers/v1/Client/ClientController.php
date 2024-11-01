@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Repositories\User\UserRepository;
 use App\Exceptions\NotAjaxRequestException;
 use App\Services\Client\ClientManager;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClientController extends Controller
 {
@@ -117,5 +118,13 @@ class ClientController extends Controller
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
         }
+    }
+
+    public function generateNewPassword(User $user)
+    {
+        $data = $this->clientManager->generateNewPassword($user);
+        $pdf = Pdf::loadView('pdf.generated_password', $data);
+
+        return $pdf->download('user_'.$user->id.'.pdf');
     }
 }
