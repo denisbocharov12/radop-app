@@ -27,6 +27,7 @@ final class Order extends Model
         'manager_id',
         'deleted_at',
         'payment_method',
+        'delivery_method',
         'payment_status',
         'status',
         'subtotal',

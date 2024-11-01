@@ -25,6 +25,7 @@ final class OrderPaymentMethods
             'cash' => __('theme.cash'),
             'card' => __('theme.card'),
             'card_delivery' => __('theme.card_delivery'),
+            'transfer' => __('theme.transfer'),
         ];
     }
 }

@@ -244,6 +244,17 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label class="form-label" for="order_number">Метод оплаты</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control @error('delivery_method') error @enderror" id="delivery_method" name="delivery_method" value="{{$order->delivery_method}}" placeholder="Метод оплаты">
+                                                    @error('delivery_method')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label class="form-label" for="payment_status">Статус оплаты</label>
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" data-search="on" name="payment_status" id="payment_status" data-placeholder="Статус оплаты">

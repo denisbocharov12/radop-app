@@ -97,7 +97,7 @@
                                                 class="select-2-container"
                                             >
                                                 @foreach($cities as $city)
-                                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                                    <option value="{{$city->name}}">{{$city->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -128,6 +128,21 @@
                                             >
                                                 @foreach($paymentMethods as $key => $value)
                                                     <option value="{{$key}}">{{$value}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-checkout">
+                                        <div class="form-control-ch">
+                                            <label for="delivery_method">{{__('theme.delivery-method')}}</label>
+                                            <select
+                                                    name="delivery_method"
+                                                    id="delivery_method"
+                                                    class="select-2-container"
+                                                    required
+                                            >
+                                                @foreach($deliveryMethods as $deliveryMethod)
+                                                    <option value="{{$deliveryMethod->name}}">{{$deliveryMethod->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

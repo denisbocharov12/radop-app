@@ -7703,3 +7703,113 @@ hr {
         width: auto;
     }
 }
+
+.reset-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.reset-password__title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.reset-password__wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reset-password__form .form-group {
+    margin-bottom: 20px;
+}
+
+.reset-password__form label {
+    font-weight: 600;
+    color: #555;
+}
+
+.reset-password__form .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.reset-password__form .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+.reset-password__form .btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.reset-password__form .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.text-danger {
+    color: #e3342f;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: block;
+}
+
+#forgetPasswordModal {
+    max-width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#forgetPasswordModal h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+#forgetPasswordModal p {
+    color: #666;
+    font-size: 1rem;
+}
+
+#forgetPasswordModal .input-login {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#forgetPasswordModal .login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#forgetPasswordModal .login-btn:hover {
+    background-color: #0056b3;
+}

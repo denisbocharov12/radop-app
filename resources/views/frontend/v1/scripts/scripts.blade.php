@@ -317,5 +317,12 @@
             }
         });
     });
+
+    $(document).ready(function() {
+        $('.helper-account-psw').on('click', function(e) {
+            e.preventDefault();
+            Fancybox.show([{ src: "#forgetPasswordModal", type: "inline" }]);
+        });
+    });
 </script>
 @yield('scripts')

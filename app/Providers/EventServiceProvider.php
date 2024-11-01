@@ -4,14 +4,17 @@ namespace App\Providers;
 
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
+use App\Events\PasswordChangedEmailEvent;
+use App\Events\PasswordResetEmailEvent;
 use App\Events\UserActivationSendEmailEvent;
+use App\Listeners\PasswordChangedEmailListener;
+use App\Listeners\PasswordResetEmailListener;
 use App\Listeners\SendManagerOrderEmailListener;
 use App\Listeners\SendUserActivationEmailListener;
 use App\Listeners\SendUserOrderEmailListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -35,6 +38,14 @@ class EventServiceProvider extends ServiceProvider
 
         OrderCreatedSendManagerEmailEvent::class => [
             SendManagerOrderEmailListener::class
+        ],
+
+        PasswordResetEmailEvent::class => [
+            PasswordResetEmailListener::class
+        ],
+
+        PasswordChangedEmailEvent::class => [
+            PasswordChangedEmailListener::class
         ]
     ];
 

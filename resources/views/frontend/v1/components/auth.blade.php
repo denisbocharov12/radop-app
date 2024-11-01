@@ -13,7 +13,7 @@
         <a class="p-3 bg-light d-block rounded-1 mb-2" href="{{route('theme.user.logout')}}">{{__('theme.logout')}}</a>
         <div class="account-helpers-wrap mt-4">
             <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
-            <a href="#" class="helper-account-psw">{{__('theme.forget-password')}}</a>
+            <a href="javascript:;" class="helper-account-psw">{{__('theme.forget-password')}}</a>
         </div>
     </div>
     @else
@@ -74,7 +74,29 @@
             </div>
             <div class="account-helpers-wrap">
                 <a href="#" class="helper-account-activate">{{__('theme.activate-account')}}</a>
-                <a href="#" class="helper-account-psw">{{__('theme.forget-password')}}</a>
+                <a href="javascript:;" class="helper-account-psw">{{__('theme.forget-password')}}</a>
+            </div>
+            <div style="display: none; max-width: 500px; border-radius: 10px" id="forgetPasswordModal">
+                <div class="login-modal-wrap">
+                    <div class="login-logo d-flex align-items-center justify-content-center">
+                        <img style="width: 90px; height: auto" src="{{ asset('/v1/frontend/assets') }}/images/logo.svg" alt="Radop Logo" />
+                    </div>
+                    <div class="login-head d-flex align-items-center justify-content-center">
+                        <h2 class="mb-3">{{__('theme.password-recovery')}}</h2>
+                    </div>
+                    <p class="text-center mb-4">{{__('theme.password-recovery-enter-email')}}</p>
+                    <div class="login-form-wrap">
+                        <form id="forgetPasswordForm" method="POST" class="form-login" action="{{route('theme.passwords.forget')}}">
+                            @csrf
+                            <div class="form-block-wrap mb-3">
+                                <input type="email" name="email" class="input-login" placeholder="Email" required />
+                            </div>
+                            <div class="form-block-wrap">
+                                <button type="submit" class="login-btn">{{__('theme.send')}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     @endif
