@@ -55,21 +55,6 @@
                                         <li class="my-account-details-form__item">
                                             <label
                                                 class="my-account-details-form__label"
-                                                for="cod_fiscal"
-                                            >{{__('theme.cod-fiscal')}}</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="text"
-                                                name="cod_fiscal"
-                                                id="cod_fiscal"
-                                                placeholder="{{__('theme.cod-fiscal')}}"
-                                                value="{{$user->profile->cod_fiscal}}"
-                                            />
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
                                                 for="address"
                                             >{{__('theme.address')}}</label
                                             >
@@ -129,6 +114,21 @@
                                                     id="organization_name"
                                                     placeholder="Название компании"
                                                     value="{{$user->profile->organization_name}}"
+                                                />
+                                            </li>
+                                            <li class="my-account-details-form__item">
+                                                <label
+                                                    class="my-account-details-form__label"
+                                                    for="cod_fiscal"
+                                                >{{__('theme.cod-fiscal')}}</label
+                                                >
+                                                <input
+                                                    class="my-account-details-form__input"
+                                                    type="text"
+                                                    name="cod_fiscal"
+                                                    id="cod_fiscal"
+                                                    placeholder="{{__('theme.cod-fiscal')}}"
+                                                    value="{{$user->profile->cod_fiscal}}"
                                                 />
                                             </li>
                                             <li class="my-account-details-form__item">

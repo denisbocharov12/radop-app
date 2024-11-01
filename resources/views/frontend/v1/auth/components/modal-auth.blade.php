@@ -26,13 +26,14 @@
         <div class="login-form-wrap">
             <form action="{{route('user.login')}}" id="form-login-modal" method="POST" class="form-login">
                 <div class="form-block-wrap">
-                    <input type="text" name="username" class="input-login" placeholder="Email" />
+                    <input type="text" name="username" required class="input-login" placeholder="Email" />
                 </div>
                 <div class="form-block-wrap">
                     <input
                         type="password"
                         name="password"
                         class="input-login input-password"
+                        required
                         placeholder="{{__('theme.password')}}"
                     />
                 </div>

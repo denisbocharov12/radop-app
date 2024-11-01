@@ -30,4 +30,8 @@ Route::prefix('clients')->name('client.')->group(function () {
         ->delete('destroy', [ClientController::class, 'destroy'])
         ->name('delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('{user}/generate', [ClientController::class, 'generateNewPassword'])
+        ->name('generate')
+    ;
 });

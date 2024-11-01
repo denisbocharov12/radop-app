@@ -146,7 +146,7 @@
                                                     <button type="submit" class="btn btn-primary">Обновить пользователя</button>
                                                 </li>
                                                 <li>
-{{--                                                    <a href="{{route('client.generate', $user)}}" class="btn btn-warning text-dark ">Распечатать новый пароль</a>--}}
+                                                    <a href="{{route('client.generate', $user)}}" class="btn btn-warning text-dark ">Распечатать новый пароль</a>
                                                 </li>
                                             </ul>
                                         </div>

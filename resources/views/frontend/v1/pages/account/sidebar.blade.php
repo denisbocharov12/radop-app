@@ -14,6 +14,11 @@
             <i class="icon-percent"></i>{{__('theme.my-coupons')}}
         </a>
     </li>
+    <li class="my-account-selects__item">
+        <a class="my-account-selects__link" href="{{route('theme.user.logout')}}">
+            <i class="icon-user"></i>{{__('theme.logout')}}
+        </a>
+    </li>
 </ul>
 @section('scripts')
     <script>
