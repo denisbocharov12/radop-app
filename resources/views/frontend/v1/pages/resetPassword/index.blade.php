@@ -12,7 +12,7 @@
                         <input type="hidden" name="token" value="{{ $token }}">
 
                         <div class="form-group">
-                            <label for="email">Email</label>
+                            <label for="email" style="margin-bottom: 4px">Email</label>
                             <input type="email" id="email" name="email" class="form-control" required
                                    placeholder="Email"
                                    value="{{ old('email') }}" autofocus>
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password">{{ __('theme.new-password') }}</label>
+                            <label for="password" style="margin-bottom: 4px">{{ __('theme.new-password') }}</label>
                             <input type="password" id="password" name="password" class="form-control" required
                                    placeholder="{{ __('theme.enter-new-password') }}">
                             @error('password')
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password-confirm">{{ __('theme.confirm-password') }}</label>
+                            <label for="password-confirm" style="margin-bottom: 4px">{{ __('theme.confirm-password') }}</label>
                             <input type="password" id="password-confirm" name="password_confirmation" class="form-control" required
                                    placeholder="{{ __('theme.confirm-new-password') }}">
                         </div>
