@@ -49,7 +49,7 @@ final class ProductRepository
 
     public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
     {
-        $query = Product::query();
+        $query = Product::query()->distinct();
 
         return QueryBuilder::for($query)
             ->allowedFilters([
