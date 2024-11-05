@@ -90,6 +90,6 @@ final class Category extends Model implements HasMedia
             'product_id',
             'onec_id',
             'onec_id'
-        )->distinct();
+        );
     }
 }

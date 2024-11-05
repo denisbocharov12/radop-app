@@ -50,6 +50,7 @@ class CategoryRepository
                 'id',
                 'onec_id'
             ])
+            ->groupBy('products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
