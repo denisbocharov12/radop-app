@@ -136,7 +136,7 @@ $(document).ready(function () {
   });
   $("#main-banner").slick({
     autoplay: true,
-    dots: false,
+    dots: true,
     autoplaySpeed: 8000,
     speed: 1000,
     infinite: true,
@@ -166,13 +166,16 @@ $(document).ready(function () {
   });
   $("#partners-slider").slick({
     autoplay: true,
-    dots: false,
+    dots: true,
     autoplaySpeed: 5000,
     speed: 1000,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
-    arrows: false,
+    arrows: true,
+    swipe: true,
+    prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+    nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
     cssEase: "ease-out",
     responsive: [
       {
