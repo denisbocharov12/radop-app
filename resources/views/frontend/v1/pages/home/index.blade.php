@@ -5,15 +5,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-main-content">
-                    <div id="main-banner">
+                    <div id="main-banner" class="theme-slider">
                         <div class="item">
-                            <a href="#">
+                            <a href="{{route('theme.category.index', 7)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_1.jpg" alt="" />
                             </a>
                         </div>
                         <div class="item">
-                            <a href="#">
+                            <a href="{{route('theme.category.index', 92)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_2.png" alt="" />
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="{{route('theme.category.index', 10)}}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt="" />
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="{{route('theme.category.index', 10)}}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_4.jpg" alt="" />
                             </a>
                         </div>
                     </div>
@@ -26,21 +36,21 @@
             <div class="row">
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
-                        <a href="https://prod.radop.md/ru/category/6" class="link-flaer">
+                        <a href="{{route('theme.category.index', 6)}}" class="link-flaer">
                             <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
+                        <a href="{{route('theme.brand.index', 82)}}" class="link-flaer">
                             <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt="" />
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
-                        <a href="#" class="link-flaer">
+                        <a href="{{route('theme.brand.index', 2)}}" class="link-flaer">
                             <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt="" />
                         </a>
                     </div>
@@ -423,11 +433,11 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-slider">
+    <section class="section-standart section-slider section-brand-slider">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-slider">
-                    <div class="wrap-slider" id="partners-slider">
+                    <div class="wrap-slider theme-slider" id="partners-slider">
                         @foreach($themeBrands as $brand)
                             <div class="item">
                                 <a href="{{route('theme.brand.index', $brand->id)}}">
