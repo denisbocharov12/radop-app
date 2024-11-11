@@ -744,6 +744,7 @@ display: inline-block;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item {
 padding: 5px;
+border: 0;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link {
 color: #000;
