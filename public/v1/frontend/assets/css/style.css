@@ -1492,7 +1492,7 @@ textarea {
     height: 64px;
 }
 
-.section-header .row-main .header-menu .header-main-menu ul.menu .item {
+.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu {
     margin-right: 0px !important;
     height: 100%;
     border-right: 1px solid #5780ab;
@@ -1509,7 +1509,7 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item.me
 header .section-header .row-main .header-menu .col-lg{
 
 }
-.section-header .row-main .header-menu .header-main-menu ul.menu .item:first-child{
+.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:first-child{
     border-left: 1px solid #5780ab;
 }
 .section-header .row-main .header-menu .header-main-menu ul.menu .item .link-megamenu {

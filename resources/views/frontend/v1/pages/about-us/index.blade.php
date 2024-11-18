@@ -53,11 +53,11 @@
             </div>
         </div>
 
-        <section class="section-standart section-slider">
+        <section class="section-standart section-slider section-brand-slider">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-slider">
-                        <div class="wrap-slider" id="partners-slider">
+                        <div class="wrap-slider theme-slider" id="partners-slider">
                             @foreach($themeBrands as $brand)
                                 <div class="item">
                                     <a href="{{route('theme.brand.index', $brand->id)}}">

@@ -33,14 +33,4 @@ final class ThemeUserRegistrationRequest extends FormRequest
             'contact_name' => ['nullable', 'string'],
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'password.required' => 'Поле обязательно для заполнения',
-            'password.min:6' => 'Пароль должен содержать не менее 6 знаков',
-            'rule.required' => 'Поле обязательно к согласию',
-            'rule_iur.required' => 'Поле обязательно к согласию'
-        ];
-    }
 }
