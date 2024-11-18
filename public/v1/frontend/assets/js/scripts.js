@@ -166,12 +166,12 @@ $(document).ready(function () {
   });
   $("#partners-slider").slick({
     autoplay: true,
-    dots: true,
+    dots: false,
     autoplaySpeed: 5000,
     speed: 1000,
     infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     arrows: true,
     swipe: true,
     prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
@@ -182,7 +182,7 @@ $(document).ready(function () {
         breakpoint: 1200,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
           infinite: true,
         },
       },

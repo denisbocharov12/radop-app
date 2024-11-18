@@ -159,7 +159,7 @@ return array (
   'rating' => 'РЕЙТИНГ',
   'rating-text' => 'Мы входим в ТОП крупнейших канцелярских компаний на молдавском рынке.',
   'received' => 'Получил:',
-  'recommended' => '',
+  'recommended' => 'Рекомендуемые',
   'registered-city' => 'Город регистрации',
   'registration' => 'Регистрация',
   'requisites' => 'Реквизиты',
