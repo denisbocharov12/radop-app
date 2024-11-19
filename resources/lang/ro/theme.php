@@ -112,7 +112,7 @@ return array (
   'no-coupons' => 'Nu aveți nici un cupon activ în acest moment',
   'no-description' => 'Nu există o descriere pentru acest produs',
   'no-orders' => 'Nu aveți în prezent nici o comandă',
-  'not-found-product' => 'Nu ai găsit produsul potrivit? Sunați la +373 22 78 21 00 / și Vă vom ajuta.',
+  'not-found-product' => 'Nu ai găsit produsul potrivit? Sunați la <a href="tel:37322782100">+373 22 78 21 00</a> și Vă vom ajuta.',
   'of' => 'din',
   'office-address' => 'Chișinău, Sarmisegetusa str. 15',
   'on-discount' => 'Produse promoționale',
