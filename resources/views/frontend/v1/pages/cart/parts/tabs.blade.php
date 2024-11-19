@@ -1,4 +1,4 @@
-<section class="section-standart section-cart-tabs">
+<section class="section-standart section-cart-tabs overflow-h">
     <div class="container">
         <div class="col-heading">
             <div class="heading">

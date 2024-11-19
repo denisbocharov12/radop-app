@@ -26,7 +26,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart">
+    <section class="section-standart section-flaer">
         <div class="container container-flaer container-flaer-m0">
             <div class="row">
                 <div class="col-12 col-lg-4 col-flaer">
@@ -428,10 +428,15 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-slider section-brand-slider">
+    <section class="section-standart section-slider section-brand-slider section-home">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-slider">
+                    <div class="col-heading">
+                        <div class="heading heading-with-btn">
+                            <h1>{{__('theme.home-brands')}}</h1>
+                        </div>
+                    </div>
                     <div class="wrap-slider theme-slider" id="partners-slider">
                         @foreach($themeBrands as $brand)
                             <div class="item">

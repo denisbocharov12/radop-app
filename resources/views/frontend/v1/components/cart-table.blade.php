@@ -11,10 +11,10 @@
         <thead class="theme-cart-table-thead">
             <tr>
                 <th></th>
-                <th>Nume</th>
-                <th class="text-center">Cantitate</th>
-                <th class="text-center">Preț</th>
-                <th class="text-center">Sumă</th>
+                <th>{{__('theme.cart-table-name')}}</th>
+                <th class="text-center">{{__('theme.cart-table-quantity')}}</th>
+                <th class="text-center">{{__('theme.cart-table-price')}}</th>
+                <th class="text-center">{{__('theme.cart-table-sum')}}</th>
                 <th></th>
             </tr>
         </thead>
@@ -109,23 +109,6 @@
 </div>
 <div class="col-lg-3 col-cart-total">
     <div class="shopping-cart-total-wrap">
-        <div class="shopping-cart-bonus-code-info" style="background-color: #0293b2; padding: 12.5px; margin-bottom: 15px; border-radius: 15px">
-            <p class="info-text" style="color: #e2e8f0; text-align: center; font-size: 14px">{{__('theme.coupon-text')}}</p>
-        </div>
-        <div class="shopping-cart-bonus-code-wrap">
-            <form action="{{route('theme.cart.coupon')}}" id="coupon-form" method="POST" class="cs-form">
-                @csrf
-                <div class="form-control-sc">
-                    <input
-                        type="text"
-                        class="cart-input"
-                        placeholder="{{__('theme.discount-code')}}"
-                        name="code"
-                    />
-                    <button type="submit" class="cart-btn-code">{{__('theme.apply')}}</button>
-                </div>
-            </form>
-        </div>
         <div class="shopping-cart-total">
             <div class="total-heading">
                 <h3>{{__('theme.invoice-payable')}}</h3>

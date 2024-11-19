@@ -86,7 +86,7 @@ return array (
   'iur-address' => 'Adresa juridică',
   'iur-person' => 'Pentru persoanele juridice:',
   'last-name' => '',
-  'legal-person' => 'Persoană juridică juridică',
+  'legal-person' => 'Persoană juridică',
   'log-in-account' => 'Autorizare',
   'login-registration' => 'Login / Înregistrare',
   'logout' => 'Ieșire',
@@ -207,4 +207,9 @@ return array (
   'working-hours' => 'Ore de lucru',
   'сontinue-shopping' => 'Continuați cumpărăturile',
   'сontrol-panel' => 'Cabinetul personal',
+  'cart-table-name' => 'Nume',
+  'cart-table-quantity' => 'Cantitate',
+  'cart-table-price' => 'Preț',
+  'cart-table-sum' => 'Sumă',
+    'home-brands' => 'Branduri',
 );
