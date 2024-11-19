@@ -12,7 +12,6 @@
         <section
             class="section-content section-checkout padding-y bg"
             id="checkout-page"
-            style="padding-top: 50px"
         >
             <div class="container">
                 <div class="row">

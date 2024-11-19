@@ -7,7 +7,7 @@
 @endphp
 @if(\Cart::session($sessionId)->getContent()->count() > 0)
         <ul class="content-shopping-cart">
-            @foreach(\Cart::session($sessionId)->getContent() as $item)
+            @foreach(\Cart::session($sessionId)->getContent()->sort()  as $item)
                 @php
                     $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
                 @endphp

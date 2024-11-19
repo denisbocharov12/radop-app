@@ -6,7 +6,7 @@
 // });
 
 
-$('a.link-megamenu').click(function(e){
+$('a.link-megamenu').hover(function(e){
     e.preventDefault();
     $(this).toggleClass('active');
     $(this).parents().find('.active').not(this).removeClass('active');
