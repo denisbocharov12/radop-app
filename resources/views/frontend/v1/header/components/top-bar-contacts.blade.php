@@ -22,7 +22,7 @@
 <div class="header-location">
     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
         <a class="location" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-            <img src="{{asset('/v1/frontend/assets')}}/images/{{ $localeCode }}.svg" alt="" />
+            <img src="{{asset('/v1/frontend/assets')}}/images/{{ $localeCode }}.png" alt="" />
             {{ strtoupper($localeCode) }}
         </a>
     @endforeach

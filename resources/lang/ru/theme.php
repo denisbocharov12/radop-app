@@ -206,4 +206,9 @@ return array (
   'working-hours' => 'График работы',
   'сontinue-shopping' => 'Продолжить покупки',
   'сontrol-panel' => 'Личный кабинет',
+    'cart-table-name' => 'Наименование',
+    'cart-table-quantity' => 'Кол-во',
+    'cart-table-price' => 'Цена',
+    'cart-table-sum' => 'Сумма',
+    'home-brands' => 'Бренды',
 );
