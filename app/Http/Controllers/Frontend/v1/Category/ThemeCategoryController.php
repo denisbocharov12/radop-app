@@ -35,11 +35,23 @@ final class ThemeCategoryController extends Controller
             throw new CategoryNotFoundException();
         }
 
+        $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
+
+        $themeBrands = $this->brandRepository->getLimited();
+
+        if ($existedCategory->children->isNotEmpty()) {
+            return view('frontend.v1.pages.category.category', compact([
+                'existedCategory',
+                'breadcrumbs',
+                'themeBrands',
+            ]));
+        }
+
         $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory);
 
-        $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
+
 
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',

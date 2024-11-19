@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="row" id="cart-page">
-                    @include('frontend.v1.components.cart-page')
+                    @include('frontend.v1.components.cart-table')
                 </div>
             </div>
         </section>
@@ -34,6 +34,7 @@
             </div>
         </section>
     @endif
+    @include('frontend.v1.pages.cart.parts.map')
     @include('frontend.v1.pages.cart.parts.tabs')
 @endsection
 

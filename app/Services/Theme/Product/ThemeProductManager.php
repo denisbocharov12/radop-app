@@ -102,7 +102,7 @@ final class ThemeProductManager
             if ($request->ajax()){
                 $cart = view('frontend.v1.components.mini-cart')->render();
                 $response['cart'] = $cart;
-                $cart_page = view('frontend.v1.components.cart-page')->render();
+                $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
             }
         }
@@ -204,7 +204,7 @@ final class ThemeProductManager
             if ($request->ajax()){
                 $cart = view('frontend.v1.components.mini-cart')->render();
                 $response['cart'] = $cart;
-                $cart_page = view('frontend.v1.components.cart-page')->render();
+                $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
             }
         }
@@ -231,7 +231,7 @@ final class ThemeProductManager
         {
             $cart = view('frontend.v1.components.mini-cart')->render();
             $response['cart'] = $cart;
-            $cart_page = view('frontend.v1.components.cart-page')->render();
+            $cart_page = view('frontend.v1.components.cart-table')->render();
             $response['cart-page'] = $cart_page;
         }
 
