@@ -211,5 +211,7 @@ return array (
     'cart-table-price' => 'Цена',
     'cart-table-sum' => 'Сумма',
     'home-brands' => 'Бренды',
+    'type_not_found_error' => 'Ошибка: Тип пользователя не найден.',
+    'duplicated_email_error' => 'Ошибка: Пользователь с таким email уже существует.',
     'for-amount' => 'на сумму',
 );
