@@ -212,4 +212,6 @@ return array (
       'cart-table-price' => 'Preț',
       'cart-table-sum' => 'Sumă',
     'home-brands' => 'Branduri',
+    'type_not_found_error' => 'Eroare: tipul de utilizator nu a fost găsit.',
+    'duplicated_email_error' => 'Eroare: un utilizator cu acest e-mail există deja.',
 );
