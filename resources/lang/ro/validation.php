@@ -59,8 +59,8 @@ return [
         'string' => ':attribute trebuie să conțină cel puțin caractere :min.',
     ],
     'numeric' => ':attribute trebuie să fie un număr.',
-    'required' => 'Câmpul :attribute este obligatoriu.',
-    'required_if' => 'Câmpul :attribute este obligatoriu când :other este :value.',
+    'required' => 'Câmpul este obligatoriu.',
+    'required_if' => 'Câmpul este obligatoriu.',
     'required_with' => 'Câmpul :attribute este obligatoriu când :values este prezent.',
     'size' => [
         'array' => ':attribute trebuie să conţină elemente :size.',

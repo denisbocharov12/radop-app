@@ -59,8 +59,8 @@ return [
         'string' => ':attribute должен содержать не менее :min символов.',
     ],
     'numeric' => ':attribute должен быть числом.',
-    'required' => 'Поле :attribute является обязательным.',
-    'required_if' => 'Поле :attribute является обязательным, если :other равно :value.',
+    'required' => 'Поле является обязательным.',
+    'required_if' => 'Поле является обязательным',
     'required_with' => 'Поле :attribute обязательно, когда присутствует :values.',
     'size' => [
         'array' => ':attribute должен содержать элементы :size.',

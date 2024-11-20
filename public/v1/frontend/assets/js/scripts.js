@@ -9,7 +9,7 @@
 $('a.link-megamenu').hover(function(e){
     e.preventDefault();
     $(this).toggleClass('active');
-    $(this).parents().find('.active').not(this).removeClass('active');
+    $(this).parents('.megamenu').find('.active').not(this).removeClass('active');
 
     $(this).parents().find('.open').removeClass('open');
     if ($(this).hasClass('active')) {
