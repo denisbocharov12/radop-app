@@ -31,22 +31,34 @@ final class ThemeRegistrationManager
 
         $userName =  strtolower($themeUserRegistrationData->firstName[0].'_'.$themeUserRegistrationData->lastName.'_user_'.$lastUserNumber);
 
-        $existedUserEmail = $this->userRepository->getFirstByEmailWithTrashed($themeUserRegistrationData->email);
-
-        if ($existedUserEmail !== null) {
-            throw new DuplicatedUserEmailException();
-        }
-
         $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
 
         if ($existedType === null) {
             throw new UserTypeNotFoundException();
         }
 
+        $address = $themeUserRegistrationData->addressFiz;
+        $phone = $themeUserRegistrationData->phoneFiz;
+        $email = $themeUserRegistrationData->emailFiz;
+        $password = $themeUserRegistrationData->passwordFiz;
+
+        if ($existedType->key_name === 'iur') {
+            $address = $themeUserRegistrationData->addressIur;
+            $phone = $themeUserRegistrationData->phoneIur;
+            $email = $themeUserRegistrationData->emailIur;
+            $password = $themeUserRegistrationData->passwordIur;
+        }
+
+        $existedUserEmail = $this->userRepository->getFirstByEmailWithTrashed($email);
+
+        if ($existedUserEmail !== null) {
+            throw new DuplicatedUserEmailException();
+        }
+
         $user = User::create([
             'name' => $userName,
-            'email' => $themeUserRegistrationData->email,
-            'password' => Hash::make($themeUserRegistrationData->password),
+            'email' => $email,
+            'password' => Hash::make($password),
             'email_verified_at' => now(),
             'status' => false,
             'type_id' => $themeUserRegistrationData->typeId,
@@ -60,8 +72,8 @@ final class ThemeRegistrationManager
             'user_id' => $user->id,
             'first_name' => $themeUserRegistrationData->firstName,
             'last_name' => $themeUserRegistrationData->lastName,
-            'phone' => $themeUserRegistrationData->phone,
-            'address' => $themeUserRegistrationData->address,
+            'phone' => $phone,
+            'address' => $address,
             'organization_name' => $themeUserRegistrationData->organizationName,
             'cod_fiscal' => $themeUserRegistrationData->codFiscal,
             'contact_name' => $themeUserRegistrationData->contactName,
