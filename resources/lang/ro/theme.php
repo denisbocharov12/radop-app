@@ -212,4 +212,5 @@ return array (
   'cart-table-price' => 'Preț',
   'cart-table-sum' => 'Sumă',
     'home-brands' => 'Branduri',
+    'for-amount' => 'pentru suma',
 );

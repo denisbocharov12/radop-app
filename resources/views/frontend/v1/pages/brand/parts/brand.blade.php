@@ -1,7 +1,7 @@
 <section class="section-standart section-category pt-0">
     <div class="container">
         <div class="row row-category-list">
-                <div class="col-12 col-md-3 col-theme-filters">
+                <div class="col-12 col-md-2 col-theme-filters">
                     <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.search')}}</p>
@@ -33,7 +33,7 @@
                         <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>
-                <div class="col-md-9 col-12 col-theme-content">
+                <div class="col-md-10 col-12 col-theme-content">
                     <div class="row">
                         @include('frontend.v1.pages.brand.parts.list')
                     </div>

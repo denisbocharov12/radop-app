@@ -2,7 +2,7 @@
     @include('frontend.v1.pages.brand.parts.not-found')
 @endif
 @foreach($products as $product)
-    <div class="col-lg-4 col-md-4 col-6 product-item-category">
+    <div class="col-lg-3 col-md-3 col-6 product-item-category">
         <div class="product-wrap drop-shadow">
             @include('frontend.v1.pages.product.components.label')
             <div class="product-wrap-main">
@@ -21,36 +21,35 @@
                         <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
                     </h3>
                 </div>
-                <div class="product-item-article-wrap">
-                    <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
-                </div>
+                    <div class="product-item-article-wrap">
+                        <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                        <div class="details-wrap">
+                        <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                            @if($product->stock > 0)
+                                {{__('theme.in-stock')}}
+                            @else
+                                {{__('theme.out-of-stock')}}
+                            @endif
+                        </span>
+                        </div>
+                    </div>
             </div>
             <div class="add_to_cart_wrap">
                 <div class="wrap">
                     @if($product->sale_price !== '')
-                        <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
-                        <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
+                        <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                     @else
-                        <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
+                        <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                     @endif
-                </div>
-                <div class="details-wrap">
-                    {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
-                    <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                        @if($product->stock > 0)
-                            {{__('theme.in-stock')}}
-                        @else
-                            {{__('theme.out-of-stock')}}
-                        @endif
-                    </span>
                 </div>
                 <div class="product-card-summary">
                     <p><span class="summary-title">{{__('theme.total')}}</span>
                         <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
                             @if($product->sale_price !== '')
-                                {{$product->sale_price}}
+                                {{ number_format($product->sale_price, 2, ',', '') }}
                             @else
-                                {{$product->price}}
+                                {{ number_format($product->price, 2, ',', '') }}
                             @endif
                         </span> {{__('theme.MDL')}}
                     </p>
@@ -72,6 +71,7 @@
                         </span> {{__('theme.unit')}}
                     </p>
                 </div>
+                <hr>
                 <div class="qty-add-to-cart">
                     <div class="sc-product-qty qty-block">
                         <div class="input-group-btn">

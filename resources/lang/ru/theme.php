@@ -211,4 +211,5 @@ return array (
     'cart-table-price' => 'Цена',
     'cart-table-sum' => 'Сумма',
     'home-brands' => 'Бренды',
+    'for-amount' => 'на сумму',
 );

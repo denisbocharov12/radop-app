@@ -115,7 +115,7 @@
 
 .product_item_article {
     color: #555;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     padding: 3px;
     background-color: #ffea98;
@@ -124,11 +124,12 @@
 }
 
 .product-card-summary{
+    font-size: 14px;
     margin-top: 15px;
     font-weight: 500;
     color: #252525;
 }
 
 .product-card-summary .product-card-summary-text{
-    font-weight: 700;
+    font-weight: 400;
 }

@@ -2028,7 +2028,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: flex;
     align-items: center;
     padding: 5px 0 7.5px 0;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 14px;
 }
 
@@ -2141,12 +2141,13 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-header .row-main .header-account .mini-shopping-cart .wrap-shopping-cart .contents-shopping-cart .content-shopping-cart .item .sc-product-item .product-info .sc-item-info-wrap .sc-product-qty .input-group-btn button {
-    background-color: #383838;
-    color: #fff;
-    outline: none;
-    border: 0;
     padding: 3px 7px;
-    font-size: 14px;
+    color: black;
+    border: 2px solid #e2e7ec;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    background-color: white;
 }
 
 .section-header .row-main .header-account .mini-shopping-cart .wrap-shopping-cart .contents-shopping-cart .content-shopping-cart .item .sc-product-item .sc-price {
@@ -2183,7 +2184,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: inline-block;
     width: 100%;
     padding: 12.5px 15px;
-    border-radius: 25px;
+    border-radius: 10px;
     text-align: center;
     align-items: center;
     background-color: #0068a7;
@@ -4932,6 +4933,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title {
     font-weight: 600;
     margin-bottom: 7.5px;
+    font-size: 15px;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap {
@@ -5200,13 +5202,14 @@ header .section-header .row-main .header-menu .col-lg{
     position: relative;
     border: 1px solid #ededed;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item:last-child{
     margin-bottom: 0;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item .theme-toggle-item-title
 {
+    font-size: 15px;
     cursor: pointer;
     background-color: #ededed;
     padding: 10px;
@@ -5550,10 +5553,11 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product-item-category .add_to_cart_wrap .wrap {
     margin-bottom: 4px;
+    text-align: center;
 }
 
 .product-item-category .add_to_cart_wrap .wrap span.price {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 18px;
     text-align: center;
     color: #000;
@@ -8065,4 +8069,34 @@ hr {
 
 #forgetPasswordModal .login-btn:hover {
     background-color: #0056b3;
+}
+
+.product-item-article-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-item-article-wrap .details-wrap {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.product-item-article-wrap .details-wrap .stock {
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+.product-item-article-wrap .details-wrap .in-stock {
+    color: #3fb100;
+    text-decoration: underline;
+}
+
+.product-item-article-wrap .details-wrap .out-of-stock {
+    color: #e82d25;
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 120px;
 }
