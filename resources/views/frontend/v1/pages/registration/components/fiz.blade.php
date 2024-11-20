@@ -1,4 +1,4 @@
-<div class="tabContent">
+<div class="tabContent {{old('type_id')  === "1" || old('type_id') === null ? 'show' : 'hide'}}">
     <form id="form-fiz-submit" action="{{route('user.registration.store')}}" method="POST">
         @csrf
         @php
@@ -14,6 +14,7 @@
                         name="first_name"
                         id="first_name_fiz"
                         placeholder="{{__('theme.first-name')}}"
+                        value="{{old('first_name')}}"
                     />
                     @error('first_name')
                     <span class="invalid-feedback d-block" role="alert">
@@ -28,6 +29,7 @@
                         name="last_name"
                         id="last_name_fiz"
                         placeholder="{{__('theme.second-name')}}"
+                        value="{{old('last_name')}}"
                     />
                     @error('last_name')
                     <span class="invalid-feedback d-block" role="alert">
@@ -42,6 +44,7 @@
                         name="address_fiz"
                         id="address_fiz"
                         placeholder="{{__('theme.address')}}"
+                        value="{{old('address_fiz')}}"
                     />
                     @error('address_fiz')
                     <span class="invalid-feedback d-block" role="alert">
@@ -58,6 +61,7 @@
                         name="phone_fiz"
                         id="phone_fiz"
                         placeholder="{{__('theme.phone-number')}}"
+                        value="{{old('phone_fiz')}}"
                     />
                     @error('phone_fiz')
                     <span class="invalid-feedback d-block" role="alert">
@@ -72,6 +76,7 @@
                         name="email_fiz"
                         id="email_fiz"
                         placeholder="Email"
+                        value="{{old('email_fiz')}}"
                     />
                     @error('email_fiz')
                     <span class="invalid-feedback d-block" role="alert">
@@ -86,6 +91,7 @@
                         type="password"
                         name="password_fiz"
                         id="password_fiz"
+                        value="{{old('password_fiz')}}"
                         placeholder="{{__('theme.password')}}"
                     />
                     @error('password_fiz')

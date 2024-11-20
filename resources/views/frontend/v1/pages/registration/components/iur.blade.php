@@ -1,4 +1,4 @@
-<div class="tabContent">
+<div class="tabContent {{old('type_id')  === "2" ? 'show show-important' : 'hide'}}">
     <form id="form-iur-submit" action="{{route('user.registration.store')}}" method="POST">
         @csrf
         @php
@@ -13,6 +13,7 @@
                         type="text"
                         name="organization_name"
                         id="organization_name"
+                        value="{{old('organization_name')}}"
                         placeholder="{{__('theme.company-name')}}"
                     />
                     @error('organization_name')
@@ -27,6 +28,7 @@
                         type="text"
                         name="address_iur"
                         id="address_iur"
+                        value="{{old('address_iur')}}"
                         placeholder="{{__('theme.address')}}"
                     />
                     @error('address_iur')
@@ -41,6 +43,7 @@
                         type="text"
                         name="contact_name"
                         id="contact_name"
+                        value="{{old('contact_name')}}"
                         placeholder="{{__('theme.contact-person')}}"
                     />
                     @error('contact_name')
@@ -57,6 +60,7 @@
                         type="text"
                         name="phone_iur"
                         id="phone_iur"
+                        value="{{old('phone_iur')}}"
                         placeholder="{{__('theme.phone-number')}}"
                     />
                     @error('phone_iur')
@@ -72,6 +76,7 @@
                         name="email_iur"
                         id="email_iur"
                         placeholder="Email"
+                        value="{{old('email_iur')}}"
                     />
                     @error('email_iur')
                     <span class="invalid-feedback d-block" role="alert">
@@ -85,6 +90,7 @@
                         type="text"
                         name="cod_fiscal"
                         id="cod_fiscal"
+                        value="{{old('cod_fiscal')}}"
                         placeholder="{{__('theme.fiscal-code')}}"
                     />
                     @error('cod_fiscal')
@@ -100,6 +106,7 @@
                         type="password"
                         name="password_iur"
                         id="password_iur"
+                        value="{{old('password_iur')}}"
                         placeholder="{{__('theme.password')}}"
                     />
                     @error('password_iur')

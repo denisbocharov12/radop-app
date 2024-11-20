@@ -41,4 +41,8 @@ final class ThemeUserRegistrationRequest extends FormRequest
             'contact_name' => ['nullable', 'string'],
         ];
     }
+
+    public function validationFailed() {
+        return redirect()->back()->withErrors($this->validator)->withInput();
+    }
 }

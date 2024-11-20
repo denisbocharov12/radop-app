@@ -7,8 +7,8 @@
                 <div class="col-12 col-register-wrap">
                     <div id="tabs">
                         <div class="tab-block">
-                            <div class="tab active">{{__('theme.physical-person')}}</div>
-                            <div class="tab">{{__('theme.legal-person')}}</div>
+                            <div class="tab {{old('type_id')  === "1" ? 'active' : ''}} {{old('type_id')  === null ? 'active' : ''}}">{{__('theme.physical-person')}}</div>
+                            <div class="tab {{old('type_id')  === "2" ? 'active' : ''}} {{old('type_id') !== null && old('type_id')  === "2" ? 'active show-important-active' : ''}}">{{__('theme.legal-person')}}</div>
                         </div>
                         @include('frontend.v1.pages.registration.components.fiz')
                         @include('frontend.v1.pages.registration.components.iur')
