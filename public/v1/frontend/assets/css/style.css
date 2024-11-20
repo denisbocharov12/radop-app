@@ -6034,6 +6034,13 @@ hr {
     color: #fff;
 }
 
+.section-register .col-register-wrap #tabs .tab-block .tab.show-important-active{
+    background-color: #0068a7;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+}
+
 .section-register .col-register-wrap #tabs .tabContent {
     background: rgba(255, 255, 255, 0.75);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -6053,6 +6060,10 @@ hr {
 }
 
 .section-register .col-register-wrap #tabs .show {
+    display: block!important;
+}
+
+.section-register .col-register-wrap #tabs .show-important{
     display: block!important;
 }
 

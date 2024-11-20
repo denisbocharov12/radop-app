@@ -27,14 +27,18 @@ final class ThemeRegistrationManager
 
     public function store(ThemeUserRegistrationData $themeUserRegistrationData): User
     {
-        $lastUserNumber = User::query()->get()->last()->id + 1;
-
-        $userName =  strtolower($themeUserRegistrationData->firstName[0].'_'.$themeUserRegistrationData->lastName.'_user_'.$lastUserNumber);
-
         $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
 
         if ($existedType === null) {
             throw new UserTypeNotFoundException();
+        }
+
+        $lastUserNumber = User::query()->withTrashed()->get()->count() + 1;
+
+        if ($existedType->key_name === 'iur') {
+            $userName =  strtolower('client_company_name_'.$lastUserNumber);
+        } else {
+            $userName =  strtolower($themeUserRegistrationData->firstName[0].'_'.$themeUserRegistrationData->lastName.'_user_'.$lastUserNumber);
         }
 
         $address = $themeUserRegistrationData->addressFiz;

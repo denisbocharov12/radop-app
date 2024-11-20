@@ -22,8 +22,8 @@ namespace App\Data\Theme\User;
 final class ThemeUserRegistrationData
 {
     public function __construct(
-        public readonly string $firstName,
-        public readonly string $lastName,
+        public readonly ?string $firstName,
+        public readonly ?string $lastName,
         public readonly ?string $emailFiz,
         public readonly ?string $emailIur,
         public readonly ?string $phoneFiz,
