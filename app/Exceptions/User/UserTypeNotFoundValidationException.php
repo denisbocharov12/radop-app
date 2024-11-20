@@ -19,6 +19,6 @@ final class UserTypeNotFoundValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(['type_not_found' => 'Ошибка: Тип пользователя не найден'])->withInput();
+        return Redirect::back()->withErrors(['type_not_found' => __('theme.type_not_found_error')])->withInput();
     }
 }

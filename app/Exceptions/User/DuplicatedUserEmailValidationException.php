@@ -15,6 +15,6 @@ final class DuplicatedUserEmailValidationException extends Exception
 
     public function render($request)
     {
-        return Redirect::back()->withErrors(['duplicated_email' => 'Ошибка: Пользователь с таким email уже существует'])->withInput();
+        return Redirect::back()->withErrors(['duplicated_email' => __('theme.duplicated_email_error')])->withInput();
     }
 }
