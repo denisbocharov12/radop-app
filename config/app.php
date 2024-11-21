@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\Theme\WishListProvider;
 use Illuminate\Support\Facades\Facade;
 use App\Providers\Theme\PropertyServiceProvider;
 return [
@@ -201,6 +202,7 @@ return [
         Darryldecode\Cart\CartServiceProvider::class,
 
         PropertyServiceProvider::class,
+        WishListProvider::class,
     ],
 
     /*

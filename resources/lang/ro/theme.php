@@ -215,4 +215,7 @@ return array (
     'type_not_found_error' => 'Eroare: tipul de utilizator nu a fost găsit.',
     'duplicated_email_error' => 'Eroare: un utilizator cu acest e-mail există deja.',
     'for-amount' => 'pentru suma',
+    'add-to-wishlist-with-success' => 'Produs a fost adăugat cu succes la favorite.',
+    'add-to-wishlist-with-error' => 'Eroare la adăugarea produsului la favorite.',
+    'delete-from-wishlist-with-success' => 'Produsul a fost şters cu succes din favorite.',
 );

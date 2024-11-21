@@ -9,71 +9,63 @@
 <script src="{{asset('/v1/frontend/assets')}}/js/scripts.js"></script>
 
 <script>
-    {{--$(document).on('click','.add-to-wishlist-btn',function (e) {--}}
-    {{--    e.preventDefault();--}}
-    {{--    var product_id = $(this).data('id');--}}
-    {{--    var product_qty = $(this).data('qty');--}}
-    {{--    var token = "{{csrf_token()}}";--}}
-    {{--    var path = "{{route('wishlist.store')}}";--}}
-    {{--    $.ajax({--}}
-    {{--        url: path,--}}
-    {{--        type: "POST",--}}
-    {{--        dataType:"JSON",--}}
-    {{--        data:{--}}
-    {{--            product_id: product_id,--}}
-    {{--            product_qty: product_qty,--}}
-    {{--            _token: token--}}
-    {{--        },--}}
-    {{--        beforeSend:function () {--}}
-    {{--            $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');--}}
-    {{--        },--}}
-    {{--        complete:function () {--}}
-    {{--            $('#add_to_wishlist-'+product_id).html('<i class="fa fa-heart" style="color: red"></i>');--}}
-    {{--        },--}}
-    {{--        success:function (response) {--}}
-    {{--            if (response['status']){--}}
-    {{--                toastr["success"](response['msg'])--}}
-    {{--                toastr.options = {--}}
-    {{--                    "closeButton": false,--}}
-    {{--                    "debug": false,--}}
-    {{--                    "newestOnTop": false,--}}
-    {{--                    "progressBar": true,--}}
-    {{--                    "positionClass": "toast-bottom-right",--}}
-    {{--                    "preventDuplicates": false,--}}
-    {{--                    "onclick": null,--}}
-    {{--                    "showDuration": "300",--}}
-    {{--                    "hideDuration": "1000",--}}
-    {{--                    "timeOut": "5000",--}}
-    {{--                    "extendedTimeOut": "1000",--}}
-    {{--                    "showEasing": "swing",--}}
-    {{--                    "hideEasing": "linear",--}}
-    {{--                    "showMethod": "fadeIn",--}}
-    {{--                    "hideMethod": "fadeOut"--}}
-    {{--                }--}}
-    {{--                $('.wishlist-counter').html(response['wishlist_count']);--}}
-    {{--            } else if(response['present']) {--}}
-    {{--                toastr["info"](response['msg'])--}}
-    {{--                toastr.options = {--}}
-    {{--                    "closeButton": false,--}}
-    {{--                    "debug": false,--}}
-    {{--                    "newestOnTop": false,--}}
-    {{--                    "progressBar": true,--}}
-    {{--                    "positionClass": "toast-bottom-right",--}}
-    {{--                    "preventDuplicates": false,--}}
-    {{--                    "onclick": null,--}}
-    {{--                    "showDuration": "300",--}}
-    {{--                    "hideDuration": "1000",--}}
-    {{--                    "timeOut": "5000",--}}
-    {{--                    "extendedTimeOut": "1000",--}}
-    {{--                    "showEasing": "swing",--}}
-    {{--                    "hideEasing": "linear",--}}
-    {{--                    "showMethod": "fadeIn",--}}
-    {{--                    "hideMethod": "fadeOut"--}}
-    {{--                }--}}
-    {{--            }--}}
-    {{--        }--}}
-    {{--    });--}}
-    {{--});--}}
+    $(document).on('click','.add-to-wishlist-btn',function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('id');
+        var token = "{{csrf_token()}}";
+        var path = "{{route('theme.wishlist.store')}}";
+        $.ajax({
+            url: path,
+            type: "POST",
+            dataType:"JSON",
+            data:{
+                product_id: product_id,
+                _token: token
+            },
+            beforeSend:function () {
+                $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+            },
+            complete:function () {
+                $('#add_to_wishlist-'+product_id).removeClass('add-to-wishlist-btn').addClass('delete-from-wishlist-btn').html('<i class="fa fa-heart" style="color: red"></i>');
+            },
+            success:function (response) {
+                if (response['status']){
+                    toastr["success"](response['msg']);
+                } else if(response['present']) {
+                    toastr["info"](response['msg'])
+                }
+            }
+        });
+    });
+
+    $(document).on('click','.delete-from-wishlist-btn',function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('id');
+        var token = "{{csrf_token()}}";
+        var path = "{{route('theme.wishlist.delete')}}";
+        $.ajax({
+            url: path,
+            type: "POST",
+            dataType:"JSON",
+            data:{
+                product_id: product_id,
+                _token: token
+            },
+            beforeSend:function () {
+                $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+            },
+            complete:function () {
+                $('#add_to_wishlist-'+product_id).removeClass('delete-from-wishlist-btn').addClass('add-to-wishlist-btn').html('<i class="fa fa-heart"></i>');
+            },
+            success:function (response) {
+                if (response['status']){
+                    toastr["success"](response['msg']);
+                } else if(response['present']) {
+                    toastr["info"](response['msg'])
+                }
+            }
+        });
+    });
 
     $(document).on('click','.add_to_cart_btn',function (e) {
         e.preventDefault();

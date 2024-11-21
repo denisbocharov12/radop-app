@@ -38,7 +38,7 @@
                         </a>
                     </div>
                     <div class="wishlist-block icon-block">
-                        <a href="#" class="wishlist icon-block-link">
+                        <a href="{{route('theme.wishlist.index')}}" class="wishlist icon-block-link">
                             <i class="icon-heart-radop"></i>
                         </a>
                     </div>
