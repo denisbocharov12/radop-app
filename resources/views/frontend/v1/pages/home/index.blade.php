@@ -76,7 +76,14 @@
                                         </a>
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        @if(app('wishlist')->get($product->id) !== null)
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                            </a>
+                                        @else
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                        @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
                                             <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
@@ -96,7 +103,6 @@
                                         @endif
                                     </div>
                                     <div class="details-wrap">
-                                        {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
                                         <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                                 @if($product->stock > 0)
                                                 {{__('theme.in-stock')}}
@@ -201,7 +207,14 @@
                                         </a>
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        @if(app('wishlist')->get($product->id) !== null)
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                            </a>
+                                        @else
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                        @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
                                             <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
@@ -326,7 +339,14 @@
                                         </a>
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                        @if(app('wishlist')->get($product->id) !== null)
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                            </a>
+                                        @else
+                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                        @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
                                             <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
@@ -346,7 +366,6 @@
                                         @endif
                                     </div>
                                     <div class="details-wrap">
-                                        {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
                                         <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                                 @if($product->stock > 0)
                                                 {{__('theme.in-stock')}}

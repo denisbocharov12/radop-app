@@ -214,4 +214,7 @@ return array (
     'type_not_found_error' => 'Ошибка: Тип пользователя не найден.',
     'duplicated_email_error' => 'Ошибка: Пользователь с таким email уже существует.',
     'for-amount' => 'на сумму',
+    'add-to-wishlist-with-success' => 'Товар успешно добавлен в избранное.',
+    'add-to-wishlist-with-error' => 'Ошибка добавления товара в избранное.',
+    'delete-from-wishlist-with-success' => 'Товар успешно удалён из избранного.',
 );
