@@ -31,7 +31,7 @@
                                     <div class="input-group-btn">
                                         <button
                                             onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                            class="sc-product-decrement btn-quantity minus"
+                                            class="sc-product-decrement btn-quantity-product minus"
                                             type="button"
                                             id="button-minus"
                                         >
@@ -51,7 +51,7 @@
                                     <div class="input-group-btn">
                                         <button
                                             onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                            class="sc-product-increment btn-quantity plus"
+                                            class="sc-product-increment btn-quantity-product plus"
                                             type="button"
                                             id="button-plus"
                                         >
@@ -68,8 +68,9 @@
             @endforeach
         </ul>
         <div class="heading-shopping-cart mb-3 mt-3">
-            <span class="sc-subtotal">{{__('theme.for-payment')}} <span class="fw-600">{{round(\Cart::session($sessionId)->getTotal(), 2)}} {{__('theme.MDL')}}</span></span>
-            <span class="sc-count">{{\Cart::session($sessionId)->getContent()->count()}} {{__('theme.unit')}}</span>
+            <span class="sc-subtotal">
+                {{__('theme.subtotal')}} {{\Cart::session($sessionId)->getTotalQuantity()}} {{mb_strtolower(__('theme.unit'))}} {{__('theme.for-amount')}} {{number_format(\Cart::session($sessionId)->getTotal(), 2)}} {{__('theme.MDL')}}
+            </span>
         </div>
     @else
         <p class="text-center">
