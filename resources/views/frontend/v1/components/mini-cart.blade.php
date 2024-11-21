@@ -31,7 +31,7 @@
                                     <div class="input-group-btn">
                                         <button
                                             onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                            class="sc-product-decrement btn-quantity-product minus"
+                                            class="sc-product-decrement btn-quantity minus"
                                             type="button"
                                             id="button-minus"
                                         >
@@ -51,7 +51,7 @@
                                     <div class="input-group-btn">
                                         <button
                                             onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                            class="sc-product-increment btn-quantity-product plus"
+                                            class="sc-product-increment btn-quantity plus"
                                             type="button"
                                             id="button-plus"
                                         >
