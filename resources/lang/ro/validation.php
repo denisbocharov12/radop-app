@@ -73,4 +73,5 @@ return [
     'uploaded' => ':attribute nu a putut fi încărcat.',
     'url' => ':attribute trebuie să fie o adresă URL validă.',
     'uuid' => ':attribute trebuie să fie un UUID valid.',
+    'regex' => 'Câmpul trebuie să includă litere de la A-Z',
 ];

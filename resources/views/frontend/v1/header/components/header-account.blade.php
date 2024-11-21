@@ -10,7 +10,11 @@
             data-src="#loginModal"
             href="javascript:;"
         >
-            {{$user->profile->first_name . ' ' . $user->profile->last_name}}
+            @if($user->type->key_name === "fiz")
+                {{$user->profile->first_name . ' ' . $user->profile->last_name}}
+            @else
+                {{$user->profile->organization_name}}
+            @endif
             <i class="icon-user-radop"></i>
         </a>
     @else

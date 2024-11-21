@@ -73,4 +73,5 @@ return [
     'uploaded' => 'Не удалось загрузить :attribute.',
     'url' => ':attribute должен быть допустимым URL.',
     'uuid' => ':attribute должен быть допустимым UUID.',
+    'regex' => 'Поле должно содержать буквы от A-Z.',
 ];
