@@ -67,7 +67,7 @@
                 </li>
             @endforeach
         </ul>
-        <div class="heading-shopping-cart mb-3 mt-3">
+        <div class="heading-shopping-cart mb-2 mt-2">
             <span class="sc-subtotal">
                 {{__('theme.subtotal')}} {{\Cart::session($sessionId)->getTotalQuantity()}} {{mb_strtolower(__('theme.unit'))}} {{__('theme.for-amount')}} {{number_format(\Cart::session($sessionId)->getTotal(), 2)}} {{__('theme.MDL')}}
             </span>
