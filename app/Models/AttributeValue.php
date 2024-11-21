@@ -29,4 +29,11 @@ final class AttributeValue extends Model
         return $this->hasOne(Attribute::class, 'onec_id', 'attribute_onec_id');
     }
 
+    /**
+     * @return HasOne<Product, AttributeValue>
+     */
+    public function product(): HasOne
+    {
+        return $this->hasOne(Product::class, 'onec_id', 'product_onec_id');
+    }
 }
