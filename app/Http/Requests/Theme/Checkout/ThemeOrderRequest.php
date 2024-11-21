@@ -49,4 +49,8 @@ final class ThemeOrderRequest extends FormRequest
             'shipping_address' => ['nullable', 'string']
         ];
     }
+
+    public function validationFailed() {
+        return redirect()->back()->withErrors($this->validator)->withInput();
+    }
 }
