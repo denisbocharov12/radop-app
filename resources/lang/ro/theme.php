@@ -220,4 +220,5 @@ return array (
     'delete-from-wishlist-with-success' => 'Produsul a fost şters cu succes din favorite.',
     'barcode' => 'Cod de bare',
     'package' => 'Pachet',
+    'all-brand-products' => 'Toate produsele de brand',
 );

@@ -25,7 +25,7 @@
                                 </a>
                             </div>
                             <div class="product-brand-link">
-                                <a href="#" class="brand-products-link">Все товары этого бренда</a>
+                                <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-products-link">{{__('theme.all-brand-products')}} {{$product->brand->title}}</a>
                             </div>
                         </div>
                         <hr>
@@ -46,12 +46,29 @@
                                 </li>
                             </ul>
                         </div>
+                        <hr/>
                         <div class="product-colors">
                             <div class="colors">
-                                <span style="background-color: #FF0000;" class="color-box"></span>
-                                <span style="background-color: #0000FF;" class="color-box"></span>
-                                <span style="background-color: #00FF00;" class="color-box"></span>
-                                <span style="background-color: #000000;" class="color-box"></span>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #FF0000;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #0000FF;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #00FF00;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #000000;" class="color-box"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -154,12 +171,12 @@
                             </p>
                         </div>
                         <hr/>
-                        @if($product->brand !== null)
-                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">
-                                <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">
-                            </a>
-                        @endif
-                        <hr/>
+{{--                        @if($product->brand !== null)--}}
+{{--                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">--}}
+{{--                                <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">--}}
+{{--                            </a>--}}
+{{--                        @endif--}}
+{{--                        <hr/>--}}
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
                         <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>
@@ -230,10 +247,10 @@
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
                                             @if($product->sale_price !== '')
-                                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
-                                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                                <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                                <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                             @else
-                                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                                <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
                                         <div class="details-wrap">
@@ -249,11 +266,11 @@
                                         <div class="product-card-summary">
                                             <p><span class="summary-title">{{__('theme.total')}}</span>
                                                 <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                                                @if($product->sale_price !== '')
-                                                        {{$product->sale_price}}
+                                                    @if($product->sale_price !== '')
+                                                        {{ number_format($product->sale_price, 2, ',', '') }}
                                                     @else
-                                                        {{$product->price}}
-                                                    @endif
+                                                        {{ number_format($product->price, 2, ',', '') }}
+                                                   @endif
                                             </span> {{__('theme.MDL')}}
                                             </p>
                                         </div>

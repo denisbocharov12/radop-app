@@ -8133,6 +8133,9 @@ hr {
     margin-bottom: 10px;
 }
 
+.product-additional-info ul a {
+    color: inherit;
+}
 
 .product-price p {
     font-size: 18px;
@@ -8152,7 +8155,7 @@ hr {
 
 .product-colors .colors {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 }
 
 .color-box {
@@ -8171,9 +8174,10 @@ hr {
 }
 
 .product-info-row {
+    margin-top: 10px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
 }
 
 .product-item .add_to_cart_wrap .qty-add-to-cart {
@@ -8183,15 +8187,6 @@ hr {
 }
 
 .product-item .add_to_cart_wrap .btn-quantity-product {
-    /*background-color: #007bff;*/
-    /*color: #fff;*/
-    /*border: none;*/
-    /*padding: 10px 15px;*/
-    /*font-size: 20px;*/
-    /*font-weight: bold;*/
-    /*cursor: pointer;*/
-    /*border-radius: 4px;*/
-    /*transition: background-color 0.3s ease;*/
     height: 38px;
     width: 38px;
     padding: 7.5px;
@@ -8204,12 +8199,6 @@ hr {
 }
 
 .product-item .add_to_cart_wrap .product-qty-item {
-    /*width: 70px;*/
-    /*height: 40px;*/
-    /*text-align: center;*/
-    /*font-size: 16px;*/
-    /*border: 1px solid #ddd;*/
-    /*border-radius: 4px;*/
     padding: 7.5px;
     color: black;
     border: 2px solid #e2e7ec;
@@ -8272,4 +8261,22 @@ hr {
 
 .section-similar-product.section-standart .col-heading .heading.heading-with-btn a:hover{
     text-decoration: underline!important;
+}
+
+.color-box-wrapper {
+    display: inline-block;
+}
+
+.color-box-border {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-brand-link a {
+    color: inherit;
 }
