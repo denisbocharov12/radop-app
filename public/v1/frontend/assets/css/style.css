@@ -3506,11 +3506,16 @@ header .section-header .row-main .header-menu .col-lg{
     justify-content: center;
     cursor: pointer;
     z-index: 2;
+    color: #0052a6;
+    font-size: 14px;
+    padding: 8px 9px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
 }
 
 .section-product .col-product-images .product-slider-thumb .slick-arrow:before,
 .section-product .col-product-images .product-slider-thumb .slick-arrow:after {
-    color: white;
+    color: #0052a6;
     opacity: 1;
 }
 
@@ -8279,4 +8284,52 @@ hr {
 
 .product-brand-link a {
     color: inherit;
+}
+
+.product-info-row .delete-from-wishlist-btn {
+    font-style: italic;
+    text-decoration: underline !important;
+    color: #252525;
+}
+
+.product-info-row .delete-from-wishlist-btn i {
+    color: #0052a6;
+}
+
+.product-info-row .delete-from-wishlist-btn:hover i {
+    color: #e82d25;
+}
+
+.section-product .product-label-s-wrap {
+    display: inline-block;
+    width: auto;
+    padding: 4px 15px;
+    background-color: #0a2d6c;
+    color: white;
+    border-radius: 18px 18px 0 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.section-product .product-label-s-wrap.product-label-s-wrap-right
+{
+    left: 65px;
+}
+.section-product .product-label-s-wrap.s-on_sale{
+    background-color: #c70303;
+}
+.section-product .product-label-s-wrap.s-new{
+    background-color: #20b600;
+}
+.section-product .product-label-s-wrap.s-popular{
+    background-color: #1f7bf9;
+}
+.section-product .product-label-s-wrap.s-featured{
+    background-color: #e37900;
+}
+.section-product .product-label-s-wrap.s-hot{
+    background-color: #ff1d1d;
+}
+.section-product .product-label-s-wrap.s-winter{
+    background-color: #1dc3ff;
 }

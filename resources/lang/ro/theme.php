@@ -221,4 +221,6 @@ return array (
     'barcode' => 'Cod de bare',
     'package' => 'Pachet',
     'all-brand-products' => 'Toate produsele de brand',
+    'remove-from-wishlist' => 'Scoate din favorite',
+    'already-in-cart' => 'În coș',
 );

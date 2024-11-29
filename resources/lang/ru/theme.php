@@ -220,4 +220,6 @@ return array (
     'barcode' => 'Штрихкод',
     'package' => 'Упаковка',
     'all-brand-products' => 'Все товары бренда',
+    'remove-from-wishlist' => 'Удалить из избранного',
+    'already-in-cart' => 'Уже в корзине',
 );

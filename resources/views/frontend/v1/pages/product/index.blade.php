@@ -6,6 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-7 col-product-images">
+                    @include('frontend.v1.pages.product.components.label')
                     @include('frontend.v1.pages.product.parts.gallery')
                 </div>
                 <div class="col-12 col-lg-5 col-product-info">
@@ -20,9 +21,27 @@
                                 </div>
                             </div>
                             <div class="product-add-to-wishlist-wrap">
-                                <a href="#" class="add-to-wishlist-btn">
-                                    <i class="icon-heart"></i>{{__('theme.add-to-wishlist')}}
-                                </a>
+                                @if(app('wishlist')->get($product->id) !== null)
+                                    <a href="javascript:void(0);"
+                                       id="add_to_wishlist-{{$product->id}}"
+                                       data-id="{{$product->id}}"
+                                       data-qty="1"
+                                       class="add_to_wishlist delete-from-wishlist-btn"
+                                       data-has-text="true"
+                                       tabindex="0">
+                                        <i class="fa fa-heart" style="color: red"></i> {{__('theme.remove-from-wishlist')}}
+                                    </a>
+                                @else
+                                    <a href="javascript:void(0);"
+                                       id="add_to_wishlist-{{$product->id}}"
+                                       data-id="{{$product->id}}"
+                                       data-qty="1"
+                                       class="add_to_wishlist add-to-wishlist-btn"
+                                       data-has-text="true">
+                                        <i class="fa fa-heart"></i> {{__('theme.add-to-wishlist')}}
+                                    </a>
+                                @endif
+
                             </div>
                             <div class="product-brand-link">
                                 <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-products-link">{{__('theme.all-brand-products')}} {{$product->brand->title}}</a>
@@ -153,23 +172,28 @@
                             </div>
                         </div>
                         </div>
-                        <div class="product-card-summary-cart mt-2">
+                        <div class="product-card-summary-cart mt-2" id="product-{{$product->id}}-cart-info">
                             <p>
-                                <span class="summary-title">{{__('theme.in-cart')}} </span>
-                                <span class="product-card-summary-cart-title" >
-                                    @php
-                                        $sessionId = config('shopping_cart.default_session_id');
+                                @php
+                                    $sessionId = config('shopping_cart.default_session_id');
+                                    if (auth()->guard('user')->user()) {
+                                        $sessionId = auth()->guard('user')->user()->id;
+                                    }
+                                    $item = \Cart::session($sessionId)->get($product->id);
+                                @endphp
 
-                                        if (auth()->guard('user')->user()) {
-                                            $sessionId = auth()->guard('user')->user()->id;
-                                        }
-
-                                        $item = \Cart::session($sessionId)->get($product->id);
-                                    @endphp
-                                    {{$item?->quantity ?? 0}}
-                                </span> {{__('theme.unit')}}
+                                @if ($item && $item->quantity > 0)
+                                    <span class="already-in-cart" style="display: flex; align-items: center;">
+                                        <i class="fa fa-check-circle" style="margin-right: 5px; color: green"></i>
+                                        {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}
+                                    </span>
+                                @else
+                                    <span class="summary-title">{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
+                                @endif
                             </p>
                         </div>
+
+
                         <hr/>
 {{--                        @if($product->brand !== null)--}}
 {{--                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">--}}
@@ -234,7 +258,14 @@
                                             </a>
                                         @endif
                                         @include('frontend.v1.pages.shop.parts.product-image')
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                            @if(app('wishlist')->get($product->id) !== null)
+                                                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                                    <i class="fa fa-heart"></i>
+                                                </a>
+                                            @endif
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
                                                 <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
