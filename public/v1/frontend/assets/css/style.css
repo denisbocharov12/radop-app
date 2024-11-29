@@ -2198,12 +2198,12 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-header .row-main .header-account .mini-shopping-cart .wrap-shopping-cart .bottom-shopping-cart a.btn-shopping-cart.red {
-    background-color: #e82d25;
+    background-color: #169a14;
     margin-left: 5px;
 }
 
 .section-header .row-main .header-account .mini-shopping-cart .wrap-shopping-cart .bottom-shopping-cart a.btn-shopping-cart.red:hover {
-    background-color: #de2c24;
+    background-color: #11730f;
 }
 
 .section-slider {
@@ -3176,7 +3176,8 @@ header .section-header .row-main .header-menu .col-lg{
     margin-bottom: 15px;
 }
 .section-product .col-product-info .product-info-wrap .product-name h1{
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 700;
 }
 .section-product .col-product-info .product-price-wrap {
     display: flex;
@@ -3340,7 +3341,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-product .col-product-info .product-details-wrap .details-list-wrap .ul-details .item {
     position: relative;
-    font-style: italic;
+    font-style: normal;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -3505,11 +3506,16 @@ header .section-header .row-main .header-menu .col-lg{
     justify-content: center;
     cursor: pointer;
     z-index: 2;
+    color: #0052a6;
+    font-size: 14px;
+    padding: 8px 9px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
 }
 
 .section-product .col-product-images .product-slider-thumb .slick-arrow:before,
 .section-product .col-product-images .product-slider-thumb .slick-arrow:after {
-    color: white;
+    color: #0052a6;
     opacity: 1;
 }
 
@@ -8119,4 +8125,211 @@ hr {
 .sticky-sidebar {
     position: sticky;
     top: 120px;
+}
+
+.product-additional-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.product-additional-info ul li {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.product-additional-info ul a {
+    color: inherit;
+}
+
+.product-price p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-colors {
+    margin-top: 15px;
+}
+
+.product-colors p {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-colors .colors {
+    display: flex;
+    gap: 10px;
+}
+
+.color-box {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.color-box:hover {
+    transform: scale(1.1);
+}
+
+.product-info-row {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-item .add_to_cart_wrap .qty-add-to-cart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-item .add_to_cart_wrap .btn-quantity-product {
+    height: 38px;
+    width: 38px;
+    padding: 7.5px;
+    color: black;
+    border: 2px solid #e2e7ec;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    background-color: white;
+}
+
+.product-item .add_to_cart_wrap .product-qty-item {
+    padding: 7.5px;
+    color: black;
+    border: 2px solid #e2e7ec;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    height: 38px;
+}
+
+.product-item .add_to_cart_wrap .add_to_cart_btn {
+    background-color: #0068a7;
+    color: #fff;
+    font-size: 14px;
+    /*font-weight: bold;*/
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.product-item .add_to_cart_wrap .add_to_cart_btn:hover {
+    background-color: #005991;
+}
+
+.product-item .add_to_cart_wrap .qty-block {
+    display: flex;
+    align-items: center;
+}
+
+.section-similar-product.section-standart .col-heading .heading {
+    border-bottom: 2px solid #0052a6;
+}
+
+.section-similar-product.section-standart .col-heading .heading h1 {
+    color: #fff;
+    background-color: #0052a6;
+    padding: 10px;
+    display: inline-block;
+    font-size: 18px;
+}
+
+.section-standart .col-heading .heading h1 {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: left;
+    color: #252525;
+}
+
+.section-similar-product.section-standart .col-heading .heading.heading-with-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-similar-product.section-standart .col-heading .heading.heading-with-btn a{
+    color: #0052a6;
+    font-size: 14px;
+}
+
+.section-similar-product.section-standart .col-heading .heading.heading-with-btn a:hover{
+    text-decoration: underline!important;
+}
+
+.color-box-wrapper {
+    display: inline-block;
+}
+
+.color-box-border {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-brand-link a {
+    color: inherit;
+}
+
+.product-info-row .delete-from-wishlist-btn {
+    font-style: italic;
+    text-decoration: underline !important;
+    color: #252525;
+}
+
+.product-info-row .delete-from-wishlist-btn i {
+    color: #0052a6;
+}
+
+.product-info-row .delete-from-wishlist-btn:hover i {
+    color: #e82d25;
+}
+
+.section-product .product-label-s-wrap {
+    display: inline-block;
+    width: auto;
+    padding: 4px 15px;
+    background-color: #0a2d6c;
+    color: white;
+    border-radius: 18px 18px 0 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.section-product .product-label-s-wrap.product-label-s-wrap-right
+{
+    left: 65px;
+}
+.section-product .product-label-s-wrap.s-on_sale{
+    background-color: #c70303;
+}
+.section-product .product-label-s-wrap.s-new{
+    background-color: #20b600;
+}
+.section-product .product-label-s-wrap.s-popular{
+    background-color: #1f7bf9;
+}
+.section-product .product-label-s-wrap.s-featured{
+    background-color: #e37900;
+}
+.section-product .product-label-s-wrap.s-hot{
+    background-color: #ff1d1d;
+}
+.section-product .product-label-s-wrap.s-winter{
+    background-color: #1dc3ff;
 }

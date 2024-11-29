@@ -12,7 +12,7 @@ return array (
   'activate-account' => 'Активировать аккаунт',
   'add-to-cart' => 'В корзину',
   'add-to-cart-with-success' => 'успешно добавлен в корзину',
-  'add-to-wishlist' => 'Добавить в список желаний',
+  'add-to-wishlist' => 'Добавить в избранное',
   'address' => 'Адрес',
   'agree-with' => 'Я согласен с',
   'all-rights-reserved-according-to' => 'Все права защищены согласно',
@@ -217,4 +217,9 @@ return array (
     'add-to-wishlist-with-success' => 'Товар успешно добавлен в избранное.',
     'add-to-wishlist-with-error' => 'Ошибка добавления товара в избранное.',
     'delete-from-wishlist-with-success' => 'Товар успешно удалён из избранного.',
+    'barcode' => 'Штрихкод',
+    'package' => 'Упаковка',
+    'all-brand-products' => 'Все товары бренда',
+    'remove-from-wishlist' => 'Удалить из избранного',
+    'already-in-cart' => 'Уже в корзине',
 );

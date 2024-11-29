@@ -6,6 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-7 col-product-images">
+                    @include('frontend.v1.pages.product.components.label')
                     @include('frontend.v1.pages.product.parts.gallery')
                 </div>
                 <div class="col-12 col-lg-5 col-product-info">
@@ -13,80 +14,193 @@
                         <div class="product-name">
                             <h1>{{$product->title}}</h1>
                         </div>
-                        <div class="product-sku">
-                            <div class="product-item-article-wrap">
-                                <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                        <div class="product-info-row">
+                            <div class="product-sku">
+                                <div class="product-item-article-wrap">
+                                    <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product-details-wrap">
-                            <div class="product-stock-status">
-                                @if($product->stock < 1)
-                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>
+                            <div class="product-add-to-wishlist-wrap">
+                                @if(app('wishlist')->get($product->id) !== null)
+                                    <a href="javascript:void(0);"
+                                       id="add_to_wishlist-{{$product->id}}"
+                                       data-id="{{$product->id}}"
+                                       data-qty="1"
+                                       class="add_to_wishlist delete-from-wishlist-btn"
+                                       data-has-text="true"
+                                       tabindex="0">
+                                        <i class="fa fa-heart" style="color: red"></i> {{__('theme.remove-from-wishlist')}}
+                                    </a>
                                 @else
-                                    <span class="status in-stock">{{__('theme.in-stock')}}</span>
+                                    <a href="javascript:void(0);"
+                                       id="add_to_wishlist-{{$product->id}}"
+                                       data-id="{{$product->id}}"
+                                       data-qty="1"
+                                       class="add_to_wishlist add-to-wishlist-btn"
+                                       data-has-text="true">
+                                        <i class="fa fa-heart"></i> {{__('theme.add-to-wishlist')}}
+                                    </a>
                                 @endif
+
+                            </div>
+                            <div class="product-brand-link">
+                                <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-products-link">{{__('theme.all-brand-products')}} {{$product->brand->title}}</a>
                             </div>
                         </div>
+                        <hr>
+                        <div class="product-additional-info">
+                            <ul class="list">
+                                <li>
+                                    <p>{{__('theme.barcode')}}: {{$product->barcode ?? '4041483551357'}}</p>
+                                </li>
+                                <li>
+                                    <p>{{__('theme.package')}}: {{$product->small_package ?? '24/576'}}</p>
+                                </li>
+                                <li>
+                                    <p>{{__('theme.brand')}}:
+                                        <a href="{{route('theme.brand.index', $product->brand_id)}}">
+                                            {{$product->brand->title ?? 'ErichKrause'}}
+                                        </a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                        <hr/>
+                        <div class="product-colors">
+                            <div class="colors">
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #FF0000;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #0000FF;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #00FF00;" class="color-box"></span>
+                                    </div>
+                                </div>
+                                <div class="color-box-wrapper">
+                                    <div class="color-box-border">
+                                        <span style="background-color: #000000;" class="color-box"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+{{--                        <div class="product-details-wrap">--}}
+{{--                            <div class="product-stock-status">--}}
+{{--                                @if($product->stock < 1)--}}
+{{--                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>--}}
+{{--                                @else--}}
+{{--                                    <span class="status in-stock">{{__('theme.in-stock')}}</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                     <div class="product-wrap">
                         <div class="product-price-wrap">
                             @if($product->sale_price !== '')
-                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
-                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             @else
-                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             @endif
                         </div>
-                        <hr />
-                        <div class="product-add-to-cart-wrap">
-                            <div class="qty-select">
-                                <label for="product-qty-page" class="qty-label">{{__('theme.quantity')}}</label>
-                                <input type="number" name="product-{{$product->id}}-qty" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input product-qty-page-input qty-item-{{$product->id}}">
-                            </div>
-                            <div class="product-add-to-cart">
-                                <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>
-                            </div>
-                        </div>
                         <div class="product-card-summary">
-                            <p><span class="summary-title">{{__('theme.total')}}</span>
-                                <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @if($product->sale_price !== '')
-                                        {{$product->sale_price}}
-                                    @else
-                                        {{$product->price}}
-                                    @endif
-                        </span> {{__('theme.MDL')}}
-                            </p>
-                        </div>
-                        <div class="product-card-summary-cart mt-2">
                             <p>
-                                <span class="summary-title">{{__('theme.in-cart')}} </span>
-                                <span class="product-card-summary-cart-title" >
-                                                @php
-                                                    $sessionId = config('shopping_cart.default_session_id');
-
-                                                    if (auth()->guard('user')->user()) {
-                                                        $sessionId = auth()->guard('user')->user()->id;
-                                                    }
-
-                                                    $item = \Cart::session($sessionId)->get($product->id);
-                                                @endphp
-                                    {{$item?->quantity ?? 0}}
-                                            </span> {{__('theme.unit')}}
+                                <span class="summary-title">{{__('theme.total')}}</span>
+                                <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
+                                    @if($product->sale_price !== '')
+                                        {{ number_format($product->sale_price, 2, ',', '') }}
+                                    @else
+                                        {{ number_format($product->price, 2, ',', '') }}
+                                    @endif
+                                </span> {{__('theme.MDL')}}
                             </p>
                         </div>
-                        <hr />
-                        <div class="product-add-to-wishlist-wrap">
-                            <a href="#" class="add-to-wishlist-btn"
-                            ><i class="icon-heart"></i>{{__('theme.add-to-wishlist')}}</a
-                            >
+{{--                        <div class="product-add-to-cart-wrap">--}}
+{{--                            <div class="qty-select">--}}
+{{--                                <label for="product-qty-page" class="qty-label">{{__('theme.quantity')}}</label>--}}
+{{--                                <input type="number" name="product-{{$product->id}}-qty" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty" data-product-id="{{$product->onec_id}}" data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif" class="product-qty-input product-qty-page-input qty-item-{{$product->id}}">--}}
+{{--                            </div>--}}
+{{--                            <div class="product-add-to-cart">--}}
+{{--                                <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="product-add-to-cart-btn">{{__('theme.add-to-cart')}}</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                        <div class="product-item">
+                            <div class="add_to_cart_wrap">
+                                <div class="qty-add-to-cart">
+                                    <div class="sc-product-qty qty-block">
+                                        <div class="input-group-btn">
+                                            <button
+                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                                    class="sc-product-decrement btn-quantity-product minus"
+                                                    type="button"
+                                                    id="button-minus"
+                                            >
+                                                -
+                                            </button>
+                                        </div>
+                                        <input
+                                                id="product-{{$product->id}}-qty"
+                                                type="number"
+                                                min="1"
+                                                max="{{$product->stock}}"
+                                                placeholder="1"
+                                                value="1"
+                                                name="product-{{$product->id}}-qty"
+                                                data-product-id="{{$product->onec_id}}"
+                                                data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
+                                                class="product-qty-item"
+                                        />
+                                        <div class="input-group-btn">
+                                            <button
+                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    class="sc-product-increment btn-quantity-product plus"
+                                                    type="button"
+                                                    id="button-plus"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                            </div>
                         </div>
+                        </div>
+                        <div class="product-card-summary-cart mt-2" id="product-{{$product->id}}-cart-info">
+                            <p>
+                                @php
+                                    $sessionId = config('shopping_cart.default_session_id');
+                                    if (auth()->guard('user')->user()) {
+                                        $sessionId = auth()->guard('user')->user()->id;
+                                    }
+                                    $item = \Cart::session($sessionId)->get($product->id);
+                                @endphp
+
+                                @if ($item && $item->quantity > 0)
+                                    <span class="already-in-cart" style="display: flex; align-items: center;">
+                                        <i class="fa fa-check-circle" style="margin-right: 5px; color: green"></i>
+                                        {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}
+                                    </span>
+                                @else
+                                    <span class="summary-title">{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
+                                @endif
+                            </p>
+                        </div>
+
+
                         <hr/>
-                        @if($product->brand !== null)
-                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">
-                                <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">
-                            </a>
-                        @endif
+{{--                        @if($product->brand !== null)--}}
+{{--                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">--}}
+{{--                                <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">--}}
+{{--                            </a>--}}
+{{--                        @endif--}}
+{{--                        <hr/>--}}
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
                         <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>
@@ -122,11 +236,11 @@
         </div>
     </section>
     @if($similarProducts !== null)
-    <section class="section-standart section-catalog mb-5">
+    <section class="section-standart section-catalog mb-5 section-similar-product">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
-                    <div class="heading">
+                    <div class="heading heading-with-btn">
                         <h1>{{__('theme.similar-products')}}</h1>
                     </div>
                 </div>
@@ -144,7 +258,14 @@
                                             </a>
                                         @endif
                                         @include('frontend.v1.pages.shop.parts.product-image')
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn"><i class="fa fa-heart"></i></a>
+                                            @if(app('wishlist')->get($product->id) !== null)
+                                                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                                </a>
+                                            @else
+                                                <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                                    <i class="fa fa-heart"></i>
+                                                </a>
+                                            @endif
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
                                                 <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
@@ -157,10 +278,10 @@
                                     <div class="add_to_cart_wrap">
                                         <div class="wrap">
                                             @if($product->sale_price !== '')
-                                                <span class="price">{{$product->sale_price}} {{__('theme.MDL')}}</span>
-                                                <span class="old_price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                                <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                                <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                             @else
-                                                <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
+                                                <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
                                         <div class="details-wrap">
@@ -176,11 +297,11 @@
                                         <div class="product-card-summary">
                                             <p><span class="summary-title">{{__('theme.total')}}</span>
                                                 <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                                                @if($product->sale_price !== '')
-                                                        {{$product->sale_price}}
+                                                    @if($product->sale_price !== '')
+                                                        {{ number_format($product->sale_price, 2, ',', '') }}
                                                     @else
-                                                        {{$product->price}}
-                                                    @endif
+                                                        {{ number_format($product->price, 2, ',', '') }}
+                                                   @endif
                                             </span> {{__('theme.MDL')}}
                                             </p>
                                         </div>

@@ -109,10 +109,6 @@
     background-color: #005991;
 }
 
-.product-item-article-wrap {
-    margin-top: 10px;
-}
-
 .product_item_article {
     color: #555;
     font-size: 12px;
@@ -125,7 +121,7 @@
 
 .product-card-summary{
     font-size: 14px;
-    margin-top: 15px;
+    margin: 10px 0;
     font-weight: 500;
     color: #252525;
 }

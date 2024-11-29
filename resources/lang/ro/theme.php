@@ -218,4 +218,9 @@ return array (
     'add-to-wishlist-with-success' => 'Produs a fost adăugat cu succes la favorite.',
     'add-to-wishlist-with-error' => 'Eroare la adăugarea produsului la favorite.',
     'delete-from-wishlist-with-success' => 'Produsul a fost şters cu succes din favorite.',
+    'barcode' => 'Cod de bare',
+    'package' => 'Pachet',
+    'all-brand-products' => 'Toate produsele de brand',
+    'remove-from-wishlist' => 'Scoate din favorite',
+    'already-in-cart' => 'În coș',
 );
