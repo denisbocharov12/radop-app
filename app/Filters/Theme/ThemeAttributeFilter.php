@@ -22,13 +22,21 @@ final class ThemeAttributeFilter implements Filter
             $attributeProductsIds = AttributeValue::query()
                 ->whereIn('value->'.str_replace('_', '-', app()->getLocale()), $value)
                 ->get()
-                ->pluck('id')
+//                ->pluck('id')
+                ->pluck('product_onec_id')
                 ->toArray()
             ;
 
-        $query
-        ->whereHas('values', function ($q) use ($query, $attributeProductsIds, $value) {
-            $q->whereIn('attribute_values.id', $attributeProductsIds);
-        });
+        foreach ($value as $val) {
+            $query
+                ->whereHas('values', function ($q) use ($query, $attributeProductsIds, $value, $val) {
+                    $q->where('attribute_values.value->'.str_replace('_', '-', app()->getLocale()), $val);
+                });
+        }
+
+//        $query
+//        ->whereHas('values', function ($q) use ($query, $attributeProductsIds, $value) {
+//            $q->whereIn('attribute_values.product_onec_id', array_values(array_unique($attributeProductsIds, SORT_NUMERIC)));
+//        });
     }
 }
