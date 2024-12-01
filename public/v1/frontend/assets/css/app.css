@@ -1861,8 +1861,6 @@ font-size: 20px;
 font-style: italic;
 }
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn {
-font-style: italic;
-text-decoration: underline !important;
 color: #000;
 }
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn i {
@@ -3192,7 +3190,7 @@ font-size: 14px;
 width: calc(100% - 35px);
 }
 .product-item-category .product-item-title-wrap .product_item_name a {
-font-weight: 700;
+font-weight: 500;
 margin-top: 7.5px;
 color: #000;
 font-size: 14px;

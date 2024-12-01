@@ -1567,7 +1567,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-header .row-main .header-menu .header-main-menu ul.menu .item .link {
     padding: 15px 0;
     color: #fff;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     letter-spacing: 1px;
 }
 
@@ -1719,7 +1719,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content a.heading {
     color: #252525;
-    font-weight: 600!important;
+    font-weight: 500!important;
     padding: 7.5px 5px;
     display: inline-block;
 }
@@ -1732,7 +1732,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link {
     color: #252525;
-    font-weight: 500!important;
+    font-weight: 400!important;
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link:hover {
@@ -3176,7 +3176,7 @@ header .section-header .row-main .header-menu .col-lg{
     margin-bottom: 15px;
 }
 .section-product .col-product-info .product-info-wrap .product-name h1{
-    font-size: 32px;
+    font-size: 22px;
     font-weight: 700;
 }
 .section-product .col-product-info .product-price-wrap {
@@ -3220,11 +3220,11 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn {
-    font-style: italic;
-    text-decoration: underline !important;
     color: #252525;
 }
-
+.section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn:hover{
+    text-decoration: underline !important;
+}
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn i {
     color: #0052a6;
 }
@@ -5407,13 +5407,13 @@ header .section-header .row-main .header-menu .col-lg{
     margin-top: 7.5px;
     color: #252525;
     font-size: 14px;
-    width: calc(100% - 35px);
+    width: calc(100% - 5px);
 }
 
 .product-item-category a.add_to_wishlist {
     position: absolute;
     font-size: 15px;
-    background-color: #fff;
+    background-color: #ffffff78;
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -5424,7 +5424,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .product-item-category a.add_to_wishlist i {
-    color: #b9b9b9;
+    color: #b9b9b9ba;
 }
 
 .product-item-category a.add_to_wishlist:hover i {
@@ -8218,7 +8218,7 @@ hr {
     color: #fff;
     font-size: 14px;
     /*font-weight: bold;*/
-    padding: 10px 20px;
+    padding: 12.5px 30px;
     text-align: center;
     text-decoration: none;
     border-radius: 4px;
@@ -8284,6 +8284,10 @@ hr {
 
 .product-brand-link a {
     color: inherit;
+}
+
+.product-brand-link a:hover{
+    text-decoration: underline!important;
 }
 
 .product-info-row .delete-from-wishlist-btn {
