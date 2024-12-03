@@ -4,7 +4,7 @@
             @if(count($existedCategory->products) < 1)
                 @include('frontend.v1.pages.category.parts.not-found')
             @else
-                <div class="col-12 col-md-2 col-theme-filters">
+                <div class="col-12 col-md-3 col-theme-filters">
                     <div class="sticky-sidebar">
                         <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET">
                             <div class="theme-wg-wrap">
@@ -56,7 +56,7 @@
                         </form>
                     </div>
               </div>
-                <div class="col-md-10 col-12 col-theme-content">
+                <div class="col-md-9 col-12 col-theme-content">
                     <div class="row">
                         @include('frontend.v1.pages.category.parts.list')
                     </div>

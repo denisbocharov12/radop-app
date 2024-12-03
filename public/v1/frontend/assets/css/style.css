@@ -4941,7 +4941,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title {
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 7.5px;
     font-size: 15px;
 }
@@ -5248,7 +5248,9 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .product-item-category {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    padding-left: 4.5px;
+    padding-right: 4.5px;
 }
 
 .product-item-category .product-wrap {
@@ -5408,6 +5410,7 @@ header .section-header .row-main .header-menu .col-lg{
     color: #252525;
     font-size: 14px;
     width: calc(100% - 5px);
+    margin-bottom: 10px;
 }
 
 .product-item-category a.add_to_wishlist {
