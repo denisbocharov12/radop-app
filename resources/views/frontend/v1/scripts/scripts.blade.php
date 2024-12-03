@@ -128,10 +128,13 @@
 
                     var quantity = response['product_quantity'];
                     var cartHtml = `
+                    <p>
                     <span class="already-in-cart" style="display: flex; align-items: center;">
-                        <i class="fa fa-check-circle" style="margin-right: 5px; color: green"></i>
-                        {{__('theme.already-in-cart')}} - ${quantity} {{__('theme.unit')}}
+                            <i class="icon-check"></i>
+                            {{__('theme.already-in-cart')}} - ${quantity} {{__('theme.unit')}}
+
                     </span>
+                    </p>
                 `;
                     $('#product-' + product_id + '-cart-info').html(cartHtml);
 

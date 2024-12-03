@@ -172,7 +172,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="product-card-summary-cart mt-2" id="product-{{$product->id}}-cart-info">
+                        <div class="product-card-summary-cart product-card-summary-in-cart mt-2" id="product-{{$product->id}}-cart-info">
                             <p>
                                 @php
                                     $sessionId = config('shopping_cart.default_session_id');
@@ -184,11 +184,11 @@
 
                                 @if ($item && $item->quantity > 0)
                                     <span class="already-in-cart" style="display: flex; align-items: center;">
-                                        <i class="fa fa-check-circle" style="margin-right: 5px; color: green"></i>
+                                        <i class="icon-check"></i>
                                         {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}
                                     </span>
                                 @else
-                                    <span class="summary-title">{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
+                                    <span class="summary-title"><i class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
                                 @endif
                             </p>
                         </div>
