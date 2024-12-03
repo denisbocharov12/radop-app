@@ -124,6 +124,7 @@
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
+                    $('#product-card-summary-in-cart-' + product_id).html(response['in-cart']);
 
                     var quantity = response['product_quantity'];
                     var cartHtml = `

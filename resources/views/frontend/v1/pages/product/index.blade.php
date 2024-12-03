@@ -168,9 +168,9 @@
                                             </button>
                                         </div>
                                     </div>
-                                <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                </div>
                             </div>
-                        </div>
                         </div>
                         <div class="product-card-summary-cart mt-2" id="product-{{$product->id}}-cart-info">
                             <p>
@@ -192,8 +192,6 @@
                                 @endif
                             </p>
                         </div>
-
-
                         <hr/>
 {{--                        @if($product->brand !== null)--}}
 {{--                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">--}}

@@ -42,6 +42,7 @@
                 </div>
             </div>
             <div class="add_to_cart_wrap">
+                <hr class="product-card-item">
                 <div class="wrap">
                     @if($product->sale_price !== '')
                         <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
@@ -61,25 +62,7 @@
                         </span> {{__('theme.MDL')}}
                     </p>
                 </div>
-                <div class="product-card-summary-cart mt-2">
-                    <p>
-                        <span class="summary-title">{{__('theme.in-cart')}}</span>
-                        <span class="product-card-summary-cart-title" >
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
-
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            {{$item?->quantity ?? 0}}
-                        </span> {{__('theme.unit')}}
-                    </p>
-                </div>
-                <hr>
-                <div class="qty-add-to-cart">
+                <div class="qty-add-to-cart qty-add-to-cart-product-card">
                     <div class="sc-product-qty qty-block">
                         <div class="input-group-btn">
                             <button
@@ -115,6 +98,25 @@
                         </div>
                     </div>
                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                </div>
+                <div class="product-card-summary-in-cart" id="product-card-summary-in-cart-{{$product->id}}">
+                    @php
+                        $sessionId = config('shopping_cart.default_session_id');
+
+                        if (auth()->guard('user')->user()) {
+                            $sessionId = auth()->guard('user')->user()->id;
+                        }
+
+                        $item = \Cart::session($sessionId)->get($product->id);
+                    @endphp
+                    @if($item !== null)
+                        <p>
+                            <span class="summary-title"><i class="icon-check"></i>{{__('theme.in-cart')}}</span>
+                            <span class="product-card-summary-cart-title" >
+                            {{$item?->quantity ?? 0}}
+                        </span> {{__('theme.unit')}}
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>

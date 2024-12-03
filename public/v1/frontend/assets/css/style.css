@@ -5442,7 +5442,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product-item-category .add_to_cart_wrap {
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .product-item-category .add_to_cart_wrap .details-wrap {
@@ -5476,7 +5476,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 25px auto 0 auto;
+    margin: 10px auto 0 auto;
     flex-direction: column;
 }
 .product-item-category .add_to_cart_wrap .qty-add-to-cart .sc-product-qty.qty-block{
@@ -5568,6 +5568,30 @@ header .section-header .row-main .header-menu .col-lg{
     transform: translate(0, -50%);
 }
 
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card{
+    flex-direction: row;
+}
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block{
+    margin: 0;
+}
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card a.add_to_cart_btn{
+    font-size: 13px;
+    padding: 10px 15px;
+}
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block{
+    margin-right: 7.5px;
+}
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block .btn-quantity-product{
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+}
+.product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block .product-qty-item{
+    padding: 5px;
+    width: 28px;
+    height: 28px;
+}
 .product-item-category .add_to_cart_wrap .wrap {
     margin-bottom: 4px;
     text-align: center;
@@ -5766,12 +5790,25 @@ header .section-header .row-main .header-menu .col-lg{
 
 hr {
     height: 1px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.03);
 }
+hr.product-card-item{
+    margin-top: 0;
+    margin-bottom: 10px;
+}
 
+.product-card-summary-in-cart p{
+    margin-top: 12.5px;
+    font-size: 14px;
+}
+.product-card-summary-in-cart p i {
+    color: green;
+    font-size: 12px;
+    margin-right: 3px;
+}
 .input-error-validation{
     border-color: red!important;
 }
