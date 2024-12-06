@@ -222,4 +222,10 @@ return array (
     'all-brand-products' => 'Все товары бренда',
     'remove-from-wishlist' => 'Удалить из избранного',
     'already-in-cart' => 'Уже в корзине',
+    'label_on_sale' => 'Sale',
+    'label_new' => 'New',
+    'label_hot' => 'Hot',
+    'label_popular' => 'Hit',
+    'label_featured' => 'Featured',
+    'label_winter' => 'Winter',
 );

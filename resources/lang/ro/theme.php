@@ -223,4 +223,10 @@ return array (
     'all-brand-products' => 'Toate produsele de brand',
     'remove-from-wishlist' => 'Scoate din favorite',
     'already-in-cart' => 'În coș',
+    'label_on_sale' => 'Sale',
+    'label_new' => 'New',
+    'label_hot' => 'Hot',
+    'label_popular' => 'Hit',
+    'label_featured' => 'Featured',
+    'label_winter' => 'Winter',
 );

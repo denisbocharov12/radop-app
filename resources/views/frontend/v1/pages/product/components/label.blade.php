@@ -4,7 +4,7 @@
     s-on_sale
     ">
     <span class="product-label-s">
-        Sale
+        {{__('theme.label_on_sale')}}
     </span>
 </div>
 @endif
@@ -15,7 +15,7 @@
     s-new
     ">
     <span class="product-label-s">
-        New
+        {{__('theme.label_new')}}
     </span>
     </div>
 @endif
@@ -26,7 +26,7 @@
     s-popular
     ">
     <span class="product-label-s">
-        Popular
+        {{__('theme.label_popular')}}
     </span>
     </div>
 @endif
@@ -37,7 +37,7 @@
     s-featured
     ">
     <span class="product-label-s">
-        Featured
+        {{__('theme.label_featured')}}
     </span>
     </div>
 @endif
@@ -48,7 +48,7 @@
     s-hot
     ">
     <span class="product-label-s">
-        Hot
+        {{__('theme.label_hot')}}
     </span>
     </div>
 @endif
@@ -59,7 +59,7 @@
     s-winter
     ">
     <span class="product-label-s">
-        Winter
+         {{__('theme.label_winter')}}
     </span>
     </div>
 @endif
@@ -71,7 +71,7 @@
     s-new
     ">
     <span class="product-label-s">
-        New
+        {{__('theme.label_new')}}
     </span>
     </div>
 @endif
@@ -83,7 +83,7 @@
     s-popular
     ">
     <span class="product-label-s">
-        New
+        {{__('theme.label_popular')}}
     </span>
     </div>
 @endif
@@ -95,7 +95,7 @@
     s-featured
     ">
     <span class="product-label-s">
-        Featured
+                {{__('theme.label_featured')}}
     </span>
     </div>
 @endif
@@ -107,7 +107,7 @@
     s-hot
     ">
     <span class="product-label-s">
-        Hot
+        {{__('theme.label_hot')}}
     </span>
     </div>
 @endif
@@ -119,7 +119,7 @@
     s-winter
     ">
     <span class="product-label-s">
-        Winter
+        {{__('theme.label_winter')}}
     </span>
     </div>
 @endif
