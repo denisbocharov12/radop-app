@@ -571,6 +571,7 @@ position: relative;
 align-items: center;
 display: flex;
 padding-right: 14px !important;
+    text-transform: uppercase;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item .link-megamenu img {
   width: 22px;
