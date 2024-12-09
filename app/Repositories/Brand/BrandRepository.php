@@ -51,7 +51,7 @@ final class BrandRepository
 
     public function getLimited(): Collection
     {
-        return Brand::all()->where('status', true)->take(50);
+        return Brand::all()->where('status', true)->sortBy('onec_id')->take(50);
     }
 
     public function getById($brandId): ?Brand

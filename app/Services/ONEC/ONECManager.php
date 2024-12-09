@@ -50,7 +50,7 @@ final class ONECManager
                 DB::beginTransaction();
 
                 ProductCategory::query()->truncate();
-                ProductProfile::query()->truncate();
+                //ProductProfile::query()->truncate();
 
                 $productsData = $json->Product;
                 $header = [];
