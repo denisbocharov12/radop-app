@@ -43,9 +43,6 @@
                                 @endif
 
                             </div>
-                            <div class="product-brand-link">
-                                <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-products-link">{{__('theme.all-brand-products')}} {{$product->brand->title}}</a>
-                            </div>
                         </div>
                         <hr>
                         <div class="product-additional-info">
@@ -58,8 +55,9 @@
                                 </li>
                                 <li>
                                     <p>{{__('theme.brand')}}:
-                                        <a href="{{route('theme.brand.index', $product->brand_id)}}">
+                                        <a href="{{route('theme.brand.index', $product->brand_id)}}" class="colored">
                                             {{$product->brand->title ?? 'ErichKrause'}}
+                                            <i class="icon-arrow-right"></i>
                                         </a>
                                     </p>
                                 </li>

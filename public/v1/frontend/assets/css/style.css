@@ -8182,6 +8182,12 @@ hr.product-card-item{
 .product-additional-info ul a {
     color: inherit;
 }
+.product-additional-info ul a.colored{
+    text-decoration: underline!important;
+}
+.product-info-row .product-add-to-wishlist-wrap{
+    margin-left: 10px;
+}
 
 .product-price p {
     font-size: 18px;
@@ -8223,7 +8229,6 @@ hr.product-card-item{
     margin-top: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .product-item .add_to_cart_wrap .qty-add-to-cart {
