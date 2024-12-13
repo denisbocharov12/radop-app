@@ -5253,6 +5253,8 @@ header .section-header .row-main .header-menu .col-lg{
     display: flex;
     flex-direction: column;
     width: 100%;
+    border-radius: 10px;
+    height: fit-content;
 }
 .grid-products-list-wrap{
     grid-template-columns: repeat(4, 1fr);
@@ -5587,6 +5589,7 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 7.5px 7.5px;
     background-color: #0052a6;
     color: #f1f1f1;
+    border-radius: 10px;
 }
 .product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card a.add_to_cart_btn:hover{
     background-color: #004791;

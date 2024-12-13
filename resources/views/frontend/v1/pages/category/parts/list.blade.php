@@ -11,8 +11,8 @@
 
         $item = \Cart::session($sessionId)->get($product->id);
     @endphp
-    <div class="col-lg-3 col-md-3 col-6 product-item-category @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
-        <div class="product-wrap drop-shadow">
+    <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
+        <div class="product-wrap">
             @include('frontend.v1.pages.product.components.label')
             <div class="product-wrap-main">
                 @if($product->sale_price !== '')
