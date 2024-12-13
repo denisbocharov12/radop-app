@@ -5250,17 +5250,22 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product-item-category {
     margin-bottom: 20px;
-    padding-left: 4.5px;
-    padding-right: 4.5px;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
-
+.grid-products-list-wrap{
+    grid-template-columns: repeat(4, 1fr);
+    display: grid;
+    column-gap: 10px;
+}
 .product-item-category .product-wrap {
     position: relative;
     border: 1px solid #e2e7ec;
     padding: 10px;
     border-radius: 10px;
+    height: fit-content;
+    min-height: 196px;
 }
 .slick-track{
     margin-top: 21px;
