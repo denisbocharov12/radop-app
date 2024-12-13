@@ -125,6 +125,9 @@
                     $('.header-cart-widget .summ').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
                     $('#product-card-summary-in-cart-' + product_id).html(response['in-cart']);
+                    if(!$('#col-product-' + product_id).hasClass('product-item-category-in-cart')) {
+                        $('#col-product-' + product_id).addClass('product-item-category-in-cart');
+                    }
 
                     var quantity = response['product_quantity'];
                     var cartHtml = `

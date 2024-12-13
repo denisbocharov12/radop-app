@@ -2,7 +2,16 @@
     @include('frontend.v1.pages.category.parts.not-found')
 @endif
 @foreach($products as $product)
-    <div class="col-lg-3 col-md-3 col-6 product-item-category">
+    @php
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        $item = \Cart::session($sessionId)->get($product->id);
+    @endphp
+    <div class="col-lg-3 col-md-3 col-6 product-item-category @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
         <div class="product-wrap drop-shadow">
             @include('frontend.v1.pages.product.components.label')
             <div class="product-wrap-main">
@@ -99,26 +108,8 @@
                     </div>
                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
-                <div class="product-card-summary-in-cart" id="product-card-summary-in-cart-{{$product->id}}">
-                    @php
-                        $sessionId = config('shopping_cart.default_session_id');
-
-                        if (auth()->guard('user')->user()) {
-                            $sessionId = auth()->guard('user')->user()->id;
-                        }
-
-                        $item = \Cart::session($sessionId)->get($product->id);
-                    @endphp
-                    @if($item !== null)
-                        <p>
-                            <span class="summary-title"><i class="icon-check"></i>{{__('theme.in-cart')}}</span>
-                            <span class="product-card-summary-cart-title" >
-                            {{$item?->quantity ?? 0}}
-                        </span> {{__('theme.unit')}}
-                        </p>
-                    @endif
-                </div>
             </div>
         </div>
+        @include('frontend.v1.components.in_cart_widget')
     </div>
 @endforeach

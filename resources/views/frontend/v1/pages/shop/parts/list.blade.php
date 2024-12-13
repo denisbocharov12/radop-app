@@ -2,7 +2,16 @@
     @include('frontend.v1.pages.shop.parts.not-found')
 @endif
 @foreach($products as $product)
-    <div class="col-lg-3 col-md-3 col-6 product-item-category">
+    @php
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        $item = \Cart::session($sessionId)->get($product->id);
+    @endphp
+    <div class="col-lg-3 col-md-3 col-6 product-item-category @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
         <div class="product-wrap drop-shadow">
             @include('frontend.v1.pages.product.components.label')
             <div class="product-wrap-main">
@@ -41,6 +50,7 @@
                 </div>
             </div>
             <div class="add_to_cart_wrap">
+                <hr class="product-card-item">
                 <div class="wrap">
                     @if($product->sale_price !== '')
                         <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
@@ -60,62 +70,9 @@
                         </span> {{__('theme.MDL')}}
                     </p>
                 </div>
-                <div class="product-card-summary-cart mt-2">
-                    <p>
-                        <span class="summary-title">{{__('theme.in-cart')}}</span>
-                        <span class="product-card-summary-cart-title" >
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
-
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            {{$item?->quantity ?? 0}}
-                        </span> {{__('theme.unit')}}
-                    </p>
-                </div>
-                <hr>
-                <div class="qty-add-to-cart">
-                    <div class="sc-product-qty qty-block">
-                        <div class="input-group-btn">
-                            <button
-                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                class="sc-product-decrement btn-quantity-product minus"
-                                type="button"
-                                id="button-minus"
-                            >
-                                -
-                            </button>
-                        </div>
-                        <input
-                            id="product-{{$product->id}}-qty"
-                            type="number"
-                            min="1"
-                            max="{{$product->stock}}"
-                            placeholder="1"
-                            value="1"
-                            name="product-{{$product->id}}-qty"
-                            data-product-id="{{$product->onec_id}}"
-                            data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
-                            class="product-qty-item"
-                        />
-                        <div class="input-group-btn">
-                            <button
-                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                class="sc-product-increment btn-quantity-product plus"
-                                type="button"
-                                id="button-plus"
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
-                </div>
+                @include('frontend.v1.components.add_to_cart_widget_v2')
             </div>
         </div>
+        @include('frontend.v1.components.in_cart_widget')
     </div>
 @endforeach
