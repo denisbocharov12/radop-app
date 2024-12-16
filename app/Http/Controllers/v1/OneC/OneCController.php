@@ -41,6 +41,7 @@ class OneCController extends Controller
         $attributeBatch = $this->onecRepository->getAttributeImportBatches();
         $attributeValueBatch = $this->onecRepository->getAttributeValueImportBatches();
         $descriptionBatch = $this->onecRepository->getDescriptionImportBatches();
+        $packageBatch = $this->onecRepository->getPackageImportBatches();
 
         return view('onec.index', compact([
             'productBatch',
@@ -48,7 +49,8 @@ class OneCController extends Controller
             'brandBatch',
             'attributeBatch',
             'attributeValueBatch',
-            'descriptionBatch'
+            'descriptionBatch',
+            'packageBatch'
         ]));
     }
 
@@ -89,6 +91,26 @@ class OneCController extends Controller
             return redirect()->route('import-export-data.index');
         } else {
             return redirect()->back()->withErrors('Ошибка при импорте номенклатуры');
+        }
+    }
+
+    public function importPackages(OneCRequest $request)
+    {
+        $importFile = $request->file('attachment');
+
+        if (!$importFile->isValid()) {
+            return redirect()->back()->withErrors('This file is invalid for structure');
+        }
+
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
+
+        $result = $this->ONECManager->importPackages($json);
+
+        if ($result) {
+            toastr()->success('Импорт упаковки добавлен в очередь.');
+            return redirect()->route('import-export-data.index');
+        } else {
+            return redirect()->back()->withErrors('Ошибка при импорте упаковки');
         }
     }
 

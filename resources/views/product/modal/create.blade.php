@@ -44,6 +44,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="shtrih_code">Штрих код</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" required class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="sale_price">Цена на скидке</label>
                                         <div class="form-control-wrap">
                                             <input type="text" class="form-control" id="sale_price" name="sale_price" placeholder="254">

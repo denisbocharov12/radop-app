@@ -228,4 +228,5 @@ return array (
     'label_popular' => 'Hit',
     'label_featured' => 'Featured',
     'label_winter' => 'Winter',
+    'products_not_found_for_query' => 'Товары не найдены после фильтра.',
 );

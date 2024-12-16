@@ -47,12 +47,16 @@
                         <hr>
                         <div class="product-additional-info">
                             <ul class="list">
-                                <li>
-                                    <p>{{__('theme.barcode')}}: {{$product->barcode ?? '4041483551357'}}</p>
-                                </li>
-                                <li>
-                                    <p>{{__('theme.package')}}: {{$product->small_package ?? '24/576'}}</p>
-                                </li>
+                                @if($product->shtrih_code !== null)
+                                    <li>
+                                        <p>{{__('theme.barcode')}}: {{$product->shtrih_code}}</p>
+                                    </li>
+                                @endif
+                                @if(!$product->packages->isEmpty())
+                                        <li>
+                                            <p>{{__('theme.package')}}: @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach</p>
+                                        </li>
+                                @endif
                                 <li>
                                     <p>{{__('theme.brand')}}:
                                         <a href="{{route('theme.brand.index', $product->brand_id)}}" class="colored">
@@ -63,31 +67,31 @@
                                 </li>
                             </ul>
                         </div>
-                        <hr/>
-                        <div class="product-colors">
-                            <div class="colors">
-                                <div class="color-box-wrapper">
-                                    <div class="color-box-border">
-                                        <span style="background-color: #FF0000;" class="color-box"></span>
-                                    </div>
-                                </div>
-                                <div class="color-box-wrapper">
-                                    <div class="color-box-border">
-                                        <span style="background-color: #0000FF;" class="color-box"></span>
-                                    </div>
-                                </div>
-                                <div class="color-box-wrapper">
-                                    <div class="color-box-border">
-                                        <span style="background-color: #00FF00;" class="color-box"></span>
-                                    </div>
-                                </div>
-                                <div class="color-box-wrapper">
-                                    <div class="color-box-border">
-                                        <span style="background-color: #000000;" class="color-box"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <hr/>--}}
+{{--                        <div class="product-colors">--}}
+{{--                            <div class="colors">--}}
+{{--                                <div class="color-box-wrapper">--}}
+{{--                                    <div class="color-box-border">--}}
+{{--                                        <span style="background-color: #FF0000;" class="color-box"></span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="color-box-wrapper">--}}
+{{--                                    <div class="color-box-border">--}}
+{{--                                        <span style="background-color: #0000FF;" class="color-box"></span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="color-box-wrapper">--}}
+{{--                                    <div class="color-box-border">--}}
+{{--                                        <span style="background-color: #00FF00;" class="color-box"></span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="color-box-wrapper">--}}
+{{--                                    <div class="color-box-border">--}}
+{{--                                        <span style="background-color: #000000;" class="color-box"></span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <hr>
 {{--                        <div class="product-details-wrap">--}}
 {{--                            <div class="product-stock-status">--}}
@@ -170,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="product-card-summary-cart product-card-summary-in-cart mt-2" id="product-{{$product->id}}-cart-info">
+                        <div class="product-card-summary-cart product-card-summary-in-cart product-card-summary-in-cart-page mt-2" id="product-{{$product->id}}-cart-info">
                             <p>
                                 @php
                                     $sessionId = config('shopping_cart.default_session_id');
@@ -191,12 +195,6 @@
                             </p>
                         </div>
                         <hr/>
-{{--                        @if($product->brand !== null)--}}
-{{--                            <a href="{{route('theme.brand.index', $product->brand_id)}}" class="brand-block">--}}
-{{--                                <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}" class="brand-logo">--}}
-{{--                            </a>--}}
-{{--                        @endif--}}
-{{--                        <hr/>--}}
                     <div class="tabs">
                         <button class="tab-button active" data-tab="details">{{__('theme.product-details')}}</button>
                         <button class="tab-button" data-tab="description">{{__('theme.description')}}</button>

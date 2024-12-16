@@ -58,5 +58,12 @@ final class OnecRepository
             ->last()
         ;
     }
-
+    public function getPackageImportBatches()
+    {
+        return DB::table('job_batches')
+            ->where('name', 'like', '%' . 'Import Packages' . '%')
+            ->get()
+            ->last()
+        ;
+    }
 }

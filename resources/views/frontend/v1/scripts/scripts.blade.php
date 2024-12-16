@@ -129,6 +129,10 @@
                         $('#col-product-' + product_id).addClass('product-item-category-in-cart');
                     }
 
+                    if(!$('#item-wishlist-' + product_id).hasClass('product-item-category-in-cart')) {
+                        $('#item-wishlist-' + product_id).addClass('product-item-category-in-cart');
+                    }
+
                     var quantity = response['product_quantity'];
                     var cartHtml = `
                     <p>

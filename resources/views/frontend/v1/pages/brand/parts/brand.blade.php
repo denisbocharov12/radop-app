@@ -34,7 +34,7 @@
                     </form>
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
-                    <div class="row">
+                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.brand.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">

@@ -35,6 +35,7 @@ final class Product extends Model implements HasMedia
         'status',
         'site_status',
         'brand_id',
+        'shtrih_code',
         'deleted_at'
     ];
 
@@ -99,5 +100,13 @@ final class Product extends Model implements HasMedia
     public function values(): HasMany
     {
         return $this->hasMany(AttributeValue::class, 'product_onec_id', 'onec_id');
+    }
+
+    /**
+     * @return HasMany<Package, Product>
+     */
+    public function packages(): HasMany
+    {
+        return $this->hasMany(Package::class, 'product_onec_id','onec_id');
     }
 }

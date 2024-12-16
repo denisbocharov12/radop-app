@@ -52,6 +52,17 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label class="form-label" for="shtrih_code">Штрих код</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" required class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122" value="{{$product->shtrih_code}}">
+                                                    @error('shtrih_code')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label class="form-label" for="sale_price">Цена на скидке</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" class="form-control @error('sale_price') error @enderror" value="{{$product->sale_price}}" id="sale_price" name="sale_price" placeholder="254">

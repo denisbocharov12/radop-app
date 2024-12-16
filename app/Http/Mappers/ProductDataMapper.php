@@ -29,6 +29,7 @@ final class ProductDataMapper
             $request->upp_sale,
             $request->iur_price,
             $request->condition,
+            $request->shtrih_code,
         );
     }
 }
