@@ -5839,6 +5839,11 @@ hr.product-card-item{
     font-size: 12px;
     margin-right: 3px;
 }
+.product-card-summary-in-cart.product-card-summary-in-cart-page p{
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
 .input-error-validation{
     border-color: red!important;
 }

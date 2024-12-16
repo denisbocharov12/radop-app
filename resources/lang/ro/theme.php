@@ -229,4 +229,5 @@ return array (
     'label_popular' => 'Hit',
     'label_featured' => 'Featured',
     'label_winter' => 'Winter',
+    'products_not_found_for_query' => 'Nu au fost găsite articole după filtru.',
 );

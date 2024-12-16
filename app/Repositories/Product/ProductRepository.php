@@ -61,6 +61,8 @@ final class ProductRepository
             ->allowedSorts([
                 'id',
             ])
+            ->where('status', true)
+            ->where('site_status', true)
             ->groupBy('onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()

@@ -107,6 +107,37 @@
                             @if(!\App\Models\Product::query()->count() < 1)
                                 <div class="card">
                                     <div class="card-inner">
+                                        <h5 class="card-title">Импорт упаковки</h5>
+                                        <form action="{{route('import-export-data.package')}}" enctype="multipart/form-data" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <div class="form-control-wrap">
+                                                    <div class="form-file">
+                                                        <input type="file" class="form-control" name="attachment">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"><span>Импортировать упаковку</span><em class="icon ni ni-setting"></em></button>
+                                        </form>
+                                    </div>
+                                    @if($packageBatch !== null)
+                                        @php
+                                            $batch = \Illuminate\Support\Facades\Bus::findBatch($packageBatch->id);
+                                        @endphp
+                                        <div class="card-inner">
+                                            <h6 class="card-title">Последний импорт - {{$batch->createdAt}}</h6>
+                                            <p class="fs-12px"><span class="fw-bold"> Завершен: </span> <span class="fw-italic">{{$batch->finishedAt}}</span></p>
+                                            <p class="fs-12px"><span class="fw-bold"> Ошибки: </span><span class="fw-italic">{{$batch->failedJobs}}</span></p>
+                                            <div class="progress progress-lg">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" data-progress="{{$batch->progress()}}">{{$batch->progress()}}%</div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                            @if(!\App\Models\Product::query()->count() < 1)
+                                <div class="card">
+                                    <div class="card-inner">
                                         <h5 class="card-title">Импорт описания</h5>
                                         <form action="{{route('import-export-data.description')}}" enctype="multipart/form-data" method="POST">
                                             @csrf

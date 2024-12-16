@@ -22,6 +22,7 @@ namespace App\Data\Product;
  * @property array $uppSale
  * @property string $iurPrice
  * @property string $condition
+ * @property string $shtrih_code
  */
 final class ProductData
 {
@@ -44,7 +45,8 @@ final class ProductData
         public readonly ?string $description,
         public readonly ?array $uppSale,
         public readonly ?string $iurPrice,
-        public readonly string $condition
+        public readonly string $condition,
+        public readonly ?string $shtrih_code,
     )
     {
     }

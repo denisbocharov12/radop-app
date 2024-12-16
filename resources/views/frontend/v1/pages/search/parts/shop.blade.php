@@ -5,7 +5,7 @@
                 @include('frontend.v1.pages.search.parts.not-found')
             @else
                 <div class="col-12">
-                    <div class="row">
+                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.search.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">
@@ -13,7 +13,6 @@
                     </div>
                 </div>
             @endif
-
         </div>
     </div>
 </section>

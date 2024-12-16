@@ -50,6 +50,8 @@ class CategoryRepository
                 'id',
                 'onec_id'
             ])
+            ->where('status', true)
+            ->where('site_status', true)
             ->groupBy('products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()

@@ -80,6 +80,7 @@ class ProductManager
             'status' => $status,
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
+            'shtrih_code' => $productData->shtrih_code,
         ]);
 
         $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;
@@ -141,6 +142,7 @@ class ProductManager
             'status' => $status,
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
+            'shtrih_code' => $productData->shtrih_code,
         ]);
 
         $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;

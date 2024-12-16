@@ -53,6 +53,7 @@ final class ProductImportJsonJob implements ShouldQueue
                 'status' => $status,
                 'stock' => $product->stock,
                 'brand_id' => $product->brand_id,
+                'shtrih_code' => $product->shtrih_code,
             ];
 
             Product::updateOrCreate(['onec_id' => $product->id], $data);

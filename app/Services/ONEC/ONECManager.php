@@ -7,8 +7,10 @@ use App\Jobs\AttributeValueImportJsonJob;
 use App\Jobs\BrandImportJsonJob;
 use App\Jobs\CategoryImportJsonJob;
 use App\Jobs\DescriptionImportJsonJob;
+use App\Jobs\PackageImportJsonJob;
 use App\Jobs\ProductImportJsonJob;
 use App\Models\Category;
+use App\Models\Package;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
@@ -63,6 +65,37 @@ final class ONECManager
                 }
 
                 $batch->name('Import Products')->dispatch();
+
+                return true;
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public function importPackages($json): bool
+    {
+        if (isset($json->Distributions)) {
+            try {
+                DB::beginTransaction();
+
+                Package::query()->truncate();
+
+                $packagesData = $json->Distributions;
+                $header = [];
+                $batch  = Bus::batch([]);
+
+                $packagesChunks = array_chunk($packagesData, 100);
+
+                foreach ($packagesChunks as $packagesChunk) {
+                    $batch->add(new PackageImportJsonJob($packagesChunk, $header));
+                }
+
+                $batch->name('Import Packages')->dispatch();
 
                 return true;
             } catch (\Exception $e) {
