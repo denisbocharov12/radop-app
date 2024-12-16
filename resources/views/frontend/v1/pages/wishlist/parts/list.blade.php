@@ -71,6 +71,11 @@
                     </p>
                 </div>
                 @include('frontend.v1.components.add_to_cart_widget_v2')            </div>
+            @if(!$product->conditions->packages->isEmpty())
+                <div class="packages-wrap">
+                    <p>{{__('theme.package')}}: @foreach($product->conditions->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach</p>
+                </div>
+            @endif
         </div>
         @include('frontend.v1.components.in_cart_widget')
     </div>

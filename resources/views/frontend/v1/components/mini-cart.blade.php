@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="sc-price">{{number_format($item->price * $item->quantity, 2)}} {{__('theme.MDL')}}</span>
+                        <span class="sc-price">{{number_format($item->price * $item->quantity, 2, ',', '')}} {{__('theme.MDL')}}</span>
                         <div data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></div>
                     </div>
                 </li>
@@ -69,7 +69,7 @@
         </ul>
         <div class="heading-shopping-cart mb-2 mt-2">
             <span class="sc-subtotal">
-                {{__('theme.subtotal')}} {{\Cart::session($sessionId)->getTotalQuantity()}} {{mb_strtolower(__('theme.unit'))}} {{__('theme.for-amount')}} {{number_format(\Cart::session($sessionId)->getTotal(), 2)}} {{__('theme.MDL')}}
+                {{__('theme.subtotal')}} {{\Cart::session($sessionId)->getTotalQuantity()}} {{mb_strtolower(__('theme.unit'))}} {{__('theme.for-amount')}} {{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}
             </span>
         </div>
     @else

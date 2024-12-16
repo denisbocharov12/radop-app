@@ -72,6 +72,7 @@
                 </div>
                 @include('frontend.v1.components.add_to_cart_widget_v2')
             </div>
+            @include('frontend.v1.components.packages_card_wrap')
         </div>
         @include('frontend.v1.components.in_cart_widget')
     </div>
