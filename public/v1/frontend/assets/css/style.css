@@ -2294,11 +2294,12 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .catalog-slider {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .catalog-slider .slick-slide {
     margin: 0 7.5px;
+    height: 100%!important;
 }
 
 .catalog-slider .slick-list {
@@ -2423,6 +2424,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .cart-catalog-slider .slick-slide {
     margin: 0 7.5px;
+    height: 100%!important;
 }
 
 .cart-catalog-slider .slick-list {
@@ -2932,7 +2934,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product_item .add_to_cart_wrap a.add_to_cart_btn {
     display: flex;
-    margin: 25px auto 0 auto;
+    margin: 0px auto 0 auto!important;
     color: #252525;
     border-radius: 25px;
     width: 90%;
@@ -5271,7 +5273,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 .slick-track{
     margin-top: 21px;
-    margin-bottom: 21px;
+    margin-bottom: 36px;
 }
 .col-product-images .slick-track{
     margin-top: 0;
@@ -5847,7 +5849,12 @@ hr.product-card-item{
 .input-error-validation{
     border-color: red!important;
 }
-
+.packages-wrap{
+    margin-top: 10px;
+}
+.packages-wrap p{
+    font-size: 14px;
+}
 .section-register {
     background-color: #fff;
     padding: 80px 0;

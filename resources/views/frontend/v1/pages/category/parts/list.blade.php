@@ -109,6 +109,7 @@
                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
             </div>
+            @include('frontend.v1.components.packages_card_wrap')
         </div>
         @include('frontend.v1.components.in_cart_widget')
     </div>
