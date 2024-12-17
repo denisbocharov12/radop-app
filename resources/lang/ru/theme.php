@@ -147,7 +147,7 @@ return array (
     'privacy-policy' => 'Политике конфиденциальности',
     'processing' => 'В обработке',
     'procurement-department' => 'Отдел закупок',
-    'product' => 'товар',
+    'product' => 'товаров',
     'product-details' => 'Характеристики',
     'product-name' => 'Наименование',
     'production' => 'ПРОЙЗВОДСТВО',
