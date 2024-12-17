@@ -229,4 +229,5 @@ return array (
     'label_featured' => 'Featured',
     'label_winter' => 'Winter',
     'products_not_found_for_query' => 'Товары не найдены после фильтра.',
+    'package_unit' => 'штук',
 );
