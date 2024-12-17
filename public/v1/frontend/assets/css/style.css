@@ -3224,6 +3224,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn {
     color: #252525;
+    font-size: 14px;
 }
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn:hover{
     text-decoration: underline !important;
@@ -5081,8 +5082,12 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .price-input {
     width: 100%;
     display: flex;
-    margin: 10px 0 10px;
+    margin: 25px 0 10px;
     align-items: center;
+}
+
+.price-range-wrap{
+    margin-top: 10px;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .price-input .field {
@@ -5138,8 +5143,8 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .slider .progress {
     height: 100%;
-    left: 25%;
-    right: 25%;
+    left: 0%;
+    right: 0%;
     position: absolute;
     border-radius: 5px;
     background: #1F5785;
