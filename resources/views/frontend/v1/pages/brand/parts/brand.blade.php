@@ -3,12 +3,12 @@
         <div class="row row-category-list">
                 <div class="col-12 col-md-3 col-theme-filters">
                     <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
-                        <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">{{__('theme.search')}}</p>
-                            <div class="filter-widget-wrap">
-                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
-                            </div>
-                        </div>
+{{--                        <div class="theme-wg-wrap">--}}
+{{--                            <p class="theme-widget-title">{{__('theme.search')}}</p>--}}
+{{--                            <div class="filter-widget-wrap">--}}
+{{--                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">

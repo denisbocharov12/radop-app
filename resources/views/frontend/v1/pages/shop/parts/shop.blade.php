@@ -6,12 +6,12 @@
             @else
                 <div class="col-12 col-md-3 col-theme-filters">
                     <form action="{{route('theme.shop.index')}}" method="GET">
-                        <div class="theme-wg-wrap">
-                           <p class="theme-widget-title">{{__('theme.search')}}</p>
-                           <div class="filter-widget-wrap">
-                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">
-                           </div>
-                        </div>
+{{--                        <div class="theme-wg-wrap">--}}
+{{--                           <p class="theme-widget-title">{{__('theme.search')}}</p>--}}
+{{--                           <div class="filter-widget-wrap">--}}
+{{--                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">--}}
+{{--                           </div>--}}
+{{--                        </div>--}}
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">
@@ -47,15 +47,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
-                            <div class="filter-widget-wrap filter-wrap-overflow">
-                                @foreach($brands as $brand)
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
-                                    <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>
-                                @endforeach
-                            </div>
-                        </div>
+{{--                        <div class="theme-wg-wrap">--}}
+{{--                            <p class="theme-widget-title">{{__('theme.brand')}}</p>--}}
+{{--                            <div class="filter-widget-wrap filter-wrap-overflow">--}}
+{{--                                @foreach($brands as $brand)--}}
+{{--                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">--}}
+{{--                                    <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>--}}
+{{--                                @endforeach--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>

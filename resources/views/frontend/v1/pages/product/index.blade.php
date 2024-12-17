@@ -54,7 +54,7 @@
                                 @endif
                                 @if(!$product->packages->isEmpty())
                                         <li>
-                                            <p>{{__('theme.package')}}: @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach</p>
+                                            <p>{{__('theme.package')}}: @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach {{__('theme.package_unit')}}</p>
                                         </li>
                                 @endif
                                 <li>
