@@ -231,4 +231,5 @@ return array (
     'label_winter' => 'Winter',
     'products_not_found_for_query' => 'Nu au fost găsite articole după filtru.',
     'package_unit' => 'buc.',
+    'cart-destroy' => 'Ștergeți coșul',
 );

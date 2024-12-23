@@ -29,6 +29,7 @@ final class ThemeProductController extends Controller
     public function index(Request $request, string $slug)
     {
         $similarProducts = null;
+        $breadcrumbs = null;
 
         $product = $this->productRepository->getBySlug($slug);
 
@@ -39,8 +40,9 @@ final class ThemeProductController extends Controller
         if (!$product->categories->isEmpty()) {
             $similarProducts = $this->productRepository->getAllSimilarProducts($product);
         }
-
-        $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($product->categories->first());
+        if (!$product->categories->isEmpty()) {
+            $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($product->categories->first());
+        }
 
         return view('frontend.v1.pages.product.index', compact([
             'product',
