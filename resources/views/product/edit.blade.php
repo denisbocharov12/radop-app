@@ -54,7 +54,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="shtrih_code">Штрих код</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122" value="{{$product->shtrih_code}}">
+                                                    <input type="text" class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122" value="{{$product->shtrih_code}}">
                                                     @error('shtrih_code')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror

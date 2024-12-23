@@ -27,6 +27,7 @@ final class User extends Authenticatable
         'status',
         'type_id',
         'manager_id',
+        'sale',
         'email_verified_at',
     ];
 
@@ -37,6 +38,7 @@ final class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'sale' => 'float',
     ];
 
     /**
