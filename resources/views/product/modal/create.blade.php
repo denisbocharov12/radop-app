@@ -46,7 +46,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="shtrih_code">Штрих код</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122">
+                                            <input type="text" class="form-control" id="shtrih_code" name="shtrih_code" placeholder="378820122">
                                         </div>
                                     </div>
                                 </div>
