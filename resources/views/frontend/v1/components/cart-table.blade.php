@@ -106,6 +106,13 @@
             @endforeach
         </tbody>
     </table>
+    <div class="row">
+        <div class="col-12 col-cart-destroy">
+            <div class="wrap">
+                <a href="{{route('theme.cart.destroy')}}" class="btn-cart-destroy">{{__('theme.cart-destroy')}}</a>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="col-lg-3 col-cart-total">
     <div class="shopping-cart-total-wrap">

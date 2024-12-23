@@ -10,4 +10,7 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::post('/coupon', [ThemeCartController::class, 'coupon'])
         ->name('coupon')
     ;
+    Route::get('/destroy', [ThemeCartController::class, 'destroy'])
+        ->name('destroy')
+    ;
 });

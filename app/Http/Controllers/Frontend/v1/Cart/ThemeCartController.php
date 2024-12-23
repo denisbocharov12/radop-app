@@ -64,4 +64,17 @@ final class ThemeCartController extends Controller
         toastr()->success('Купон успешно применен!','Успех');
         return redirect()->back();
     }
+
+    public function destroy()
+    {
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        \Cart::session($sessionId)->clear();
+
+        return redirect()->route('theme.cart.index');
+    }
 }
