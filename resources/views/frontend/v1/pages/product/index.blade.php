@@ -57,16 +57,16 @@
                                             <p>{{__('theme.package')}}: @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach {{__('theme.package_unit')}}</p>
                                         </li>
                                 @endif
-                                <li>
-                                    <p>{{__('theme.brand')}}:
-                                        <a href="{{route('theme.brand.index', $product->brand_id)}}" class="colored">
-                                            {{$product->brand->title ?? 'ErichKrause'}}
-                                            <i class="icon-arrow-right"></i>
-                                        </a>
-                                    </p>
-                                </li>
                             </ul>
                         </div>
+                        @if($product->brand !== null)
+                            <div class="product-mini-brand-wrap">
+                                <a href="" class="product-mini-brand">
+                                    <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}">
+                                    <span>{{$product->brand->title}}</span>
+                                </a>
+                            </div>
+                        @endif
 {{--                        <hr/>--}}
 {{--                        <div class="product-colors">--}}
 {{--                            <div class="colors">--}}
