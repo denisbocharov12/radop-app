@@ -26,6 +26,7 @@ class ClientController extends Controller
     private ClientManager $clientManager;
     private ClientUpdateDataMapper $clientUpdateDataMapper;
 
+
     public function __construct(
         UserRepository   $userRepository,
         ClientDataMapper $clientDataMapper,
