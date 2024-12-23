@@ -5871,6 +5871,20 @@ hr.product-card-item{
     background-color: #004791;
     color: #fff;
 }
+.product-mini-brand-wrap a{
+    display: flex;
+    align-items: center;
+}
+.product-mini-brand-wrap img {
+    width: 70px;
+    height: auto;
+}
+.product-mini-brand-wrap a span{
+    color: #252525;
+}
+.product-mini-brand-wrap a span:hover{
+    text-decoration: underline;
+}
 .product-card-summary-in-cart.product-card-summary-in-cart-page p{
     border: 0;
     padding-left: 0;
