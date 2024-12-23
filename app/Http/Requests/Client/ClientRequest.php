@@ -35,6 +35,7 @@ class ClientRequest extends FormRequest
             'cod_fiscal' => ['nullable', 'string'],
             'contact_name' => ['nullable', 'string'],
             'type_id' => ['required', 'integer'],
+            'sale' => ['nullable', 'string'],
         ];
     }
 }
