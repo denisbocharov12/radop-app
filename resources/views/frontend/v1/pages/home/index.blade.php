@@ -11,7 +11,6 @@
                                 <img src="{{asset('/v1/frontend/assets')}}/images/tehnical-support.jpg" alt="" />
                             </a>
                         </div>
-
                         <div class="item">
                             <a href="{{route('theme.category.index', 10)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt="" />
