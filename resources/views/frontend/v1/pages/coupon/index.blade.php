@@ -3,59 +3,24 @@
 @section('content')
     <section class="my-account" style="margin-bottom: 100px">
         <div class="container">
-            <h1 class="my-account__title title">{{ __('theme.my-coupons') }}</h1>
+            <h1 class="my-account__title title">{{ __('theme.my-sale') }}</h1>
             <div class="my-account__wrapper">
                 @include('frontend.v1.pages.account.sidebar')
                 <div class="coupons">
                     <ul class="coupons__list">
-                        @if(!$coupons->count())
+                        @if($user->sale === null || $user->sale === 0 || $user->sale === 0.0)
                             <div class="no-coupons text-center">
-                                <p>{{ __('theme.no-coupons') }}</p>
+                                <p>{{ __('theme.no-my-sale') }}</p>
                                 <a href="{{ route('theme.shop.index') }}" class="btn btn-primary mt-3">{{ __('theme.go-to-catalog') }}</a>
                             </div>
-                        @endif
-                        @foreach($coupons as $coupon)
+                        @else
                             <li class="coupons__item coupon">
-                                <div class="coupon__block">
-                                    <p class="coupon__code">{{ $coupon->code }}</p>
-                                    <p class="coupon__description">{{ $coupon->description }}</p>
-                                </div>
-                                <div class="coupon__block">
-                                    <ul class="coupon__details">
-                                        <li class="coupon__detail">
-                                            <span class="coupon__detail-label">{{ __('theme.start-date') }}:</span>
-                                            <time datetime="{{ $coupon?->start_date?->format('Y-m-d') }}">{{ $coupon?->start_date?->format('d.m.Y') }}</time>
-                                        </li>
-                                        <li class="coupon__detail">
-                                            <span class="coupon__detail-label">{{ __('theme.end-date') }}:</span>
-                                            <time datetime="{{ $coupon?->end_date?->format('Y-m-d') }}">{{ $coupon?->end_date?->format('d.m.Y') }}</time>
-                                        </li>
-                                        <li class="coupon__detail">
-                                            <span class="coupon__detail-label">{{ __('theme.discount-type') }}:</span>
-                                            @if($coupon->type === 'fixed')
-                                                {{ __('theme.fixed-discount') }}
-                                            @elseif($coupon->type === 'percent')
-                                                {{ __('theme.percent-discount') }}
-                                            @endif
-                                        </li>
-                                        <li class="coupon__detail">
-                                            <span class="coupon__detail-label">{{ __('theme.discount-value') }}:</span>
-                                            @if($coupon->type === 'fixed')
-                                                {{ $coupon->value }} MDL
-                                            @elseif($coupon->type === 'percent')
-                                                {{ $coupon->value }}%
-                                            @endif
-                                        </li>
-                                        @if($coupon->minimal_total)
-                                            <li class="coupon__detail">
-                                                <span class="coupon__detail-label">{{ __('theme.minimal_total') }}:</span>
-                                                {{ $coupon->minimal_total }}
-                                            </li>
-                                        @endif
-                                    </ul>
+                                <div class="coupon__block" style="flex-direction: column; justify-content: flex-start; align-items: flex-start">
+                                    <p class="coupon__code">{{ __('theme.sale-heading') }} {{$user->sale}}%</p>
+                                    <p class="coupon__description" style="margin-top: 15px">{{ __('theme.sale-description-info') }}</p>
                                 </div>
                             </li>
-                        @endforeach
+                        @endif
                     </ul>
                 </div>
             </div>

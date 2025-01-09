@@ -21,7 +21,6 @@
 .coupon__block {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
 }
 
 .coupon__code {
@@ -97,7 +96,7 @@
 }
 
 .tab-button.active {
-    background-color: #0068a7;
+    background-color: #0052a6;
     color: white;
 }
 
@@ -106,7 +105,7 @@
 }
 
 .tab-button.active:hover {
-    background-color: #005991;
+    background-color: #004791;
 }
 
 .product_item_article {
@@ -123,6 +122,14 @@
     font-size: 14px;
     margin: 10px 0;
     color: #252525;
+}
+.section-product .product-card-summary p{
+    text-align: left;
+    font-style: italic;
+}
+.product-card-summary p{
+    text-align: center;
+    font-style: italic;
 }
 
 .product-card-summary .product-card-summary-text{
