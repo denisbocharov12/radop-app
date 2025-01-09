@@ -5201,7 +5201,8 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-checkbox + label{
     width: 100%;
     flex: 0 0 100%;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
+    word-break: break-all;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow::-webkit-scrollbar {
@@ -5222,8 +5223,6 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item
 {
     position: relative;
-    border: 1px solid #ededed;
-    border-radius: 8px;
     margin-bottom: 10px;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item:last-child{
@@ -5233,26 +5232,26 @@ header .section-header .row-main .header-menu .col-lg{
 {
     font-size: 15px;
     cursor: pointer;
-    background-color: #ededed;
     padding: 10px;
-    border-radius: 8px;
     color: #252525;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     position: relative;
+    border-bottom: 1px solid #ededed;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item .theme-toggle-item-title p{
     margin-bottom: 0;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item .theme-toggle-item-title i{
-    transform: rotate(90deg);
+    transform: rotate(0deg);
     font-size: 14px;
 }
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-toggle-item .theme-toggle-item-content{
     padding: 20px 12.5px 12.5px 12.5px;
     display: none;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .product-item-category .product-item-title-wrap .product_item_name a:hover{
@@ -8478,4 +8477,19 @@ hr.product-card-item{
 }
 .section-product .product-label-s-wrap.s-winter{
     background-color: #1dc3ff;
+}
+
+.col-theme-filters{
+    box-shadow: 0 1px 9px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    margin-bottom: 40px;
+}
+
+.icon-arrow-radop-left{
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-left: 6px solid #a2a2a2;
+    display: inline-block;
+    margin-right: 6px;
 }

@@ -7,6 +7,7 @@ use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
+use App\Models\Category;
 use App\Models\Order;
 use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
@@ -68,6 +69,16 @@ final class ProductRepository
             ->withQueryString()
             ->appends(request()->query())
         ;
+    }
+
+    public function getAllProductsByCategory(Category $category)
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->get();
     }
 
     public function getAllPopularProducts(): Collection

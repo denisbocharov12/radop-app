@@ -6,12 +6,6 @@
             @else
                 <div class="col-12 col-md-3 col-theme-filters">
                     <form action="{{route('theme.shop.index')}}" method="GET">
-{{--                        <div class="theme-wg-wrap">--}}
-{{--                           <p class="theme-widget-title">{{__('theme.search')}}</p>--}}
-{{--                           <div class="filter-widget-wrap">--}}
-{{--                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">--}}
-{{--                           </div>--}}
-{{--                        </div>--}}
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">
@@ -47,15 +41,56 @@
                                 </div>
                             </div>
                         </div>
-{{--                        <div class="theme-wg-wrap">--}}
-{{--                            <p class="theme-widget-title">{{__('theme.brand')}}</p>--}}
-{{--                            <div class="filter-widget-wrap filter-wrap-overflow">--}}
-{{--                                @foreach($brands as $brand)--}}
-{{--                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">--}}
-{{--                                    <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>--}}
-{{--                                @endforeach--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <div class="theme-wg-wrap">
+                            <p class="theme-widget-title">{{__('theme.attributes')}}</p>
+                            @if(!empty($attributes))
+                                <ul class="theme-toggle-list">
+                                    @foreach($attributes as $key => $attributeValues)
+                                        <li class="theme-toggle-item">
+                                            <div class="theme-toggle-item-title">
+                                                <i class="icon-arrow-radop-left"></i>
+                                                <p class="theme-widget-title">{{$key}}</p>
+                                            </div>
+                                            <div class="theme-toggle-item-content">
+                                                @php
+                                                    $attributeValues = collect($attributeValues)->map(function($attribute) {
+                                                        return \App\Models\AttributeValue::find($attribute['id']);
+                                                    })->sortBy('value');
+                                                @endphp
+                                                @foreach($attributeValues as $attribute)
+                                                    <div class="col-6">
+                                                        <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{$attribute->value}}">
+                                                        <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                    <li class="theme-toggle-item">
+                                        <div class="theme-toggle-item-title">
+                                            <i class="icon-arrow-radop-left"></i>
+                                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
+                                        </div>
+                                        <div class="theme-toggle-item-content">
+                                            @php
+                                                $allProductIds = $allProducts->pluck('id')->toArray();
+                                                $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
+                                                    ->with('brand')
+                                                    ->get()
+                                                    ->pluck('brand')
+                                                    ->unique('id');
+                                            @endphp
+                                            @foreach($displayedBrands as $brand)
+                                                <div class="col-6">
+                                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
+                                                    <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </li>
+                                </ul>
+                            @endif
+                        </div>
                         <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
                     </form>
                 </div>
