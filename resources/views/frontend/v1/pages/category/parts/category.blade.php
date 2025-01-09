@@ -73,7 +73,6 @@
                                                 <p class="theme-widget-title">{{__('theme.brand')}}</p>
                                             </div>
                                             <div class="theme-toggle-item-content">
-                                                <div class="filter-widget-wrap filter-wrap-overflow">
                                                     @php
                                                         $allProductIds = $productsByCategory->pluck('id')->toArray();
                                                         $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
@@ -89,7 +88,6 @@
                                                         </div>
                                                     @endforeach
                                                 </div>
-                                            </div>
                                         </li>
                                     </ul>
                                 @endif
