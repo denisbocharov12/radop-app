@@ -3130,13 +3130,15 @@ header .section-header .row-main .header-menu .col-lg{
     color: #4d4d4d;
     font-size: 16px;
 }
-
+.section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item a:hover {
+    text-decoration: underline!important;
+}
 .section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item a.active {
-    color: #0052a6;
+    color: #4d4d4d;
 }
 
 .section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item a.active:hover {
-    color: #034486;
+    text-decoration: underline!important;
 }
 
 .section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item::before {
@@ -3194,9 +3196,11 @@ header .section-header .row-main .header-menu .col-lg{
     text-align: center;
     color: #252525;
 }
-
+.section-product .col-product-info .product-price-wrap span.price.with-sale{
+    color: #e82d25;
+}
 .section-product .col-product-info .product-price-wrap span.old_price {
-    color: #37424d;
+    color: #003060;
     position: relative;
     font-size: 24px;
     margin-left: 7.5px;
@@ -5875,16 +5879,20 @@ hr.product-card-item{
     display: flex;
     align-items: center;
 }
-.product-mini-brand-wrap img {
-    width: 70px;
-    height: auto;
-}
-.product-mini-brand-wrap a span{
+.product-mini-brand-wrap a:hover{
+    text-decoration: underline!important;
     color: #252525;
-    margin-left: 7.5px;
 }
-.product-mini-brand-wrap a span:hover{
-    text-decoration: underline;
+
+.product-mini-brand-wrap a span.brand-text{
+    color: #252525;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+.product-mini-brand-wrap a span.brand-text i{
+    font-size: 12px;
+    margin-left: 3px;
 }
 .product-card-summary-in-cart.product-card-summary-in-cart-page p{
     border: 0;
@@ -5899,6 +5907,8 @@ hr.product-card-item{
 }
 .packages-wrap p{
     font-size: 14px;
+    text-align: center;
+    font-style: italic;
 }
 .section-register {
     background-color: #fff;
@@ -8346,19 +8356,19 @@ hr.product-card-item{
 }
 
 .product-item .add_to_cart_wrap .add_to_cart_btn {
-    background-color: #0068a7;
+    background-color: #0052a6;
     color: #fff;
     font-size: 14px;
     /*font-weight: bold;*/
     padding: 12.5px 30px;
     text-align: center;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 10px;
     transition: background-color 0.3s ease;
 }
 
 .product-item .add_to_cart_wrap .add_to_cart_btn:hover {
-    background-color: #005991;
+    background-color: #004791;
 }
 
 .product-item .add_to_cart_wrap .qty-block {

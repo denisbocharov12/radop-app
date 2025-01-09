@@ -1794,9 +1794,7 @@ font-size: 16px;
 .section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item a.active {
 color: #0068a7;
 }
-.section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item a.active:hover {
-color: #005991;
-}
+
 .section-breadcrumb .col-breadcrumb nav .breadcrumb .breadcrumb-item::before {
 display: inline-block;
 padding-right: 0.5rem;

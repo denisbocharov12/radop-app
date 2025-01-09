@@ -30,7 +30,8 @@ final class ClientData
         public readonly ?string $organizationName,
         public readonly ?string $codFiscal,
         public readonly ?string $contactName,
-        public readonly int $typeId
+        public readonly int $typeId,
+        public readonly ?string $sale,
     )
     {
     }

@@ -62,8 +62,7 @@
                         @if($product->brand !== null)
                             <div class="product-mini-brand-wrap">
                                 <a href="" class="product-mini-brand">
-                                    <img src="{{$product->brand->getFirstMediaUrl('media')}}" alt="{{$product->brand->title}}">
-                                    <span>{{$product->brand->title}}</span>
+                                    <span class="brand-text">{{__('theme.all-brand-products')}} {{$product->brand->title}} <i class="icon-arrow-radop-right"></i></span>
                                 </a>
                             </div>
                         @endif
@@ -106,7 +105,7 @@
                     <div class="product-wrap">
                         <div class="product-price-wrap">
                             @if($product->sale_price !== '')
-                                <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                <span class="price with-sale">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                 <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             @else
                                 <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
@@ -174,25 +173,27 @@
                                 </div>
                             </div>
                         </div>
+                        @php
+                            $sessionId = config('shopping_cart.default_session_id');
+                            if (auth()->guard('user')->user()) {
+                                $sessionId = auth()->guard('user')->user()->id;
+                            }
+                            $item = \Cart::session($sessionId)->get($product->id);
+                        @endphp
                         <div class="product-card-summary-cart product-card-summary-in-cart product-card-summary-in-cart-page mt-2" id="product-{{$product->id}}-cart-info">
-                            <p>
-                                @php
-                                    $sessionId = config('shopping_cart.default_session_id');
-                                    if (auth()->guard('user')->user()) {
-                                        $sessionId = auth()->guard('user')->user()->id;
-                                    }
-                                    $item = \Cart::session($sessionId)->get($product->id);
-                                @endphp
+                        @if(\Cart::session($sessionId)->get($product->id) !== null)
 
-                                @if ($item && $item->quantity > 0)
-                                    <span class="already-in-cart" style="display: flex; align-items: center;">
+                                <p>
+                                    @if ($item && $item->quantity > 0)
+                                        <span class="already-in-cart" style="display: flex; align-items: center;">
                                         <i class="icon-check"></i>
                                         {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}
                                     </span>
-                                @else
-                                    <span class="summary-title"><i class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
-                                @endif
-                            </p>
+                                    @else
+                                        <span class="summary-title"><i class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
+                                    @endif
+                                </p>
+                        @endif
                         </div>
                         <hr/>
                     <div class="tabs">

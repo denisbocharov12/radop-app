@@ -50,6 +50,7 @@ class ClientManager
             'email_verified_at' => now(),
             'status' => $status,
             'type_id' => $clientData->typeId,
+            'sale' => (float)$clientData->sale,
         ]);
 
         $user->assignRole($clientData->role);
@@ -77,6 +78,7 @@ class ClientManager
             'email' => $clientData->email,
             'status' => $status,
             'type_id' => $clientData->typeId,
+            'sale' => (float)$clientData->sale,
         ]);
 
         $user->assignRole($clientData->role);

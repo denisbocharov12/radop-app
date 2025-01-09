@@ -81,7 +81,6 @@ class OneCController extends Controller
         if (!$importFile->isValid()) {
             return redirect()->back()->withErrors('This file is invalid for structure');
         }
-
         $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
 
         $result = $this->ONECManager->importNomenclature($json);

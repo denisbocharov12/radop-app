@@ -20,7 +20,8 @@ final class ClientUpdateDataMapper
             $request->organization_name,
             $request->cod_fiscal,
             $request->contact_name,
-            $request->type_id
+            $request->type_id,
+            $request->sale,
         );
     }
 }

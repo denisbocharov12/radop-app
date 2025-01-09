@@ -63,6 +63,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="sale">Персональная скидка</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="sale" placeholder="15" name="sale">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="phone">Мобильный телефон</label>
                                         <div class="form-control-wrap">
                                             <input type="text" required class="form-control" id="phone" name="phone" placeholder="373 777 77 777">

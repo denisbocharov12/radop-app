@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $cod_fiscal
  * @property string $contact_name
  * @property string $type_id
+ * @property string $sale
  */
 class ClientRequest extends FormRequest
 {

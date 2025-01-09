@@ -232,4 +232,8 @@ return array (
     'products_not_found_for_query' => 'Nu au fost găsite articole după filtru.',
     'package_unit' => 'buc.',
     'cart-destroy' => 'Ștergeți coșul',
+    'my-sale' => 'Reducerea mea',
+    'no-my-sale' => 'Momentan nu ai reducere personala. Contactați managerul dvs.',
+    'sale-heading' => 'Reducerea:',
+    'sale-description-info' => 'Reducerea „site-ului” nu se aplică reducerii dumneavoastră personale.',
 );
