@@ -48,6 +48,7 @@ final class ThemeCategoryController extends Controller
         }
 
         $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory);
+        $productsByCategory = $this->productRepository->getAllProductsByCategory($existedCategory);
 
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
@@ -56,6 +57,7 @@ final class ThemeCategoryController extends Controller
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
             'products',
+            'productsByCategory',
             'breadcrumbs',
             'query',
             'brands',

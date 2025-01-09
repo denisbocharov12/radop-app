@@ -8472,6 +8472,7 @@ hr.product-card-item{
 .col-theme-filters{
     box-shadow: 0 1px 9px rgba(0, 0, 0, 0.2);
     padding: 12px;
+    margin-bottom: 40px;
 }
 
 .icon-arrow-radop-left{
