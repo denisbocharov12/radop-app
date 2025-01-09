@@ -633,7 +633,7 @@ $(document).ready(function () {
             $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
         } else {
             content.slideUp('0');
-            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(-90deg)');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(0deg)');
         }
 
     });
