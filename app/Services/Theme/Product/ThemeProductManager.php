@@ -16,8 +16,7 @@ final class ThemeProductManager
 {
     public function __construct(
         private readonly ProductRepository $productRepository,
-    )
-    {
+    ) {
     }
 
     public function getBreadcrumbsForProduct(Product $product): ?Collection
@@ -79,6 +78,7 @@ final class ThemeProductManager
 
             if ($productStock < (int)$exProduct->qty + (int)$productQty)
             {
+                // TODO: Добавить перевод
                 $response['msg'] = 'У нас нет столько товара на складе';
                 $response['status'] = 'not_in_stock';
                 $result = false;
@@ -228,7 +228,7 @@ final class ThemeProductManager
         $response['status'] = true;
         $response['total'] = \Cart::session($sessionId)->getSubTotal();
         $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
-        $response['msg']= 'Товар успешно удален';
+        $response['msg']= __('theme.product_was_deleted_successfully');
 
         if ($request->ajax())
         {
