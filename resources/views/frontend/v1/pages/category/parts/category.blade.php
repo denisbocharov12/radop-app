@@ -67,20 +67,21 @@
                                                 </div>
                                             </li>
                                         @endforeach
-                                        <li class="theme-toggle-item">
-                                            <div class="theme-toggle-item-title">
-                                                <i class="icon-arrow-filter-radop-left"></i>
-                                                <p class="theme-widget-title">{{__('theme.brand')}}</p>
-                                            </div>
-                                            <div class="theme-toggle-item-content">
-                                                    @php
-                                                        $allProductIds = $productsByCategory->pluck('id')->toArray();
-                                                        $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
-                                                            ->with('brand')
-                                                            ->get()
-                                                            ->pluck('brand')
-                                                            ->unique('id');
-                                                    @endphp
+                                        @php
+                                            $allProductIds = $productsByCategory->pluck('id')->toArray();
+                                            $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
+                                                ->with('brand')
+                                                ->get()
+                                                ->pluck('brand')
+                                                ->unique('id');
+                                        @endphp
+                                        @if($displayedBrands)
+                                            <li class="theme-toggle-item">
+                                                <div class="theme-toggle-item-title">
+                                                    <i class="icon-arrow-filter-radop-left"></i>
+                                                    <p class="theme-widget-title">{{__('theme.brand')}}</p>
+                                                </div>
+                                                <div class="theme-toggle-item-content">
                                                     @foreach($displayedBrands as $brand)
                                                         <div class="col-6">
                                                             <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
@@ -88,7 +89,8 @@
                                                         </div>
                                                     @endforeach
                                                 </div>
-                                        </li>
+                                            </li>
+                                        @endif
                                     </ul>
                                 @endif
                             </div>
