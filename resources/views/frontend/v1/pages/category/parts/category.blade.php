@@ -85,7 +85,7 @@
                                                     @foreach($displayedBrands as $brand)
                                                         <div class="col-6">
                                                             <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand?->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand?->onec_id}}" name="filter[brand][]" value="{{$brand?->onec_id}}">
-                                                            <label for="brand-{{$brand?->onec_id}}">{{$brand->title}}</label>
+                                                            <label for="brand-{{$brand?->onec_id}}">{{$brand?->title}}</label>
                                                         </div>
                                                     @endforeach
                                                 </div>
