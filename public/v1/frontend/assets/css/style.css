@@ -8258,11 +8258,6 @@ hr.product-card-item{
     color: #e82d25;
 }
 
-.sticky-sidebar {
-    position: sticky;
-    top: 120px;
-}
-
 .product-additional-info ul {
     list-style: none;
     padding: 0;
@@ -8483,6 +8478,9 @@ hr.product-card-item{
     box-shadow: 0 1px 9px rgba(0, 0, 0, 0.2);
     padding: 12px;
     margin-bottom: 40px;
+    top: 120px;
+    position: sticky;
+    height: fit-content;
 }
 
 .icon-arrow-filter-radop-left{
