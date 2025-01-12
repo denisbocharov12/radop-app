@@ -10,13 +10,11 @@ final class ThemeSearchManager
 {
     public function __construct(
         private readonly ProductRepository $productRepository
-    )
-    {
+    ) {
     }
 
     public function index(ThemeSearchData $themeSearchData)
     {
         return $this->productRepository->getAllBySearch($themeSearchData->search);
     }
-
 }

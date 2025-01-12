@@ -59,6 +59,7 @@ final class ProductRepository
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
+            ->where('stock', '!=', 0)
             ->allowedSorts([
                 'id',
             ])
@@ -90,6 +91,7 @@ final class ProductRepository
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
+            ->where('stock', '!=', 0)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
 
@@ -104,6 +106,7 @@ final class ProductRepository
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
+            ->where('stock', '!=', 0)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -113,6 +116,7 @@ final class ProductRepository
         return Product::where('sale_price', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
+            ->where('stock', '!=', 0)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -126,6 +130,7 @@ final class ProductRepository
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
+            ->where('stock', '!=', 0)
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -168,6 +173,7 @@ final class ProductRepository
         return Product::where('status', true)
             ->where('site_status', true)
             ->where('products.title', 'like', "%{$value}%")
+            ->where('stock', '!=', 0)
             ->orWhere('products.onec_id', 'like', "%{$value}%")
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())

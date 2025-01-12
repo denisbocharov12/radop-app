@@ -80,6 +80,7 @@ final class BrandRepository
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
+            ->where('stock', '!=', 0)
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
@@ -87,6 +88,6 @@ final class BrandRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
-            ;
+        ;
     }
 }

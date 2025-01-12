@@ -45,6 +45,7 @@ class CategoryRepository
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
+            ->where('stock', '!=', 0)
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
