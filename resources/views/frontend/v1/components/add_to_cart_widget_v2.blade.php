@@ -19,7 +19,7 @@
             value="1"
             name="product-{{$product->id}}-qty"
             data-product-id="{{$product->onec_id}}"
-            data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
+            data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
             class="product-qty-item"
         />
         <div class="input-group-btn">

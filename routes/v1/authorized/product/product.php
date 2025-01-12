@@ -31,4 +31,44 @@ Route::prefix('products')->name('product.')->group(function () {
         ->name('media.delete')
     ;
 
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/featured', [ProductController::class, 'sortFeatured'])
+        ->name('sort.index.featured')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/featured', [ProductController::class, 'sortFeaturedOrder'])
+        ->name('sort.order.featured')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/sale', [ProductController::class, 'sortSale'])
+        ->name('sort.index.sale')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/sale', [ProductController::class, 'sortSaleOrder'])
+        ->name('sort.order.sale')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/popular', [ProductController::class, 'sortPopular'])
+        ->name('sort.index.popular')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/popular', [ProductController::class, 'sortPopularOrder'])
+        ->name('sort.order.popular')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/new', [ProductController::class, 'sortNew'])
+        ->name('sort.index.new')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/new', [ProductController::class, 'sortNewOrder'])
+        ->name('sort.order.new')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/hot', [ProductController::class, 'sortHot'])
+        ->name('sort.index.hot')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/hot', [ProductController::class, 'sortHotOrder'])
+        ->name('sort.order.hot')
+    ;
 });

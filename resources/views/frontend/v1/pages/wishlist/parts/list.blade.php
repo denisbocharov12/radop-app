@@ -33,7 +33,7 @@
                     @endif
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{$product->conditions->title}}</a>
+                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{\Illuminate\Support\Str::words($product->conditions->title, 8, ' ...')}}</a>
                     </h3>
                 </div>
                 <div class="product-item-article-wrap">
@@ -52,25 +52,63 @@
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
                 <div class="wrap">
-                    @if($product->conditions->sale_price !== '')
-                        <span class="price">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                    @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
+                        <span class="price">{{number_format((float)$product->conditions->price - (float)$product->conditions->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                         <span class="old_price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                     @else
-                        <span class="price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        @if($product->sale_price !== '')
+                            <span class="price">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                            <span class="old_price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        @else
+                            <span class="price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        @endif
                     @endif
                 </div>
                 <div class="product-card-summary">
                     <p><span class="summary-title">{{__('theme.total')}}</span>
                         <span class="product-card-summary-text" id="product-card-summary-{{$product->conditions->onec_id}}">
-                            @if($product->conditions->sale_price !== '')
-                                {{ number_format($product->conditions->sale_price, 2, ',', '') }}
-                            @else
-                                {{ number_format($product->conditions->price, 2, ',', '') }}
-                            @endif
+                            {{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSumWithReplace($product->conditions)}}
                         </span> {{__('theme.MDL')}}
                     </p>
                 </div>
-                @include('frontend.v1.components.add_to_cart_widget_v2')            </div>
+                <div class="qty-add-to-cart qty-add-to-cart-product-card">
+                    <div class="sc-product-qty qty-block">
+                        <div class="input-group-btn">
+                            <button
+                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                class="sc-product-decrement btn-quantity-product minus"
+                                type="button"
+                                id="button-minus"
+                            >
+                                -
+                            </button>
+                        </div>
+                        <input
+                            id="product-{{$product->conditions->id}}-qty"
+                            type="number"
+                            min="1"
+                            max="{{$product->conditions->stock}}"
+                            placeholder="1"
+                            value="1"
+                            name="product-{{$product->conditions->id}}-qty"
+                            data-product-id="{{$product->conditions->onec_id}}"
+                            data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product->conditions)}}"
+                            class="product-qty-item"
+                        />
+                        <div class="input-group-btn">
+                            <button
+                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                class="sc-product-increment btn-quantity-product plus"
+                                type="button"
+                                id="button-plus"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                    <a href="#" data-id="{{$product->conditions->id}}" id="add-to-cart-{{$product->conditions->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                </div>
+            </div>
             @if(!$product->conditions->packages->isEmpty())
                 <div class="packages-wrap">
                     <p>{{__('theme.package')}}: @foreach($product->conditions->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach</p>

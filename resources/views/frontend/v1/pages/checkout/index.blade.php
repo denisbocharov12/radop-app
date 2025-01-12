@@ -304,7 +304,7 @@
                                                 <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                             </li>
                                             <li class="item">
-                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
+                                                <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
                                             </li>
                                             <li class="item">
                                                 <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 {{__('theme.MDL')}}</span>
@@ -313,7 +313,7 @@
                                     </div>
                                     <div class="total-wrap">
                                         <p class="total-text">{{__('theme.for-payment')}}</p>
-                                        <span>{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
+                                        <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
                                     </div>
                                 @endif
                                 <div class="sc-buttons-wrap">
@@ -341,7 +341,7 @@
             </div>
         </section>
     @endif
-    @include('frontend.v1.pages.checkout.parts.tabs')
+    @include('frontend.v1.pages.cart.parts.tabs')
 @endsection
 
 @section('scripts')

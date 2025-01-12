@@ -8,7 +8,6 @@
                     BC Moldindconbank SA  MOLDMD2X <br>
                     Cod MOLDMD2X
                 </p>
-                {{--                    <p><strong>Reference:</strong> UX Design & Development for Android App.</p>--}}
             </div>
             <div class="client-info" style="width: 66%; text-align: right;">
                 <!-- Site Logo -->
@@ -55,13 +54,6 @@
             @endphp
             {{ $totalAmount }} {{ __('theme.MDL')}}
         </div>
-        {{--            <div class="invoice-terms">--}}
-        {{--                <h4>Terms</h4>--}}
-        {{--                <ul>--}}
-        {{--                    <li>Invoice to be paid in advance.</li>--}}
-        {{--                    <li>Make payment in 2-3 business days.</li>--}}
-        {{--                </ul>--}}
-        {{--            </div>--}}
         <div class="invoice-footer" style="text-align: center; font-size: 14px; color: #777777; border-top: 1px solid #eaeaea; padding-top: 20px;">
             <p>radop.md | radop112@radop.md | 022-78-21-00</p>
         </div>

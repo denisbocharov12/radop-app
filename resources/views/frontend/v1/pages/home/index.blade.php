@@ -100,7 +100,7 @@
                                         @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
                                         </h3>
                                     </div>
                                         <div class="product-item-article-wrap">
@@ -119,61 +119,16 @@
                                 <div class="add_to_cart_wrap">
                                     <hr class="product-card-item">
                                     <div class="wrap">
-                                        @if($product->sale_price !== '')
-                                            <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                            <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @else
-                                            <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @endif
+                                        @include('frontend.v1.components.product_price')
                                     </div>
                                     <div class="product-card-summary">
                                         <p><span class="summary-title">{{__('theme.total')}}</span>
                                             <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @if($product->sale_price !== '')
-                                                    {{ number_format($product->sale_price, 2, ',', '') }}
-                                                @else
-                                                    {{ number_format($product->price, 2, ',', '') }}
-                                                @endif
-                        </span> {{__('theme.MDL')}}
+                                                @include('frontend.v1.components.product_total')
+                                            </span> {{__('theme.MDL')}}
                                         </p>
                                     </div>
-                                    <div class="qty-add-to-cart qty-add-to-cart-product-card">
-                                        <div class="sc-product-qty qty-block">
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                    class="sc-product-decrement btn-quantity-product minus"
-                                                    type="button"
-                                                    id="button-minus"
-                                                >
-                                                    -
-                                                </button>
-                                            </div>
-                                            <input
-                                                id="product-{{$product->id}}-qty"
-                                                type="number"
-                                                min="1"
-                                                max="{{$product->stock}}"
-                                                placeholder="1"
-                                                value="1"
-                                                name="product-{{$product->id}}-qty"
-                                                data-product-id="{{$product->onec_id}}"
-                                                data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
-                                                class="product-qty-item"
-                                            />
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                    class="sc-product-increment btn-quantity-product plus"
-                                                    type="button"
-                                                    id="button-plus"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
-                                    </div>
+                                    @include('frontend.v1.components.add_to_cart_widget_v2')
                                 </div>
                                 @include('frontend.v1.components.packages_card_wrap')
                             </div>
@@ -226,7 +181,7 @@
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">
@@ -245,61 +200,16 @@
                                 <div class="add_to_cart_wrap">
                                     <hr class="product-card-item">
                                     <div class="wrap">
-                                        @if($product->sale_price !== '')
-                                            <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                            <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @else
-                                            <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @endif
+                                        @include('frontend.v1.components.product_price')
                                     </div>
                                     <div class="product-card-summary">
                                         <p><span class="summary-title">{{__('theme.total')}}</span>
                                             <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @if($product->sale_price !== '')
-                                                    {{ number_format($product->sale_price, 2, ',', '') }}
-                                                @else
-                                                    {{ number_format($product->price, 2, ',', '') }}
-                                                @endif
-                        </span> {{__('theme.MDL')}}
+                                                @include('frontend.v1.components.product_total')
+                                            </span> {{__('theme.MDL')}}
                                         </p>
                                     </div>
-                                    <div class="qty-add-to-cart qty-add-to-cart-product-card">
-                                        <div class="sc-product-qty qty-block">
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                    class="sc-product-decrement btn-quantity-product minus"
-                                                    type="button"
-                                                    id="button-minus"
-                                                >
-                                                    -
-                                                </button>
-                                            </div>
-                                            <input
-                                                id="product-{{$product->id}}-qty"
-                                                type="number"
-                                                min="1"
-                                                max="{{$product->stock}}"
-                                                placeholder="1"
-                                                value="1"
-                                                name="product-{{$product->id}}-qty"
-                                                data-product-id="{{$product->onec_id}}"
-                                                data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
-                                                class="product-qty-item"
-                                            />
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                    class="sc-product-increment btn-quantity-product plus"
-                                                    type="button"
-                                                    id="button-plus"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
-                                    </div>
+                                    @include('frontend.v1.components.add_to_cart_widget_v2')
                                 </div>
                                 @include('frontend.v1.components.packages_card_wrap')
                             </div>
@@ -352,7 +262,7 @@
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">
@@ -371,61 +281,16 @@
                                 <div class="add_to_cart_wrap">
                                     <hr class="product-card-item">
                                     <div class="wrap">
-                                        @if($product->sale_price !== '')
-                                            <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                            <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @else
-                                            <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                        @endif
+                                        @include('frontend.v1.components.product_price')
                                     </div>
                                     <div class="product-card-summary">
                                         <p><span class="summary-title">{{__('theme.total')}}</span>
                                             <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @if($product->sale_price !== '')
-                                                    {{ number_format($product->sale_price, 2, ',', '') }}
-                                                @else
-                                                    {{ number_format($product->price, 2, ',', '') }}
-                                                @endif
-                        </span> {{__('theme.MDL')}}
+                                                @include('frontend.v1.components.product_total')
+                                            </span> {{__('theme.MDL')}}
                                         </p>
                                     </div>
-                                    <div class="qty-add-to-cart qty-add-to-cart-product-card">
-                                        <div class="sc-product-qty qty-block">
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                    class="sc-product-decrement btn-quantity-product minus"
-                                                    type="button"
-                                                    id="button-minus"
-                                                >
-                                                    -
-                                                </button>
-                                            </div>
-                                            <input
-                                                id="product-{{$product->id}}-qty"
-                                                type="number"
-                                                min="1"
-                                                max="{{$product->stock}}"
-                                                placeholder="1"
-                                                value="1"
-                                                name="product-{{$product->id}}-qty"
-                                                data-product-id="{{$product->onec_id}}"
-                                                data-price="@if($product->sale_price !== ''){{$product->sale_price}}@else{{$product->price}}@endif"
-                                                class="product-qty-item"
-                                            />
-                                            <div class="input-group-btn">
-                                                <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                    class="sc-product-increment btn-quantity-product plus"
-                                                    type="button"
-                                                    id="button-plus"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
-                                    </div>
+                                    @include('frontend.v1.components.add_to_cart_widget_v2')
                                 </div>
                                 @include('frontend.v1.components.packages_card_wrap')
                             </div>

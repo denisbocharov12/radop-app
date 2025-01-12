@@ -5254,10 +5254,12 @@ header .section-header .row-main .header-menu .col-lg{
     align-items: center;
 }
 
+.product-item-category .product-item-title-wrap .product_item_name a{
+    height: 28px;
+}
 .product-item-category .product-item-title-wrap .product_item_name a:hover{
     text-decoration: underline!important;
 }
-
 .product-item-category {
     margin-bottom: 20px;
     display: flex;

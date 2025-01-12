@@ -33,7 +33,7 @@
                     @endif
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
+                        <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
                     </h3>
                 </div>
                 <div class="product-item-article-wrap">
@@ -52,21 +52,12 @@
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
                 <div class="wrap">
-                    @if($product->sale_price !== '')
-                        <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                        <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                    @else
-                        <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                    @endif
+                    @include('frontend.v1.components.product_price')
                 </div>
                 <div class="product-card-summary">
                     <p><span class="summary-title">{{__('theme.total')}}</span>
                         <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @if($product->sale_price !== '')
-                                {{ number_format($product->sale_price, 2, ',', '') }}
-                            @else
-                                {{ number_format($product->price, 2, ',', '') }}
-                            @endif
+                            @include('frontend.v1.components.product_total')
                         </span> {{__('theme.MDL')}}
                     </p>
                 </div>
