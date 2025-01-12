@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 final class ThemeProductManager
 {
@@ -56,12 +57,7 @@ final class ThemeProductManager
 
         $productStock = $existedProduct->stock;
 
-        $price = $existedProduct->price;
-
-        if ($existedProduct->sale_price !== '')
-        {
-            $price = $existedProduct->sale_price;
-        }
+        $price = $this->getProductPriceForCart($existedProduct);
 
         $cartArray = [];
 
@@ -78,8 +74,7 @@ final class ThemeProductManager
 
             if ($productStock < (int)$exProduct->qty + (int)$productQty)
             {
-                // TODO: Добавить перевод
-                $response['msg'] = 'У нас нет столько товара на складе';
+                $response['msg'] = __('theme.product_not_in_stock_for_buy');
                 $response['status'] = 'not_in_stock';
                 $result = false;
             } else
@@ -95,7 +90,7 @@ final class ThemeProductManager
             $response['status'] = true;
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
-            $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
+            $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
             $response['msg']= __('theme.product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
             $response['product_quantity'] = \Cart::session($sessionId)->get($productId)->quantity;
@@ -141,7 +136,6 @@ final class ThemeProductManager
 
     public function updateCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
-
         $existedProduct = $this->productRepository->getById($addToCartData->productId);
 
         if ($existedProduct === null)
@@ -161,12 +155,7 @@ final class ThemeProductManager
 
         $productStock = $existedProduct->stock;
 
-        $price = $existedProduct->price;
-
-        if ($existedProduct->sale_price !== '')
-        {
-            $price = $existedProduct->sale_price;
-        }
+        $price = $this->getProductPriceForCart($existedProduct);
 
         $cartArray = [];
 
@@ -183,7 +172,7 @@ final class ThemeProductManager
 
             if ($productStock < (int)$exProduct->qty + (int)$productQty)
             {
-                $response['msg'] = 'У нас нет столько товара на складе';
+                $response['msg'] = __('theme.product_not_in_stock_for_buy');
                 $response['status'] = 'not_in_stock';
                 $result = false;
             } else
@@ -199,7 +188,7 @@ final class ThemeProductManager
             $response['status'] = true;
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
-            $response['total'] = round(\Cart::session($sessionId)->getSubTotal(), 2);
+            $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
             $response['msg']= __('theme.product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
             $response['product_quantity'] = \Cart::session($sessionId)->get($productId)->quantity;
@@ -226,7 +215,7 @@ final class ThemeProductManager
         \Cart::session($sessionId)->remove($productId);
 
         $response['status'] = true;
-        $response['total'] = \Cart::session($sessionId)->getSubTotal();
+        $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
         $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
         $response['msg']= __('theme.product_was_deleted_successfully');
 
@@ -239,5 +228,50 @@ final class ThemeProductManager
         }
 
         return $response;
+    }
+
+    public static function getProductTotalSum($product)
+    {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
+        } else {
+            if($product->sale_price !== '') {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            } else {
+                $price = number_format((float)$product->price, 2, '.', '');
+            }
+        }
+
+        return $price;
+    }
+
+    public static function getProductTotalSumWithReplace($product)
+    {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '');
+        } else {
+            if($product->sale_price !== '') {
+                $price = number_format((float)$product->sale_price, 2, ',', '');
+            } else {
+                $price = number_format((float)$product->price, 2, ',', '');
+            }
+        }
+
+        return $price;
+    }
+
+    private function getProductPriceForCart(Product $product)
+    {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
+        } else {
+            if($product->sale_price !== '') {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            } else {
+                $price = number_format((float)$product->price, 2, '.', '');
+            }
+        }
+
+        return $price;
     }
 }

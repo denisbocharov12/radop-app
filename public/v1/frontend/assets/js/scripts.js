@@ -566,6 +566,7 @@ $(function () {
   });
 });
 $(document).ready(function () {
+
     $('.btn-quantity-product').click(function (){
         var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
         var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
@@ -574,7 +575,7 @@ $(document).ready(function () {
         var changedElement = $('#product-card-summary-'+productId);
         var result = qtyCount*productPrice;
 
-        changedElement.html(result.toFixed(2));
+        changedElement.html(result.toFixed(2).replace('.',','));
     })
 
   $(".filter-select").select2();
