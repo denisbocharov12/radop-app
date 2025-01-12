@@ -65,6 +65,21 @@
                                 <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('product.sort.index.featured')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Featured" товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.sort.index.popular')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Popular" товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.sort.index.sale')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Sale" товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.sort.index.hot')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Hot" товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.sort.index.new')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "New" товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
                             </li>
                             <li class="nk-menu-item">

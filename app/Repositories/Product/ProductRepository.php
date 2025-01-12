@@ -92,6 +92,23 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->orderBy('popular_order')
+            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+
+    }
+
+    public function getAllHotProducts(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getHotCondition())->get();
+
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('hot_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
 
@@ -107,6 +124,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->orderBy('new_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -117,6 +135,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->orderBy('sale_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -131,6 +150,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->orderBy('featured_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }

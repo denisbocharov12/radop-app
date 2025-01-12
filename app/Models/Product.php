@@ -36,6 +36,11 @@ final class Product extends Model implements HasMedia
         'site_status',
         'brand_id',
         'shtrih_code',
+        'sale_order',
+        'featured_oder',
+        'popular_order',
+        'new_order',
+        'hot_order',
         'deleted_at'
     ];
 

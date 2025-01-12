@@ -25,6 +25,7 @@ use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Product\ProductManager;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -139,5 +140,125 @@ class ProductController extends Controller
         } catch (AttachmentNotFoundException $e) {
             throw new AttachmentNotFoundValidationException();
         }
+    }
+
+    public function sortFeatured()
+    {
+        $products = $this->productRepository->getAllFeaturedProducts();
+
+        return view('product.sort-featured', compact([
+            'products',
+        ]));
+    }
+
+    public function sortFeaturedOrder(Request $request)
+    {
+        $products = $this->productRepository->getAllFeaturedProducts();
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->id) {
+                    $product->update(['featured_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
+    }
+
+    public function sortSale()
+    {
+        $products = $this->productRepository->getAllDiscountProducts();
+
+        return view('product.sort-sale', compact([
+            'products',
+        ]));
+    }
+
+    public function sortSaleOrder(Request $request)
+    {
+        $products = $this->productRepository->getAllDiscountProducts();
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->id) {
+                    $product->update(['sale_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
+    }
+
+    public function sortPopular()
+    {
+        $products = $this->productRepository->getAllPopularProducts();
+
+        return view('product.sort-popular', compact([
+            'products',
+        ]));
+    }
+
+    public function sortPopularOrder(Request $request)
+    {
+        $products = $this->productRepository->getAllPopularProducts();
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->id) {
+                    $product->update(['popular_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
+    }
+
+    public function sortNew()
+    {
+        $products = $this->productRepository->getAllNewProducts();
+
+        return view('product.sort-new', compact([
+            'products',
+        ]));
+    }
+
+    public function sortNewOrder(Request $request)
+    {
+        $products = $this->productRepository->getAllNewProducts();
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->id) {
+                    $product->update(['new_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
+    }
+
+    public function sortHot()
+    {
+        $products = $this->productRepository->getAllHotProducts();
+
+        return view('product.sort-hot', compact([
+            'products',
+        ]));
+    }
+
+    public function sortHotOrder(Request $request)
+    {
+        $products = $this->productRepository->getAllHotProducts();
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->id) {
+                    $product->update(['hot_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
     }
 }
