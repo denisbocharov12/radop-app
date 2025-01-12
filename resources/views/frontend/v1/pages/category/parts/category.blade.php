@@ -49,7 +49,7 @@
                                         @foreach($attributes as $key => $attributeValues)
                                             <li class="theme-toggle-item">
                                                 <div class="theme-toggle-item-title">
-                                                    <i class="icon-arrow-radop-left"></i>
+                                                    <i class="icon-arrow-filter-radop-left"></i>
                                                     <p class="theme-widget-title">{{$key}}</p>
                                                 </div>
                                                 <div class="theme-toggle-item-content">
@@ -69,7 +69,7 @@
                                         @endforeach
                                         <li class="theme-toggle-item">
                                             <div class="theme-toggle-item-title">
-                                                <i class="icon-arrow-radop-left"></i>
+                                                <i class="icon-arrow-filter-radop-left"></i>
                                                 <p class="theme-widget-title">{{__('theme.brand')}}</p>
                                             </div>
                                             <div class="theme-toggle-item-content">
