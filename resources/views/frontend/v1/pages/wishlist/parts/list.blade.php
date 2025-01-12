@@ -33,7 +33,7 @@
                     @endif
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{$product->conditions->title}}</a>
+                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{\Illuminate\Support\Str::words($product->conditions->title, 8, ' ...')}}</a>
                     </h3>
                 </div>
                 <div class="product-item-article-wrap">
