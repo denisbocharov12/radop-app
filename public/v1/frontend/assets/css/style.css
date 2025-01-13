@@ -2311,7 +2311,9 @@ header .section-header .row-main .header-menu .col-lg{
     cursor: pointer;
     color: #0052a6;
     font-size: 14px;
-    padding: 8px 9px;
+    padding: 8px 4px;
+    width: 28px;
+    height: 28px;
     background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
     border-radius: 50%;
@@ -3234,7 +3236,7 @@ header .section-header .row-main .header-menu .col-lg{
     text-decoration: underline !important;
 }
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn i {
-    color: #0052a6;
+    color: #b9b9b9ba;
 }
 
 .section-product .col-product-info .product-add-to-wishlist-wrap .add-to-wishlist-btn:hover i {

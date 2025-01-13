@@ -224,8 +224,8 @@ $(document).ready(function () {
       slidesToScroll: 1,
       arrows: true,
       swipe: false,
-      prevArrow: "<i class='fa fa-chevron-left prev-arrow'></i>",
-      nextArrow: "<i class='fa fa-chevron-right next-arrow'></i>",
+        prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+        nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
       cssEase: "ease-out",
       rows: 1,
       responsive: [
@@ -264,8 +264,8 @@ $(document).ready(function () {
     slidesToScroll: 1,
     arrows: true,
     swipe: true,
-    prevArrow: "<i class='fa fa-chevron-left prev-arrow'></i>",
-    nextArrow: "<i class='fa fa-chevron-right next-arrow'></i>",
+      prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+      nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
     cssEase: "ease-out",
     rows: 1,
     responsive: [
@@ -301,8 +301,8 @@ $(document).ready(function () {
       slidesToScroll: 1,
       arrows: true,
       swipe: false,
-      prevArrow: "<i class='fa fa-chevron-left prev-arrow'></i>",
-      nextArrow: "<i class='fa fa-chevron-right next-arrow'></i>",
+        prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+        nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
       cssEase: "ease-out",
       rows: 1,
       responsive: [
