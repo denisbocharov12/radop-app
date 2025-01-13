@@ -87,7 +87,7 @@
                                     <span class="price">{{number_format((float)$item->associatedModel->price - (float)$item->associatedModel->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                                     <span class="old_price">{{ number_format((float)$item->associatedModel->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                 @else
-                                    @if($item->sale_price !== '')
+                                    @if($item->associatedModel->sale_price !== '')
                                         <span class="price">{{ number_format((float)$item->associatedModel->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                         <span class="old_price">{{ number_format((float)$item->associatedModel->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                     @else
