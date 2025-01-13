@@ -95,7 +95,20 @@ final class ProductRepository
             ->orderBy('popular_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
+    }
 
+    public function getAllPopularProductsWithoutLimit(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
+
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('popular_order')
+            ->get();
     }
 
     public function getAllHotProducts(): Collection
@@ -111,7 +124,20 @@ final class ProductRepository
             ->orderBy('hot_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
+    }
 
+    public function getAllHotProductsWithoutLimit(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getHotCondition())->get();
+
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('hot_order')
+            ->get();
     }
 
     public function getAllNewProducts(): Collection
@@ -129,6 +155,20 @@ final class ProductRepository
             ->get();
     }
 
+    public function getAllNewProductsWithoutLimit(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('new_order')
+            ->get();
+    }
+
     public function getAllDiscountProducts(): Collection
     {
         return Product::where('sale_price', '!=', 0)
@@ -137,6 +177,16 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->orderBy('sale_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+    }
+
+    public function getAllDiscountProductsWithoutLimit(): Collection
+    {
+        return Product::where('sale_price', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('sale_order')
             ->get();
     }
 
@@ -152,6 +202,20 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->orderBy('featured_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->get();
+    }
+
+    public function getAllFeaturedProductsWithoutLimit(): Collection
+    {
+        $featuredProductProfiles = ProductProfile::where('condition', $this->productConditions->getFeaturedCondition())->get();
+
+        $productIds = $featuredProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('featured_order')
             ->get();
     }
 

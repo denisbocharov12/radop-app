@@ -144,7 +144,7 @@ class ProductController extends Controller
 
     public function sortFeatured()
     {
-        $products = $this->productRepository->getAllFeaturedProducts();
+        $products = $this->productRepository->getAllFeaturedProductsWithoutLimit();
 
         return view('product.sort-featured', compact([
             'products',
@@ -153,7 +153,7 @@ class ProductController extends Controller
 
     public function sortFeaturedOrder(Request $request)
     {
-        $products = $this->productRepository->getAllFeaturedProducts();
+        $products = $this->productRepository->getAllFeaturedProductsWithoutLimit();
 
         foreach ($products as $product) {
             foreach ($request->order as $order) {
@@ -168,7 +168,7 @@ class ProductController extends Controller
 
     public function sortSale()
     {
-        $products = $this->productRepository->getAllDiscountProducts();
+        $products = $this->productRepository->getAllDiscountProductsWithoutLimit();
 
         return view('product.sort-sale', compact([
             'products',
@@ -177,7 +177,7 @@ class ProductController extends Controller
 
     public function sortSaleOrder(Request $request)
     {
-        $products = $this->productRepository->getAllDiscountProducts();
+        $products = $this->productRepository->getAllDiscountProductsWithoutLimit();
 
         foreach ($products as $product) {
             foreach ($request->order as $order) {
@@ -192,7 +192,7 @@ class ProductController extends Controller
 
     public function sortPopular()
     {
-        $products = $this->productRepository->getAllPopularProducts();
+        $products = $this->productRepository->getAllPopularProductsWithoutLimit();
 
         return view('product.sort-popular', compact([
             'products',
@@ -201,7 +201,7 @@ class ProductController extends Controller
 
     public function sortPopularOrder(Request $request)
     {
-        $products = $this->productRepository->getAllPopularProducts();
+        $products = $this->productRepository->getAllPopularProductsWithoutLimit();
 
         foreach ($products as $product) {
             foreach ($request->order as $order) {
@@ -216,7 +216,7 @@ class ProductController extends Controller
 
     public function sortNew()
     {
-        $products = $this->productRepository->getAllNewProducts();
+        $products = $this->productRepository->getAllNewProductsWithoutLimit();
 
         return view('product.sort-new', compact([
             'products',
@@ -225,7 +225,7 @@ class ProductController extends Controller
 
     public function sortNewOrder(Request $request)
     {
-        $products = $this->productRepository->getAllNewProducts();
+        $products = $this->productRepository->getAllNewProductsWithoutLimit();
 
         foreach ($products as $product) {
             foreach ($request->order as $order) {
@@ -240,7 +240,7 @@ class ProductController extends Controller
 
     public function sortHot()
     {
-        $products = $this->productRepository->getAllHotProducts();
+        $products = $this->productRepository->getAllHotProductsWithoutLimit();
 
         return view('product.sort-hot', compact([
             'products',
@@ -249,7 +249,7 @@ class ProductController extends Controller
 
     public function sortHotOrder(Request $request)
     {
-        $products = $this->productRepository->getAllHotProducts();
+        $products = $this->productRepository->getAllHotProductsWithoutLimit();
 
         foreach ($products as $product) {
             foreach ($request->order as $order) {
