@@ -26,7 +26,7 @@
                     <div class="nk-block nk-block-lg">
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование сортировки "Featured" товаров</h4>
+                                <h4 class="title nk-block-title">Редактирование сортировки "Sale" товаров</h4>
                             </div>
                         </div>
                         <div class="card">
