@@ -66,41 +66,32 @@
                                 </a>
                             </div>
                         @endif
-{{--                        <hr/>--}}
-{{--                        <div class="product-colors">--}}
-{{--                            <div class="colors">--}}
-{{--                                <div class="color-box-wrapper">--}}
-{{--                                    <div class="color-box-border">--}}
-{{--                                        <span style="background-color: #FF0000;" class="color-box"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="color-box-wrapper">--}}
-{{--                                    <div class="color-box-border">--}}
-{{--                                        <span style="background-color: #0000FF;" class="color-box"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="color-box-wrapper">--}}
-{{--                                    <div class="color-box-border">--}}
-{{--                                        <span style="background-color: #00FF00;" class="color-box"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="color-box-wrapper">--}}
-{{--                                    <div class="color-box-border">--}}
-{{--                                        <span style="background-color: #000000;" class="color-box"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <hr>
-{{--                        <div class="product-details-wrap">--}}
-{{--                            <div class="product-stock-status">--}}
-{{--                                @if($product->stock < 1)--}}
-{{--                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>--}}
-{{--                                @else--}}
-{{--                                    <span class="status in-stock">{{__('theme.in-stock')}}</span>--}}
-{{--                                @endif--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <hr/>
+                        @if(isset($product->data->upp_sale))
+                            <div class="upp-sale-products-wrap">
+                            @foreach(json_decode($product->data->upp_sale) as $uppSaleProductOnecId)
+                                @php
+                                    $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)->first();
+                                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id);
+                                @endphp
+                                    <div class="upp-sale-product">
+                                        <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
+                                            <img src="{{config('app.url')}}/{{current($imagesArray)}}" loading="lazy" alt="{{$uppSaleProduct->title}}" />
+                                        </a>
+                                    </div>
+                            @endforeach
+                            </div>
+                            <hr>
+                        @endif
+                        <div class="product-details-wrap">
+                            <div class="product-stock-status">
+                                @if($product->stock < 1)
+                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>
+                                @else
+                                    <span class="status in-stock">{{__('theme.in-stock')}}</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="product-wrap">
                         <div class="product-price-wrap">
