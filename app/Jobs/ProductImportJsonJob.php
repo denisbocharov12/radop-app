@@ -62,6 +62,12 @@ final class ProductImportJsonJob implements ShouldQueue
                 'sku' => $product->id
             ]);
 
+            if (isset($product->product_onec_ids)) {
+                ProductProfile::updateOrCreate(['product_id' => $product->id], [
+                    'upp_sale' => $product->product_onec_ids
+                ]);
+            }
+
             foreach ($product->category_id as $item) {
 
                 if (Category::where('onec_id', $item)->first() !== null) {
