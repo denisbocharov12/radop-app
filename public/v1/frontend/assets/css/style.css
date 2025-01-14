@@ -8491,3 +8491,8 @@ hr.product-card-item{
     height: 60px;
     width: 60px;
 }
+
+.upp-sale-products-wrap .upp-sale-product img{
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+}
