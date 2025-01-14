@@ -74,7 +74,7 @@
                                     $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)->first();
                                     $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id);
                                 @endphp
-                                    <div class="upp-sale-product">
+                                    <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
                                         <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
                                             <img src="{{config('app.url')}}/{{current($imagesArray)}}" loading="lazy" alt="{{$uppSaleProduct->title}}" />
                                         </a>
