@@ -9,7 +9,7 @@ class OneCRequest extends FormRequest
     public function rules()
     {
         return [
-            'attachment' => ['required', 'max:10000', 'file', 'mimes:json'],
+            'attachment' => ['required', 'file'],
         ];
     }
 }
