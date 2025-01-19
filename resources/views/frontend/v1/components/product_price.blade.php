@@ -3,8 +3,8 @@
     <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
 @else
     @if($product->sale_price !== '')
-        <span class="price">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-        <span class="old_price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+        <span class="price" style="color: #ee0000">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+        <span class="old_price" style="color: #848484">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
     @else
         <span class="price">{{ number_format($product->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
     @endif

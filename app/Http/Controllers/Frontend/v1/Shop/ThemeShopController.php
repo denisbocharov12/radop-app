@@ -37,4 +37,40 @@ final class ThemeShopController extends Controller
             'allProducts',
         ]));
     }
+
+    public function newProducts(Request $request)
+    {
+        $query = $request->query('filter');
+
+        $products = $this->productRepository->getAllNewProductsPaginated();
+
+        return view('frontend.v1.pages.shop.index', compact([
+            'products',
+            'query',
+        ]));
+    }
+
+    public function popularProducts(Request $request)
+    {
+        $query = $request->query('filter');
+
+        $products = $this->productRepository->getAllPopularProductsPaginated();
+
+        return view('frontend.v1.pages.shop.index', compact([
+            'products',
+            'query',
+        ]));
+    }
+
+    public function saleProducts(Request $request)
+    {
+        $query = $request->query('filter');
+
+        $products = $this->productRepository->getAllDiscountProductsPaginated();
+
+        return view('frontend.v1.pages.shop.index', compact([
+            'products',
+            'query',
+        ]));
+    }
 }

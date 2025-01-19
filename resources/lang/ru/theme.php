@@ -1,7 +1,7 @@
 <?php
 
 return array (
-    '	phone-number' => '',
+    'phone-number' => '',
     'MDL' => 'лей',
     'Weekdays' => '',
     'about-company' => 'О компании',
@@ -196,7 +196,7 @@ return array (
     'to-pay' => '',
     'total' => 'Итого:',
     'transfer' => 'Перечисление',
-    'unit' => 'единиц',
+    'unit' => 'товаров',
     'vacancies' => 'Вакансии',
     'view-all' => 'Смотреть все',
     'warehouse' => 'Основной склад',
@@ -237,4 +237,11 @@ return array (
     'sale-description-info' => 'Дополнительная скидка не применяется.',
     'product_was_deleted_successfully' => 'Товар успешно удален.',
     'product_not_in_stock_for_buy' => 'У нас нет столько товара на складе.',
+    'sort-title' => 'Наименованию',
+    'sort-label' => 'Сортировать по:',
+    'sort-popular' => 'Популярности',
+    'sort-stock' => 'Наличию',
+    'sort-new' => 'Новизне',
+    'sort-price-asc' => 'Цене (возр.)',
+    'sort-price-desc' => 'Цене (убыв.)',
 );
