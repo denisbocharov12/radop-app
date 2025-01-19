@@ -49,7 +49,12 @@ class CategoryRepository
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
-                'onec_id'
+                'onec_id',
+                'price',
+                'title',
+                'created_at',
+                'popular_order',
+                'stock',
             ])
             ->where('status', true)
             ->where('site_status', true)

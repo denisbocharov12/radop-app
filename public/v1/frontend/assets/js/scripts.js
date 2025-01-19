@@ -137,7 +137,7 @@ $(document).ready(function () {
   $("#main-banner").slick({
     autoplay: true,
     dots: true,
-    autoplaySpeed: 8000,
+    autoplaySpeed: 3000,
     speed: 1000,
     infinite: true,
     slidesToShow: 1,

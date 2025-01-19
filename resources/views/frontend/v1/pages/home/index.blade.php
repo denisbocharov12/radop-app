@@ -64,7 +64,7 @@
                 <div class="col-heading">
                     <div class="heading heading-with-btn">
                         <h1>{{__('theme.popular-products')}}</h1>
-                        <a class="section-home-btn" href="#">{{__('theme.view-all')}}</a>
+                        <a class="section-home-btn" href="{{route('theme.shop.popular')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">
@@ -145,7 +145,7 @@
                 <div class="col-heading">
                     <div class="heading heading-with-btn">
                         <h1>{{__('theme.new-products')}}</h1>
-                        <a class="section-home-btn" href="#">{{__('theme.view-all')}}</a>
+                        <a class="section-home-btn" href="{{route('theme.shop.new')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">
@@ -226,7 +226,7 @@
                 <div class="col-heading">
                     <div class="heading heading-with-btn">
                         <h1>{{__('theme.on-discount')}}</h1>
-                        <a class="section-home-btn" href="#">{{__('theme.view-all')}}</a>
+                        <a class="section-home-btn" href="{{route('theme.shop.sale')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
                 <div class="col catalog-slider">

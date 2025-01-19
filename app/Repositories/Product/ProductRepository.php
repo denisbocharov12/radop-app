@@ -62,6 +62,12 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->allowedSorts([
                 'id',
+                'onec_id',
+                'price',
+                'title',
+                'created_at',
+                'popular_order',
+                'stock',
             ])
             ->where('status', true)
             ->where('site_status', true)
@@ -85,7 +91,6 @@ final class ProductRepository
     public function getAllPopularProducts(): Collection
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
-
         $productIds = $popularProductProfiles->pluck('product_id');
 
         return Product::whereIn('onec_id', $productIds)
@@ -95,6 +100,21 @@ final class ProductRepository
             ->orderBy('popular_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
+    }
+
+    public function getAllPopularProductsPaginated(): LengthAwarePaginator
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return QueryBuilder::for(Product::query())
+            ->whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->withQueryString()
+            ->appends(request()->query());
     }
 
     public function getAllPopularProductsWithoutLimit(): Collection
@@ -142,9 +162,8 @@ final class ProductRepository
 
     public function getAllNewProducts(): Collection
     {
-        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
-
-        $productIds = $popularProductProfiles->pluck('product_id');
+        $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+        $productIds = $newProductProfile->pluck('product_id');
 
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
@@ -154,6 +173,22 @@ final class ProductRepository
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
+
+    public function getAllNewProductsPaginated(): LengthAwarePaginator
+    {
+        $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+        $productIds = $newProductProfile->pluck('product_id');
+
+        return QueryBuilder::for(Product::query())
+            ->whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->withQueryString()
+            ->appends(request()->query());
+    }
+
 
     public function getAllNewProductsWithoutLimit(): Collection
     {
@@ -178,6 +213,18 @@ final class ProductRepository
             ->orderBy('sale_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
+    }
+
+    public function getAllDiscountProductsPaginated(): LengthAwarePaginator
+    {
+        return QueryBuilder::for(Product::query())
+            ->where('sale_price', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->withQueryString()
+            ->appends(request()->query());
     }
 
     public function getAllDiscountProductsWithoutLimit(): Collection

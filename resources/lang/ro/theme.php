@@ -238,4 +238,11 @@ return array (
     'sale-description-info' => 'Nu se aplică reducere suplimentară.',
     'product_was_deleted_successfully' => 'Produsul este șters cu succes',
     'product_not_in_stock_for_buy' => 'Cantitate insuficientă.',
+    'sort-title' => 'Denumire',
+    'sort-label' => 'Sortare după:',
+    'sort-popular' => 'Popularitate',
+    'sort-stock' => 'Disponibilitate',
+    'sort-new' => 'Noutate',
+    'sort-price-asc' => 'Preț (crescător)',
+    'sort-price-desc' => 'Preț (desc.)',
 );

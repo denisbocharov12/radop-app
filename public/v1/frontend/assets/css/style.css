@@ -1064,7 +1064,7 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
 }
 .section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item a.link {
     color: #0052a6;
-    font-size: 14px;
+    font-size: 16px;
 }
 .section-header.section-header-top .header-with-menu .wrap-top-menu .top-menu-list li.item a.link:hover {
     text-decoration: underline !important;
@@ -3062,7 +3062,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-breadcrumb {
     margin-top: 25px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .section-breadcrumb .col-breadcrumb-mobile nav .breadcrumb {
@@ -8495,4 +8495,54 @@ hr.product-card-item{
 .upp-sale-products-wrap .upp-sale-product img{
     border: 1px solid #d1d1d1;
     border-radius: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list > li {
+    margin-bottom: 10px;
+}
+
+.category-list ul {
+    margin-left: 20px;
+    list-style: circle;
+}
+.sort-block {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    justify-content: flex-end;
+    border-block: 1px solid #eee;
+    margin-bottom: 25px;
+}
+.sort-label {
+    color: #000;
+}
+.sort-options {
+    display: flex;
+    gap: 10px;
+}
+.sort-option {
+    color: #666;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+.sort-option:hover {
+    text-decoration: underline;
+    background-color: #0052a6;
+    color: #f1f1f1;
+}
+.sort-option.active {
+    background-color: #0052a6;
+    color: #fff;
 }
