@@ -6,9 +6,9 @@ use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemePriceFilter;
+use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Category;
-use App\Models\Order;
 use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -16,6 +16,7 @@ use App\Models\ProductProfile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class ProductRepository
@@ -47,7 +48,6 @@ final class ProductRepository
         ;
     }
 
-
     public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
     {
         $query = Product::query()->distinct();
@@ -63,7 +63,7 @@ final class ProductRepository
             ->allowedSorts([
                 'id',
                 'onec_id',
-                'price',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 'created_at',
                 'popular_order',
@@ -112,7 +112,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
-            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -184,7 +184,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
-            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -222,7 +222,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
-            ->paginate(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
+            ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
