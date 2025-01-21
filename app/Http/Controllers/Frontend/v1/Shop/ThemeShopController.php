@@ -42,9 +42,10 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllNewProductsPaginatedWithFilters();
-        $attributes = $this->attributeRepository->getAllToShop();
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
+        $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort();
+        $allNewProducts = $this->productRepository->getAllNewProducts();
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
@@ -58,9 +59,10 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllPopularProductsPaginatedWithFilters();
-        $attributes = $this->attributeRepository->getAllToShop();
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
+        $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort();
+        $allPopularProducts = $this->productRepository->getAllPopularProducts();
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
@@ -74,9 +76,10 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllDiscountProductsPaginatedWithFilters();
-        $attributes = $this->attributeRepository->getAllToShop();
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
+        $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort();
+        $allSaleProducts = $this->productRepository->getAllDiscountProducts();
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',

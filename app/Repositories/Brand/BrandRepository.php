@@ -92,7 +92,7 @@ final class BrandRepository
         ;
     }
 
-    public function getAllBrandsByProductsIdsToFrontEnd(LengthAwarePaginator $products): Collection
+    public function getAllBrandsByProductsIdsToFrontEnd(Collection $products): Collection
     {
         $productIds = $products->pluck('id')->toArray();
 

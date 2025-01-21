@@ -746,3 +746,19 @@ $(document).ready(function(){
         });
     }
 });
+
+$(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function() {
+        const sortSelect = document.querySelector('.sort-select')
+        const filterForm = document.getElementById('filterForm')
+        const sortInput = document.getElementById('sortInput')
+
+        if (sortSelect && filterForm && sortInput) {
+            sortSelect.addEventListener('change', function() {
+                sortInput.value = this.value
+                filterForm.submit()
+            })
+        }
+    })
+});
+

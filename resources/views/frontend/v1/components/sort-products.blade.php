@@ -1,11 +1,12 @@
 <span class="sort-label">{{__('theme.sort-label')}}</span>
 <div class="sort-options">
-    <a href="?sort=popular_order" class="sort-option">{{__('theme.sort-popular')}}</a>
-    <a href="?sort=stock" class="sort-option">{{__('theme.sort-stock')}}</a>
-    <a href="?sort=created_at" class="sort-option">{{__('theme.sort-new')}}</a>
-    <a href="?sort=title" class="sort-option">{{__('theme.sort-title')}}</a>
-    <a href="?sort=price" class="sort-option">{{__('theme.sort-price-asc')}}</a>
-    <a href="?sort=-price" class="sort-option">{{__('theme.sort-price-desc')}}</a>
+    <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
+    <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
+    <a href="#" class="sort-option" data-sort="created_at">{{__('theme.sort-new')}}</a>
+    <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
+    <a href="#" class="sort-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
+    <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,11 +14,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentUrl = new URL(window.location.href);
     const currentSort = currentUrl.searchParams.get('sort');
 
-    sortOptions.forEach(option => {
-        const optionUrl = new URL(option.href);
-        const optionSort = optionUrl.searchParams.get('sort');
+    function updateUrlWithParams(params) {
+        const url = new URL(window.location.href);
+        for (const [key, value] of Object.entries(params)) {
+            if (value) {
+                url.searchParams.set(key, value);
+            } else {
+                url.searchParams.delete(key);
+            }
+        }
+        return url.toString();
+    }
 
-        if (currentSort === optionSort) {
+    function applySort(sort) {
+        const newUrl = updateUrlWithParams({ sort: sort });
+        window.location.href = newUrl;
+    }
+
+    sortOptions.forEach(option => {
+        const optionSort = option.getAttribute('data-sort');
+
+        if (currentSort === optionSort || (currentSort === '-price' && optionSort === 'price_desc')) {
             option.classList.add('active');
         }
 
@@ -25,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             sortOptions.forEach(opt => opt.classList.remove('active'));
             this.classList.add('active');
-            window.location.href = this.href;
+            const sort = this.getAttribute('data-sort');
+            applySort(sort === 'price_desc' ? '-price' : sort);
         });
     });
 });
 </script>
-</div>
