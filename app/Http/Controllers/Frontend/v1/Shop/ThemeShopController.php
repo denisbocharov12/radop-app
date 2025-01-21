@@ -43,10 +43,12 @@ final class ThemeShopController extends Controller
         $query = $request->query('filter');
 
         $products = $this->productRepository->getAllNewProductsPaginated();
+        $attributes = $this->attributeRepository->getAllToShop();
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
+            'attributes'
         ]));
     }
 
@@ -55,10 +57,12 @@ final class ThemeShopController extends Controller
         $query = $request->query('filter');
 
         $products = $this->productRepository->getAllPopularProductsPaginated();
+        $attributes = $this->attributeRepository->getAllToShop();
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
+            'attributes'
         ]));
     }
 
@@ -67,10 +71,12 @@ final class ThemeShopController extends Controller
         $query = $request->query('filter');
 
         $products = $this->productRepository->getAllDiscountProductsPaginated();
+        $attributes = $this->attributeRepository->getAllToShop();
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
+            'attributes'
         ]));
     }
 }
