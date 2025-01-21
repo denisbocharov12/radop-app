@@ -69,23 +69,25 @@
                         <hr/>
                         @if(isset($product->data->upp_sale))
                             <div class="upp-sale-products-wrap">
-                            @foreach(json_decode($product->data->upp_sale) as $uppSaleProductOnecId)
-                                @php
-                                    $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)->where('status', 'true')->where('site_status', 'true')->first();
-                                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id);
-                                @endphp
-                                @if(!empty($imagesArray))
-                                    <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
-                                        <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
-                                            <img src="{{config('app.url')}}/{{current($imagesArray)}}" loading="lazy" alt="{{$uppSaleProduct->title}}" />
-                                        </a>
-                                    </div>
-                                @endif
-                            @endforeach
+                                @foreach(json_decode($product->data->upp_sale) as $uppSaleProductOnecId)
+                                    @php
+                                        $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)
+                                                                             ->where('status', 'true')
+                                                                             ->where('site_status', 'true')
+                                                                             ->first();
+                                    @endphp
+                                    @if($uppSaleProduct && !empty($imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id)))
+                                        <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
+                                            <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
+                                                <img src="{{config('app.url')}}/{{current($imagesArray)}}" loading="lazy" alt="{{$uppSaleProduct->title}}" />
+                                            </a>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
                             <hr>
                         @endif
-{{--                        <div class="product-details-wrap">--}}
+                        {{--                        <div class="product-details-wrap">--}}
 {{--                            <div class="product-stock-status">--}}
 {{--                                @if($product->stock < 1)--}}
 {{--                                    <span class="status out-of-stock">{{__('theme.out-of-stock')}}</span>--}}
