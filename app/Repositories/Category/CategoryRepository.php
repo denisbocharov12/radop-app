@@ -6,12 +6,14 @@ use App\Filters\CategorySearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeBrandsFilter;
 use App\Filters\Theme\ThemePriceFilter;
+use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CategoryRepository
@@ -50,7 +52,7 @@ class CategoryRepository
             ->allowedSorts([
                 'id',
                 'onec_id',
-                'price',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 'created_at',
                 'popular_order',

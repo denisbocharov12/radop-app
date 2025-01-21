@@ -42,13 +42,15 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllNewProductsPaginated();
+        $products = $this->productRepository->getAllNewProductsPaginatedWithFilters();
         $attributes = $this->attributeRepository->getAllToShop();
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
-            'attributes'
+            'attributes',
+            'brands',
         ]));
     }
 
@@ -56,13 +58,15 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllPopularProductsPaginated();
+        $products = $this->productRepository->getAllPopularProductsPaginatedWithFilters();
         $attributes = $this->attributeRepository->getAllToShop();
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
-            'attributes'
+            'attributes',
+            'brands',
         ]));
     }
 
@@ -70,13 +74,15 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllDiscountProductsPaginated();
+        $products = $this->productRepository->getAllDiscountProductsPaginatedWithFilters();
         $attributes = $this->attributeRepository->getAllToShop();
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($products);
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
-            'attributes'
+            'attributes',
+            'brands',
         ]));
     }
 }

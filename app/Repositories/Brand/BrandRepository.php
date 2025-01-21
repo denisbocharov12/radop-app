@@ -9,6 +9,7 @@ use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -89,5 +90,16 @@ final class BrandRepository
             ->withQueryString()
             ->appends(request()->query())
         ;
+    }
+
+    public function getAllBrandsByProductsIdsToFrontEnd(LengthAwarePaginator $products): Collection
+    {
+        $productIds = $products->pluck('id')->toArray();
+
+        return Product::whereIn('id', $productIds)
+            ->with('brand')
+            ->get()
+            ->pluck('brand')
+            ->unique('id');
     }
 }

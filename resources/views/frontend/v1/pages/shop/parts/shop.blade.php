@@ -8,7 +8,7 @@
                 @include('frontend.v1.pages.category.parts.not-found')
             @else
                 <div class="col-12 col-md-3 col-theme-filters">
-                    <form action="{{route('theme.shop.index')}}" method="GET">
+                    <form action="{{ url()->current() }}" method="GET">
                         <div class="theme-wg-wrap">
                             <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">

@@ -102,12 +102,18 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllPopularProductsPaginated(): LengthAwarePaginator
+    public function getAllPopularProductsPaginatedWithFilters(): LengthAwarePaginator
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
         $productIds = $popularProductProfiles->pluck('product_id');
 
         return QueryBuilder::for(Product::query())
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
@@ -174,12 +180,18 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllNewProductsPaginated(): LengthAwarePaginator
+    public function getAllNewProductsPaginatedWithFilters(): LengthAwarePaginator
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
         $productIds = $newProductProfile->pluck('product_id');
 
         return QueryBuilder::for(Product::query())
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
@@ -215,9 +227,15 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllDiscountProductsPaginated(): LengthAwarePaginator
+    public function getAllDiscountProductsPaginatedWithFilters(): LengthAwarePaginator
     {
         return QueryBuilder::for(Product::query())
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
             ->where('sale_price', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
