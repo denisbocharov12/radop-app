@@ -72,11 +72,9 @@
                             @foreach(json_decode($product->data->upp_sale) as $uppSaleProductOnecId)
                                 @php
                                     $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)->where('status', 'true')->where('site_status', 'true')->first();
-                                    if ($uppSaleProduct){
-                                        $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id);
-                                    }
+                                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id);
                                 @endphp
-                                @if($uppSaleProduct)
+                                @if(!empty($imagesArray))
                                     <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
                                         <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
                                             <img src="{{config('app.url')}}/{{current($imagesArray)}}" loading="lazy" alt="{{$uppSaleProduct->title}}" />

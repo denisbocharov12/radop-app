@@ -11,6 +11,12 @@ final class ThemePriceSort implements Sort
     {
         $direction = $descending ? 'DESC' : 'ASC';
 
-        $query->orderByRaw("CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2)) $direction");
+        $query->orderByRaw("
+            CASE
+                WHEN sale_price IS NOT NULL AND sale_price != ''
+                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
+                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
+            END $direction
+        ");
     }
 }

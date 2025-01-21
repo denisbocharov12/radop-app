@@ -53,7 +53,6 @@ final class ThemeCategoryController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
 
-
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
             'products',

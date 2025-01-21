@@ -9,7 +9,8 @@
             @else
                 <div class="col-12 col-md-3 col-theme-filters">
                     <div class="sticky-sidebar">
-                        <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET">
+                        <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET" id="filterForm">
+                            <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
                             <div class="theme-wg-wrap">
                                 <p class="theme-widget-title">{{__('theme.by-price')}}</p>
                                 <div class="filter-widget-wrap">
@@ -106,7 +107,7 @@
                         @include('frontend.v1.pages.category.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">
-                        {{$products->links()}}
+                        {{$products->appends(request()->except('page'))->links()}}
                     </div>
                 </div>
             @endif

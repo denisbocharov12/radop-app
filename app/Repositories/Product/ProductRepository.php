@@ -98,11 +98,10 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('popular_order')
-            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
 
-    public function getAllPopularProductsPaginatedWithFilters(): LengthAwarePaginator
+    public function getAllPopularProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
         $productIds = $popularProductProfiles->pluck('product_id');
@@ -113,6 +112,15 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
+            ->allowedSorts([
+                'id',
+                'onec_id',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
+                'title',
+                'created_at',
+                'popular_order',
+                'stock',
             ])
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
@@ -176,11 +184,10 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('new_order')
-            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
 
-    public function getAllNewProductsPaginatedWithFilters(): LengthAwarePaginator
+    public function getAllNewProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
         $productIds = $newProductProfile->pluck('product_id');
@@ -191,6 +198,15 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
+            ->allowedSorts([
+                'id',
+                'onec_id',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
+                'title',
+                'created_at',
+                'popular_order',
+                'stock',
             ])
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
@@ -223,11 +239,10 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('sale_order')
-            ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
 
-    public function getAllDiscountProductsPaginatedWithFilters(): LengthAwarePaginator
+    public function getAllDiscountProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
     {
         return QueryBuilder::for(Product::query())
             ->allowedFilters([
@@ -235,6 +250,15 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
+            ->allowedSorts([
+                'id',
+                'onec_id',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
+                'title',
+                'created_at',
+                'popular_order',
+                'stock',
             ])
             ->where('sale_price', '!=', 0)
             ->where('status', true)
