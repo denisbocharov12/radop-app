@@ -5892,6 +5892,7 @@ hr.product-card-item{
     display: flex;
     align-items: center;
     font-size: 14px;
+    font-weight: 500;
 }
 .product-mini-brand-wrap a span.brand-text i{
     font-size: 12px;
@@ -8271,6 +8272,7 @@ hr.product-card-item{
 .product-additional-info ul li {
     font-size: 14px;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
 .product-additional-info ul a {
@@ -8416,9 +8418,9 @@ hr.product-card-item{
 }
 
 .product-info-row .delete-from-wishlist-btn {
-    font-style: italic;
     text-decoration: underline !important;
     color: #252525;
+    font-size: 14px;
 }
 
 .product-info-row .delete-from-wishlist-btn i {
