@@ -49,20 +49,20 @@
                             <ul class="list">
                                 @if($product->shtrih_code !== null)
                                     <li>
-                                        <p>{{__('theme.barcode')}}: {{$product->shtrih_code}}</p>
+                                        <p><span class="mini-heading">{{__('theme.barcode')}}:</span> {{$product->shtrih_code}}</p>
                                     </li>
                                 @endif
                                 @if(!$product->packages->isEmpty())
                                         <li>
-                                            <p>{{__('theme.package')}}: @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach {{__('theme.package_unit')}}</p>
+                                            <p><span class="mini-heading">{{__('theme.package')}}:</span> @foreach($product->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach {{__('theme.package_unit')}}</p>
                                         </li>
                                 @endif
                             </ul>
                         </div>
                         @if($product->brand !== null)
                             <div class="product-mini-brand-wrap">
-                                <a href="" class="product-mini-brand">
-                                    <span class="brand-text">{{__('theme.all-brand-products')}} {{$product->brand->title}} <i class="icon-arrow-radop-right"></i></span>
+                                <a href="{{route('theme.brand.index', $product->brand->id)}}" class="product-mini-brand">
+                                    <span class="brand-text"><span class="mini-heading">{{__('theme.all-brand-products')}}</span> {{$product->brand->title}} <i class="icon-arrow-radop-right"></i></span>
                                 </a>
                             </div>
                         @endif
