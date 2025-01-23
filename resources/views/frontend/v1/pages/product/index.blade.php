@@ -71,8 +71,8 @@
                             @foreach(json_decode($product->data->upp_sale) as $uppSaleProductOnecId)
                                 @php
                                     $uppSaleProduct = \App\Models\Product::where('onec_id', $uppSaleProductOnecId)
-                                                                         ->where('status', 'true')
-                                                                         ->where('site_status', 'true')
+                                                                         ->where('status', true)
+                                                                         ->where('site_status', true)
                                                                          ->first();
                                 @endphp
                                 @if($uppSaleProduct && !empty($imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($uppSaleProduct->onec_id)))
