@@ -83,9 +83,9 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <hr>
                                 @endif
                             @endforeach
+                            <hr>
                         @endif
 {{--                        <div class="product-details-wrap">--}}
 {{--                            <div class="product-stock-status">--}}
