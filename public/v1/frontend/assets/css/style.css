@@ -8489,6 +8489,10 @@ hr.product-card-item{
 .upp-sale-products-wrap{
     display: flex;
     gap: 10px;
+    border-bottom: 1px solid rgba(33, 37, 41, 0.25);
+    margin-bottom: 12.5px;
+    padding-bottom: 12.5px;
+    flex-wrap: wrap;
 }
 
 .upp-sale-products-wrap .upp-sale-product a{
