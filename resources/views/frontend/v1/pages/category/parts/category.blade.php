@@ -56,15 +56,23 @@
                                                     <i class="icon-arrow-filter-radop-left"></i>
                                                     <p class="theme-widget-title">{{$key}}</p>
                                                 </div>
-                                                <div class="theme-toggle-item-content">
-                                                        @php
-                                                            $attributeValues = collect($attributeValues)->map(function($attribute) {
-                                                                return \App\Models\AttributeValue::find($attribute['id']);
-                                                            })->sortBy('value');
-                                                        @endphp
+                                                @php
+                                                    $attributeValues = collect($attributeValues)->map(function($attribute) {
+                                                        return \App\Models\AttributeValue::find($attribute['id']);
+                                                    })->sortBy('value');
+
+                                                $activeStyle = 'display: none';
+
+                                                foreach ($attributeValues as $attribute) {
+                                                    if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute'])){
+                                                        $activeStyle = 'display:flex';
+                                                    }
+                                                }
+                                                @endphp
+                                                <div class="theme-toggle-item-content" style="{{$activeStyle}}">
                                                         @foreach($attributeValues as $attribute)
                                                             <div class="col-6">
-                                                                <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{$attribute->value}}">
+                                                                <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{str_replace(',','.', $attribute->value)}}">
                                                                 <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
                                                             </div>
                                                         @endforeach
