@@ -21,6 +21,13 @@ final class ThemeAttributeFilter implements Filter
 
         if ($value !== null && !empty($value))
             if (is_array($value[0])) $value = $value[0];
+
+            foreach ($value as $key => $item) {
+                if ($this->isStringFloat($item)) {
+                    $value[$key] = str_replace('.',',', $item);
+                }
+            }
+
             $attributeProductsIds = AttributeValue::query()
                 ->whereIn('value->'.str_replace('_', '-', app()->getLocale()), $value)
                 ->get()
@@ -40,5 +47,15 @@ final class ThemeAttributeFilter implements Filter
 //        ->whereHas('values', function ($q) use ($query, $attributeProductsIds, $value) {
 //            $q->whereIn('attribute_values.product_onec_id', array_values(array_unique($attributeProductsIds, SORT_NUMERIC)));
 //        });
+    }
+
+    private function isStringFloat($string) {
+        if(is_numeric($string)) {
+            $val = $string+0;
+
+            return is_float($val);
+        }
+
+        return false;
     }
 }
