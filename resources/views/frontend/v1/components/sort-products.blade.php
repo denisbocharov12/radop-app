@@ -1,11 +1,11 @@
 <span class="sort-label">{{__('theme.sort-label')}}</span>
 <div class="sort-options">
-    <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
-    <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
-    <a href="#" class="sort-option" data-sort="created_at">{{__('theme.sort-new')}}</a>
-    <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
     <a href="#" class="sort-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
     <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
+    <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
+    <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
+    <a href="#" class="sort-option" data-sort="created_at">{{__('theme.sort-new')}}</a>
+    <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
 </div>
 
 <script>
