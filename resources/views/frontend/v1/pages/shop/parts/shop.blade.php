@@ -64,7 +64,7 @@
                                                 $activeStyle = 'display: none';
 
                                                 foreach ($attributeValues as $attribute) {
-                                                    if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array($attribute->value, $query['attribute'])){
+                                                    if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'])){
                                                         $activeStyle = 'display:flex';
                                                     }
                                                 }

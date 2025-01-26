@@ -67,7 +67,7 @@
                             </div>
                         @endif
                         <hr/>
-                        @if(isset($product->data->upp_sale))
+                        @if(isset($product->data->upp_sale) && is_array(json_decode($product->data->upp_sale, true)))
                             @php
                                 $hasVisibleProducts = false;
                             @endphp
