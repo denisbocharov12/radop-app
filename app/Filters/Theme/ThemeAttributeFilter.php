@@ -18,6 +18,7 @@ final class ThemeAttributeFilter implements Filter
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
+
         if ($value !== null && !empty($value))
             if (is_array($value[0])) $value = $value[0];
             $attributeProductsIds = AttributeValue::query()
