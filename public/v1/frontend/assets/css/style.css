@@ -5911,7 +5911,9 @@ hr.product-card-item{
     border-color: red!important;
 }
 .packages-wrap{
-    margin-top: 10px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(33, 37, 41, 0.25);
 }
 .packages-wrap p{
     font-size: 14px;
@@ -8554,4 +8556,26 @@ hr.product-card-item{
 .sort-option.active {
     background-color: #0052a6;
     color: #fff;
+}
+.product-list-mini-brand-wrap{
+    margin: 12px 0 0;
+}
+.product-list-mini-brand-wrap a{
+    display: flex;
+}
+.product-list-mini-brand-wrap a:hover{
+    text-decoration: underline!important;
+    color: #252525;
+}
+.product-list-mini-brand-wrap a span.brand-text{
+    color: #252525;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.product-list-mini-brand-wrap a span.brand-text .mini-heading{
+    margin-right: 3px;
+}
+.product-list-mini-brand-wrap a span.brand-text i{
+    font-size: 12px;
 }

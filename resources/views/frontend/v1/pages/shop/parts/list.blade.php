@@ -48,6 +48,9 @@
                     </span>
                     </div>
                 </div>
+                @if($product->brand !== null)
+                    @include('frontend.v1.components.product-list-mini-brand-wrap')
+                @endif
             </div>
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
