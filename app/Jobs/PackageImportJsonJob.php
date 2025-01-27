@@ -50,6 +50,7 @@ final class PackageImportJsonJob implements ShouldQueue
                     'ru' => isset($package->name_ru) ? $package->name_ru : '',
                 ],
                 'value' => $package->koef,
+                'order_status' => isset($package->order_status) ? true : false,
             ];
 
             Package::create($data);
