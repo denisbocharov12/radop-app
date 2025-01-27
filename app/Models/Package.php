@@ -15,6 +15,7 @@ final class Package extends Model
         'name',
         'value',
         'product_onec_id',
+        'order_status',
     ];
 
     public $translatable = ['name'];
