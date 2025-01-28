@@ -247,8 +247,7 @@ final class ThemeProductManager
 
     public static function getProductTotalSumWithReplace($product)
     {
-        $package = isset($product->packages->sortBy('value')->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
-
+        $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->where('order_status', true)->first()->value : 1;
         if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
             $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100) * (float)$package, 2, ',', '');
         } else {
