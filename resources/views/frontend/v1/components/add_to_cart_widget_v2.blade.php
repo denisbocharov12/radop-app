@@ -23,6 +23,7 @@
             name="product-{{$product->id}}-qty"
             data-product-id="{{$product->onec_id}}"
             data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
+            data-package="{{$package}}"
             class="product-qty-item"
         />
         <div class="input-group-btn">
@@ -53,5 +54,6 @@
                 input.value = newValue;
             }
         }
-    </script>    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+    </script>
+    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
 </div>
