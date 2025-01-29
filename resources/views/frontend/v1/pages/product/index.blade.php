@@ -137,6 +137,9 @@
                             </p>
                         </div>
                         <div class="product-item">
+                            @php
+                                $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
+                            @endphp
                             <div class="add_to_cart_wrap">
                                 <div class="qty-add-to-cart">
                                     <div class="sc-product-qty qty-block">
@@ -153,13 +156,14 @@
                                         <input
                                                 id="product-{{$product->id}}-qty"
                                                 type="number"
-                                                min="1"
+                                                min="{{$package}}"
                                                 max="{{$product->stock}}"
-                                                placeholder="1"
-                                                value="1"
+                                                placeholder="{{$package}}"
+                                                value="{{$package}}"
                                                 name="product-{{$product->id}}-qty"
                                                 data-product-id="{{$product->onec_id}}"
                                                 data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
+                                                data-package="{{$package}}"
                                                 class="product-qty-item"
                                         />
                                         <div class="input-group-btn">
@@ -173,6 +177,25 @@
                                             </button>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        function incrementQuantity(button, packageSize) {
+                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                                            var newValue = parseInt(input.value) + packageSize;
+                                            if (newValue <= parseInt(input.max)) {
+                                                input.value = newValue;
+                                            }
+                                        }
+
+                                        function decrementQuantity(button, packageSize) {
+                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                                            var newValue = parseInt(input.value) - packageSize;
+                                            if (newValue >= parseInt(input.min)) {
+                                                input.value = newValue;
+                                            }
+                                        }
+                                    </script>
+
                                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
                             </div>
