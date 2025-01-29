@@ -5,6 +5,7 @@ namespace App\Repositories\Category;
 use App\Filters\CategorySearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeBrandsFilter;
+use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
@@ -54,7 +55,7 @@ class CategoryRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'condition',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
                 'popular_order',
                 'stock',
             ])

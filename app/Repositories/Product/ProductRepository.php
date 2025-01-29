@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
+use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
@@ -65,7 +66,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'condition',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
                 'popular_order',
                 'stock',
             ])
@@ -119,7 +120,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'condition',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
                 'popular_order',
                 'stock',
             ])
@@ -206,7 +207,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'condition',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
                 'popular_order',
                 'stock',
             ])
@@ -259,7 +260,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'condition',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
                 'popular_order',
                 'stock',
             ])
