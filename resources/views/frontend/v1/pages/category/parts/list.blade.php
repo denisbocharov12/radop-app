@@ -51,6 +51,7 @@
                         </span>
                     </div>
                 </div>
+                @include('frontend.v1.pages.product.components.variations-product-card')
                 @if($product->brand !== null)
                     @include('frontend.v1.components.product-list-mini-brand-wrap')
                 @endif
