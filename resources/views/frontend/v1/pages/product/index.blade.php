@@ -145,7 +145,7 @@
                                     <div class="sc-product-qty qty-block">
                                         <div class="input-group-btn">
                                             <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                                    onclick="decrementQuantityProduct(this, {{$package}})"
                                                     class="sc-product-decrement btn-quantity-product minus"
                                                     type="button"
                                                     id="button-minus"
@@ -168,7 +168,7 @@
                                         />
                                         <div class="input-group-btn">
                                             <button
-                                                    onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    onclick="incrementQuantityProduct(this, {{$package}})"
                                                     class="sc-product-increment btn-quantity-product plus"
                                                     type="button"
                                                     id="button-plus"
@@ -179,7 +179,7 @@
                                     </div>
 
                                     <script>
-                                        function incrementQuantity(button, packageSize) {
+                                        function incrementQuantityProduct(button, packageSize) {
                                             var input = button.parentNode.parentNode.querySelector('input[type=number]');
                                             var newValue = parseInt(input.value) + packageSize;
                                             if (newValue <= parseInt(input.max)) {
@@ -187,7 +187,7 @@
                                             }
                                         }
 
-                                        function decrementQuantity(button, packageSize) {
+                                        function decrementQuantityProduct(button, packageSize) {
                                             var input = button.parentNode.parentNode.querySelector('input[type=number]');
                                             var newValue = parseInt(input.value) - packageSize;
                                             if (newValue >= parseInt(input.min)) {
