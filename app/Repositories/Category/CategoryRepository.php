@@ -54,12 +54,13 @@ class CategoryRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'created_at',
+                'condition',
                 'popular_order',
                 'stock',
             ])
             ->where('status', true)
             ->where('site_status', true)
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->groupBy('products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
