@@ -571,9 +571,10 @@ $(document).ready(function () {
         var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
         var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
         var productPrice = $(this).parent().parent('.qty-block').find('.product-qty-item').data('price');
+        var packageCount = $(this).parent().parent('.qty-block').find('.product-qty-item').data('package');
 
         var changedElement = $('#product-card-summary-'+productId);
-        var result = qtyCount*productPrice;
+        var result = (qtyCount*productPrice)/packageCount;
 
         changedElement.html(result.toFixed(2).replace('.',','));
     })
