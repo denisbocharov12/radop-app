@@ -245,4 +245,6 @@ return array (
     'sort-new' => 'Noutate',
     'sort-price-asc' => 'Preț (crescător)',
     'sort-price-desc' => 'Preț (desc.)',
+    'characteristic_color' => 'Culoare',
+    'characteristic_text' => 'Text',
 );

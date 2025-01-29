@@ -41,6 +41,7 @@ final class Product extends Model implements HasMedia
         'popular_order',
         'new_order',
         'hot_order',
+        'characteristic',
         'deleted_at'
     ];
 

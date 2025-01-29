@@ -244,4 +244,6 @@ return array (
     'sort-new' => 'Новизне',
     'sort-price-asc' => 'Цене (возр.)',
     'sort-price-desc' => 'Цене (убыв.)',
+    'characteristic_color' => 'Цвет',
+    'characteristic_text' => 'Текс',
 );

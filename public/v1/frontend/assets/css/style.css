@@ -8499,8 +8499,35 @@ hr.product-card-item{
 
 .upp-sale-products-wrap .upp-sale-product a{
     display: block;
-    height: 60px;
-    width: 60px;
+    margin: 5px 0;
+}
+
+.upp-sale-products-wrap .upp-sale-product a .upp-sale-product-value-text{
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    padding: 5px 7.5px;
+    border-radius: 5px;
+    color: #252525;
+}
+.product-item-category .upp-sale-products-wrap{
+    margin-top: 10px;
+}
+.product-item-category .upp-sale-products-wrap .upp-sale-product a{
+    display: block;
+    margin: 2.5px 0;
+}
+
+.product-item-category .upp-sale-products-wrap .other-uppsale{
+    color: #252525ad;
+    font-size: 13px;
+    text-decoration: underline!important;
+}
+
+.product-item-category .upp-sale-products-wrap .upp-sale-product a .upp-sale-product-value-text{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: #252525;
+    font-size: 13px;
 }
 
 .upp-sale-products-wrap .upp-sale-product img{
