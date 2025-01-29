@@ -118,7 +118,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'created_at',
+                'condition',
                 'popular_order',
                 'stock',
             ])
@@ -126,6 +126,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -204,7 +205,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'created_at',
+                'condition',
                 'popular_order',
                 'stock',
             ])
@@ -212,6 +213,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -256,7 +258,7 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                'created_at',
+                'condition',
                 'popular_order',
                 'stock',
             ])
@@ -264,6 +266,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());

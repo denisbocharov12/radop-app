@@ -1,5 +1,5 @@
 @php
-    $package = isset($product->packages->sortBy('value')->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
+    $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
 @endphp
 <div class="qty-add-to-cart qty-add-to-cart-product-card">
     <div class="sc-product-qty qty-block">
