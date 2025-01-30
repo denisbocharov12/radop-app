@@ -29,8 +29,9 @@
                 <a class="other-uppsale" href="{{route('theme.product.index', $product->slug)}}">
                     <span>+{{$loop->count - $count}}</span>
                 </a>
+                @break
             @endif
-            @break
+
             @php
                 $count++;
             @endphp
