@@ -51,6 +51,12 @@ final class ProductImportJsonJob implements ShouldQueue
                 ];
             }
 
+            $shtrihCode = null;
+
+            if (isset($product->shtrih_code)) {
+                $shtrihCode = $product->shtrih_code;
+            }
+
             $data = [
                 'title' => [
                     'ro' => isset($product->name_ro_full) ? $product->name_ro_full : '',
@@ -61,7 +67,7 @@ final class ProductImportJsonJob implements ShouldQueue
                 'status' => $status,
                 'stock' => $product->stock,
                 'brand_id' => $product->brand_id,
-                'shtrih_code' => $product->shtrih_code,
+                'shtrih_code' => $shtrihCode,
                 'characteristic' => json_encode($characteristics),
             ];
 
