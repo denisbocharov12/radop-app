@@ -11,7 +11,11 @@
                              ->where('status', true)
                              ->where('site_status', true)
                              ->first();
-                $selectedType = json_decode($product->characteristic)?->selected_type ? json_decode($product->characteristic)?->selected_type : null;
+                                $selectedType = null;
+
+                if(isset($selectedType->selected_type)) {
+                    $selectedType = json_decode($product->characteristic)?->selected_type;
+                }
             @endphp
 
             @if($selectedType !== null && $selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE() && $count < 4 && $uppSaleProduct !== null && \App\Models\AttributeValue::where('attribute_onec_id', json_decode($product->characteristic)->character_id)->where('product_onec_id', $uppSaleProductOnecId)->first()?->value !== null)
