@@ -14,7 +14,7 @@
                 }
             @endphp
             @if($selectedType !== null && $selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE())
-                <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
+                <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct?->title}}">
                     <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
                         <span class="upp-sale-product-value-text">
                             {{\App\Models\AttributeValue::where('attribute_onec_id', json_decode($product->characteristic)->character_id)->where('product_onec_id', $uppSaleProductOnecId)->first()?->value}}
