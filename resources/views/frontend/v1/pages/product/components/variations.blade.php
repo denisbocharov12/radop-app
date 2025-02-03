@@ -7,10 +7,13 @@
                              ->where('site_status', true)
                              ->first();
 
-                $selectedType = json_decode($product->characteristic)->selected_type;
+                $selectedType = null;
 
+                if(isset($selectedType->selected_type)) {
+                    $selectedType = json_decode($product->characteristic)?->selected_type;
+                }
             @endphp
-            @if($selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE())
+            @if($selectedType !== null && $selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE())
                 <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct->title}}">
                     <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
                         <span class="upp-sale-product-value-text">
