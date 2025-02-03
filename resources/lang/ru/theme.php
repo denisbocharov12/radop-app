@@ -219,7 +219,7 @@ return array (
     'delete-from-wishlist-with-success' => 'Товар успешно удалён из избранное.',
     'barcode' => 'Штрихкод',
     'package' => 'В упаковке',
-    'all-brand-products' => 'Все товары бренда',
+    'all-brand-products' => 'Все товары',
     'remove-from-wishlist' => 'Удалить из избранное',
     'already-in-cart' => 'Уже в корзине',
     'label_on_sale' => 'Sale',

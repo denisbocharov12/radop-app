@@ -9,7 +9,7 @@
 
                 $selectedType = null;
 
-                if(isset($selectedType->selected_type)) {
+                if(array_key_exists('selected_type', json_decode($product->characteristic, true))) {
                     $selectedType = json_decode($product->characteristic)?->selected_type;
                 }
             @endphp
