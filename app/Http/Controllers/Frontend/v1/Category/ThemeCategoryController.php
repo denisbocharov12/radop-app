@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Category;
 
 use App\Exceptions\Category\CategoryNotFoundException;
+use App\Exceptions\Category\CategoryNotFoundValidationException;
+use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
@@ -32,7 +34,7 @@ final class ThemeCategoryController extends Controller
         $existedCategory = $this->categoryRepository->getByOnecId($onecId);
 
         if ($existedCategory === null) {
-            throw new CategoryNotFoundException();
+            throw new ThemeCategoryNotFoundException();
         }
 
         $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
