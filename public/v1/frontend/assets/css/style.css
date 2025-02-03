@@ -8499,14 +8499,15 @@ hr.product-card-item{
 
 .upp-sale-products-wrap .upp-sale-product a{
     display: block;
-    margin: 5px 0;
+    margin: 2.5px 0;
 }
 
 .upp-sale-products-wrap .upp-sale-product a .upp-sale-product-value-text{
     border: 2px solid rgba(0, 0, 0, 0.2);
-    padding: 5px 7.5px;
+    padding: 3px 5px;
     border-radius: 5px;
     color: #252525;
+    font-size: 13px;
 }
 .product-item-category .upp-sale-products-wrap{
     margin-top: 10px;
@@ -8524,10 +8525,10 @@ hr.product-card-item{
 
 .product-item-category .upp-sale-products-wrap .upp-sale-product a .upp-sale-product-value-text{
     border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 3px 5px;
+    padding: 2px 4px;
     border-radius: 5px;
     color: #252525;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .upp-sale-products-wrap .upp-sale-product img{
