@@ -232,14 +232,13 @@ final class ThemeProductManager
 
     public static function getProductTotalSum($product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
             $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
-        } else {
-            if($product->sale_price !== '') {
-                $price = number_format((float)$product->sale_price, 2, '.', '');
-            } else {
-                $price = number_format((float)$product->price, 2, '.', '');
-            }
+        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->sale_price, 2, '.', '');
+        }
+        else{
+            $price = number_format((float)$product->price, 2, '.', '');
         }
 
         return $price;
@@ -247,14 +246,13 @@ final class ThemeProductManager
 
     public static function getProductTotalSumWithReplace($product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
             $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '');
-        } else {
-            if($product->sale_price !== '') {
-                $price = number_format((float)$product->sale_price, 2, ',', '');
-            } else {
-                $price = number_format((float)$product->price, 2, ',', '');
-            }
+        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->sale_price, 2, ',', '');
+        }
+        else{
+            $price = number_format((float)$product->price, 2, ',', '');
         }
 
         return $price;
@@ -262,14 +260,13 @@ final class ThemeProductManager
 
     private function getProductPriceForCart(Product $product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
             $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
-        } else {
-            if($product->sale_price !== '') {
-                $price = number_format((float)$product->sale_price, 2, '.', '');
-            } else {
-                $price = number_format((float)$product->price, 2, '.', '');
-            }
+        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+            $price = number_format((float)$product->sale_price, 2, '.', '');
+        }
+        else{
+            $price = number_format((float)$product->price, 2, '.', '');
         }
 
         return $price;

@@ -247,4 +247,5 @@ return array (
     'sort-price-desc' => 'Preț (desc.)',
     'characteristic_color' => 'Culoare',
     'characteristic_text' => 'Text',
+    'category_not_found' => 'Categoria nu a fost gasita',
 );

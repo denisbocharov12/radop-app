@@ -246,4 +246,5 @@ return array (
     'sort-price-desc' => 'Цене (убыв.)',
     'characteristic_color' => 'Цвет',
     'characteristic_text' => 'Текс',
+    'category_not_found' => 'Категория не найдена',
 );
