@@ -11,9 +11,10 @@
                              ->where('status', true)
                              ->where('site_status', true)
                              ->first();
-                                $selectedType = null;
 
-                if(isset($selectedType->selected_type)) {
+                $selectedType = null;
+
+                if(array_key_exists('selected_type', json_decode($product->characteristic, true))) {
                     $selectedType = json_decode($product->characteristic)?->selected_type;
                 }
             @endphp
