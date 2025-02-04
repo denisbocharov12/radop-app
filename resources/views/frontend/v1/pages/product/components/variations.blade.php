@@ -6,14 +6,14 @@
                              ->where('status', true)
                              ->where('site_status', true)
                              ->first();
-
+dd($uppSaleProduct);
                 $selectedType = null;
 
                 if(array_key_exists('selected_type', json_decode($product->characteristic, true))) {
                     $selectedType = json_decode($product->characteristic)?->selected_type;
                 }
             @endphp
-            @if($selectedType !== null && $selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE())
+            @if($selectedType !== null && $selectedType === \App\Enums\ProductCharacteristicTypes::getTextCharacteristicFE() && $uppSaleProduct !== null && \App\Models\AttributeValue::where('attribute_onec_id', json_decode($product->characteristic)->character_id)->where('product_onec_id', $uppSaleProductOnecId)->first()?->value !== null)
                 <div class="upp-sale-product" data-toggle="tooltip" data-placement="top" title="{{$uppSaleProduct?->title}}">
                     <a href="{{route('theme.product.index', $uppSaleProduct->slug)}}" class="product-mini-brand">
                         <span class="upp-sale-product-value-text">
