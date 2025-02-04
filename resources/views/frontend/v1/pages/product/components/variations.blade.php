@@ -6,7 +6,7 @@
                              ->where('status', true)
                              ->where('site_status', true)
                              ->first();
-dd($uppSaleProduct);
+
                 $selectedType = null;
 
                 if(array_key_exists('selected_type', json_decode($product->characteristic, true))) {
