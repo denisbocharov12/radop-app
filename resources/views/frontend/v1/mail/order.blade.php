@@ -1,61 +1,49 @@
-<section class="section-invoice" style="padding: 40px 0; background-color: #f9f9f9;">
-    <div class="invoice-container" style="max-width: 800px; margin: auto; background-color: #ffffff; padding: 40px; border: 1px solid #eaeaea; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif; color: #333333; line-height: 1.6;">
-        <div class="invoice-header" style="display: flex; justify-content: space-between; margin-bottom: 40px;">
-            <div class="company-info" style="width: 45%;">
-                <h3>'RADOP-OPT' SRL</h3>
-                <p>
-                    MD94ML000000002251419173   la <br>
-                    BC Moldindconbank SA  MOLDMD2X <br>
-                    Cod MOLDMD2X
-                </p>
-            </div>
-            <div class="client-info" style="width: 66%; text-align: right;">
-                <!-- Site Logo -->
-                <a href="{{ route('theme.home') }}" class="site-logo" style="margin-top: 20px;">
-                    <img src="{{ $message->embed(public_path('/v1/frontend/assets/images/logo_svg_radop.png')) }}" alt="Radop Logo" style="max-width: 150px;" />
-                </a>
-                <p>{{ __('theme.address')}}: Sarmizegetusa, 15 Chisinau</p>
-                <p>Tel. 022-78-21-00</p>
-            </div>
-        </div>
-
-        <div class="invoice-details" style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-size: 32px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; color: #333333;">{{ __('theme.payment-account')}}</h1>
-            <p style="font-size: 18px; color: #555555;"><strong>{{ __('theme.payment-account')}} №:</strong> {{ $order->order_number }}</p>
-            <p style="font-size: 18px; color: #555555;"><strong>{{ __('theme.data')}}</strong> {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
-        </div>
-
-        <table class="invoice-table" style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
-            <thead style="background-color: #f0f0f0;">
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
+<div class="header" style="padding: 10px 0;">
+    <h2 style="color: #0056b3; text-align: center; font-weight: bold;">{{ __('theme.order-title')}}</h2>
+    <p>{{ __('theme.order-text-2')}} <strong><a href="{{ route('theme.home') }}" class="site-logo">radop.md</a></strong> {{ __('theme.order-text-3')}}</p>
+    <p>{{ __('theme.order-text')}}</p>
+</div>
+<div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
+<div class="order-details" style="padding: 10px 0;">
+    <p style="margin: 5px 0;"><strong>{{ __('theme.payment-account')}}:</strong> {{ $order->order_number }}</p>
+    <p style="margin: 5px 0;"><strong>{{ __('theme.data')}}</strong> {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
+    <p style="margin: 5px 0;"><strong>{{ __('theme.order-delivery')}}:</strong> {{ $order->address }}</p>
+    <p style="margin: 5px 0;"><strong>{{ __('theme.order-contact-data')}}:</strong> {{ $order->first_name }} {{ $order->last_name }} {{ $order->phone }}</p>
+    <p style="margin: 5px 0;"><strong>{{ __('theme.order-payment')}}:</strong> {{ __('theme.' . $order->payment_method) }}</p></div>
+<div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
+<div class="order-content" style="padding: 10px 0;">
+    <h3>{{ __('theme.order-content')}}</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <tr>
+            <th style="padding: 8px; text-align: left; font-weight: bold;">{{ __('theme.order-product')}}</th>
+            <th style="padding: 8px; text-align: left; font-weight: bold;">{{ __('theme.order-cod')}}</th>
+            <th style="padding: 8px; text-align: left; font-weight: bold;">{{ __('theme.order-quantity')}}</th>
+            <th style="padding: 8px; text-align: left; font-weight: bold;">{{ __('theme.order-price')}}</th>
+        </tr>
+        @foreach($products as $product)
             <tr>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.title')}}</th>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.quantity-shortly')}}</th>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.price')}}</th>
-                <th style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ __('theme.total')}}</th>
+                <td style="padding: 8px; text-align: left;">{{ \App\Models\Product::find($product->product_id)->title }}</td>
+                <td style="padding: 8px; text-align: left;">{{ $product->onec_id }}</td>
+                <td style="padding: 8px; text-align: left;">{{ $product->quantity }} {{ __('theme.package_unit') }}</td>
+                <td style="padding: 8px; text-align: left;">{{ $product->price * $product->quantity}} {{ __('theme.MDL') }}</td>
             </tr>
-            </thead>
-            <tbody>
-            @foreach($products as $product)
-                <tr>
-                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ \App\Models\Product::find($product->product_id)->title }}</td>
-                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->quantity }}</td>
-                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price }} {{ __('theme.MDL') }}</td>
-                    <td style="padding: 15px; border: 1px solid #eaeaea; text-align: left;">{{ $product->price * $product->quantity}} {{ __('theme.MDL') }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        <div class="total-amount" style="text-align: right; margin-bottom: 20px; font-size: 18px;">
-            <strong>{{ __('theme.summary')}}</strong>
-            @php
-                $totalAmount = $products->sum(function($product) {
-                    return $product->price * $product->quantity;
-                });
-            @endphp
-            {{ $totalAmount }} {{ __('theme.MDL')}}
-        </div>
-        <div class="invoice-footer" style="text-align: center; font-size: 14px; color: #777777; border-top: 1px solid #eaeaea; padding-top: 20px;">
-            <p>radop.md | radop112@radop.md | 022-78-21-00</p>
-        </div>
+        @endforeach
+    </table>
+    <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
+    <div class="total" style="overflow: hidden;">
+        <p style="float: left;">{{ __('theme.order-delivery')}}:</p>
+        <p style="float: right;">
+            @if($order->delivery_charge > 0)
+                {{ $order->delivery_charge }} {{ __('theme.MDL') }}
+            @else
+                {{ __('theme.order-delivery-free')}}
+            @endif
+        </p>
     </div>
-</section>
+    <div class="total" style="overflow: hidden;">
+        <p style="float: left;">{{ __('theme.order-total')}}:</p>
+        <p style="float: right;">{{ $order->total }} {{ __('theme.MDL') }}</p>
+    </div>
+</div>
+</body>
