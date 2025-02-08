@@ -5307,11 +5307,11 @@ header .section-header .row-main .header-menu .col-lg{
     z-index: 2;
 }
 .product-item-category .product-wrap-main.product-wrap-main-with-sale .product-label-s-wrap {
-    top: 52px;
+    top: 10px;
 }
 .product-item-category .product-wrap .product-label-s-wrap.product-label-s-wrap-right
 {
-    top: 71px;
+    top: 31px;
     left: 10px;
 }
 .product-item-category .product-wrap .product-label-s-wrap.s-on_sale{
@@ -5341,9 +5341,10 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product-item-category a.product-label {
     position: absolute;
-    left: 10px;
+    right: 10px;
     top: 10px;
     z-index: 1;
+    align-items: flex-end;
 }
 
 .product-item-category a.product-label .product-label-wrap {
@@ -5452,7 +5453,7 @@ header .section-header .row-main .header-menu .col-lg{
     align-items: center;
     justify-content: center;
     right: 10px;
-    top: 10px;
+    top: 55px;
 }
 
 .product-item-category a.add_to_wishlist i {

@@ -13,8 +13,8 @@
     @endphp
     <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
         <div class="product-wrap">
-            @include('frontend.v1.pages.product.components.label')
-            <div class="product-wrap-main">
+            <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
+                @include('frontend.v1.pages.product.components.label')
                 @if($product->sale_price !== '')
                     <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                         <div class="product-label-wrap">
