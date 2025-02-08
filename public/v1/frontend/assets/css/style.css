@@ -5304,6 +5304,7 @@ header .section-header .row-main .header-menu .col-lg{
     font-size: 11px;
     text-transform: uppercase;
     font-weight: 500;
+    z-index: 2;
 }
 .product-item-category .product-wrap-main.product-wrap-main-with-sale .product-label-s-wrap {
     top: 52px;
