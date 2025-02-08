@@ -75,8 +75,8 @@
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
                             <div class="product-wrap">
-                                @include('frontend.v1.pages.product.components.label')
-                                <div class="product-wrap-main">
+                                <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
+                                    @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
@@ -95,7 +95,7 @@
                                         @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                         </h3>
                                     </div>
                                         <div class="product-item-article-wrap">
@@ -156,8 +156,8 @@
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
                             <div class="product-wrap">
-                                @include('frontend.v1.pages.product.components.label')
-                                <div class="product-wrap-main">
+                                <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
+                                    @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
@@ -176,7 +176,7 @@
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">
@@ -237,8 +237,8 @@
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
                             <div class="product-wrap">
-                                @include('frontend.v1.pages.product.components.label')
-                                <div class="product-wrap-main">
+                                <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
+                                    @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
                                         <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
                                             <div class="product-label-wrap">
@@ -257,7 +257,7 @@
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">

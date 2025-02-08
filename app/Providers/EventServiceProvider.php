@@ -6,9 +6,11 @@ use App\Events\OrderCreatedSendEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
 use App\Events\PasswordChangedEmailEvent;
 use App\Events\PasswordResetEmailEvent;
+use App\Events\PersonalSaleWasChangedEvent;
 use App\Events\UserActivationSendEmailEvent;
 use App\Listeners\PasswordChangedEmailListener;
 use App\Listeners\PasswordResetEmailListener;
+use App\Listeners\PersonalSaleWasChangedListener;
 use App\Listeners\SendManagerOrderEmailListener;
 use App\Listeners\SendUserActivationEmailListener;
 use App\Listeners\SendUserOrderEmailListener;
@@ -46,7 +48,11 @@ class EventServiceProvider extends ServiceProvider
 
         PasswordChangedEmailEvent::class => [
             PasswordChangedEmailListener::class
-        ]
+        ],
+
+        PersonalSaleWasChangedEvent::class => [
+            PersonalSaleWasChangedListener::class
+        ],
     ];
 
     /**

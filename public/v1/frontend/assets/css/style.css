@@ -5284,7 +5284,7 @@ header .section-header .row-main .header-menu .col-lg{
     min-height: 196px;
 }
 .slick-track{
-    margin-top: 21px;
+    margin-top: 0;
     margin-bottom: 36px;
 }
 .col-product-images .slick-track{
@@ -5295,19 +5295,23 @@ header .section-header .row-main .header-menu .col-lg{
     display: inline-block;
     width: auto;
     position: absolute;
-    top: -20px;
-    left: 5px;
-    padding: 4px 15px;
+    top: 10px;
+    left: 10px;
+    padding: 3px 7px;
     background-color: #0a2d6c;
     color: white;
-    border-radius: 18px 18px 0 0;
-    font-size: 12px;
+    border-radius: 5px;
+    font-size: 11px;
     text-transform: uppercase;
     font-weight: 500;
 }
+.product-item-category .product-wrap-main.product-wrap-main-with-sale .product-label-s-wrap {
+    top: 52px;
+}
 .product-item-category .product-wrap .product-label-s-wrap.product-label-s-wrap-right
 {
-    left: 65px;
+    top: 71px;
+    left: 10px;
 }
 .product-item-category .product-wrap .product-label-s-wrap.s-on_sale{
     background-color: #c70303;
@@ -5342,8 +5346,8 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .product-item-category a.product-label .product-label-wrap {
-    width: 52px;
-    height: 52px;
+    width: 39px;
+    height: 39px;
     border-radius: 100%;
     font-size: 12px;
     padding: 0;

@@ -49,7 +49,7 @@ class CategoryRepository
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
             ->where('stock', '!=', 0)
-            ->defaultSort('id')
+            ->defaultSort('price')
             ->allowedSorts([
                 'id',
                 'onec_id',
