@@ -5,7 +5,9 @@ namespace App\Repositories\Brand;
 use App\Filters\BrandSearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeBrandsFilter;
+use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
+use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Brand;
 use App\Models\Category;
@@ -13,6 +15,7 @@ use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class BrandRepository
@@ -82,10 +85,20 @@ final class BrandRepository
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
             ->where('stock', '!=', 0)
-            ->defaultSort('id')
+            ->defaultSort('price')
             ->allowedSorts([
                 'id',
+                'onec_id',
+                AllowedSort::custom('price', new ThemePriceSort(), 'price'),
+                'title',
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                'popular_order',
+                'stock',
             ])
+            ->where('status', true)
+            ->where('site_status', true)
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
+            ->groupBy('products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())

@@ -60,6 +60,7 @@ final class ProductRepository
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
+            ->defaultSort('price')
             ->where('stock', '!=', 0)
             ->allowedSorts([
                 'id',

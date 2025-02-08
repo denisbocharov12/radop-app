@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1\Client;
 
 use App\Data\Client\ClientData;
+use App\Events\PersonalSaleWasChangedEvent;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\DuplicatedUserEmailValidationException;
 use App\Exceptions\User\UserNotFoundException;
@@ -70,10 +71,15 @@ class ClientController extends Controller
     public function update(User $user, ClientUpdateRequest $request)
     {
         $clientData = $this->clientUpdateDataMapper->mapFromRequestToNormalized($request);
+        $personalSale = $user->sale;
 
         try {
 
             $this->clientManager->update($clientData, $user);
+
+            if ($personalSale !== (float) $clientData->sale) {
+                event(new PersonalSaleWasChangedEvent($user));
+            }
 
             return redirect()->route('client.index');
 

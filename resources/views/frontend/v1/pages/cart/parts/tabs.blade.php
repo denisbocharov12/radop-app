@@ -47,7 +47,7 @@
                                         @endif
                                         <div class="product-item-title-wrap">
                                             <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                                <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                             </h3>
                                         </div>
                                         <div class="product-item-article-wrap">
@@ -116,7 +116,7 @@
                                 @endif
                                 <div class="product-item-title-wrap">
                                     <h3 class="product_item_name">
-                                        <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                        <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                     </h3>
                                 </div>
                                 <div class="product-item-article-wrap">
@@ -183,7 +183,7 @@
                                 @endif
                                 <div class="product-item-title-wrap">
                                     <h3 class="product_item_name">
-                                        <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::words($product->title, 8, ' ...')}}</a>
+                                        <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
                                     </h3>
                                 </div>
                                 <div class="product-item-article-wrap">
