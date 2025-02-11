@@ -85,7 +85,6 @@ final class BrandRepository
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
             ])
             ->where('stock', '!=', 0)
-            ->defaultSort('price')
             ->allowedSorts([
                 'id',
                 'onec_id',
@@ -99,6 +98,13 @@ final class BrandRepository
             ->where('site_status', true)
             ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->groupBy('products.onec_id')
+            ->orderByRaw("
+            CASE
+                WHEN sale_price IS NOT NULL AND sale_price != ''
+                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
+                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
+            END ASC
+            ")
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
