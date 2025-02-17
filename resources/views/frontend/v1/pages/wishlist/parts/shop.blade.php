@@ -5,7 +5,7 @@
                 @include('frontend.v1.pages.wishlist.parts.not-found')
             @else
                 <div class="col-12">
-                    <div class="{{app('wishlist')->getContent()->count() < 1 ? 'row' : 'grid-products-list-wrap'}}">
+                    <div class="{{app('wishlist')->getContent()->count() < 1 ? 'row' : 'grid-products-list-wrap'}}" style="{{app('wishlist')->getContent()->count() < 1 ? '' : 'grid-template-columns: repeat(5, 1fr);'}}">
                         @include('frontend.v1.pages.wishlist.parts.list')
                     </div>
                 </div>

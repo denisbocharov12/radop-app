@@ -78,6 +78,8 @@ final class AttributeRepository
             ->join('products', 'product_categories.product_id', '=', 'products.onec_id')
             ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
             ->where('product_categories.category_id', $id)
+            ->where('products.status', true)
+            ->where('products.site_status', true)
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
             ->get()
             ->keyBy('value')

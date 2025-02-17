@@ -5,7 +5,7 @@
                 @include('frontend.v1.pages.search.parts.not-found')
             @else
                 <div class="col-12">
-                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
+                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" style="{{$products->isEmpty() ? '' : 'grid-template-columns: repeat(5, 1fr);'}}">
                         @include('frontend.v1.pages.search.parts.list')
                     </div>
                     <div class="row mt-5 mb-5">
