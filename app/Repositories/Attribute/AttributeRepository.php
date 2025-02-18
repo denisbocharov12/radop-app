@@ -96,25 +96,20 @@ final class AttributeRepository
     public function getAllAttributesByProductsIdsToFrontEnd(Collection $products): ?array
     {
         $productIds = $products->pluck('onec_id')->toArray();
-        $attributesCollection = [];
+        $collect = [];
 
         $attributeValues = DB::table('attribute_values')
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
             ->whereIn('attribute_values.product_onec_id', $productIds)
             ->get()
-            ->keyBy('value');
+            ->groupBy('attribute_onec_id');
 
         foreach ($attributeValues as $key => $value) {
-            $attributeName = Attribute::where('onec_id', $value->attribute_onec_id)
-                ->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
 
-            if (array_key_exists($attributeName, $attributesCollection)) {
-                $attributesCollection[$attributeName][] = (array)$value;
-            } else {
-                $attributesCollection[$attributeName] = [(array)$value];
-            }
+            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
         }
 
-        return $attributesCollection;
+        return $collect;
     }
 }

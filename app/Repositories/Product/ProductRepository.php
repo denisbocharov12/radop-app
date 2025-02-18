@@ -360,7 +360,7 @@ final class ProductRepository
             ->where('products.title', 'like', "%{$value}%")
             ->where('stock', '!=', 0)
             ->orWhere('products.onec_id', 'like', "%{$value}%")
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate(15)
             ->appends(request()->query())
         ;
     }

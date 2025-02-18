@@ -213,15 +213,16 @@ $(document).ready(function () {
     arrows: false,
     cssEase: "ease-out",
   });
+
   $(".catalog-slider")
     .slick({
       autoplay: false,
       dots: false,
-      autoplaySpeed: 8000,
+      autoplaySpeed: 3000,
       speed: 1000,
       infinite: true,
       slidesToShow: 5,
-      slidesToScroll: 1,
+      slidesToScroll: 5,
       arrows: true,
       swipe: false,
         prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
@@ -236,7 +237,7 @@ $(document).ready(function () {
             swipe: true,
             dots: true,
             arrows: false,
-            slidesToScroll: 1,
+            slidesToScroll: 3,
           },
         },
         {
@@ -246,7 +247,7 @@ $(document).ready(function () {
             swipe: true,
             arrows: false,
             slidesToShow: 2,
-            slidesToScroll: 1,
+            slidesToScroll: 2,
           },
         },
       ],
