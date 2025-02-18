@@ -24,6 +24,7 @@ final class Brand extends Model implements HasMedia
         'title',
         'slug',
         'description',
+        'order',
         'status'
     ];
 

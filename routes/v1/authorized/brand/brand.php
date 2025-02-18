@@ -35,4 +35,12 @@ Route::prefix('brands')->name('brand.')->group(function () {
         ->post('{brand}/media/delete', [BrandController::class, 'deleteMedia'])
         ->name('media.delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts', [BrandController::class, 'sortBrand'])
+        ->name('sort.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/brand', [BrandController::class, 'sortBrandOrder'])
+        ->name('sort.order')
+    ;
 });

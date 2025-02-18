@@ -48,6 +48,14 @@ final class BrandRepository
         return Brand::query()->get();
     }
 
+    public function getAllForSort(): Collection
+    {
+        return Brand::where('status', true)
+            ->orderBy('order')
+            ->get()
+        ;
+    }
+
     public function getAllToFrontEnd(): Collection
     {
         return Brand::query()->where('status', true)->get();
@@ -55,7 +63,11 @@ final class BrandRepository
 
     public function getLimited(): Collection
     {
-        return Brand::all()->where('status', true)->sortBy('onec_id')->take(30);
+        return Brand::where('status', true)
+            ->orderBy('order')
+            ->take(30)
+            ->get()
+        ;
     }
 
     public function getById($brandId): ?Brand

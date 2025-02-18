@@ -58,7 +58,7 @@
                                                 </div>
                                                 @php
                                                     $attributeValues = collect($attributeValues)->map(function($attribute) {
-                                                        return \App\Models\AttributeValue::find($attribute['id']);
+                                                        return \App\Models\AttributeValue::find($attribute->id);
                                                     })->sortBy('value');
 
                                                 $activeStyle = 'display: none';

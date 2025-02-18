@@ -105,4 +105,28 @@ final class BrandController extends Controller
             throw new AttachmentNotFoundValidationException();
         }
     }
+
+    public function sortBrand()
+    {
+        $brands = $this->brandRepository->getAllForSort();
+
+        return view('brand.sort', compact([
+            'brands',
+        ]));
+    }
+
+    public function sortBrandOrder(Request $request)
+    {
+        $brands = $this->brandRepository->getAllForSort();
+
+        foreach ($brands as $brand) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $brand->id) {
+                    $brand->update(['order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Брэнды успешно отсортированы']);
+    }
 }
