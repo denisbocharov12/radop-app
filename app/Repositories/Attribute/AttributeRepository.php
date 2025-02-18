@@ -42,18 +42,14 @@ final class AttributeRepository
         $join = DB::table('attribute_values')
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
             ->get()
-            ->keyBy('value')
+            ->groupBy('attribute_onec_id')
         ;
 
         foreach ($join as $key => $value)
         {
-            $keyName = Attribute::where('onec_id', $value->attribute_onec_id)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
 
-            if (array_key_exists($keyName, $collect)) {
-                array_push($collect[$keyName], (array)$value);
-            } else {
-                $collect[$keyName][] = (array)$value;
-            }
+            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
         }
 
         return $collect;
@@ -82,18 +78,15 @@ final class AttributeRepository
             ->where('products.site_status', true)
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
             ->get()
-            ->keyBy('value')
+            ->groupBy('attribute_onec_id')
         ;
 
         foreach ($join as $key => $value)
         {
-            $keyName = Attribute::where('onec_id', $value->attribute_onec_id)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
 
-            if (array_key_exists($keyName, $collect)) {
-                array_push($collect[$keyName], (array)$value);
-            } else {
-                $collect[$keyName][] = (array)$value;
-            }
+            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+
+            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
 
         }
 
