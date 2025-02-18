@@ -1932,8 +1932,10 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 8px 15px;
     border-radius: 10px;
 }
-.section-header .row-main .header-account .icon-block a.icon-block-link:hover{
+.section-header .row-main .header-account .icon-block.login-registration-block a.icon-block-link{
     background-color: #eff3f6;
+}
+.section-header .row-main .header-account .icon-block a.icon-block-link:hover{
     text-decoration: underline!important;
 }
 .section-header .row-main .header-account .icon-block a.icon-block-link i {
@@ -2302,7 +2304,6 @@ header .section-header .row-main .header-menu .col-lg{
 
 .catalog-slider .slick-slide {
     margin: 0 7.5px;
-    height: 100%!important;
 }
 
 .catalog-slider .slick-list {
@@ -2395,7 +2396,7 @@ header .section-header .row-main .header-menu .col-lg{
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .catalog-slider .rating-css {
@@ -5271,7 +5272,6 @@ header .section-header .row-main .header-menu .col-lg{
     flex-direction: column;
     width: 100%;
     border-radius: 10px;
-    height: fit-content;
 }
 .grid-products-list-wrap{
     grid-template-columns: repeat(4, 1fr);
@@ -5283,8 +5283,8 @@ header .section-header .row-main .header-menu .col-lg{
     border: 1px solid #e2e7ec;
     padding: 10px;
     border-radius: 10px;
-    height: fit-content;
     min-height: 196px;
+    justify-content: flex-start;
 }
 .slick-track{
     margin-top: 0;
@@ -8447,17 +8447,22 @@ hr.product-card-item{
 .product-info-row .delete-from-wishlist-btn:hover i {
     color: #e82d25;
 }
-
+.section-product .col-product-images {
+    position: relative;
+}
 .section-product .product-label-s-wrap {
     display: inline-block;
     width: auto;
-    padding: 4px 15px;
-    background-color: #0a2d6c;
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    padding: 3px 7px;
     color: white;
-    border-radius: 18px 18px 0 0;
-    font-size: 12px;
+    border-radius: 5px;
+    font-size: 11px;
     text-transform: uppercase;
     font-weight: 500;
+    z-index: 2;
 }
 .section-product .product-label-s-wrap.product-label-s-wrap-right
 {
