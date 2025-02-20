@@ -50,30 +50,30 @@
                                     <a href="#"><i class="icon-point"></i>{{__('theme.office-address')}}</a>
                                 </div>
                             </li>
-                            <li class="item">
-                                <p class="footer-text">{{__('theme.sales-department')}}:</p>
-                                <div class="d-flex align-items-center">
-                                    <a href="tel:+37322782100">+373 22 78 21 00</a> <a href="mailto:sales@radop.md">sales@radop.md</a>
-                                </div>
-                            </li>
-                            <li class="item">
-                                <p class="footer-text">{{__('theme.procurement-department')}}:</p>
-                                <div class="d-flex align-items-center">
-                                    <a href="tel:+37322782102">+ 373 22 78 21 02</a> <a href="mailto:office@radop.md">office@radop.md</a>
-                                </div>
-                            </li>
-                            <li class="item">
-                                <p class="footer-text">{{__('theme.tender-department')}}:</p>
-                                <div class="d-flex align-items-center">
-                                    <a href="tel:+37322782101">+373 22 78 21 01</a> <a href="mailto:sales@radop.md">sales@radop.md</a>
-                                </div>
-                            </li>
-                            <li class="item">
-                                <p class="footer-text">{{__('theme.accounting')}}:</p>
-                                <div class="d-flex align-items-center">
-                                    <a href="tel:+37322782103">+ 373 22 78 21 03</a> <a href="mailto:cont@radop.md">cont@radop.md</a>
-                                </div>
-                            </li>
+{{--                            <li class="item">--}}
+{{--                                <p class="footer-text">{{__('theme.sales-department')}}:</p>--}}
+{{--                                <div class="d-flex align-items-center">--}}
+{{--                                    <a href="tel:+37322782100">+373 22 78 21 00</a> <a href="mailto:sales@radop.md">sales@radop.md</a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
+{{--                            <li class="item">--}}
+{{--                                <p class="footer-text">{{__('theme.procurement-department')}}:</p>--}}
+{{--                                <div class="d-flex align-items-center">--}}
+{{--                                    <a href="tel:+37322782102">+ 373 22 78 21 02</a> <a href="mailto:office@radop.md">office@radop.md</a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
+{{--                            <li class="item">--}}
+{{--                                <p class="footer-text">{{__('theme.tender-department')}}:</p>--}}
+{{--                                <div class="d-flex align-items-center">--}}
+{{--                                    <a href="tel:+37322782101">+373 22 78 21 01</a> <a href="mailto:sales@radop.md">sales@radop.md</a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
+{{--                            <li class="item">--}}
+{{--                                <p class="footer-text">{{__('theme.accounting')}}:</p>--}}
+{{--                                <div class="d-flex align-items-center">--}}
+{{--                                    <a href="tel:+37322782103">+ 373 22 78 21 03</a> <a href="mailto:cont@radop.md">cont@radop.md</a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                         </ul>
 {{--                        <ul class="footer-menu">--}}
 {{--                            <li class="item"><a href="#">{{__('theme.how-to-order')}}</a></li>--}}
