@@ -35,6 +35,7 @@ return array (
     'check-email' => '',
     'chisinau' => 'Кишинёв',
     'client' => 'Клиент:',
+    'client_type' => 'Тип клиента:',
     'closed' => 'Закрыто',
     'cod-fiscal' => 'Фискальный код',
     'code' => 'Код',
@@ -262,4 +263,5 @@ return array (
     'order-text-2' => 'Уважаемый клиент, ваш заказ, размещенный на',
     'order-text-3' => 'был зарегистрирован.',
     'order-delivery-free' => 'Бесплатная доставка',
+    'order-new-order' => 'Новый заказ №',
 );

@@ -7,6 +7,7 @@ use App\Data\Theme\Order\ThemeOrderData;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
+use App\Events\OrderCreatedSendAdminEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
 use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\User\UserNotFoundException;
@@ -103,6 +104,8 @@ final class ThemeCheckoutManager
                 event(new OrderCreatedSendManagerEmailEvent($existedManager));
             }
         }
+
+        event(new OrderCreatedSendAdminEmailEvent(config('mail.admin_email'), $order));
 
         return $order;
     }
