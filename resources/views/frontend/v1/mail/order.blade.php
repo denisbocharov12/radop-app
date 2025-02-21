@@ -24,7 +24,7 @@
         @foreach($products as $product)
             <tr>
                 <td style="padding: 8px; text-align: left;">{{ \App\Models\Product::find($product->product_id)->title }}</td>
-                <td style="padding: 8px; text-align: left;">{{ $product->onec_id }}</td>
+                <td style="padding: 8px; text-align: left;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
                 <td style="padding: 8px; text-align: left;">{{ $product->quantity }} {{ __('theme.package_unit') }}</td>
                 <td style="padding: 8px; text-align: left;">{{ $product->price * $product->quantity}} {{ __('theme.MDL') }}</td>
             </tr>

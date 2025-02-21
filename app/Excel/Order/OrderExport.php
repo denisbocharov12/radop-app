@@ -19,7 +19,7 @@ final class OrderExport implements ShouldAutoSize, FromView
 
     public function view(): View
     {
-        $products = OrderItem::where('order_id', $this->order->id)->get();
+        $products = $this->order->products;
 
         return view('frontend.v1.excel.order', [
             'order' => $this->order,

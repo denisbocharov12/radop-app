@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Excel\Order\OrderExport;
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +21,7 @@ class AdminOrderMail extends Mailable
     {
         $filePath = "orders/order_{$this->order->id}.xlsx";
         Excel::store(new OrderExport($this->order), $filePath, 'local');
-        $products = OrderItem::where('order_id', $this->order->id)->get();
+        $products = $this->order->products;
 
         return $this->subject(__('theme.order-new-order') . '' . $this->order->order_number)
             ->view('frontend.v1.mail.order', ['order' => $this->order, 'products' => $products])
