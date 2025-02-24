@@ -61,12 +61,12 @@ final class BrandRepository
         return Brand::query()->where('status', true)->get();
     }
 
-    public function getLimited(): Collection
+    public function getLimited()
     {
         return Brand::where('status', true)
             ->orderBy('order')
             ->take(30)
-            ->get()
+            ->lazy()
         ;
     }
 

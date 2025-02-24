@@ -97,7 +97,7 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllPopularProducts(): Collection
+    public function getAllPopularProducts()
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
         $productIds = $popularProductProfiles->pluck('product_id');
@@ -107,7 +107,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('popular_order')
-            ->get();
+            ->lazy();
     }
 
     public function getAllPopularProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
@@ -184,7 +184,7 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllNewProducts(): Collection
+    public function getAllNewProducts()
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
         $productIds = $newProductProfile->pluck('product_id');
@@ -194,7 +194,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('new_order')
-            ->get();
+            ->lazy();
     }
 
     public function getAllNewProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
@@ -243,14 +243,14 @@ final class ProductRepository
             ->get();
     }
 
-    public function getAllDiscountProducts(): Collection
+    public function getAllDiscountProducts()
     {
         return Product::where('sale_price', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('sale_order')
-            ->get();
+            ->lazy();
     }
 
     public function getAllDiscountProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator

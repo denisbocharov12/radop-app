@@ -15,8 +15,8 @@ final class PropertyServiceProvider extends ServiceProvider
 
         View::composer('*', function($view)
         {
-            $themeParentCategories = Category::where(['parent_id'=> null,'status'=> true])->orderBy('order')->get();
-            $view->with(['themeParentCategories'=>$themeParentCategories]);
+            $themeParentCategories = Category::where(['parent_id'=> null,'status'=> true])->orderBy('order')->lazy();
+            $view->with(['themeParentCategories' => $themeParentCategories]);
         });
     }
 }

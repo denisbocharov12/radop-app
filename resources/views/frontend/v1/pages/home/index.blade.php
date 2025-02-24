@@ -13,11 +13,6 @@
                         </div>
                         <div class="item">
                             <a href="{{route('theme.category.index', 10)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_4.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{route('theme.category.index', 10)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt="" />
                             </a>
                         </div>
@@ -273,21 +268,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="add_to_cart_wrap">
-                                    <hr class="product-card-item">
-                                    <div class="wrap">
-                                        @include('frontend.v1.components.product_price')
-                                    </div>
-                                    <div class="product-card-summary">
-                                        <p><span class="summary-title">{{__('theme.total')}}</span>
-                                            <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
+                                <div class="product-card-bottom">
+                                    <div class="add_to_cart_wrap">
+                                        <hr class="product-card-item">
+                                        <div class="wrap">
+                                            @include('frontend.v1.components.product_price')
+                                        </div>
+                                        <div class="product-card-summary">
+                                            <p><span class="summary-title">{{__('theme.total')}}</span>
+                                                <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
                                                 @include('frontend.v1.components.product_total')
                                             </span> {{__('theme.MDL')}}
-                                        </p>
+                                            </p>
+                                        </div>
+                                        @include('frontend.v1.components.add_to_cart_widget_v2')
                                     </div>
-                                    @include('frontend.v1.components.add_to_cart_widget_v2')
+                                    @include('frontend.v1.components.packages_card_wrap')
                                 </div>
-                                @include('frontend.v1.components.packages_card_wrap')
                             </div>
                             @include('frontend.v1.components.in_cart_widget')
                         </div>
