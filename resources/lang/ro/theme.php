@@ -35,6 +35,7 @@ return array (
     'check-email' => 'Verificați email-ul cu detaliile comenzii. În scurt timp veti fi contactat de un operator.',
     'chisinau' => 'Chișinău',
     'client' => 'Client:',
+    'client_type' => 'Tipul clientului:',
     'closed' => 'Închis',
     'cod-fiscal' => 'Cod fiscal',
     'code' => 'Cod',
@@ -262,4 +263,5 @@ return array (
     'order-text-2' => 'Stimate client, comanda făcută pe',
     'order-text-3' => 'a fost înregistrată.',
     'order-delivery-free' => 'Livrare gratuită',
+    'order-new-order' => 'Comanda nouă №',
 );
