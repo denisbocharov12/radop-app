@@ -147,4 +147,11 @@ class OrderController extends Controller
         }
     }
 
+    public function downloadExcel(Order $order){
+        try {
+            return $this->orderManager->downloadExcel($order);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
+        }
+    }
 }

@@ -38,4 +38,8 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->get('/{order}/download-invoice', [OrderController::class, 'downloadInvoice'])
         ->name('download.invoice')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/{order}/download-excel', [OrderController::class, 'downloadExcel'])
+        ->name('download.excel')
+    ;
 });

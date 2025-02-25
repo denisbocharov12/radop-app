@@ -3,6 +3,7 @@
 namespace App\Services\Order;
 
 use App\Data\Order\OrderData;
+use App\Excel\Order\OrderExport;
 use App\Exceptions\Order\ManagerNotFoundException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderUniqueCodeException;
@@ -12,6 +13,7 @@ use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 
 final class OrderManager
@@ -161,6 +163,19 @@ final class OrderManager
         ]));
 
         return $pdf->download();
+    }
+
+    public function downloadExcel(Order $order)
+    {
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null){
+            throw new OrderNotFoundException();
+        }
+
+        $filePath = "order_{$order->id}.xlsx";
+
+        return Excel::download(new OrderExport($order), $filePath);
     }
 
 }

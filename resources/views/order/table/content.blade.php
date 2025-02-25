@@ -46,6 +46,7 @@
                                         <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf', $order)}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>
                                         <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
                                         <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice', $order)}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.excel', $order)}}"><em class="icon ni ni-download"></em><span>Скачать Excel</a></li>
                                     </ul>
                                 </div>
                             </div>

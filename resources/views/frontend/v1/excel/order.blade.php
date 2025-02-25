@@ -16,8 +16,12 @@
         <td style="border: 1px solid black;">{{ $order->user_type == 'fiz' ? __('theme.physical-person') : __('theme.legal-person') }}</td>
     </tr>
     <tr>
-        <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
-        <td style="border: 1px solid black;">{{ $order->first_name . ' ' . $order->last_name }}</td>
+        <td style="border: 1px solid black;"><strong>{{ __('theme.client_type') }}</strong></td>
+        <td style="border: 1px solid black;">{{ $order->user_type == 'fiz' ? __('theme.physical-person') : __('theme.legal-person') }}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black;"><strong>{{ __('theme.cod-fiscal') }}</strong></td>
+        <td style="border: 1px solid black;">{!! $order->user->profile->cod_fiscal !!}</td>
     </tr>
 </table>
 
