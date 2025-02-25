@@ -107,7 +107,9 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('popular_order')
-            ->lazy();
+            ->take(15)
+            ->get()
+        ;
     }
 
     public function getAllPopularProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
@@ -167,7 +169,9 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->orderBy('hot_order')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
-            ->get();
+            ->take(15)
+            ->get()
+        ;
     }
 
     public function getAllHotProductsWithoutLimit(): Collection
@@ -181,7 +185,9 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('hot_order')
-            ->get();
+            ->take(15)
+            ->get()
+        ;
     }
 
     public function getAllNewProducts()
@@ -194,7 +200,9 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('new_order')
-            ->lazy();
+            ->take(15)
+            ->get()
+        ;
     }
 
     public function getAllNewProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
@@ -250,7 +258,9 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('sale_order')
-            ->lazy();
+            ->take(15)
+            ->get()
+         ;
     }
 
     public function getAllDiscountProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
