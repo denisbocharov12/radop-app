@@ -66,7 +66,7 @@ final class BrandRepository
         return Brand::where('status', true)
             ->orderBy('order')
             ->take(30)
-            ->lazy()
+            ->get()
         ;
     }
 
