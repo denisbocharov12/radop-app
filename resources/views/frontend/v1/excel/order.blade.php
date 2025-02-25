@@ -15,14 +15,22 @@
         <td style="border: 1px solid black;"><strong>{{ __('theme.client_type') }}</strong></td>
         <td style="border: 1px solid black;">{{ $order->user_type == 'fiz' ? __('theme.physical-person') : __('theme.legal-person') }}</td>
     </tr>
-    <tr>
-        <td style="border: 1px solid black;"><strong>{{ __('theme.client_type') }}</strong></td>
-        <td style="border: 1px solid black;">{{ $order->user_type == 'fiz' ? __('theme.physical-person') : __('theme.legal-person') }}</td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid black;"><strong>{{ __('theme.cod-fiscal') }}</strong></td>
-        <td style="border: 1px solid black;">{!! $order->user->profile->cod_fiscal !!}</td>
-    </tr>
+
+    @if($order->user_type !== 'fiz')
+        <tr>
+            <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
+            <td style="border: 1px solid black;">{{ $order->user->profile->organization_name }}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;"><strong>{{ __('theme.cod-fiscal') }}</strong></td>
+            <td style="border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}" align="left">{!! $order->user->profile->cod_fiscal !!}</td>
+        </tr>
+    @else
+        <tr>
+            <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
+            <td style="border: 1px solid black;">{{ $order->first_name . ' ' . $order->last_name }}</td>
+        </tr>
+    @endif
 </table>
 
 <br>
@@ -30,8 +38,7 @@
 <table style="border-collapse: collapse; width: 100%;">
     <thead>
     <tr>
-        <th style="border: 1px solid black;">№</th>
-        <th style="border: 1px solid black;">{{ __('theme.order-cod') }}</th>
+        <th style="border: 1px solid black; width: 120px">{{ __('theme.order-cod') }}</th>
         <th style="border: 1px solid black;">{{ __('theme.product-name') }}</th>
         <th style="border: 1px solid black;">{{ __('theme.order-quantity') }}</th>
         <th style="border: 1px solid black;">{{ __('theme.order-price') }}</th>
@@ -44,7 +51,6 @@
             $product = \App\Models\Product::find($item->product_id);
         @endphp
         <tr>
-            <td style="border: 1px solid black;">{{ $index + 1 }}</td>
             <td style="border: 1px solid black;">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{{ $product->title }}</td>
             <td style="border: 1px solid black;">{{ $item->quantity }}</td>
@@ -56,7 +62,7 @@
     <tfoot>
     <tr>
         <td colspan="5" style="border: 1px solid black; text-align: center;"><strong>{{ __('theme.cart-table-sum') }}</strong></td>
-        <td style="border: 1px solid black;"><strong>{{ number_format($order->total, 2, '.', ' ') }}</strong></td>
+        <td style="border: 1px solid black;"><strong>{{ number_format($order->total, 2, '.', ' ') }} лей</strong></td>
     </tr>
     </tfoot>
 </table>
