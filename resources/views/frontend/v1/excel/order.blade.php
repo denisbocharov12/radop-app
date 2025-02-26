@@ -61,7 +61,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="5" style="border: 1px solid black; text-align: center;"><strong>{{ __('theme.cart-table-sum') }}</strong></td>
+        <td colspan="4" style="border: 1px solid black; text-align: center;"><strong>{{ __('theme.cart-table-sum') }}</strong></td>
         <td style="border: 1px solid black;"><strong>{{ number_format($order->total, 2, '.', ' ') }} лей</strong></td>
     </tr>
     </tfoot>

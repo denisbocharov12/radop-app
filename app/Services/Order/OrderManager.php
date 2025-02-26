@@ -173,9 +173,9 @@ final class OrderManager
             throw new OrderNotFoundException();
         }
 
-        $filePath = "order_{$order->id}.xlsx";
+        $filePath = "order_{$order->id}.xls";
 
-        return Excel::download(new OrderExport($order), $filePath);
+        return Excel::download(new OrderExport($order), $filePath, \Maatwebsite\Excel\Excel::XLS);
     }
 
 }
