@@ -19,8 +19,8 @@ class AdminOrderMail extends Mailable
 
     public function build(): AdminOrderMail
     {
-        $filePath = "orders/order_{$this->order->id}.xlsx";
-        Excel::store(new OrderExport($this->order), $filePath, 'local');
+        $filePath = "orders/order_{$this->order->id}.xls";
+        Excel::store(new OrderExport($this->order), $filePath, 'local', \Maatwebsite\Excel\Excel::XLS);
         $products = $this->order->products;
 
         return $this->subject(__('theme.order-new-order') . '' . $this->order->order_number)
