@@ -22,7 +22,9 @@
                         </div>
                     </a>
                 @endif
-                @include('frontend.v1.pages.wishlist.parts.product-image')
+                <div class="wrap">
+                    @include('frontend.v1.pages.wishlist.parts.product-image')
+                </div>
                     @if(app('wishlist')->get($product->conditions->id) !== null)
                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->conditions->id}}" data-id="{{$product->conditions->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
                         </a>
@@ -48,6 +50,11 @@
                     </span>
                     </div>
                 </div>
+                <div class="product-list-mini-brand-wrap">
+                    <a href="{{route('theme.brand.index', $product->conditions->brand->id)}}" class="product-mini-brand">
+                        <span class="brand-text"><span class="mini-heading">{{__('theme.all-brand-products')}}</span> {{$product->conditions->brand->title}} <i class="icon-arrow-radop-right"></i></span>
+                    </a>
+                </div>
             </div>
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
@@ -56,9 +63,9 @@
                         <span class="price">{{number_format((float)$product->conditions->price - (float)$product->conditions->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                     @elseif($product->conditions->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
                         <span class="price" style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                        <span class="old_price" style="color: #848484">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        <span class="old_price" style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                     @else
-                        <span class="price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                     @endif
 
                 </div>
@@ -131,6 +138,9 @@
             @if(!$product->conditions->packages->isEmpty())
                 <div class="packages-wrap">
                     <p>{{__('theme.package')}}: @foreach($product->conditions->packages->sortBy('value') as $package){{$package->value}}{{$loop->last ? '' : '/'}}@endforeach</p>
+                </div>
+                <div class="packages-wrap-min-to-order">
+                    <p>{{__('theme.package-min-to-order')}}: {{isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1}}</p>
                 </div>
             @endif
         </div>

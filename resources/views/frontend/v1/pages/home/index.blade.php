@@ -105,8 +105,13 @@
                                                 </span>
                                             </div>
                                         </div>
+                                    @include('frontend.v1.pages.product.components.variations-product-card')
+                                    @if($product->brand !== null)
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
+                                    @endif
                                 </div>
-                                <div class="add_to_cart_wrap">
+                                <div class="product-card-bottom">
+                                    <div class="add_to_cart_wrap">
                                     <hr class="product-card-item">
                                     <div class="wrap">
                                         @include('frontend.v1.components.product_price')
@@ -120,7 +125,8 @@
                                     </div>
                                     @include('frontend.v1.components.add_to_cart_widget_v2')
                                 </div>
-                                @include('frontend.v1.components.packages_card_wrap')
+                                    @include('frontend.v1.components.packages_card_wrap')
+                                </div>
                             </div>
                             @include('frontend.v1.components.in_cart_widget')
                         </div>
@@ -186,8 +192,13 @@
                                                 </span>
                                         </div>
                                     </div>
+                                    @include('frontend.v1.pages.product.components.variations-product-card')
+                                    @if($product->brand !== null)
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
+                                    @endif
                                 </div>
-                                <div class="add_to_cart_wrap">
+                                <div class="product-card-bottom">
+                                    <div class="add_to_cart_wrap">
                                     <hr class="product-card-item">
                                     <div class="wrap">
                                         @include('frontend.v1.components.product_price')
@@ -201,7 +212,8 @@
                                     </div>
                                     @include('frontend.v1.components.add_to_cart_widget_v2')
                                 </div>
-                                @include('frontend.v1.components.packages_card_wrap')
+                                    @include('frontend.v1.components.packages_card_wrap')
+                                </div>
                             </div>
                             @include('frontend.v1.components.in_cart_widget')
                         </div>
@@ -267,6 +279,10 @@
                                                 </span>
                                         </div>
                                     </div>
+                                    @include('frontend.v1.pages.product.components.variations-product-card')
+                                    @if($product->brand !== null)
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
+                                    @endif
                                 </div>
                                 <div class="product-card-bottom">
                                     <div class="add_to_cart_wrap">

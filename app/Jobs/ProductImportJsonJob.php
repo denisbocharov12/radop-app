@@ -41,6 +41,7 @@ final class ProductImportJsonJob implements ShouldQueue
         }
 
         foreach ($this->importData as $product) {
+
             $status = $product->status ? true : false;
             $characteristics = [];
 
@@ -69,6 +70,7 @@ final class ProductImportJsonJob implements ShouldQueue
                 'brand_id' => $product->brand_id,
                 'shtrih_code' => $shtrihCode,
                 'characteristic' => json_encode($characteristics),
+                'price_koef' => isset($product->price_koef) ? (float)$product->price_koef : null,
             ];
 
             Product::updateOrCreate(['onec_id' => $product->id], $data);

@@ -15,7 +15,8 @@ final class Attribute extends Model
     protected $fillable = [
         'onec_id',
         'name',
-        'status'
+        'status',
+        'order',
     ];
 
     public $translatable = ['name'];

@@ -2295,7 +2295,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .drop-shadow:hover {
-    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -7px 15px 1px rgba(0, 0, 0, 0.08);
 }
 
 .catalog-slider {
@@ -2396,7 +2396,7 @@ header .section-header .row-main .header-menu .col-lg{
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .catalog-slider .rating-css {
@@ -5260,6 +5260,16 @@ header .section-header .row-main .header-menu .col-lg{
     align-items: center;
 }
 
+.product-item-category.product-item-category-in-cart{
+    margin-bottom: 55px;
+}
+.product-item-category.product-item-category-in-cart.drop-shadow:hover{
+    box-shadow: 0 -7px 15px 1px rgba(0, 0, 0, 0.08);
+}
+.product-item-category.product-item-category-in-cart:hover .product-card-summary-in-cart p{
+    box-shadow: 0 5px 15px 1px rgba(0, 0, 0, 0.08);
+}
+
 .product-item-category .product-item-title-wrap .product_item_name a{
     height: 28px;
 }
@@ -5272,6 +5282,10 @@ header .section-header .row-main .header-menu .col-lg{
     flex-direction: column;
     width: 100%;
     border-radius: 10px;
+    height: auto;
+}
+.product-item-category.drop-shadow:hover{
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.08);
 }
 .grid-products-list-wrap{
     grid-template-columns: repeat(4, 1fr);
@@ -5284,7 +5298,7 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 10px;
     border-radius: 10px;
     min-height: 196px;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 .slick-track{
     margin-top: 0;
@@ -5842,7 +5856,7 @@ hr.product-card-item{
     margin-bottom: 10px;
 }
 .product-card-summary-in-cart{
-
+    position: relative;
 }
 .product-item-category.product-item-category-in-cart .product-wrap {
     border-radius: 10px 10px 0 0 ;
@@ -5853,12 +5867,13 @@ hr.product-card-item{
 
 .product-card-summary-in-cart p{
     font-size: 14px;
-    position: relative;
+    position: absolute;
     padding: 10px;
     border-radius: 0 0 10px 10px;
     border-left: 1px solid #e2e7ec;
     border-bottom: 1px solid #e2e7ec;
     border-right: 1px solid #e2e7ec;
+    width: 100%;
 }
 .product-card-summary-in-cart p i {
     color: green;
@@ -5931,6 +5946,15 @@ hr.product-card-item{
     font-size: 14px;
     text-align: center;
     font-style: italic;
+}
+.packages-wrap-min-to-order{
+    margin-top: 5px;
+}
+.packages-wrap-min-to-order p{
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    color: red;
 }
 .section-register {
     background-color: #fff;

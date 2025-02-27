@@ -35,6 +35,14 @@ final class AttributeRepository
         return Attribute::query()->get();
     }
 
+    public function getAllSorted(): Collection
+    {
+        return Attribute::where('status', true)
+            ->orderBy('order')
+            ->get()
+        ;
+    }
+
     public function getAllToShop(): ?array
     {
         $collect = array();
@@ -77,17 +85,16 @@ final class AttributeRepository
             ->where('products.status', true)
             ->where('products.site_status', true)
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+            ->orderBy('order')
             ->get()
             ->groupBy('attribute_onec_id')
         ;
 
         foreach ($join as $key => $value)
         {
-
             $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
 
             $collect[$keyName] = $value->keyBy('value')->values()->toArray();
-
         }
 
         return $collect;

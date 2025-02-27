@@ -264,4 +264,5 @@ return array (
     'order-text-3' => 'a fost înregistrată.',
     'order-delivery-free' => 'Livrare gratuită',
     'order-new-order' => 'Comanda nouă №',
+    'package-min-to-order' => 'Min. comanda',
 );

@@ -10,23 +10,12 @@ Route::prefix('attributes')->name('attribute.')->group(function () {
         ->get('/', [AttributeController::class, 'index'])
         ->name('index')
     ;
-//
-//    Route::middleware(['app.permissions'])
-//        ->post('/', [BrandController::class, 'store'])
-//        ->name('store');
-//
-//    Route::middleware(['app.permissions'])
-//        ->get('{brand}/edit', [BrandController::class, 'edit'])
-//        ->name('edit');
-//
-//    Route::middleware(['app.permissions'])
-//        ->post('{brand}/update', [BrandController::class, 'update'])
-//        ->name('update');
-//
-//    Route::middleware(['app.permissions'])
-//        ->delete('destroy', [BrandController::class, 'destroy'])
-//        ->name('delete');
-//    Route::middleware(['app.permissions'])
-//        ->post('{brand}/media/delete', [BrandController::class, 'deleteMedia'])
-//        ->name('media.delete');
+    Route::middleware(['app.permissions'])
+        ->get('/sorts', [AttributeController::class, 'sort'])
+        ->name('sort.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/order', [AttributeController::class, 'sortOrder'])
+        ->name('sort.order')
+    ;
 });
