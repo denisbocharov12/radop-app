@@ -3173,6 +3173,10 @@ header .section-header .row-main .header-menu .col-lg{
     margin-top: 15px;
 }
 
+.section-product .product-card-summary-in-cart.product-card-summary-in-cart-page p{
+    position: relative;
+}
+
 .section-product .product-tabs {
     margin-top: 30px;
 }
