@@ -86,6 +86,9 @@
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('attribute.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка аттрибутов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
                             </li>
                             <li class="nk-menu-item">

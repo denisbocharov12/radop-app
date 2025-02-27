@@ -264,4 +264,5 @@ return array (
     'order-text-3' => 'был зарегистрирован.',
     'order-delivery-free' => 'Бесплатная доставка',
     'order-new-order' => 'Новый заказ №',
+    'package-min-to-order' => 'Мин. заказ',
 );
