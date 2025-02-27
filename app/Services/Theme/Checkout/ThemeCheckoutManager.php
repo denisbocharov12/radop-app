@@ -48,7 +48,7 @@ final class ThemeCheckoutManager
             $authUser = $this->checkForExistedUser($user->id);
             $userId = $authUser->id;
             $managerId = $user->manager_id;
-            $userType = $authUser->type->name;
+            $userType = $authUser->type->key_name;
         }
 
         if (!array_key_exists($orderData->payment_method, $this->orderPaymentMethods->getAll()))
