@@ -63,7 +63,7 @@ final class ProductImportJsonJob implements ShouldQueue
                     'ro' => isset($product->name_ro_full) ? $product->name_ro_full : '',
                     'ru' => isset($product->name_ru_full) ? $product->name_ru_full : '',
                 ],
-                'slug' => Str::slug($product->name_ru_full) . '-' . $product->id,
+                //'slug' => Str::slug($product->name_ru_full) . '-' . $product->id,
                 'price' => $product->price,
                 'status' => $status,
                 'stock' => $product->stock,
