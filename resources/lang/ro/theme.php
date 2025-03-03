@@ -273,4 +273,5 @@ return array (
     'registration-text' => 'Pentru a activa contul dumneavoastră, vă rugăm să urmați instrucțiunile trimise pe adresa dumneavoastră de email',
     'registration-success-text' => 'Vă mulțumim pentru înregistrare! Pentru a afla prețul dvs. individual cu reducere, contactați managerul la numărul 022 78 21 12 sau scrieți la support@radop.md',
     'success' => 'Succes',
+    'header-catalog-text' => 'Catalog',
 );
