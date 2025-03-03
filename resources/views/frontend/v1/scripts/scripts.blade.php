@@ -117,7 +117,7 @@
                 $('#add-to-cart-' + product_id).html('{{__('theme.add-to-cart')}}');
             },
             success: function (response) {
-                if (response['status']) {
+                if (response['status'] === true) {
                     $('#cart-update').html(response['cart']);
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
@@ -146,6 +146,29 @@
                     $('#product-' + product_id + '-cart-info').html(cartHtml);
 
                     toastr["success"](response['msg']);
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+                if(response['status'] === 'not_in_stock') {
+                    toastr["warning"](response['msg'])
+                }
+                if(response['status'] === 'not_permitted') {
+                    toastr["error"](response['msg'])
                 }
             }
         });
@@ -166,7 +189,7 @@
                 _token: token
             },
             success:function (response) {
-                if (response['status']){
+                if (response['status'] === true){
                     $('#cart-update').html(response['cart']);
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
@@ -174,6 +197,9 @@
                     $('.header-cart-widget .summ').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
                     //toastr["success"](response['msg'])
+                }
+                if(response['status'] === 'not_permitted') {
+                    toastr["error"](response['msg'])
                 }
             }
         });
@@ -303,8 +329,8 @@
                     $('.header-cart-widget .summ').html(response['total']);
                     $('#cart-page').html(response['cart-page']);
                 }
-                if(response['status'] == 'not_in_stock') {
-                    toastr["warning"]("Данного товара нет в наличии больше указанной цифры...")
+                if(response['status'] === 'not_in_stock') {
+                    toastr["warning"](response['msg'])
                     toastr.options = {
                         "closeButton": false,
                         "debug": false,
@@ -322,6 +348,26 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
+                }
+                if(response['status'] === 'not_permitted') {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    toastr["warning"](response['msg'])
                 }
                 if (!response['status']){
                     alert('Нельзя уменьшить меньше 1')

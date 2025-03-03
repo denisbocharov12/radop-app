@@ -1,4 +1,11 @@
-@if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '')
+@if(Auth::guard('user')->user() === null)
+    <div class="auth-text">
+        {{__('theme.login-to-view-prices')}}
+        <a href="javascript:;" class="auth" data-fancybox data-src="#loginModal">{{__('theme.login-to-view-prices-auth')}}</a>
+        {{__('theme.login-to-view-prices-or')}}
+        <a href="{{route('user.registration.index')}}">{{__('theme.login-to-view-prices-registration')}}</a>
+    </div>
+@elseif(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '')
     <span class="price">{{number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
 @elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
     <span class="price" style="color: #ee0000">{{ number_format($product->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>

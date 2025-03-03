@@ -154,9 +154,7 @@ final class ThemeCheckoutManager
             $latestOrder = Order::withTrashed()->get()->last()->id + 1;
         }
 
-        $orderNumber = 'ORD-'.str_pad((string)$latestOrder, 6, "0", STR_PAD_LEFT);
-
-        return $orderNumber;
+        return str_pad((string)$latestOrder, 6, "0", STR_PAD_LEFT);
     }
 
     private function checkForExistedUser(int $userId): ?User

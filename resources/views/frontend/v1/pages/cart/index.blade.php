@@ -8,7 +8,7 @@
             $sessionId = auth()->guard('user')->user()->id;
         }
     @endphp
-    @if(\Cart::session($sessionId)->getContent()->count() > 0)
+    @if(\Cart::session($sessionId)->getContent()->count() > 0 || Auth::guard('user')->user() !== null)
         <section class="section-content section-shopping-cart padding-y bg">
             <div class="container">
                 <div class="row">
