@@ -11,7 +11,8 @@
 
         $item = \Cart::session($sessionId)->get($product->id);
     @endphp
-    <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
+    <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
+         id="col-product-{{$product->id}}">
         <div class="product-wrap">
             <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                 @include('frontend.v1.pages.product.components.label')
@@ -26,17 +27,20 @@
                     @include('frontend.v1.pages.category.parts.product-category-image')
                 </div>
                 @if(app('wishlist')->get($product->id) !== null)
-                    <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0" data-has-text="false">
+                    <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}"
+                       data-qty="1" class="add_to_wishlist delete-from-wishlist-btn" tabindex="0" data-has-text="false">
                         <i class="fa fa-heart" style="color: red"></i>
                     </a>
                 @else
-                    <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
+                    <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}"
+                       data-qty="1" class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
                         <i class="fa fa-heart"></i>
                     </a>
                 @endif
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
+                        <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}
+                            ...</a>
                     </h3>
                 </div>
                 <div class="product-item-article-wrap">
@@ -62,14 +66,7 @@
                     <div class="wrap">
                         @include('frontend.v1.components.product_price')
                     </div>
-                    <div class="product-card-summary">
-                        <p><span class="summary-title">{{__('theme.total')}}</span>
-                            <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                            @include('frontend.v1.components.product_total')
-                        </span>
-                            {{__('theme.MDL')}}
-                        </p>
-                    </div>
+                    @include('frontend.v1.components.product_card_summary')
                     @include('frontend.v1.components.add_to_cart_widget_v2')
                 </div>
                 @include('frontend.v1.components.packages_card_wrap')

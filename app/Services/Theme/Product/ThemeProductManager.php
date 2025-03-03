@@ -37,6 +37,12 @@ final class ThemeProductManager
 
     public function addToCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
+        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+            $response['msg'] = __('theme.add_to_cart_not_permitted');
+            $response['status'] = 'not_permitted';
+
+            return $response;
+        }
 
         $existedProduct = $this->productRepository->getById($addToCartData->productId);
 
@@ -206,6 +212,13 @@ final class ThemeProductManager
 
     public function deleteCartItem(string $productId, Request $request): array
     {
+        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+            $response['msg'] = __('theme.add_to_cart_not_permitted');
+            $response['status'] = 'not_permitted';
+
+            return $response;
+        }
+
         $sessionId = config('shopping_cart.default_session_id');
 
         if (auth()->guard('user')->user()) {

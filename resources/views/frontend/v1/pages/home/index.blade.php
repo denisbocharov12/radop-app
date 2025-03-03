@@ -8,12 +8,12 @@
                     <div id="main-banner" class="theme-slider">
                         <div class="item">
                             <a href="#">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/tehnical-support.jpg" alt="" />
+                                <img src="{{asset('/v1/frontend/assets')}}/images/tehnical-support.jpg" alt=""/>
                             </a>
                         </div>
                         <div class="item">
                             <a href="{{route('theme.category.index', 10)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt="" />
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt=""/>
                             </a>
                         </div>
                     </div>
@@ -27,21 +27,21 @@
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="{{route('theme.category.index', 6)}}" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_1.jpg" alt=""/>
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="{{route('theme.brand.index', 82)}}" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_2.jpg" alt=""/>
                         </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4 col-flaer">
                     <div class="flaer-wrap drop-shadow">
                         <a href="{{route('theme.brand.index', 2)}}" class="link-flaer">
-                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt="" />
+                            <img src="{{asset('/v1/frontend/assets')}}/images/grid_slide_3.jpg" alt=""/>
                         </a>
                     </div>
                 </div>
@@ -68,34 +68,43 @@
 
                             $item = \Cart::session($sessionId)->get($product->id);
                         @endphp
-                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
+                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
+                             id="col-product-{{$product->id}}">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                        <a href="{{route('theme.product.index', $product->slug)}}"
+                                           class="product-label">
                                             <div class="product-label-wrap">
                                                 <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
                                         </a>
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
-                                        @if(app('wishlist')->get($product->id) !== null)
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                        @endif
+                                    @if(app('wishlist')->get($product->id) !== null)
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i
+                                                    class="fa fa-heart" style="color: red"></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist add-to-wishlist-btn">
+                                            <i class="fa fa-heart"></i>
+                                        </a>
+                                    @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}
+                                                ...</a>
                                         </h3>
                                     </div>
-                                        <div class="product-item-article-wrap">
-                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
-                                            <div class="details-wrap">
+                                    <div class="product-item-article-wrap">
+                                        <h3 class="product_item_article">{{__('theme.code')}}
+                                            : {{$product->onec_id}}</h3>
+                                        <div class="details-wrap">
                                                 <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                                     @if($product->stock > 0)
                                                         {{__('theme.in-stock')}}
@@ -103,8 +112,8 @@
                                                         {{__('theme.out-of-stock')}}
                                                     @endif
                                                 </span>
-                                            </div>
                                         </div>
+                                    </div>
                                     @include('frontend.v1.pages.product.components.variations-product-card')
                                     @if($product->brand !== null)
                                         @include('frontend.v1.components.product-list-mini-brand-wrap')
@@ -112,19 +121,13 @@
                                 </div>
                                 <div class="product-card-bottom">
                                     <div class="add_to_cart_wrap">
-                                    <hr class="product-card-item">
-                                    <div class="wrap">
-                                        @include('frontend.v1.components.product_price')
+                                        <hr class="product-card-item">
+                                        <div class="wrap">
+                                            @include('frontend.v1.components.product_price')
+                                        </div>
+                                        @include('frontend.v1.components.product_card_summary')
+                                        @include('frontend.v1.components.add_to_cart_widget_v2')
                                     </div>
-                                    <div class="product-card-summary">
-                                        <p><span class="summary-title">{{__('theme.total')}}</span>
-                                            <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                                                @include('frontend.v1.components.product_total')
-                                            </span> {{__('theme.MDL')}}
-                                        </p>
-                                    </div>
-                                    @include('frontend.v1.components.add_to_cart_widget_v2')
-                                </div>
                                     @include('frontend.v1.components.packages_card_wrap')
                                 </div>
                             </div>
@@ -155,12 +158,14 @@
 
                             $item = \Cart::session($sessionId)->get($product->id);
                         @endphp
-                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
+                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
+                             id="col-product-{{$product->id}}">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                        <a href="{{route('theme.product.index', $product->slug)}}"
+                                           class="product-label">
                                             <div class="product-label-wrap">
                                                 <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
@@ -168,20 +173,27 @@
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     @if(app('wishlist')->get($product->id) !== null)
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i
+                                                    class="fa fa-heart" style="color: red"></i>
                                         </a>
                                     @else
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist add-to-wishlist-btn">
                                             <i class="fa fa-heart"></i>
                                         </a>
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}
+                                                ...</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">
-                                        <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                        <h3 class="product_item_article">{{__('theme.code')}}
+                                            : {{$product->onec_id}}</h3>
                                         <div class="details-wrap">
                                                 <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                                     @if($product->stock > 0)
@@ -199,19 +211,13 @@
                                 </div>
                                 <div class="product-card-bottom">
                                     <div class="add_to_cart_wrap">
-                                    <hr class="product-card-item">
-                                    <div class="wrap">
-                                        @include('frontend.v1.components.product_price')
+                                        <hr class="product-card-item">
+                                        <div class="wrap">
+                                            @include('frontend.v1.components.product_price')
+                                        </div>
+                                        @include('frontend.v1.components.product_card_summary')
+                                        @include('frontend.v1.components.add_to_cart_widget_v2')
                                     </div>
-                                    <div class="product-card-summary">
-                                        <p><span class="summary-title">{{__('theme.total')}}</span>
-                                            <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                                                @include('frontend.v1.components.product_total')
-                                            </span> {{__('theme.MDL')}}
-                                        </p>
-                                    </div>
-                                    @include('frontend.v1.components.add_to_cart_widget_v2')
-                                </div>
                                     @include('frontend.v1.components.packages_card_wrap')
                                 </div>
                             </div>
@@ -242,12 +248,14 @@
 
                             $item = \Cart::session($sessionId)->get($product->id);
                         @endphp
-                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif" id="col-product-{{$product->id}}">
+                        <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
+                             id="col-product-{{$product->id}}">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
                                     @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
+                                        <a href="{{route('theme.product.index', $product->slug)}}"
+                                           class="product-label">
                                             <div class="product-label-wrap">
                                                 <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
                                             </div>
@@ -255,20 +263,27 @@
                                     @endif
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     @if(app('wishlist')->get($product->id) !== null)
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1"  class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart" style="color: red"></i>
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i
+                                                    class="fa fa-heart" style="color: red"></i>
                                         </a>
                                     @else
-                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
+                                        <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
+                                           data-id="{{$product->id}}" data-qty="1"
+                                           class="add_to_wishlist add-to-wishlist-btn">
                                             <i class="fa fa-heart"></i>
                                         </a>
                                     @endif
                                     <div class="product-item-title-wrap">
                                         <h3 class="product_item_name">
-                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}...</a>
+                                            <a href="{{route('theme.product.index', $product->slug)}}">{{mb_substr($product->title, 0, 50)}}
+                                                ...</a>
                                         </h3>
                                     </div>
                                     <div class="product-item-article-wrap">
-                                        <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                        <h3 class="product_item_article">{{__('theme.code')}}
+                                            : {{$product->onec_id}}</h3>
                                         <div class="details-wrap">
                                                 <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
                                                     @if($product->stock > 0)
@@ -290,13 +305,7 @@
                                         <div class="wrap">
                                             @include('frontend.v1.components.product_price')
                                         </div>
-                                        <div class="product-card-summary">
-                                            <p><span class="summary-title">{{__('theme.total')}}</span>
-                                                <span class="product-card-summary-text" id="product-card-summary-{{$product->onec_id}}">
-                                                @include('frontend.v1.components.product_total')
-                                            </span> {{__('theme.MDL')}}
-                                            </p>
-                                        </div>
+                                        @include('frontend.v1.components.product_card_summary')
                                         @include('frontend.v1.components.add_to_cart_widget_v2')
                                     </div>
                                     @include('frontend.v1.components.packages_card_wrap')
@@ -322,7 +331,7 @@
                         @foreach($themeBrands as $brand)
                             <div class="item">
                                 <a href="{{route('theme.brand.index', $brand->id)}}">
-                                    <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" />
+                                    <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}"/>
                                 </a>
                             </div>
                         @endforeach

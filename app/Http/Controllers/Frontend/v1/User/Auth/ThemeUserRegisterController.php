@@ -40,7 +40,7 @@ final class ThemeUserRegisterController extends Controller
 
             $this->themeRegistrationManager->generateActivationToken($user);
 
-            toastr()->success('Вы успешно зарегестрировались в системе! Активируйте аккаунт!','Успех');
+            toastr()->success(__('theme.registration-text'),__('theme.success'));
             return redirect()->route('theme.home');
         } catch (DuplicatedUserEmailException) {
             throw new DuplicatedUserEmailValidationException();

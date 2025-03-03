@@ -592,6 +592,10 @@ $(document).ready(function () {
       Fancybox.show([{ src: "#loginModal", type: "inline" }]);
   });
 
+  $("a.auth").click(function(){
+      Fancybox.show([{ src: "#loginModal", type: "inline" }]);
+  });
+
     $('.toggle').click(function(e) {
         e.preventDefault();
 

@@ -22,7 +22,7 @@ final class UserActivationGenerateMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Radop Moldova - Account activation',
+            subject: 'Activarea contului pe site-ul www.radop.md',
         );
     }
 

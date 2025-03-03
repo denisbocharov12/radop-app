@@ -122,7 +122,7 @@
                                             <select
                                                 name="payment_method"
                                                 id="payment_method"
-                                                class="select-2-container"
+                                                class="form-select"
                                                 required
                                             >
                                                 @foreach($paymentMethods as $key => $value)
@@ -137,7 +137,7 @@
                                             <select
                                                     name="delivery_method"
                                                     id="delivery_method"
-                                                    class="select-2-container"
+                                                    class="form-select"
                                                     required
                                             >
                                                 @foreach($deliveryMethods as $deliveryMethod)

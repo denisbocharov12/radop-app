@@ -22,10 +22,9 @@ final class ThemeUserActivationController extends Controller
         try {
             $this->themeRegistrationManager->activateUser($token);
 
-            toastr()->success('Вы успешно активировали аккаунт!','Успех');
+            toastr()->success(__('theme.registration-success-text'),__('theme.success'));
 
             return redirect()->route('theme.home');
-
         } catch (UserActivationIsActiveException) {
             throw new UserActivationIsActiveValidationException();
         }

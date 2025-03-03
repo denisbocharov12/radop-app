@@ -5,10 +5,10 @@
 
     @if($user)
         <a
-            class="user icon-block-link"
-            data-fancybox
-            data-src="#loginModal"
-            href="javascript:;"
+            class="icon-block-link"
+{{--            data-fancybox--}}
+{{--            data-src="#loginModal"--}}
+            href="{{route('theme.user.orders.index')}}"
         >
             @if($user->type->key_name === "fiz")
                 {{$user->profile->first_name . ' ' . $user->profile->last_name}}
