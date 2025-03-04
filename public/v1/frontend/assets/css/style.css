@@ -8658,33 +8658,6 @@ hr.product-card-item{
 .auth-text a{
     display: inline-block;
 }
-.section-register .container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-.section-register .registration-block {
-    width: 300px;
-    padding: 20px;
-    background-color: #0056b3;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
-}
-.section-register .registration-block:hover {
-    transform: scale(1.05);
-    background-color: #004494;
-}
-.section-register .registration-block a {
-    text-decoration: none;
-    color: white;
-    display: block;
-    height: 100%;
-    width: 100%;
-}
 .section-product .product-wrap .auth-text{
     font-size: 16px;
 }
