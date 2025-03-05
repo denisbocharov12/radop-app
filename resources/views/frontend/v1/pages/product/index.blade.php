@@ -78,7 +78,9 @@
                         @include('frontend.v1.pages.product.components.variations')
                     </div>
                     <div class="product-wrap">
-                        @include('frontend.v1.components.product_price')
+                        <div class="product-price-wrap">
+                            @include('frontend.v1.components.product_price')
+                        </div>
                         @include('frontend.v1.components.product_card_summary')
                         <div class="product-item">
                             @php
