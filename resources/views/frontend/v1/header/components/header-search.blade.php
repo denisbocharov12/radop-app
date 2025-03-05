@@ -3,9 +3,20 @@
     <div class="wrap">
         <div class="btn-header-catalog-wrap">
             <button id="btn-header-catalog" class="btn-header-catalog">
-                <i class="icon-bars"></i>
+                <i class="icon-radop-bars"></i>
                 <span class="btn-header-catalog-text">{{__('theme.header-catalog-text')}}</span>
             </button>
+            <div class="row row-menu row-header-catalog row-header-catalog-wrap">
+                <div class="header-catalog" id="header-catalog-action">
+                    <div class="row row-header-catalog">
+                        @if(!empty($themeParentCategories))
+                            @foreach($themeParentCategories as $parentCategory)
+                                @include('frontend.v1.header.components.header-catalog-item', $parentCategory)
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
         <form action="{{route('theme.search.index')}}" method="GET">
             @csrf

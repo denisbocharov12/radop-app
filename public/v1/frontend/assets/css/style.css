@@ -1767,28 +1767,34 @@ header .section-header .row-main .header-menu .col-lg{
 .section-header .row-main .header-search .wrap .btn-header-catalog-wrap .btn-header-catalog i{
     padding-top: 4px;
     margin-right: 4px;
+    font-size: 16px;
 }
 .section-header .row-main .header-search .wrap .btn-header-catalog-wrap .btn-header-catalog span{
     font-size: 15px;
+    text-transform: uppercase;
+    line-height: 1;
 }
 .section-header .row-main .header-search .wrap .btn-header-catalog-wrap .btn-header-catalog:hover{
     background-color: #034486;
 }
 .row-header-catalog.row-header-catalog-wrap{
-    position: relative;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 90px;
 }
 .row-header-catalog.row-header-catalog-wrap .header-catalog{
     display: none;
     max-height: 620px;
     position: absolute;
-    right: calc(var(--bs-gutter-x) / 2);
+    left: calc(var(--bs-gutter-x) / 2);
     top: 100%;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     padding: 25px 15px;
     border-radius: 0 0 15px 15px;
     overflow-y: scroll;
-    width: calc(100% - 25px);
+    width: calc(100% - 0px);
 }
 
 .row-header-catalog .header-catalog.show{

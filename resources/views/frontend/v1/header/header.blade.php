@@ -221,17 +221,6 @@
                     </nav>
                 </div>
             </div>
-            <div class="row row-menu row-header-catalog row-header-catalog-wrap">
-                <div class="header-catalog" id="header-catalog-action">
-                    <div class="row row-header-catalog">
-                        @if(!empty($themeParentCategories))
-                            @foreach($themeParentCategories as $parentCategory)
-                                @include('frontend.v1.header.components.header-catalog-item', $parentCategory)
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 </header>

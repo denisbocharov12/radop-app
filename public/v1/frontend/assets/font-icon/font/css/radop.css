@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'radop';
-  src: url('../font/radop.eot?90582506');
-  src: url('../font/radop.eot?90582506#iefix') format('embedded-opentype'),
-       url('../font/radop.woff2?90582506') format('woff2'),
-       url('../font/radop.woff?90582506') format('woff'),
-       url('../font/radop.ttf?90582506') format('truetype'),
-       url('../font/radop.svg?90582506#radop') format('svg');
+  src: url('../font/radop.eot?86356979');
+  src: url('../font/radop.eot?86356979#iefix') format('embedded-opentype'),
+       url('../font/radop.woff2?86356979') format('woff2'),
+       url('../font/radop.woff?86356979') format('woff'),
+       url('../font/radop.ttf?86356979') format('truetype'),
+       url('../font/radop.svg?86356979#radop') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'radop';
-    src: url('../font/radop.svg?90582506#radop') format('svg');
+    src: url('../font/radop.svg?86356979#radop') format('svg');
   }
 }
 */
@@ -96,4 +96,5 @@
 .icon-cart:before { content: '\e827'; } /* '' */
 .icon-time:before { content: '\e828'; } /* '' */
 .icon-arrow-down:before { content: '\e829'; } /* '' */
+.icon-radop-bars:before { content: '\e82b'; } /* '' */
 .icon-star-half-alt:before { content: '\f123'; } /* '' */
