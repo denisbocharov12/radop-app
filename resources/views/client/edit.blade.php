@@ -21,7 +21,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="first_name">Имя</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('first_name') error @enderror" value="{{$user->profile->first_name}}" id="first_name" name="first_name" placeholder="Имя">
+                                                    <input type="text" class="form-control @error('first_name') error @enderror" value="{{$user->profile->first_name}}" id="first_name" name="first_name" placeholder="Имя">
                                                     @error('first_name')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -32,7 +32,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="last_name">Фамилия</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('last_name') error @enderror" value="{{$user->profile->last_name}}" id="last_name" name="last_name" placeholder="Имя">
+                                                    <input type="text" class="form-control @error('last_name') error @enderror" value="{{$user->profile->last_name}}" id="last_name" name="last_name" placeholder="Имя">
                                                     @error('last_name')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
