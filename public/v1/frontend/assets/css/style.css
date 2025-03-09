@@ -6177,7 +6177,7 @@ hr.product-card-item{
 .section-register .col-register-wrap #tabs form .right .form-control input {
     display: block;
     color: #252525;
-    padding: 15px 25px;
+    padding: 15px 40px;
     border-radius: 15px;
     background-color: #fff;
     border: 1px solid #0067a770;
@@ -6229,7 +6229,7 @@ hr.product-card-item{
 .section-register .col-register-wrap #tabs form .left .form-control input {
     display: block;
     color: #252525;
-    padding: 15px 25px;
+    padding: 15px 40px;
     border-radius: 15px;
     background-color: #fff;
     border: 1px solid #0067a770;
@@ -8761,4 +8761,83 @@ hr.product-card-item{
 }
 .section-product .product-wrap .auth-text{
     font-size: 16px;
+}
+.section-register .container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+.section-register .registration-block {
+    width: 300px;
+    padding: 20px;
+    background-color: #0056b3;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+.section-register .registration-block:hover {
+    transform: scale(1.05);
+    background-color: #004494;
+}
+.section-register .registration-block a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+.section-register #warning {
+    text-align: center;
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffcc00;
+    color: #333;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.section-register {
+    min-height: 0;
+}
+.section-register strong{
+    border: 2px solid;
+    padding: 5px;
+    font-weight: bold;
+}
+.section-register p {
+    margin: 0 0 16px;
+    text-align: start;
+}
+#iur-form {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+}
+.section-register .col-register-wrap #tabs form .center .form-control label p{
+    margin: 0 0 0 6px;
+}
+.section-register .registration-block-title{
+    text-align: center;
+    font-size: 20px;
+}
+.section-register .password-rules {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+.section-register .rule {
+    font-size: 14px;
+    color: gray;
+}
+.section-register .rule.valid {
+    color: green;
+}
+.section-register .rule.invalid {
+    color: red;
+}
+.section-register .form-control .icon-style{
+    position: absolute;
+    margin: 20px;
 }
