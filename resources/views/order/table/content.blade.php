@@ -28,7 +28,7 @@
                     <span>{{$order->order_number}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$order->payment_status}}</span>
+                    <span>{{ __('theme.' . $order->status) }}</span>
                 </div>
                 <div class="nk-tb-col order-details">
                     <span>{{$order->address}}</span>

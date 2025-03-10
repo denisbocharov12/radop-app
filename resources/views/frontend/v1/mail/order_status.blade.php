@@ -10,8 +10,7 @@
 </a>
 <div class="header" style="padding: 10px 0;">
     <h2>Bună ziua, {{ $order->first_name }} {{ $order->last_name }}</h2>
-    <p>Vă mulțumim pentru cumpărătura făcută în magazinul nostru! Comanda dvs. nr. {{ $order_number }} a fost plasată cu succes și trimisă spre procesare.</p>
-    <p>Managerul nostru vă va contacta în cel mai scurt timp pentru a clarifica detaliile comenzii și ale livrării.</p>
+    <h2>Starea comenzii dvs. nr. {{$order_number}} a fost schimbat la {{__('theme.' . $order->status, [], 'ro')}}</h2>
     <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:radop@mail.ru">radop@mail.ru</a></p>
 </div>
 <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
