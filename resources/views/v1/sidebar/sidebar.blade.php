@@ -92,6 +92,9 @@
                                 <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('city.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка городов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('deliveryMethod.index')}}" class="nk-menu-link"><span class="nk-menu-text">Методы доставки</span></a>
                             </li>
                             @endhasrole
@@ -111,6 +114,9 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('city.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка городов</span></a>
                             </li>
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
@@ -160,7 +166,7 @@
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
                             <li class="nk-menu-item">
-                                <a href="{{route('client.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все пользователи</span></a>
+                                <a href="{{route('client.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все пользователи</span><span style="width: 20px; height: 20px; border-radius: 50px; text-align: center; vertical-align: middle; color: white; background-color: #a52834">{{\App\Models\User::where('verified_status', false)->count()}}</span></a>
                             </li>
                             @endhasrole
 

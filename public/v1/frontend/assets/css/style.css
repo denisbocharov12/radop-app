@@ -1817,10 +1817,11 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content a.link.link-megamenu{
-    color: #252525;
+    color: #0052a6;
     font-weight: 500!important;
     padding: 7.5px 5px;
     display: inline-block;
+    font-size: 18px;
 }
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content a.link.link-megamenu:hover{
     text-decoration: underline!important;
@@ -1837,6 +1838,10 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 5px;
     border: 0;
 }
+.row-header-catalog .header-catalog .row-header-catalog .col-list-content .wrap-content a.heading {
+    font-weight: 500 !important;
+}
+
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content .wrap-content a.heading:hover,
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content .wrap-content a.link:hover{
     text-decoration: underline!important;

@@ -96,4 +96,28 @@ class CityController extends Controller
             throw new CityNotFoundValidationException();
         }
     }
+
+    public function sort()
+    {
+        $cities = $this->cityRepository->getAllSorted();
+
+        return view('city.sort', compact([
+            'cities',
+        ]));
+    }
+
+    public function sortOrder(Request $request)
+    {
+        $cities = $this->cityRepository->getAllSorted();
+
+        foreach ($cities as $city) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $city->id) {
+                    $city->update(['order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Города успешно отсортированы']);
+    }
 }

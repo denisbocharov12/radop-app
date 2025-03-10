@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property string $name_ro
  * @property string $name_ru
+ * @property int $delivery_sum
  */
 class CityRequest extends FormRequest
 {
@@ -15,6 +16,7 @@ class CityRequest extends FormRequest
         return [
             'name_ro' => ['required', 'string'],
             'name_ru' => ['required', 'string'],
+            'delivery_sum' => ['required', 'integer'],
         ];
     }
 }

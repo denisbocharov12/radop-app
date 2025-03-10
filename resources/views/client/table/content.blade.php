@@ -6,6 +6,7 @@
             <div class="nk-tb-col"><span class="sub-text">Пользователь</span></div>
             <div class="nk-tb-col"><span class="sub-text">Роль</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус проверки</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Телефон</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
@@ -38,6 +39,13 @@
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     @if($user->status)
+                        <span class="tb-status text-success">Активный</span>
+                    @else
+                        <span class="tb-status text-danger">Неактивный</span>
+                    @endif
+                </div>
+                <div class="nk-tb-col tb-col-lg">
+                    @if($user->verified_status)
                         <span class="tb-status text-success">Активный</span>
                     @else
                         <span class="tb-status text-danger">Неактивный</span>

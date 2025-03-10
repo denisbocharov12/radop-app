@@ -21,6 +21,8 @@ final class City extends Model
         'name',
         'slug',
         'deleted_at',
+        'order',
+        'delivery_sum'
     ];
 
     public $translatable = ['name'];

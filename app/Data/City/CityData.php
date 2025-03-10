@@ -7,6 +7,7 @@ namespace App\Data\City;
 /**
  * @property string $name_ro
  * @property string $name_ru
+ * @property int $deliverySum
  */
 final class CityData
 {
@@ -16,6 +17,7 @@ final class CityData
     public function __construct(
         string  $name_ro,
         string  $name_ru,
+        public int $deliverySum,
     )
     {
         $this->name_ro = $name_ro;

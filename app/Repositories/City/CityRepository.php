@@ -48,4 +48,11 @@ class CityRepository
     {
         return City::query()->where('name', $name)->first();
     }
+
+    public function getAllSorted(): Collection
+    {
+        return City::orderBy('order')
+            ->get()
+        ;
+    }
 }

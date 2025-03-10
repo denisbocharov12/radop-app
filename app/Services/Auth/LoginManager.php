@@ -25,6 +25,7 @@ final class LoginManager
             $loginFieldName => $username,
             'password' => $password,
             'status' => true,
+            'verified_status' => true
         ];
     }
 
