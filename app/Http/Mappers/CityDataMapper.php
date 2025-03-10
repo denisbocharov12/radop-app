@@ -13,6 +13,7 @@ final class CityDataMapper
         return new CityData(
             $request->name_ro,
             $request->name_ru,
+            $request->delivery_sum,
         );
     }
 }

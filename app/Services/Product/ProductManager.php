@@ -161,7 +161,7 @@ class ProductManager
         ]);
 
 
-        $this->syncCategoriesToProduct($product, $productData->categoryId);
+        //$this->syncCategoriesToProduct($product, $productData->categoryId);
 
         $this->attachmentsManager->storeToMediaAttachmentsFromRequestToModel($request, $product);
     }

@@ -26,4 +26,12 @@ Route::prefix('cities')->name('city.')->group(function () {
         ->delete('destroy', [CityController::class, 'destroy'])
         ->name('delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts', [CityController::class, 'sort'])
+        ->name('sort.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/order', [CityController::class, 'sortOrder'])
+        ->name('sort.order')
+    ;
 });

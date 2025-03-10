@@ -3,6 +3,7 @@
         <div class="nk-tb-item nk-tb-head">
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Название</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Цена доставки (MDL)</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
         </div><!-- .nk-tb-item -->
@@ -13,6 +14,9 @@
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$city->name}}</span>
+                </div>
+                <div class="nk-tb-col">
+                    <span>{{$city->delivery_sum}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools">
                     <ul class="nk-tb-actions gx-2">

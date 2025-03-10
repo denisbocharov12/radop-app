@@ -24,6 +24,6 @@ return array(
     */
 
     'options' => array(
-        'positionClass' => "toast-bottom-right",
+        'positionClass' => "toast-top-right",
     ),
 );

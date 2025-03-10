@@ -39,7 +39,7 @@ final class ThemeCheckoutController
         $discountProducts = $this->productRepository->getAllDiscountProducts();
         $featuredProducts = $this->productRepository->getAllFeaturedProducts();
         $deliveryMethods = $this->deliveryMethodRepository->getAllActive();
-        $cities = $this->cityRepository->getAll();
+        $cities = $this->cityRepository->getAllSorted();
 
         return view('frontend.v1.pages.checkout.index', compact([
             'paymentMethods',

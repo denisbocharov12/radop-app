@@ -73,10 +73,12 @@ class ClientManager
     public function update(ClientUpdateData $clientData, User $user)
     {
         $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
+        $verifiedStatus = $this->entityStatusManager->getEntityStatusFromRequest($clientData->verifiedStatus);
 
         $user->update([
             'email' => $clientData->email,
             'status' => $status,
+            'verified_status' => $verifiedStatus,
             'type_id' => $clientData->typeId,
             'sale' => (float)$clientData->sale,
         ]);

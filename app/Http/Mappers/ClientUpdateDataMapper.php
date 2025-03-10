@@ -16,6 +16,7 @@ final class ClientUpdateDataMapper
             $request->phone,
             $request->role,
             $request->status,
+            $request->verified_status,
             $request->address,
             $request->organization_name,
             $request->cod_fiscal,

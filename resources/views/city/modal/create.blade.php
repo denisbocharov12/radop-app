@@ -32,6 +32,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="delivery_sum">Сумма доставки (MDL)</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" required class="form-control @error('delivery_sum') error @enderror" id="delivery_sum" name="delivery_sum" placeholder="500">
+                                            @error('delivery_sum')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-12">
                                     <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                         <li>

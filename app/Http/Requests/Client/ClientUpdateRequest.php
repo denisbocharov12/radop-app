@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $phone
  * @property string $role
  * @property string $status
+ * @property string $verified_status
  * @property string $address
  * @property string $organization_name
  * @property string $cod_fiscal
@@ -29,6 +30,7 @@ class ClientUpdateRequest extends FormRequest
             'phone' => ['nullable', 'string'],
             'role' => ['required', 'string'],
             'status' => ['required', 'string'],
+            'verified_status' => ['required', 'string'],
             'address' => ['nullable', 'string'],
             'organization_name' => ['nullable', 'string'],
             'cod_fiscal' => ['nullable', 'string'],

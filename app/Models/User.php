@@ -28,6 +28,7 @@ final class User extends Authenticatable
         'type_id',
         'manager_id',
         'sale',
+        'verified_status',
         'email_verified_at',
     ];
 
