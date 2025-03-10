@@ -166,7 +166,7 @@
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
                             <li class="nk-menu-item">
-                                <a href="{{route('client.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все пользователи</span><span style="width: 20px; height: 20px; border-radius: 50px; text-align: center; vertical-align: middle; color: white; background-color: #a52834">{{\App\Models\User::where('verified_status', false)->count()}}</span></a>
+                                <a href="{{route('client.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все пользователи</span>@if(\App\Models\User::where('verified_status', false)->count() > 0)<span style="width: 20px; height: 20px; border-radius: 50px; text-align: center; vertical-align: middle; color: white; background-color: #a52834">{{\App\Models\User::where('verified_status', false)->count()}}</span>@endif</a>
                             </li>
                             @endhasrole
 
