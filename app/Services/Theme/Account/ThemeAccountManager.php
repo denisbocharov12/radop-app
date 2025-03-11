@@ -42,7 +42,7 @@ final class ThemeAccountManager
 
         if (Hash::check($passwordData->currentPassword, $user->password)){
             $user->update([
-                'password'=>bcrypt($passwordData->password)
+                'password'=> Hash::make($passwordData->password),
             ]);
         }
     }
