@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Order;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
+use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Exceptions\NotAjaxRequestException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderNotFoundValidationException;
@@ -91,7 +92,7 @@ class OrderController extends Controller
         $orderData = $this->orderDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->orderManager->update($orderData, $order, $request);
+            $this->orderManager->update($orderData, $order);
 
             return redirect()->route('order.index');
         } catch (OrderUniqueCodeException $e) {

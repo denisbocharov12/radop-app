@@ -1,16 +1,21 @@
-<body style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
+@php
+    if($order->user_type === 'fiz')
+        $order_number = "№PF$order->order_number";
+    elseif($order->user_type === 'iur')
+        $order_number = "№PJ$order->order_number";
+@endphp
+<body style="font-family: DejaVu Sans, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
 <a href="{{route('theme.home')}}" class="link-logo">
     <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
 </a>
 <div class="header" style="padding: 10px 0;">
     <h2>Bună ziua, {{ $order->first_name }} {{ $order->last_name }}</h2>
-    <p>Vă mulțumim pentru cumpărătura făcută în magazinul nostru! Comanda dvs. nr. {{ $order->order_number }} a fost plasată cu succes și trimisă spre procesare.</p>
-    <p>Managerul nostru vă va contacta în cel mai scurt timp pentru a clarifica detaliile comenzii și ale livrării.</p>
-    <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:support@radop.md">support@radop.md</a></p>
+    <h2>Starea comenzii dvs. nr. {{$order_number}} a fost schimbat la {{__('theme.' . $order->status, [], 'ro')}}</h2>
+    <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:radop@mail.ru">radop@mail.ru</a></p>
 </div>
 <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
 <div class="order-details" style="padding: 10px 0;">
-    <p style="margin: 5px 0;"><strong>Număr comandă:</strong> {{ $order->order_number }}</p>
+    <p style="margin: 5px 0;"><strong>Număr comandă:</strong> {{ $order_number }}</p>
     <p style="margin: 5px 0;"><strong>Data comenzii:</strong> {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
     <p style="margin: 5px 0;"><strong>Metoda de plată:</strong>
         @if($order->payment_method === 'cash')
