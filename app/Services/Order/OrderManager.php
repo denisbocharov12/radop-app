@@ -3,6 +3,8 @@
 namespace App\Services\Order;
 
 use App\Data\Order\OrderData;
+use App\Enums\OrderStatus;
+use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Excel\Order\OrderExport;
 use App\Exceptions\Order\ManagerNotFoundException;
 use App\Exceptions\Order\OrderNotFoundException;
@@ -24,7 +26,8 @@ final class OrderManager
 
     public function __construct(
         OrderRepository $orderRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        private readonly OrderStatus $orderStatus,
     )
     {
         $this->orderRepository = $orderRepository;
@@ -33,6 +36,8 @@ final class OrderManager
 
     public function update(OrderData $orderData, Order $order): void
     {
+        $orderStatus = $order->status;
+
         if ($order->order_number !== $orderData->orderNumber) {
             $existedOrder = $this->orderRepository->getByOrderNumber($orderData->orderNumber);
 
@@ -89,6 +94,11 @@ final class OrderManager
                 'iur_address' => $orderData->iurAddress,
                 'shipping_address' => $orderData->shippingAddress
             ]);
+        }
+
+        if ($orderData->status === $this->orderStatus->getCanceledStatus() && $orderStatus !== $orderData->status
+            || $orderData->status === $this->orderStatus->getDeliveredStatus() && $orderStatus !== $orderData->status){
+            event(new OrderStatusUpdatedSendEmailEvent($order));
         }
     }
 

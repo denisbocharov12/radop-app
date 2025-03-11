@@ -21,7 +21,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="user_id">Пользователь</label>
                                                 <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" data-search="on" name="user_id" id="user_id" data-placeholder="Пользователь">
+                                                    <select class="form-select js-select2 form-control @error('user_id') error @enderror" data-search="on" name="user_id" id="user_id" data-placeholder="Пользователь" required>
                                                         <option value="">Пользователь</option>
                                                         @foreach ($users as $user)
                                                             <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : '' }}>
