@@ -291,4 +291,5 @@ return array (
     'password-rule-special-symbols' => 'Parola nu trebuie să conțină caractere precum (!@#$%^&*)',
     'password-rule-uppercase-letter' => 'Parola trebuie să aibă cel puțin o literă majusculă',
     'password-rule-length' => 'Parola trebuie să conțină între 8 și 20 de caractere',
+    'password_was_updated' => 'Parola a fost actualizată cu succes',
 );

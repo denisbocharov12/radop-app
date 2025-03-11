@@ -5670,6 +5670,9 @@ header .section-header .row-main .header-menu .col-lg{
     width: 100%;
     height: 38px;
 }
+.fancybox__container{
+    --fancybox-bg: rgba(24, 24, 27, 0.8);
+}
 .product-item-category .add_to_cart_wrap .qty-add-to-cart .sc-product-qty.qty-block .product-qty-iteminput::-webkit-outer-spin-button,
 .product-item-category .add_to_cart_wrap .qty-add-to-cart .sc-product-qty.qty-block .product-qty-iteminput::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
