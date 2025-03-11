@@ -291,4 +291,5 @@ return array (
     'password-rule-special-symbols' => 'Пароль не должен содержать символы (!@#$%*&)',
     'password-rule-uppercase-letter' => 'Пароль должен иметь минимум 1 заглавную букву',
     'password-rule-length' => 'Пароль должен содержать от 8 до 20 символов',
+    'password_was_updated' => 'Пароль успешно обновлен',
 );

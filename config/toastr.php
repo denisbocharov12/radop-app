@@ -25,5 +25,7 @@ return array(
 
     'options' => array(
         'positionClass' => "toast-top-right",
+        'timeOut' =>  "10000",
+        'progressBar' => true,
     ),
 );
