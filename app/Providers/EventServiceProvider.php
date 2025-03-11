@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\OrderCreatedSendAdminEmailEvent;
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
+use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Events\PasswordChangedEmailEvent;
 use App\Events\PasswordResetEmailEvent;
 use App\Events\PersonalSaleWasChangedEvent;
@@ -14,6 +15,7 @@ use App\Listeners\PasswordResetEmailListener;
 use App\Listeners\PersonalSaleWasChangedListener;
 use App\Listeners\SendAdminOrderEmailListener;
 use App\Listeners\SendManagerOrderEmailListener;
+use App\Listeners\SendOrderStatusUpdatedEmailEventListener;
 use App\Listeners\SendUserActivationEmailListener;
 use App\Listeners\SendUserOrderEmailListener;
 use Illuminate\Auth\Events\Registered;
@@ -58,6 +60,10 @@ class EventServiceProvider extends ServiceProvider
 
         PersonalSaleWasChangedEvent::class => [
             PersonalSaleWasChangedListener::class
+        ],
+
+        OrderStatusUpdatedSendEmailEvent::class => [
+            SendOrderStatusUpdatedEmailEventListener::class
         ],
     ];
 

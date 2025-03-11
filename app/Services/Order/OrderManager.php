@@ -31,26 +31,26 @@ final class OrderManager
         $this->userRepository = $userRepository;
     }
 
-    public function update(OrderData $orderData, Order $order, OrderRequest $request): void
+    public function update(OrderData $orderData, Order $order): void
     {
-        if ($order->order_number !== $orderData->order_number) {
-            $existedOrder = $this->orderRepository->getByOrderNumber($orderData->order_number);
+        if ($order->order_number !== $orderData->orderNumber) {
+            $existedOrder = $this->orderRepository->getByOrderNumber($orderData->orderNumber);
 
             if ($existedOrder !== null) {
                 throw new OrderUniqueCodeException();
             }
         }
 
-        if ($order->user_id !== $orderData->user_id) {
-            $existedUser = $this->userRepository->getById($orderData->user_id);
+        if ($order->user_id !== $orderData->userId) {
+            $existedUser = $this->userRepository->getById($orderData->userId);
 
             if ($existedUser === null) {
                 throw new UserNotFoundException();
             }
         }
 
-        if ($order->manager_id !== $orderData->manager_id) {
-            $existedManager = $this->userRepository->getById($orderData->manager_id);
+        if ($order->manager_id !== $orderData->managerId) {
+            $existedManager = $this->userRepository->getById($orderData->managerId);
 
             if ($existedManager === null) {
                 throw new ManagerNotFoundException();
@@ -58,36 +58,36 @@ final class OrderManager
         }
 
         $order->update([
-            'order_number' => $orderData->order_number,
-            'first_name' => $orderData->first_name,
-            'last_name' => $orderData->last_name,
+            'order_number' => $orderData->orderNumber,
+            'first_name' => $orderData->firstName,
+            'last_name' => $orderData->lastName,
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,
-            'user_type' => $orderData->user_type,
+            'user_type' => $orderData->userType,
             'city' => $orderData->city,
             'note' => $orderData->note,
-            'user_id' => $orderData->user_id,
-            'manager_id' => $orderData->manager_id,
-            'payment_method' => $orderData->payment_method,
-            'payment_status' => $orderData->payment_status,
+            'user_id' => $orderData->userId,
+            'manager_id' => $orderData->managerId,
+            'payment_method' => $orderData->paymentMethod,
+            'payment_status' => $orderData->paymentStatus,
             'status' => $orderData->status,
             'subtotal' => $orderData->subtotal,
             'discount' => $orderData->discount,
             'total' => $orderData->total,
-            'delivery_charge' => $orderData->delivery_charge,
+            'delivery_charge' => $orderData->deliveryCharge,
         ]);
 
-        if ($orderData->user_type === self::IUR_TYPE){
+        if ($orderData->userType === self::IUR_TYPE){
             $order->profile->update([
-                'company_name' => $orderData->company_name,
-                'reserve_phone' => $orderData->reserve_phone,
+                'company_name' => $orderData->companyName,
+                'reserve_phone' => $orderData->reservePhone,
                 'bank' => $orderData->bank,
                 'idno' => $orderData->idno,
                 'tva' => $orderData->tva,
-                'registered_city' => $orderData->registered_city,
-                'iur_address' => $orderData->iur_address,
-                'shipping_address' => $orderData->shipping_address
+                'registered_city' => $orderData->registeredCity,
+                'iur_address' => $orderData->iurAddress,
+                'shipping_address' => $orderData->shippingAddress
             ]);
         }
     }
@@ -113,8 +113,9 @@ final class OrderManager
             throw new OrderNotFoundException();
         }
 
-        $pdf = PDF::loadView('pdf.invoice', compact([
-            'order'
+        $pdf = PDF::loadView('frontend.v1.mail.order', ([
+            'order' => $order,
+            'products' => $order->products,
         ]));
 
         return $pdf->stream();
@@ -128,8 +129,9 @@ final class OrderManager
             throw new OrderNotFoundException();
         }
 
-        $pdf = PDF::loadView('pdf.invoice', compact([
-            'order'
+        $pdf = PDF::loadView('frontend.v1.mail.order', ([
+            'order' => $order,
+            'products' => $order->products,
         ]));
 
         return $pdf->download();
