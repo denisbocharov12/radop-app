@@ -57,7 +57,7 @@ final class ThemeCheckoutManager
         }
 
         $order = Order::create([
-            'order_number' => $this->getLatestOrderNumber(),
+            'order_number' => $this->getLatestOrderNumber($userType),
             'first_name' => $orderData->first_name,
             'last_name' => $orderData->last_name,
             'email' => $orderData->email,
@@ -143,10 +143,13 @@ final class ThemeCheckoutManager
         return $sessionId;
     }
 
-    private function getLatestOrderNumber(): string
+    private function getLatestOrderNumber(string $userType): string
     {
         $latestOrder = 1;
-
+        $orderPrefix = 'PF1';
+        if ($userType === 'iur') {
+            $orderPrefix = 'PJ1';
+        }
         $orderCount = Order::withTrashed()->count();
 
         if($orderCount !== 0)
@@ -154,7 +157,7 @@ final class ThemeCheckoutManager
             $latestOrder = Order::withTrashed()->get()->last()->id + 1;
         }
 
-        return str_pad((string)$latestOrder, 6, "0", STR_PAD_LEFT);
+        return $orderPrefix.str_pad((string)$latestOrder, 3, "0", STR_PAD_LEFT);
     }
 
     private function checkForExistedUser(int $userId): ?User

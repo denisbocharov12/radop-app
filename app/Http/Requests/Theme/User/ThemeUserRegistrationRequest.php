@@ -27,8 +27,8 @@ final class ThemeUserRegistrationRequest extends FormRequest
         return [
             'first_name' => ['required_if:type_id,1', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z]+$/u'],
             'last_name' => ['required_if:type_id,1', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z]+$/u'],
-            'email_fiz' => ['required_if:type_id,1', 'string'],
-            'email_iur' => ['required_if:type_id,2', 'string'],
+            'email_fiz' => ['required_if:type_id,1', 'string', 'email'],
+            'email_iur' => ['required_if:type_id,2', 'string', 'email'],
             'phone_fiz' => ['required_if:type_id,1', 'string'],
             'phone_iur' => ['required_if:type_id,2', 'string'],
             'password_fiz' => ['required_if:type_id,1', 'string', 'min:6'],
