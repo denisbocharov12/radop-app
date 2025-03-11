@@ -18,7 +18,7 @@
                 <p>{{__('theme.registration-physical-person-text-4')}}</p>
             </div>
             <div id="iur-form" style="display: none;">
-                <h2>{{__('theme.registration')}}</h2>
+                <h2 class="mb-3">{{__('theme.registration')}}</h2>
                 @include('frontend.v1.pages.registration.components.iur')
             </div>
         </div>
