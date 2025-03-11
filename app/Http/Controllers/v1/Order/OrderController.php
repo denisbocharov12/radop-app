@@ -94,8 +94,6 @@ class OrderController extends Controller
         try {
             $this->orderManager->update($orderData, $order);
 
-            event(new OrderStatusUpdatedSendEmailEvent($order));
-
             return redirect()->route('order.index');
         } catch (OrderUniqueCodeException $e) {
             throw new OrderUniqueCodeValidationException();
