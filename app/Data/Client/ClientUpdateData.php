@@ -9,7 +9,6 @@ namespace App\Data\Client;
  * @property string $phone
  * @property string $role
  * @property string $status
- * @property string $verifiedStatus
  * @property string $address
  * @property string $organizationName
  * @property string $codFiscal
@@ -26,7 +25,6 @@ class ClientUpdateData
         public readonly ?string $phone,
         public readonly string $role,
         public readonly string $status,
-        public readonly string $verifiedStatus,
         public readonly ?string $address,
         public readonly ?string $organizationName,
         public readonly ?string $codFiscal,

@@ -148,17 +148,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Проверенный клиент</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" required name="verified_status" id="verified_status" data-placeholder="Выберите статус проверки">
-                                                        <option {{$user->verified_status == true ? 'selected' : ''}} value="true">Активный</option>
-                                                        <option {{$user->verified_status == false ? 'selected' : ''}} value="false">Неактивный</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>
