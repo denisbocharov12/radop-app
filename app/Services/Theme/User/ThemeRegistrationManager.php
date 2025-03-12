@@ -65,7 +65,6 @@ final class ThemeRegistrationManager
             'password' => Hash::make($password),
             'email_verified_at' => now(),
             'status' => false,
-            'verified_status' => false,
             'type_id' => $themeUserRegistrationData->typeId,
         ]);
 

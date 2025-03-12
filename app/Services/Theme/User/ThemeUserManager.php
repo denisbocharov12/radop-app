@@ -27,7 +27,6 @@ final class ThemeUserManager
             $loginFieldName => $username,
             'password' => $password,
             'status' => true,
-            'verified_status' => true,
         ];
     }
 
