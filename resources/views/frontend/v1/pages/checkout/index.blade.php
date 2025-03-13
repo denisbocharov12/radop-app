@@ -20,7 +20,7 @@
                             <h1>{{__('theme.order-placement')}}</h1>
                         </div>
                         <div class="continue-shopping">
-                            <a href="{{route('theme.shop.index')}}" class="link"
+                            <a href="{{route('theme.shop.catalog')}}" class="link"
                             >{{__('theme.сontinue-shopping')}}<i class="fa fa-arrow-right"></i
                                 ></a>
                         </div>
@@ -89,14 +89,14 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="city">{{__('theme.select-city')}}</label>
+                                            <label for="city_id">{{__('theme.select-city')}}</label>
                                             <select
-                                                name="city"
-                                                id="city"
+                                                name="city_id"
+                                                id="city_id"
                                                 class="select-2-container"
                                             >
                                                 @foreach($cities as $city)
-                                                    <option value="{{$city->name}}">{{$city->name}}</option>
+                                                    <option data-delivery-charge="{{(float)$city->delivery_sum}}" data-required-sum="{{(float)$city->required_sum}}" value="{{$city->id}}" {{$user->city_id === $city->id ? 'selected' : ''}}>{{$city->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -160,116 +160,7 @@
                                         </div>
                                     </div>
                                 </div>
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-12 col-checkout-heading flex-column" >--}}
-{{--                                        <h5 class="d-flex w-100 fw-bold">{{__('theme.iur-person')}}</h5>--}}
-{{--                                        <span  style="margin-top: 5px;border-bottom: 1px solid #C9C9C9; display: flex; width: 100%"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="company_name">{{__('theme.company-name')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="company_name"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="company_name"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="reserve_phone">{{__('theme.backup-phone')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="reserve_phone"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="reserve_phone"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="bank">{{__('theme.bank')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="bank"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="bank"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="idno">IDNO</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="idno"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="idno"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="tva">TVA</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="tva"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="tva"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="registered_city">{{__('theme.registered-city')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="registered_city"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="registered_city"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="iur_address">{{__('theme.iur-address')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="iur_address"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="iur_address"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-md-6 col-checkout">--}}
-{{--                                        <div class="form-control-ch">--}}
-{{--                                            <label for="shipping_address">{{__('theme.shipping-address')}}</label>--}}
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="shipping_address"--}}
-{{--                                                class="form-control-ch-input"--}}
-{{--                                                required--}}
-{{--                                                id="shipping_address"--}}
-{{--                                            />--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                {{--Iur Part--}}
                             </form>
                         </div>
                     </div>
@@ -309,18 +200,21 @@
                                             <li class="item">
                                                 <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 {{__('theme.MDL')}}</span>
                                             </li>
+                                            <li class="item">
+                                                <span class="left">{{__('theme.order-delivery')}} </span><span class="right"><span id="delivery-charge">{{$user?->city_id !== null ? (float)$user->city->delivery_sum : 0.00}}</span> {{__('theme.MDL')}}</span>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="total-wrap">
                                         <p class="total-text">{{__('theme.for-payment')}}</p>
-                                        <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
                                     </div>
                                 @endif
                                 <div class="sc-buttons-wrap">
                                     <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit"
                                     >{{__('theme.place-order')}}</a
                                     >
-                                    <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn"
+                                    <a href="{{route('theme.shop.catalog')}}" class="sc-btn-continuie sc-btn"
                                     >{{__('theme.сontinue-shopping')}}</a
                                     >
                                 </div>
@@ -360,6 +254,12 @@
                 // $(this).addClass('chosen');
                 $('.vertical-tabs-content-wrap .vertical-tabs-content').removeClass('active');
                 $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(tabIndex).addClass('active');
+            });
+            $('#city_id').change(function(){
+                var total = $('#checkout-final-price').data('total');
+                $('#delivery-charge').text($(this).find(':selected').data('delivery-charge'));
+                $('#checkout-final-price').text(total + $(this).find(':selected').data('delivery-charge'));
+
             });
         });
     </script>

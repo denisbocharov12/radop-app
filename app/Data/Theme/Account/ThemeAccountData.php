@@ -11,6 +11,7 @@ namespace App\Data\Theme\Account;
  * @property string $organization_name
  * @property string $cod_fiscal
  * @property string $contact_name
+ * @property int $cityId
  */
 
 final class ThemeAccountData
@@ -24,6 +25,7 @@ final class ThemeAccountData
         public readonly ?string $organizationName,
         public readonly ?string $codFiscal,
         public readonly ?string $contactName,
+        public readonly int $cityId,
     )
     {
     }

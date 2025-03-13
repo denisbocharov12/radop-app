@@ -16,4 +16,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/sale', [ThemeShopController::class, 'saleProducts'])
         ->name('sale')
     ;
+    Route::get('/catalog', [ThemeShopController::class, 'catalog'])
+        ->name('catalog')
+    ;
 });

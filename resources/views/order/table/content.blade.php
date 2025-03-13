@@ -8,6 +8,8 @@
             <div class="nk-tb-col"><span class="sub-text">Номер заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус заказа</span></div>
             <div class="nk-tb-col"><span class="sub-text">Адресс</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Доставка</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Итого</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
@@ -32,6 +34,12 @@
                 </div>
                 <div class="nk-tb-col order-details">
                     <span>{{$order->address}}</span>
+                </div>
+                <div class="nk-tb-col order-details">
+                    <span>{{$order->delivery_charge}}</span>
+                </div>
+                <div class="nk-tb-col order-details">
+                    <span>{{$order->total}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools order-details">
                     <ul class="nk-tb-actions gx-2">

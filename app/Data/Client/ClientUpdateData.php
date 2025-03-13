@@ -14,6 +14,7 @@ namespace App\Data\Client;
  * @property string $codFiscal
  * @property string $contactName
  * @property int $typeId
+ * @property int $cityId
  */
 class ClientUpdateData
 {
@@ -31,6 +32,7 @@ class ClientUpdateData
         public readonly ?string $contactName,
         public readonly int $typeId,
         public readonly ?string $sale,
+        public readonly int $cityId,
     ) {
     }
 }

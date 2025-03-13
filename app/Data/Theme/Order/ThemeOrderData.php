@@ -9,7 +9,7 @@ namespace App\Data\Theme\Order;
  * @property string $email
  * @property string $phone
  * @property string $address
- * @property string $city
+ * @property int $cityId
  * @property string $note
  * @property string $payment_method
  * @property string $delivery_method
@@ -31,7 +31,7 @@ final class ThemeOrderData
         public readonly string $email,
         public readonly string $phone,
         public readonly string $address,
-        public readonly string $city,
+        public readonly int $cityId,
         public readonly ?string $note,
         public readonly string $payment_method,
         public readonly string $delivery_method,

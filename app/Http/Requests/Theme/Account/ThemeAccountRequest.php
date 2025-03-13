@@ -13,6 +13,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $organization_name
  * @property string $cod_fiscal
  * @property string $contact_name
+ * @property int $city_id
  */
 
 final class ThemeAccountRequest extends FormRequest
@@ -28,6 +29,7 @@ final class ThemeAccountRequest extends FormRequest
             'organization_name' => ['nullable', 'string'],
             'cod_fiscal' => ['nullable', 'string'],
             'contact_name' => ['nullable', 'string'],
+            'city_id' => ['required', 'integer']
         ];
     }
 }

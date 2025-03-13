@@ -15,7 +15,7 @@ final class ThemeOrderDataMapper
             $request->email,
             $request->phone,
             $request->address,
-            $request->city,
+            $request->city_id,
             $request->note,
             $request->payment_method,
             $request->delivery_method,

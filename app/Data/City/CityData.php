@@ -8,6 +8,7 @@ namespace App\Data\City;
  * @property string $name_ro
  * @property string $name_ru
  * @property int $deliverySum
+ * @property int $requiredSum
  */
 final class CityData
 {
@@ -18,6 +19,7 @@ final class CityData
         string  $name_ro,
         string  $name_ru,
         public int $deliverySum,
+        public int $requiredSum
     )
     {
         $this->name_ro = $name_ro;

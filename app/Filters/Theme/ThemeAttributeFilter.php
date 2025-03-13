@@ -2,6 +2,7 @@
 
 namespace App\Filters\Theme;
 
+use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,28 +20,21 @@ final class ThemeAttributeFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
 
-        if ($value !== null && !empty($value))
-            if (is_array($value[0])) $value = $value[0];
+//        if ($value !== null && !empty($value))
+//            if (is_array($value[0])) $value = $value[0];
+//
+//            foreach ($value as $key => $item) {
+//                if ($this->isStringFloat($item)) {
+//                    $value[$key] = str_replace('.',',', $item);
+//                }
+//            }
 
-            foreach ($value as $key => $item) {
-                if ($this->isStringFloat($item)) {
-                    $value[$key] = str_replace('.',',', $item);
-                }
-            }
-
-            $attributeProductsIds = AttributeValue::query()
-                ->whereIn('value->'.str_replace('_', '-', app()->getLocale()), $value)
-                ->get()
-//                ->pluck('id')
-                ->pluck('product_onec_id')
-                ->toArray()
-            ;
-
-        foreach ($value as $val) {
+        foreach ($value as $attributeId => $attributeValueIds) {
             $query
-                ->whereHas('values', function ($q) use ($query, $attributeProductsIds, $value, $val) {
-                    $q->where('attribute_values.value->'.str_replace('_', '-', app()->getLocale()), $val);
+                ->whereHas('values', function ($q) use ($query, $attributeValueIds) {
+                    $q->where('attribute_values.value->'.str_replace('_', '-', app()->getLocale()), $attributeValueIds);
                 });
+
         }
 
 //        $query

@@ -20,7 +20,7 @@ class OrderRepository
             ->allowedFilters([
 
             ])
-            ->defaultSort('id')
+            ->defaultSort('-id')
             ->allowedSorts([
                 'id',
             ])

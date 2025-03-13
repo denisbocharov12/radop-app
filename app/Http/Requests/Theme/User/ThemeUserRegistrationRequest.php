@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $cod_fiscal
  * @property string $contact_name
  * @property string $type_id
+ * @property int $city_id
  */
 final class ThemeUserRegistrationRequest extends FormRequest
 {
@@ -31,14 +32,16 @@ final class ThemeUserRegistrationRequest extends FormRequest
             'email_iur' => ['required_if:type_id,2', 'string', 'email'],
             'phone_fiz' => ['required_if:type_id,1', 'string'],
             'phone_iur' => ['required_if:type_id,2', 'string'],
-            'password_fiz' => ['required_if:type_id,1', 'string', 'min:6'],
-            'password_iur' => ['required_if:type_id,2', 'string', 'min:6'],
+            'password_fiz' => ['required_if:type_id,1', 'string', 'min:8'],
+            'password_iur' => ['required_if:type_id,2', 'string', 'min:8'],
+            'password_confirmation_iur' => 'required_with:password_iur|same:password_iur|min:8',
+            'password_confirmation_fiz' => 'required_with:password_fiz|same:password_fiz|min:8',
             'address_fiz' => ['required_if:type_id,1', 'string'],
             'address_iur' => ['required_if:type_id,2', 'string'],
             'type_id' => ['required', 'integer'],
+            'city_id' => ['required', 'integer'],
             'organization_name' => ['required_if:type_id,2', 'string'],
             'cod_fiscal' => ['nullable', 'string'],
-            'contact_name' => ['nullable', 'string'],
         ];
     }
 

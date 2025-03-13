@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Frontend\v1\Account;
 
+use App\Exceptions\City\CityNotFoundException;
+use App\Exceptions\City\ThemeCityNotFoundValidationException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\DuplicatedUserEmailValidationException;
 use App\Exceptions\User\UserNewPasswordDoesNotMatch;
@@ -12,6 +14,7 @@ use App\Http\Mappers\Theme\ThemeAccountDataMapper;
 use App\Http\Requests\Theme\Account\ThemeAccountChangePasswordRequest;
 use App\Http\Requests\Theme\Account\ThemeAccountRequest;
 use App\Models\User;
+use App\Repositories\City\CityRepository;
 use App\Services\Theme\Account\ThemeAccountManager;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +24,7 @@ final class ThemeAccountController extends Controller
         private readonly ThemeAccountDataMapper $themeAccountDataMapper,
         private readonly ThemeAccountManager $themeAccountManager,
         private readonly ThemeAccountChangePasswordDataMapper $themeAccountChangePasswordDataMapper,
+        private readonly CityRepository $cityRepository,
     )
     {
     }
@@ -28,9 +32,11 @@ final class ThemeAccountController extends Controller
     public function index()
     {
         $user = Auth::guard('user')->user();
+        $cities = $this->cityRepository->getAllSorted();
 
         return view('frontend.v1.pages.account.index', compact([
-            'user'
+            'user',
+            'cities',
         ]));
     }
 
@@ -45,6 +51,8 @@ final class ThemeAccountController extends Controller
 
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
+        } catch (CityNotFoundException $e) {
+            throw new ThemeCityNotFoundValidationException();
         }
     }
 

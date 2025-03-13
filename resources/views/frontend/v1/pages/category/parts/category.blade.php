@@ -64,7 +64,7 @@
                                                 $activeStyle = 'display: none';
 
                                                 foreach ($attributeValues as $attribute) {
-                                                    if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'])){
+                                                    if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
                                                         $activeStyle = 'display:flex';
                                                     }
                                                 }
@@ -72,7 +72,7 @@
                                                 <div class="theme-toggle-item-content" style="{{$activeStyle}}">
                                                         @foreach($attributeValues as $attribute)
                                                             <div class="col-6">
-                                                                <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute']) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][]" value="{{str_replace(',','.', $attribute->value)}}">
+                                                                <input type="checkbox" class="theme-checkbox"  id="attribute-{{$attribute->id}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
                                                                 <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
                                                             </div>
                                                         @endforeach

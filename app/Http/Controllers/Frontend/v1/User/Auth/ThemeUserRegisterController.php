@@ -9,6 +9,7 @@ use App\Exceptions\User\UserTypeNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\ThemeRegistrationDataMapper;
 use App\Http\Requests\Theme\User\ThemeUserRegistrationRequest;
+use App\Repositories\City\CityRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Theme\User\ThemeRegistrationManager;
 
@@ -18,6 +19,7 @@ final class ThemeUserRegisterController extends Controller
         private readonly UserRepository $userRepository,
         private readonly ThemeRegistrationManager $themeRegistrationManager,
         private readonly ThemeRegistrationDataMapper $themeRegistrationDataMapper,
+        private readonly CityRepository $cityRepository,
     )
     {
     }
@@ -25,9 +27,11 @@ final class ThemeUserRegisterController extends Controller
     public function index()
     {
         $userTypes = $this->userRepository->getAllUserTypes();
+        $cities = $this->cityRepository->getAllSorted();
 
         return view('frontend.v1.pages.registration.index', compact([
-            'userTypes'
+            'userTypes',
+            'cities'
         ]));
     }
 

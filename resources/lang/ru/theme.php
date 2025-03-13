@@ -292,4 +292,9 @@ return array (
     'password-rule-uppercase-letter' => 'Пароль должен иметь минимум 1 заглавную букву',
     'password-rule-length' => 'Пароль должен содержать от 8 до 20 символов',
     'password_was_updated' => 'Пароль успешно обновлен',
+    'city_not_found' => 'Такой город не найден',
+    'city_required_sum_error' => 'Ошибка выбора доставки. Сумма доставки неизвестна.',
+    'city-label' => 'Город',
+    'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию',
+    'password_confirmation' => 'Подтверждение пороля',
 );

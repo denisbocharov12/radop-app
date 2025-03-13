@@ -27,6 +27,7 @@
 @endsection
 
 @section('scripts')
+    <script src="https://unpkg.com/imask"></script>
     <script>
         function showIurForm() {
             let iurForm = document.getElementById("iur-form");
@@ -99,5 +100,13 @@
                 }
             });
         });
+        $(document).ready(function(){
+            $(".select2-registration").select2();
+            const element = document.getElementById('phone_iur');
+            const maskOptions = {
+                mask: '+{373} 000 00 000'
+            };
+            const mask = IMask(element, maskOptions);
+        })
     </script>
 @endsection

@@ -10,15 +10,21 @@ use App\Enums\OrderStatus;
 use App\Events\OrderCreatedSendAdminEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
 use App\Exceptions\Checkout\OrderErrorException;
+use App\Exceptions\City\CityNotFoundException;
+use App\Exceptions\City\ThemeCityErrorRequiredSumException;
+use App\Exceptions\Order\ThemeOrderMakeException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderProfile;
 use App\Models\User;
+use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserTypeRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 final class ThemeCheckoutManager
@@ -29,7 +35,8 @@ final class ThemeCheckoutManager
         private readonly UserTypeRepository $userTypeRepository,
         private readonly OrderPaymentStatus $orderPaymentStatus,
         private readonly OrderStatus $orderStatus,
-        private readonly OrderPaymentMethods $orderPaymentMethods
+        private readonly OrderPaymentMethods $orderPaymentMethods,
+        private readonly CityRepository $cityRepository,
     )
     {
     }
@@ -51,10 +58,26 @@ final class ThemeCheckoutManager
             $userType = $authUser->type->key_name;
         }
 
+        if ($authUser === null) {
+            throw new ThemeOrderMakeException();
+        }
+
         if (!array_key_exists($orderData->payment_method, $this->orderPaymentMethods->getAll()))
         {
             throw new OrderErrorException();
         }
+
+        $existedCity = $this->cityRepository->getById($orderData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
+        if ((float)$existedCity->required_sum === null || $existedCity->delivery_sum === null) {
+            throw new ThemeCityErrorRequiredSumException();
+        }
+
+        $deliverySum = (float)$existedCity->delivery_sum;
 
         $order = Order::create([
             'order_number' => $this->getLatestOrderNumber($userType),
@@ -63,18 +86,18 @@ final class ThemeCheckoutManager
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,
-            'city' => $orderData->city,
+            'city' => $orderData->cityId,
             'note' => $orderData->note,
             'payment_method' => $orderData->payment_method,
             'delivery_method' => $orderData->delivery_method,
             'payment_status' => $this->orderPaymentStatus->getUnpaidPaymentStatus(),
             'status' => $this->orderStatus->getProcessingStatus(),
-            'delivery_charge' => $orderData->delivery_charge,
+            'delivery_charge' => $deliverySum,
             'user_id' => $userId,
             'manager_id' => $managerId,
             'user_type' => $userType,
             'subtotal' => $this->getCartSubtotalValue(),
-            'total' => $this->getCartSubtotalValue() - $discount,
+            'total' => $this->getCartSubtotalValue() - $discount + $deliverySum,
             'discount' => $discount
         ]);
 
