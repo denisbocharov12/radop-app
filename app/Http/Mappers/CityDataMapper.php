@@ -14,6 +14,7 @@ final class CityDataMapper
             $request->name_ro,
             $request->name_ru,
             $request->delivery_sum,
+            $request->required_sum,
         );
     }
 }

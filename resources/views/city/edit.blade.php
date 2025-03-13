@@ -50,6 +50,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="required_sum">Мин. сумма заказа (MDL)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="number" required class="form-control @error('required_sum') error @enderror" id="required_sum" name="required_sum" value="{{$city->required_sum}}" placeholder="800">
+                                                    @error('required_sum')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>

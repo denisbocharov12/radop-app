@@ -88,4 +88,9 @@ final class ThemeShopController extends Controller
             'brands',
         ]));
     }
+
+    public function catalog(Request $request)
+    {
+        return view('frontend.v1.pages.shop.catalog');
+    }
 }

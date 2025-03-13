@@ -7,6 +7,7 @@
             <div class="nk-tb-col"><span class="sub-text">Роль</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Телефон</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Город</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
         </div><!-- .nk-tb-item -->
@@ -45,6 +46,9 @@
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$user->profile->phone}}</span>
+                </div>
+                <div class="nk-tb-col tb-col-lg">
+                    <span>{{$user?->city?->name}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools">
                     <ul class="nk-tb-actions gx-2">

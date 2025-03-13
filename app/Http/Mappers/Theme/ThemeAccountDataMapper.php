@@ -18,6 +18,7 @@ final class ThemeAccountDataMapper
             $request->organization_name,
             $request->cod_fiscal,
             $request->contact_name,
+            $request->city_id
         );
     }
 }

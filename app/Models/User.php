@@ -28,6 +28,7 @@ final class User extends Authenticatable
         'type_id',
         'manager_id',
         'sale',
+        'city_id',
         'email_verified_at',
     ];
 
@@ -76,5 +77,13 @@ final class User extends Authenticatable
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class, 'user_id');
+    }
+
+    /**
+     * @return BelongsTo<City, User>
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class)->withTrashed();
     }
 }

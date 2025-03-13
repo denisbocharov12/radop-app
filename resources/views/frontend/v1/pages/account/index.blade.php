@@ -52,6 +52,18 @@
                                                 required
                                             />
                                         </li>
+                                        <li class="my-account-details-form__item select-2-container-wrap">
+                                            <label
+                                                class="my-account-details-form__label"
+                                                for="city_id"
+                                            >{{__('theme.city-label')}}</label
+                                            >
+                                            <select name="city_id" id="city_id" class="select-2-container my-account-details-form__input">
+                                                @foreach($cities as $city)
+                                                    <option value="{{$city->id}}" {{$user->city_id === $city->id ? 'selected' : ''}}>{{$city->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </li>
                                         <li class="my-account-details-form__item">
                                             <label
                                                 class="my-account-details-form__label"

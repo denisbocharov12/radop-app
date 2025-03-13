@@ -13,13 +13,13 @@
                     <p class="gratitude__">{{__('theme.check-email')}}</p>
                     <div class="gratitude__row">
                         <a class="gratitude__link" href="{{route('theme.home')}}">{{__('theme.on-homepage')}}</a>
-                        <a class="gratitude__link" href="{{route('theme.shop.index')}}">{{__('theme.сontinue-shopping')}}</a>
+                        <a class="gratitude__link" href="{{route('theme.shop.catalog')}}">{{__('theme.сontinue-shopping')}}</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    @include('frontend.v1.pages.checkout.parts.tabs')
+    @include('frontend.v1.pages.cart.parts.tabs')
 @endsection
 @section('scripts')
     <script>

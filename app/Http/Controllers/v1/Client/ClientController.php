@@ -4,6 +4,8 @@ namespace App\Http\Controllers\v1\Client;
 
 use App\Data\Client\ClientData;
 use App\Events\PersonalSaleWasChangedEvent;
+use App\Exceptions\City\CityNotFoundException;
+use App\Exceptions\City\CityNotFoundValidationException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\DuplicatedUserEmailValidationException;
 use App\Exceptions\User\UserNotFoundException;
@@ -15,6 +17,7 @@ use App\Http\Requests\Client\ClientRequest;
 use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\User;
+use App\Repositories\City\CityRepository;
 use App\Repositories\User\UserRepository;
 use App\Exceptions\NotAjaxRequestException;
 use App\Services\Client\ClientManager;
@@ -32,7 +35,8 @@ class ClientController extends Controller
         UserRepository   $userRepository,
         ClientDataMapper $clientDataMapper,
         ClientManager    $clientManager,
-        ClientUpdateDataMapper $clientUpdateDataMapper
+        ClientUpdateDataMapper $clientUpdateDataMapper,
+        private readonly CityRepository $cityRepository,
     )
     {
         $this->userRepository = $userRepository;
@@ -46,11 +50,13 @@ class ClientController extends Controller
         $users = $this->userRepository->getUsers();
         $roles = $this->userRepository->getAllRoles();
         $userTypes = $this->userRepository->getAllUserTypes();
+        $cities = $this->cityRepository->getAllSorted();
 
         return view('client.index', compact([
             'users',
             'roles',
-            'userTypes'
+            'userTypes',
+            'cities',
         ]));
     }
 
@@ -65,6 +71,8 @@ class ClientController extends Controller
 
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
+        } catch (CityNotFoundException $e) {
+            throw new CityNotFoundValidationException();
         }
     }
 
@@ -85,6 +93,8 @@ class ClientController extends Controller
 
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
+        }  catch (CityNotFoundException $e) {
+            throw new CityNotFoundValidationException();
         }
 
     }
@@ -94,11 +104,13 @@ class ClientController extends Controller
         $users = $this->userRepository->getUsers();
         $roles = $this->userRepository->getAllRoles();
         $userTypes = $this->userRepository->getAllUserTypes();
+        $cities = $this->cityRepository->getAllSorted();
 
         return view('client.edit', compact([
             'roles',
             'userTypes',
-            'user'
+            'user',
+            'cities'
         ]));
     }
 

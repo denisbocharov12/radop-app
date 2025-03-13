@@ -38,6 +38,7 @@ final class CityManager
                 'ru' => $cityData->name_ru,
             ],
             'delivery_sum' => $cityData->deliverySum,
+            'required_sum' => $cityData->requiredSum,
         ]);
 
         $city->slug = Str::slug($cityData->name_ro) . '-' . $city->id;
@@ -61,6 +62,7 @@ final class CityManager
                 'ru' => $cityData->name_ru,
             ],
             'delivery_sum' => $cityData->deliverySum,
+            'required_sum' => $cityData->requiredSum,
         ]);
 
         $city->slug = Str::slug($cityData->name_ro) . '-' . $city->id;

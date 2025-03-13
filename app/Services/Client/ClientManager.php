@@ -4,11 +4,13 @@ namespace App\Services\Client;
 
 use App\Data\Client\ClientData;
 use App\Data\Client\ClientUpdateData;
+use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\Profile;
 use App\Models\User;
+use App\Repositories\City\CityRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\EntityStatusManager;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,7 +25,8 @@ class ClientManager
     public function __construct
     (
         UserRepository $userRepository,
-        EntityStatusManager $entityStatusManager
+        EntityStatusManager $entityStatusManager,
+        private readonly CityRepository $cityRepository,
     )
     {
         $this->userRepository = $userRepository;
@@ -32,6 +35,12 @@ class ClientManager
 
     public function store(ClientData $clientData): void
     {
+        $existedCity = $this->cityRepository->getById($clientData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
         $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
         $lastUserNumber = User::query()->get()->last()->id + 1;
 
@@ -51,6 +60,7 @@ class ClientManager
             'status' => $status,
             'type_id' => $clientData->typeId,
             'sale' => (float)$clientData->sale,
+            'city_id' => $clientData->cityId,
         ]);
 
         $user->assignRole($clientData->role);
@@ -72,6 +82,12 @@ class ClientManager
 
     public function update(ClientUpdateData $clientData, User $user)
     {
+        $existedCity = $this->cityRepository->getById($clientData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
         $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
 
         $user->update([
@@ -79,6 +95,7 @@ class ClientManager
             'status' => $status,
             'type_id' => $clientData->typeId,
             'sale' => (float)$clientData->sale,
+            'city_id' => $clientData->cityId
         ]);
 
         $user->assignRole($clientData->role);

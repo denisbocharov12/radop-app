@@ -135,6 +135,18 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="city_id">Город</label>
+                                        <div class="form-control-wrap">
+                                            <select required class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
+                                                @foreach($cities as $city)
+                                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <div class="form-label-group">
                                             <label class="form-label" for="password">Пароль</label>
                                         </div>

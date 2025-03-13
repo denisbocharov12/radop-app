@@ -292,4 +292,8 @@ return array (
     'password-rule-uppercase-letter' => 'Parola trebuie să aibă cel puțin o literă majusculă',
     'password-rule-length' => 'Parola trebuie să conțină între 8 și 20 de caractere',
     'password_was_updated' => 'Parola a fost actualizată cu succes',
+    'city_not_found' => 'Oraș nu a fost găsit',
+    'city_required_sum_error' => 'Eroare la selectarea livrării. Costul de transport necunoscut.',
+    'city-label' => 'Oraș',
+    'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию'
 );
