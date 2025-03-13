@@ -207,7 +207,7 @@
                                     </div>
                                     <div class="total-wrap">
                                         <p class="total-text">{{__('theme.for-payment')}}</p>
-                                        <span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}} {{__('theme.MDL')}}</span>
+                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
                                     </div>
                                 @endif
                                 <div class="sc-buttons-wrap">

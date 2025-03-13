@@ -4,12 +4,14 @@ namespace App\Services\Theme\User;
 
 use App\Data\Theme\User\ThemeUserRegistrationData;
 use App\Events\UserActivationSendEmailEvent;
+use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\UserActivationIsActiveException;
 use App\Exceptions\User\UserTypeNotFoundException;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\UserActivation;
+use App\Repositories\City\CityRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -21,12 +23,19 @@ final class ThemeRegistrationManager
 
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly CityRepository $cityRepository,
     )
     {
     }
 
     public function store(ThemeUserRegistrationData $themeUserRegistrationData): User
     {
+        $existedCity = $this->cityRepository->getById($themeUserRegistrationData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
         $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
 
         if ($existedType === null) {
@@ -66,6 +75,7 @@ final class ThemeRegistrationManager
             'email_verified_at' => now(),
             'status' => false,
             'type_id' => $themeUserRegistrationData->typeId,
+            'city_id' => $themeUserRegistrationData->cityId,
         ]);
 
         $user->assignRole(self::USER_ROLE);
@@ -80,7 +90,6 @@ final class ThemeRegistrationManager
             'address' => $address,
             'organization_name' => $themeUserRegistrationData->organizationName,
             'cod_fiscal' => $themeUserRegistrationData->codFiscal,
-            'contact_name' => $themeUserRegistrationData->contactName,
         ]);
 
         return $user;

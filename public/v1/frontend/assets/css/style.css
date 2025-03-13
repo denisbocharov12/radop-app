@@ -6199,8 +6199,8 @@ hr.product-card-item{
 
 .section-register .col-register-wrap #tabs form .right .form-control .invalid-feedback {
     font-size: 12px;
-    margin-left: 4px;
     margin-top: 4px;
+    margin-left: 0;
     color: red;
 }
 
@@ -6208,9 +6208,9 @@ hr.product-card-item{
     display: block;
     color: #252525;
     padding: 15px 40px;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #fff;
-    border: 1px solid #0067a770;
+    border: 1px solid #0052a6;
 }
 
 .section-register .col-register-wrap #tabs form .right .form-control input:disabled {
@@ -6260,15 +6260,45 @@ hr.product-card-item{
     display: block;
     color: #252525;
     padding: 15px 40px;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #fff;
-    border: 1px solid #0067a770;
+    border: 1px solid #0052a6;
 }
 
 .section-register .col-register-wrap #tabs form .left .form-control input:disabled {
     background-color: #d2d2d2;
 }
 
+.section-register .select2-registration-wrap .select2-container{
+    color: #252525;
+    padding: 15px 40px;
+    border-radius: 10px;
+    background-color: #fff;
+    border: 1px solid #0052a6;
+    height: 56.48px;
+    display: flex;
+    align-items: center;
+}
+.section-register .select2-registration-wrap .select2-container .selection {
+    display: flex;
+    width: 100%;
+}
+.section-register .select2-registration-wrap .select2-container .select2-selection--single{
+    border: 0;
+    line-height: 1;
+    height: auto;
+    width: 100%;
+}
+
+.section-register .select2-registration-wrap .select2-container .select2-selection--single .select2-selection__arrow{
+    top: 14px;
+    right: 15px;
+}
+.section-register .select2-registration-wrap .select2-container .select2-selection__rendered{
+    text-align: left;
+    padding: 0;
+    line-height: 1;
+}
 .section-register .col-register-wrap #tabs form .left .form-control .invalid-feedback {
     font-size: 12px;
     margin-left: 4px;
@@ -8858,6 +8888,8 @@ hr.product-card-item{
     border: 2px solid;
     padding: 5px;
     font-weight: bold;
+    display: block;
+    margin-top: 4px;
 }
 .section-register p {
     margin: 0 0 16px;
@@ -8893,4 +8925,5 @@ hr.product-card-item{
 .section-register .form-control .icon-style{
     position: absolute;
     margin: 20px;
+    z-index: 1;
 }

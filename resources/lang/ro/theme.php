@@ -295,5 +295,6 @@ return array (
     'city_not_found' => 'Oraș nu a fost găsit',
     'city_required_sum_error' => 'Eroare la selectarea livrării. Costul de transport necunoscut.',
     'city-label' => 'Oraș',
-    'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию'
+    'order_not_permitted_to_create' => 'Pentru a plasa o comandă, vă rugăm să vă conectați',
+    'password_confirmation' => 'Confirmarea parolei',
 );

@@ -295,5 +295,6 @@ return array (
     'city_not_found' => 'Такой город не найден',
     'city_required_sum_error' => 'Ошибка выбора доставки. Сумма доставки неизвестна.',
     'city-label' => 'Город',
-    'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию'
+    'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию',
+    'password_confirmation' => 'Подтверждение пороля',
 );
