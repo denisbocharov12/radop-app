@@ -10,7 +10,6 @@ namespace App\Data\Order;
  * @property string $phone
  * @property string $address
  * @property string $userType
- * @property string $city
  * @property string $note
  * @property int $userId
  * @property int $managerId
@@ -40,7 +39,6 @@ final class OrderData
         public readonly string $phone,
         public readonly string $address,
         public readonly string $userType,
-        public readonly string $city,
         public readonly ?string $note,
         public readonly ?int $userId,
         public readonly ?int $managerId,
