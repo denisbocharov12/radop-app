@@ -91,6 +91,12 @@ final class ThemeProductManager
             $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
+        $requiredSumStatus = false;
+
+        if (\Cart::session($sessionId)->getSubTotal() < (float)Auth::guard('user')->user()->city->required_sum) {
+            $requiredSumStatus = true;
+        }
+
         if ($result)
         {
             $response['status'] = true;
@@ -107,6 +113,7 @@ final class ThemeProductManager
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
                 $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart', ['product' => $existedProduct])->render();
+                $response['required-sum-status'] = $requiredSumStatus;
             }
         }
 
@@ -142,6 +149,13 @@ final class ThemeProductManager
 
     public function updateCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
+        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+            $response['msg'] = __('theme.add_to_cart_not_permitted');
+            $response['status'] = 'not_permitted';
+
+            return $response;
+        }
+
         $existedProduct = $this->productRepository->getById($addToCartData->productId);
 
         if ($existedProduct === null)
@@ -189,6 +203,12 @@ final class ThemeProductManager
             $result = $this->updateInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
+        $requiredSumStatus = false;
+
+        if (\Cart::session($sessionId)->getSubTotal() < (float)Auth::guard('user')->user()->city->required_sum) {
+            $requiredSumStatus = true;
+        }
+
         if ($result)
         {
             $response['status'] = true;
@@ -204,6 +224,7 @@ final class ThemeProductManager
                 $response['cart'] = $cart;
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
+                $response['required-sum-status'] = $requiredSumStatus;
             }
         }
 

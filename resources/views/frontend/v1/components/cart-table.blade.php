@@ -158,6 +158,11 @@
                     <p class="total-text">{{__('theme.for-payment')}}</p>
                     <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
                 </div>
+                <div class="required-sum-wrap">
+                    @if(\Cart::session($sessionId)->getTotal() < (float)Auth::guard('user')->user()->city->required_sum)
+                        <p class="required-sum-text">{{__('theme.required-sum-text', ['sum' => \Illuminate\Support\Facades\Auth::guard('user')->user()->city->required_sum])}}</p>
+                    @endif
+                </div>
             @endif
             <div class="sc-buttons-wrap">
                 <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn">{{__('theme.place-order')}}</a>

@@ -44,7 +44,7 @@ class OrderRequest extends FormRequest
             'phone' => ['required', 'string'],
             'address' => ['required', 'string'],
             'user_type' => ['required', 'string'],
-            'city' => ['required', 'string'],
+            'city' => ['nullable', 'string'],
             'note' => ['nullable', 'string'],
             'user_id' => ['nullable', 'integer'],
             'manager_id' => ['nullable', 'integer'],

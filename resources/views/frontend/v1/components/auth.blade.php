@@ -47,6 +47,7 @@
             </div>
             <div class="login-form-wrap">
                 <form action="{{route('user.login')}}" id="form-login-modal" method="POST" class="form-login">
+                    @csrf
                     <div class="form-block-wrap">
                         <input type="text" name="username" required class="input-login" placeholder="Email" />
                     </div>

@@ -48,10 +48,6 @@ final class ThemeUserManager
     {
         $msg = 'Неверный логин или пароль';
 
-        if ($status) {
-            $msg = 'Вы успешно вошли в аккаунт!';
-        }
-
         $response['status'] = $status;
         $response['msg'] = $msg;
         $response['html'] = view('frontend.v1.auth.components.modal-auth')->render();

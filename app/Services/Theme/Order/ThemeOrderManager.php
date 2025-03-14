@@ -31,8 +31,9 @@ final class ThemeOrderManager
             throw new UserIsNotCustomerException();
 
         if ($user->can('view', $order)) {
-            $pdf = PDF::loadView('invoice.order-printing', compact([
-                'order'
+            $pdf = PDF::loadView('frontend.v1.mail.order', ([
+                'order' => $order,
+                'products' => $order->products,
             ]));
 
             return $pdf->stream();
@@ -51,8 +52,9 @@ final class ThemeOrderManager
             throw new UserIsNotCustomerException();
 
         if ($user->can('view', $order)) {
-            $pdf = PDF::loadView('invoice.order-printing', compact([
-                'order'
+            $pdf = PDF::loadView('frontend.v1.mail.order', ([
+                'order' => $order,
+                'products' => $order->products,
             ]));
 
             return $pdf->download();

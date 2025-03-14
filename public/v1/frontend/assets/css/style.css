@@ -4370,6 +4370,13 @@ header .section-header .row-main .header-menu .col-lg{
     margin-top: 0;
 }
 
+.required-sum-text{
+    text-align: left;
+    color: red;
+    font-size: 13px;
+    margin-top: 15px;
+}
+
 .section-shopping-cart .col-cart-total .shopping-cart-total-wrap .product-appseil-wrap .product-appseil .product-info .product-add-to-cart {
     flex-direction: column;
     align-items: flex-start;
@@ -6693,8 +6700,8 @@ hr.product-card-item{
 
 .order__block:last-child {
     display: flex;
-    column-gap: 85px;
-    justify-content: space-between;
+    column-gap: 0px;
+    justify-content: flex-end;
 }
 
 .order__block p:not(:last-child) {

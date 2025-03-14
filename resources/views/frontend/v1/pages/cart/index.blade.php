@@ -66,28 +66,14 @@
                         $('.mini-cart-subtotal').html(response['total']);
                         $('#cart-page').html(response['cart-page']);
                     }
-                    if(response['status'] == 'not_in_stock') {
-                        toastr["warning"]("Данного товара нет в наличии больше указанной цифры...")
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-bottom-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
+                    if(response['status'] === 'not_in_stock') {
+                        toastr["warning"](response['msg'])
                     }
-                    if (!response['status']){
-                        alert('Нельзя уменьшить меньше 1')
+                    if(response['status'] === 'not_permitted') {
+                        toastr["error"](response['msg'])
+                    }
+                    if(!response['required-sum-status']) {
+                        $('.required-sum-text').remove();
                     }
                 }
             })
