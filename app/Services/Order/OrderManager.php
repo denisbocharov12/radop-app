@@ -70,7 +70,6 @@ final class OrderManager
             'phone' => $orderData->phone,
             'address' => $orderData->address,
             'user_type' => $orderData->userType,
-            'city' => $orderData->city,
             'note' => $orderData->note,
             'user_id' => $orderData->userId,
             'manager_id' => $orderData->managerId,

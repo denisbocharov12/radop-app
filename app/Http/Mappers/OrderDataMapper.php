@@ -17,7 +17,6 @@ final class OrderDataMapper
             $request->phone,
             $request->address,
             $request->user_type,
-            $request->city,
             $request->note,
             $request->user_id,
             $request->manager_id,
