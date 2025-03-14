@@ -265,7 +265,7 @@ final class ThemeProductManager
             $price = number_format((float)$product->sale_price, 2, ',', '');
         }
         else{
-            $price = number_format((float)$product->price * (float)$product->price_koef, 2, ',', '');
+            $price = number_format((float)$product->price, 2, ',', '');
         }
 
         return $price;
@@ -279,7 +279,7 @@ final class ThemeProductManager
             $price = number_format((float)$product->sale_price, 2, '.', '');
         }
         else{
-            $price = number_format((float)$product->price * (float)$product->price_koef, 2, '.', '');
+            $price = number_format((float)$product->price, 2, '.', '');
         }
 
         return $price;

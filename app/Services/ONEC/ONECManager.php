@@ -11,6 +11,7 @@ use App\Jobs\PackageImportJsonJob;
 use App\Jobs\ProductImportJsonJob;
 use App\Models\Category;
 use App\Models\Package;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
@@ -59,6 +60,14 @@ final class ONECManager
                 $batch  = Bus::batch([]);
 
                 $productChunks = array_chunk($productsData, 100);
+
+                $updatedProducts = Product::all();
+
+                $updatedProducts->each(function ($product) {
+                    $product->update([
+                        'status' => false,
+                    ]);
+                });
 
                 foreach ($productChunks as $productChunk) {
                     $batch->add(new ProductImportJsonJob($productChunk, $header));
