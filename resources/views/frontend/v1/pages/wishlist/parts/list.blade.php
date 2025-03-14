@@ -73,9 +73,9 @@
                             <span class="price"
                                   style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             <span class="old_price"
-                                  style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                  style="color: #848484">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                         @else
-                            <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                            <span class="price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                         @endif
 
                     </div>
