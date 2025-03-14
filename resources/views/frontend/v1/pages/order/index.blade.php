@@ -48,32 +48,19 @@
                                             {{--                                            Отслеживать заказ--}}
                                             {{--                                        </a>--}}
                                         </div>
-                                        <div class="order__box">
+                                        <div class="order__box"  style="max-width: 100%">
                                             <button class="order__button" type="button">
                                                 <i class="icon-cart"></i>
                                             </button>
-                                            <div class="order__options">
-                                                {{__('theme.order-parameters')}}
-                                                <i class="icon-arrow-down"></i>
-                                                <ul class="order-dropdown">
-                                                    {{--                                                <li class="order-dropdown__item">--}}
-                                                    {{--                                                    <a class="order-dropdown__link" href="#"--}}
-                                                    {{--                                                    >Редактировать</a--}}
-                                                    {{--                                                    >--}}
-                                                    {{--                                                </li>--}}
-                                                    <li class="order-dropdown__item">
-                                                        <a class="order-dropdown__link"
-                                                           data-id="{{$order->id}}"
-                                                           href="{{route('theme.user.orders.view.invoice', $order)}}">{{__('theme.order-view-invoice')}}
-                                                        </a>
-                                                    </li>
-                                                    <li class="order-dropdown__item">
-                                                        <a class="order-dropdown__link"
-                                                           data-id="{{$order->id}}"
-                                                           href="{{route('theme.user.orders.download.invoice', $order)}}">{{__('theme.order-download-invoice')}}
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                                            <div class="order__options d-flex align-items-center">
+                                                <a class="order-dropdown__link"
+                                                   data-id="{{$order->id}}"
+                                                   href="{{route('theme.user.orders.view.invoice', $order)}}">{{__('theme.order-view-invoice')}}
+                                                </a>
+                                                <a class="order-dropdown__link"
+                                                   data-id="{{$order->id}}"
+                                                   href="{{route('theme.user.orders.download.invoice', $order)}}">{{__('theme.order-download-invoice')}}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

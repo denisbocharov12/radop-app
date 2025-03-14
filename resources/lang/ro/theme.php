@@ -272,7 +272,7 @@ return array (
     'add_to_cart_not_permitted' => 'Pentru a vedea preturile si pentru a plasa o comanda, va rugam sa va autentificati sau sa va inregistrati.',
     'registration-text' => 'Pentru a activa contul dumneavoastră, vă rugăm să urmați instrucțiunile trimise pe adresa dumneavoastră de email',
     'registration-success-text' => 'Vă mulțumim pentru înregistrare! Pentru a afla prețul dvs. individual cu reducere, contactați managerul la numărul 022 78 21 12 sau scrieți la support@radop.md',
-    'success' => 'Succes',
+    'success' => '',
     'header-catalog-text' => 'Catalog',
     'registration-warning-text' => 'Temporar nu lucrăm cu persoane fizice!',
     'refund-policy' => 'Politica de returnare',
@@ -297,4 +297,5 @@ return array (
     'city-label' => 'Oraș',
     'order_not_permitted_to_create' => 'Pentru a plasa o comandă, vă rugăm să vă conectați',
     'password_confirmation' => 'Confirmarea parolei',
+    'required-sum-text' => 'Suma minimă a comenzii pentru localitatea dumneavoastră este de :sum de lei!'
 );

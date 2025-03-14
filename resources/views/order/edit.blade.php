@@ -196,17 +196,6 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="city">Город</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('city') error @enderror" id="city" name="city" value="{{\App\Models\City::find($order->city)->name}}" placeholder="Город">
-                                                    @error('city')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label class="form-label" for="order_number">Номер заказа</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('order_number') error @enderror" id="order_number" name="order_number" value="{{$order->order_number}}" placeholder="Номер заказа">

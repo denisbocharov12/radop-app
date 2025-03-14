@@ -1,6 +1,6 @@
-<body style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
+<body style="max-width: 700px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
 <a href="{{route('theme.home')}}" class="link-logo">
-    <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
+    <img style="width: 100px; display: flex; align-items: center;justify-content: center" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" alt="Radop logo">
 </a>
 <div class="header" style="padding: 10px 0;">
     <h2>Bună ziua, {{ $order->first_name }} {{ $order->last_name }}</h2>
@@ -30,8 +30,8 @@
             <th style="padding: 8px; text-align: left; font-weight: bold;">Cod</th>
             <th style="padding: 8px; text-align: left; font-weight: bold;">Denumire produsului</th>
             <th style="padding: 8px; text-align: left; font-weight: bold;">Cantitate</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold;">Preț</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold;">Sumă</th>
+            <th style="padding: 8px; text-align: left; font-weight: bold; min-width: 80px">Preț</th>
+            <th style="padding: 8px; text-align: left; font-weight: bold; min-width: 80px">Sumă</th>
         </tr>
         @foreach($products as $product)
             <tr>
