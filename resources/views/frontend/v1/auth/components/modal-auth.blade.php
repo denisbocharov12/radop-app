@@ -1,4 +1,9 @@
 @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->hasRole('user'))
+@if($status)
+    <script>
+        window.location.replace(window.location+'/orders');
+    </script>
+@endif
 <div class="login-modal-wrap">
     <div class="login-logo d-flex align-items-center justify-content-center">
         <img style="width: 90px; height: auto" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
@@ -47,17 +52,22 @@
         <div class="login-form-wrap">
             <form action="{{route('user.login')}}" id="form-login-modal" method="POST" class="form-login">
                 <div class="form-block-wrap">
-                    <input type="text" name="username" required class="input-login" placeholder="Email" />
+                    <input type="text" name="username" required class="input-login {{!$status ? 'input-error' : ''}}" placeholder="Email" />
                 </div>
                 <div class="form-block-wrap">
                     <input
                         type="password"
                         name="password"
-                        class="input-login input-password"
+                        class="input-login input-password {{!$status ? 'input-error' : ''}}"
                         required
                         placeholder="{{__('theme.password')}}"
                     />
                 </div>
+                @if(!$status)
+                    <div class="form-block-wrap">
+                        <p class="text-error">{{__('theme.login-error')}}</p>
+                    </div>
+                @endif
                 <div class="form-block-wrap">
                     <button type="submit" class="login-btn" id="login-btn-modal">Войти</button>
                 </div>

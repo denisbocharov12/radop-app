@@ -5,6 +5,9 @@
     <title>Radop - Magazin online</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta itemprop="name" content="Radop - Magazin online"/>
+    <meta itemprop="description" content="Avem 30 ani de activitate in domeniu și suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca."/>
+    <meta itemprop="image" content="{{asset('/v1/frontend/assets/images')}}/logo_svg_radop.png"/>
     <!-- CSRF Token -->
     <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">

@@ -104,7 +104,9 @@
             $(".select2-registration").select2();
             const element = document.getElementById('phone_iur');
             const maskOptions = {
-                mask: '+{373} 000 00 000'
+                mask: '{\\0} 000 00 000',
+                lazy: false,
+                overwrite: 'shift',
             };
             const mask = IMask(element, maskOptions);
         })
