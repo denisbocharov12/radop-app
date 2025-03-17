@@ -17,14 +17,14 @@
         <input
             id="product-{{$product->id}}-qty"
             type="number"
-            min="{{$package}}"
+            min="1"
             max="{{$product->stock}}"
             placeholder="{{$package}}"
-            value="{{$package}}"
+            value="1"
             name="product-{{$product->id}}-qty"
             data-product-id="{{$product->onec_id}}"
             data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
-            data-package="{{$package}}"
+            data-package="1"
             class="product-qty-item"
         />
         <div class="input-group-btn">
