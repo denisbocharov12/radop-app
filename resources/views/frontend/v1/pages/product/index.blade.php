@@ -92,7 +92,7 @@
                                         <div class="sc-product-qty qty-block">
                                             <div class="input-group-btn">
                                                 <button
-                                                        onclick="decrementQuantityProduct(this, {{$package}})"
+                                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
                                                         class="sc-product-decrement btn-quantity-product minus"
                                                         type="button"
                                                         id="button-minus"
@@ -103,19 +103,19 @@
                                             <input
                                                     id="product-{{$product->id}}-qty"
                                                     type="number"
-                                                    min="{{$package}}"
+                                                    min="1"
                                                     max="{{$product->stock}}"
                                                     placeholder="{{$package}}"
-                                                    value="{{$package}}"
+                                                    value="1"
                                                     name="product-{{$product->id}}-qty"
                                                     data-product-id="{{$product->onec_id}}"
                                                     data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
-                                                    data-package="{{$package}}"
+                                                    data-package="1"
                                                     class="product-qty-item"
                                             />
                                             <div class="input-group-btn">
                                                 <button
-                                                        onclick="incrementQuantityProduct(this, {{$package}})"
+                                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
                                                         class="sc-product-increment btn-quantity-product plus"
                                                         type="button"
                                                         id="button-plus"
