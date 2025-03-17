@@ -46,11 +46,8 @@ final class ThemeUserManager
 
     public function generateResponse(bool $status): array
     {
-        $msg = 'Неверный логин или пароль';
-
         $response['status'] = $status;
-        $response['msg'] = $msg;
-        $response['html'] = view('frontend.v1.auth.components.modal-auth')->render();
+        $response['html'] = view('frontend.v1.auth.components.modal-auth', compact(['status']))->render();
 
         return $response;
     }

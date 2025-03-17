@@ -297,5 +297,7 @@ return array (
     'city-label' => 'Oraș',
     'order_not_permitted_to_create' => 'Pentru a plasa o comandă, vă rugăm să vă conectați',
     'password_confirmation' => 'Confirmarea parolei',
-    'required-sum-text' => 'Suma minimă a comenzii pentru localitatea dumneavoastră este de :sum de lei!'
+    'required-sum-text' => 'Suma minimă a comenzii pentru localitatea dumneavoastră este de :sum de lei!',
+    'login-error' => 'Autentificare sau parolă incorectă',
+    'logout-message' => 'Вы успешно вышли с аккаунта'
 );

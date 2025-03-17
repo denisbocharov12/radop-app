@@ -13,6 +13,7 @@ use App\Repositories\User\UserRepository;
 use App\Services\Theme\User\ThemeUserManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 final class ThemeUserLoginController extends Controller
@@ -61,7 +62,7 @@ final class ThemeUserLoginController extends Controller
 
         Auth::guard('user')->logout();
 
-        toastr()->success('Вы успешно вышли с аккаунта','Успех');
+        toastr()->success(__('theme.logout-message'), '');
 
         return redirect()->route('theme.home');
     }

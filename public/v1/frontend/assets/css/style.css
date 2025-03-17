@@ -5884,6 +5884,22 @@ header .section-header .row-main .header-menu .col-lg{
     border-radius: 5px;
 }
 
+.login-modal-wrap .login-form-wrap .form-login .form-block-wrap .text-error{
+    text-align: center;
+    width: 100%;
+    outline: none;
+    border: 0;
+    border-radius: 5px;
+    padding: 12.5px 15px;
+    letter-spacing: 1px;
+    background-color: red;
+    color: white;
+}
+
+.login-modal-wrap .login-form-wrap .form-login .form-block-wrap input.input-error{
+    border-color: red;
+}
+
 .login-modal-wrap .login-separator {
     margin: 15px 0;
     display: flex;
