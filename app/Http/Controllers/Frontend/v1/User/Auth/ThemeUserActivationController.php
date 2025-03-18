@@ -24,7 +24,7 @@ final class ThemeUserActivationController extends Controller
 
             toastr()->success(__('theme.registration-success-text'),__('theme.success'));
 
-            return redirect()->route('theme.home');
+            return redirect()->route('user.login.form');
         } catch (UserActivationIsActiveException) {
             throw new UserActivationIsActiveValidationException();
         }
