@@ -38,14 +38,6 @@ final class OrderManager
     {
         $orderStatus = $order->status;
 
-        if ($order->order_number !== $orderData->orderNumber) {
-            $existedOrder = $this->orderRepository->getByOrderNumber($orderData->orderNumber);
-
-            if ($existedOrder !== null) {
-                throw new OrderUniqueCodeException();
-            }
-        }
-
         if ($order->user_id !== $orderData->userId) {
             $existedUser = $this->userRepository->getById($orderData->userId);
 
@@ -62,10 +54,12 @@ final class OrderManager
             }
         }
 
+        $firstName = '';
+        $lastName = '';
+
         $order->update([
-            'order_number' => $orderData->orderNumber,
-            'first_name' => $orderData->firstName,
-            'last_name' => $orderData->lastName,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,

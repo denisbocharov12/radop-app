@@ -143,7 +143,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="first_name">Имя</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" value="{{$order->first_name}}" placeholder="Имя">
+                                                    <input type="text" class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" value="{{$order->first_name}}" placeholder="Имя">
                                                     @error('first_name')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -154,7 +154,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="last_name">Фамилия</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" value="{{$order->last_name}}" placeholder="Фамилия">
+                                                    <input type="text"  class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" value="{{$order->last_name}}" placeholder="Фамилия">
                                                     @error('last_name')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -189,17 +189,6 @@
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('address') error @enderror" id="address" name="address" value="{{$order->address}}" placeholder="Адрес">
                                                     @error('address')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="order_number">Номер заказа</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('order_number') error @enderror" id="order_number" name="order_number" value="{{$order->order_number}}" placeholder="Номер заказа">
-                                                    @error('order_number')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>

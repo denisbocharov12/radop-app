@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td style="border: 1px solid black;"><strong>{{ __('theme.order-delivery') }}:</strong></td>
-        <td style="border: 1px solid black;">{{ $order->city . ', ' . $order->address }}</td>
+        <td style="border: 1px solid black;">{{\App\Models\City::find($order->city)?->name. ', ' . $order->address }}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black;"><strong>{{ __('theme.client_type') }}</strong></td>

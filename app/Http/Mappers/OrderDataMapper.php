@@ -10,7 +10,6 @@ final class OrderDataMapper
     public function mapFromRequestToNormalized(OrderRequest $request): OrderData
     {
         return new OrderData(
-            $request->order_number,
             $request->first_name,
             $request->last_name,
             $request->email,
