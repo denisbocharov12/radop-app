@@ -5,7 +5,6 @@ namespace App\Http\Requests\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $order_number
  * @property string $first_name
  * @property string $last_name
  * @property string $email
@@ -37,9 +36,8 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_number' => ['required', 'string'],
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
+            'first_name' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
             'email' => ['required', 'string'],
             'phone' => ['required', 'string'],
             'address' => ['required', 'string'],

@@ -3,7 +3,6 @@
 namespace App\Data\Order;
 
 /**
- * @property string $orderNumber
  * @property string $firstName
  * @property string $lastName
  * @property string $email
@@ -32,9 +31,8 @@ namespace App\Data\Order;
 final class OrderData
 {
     public function __construct(
-        public readonly string $orderNumber,
-        public readonly string $firstName,
-        public readonly string $lastName,
+        public readonly ?string $firstName,
+        public readonly ?string $lastName,
         public readonly string $email,
         public readonly string $phone,
         public readonly string $address,
