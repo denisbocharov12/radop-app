@@ -71,7 +71,7 @@ class OrderController extends Controller
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $paymentStatus = $this->orderPaymentStatus->getAll();
         $orderStatus = $this->orderStatus->getAll();
-        $users = $this->userRepository->getUsers();
+        $users = $this->userRepository->getAll();
         $managers = $this->userRepository->getManagers();
         $userTypes = $this->userRepository->getAllTypes();
 

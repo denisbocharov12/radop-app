@@ -54,12 +54,7 @@ final class OrderManager
             }
         }
 
-        $firstName = '';
-        $lastName = '';
-
         $order->update([
-            'first_name' => $firstName,
-            'last_name' => $lastName,
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,
