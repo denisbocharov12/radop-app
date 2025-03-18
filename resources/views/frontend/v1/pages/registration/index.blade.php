@@ -109,6 +109,12 @@
                 overwrite: 'shift',
             };
             const mask = IMask(element, maskOptions);
+
+            const codFisk = document.getElementById('cod_fiscal');
+            const options = {
+                mask: /^\d+$/,
+            };
+            const maskCodFisk = IMask(codFisk, options);
         })
     </script>
 @endsection
