@@ -6127,7 +6127,7 @@ hr.product-card-item{
 
 .section-register .col-register-wrap #tabs form .center {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .section-register .col-register-wrap #tabs form .center .form-control {
@@ -6301,6 +6301,7 @@ hr.product-card-item{
     height: 56.48px;
     display: flex;
     align-items: center;
+    width: 100%!important;
 }
 .section-register .select2-registration-wrap .select2-container .selection {
     display: flex;
@@ -6368,7 +6369,7 @@ hr.product-card-item{
 .section-register .col-register-wrap #tabs .block-botton {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     margin-bottom: 15px;
 }
 
@@ -6377,7 +6378,7 @@ hr.product-card-item{
     padding: 15px 35px;
     font-size: 16px;
     line-height: 1;
-    border-radius: 25px;
+    border-radius: 10px;
     font-weight: 500;
     letter-spacing: 0.7px;
     color: #fff;

@@ -23,33 +23,6 @@ $('main').click(function (){
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleIcon = document.querySelectorAll(".togglePassword");
-  const password = document.querySelectorAll(
-    ".my-account-details-form-password"
-  );
-
-  const toggleFunk = (e) => {
-    [...password].forEach((elem) => {
-      if (e.target.previousElementSibling === elem) {
-        const type =
-          elem.getAttribute("type") === "password" ? "text" : "password";
-        elem.setAttribute("type", type);
-        e.target.classList.toggle("icon-eye");
-        if (e.target.classList.contains("icon-eye")) {
-          e.target.classList.remove("icon-eye-off");
-        } else {
-          e.target.classList.add("icon-eye-off");
-        }
-      }
-    });
-  };
-
-  const addNewArr = (arr) => {
-    return [...arr].forEach((element) => {
-      element.addEventListener("click", toggleFunk);
-    });
-  };
-  addNewArr(toggleIcon);
 
   const options = document.querySelectorAll(".order__options");
 
@@ -509,6 +482,25 @@ $(".eye_iur").on("click", function (e) {
   } else {
     $("#password_iur").attr("type", "password");
   }
+});
+
+$('.eye_iur_confirm').on("click", function (e) {
+    var t, c;
+    e.preventDefault();
+    var t = $("#password_confirmation_iur").attr("type");
+    var c = $(this).find("i").attr("class");
+    if (c == "fa fa-eye") {
+        $(this).find("i").removeClass("fa-eye");
+        $(this).find("i").addClass("fa-eye-slash");
+    } else {
+        $(this).find("i").addClass("fa-eye");
+        $(this).find("i").removeClass("fa-eye-slash");
+    }
+    if (t == "password") {
+        $("#password_confirmation_iur").attr("type", "text");
+    } else {
+        $("#password_confirmation_iur").attr("type", "password");
+    }
 });
 
 //DESCTOP MENU
