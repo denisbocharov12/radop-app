@@ -25,7 +25,11 @@
                                                         <option value="">Пользователь</option>
                                                         @foreach ($users as $user)
                                                             <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : '' }}>
-                                                                {{ $user->name }}
+                                                                @if($user?->type?->key_name === 'fiz')
+                                                                    {{$user?->profile?->first_name}} {{$user?->profile?->last_name}}
+                                                                @else
+                                                                    {{$user?->profile?->organization_name}}
+                                                                @endif
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -134,28 +138,6 @@
                                                 <div class="form-control-wrap">
                                                     <input type="text" class="form-control @error('reserve_phone') error @enderror" id="reserve_phone" name="reserve_phone" value="{{$order->profile?->reserve_phone}}" placeholder="Номер телефона">
                                                     @error('reserve_phone')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="first_name">Имя</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" value="{{$order->first_name}}" placeholder="Имя">
-                                                    @error('first_name')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="last_name">Фамилия</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text"  class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" value="{{$order->last_name}}" placeholder="Фамилия">
-                                                    @error('last_name')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>

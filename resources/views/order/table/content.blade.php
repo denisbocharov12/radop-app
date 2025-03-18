@@ -18,7 +18,13 @@
                     <span>#{{$order->id}}</span>
                 </div>
                 <div class="nk-tb-col order-details">
-                    <span>{{$order->first_name}} {{$order->last_name}}</span>
+                    <span>
+                        @if($order->user?->type?->key_name === 'fiz')
+                            {{$order->user?->profile?->first_name}} {{$order->user?->profile?->last_name}}
+                        @else
+                            {{$order->user?->profile?->organization_name}}
+                        @endif
+                    </span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$order->phone}}</span>

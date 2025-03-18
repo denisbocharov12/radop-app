@@ -99,7 +99,7 @@ final class UserRepository
                 'id',
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
-            ;
+        ;
     }
 
     public function getManagers(): ?Collection
