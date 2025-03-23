@@ -8951,3 +8951,22 @@ hr.product-card-item{
     margin: 20px;
     z-index: 1;
 }
+.section-page .container h1{
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+.section-page .container h2{
+    font-size: 1.5em;
+    margin-top: 1.5em;
+    font-weight: 700;
+}
+.section-page .container p, li{
+    margin: 0.5em 0;
+}
+.section-page .container ul, ol{
+    padding-left: 20px;
+}
+.section-page{
+    margin: 50px 0;
+}
