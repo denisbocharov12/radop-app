@@ -62,8 +62,13 @@ final class ThemeUserLoginController extends Controller
 
         Auth::guard('user')->logout();
 
-        toastr()->success(__('theme.logout-message'), '');
+        toastr()->success(__('theme.logout-message'));
 
         return redirect()->route('theme.home');
+    }
+
+    public function showLoginForm()
+    {
+        return view('frontend.v1.pages.login.login');
     }
 }

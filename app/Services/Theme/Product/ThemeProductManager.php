@@ -216,7 +216,7 @@ final class ThemeProductManager
             $response['product_title'] = $existedProduct->title;
             $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
             $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
-            $response['msg']= __('theme.product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
+            $response['msg']= __('theme.order-product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
             $response['product_quantity'] = \Cart::session($sessionId)->get($productId)->quantity;
 
             if ($request->ajax()){

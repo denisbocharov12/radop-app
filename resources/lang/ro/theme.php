@@ -272,7 +272,7 @@ return array (
     'add_to_cart_not_permitted' => 'Pentru a vedea preturile si pentru a plasa o comanda, va rugam sa va autentificati sau sa va inregistrati.',
     'registration-text' => 'Pentru a activa contul dumneavoastră, vă rugăm să urmați instrucțiunile trimise pe adresa dumneavoastră de email',
     'registration-success-text' => 'Vă mulțumim pentru înregistrare! Pentru a afla prețul dvs. individual cu reducere, contactați managerul la numărul 022 78 21 12 sau scrieți la support@radop.md',
-    'success' => '',
+    'success' => 'Succes',
     'header-catalog-text' => 'Catalog',
     'registration-warning-text' => 'Temporar nu lucrăm cu persoane fizice!',
     'refund-policy' => 'Politica de returnare',
@@ -299,5 +299,6 @@ return array (
     'password_confirmation' => 'Confirmarea parolei',
     'required-sum-text' => 'Suma minimă a comenzii pentru localitatea dumneavoastră este de :sum de lei!',
     'login-error' => 'Autentificare sau parolă incorectă',
-    'logout-message' => 'Вы успешно вышли с аккаунта'
+    'logout-message' => 'V-ați deconectat cu succes de la contul dvs.',
+    'error-message' => 'A apărut o eroare. Încercați din nou.',
 );
