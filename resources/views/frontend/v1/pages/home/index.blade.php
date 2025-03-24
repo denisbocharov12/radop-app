@@ -7,6 +7,16 @@
                 <div class="col-12 col-main-content">
                     <div id="main-banner" class="theme-slider">
                         <div class="item">
+                            <a href="{{route('theme.category.index', 23)}}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_1.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="{{route('theme.category.index', 97)}}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_2.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
                             <a href="{{route('theme.category.index', 10)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt=""/>
                             </a>
