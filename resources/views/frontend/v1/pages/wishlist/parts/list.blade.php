@@ -157,7 +157,7 @@
                 </div>
                 <div class="packages-wrap-min-to-order">
                     <p>{{__('theme.package-min-to-order')}}
-                        : {{isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1}}</p>
+                        : {{isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->where('order_status', true)->first()->value : $product->conditions->packages->sortBy('value')->first()->value}}</p>
                 </div>
             @endif
         </div>
