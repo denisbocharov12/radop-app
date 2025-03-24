@@ -151,13 +151,15 @@
             @endif
             @if(!$product->conditions->packages->isEmpty())
                 <div class="packages-wrap">
-                    <p>{{__('theme.package')}}: @foreach($product->conditions->packages->sortBy('value') as $package)
+                    <p>{{__('theme.package')}}:
+                        @foreach($product->conditions->packages->sortBy('value') as $package)
                             {{$package->value}}{{$loop->last ? '' : '/'}}
-                        @endforeach</p>
+                        @endforeach
+                    </p>
                 </div>
                 <div class="packages-wrap-min-to-order">
                     <p>{{__('theme.package-min-to-order')}}
-                        : {{isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1}}</p>
+                        : {{isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->where('order_status', true)->first()->value : $product->conditions->packages->sortBy('value')->first()->value}}</p>
                 </div>
             @endif
         </div>
