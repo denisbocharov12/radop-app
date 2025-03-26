@@ -376,8 +376,7 @@
         })
     }
 
-    $(document).on('click','#login-btn-modal',function (e) {
-        e.preventDefault();
+    $(document).on('click','#login-btn-modal',function () {
         var token = "{{csrf_token()}}";
         var path = "{{route('user.login')}}";
         var form = $('#form-login-modal');
@@ -397,10 +396,10 @@
                 $('#loginModal').find('.login-modal-wrap').html('<i class="fa fa-spin fa-spinner"></i>');
             },
             success:function (response) {
-                if (response['status']){
+                if (!response['status']){
                     $('#loginModal').html(response['html']);
                 } else {
-                    $('#loginModal').html(response['html']);
+                    window.location.replace(window.location+'/orders');
                 }
             }
         });
