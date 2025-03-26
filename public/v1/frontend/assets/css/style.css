@@ -755,24 +755,25 @@ footer {
     vertical-align: baseline;
     font-family: "Roboto", sans-serif;
     display: block;
-    background-color: #e5edf3;
+    background-color: #0052a6;
     padding: 45px 30px 60px 30px;
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu h5 {
     margin-bottom: 10px;
     font-weight: 500;
-    color: #37424d;
+    color: #ffffff;
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item {
     margin-top: 7.5px;
+    color: #ffffff;
 }
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item .footer-text{
     margin-bottom: 2.5px;
 }
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item a {
-    color: #42505e;
+    color: #ffffff;
     font-size: 14px;
     margin-top: 5px;
     margin-right: 5px;
@@ -9023,4 +9024,7 @@ hr.product-card-item{
 
 .section-page .contact-section .contact-block{
     margin-bottom: 20px;
+}
+.vertical-divider {
+    border-left: 1px solid #ccc;
 }

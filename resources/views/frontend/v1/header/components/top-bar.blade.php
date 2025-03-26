@@ -4,13 +4,13 @@
             <a class="link" href="{{route('theme.about-us')}}">{{__('theme.about-us')}}</a>
         </li>
         <li class="item">
-            <a class="link" href="#">{{__('theme.promotion')}}</a>
+            <a class="link" href="{{ route('theme.home') }}#discount-products-home-anchor">{{__('theme.promotion')}}</a>
         </li>
         <li class="item">
-            <a class="link" href="#">{{__('theme.delivery')}}</a>
+            <a class="link" href="{{route('theme.delivery.index')}}">{{__('theme.delivery')}}</a>
         </li>
         <li class="item">
-            <a class="link" href="#">{{__('theme.contact')}}</a>
+            <a class="link" href="{{route('theme.contacts.index')}}">{{__('theme.contact')}}</a>
         </li>
     </ul>
 </div>

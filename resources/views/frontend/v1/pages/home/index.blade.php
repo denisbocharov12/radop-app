@@ -235,6 +235,7 @@
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
+                    <div id="discount-products-home-anchor" style="position: relative; top: -110px; visibility: hidden;"></div>
                     <div class="heading heading-with-btn">
                         <h1>{{__('theme.on-discount')}}</h1>
                         <a class="section-home-btn" href="{{route('theme.shop.sale')}}">{{__('theme.view-all')}}</a>

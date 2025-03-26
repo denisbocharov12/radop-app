@@ -303,4 +303,8 @@ return array (
     'error-message' => 'Произошла ошибка. Попробуйте снова.',
     'min_order_unit' => 'шт.',
     'mini_cart_unit_in_cart' => 'товаров',
+    'updates' => 'Обновления',
+    'information' => 'Информация',
+    'conditions-of-use' => 'Условия пользования',
+    'cookie' => 'Политика использования cookie-файлов',
 );

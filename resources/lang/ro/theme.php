@@ -303,4 +303,9 @@ return array (
     'error-message' => 'A apărut o eroare. Încercați din nou.',
     'min_order_unit' => 'buc.',
     'mini_cart_unit_in_cart' => 'produse',
+    'updates' => 'Actualizări',
+    'information' => 'Informație',
+    'conditions-of-use' => 'Termeni și condiții de utilizare',
+    'cookie' => 'Politica de utilizare a cookie-urilor',
+
 );
