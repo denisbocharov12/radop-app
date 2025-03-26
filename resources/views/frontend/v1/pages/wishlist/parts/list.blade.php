@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="product-list-mini-brand-wrap">
-                    <a href="{{route('theme.brand.index', $product->conditions->brand->id)}}"
+                    <a href="{{route('theme.brand.index', $product->conditions->brand->onec_id)}}"
                        class="product-mini-brand">
                         <span class="brand-text"><span class="mini-heading">{{__('theme.all-brand-products')}}</span> {{$product->conditions->brand->title}} <i
                                     class="icon-arrow-radop-right"></i></span>

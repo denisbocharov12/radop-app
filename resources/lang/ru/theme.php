@@ -301,4 +301,6 @@ return array (
     'login-error' => 'Неверный логин или пароль',
     'logout-message' => 'Вы успешно вышли с аккаунта',
     'error-message' => 'Произошла ошибка. Попробуйте снова.',
+    'min_order_unit' => 'шт.',
+    'mini_cart_unit_in_cart' => 'товаров',
 );

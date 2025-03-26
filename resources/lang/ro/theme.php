@@ -301,4 +301,6 @@ return array (
     'login-error' => 'Autentificare sau parolă incorectă',
     'logout-message' => 'V-ați deconectat cu succes de la contul dvs.',
     'error-message' => 'A apărut o eroare. Încercați din nou.',
+    'min_order_unit' => 'buc.',
+    'mini_cart_unit_in_cart' => 'produse',
 );

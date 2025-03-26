@@ -1,9 +1,4 @@
 @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->hasRole('user'))
-@if($status)
-    <script>
-        window.location.replace(window.location+'/orders');
-    </script>
-@endif
 <div class="login-modal-wrap">
     <div class="login-logo d-flex align-items-center justify-content-center">
         <img style="width: 90px; height: auto" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />

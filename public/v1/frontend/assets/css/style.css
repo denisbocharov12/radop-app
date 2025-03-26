@@ -1806,6 +1806,10 @@ header .section-header .row-main .header-menu .col-lg{
     width: calc(100% - 0px);
 }
 
+.toast-success .toast-title{
+    display: none!important;
+}
+
 .row-header-catalog .header-catalog.show{
     display: block;
 }
@@ -5412,6 +5416,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .product-item-category .product-item-title-wrap .product_item_name a{
     height: 28px;
+    font-weight: 400;
 }
 .product-item-category .product-item-title-wrap .product_item_name a:hover{
     text-decoration: underline!important;
@@ -6073,7 +6078,7 @@ hr.product-card-item{
     color: #252525;
 }
 .mini-heading{
-    font-weight: 500;
+    font-weight: 400;
 }
 .product-mini-brand-wrap a span.brand-text{
     color: #252525;
