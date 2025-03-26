@@ -11,7 +11,7 @@ return [
     'address' => 'Адрес:',
     'work_hours' => 'График работы:',
     'monday_friday' => 'Понедельник — пятница:',
-    'saturday' => 'Суббота:',
+    'saturday' => 'Суббота',
     'sunday' => 'Воскресенье:',
     'weekend' => 'выходной',
     'weekends' => 'выходные дни',
