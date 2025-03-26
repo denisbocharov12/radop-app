@@ -88,7 +88,6 @@
                         <path d="M10.2751 13.3906H9.45934C9.28334 13.3906 9.14062 13.5333 9.14062 13.7093C9.14062 13.8854 9.28334 14.0281 9.45934 14.0281H10.2751C10.4511 14.0281 10.5938 13.8854 10.5938 13.7093C10.5938 13.5333 10.4511 13.3906 10.2751 13.3906Z" fill="black"/>
                         <path d="M5.22888 1.36719C5.05288 1.36719 4.91016 1.50988 4.91016 1.68591V2.06837C4.91016 2.24441 5.05288 2.38709 5.22888 2.38709C5.40488 2.38709 5.54759 2.24441 5.54759 2.06837V1.68591C5.54759 1.50988 5.40488 1.36719 5.22888 1.36719Z" fill="black"/>
                     </svg>
-
                     <select name="city_id" id="city_id" class="select2-registration">
                         @foreach($cities as $city)
                             <option value="{{$city->id}}">{{$city->name}}</option>
@@ -235,30 +234,6 @@
                         >
                             {{__('theme.refund-policy')}}
                         </a>
-                    </label>
-                </div>
-                <div class="wrap">
-                    <input
-                            type="checkbox"
-                            class="custom-checkbox rule-checkbox"
-                            id="data_processing"
-                            name="data_processing"
-                            value="1"
-                    />
-                    <label for="data_processing">
-                        {{__('theme.personal-data-processing')}}
-                    </label>
-                </div>
-                <div class="wrap">
-                    <input
-                            type="checkbox"
-                            class="custom-checkbox"
-                            id="newsletter"
-                            name="newsletter"
-                            value="1"
-                    />
-                    <label for="newsletter">
-                        {{__('theme.newsletter-of-discounts')}}
                     </label>
                 </div>
                 @error('rule_iur')

@@ -13,7 +13,7 @@
             <span class="summary-title"><i class="icon-check"></i>{{__('theme.in-cart')}}</span>
             <span class="product-card-summary-cart-title" >
                             {{$item?->quantity ?? 0}}
-                        </span> {{__('theme.unit')}}
+                        </span> {{__('theme.in_cart_unit')}}
         </p>
     @endif
 </div>

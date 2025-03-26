@@ -164,11 +164,11 @@
                                         @if ($item && $item->quantity > 0)
                                             <span class="already-in-cart" style="display: flex; align-items: center;">
                                         <i class="icon-check"></i>
-                                        {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}
+                                        {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.in_cart_unit') }}
                                     </span>
                                         @else
                                             <span class="summary-title"><i
-                                                        class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.unit') }}</span>
+                                                        class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.in_cart_unit') }}</span>
                                         @endif
                                     </p>
                                 @endif

@@ -40,7 +40,7 @@
                 @endif
                 <div class="product-item-title-wrap">
                     <h3 class="product_item_name">
-                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{\Illuminate\Support\Str::limit($product->conditions->title, 70, '...')}}</a>
+                        <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{\Illuminate\Support\Str::limit($product->conditions->title, 80, '...')}}</a>
                     </h3>
                 </div>
                 <div class="product-item-article-wrap">
