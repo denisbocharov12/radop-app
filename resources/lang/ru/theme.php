@@ -1,7 +1,6 @@
 <?php
 
 return array (
-    'phone-number' => '',
     'MDL' => 'лей',
     'Weekdays' => '',
     'about-company' => 'О компании',
@@ -296,11 +295,12 @@ return array (
     'city_required_sum_error' => 'Ошибка выбора доставки. Сумма доставки неизвестна.',
     'city-label' => 'Город',
     'order_not_permitted_to_create' => 'Что-бы сделать заказ - пройдите авторизацию',
-    'password_confirmation' => 'Подтверждение пороля',
+    'password_confirmation' => 'Подтверждение пароля',
     'required-sum-text' => 'Минимальная сумма заказа для вашего населённого пункта :sum лей!',
     'login-error' => 'Неверный логин или пароль',
     'logout-message' => 'Вы успешно вышли с аккаунта',
     'error-message' => 'Произошла ошибка. Попробуйте снова.',
     'min_order_unit' => 'шт.',
     'mini_cart_unit_in_cart' => 'товаров',
+    'in_cart_unit' => 'шт.',
 );
