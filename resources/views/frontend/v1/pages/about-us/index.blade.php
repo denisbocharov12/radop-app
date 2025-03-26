@@ -1,74 +1,65 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
-    <section class="section-standart section-about">
-        <div class="container">
-            <div class="row align-items-center mb-5">
-                <div class="col-md-6 order-md-2">
-                    <h2>{{__('theme.rating')}}</h2>
-                    <p>{{__('theme.rating-text')}}</p>
-                </div>
-                <div class="col-md-6 order-md-1">
-                    <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/raiting.jpg" alt="RAITING" class="img-fluid">
-                    </div>
-                </div>
-            </div>
+    <section class="section-page">
+        <div class="about-us-section">
+            <div class="container">
+                <h1>{{ __('about-us.about-us') }}</h1>
+                <h2>{{ __('about-us.welcome') }}</h2>
+                <p>{{ __('about-us.about') }}</p>
+                <p>{!! __('about-us.mission') !!}</p>
 
-            <div class="row align-items-center mb-5">
-                <div class="col-md-6">
-                    <h2>{{__('theme.assortment')}}</h2>
-                    <p>{{__('theme.assortment-text')}}</p>
-                </div>
-                <div class="col-md-6">
-                    <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/sortiment.png" alt="SORTIMENT" class="img-fluid">
-                    </div>
-                </div>
-            </div>
+                <h2>{{ __('about-us.offers') }}</h2>
+                <p>{{ __('about-us.offers-1') }}</p>
 
-            <div class="row align-items-center mb-5">
-                <div class="col-md-6 order-md-2">
-                    <h2>{{__('theme.production')}}</h2>
-                    <p>{{__('theme.production-text')}}</p>
-                </div>
-                <div class="col-md-6 order-md-1">
-                    <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/producere.jpg" alt="PRODUCERE" class="img-fluid">
-                    </div>
-                </div>
-            </div>
+                <h2>{{ __('about-us.brands') }}</h2>
+                <p>{{ __('about-us.activities') }}</p>
 
-            <div class="row align-items-center mb-5">
-                <div class="col-md-6">
-                    <h2>{{__('theme.main-directives')}}</h2>
-                    <p>{{__('theme.main-directives-1')}}</p>
-                    <p>{{__('theme.main-directives-2')}}</p>
-                </div>
-                <div class="col-md-6">
-                    <div class="img-container">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/directii.jpg" alt="DIRECTII" class="img-fluid">
-                    </div>
-                </div>
+                <h3>{{ __('about-us.wholesale_distribution') }}</h3>
+                <p>{{ __('about-us.wholesale_distribution_desc') }}</p>
+
+                <h3>{{ __('about-us.retail_supplies') }}</h3>
+                <p>{{ __('about-us.retail_supplies_desc') }}</p>
+
+                <h3>{{ __('about-us.online_supplies') }}</h3>
+                <p>{{ __('about-us.online_supplies_desc') }}</p>
+
+                <h3>{{ __('about-us.own_production') }}</h3>
+                <p>{{ __('about-us.own_production_desc') }}</p>
+
+                <h2>{{ __('about-us.categories') }}</h2>
+                @foreach(__('about-us.categories_list') as $category)
+                    <p>{{ $category }}</p>
+                @endforeach
+
+                <h2>{{ __('about-us.products') }}</h2>
+                @foreach(__('about-us.products_list') as $product)
+                    <p>{{ $product }}</p>
+                @endforeach
+
+                <h2>{{ __('about-us.own_production_details') }}</h2>
+                @foreach(__('about-us.own_production_list') as $ownProduct)
+                    <p>{{ $ownProduct }}</p>
+                @endforeach
+
+                <h2>{{ __('about-us.advantages') }}</h2>
+                @foreach(__('about-us.advantages_list') as $advantage)
+                    <p>{{ $advantage }}</p>
+                @endforeach
+
+                <h2>{{ __('about-us.company_info') }}</h2>
+                <p>{{ __('about-us.company_details.name') }}</p>
+                <p>{{ __('about-us.company_details.address') }}</p>
+                <p>{{ __('about-us.company_details.fiscal_code') }}</p>
+                <p>{{ __('about-us.company_details.vat') }}</p>
+                <p>{{ __('about-us.company_details.bank') }}</p>
+                <p>{{ __('about-us.company_details.iban') }}</p>
+                <p>{{ __('about-us.company_details.bic') }}</p>
+                <p>{!! __('about-us.company_details.phone') !!}</p>
+                <p>{!!__('about-us.company_details.email') !!}</p>
+
+                <h2>{{ __('about-us.slogan') }}</strong></h2>
             </div>
         </div>
-
-        <section class="section-standart section-slider section-brand-slider">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-slider">
-                        <div class="wrap-slider theme-slider" id="partners-slider">
-                            @foreach($themeBrands as $brand)
-                                <div class="item">
-                                    <a href="{{route('theme.brand.index', $brand->id)}}">
-                                        <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" />
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </section>
 @endsection
