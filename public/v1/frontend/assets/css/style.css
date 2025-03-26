@@ -8967,6 +8967,11 @@ hr.product-card-item{
     margin-top: 1.5em;
     font-weight: 700;
 }
+.section-page .container h3{
+    font-size: 1em;
+    margin-top: 1.5em;
+    font-weight: 700;
+}
 .section-page .container p, li{
     margin: 0.5em 0;
 }
@@ -8975,4 +8980,13 @@ hr.product-card-item{
 }
 .section-page{
     margin: 50px 0;
+}
+.section-page .warning {
+    background-color: #fff3cd;
+    padding: 15px;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: 20px 0;
+    display: block;
 }
