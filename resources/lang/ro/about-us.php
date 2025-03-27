@@ -34,7 +34,7 @@ return array(
         '- articole școlare;',
     ],
 
-    'products' => 'Работаем напрямую с заводами-производителями и предлагаем конкурентоспособные цены на:',
+    'products' => 'Lucrăm direct cu fabricile de producție și oferim prețuri competitive pentru:',
     'products_list' => [
         '- hârtie pentru tehnicâ de birou;',
         '- articole de scris;',

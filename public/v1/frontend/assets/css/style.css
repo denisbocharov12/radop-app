@@ -755,24 +755,32 @@ footer {
     vertical-align: baseline;
     font-family: "Roboto", sans-serif;
     display: block;
-    background-color: #e5edf3;
+    background-color: #0052a6;
     padding: 45px 30px 60px 30px;
+    margin-top: 50px;
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu h5 {
     margin-bottom: 10px;
     font-weight: 500;
-    color: #37424d;
+    color: #ffffff;
+    font-size: 22px;
 }
 
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item {
     margin-top: 7.5px;
+    color: #ffffff;
 }
+
+footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item-footer-info:nth-child(1){
+    margin-top: 30px;
+}
+
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item .footer-text{
     margin-bottom: 2.5px;
 }
 footer .section-footer .col-site-footer .wrap-footer-menu .footer-menu .item a {
-    color: #42505e;
+    color: #ffffff;
     font-size: 14px;
     margin-top: 5px;
     margin-right: 5px;
@@ -5528,6 +5536,30 @@ header .section-header .row-main .header-menu .col-lg{
     align-items: flex-end;
 }
 
+.scroll_to_top_btn{
+    position: absolute;
+    top: -95px;
+    left: calc(var(--bs-gutter-x) / 2);
+    height: 50px;
+    color: #fff;
+    background-color: #0052a6;
+    outline: 0;
+    border: 0;
+    line-height: 1;
+    padding: 20px 25px 20px 45px;
+    transition: all .4s;
+}
+
+.scroll_to_top_btn:hover{
+    background-color: #034486;
+}
+
+.scroll_to_top_btn i{
+    transform: rotate(-90deg);
+    position: absolute;
+    left: 20px;
+}
+
 .product-item-category a.product-label .product-label-wrap {
     width: 39px;
     height: 39px;
@@ -9023,4 +9055,7 @@ hr.product-card-item{
 
 .section-page .contact-section .contact-block{
     margin-bottom: 20px;
+}
+.vertical-divider {
+    border-left: 1px solid #ccc;
 }
