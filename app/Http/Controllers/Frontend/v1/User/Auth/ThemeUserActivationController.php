@@ -22,7 +22,7 @@ final class ThemeUserActivationController extends Controller
         try {
             $this->themeRegistrationManager->activateUser($token);
 
-            toastr()->success(__('theme.registration-success-text'),__('theme.success'));
+            toastr()->success(__('theme.registration-success-text').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
 
             return redirect()->route('user.login.form');
         } catch (UserActivationIsActiveException) {

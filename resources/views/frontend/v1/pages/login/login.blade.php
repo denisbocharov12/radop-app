@@ -1,11 +1,6 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
-    @if(auth()->guard('user')->user() !== null)
-        <script>
-            window.location.href = '/orders';
-        </script>
-    @else
     <div class="login-container d-flex align-items-center justify-content-center">
         <div class="card shadow-lg p-4 rounded" style="max-width: 450px; width: 100%;">
             <div class="login-logo d-flex align-items-center justify-content-center">

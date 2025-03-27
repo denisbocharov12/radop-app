@@ -9,8 +9,8 @@
                         <ul class="footer-menu">
                             <li class="item item-site-name"><h5>{{__('theme.footer_site_name')}}</h5></li>
                             <li class="item"><p>{{__('theme.footer_site_desc')}}</p></li>
-                            <li class="item"><p>{{__('theme.footer_site_address')}}</p></li>
-                            <li class="item mt-4"><p>{{__('theme.footer_info_address')}}</p></li>
+                            <li class="item mt-4"><p>{{__('theme.footer_site_address')}}</p></li>
+                            <li class="item"><p>{{__('theme.footer_info_address')}}</p></li>
                             <li class="item"><p>{!! __('theme.footer_info_phone') !!}</p></li>
                             <li class="item"><p>{!! __('theme.footer_info_gsm')!!}</p></li>
                         </ul>
