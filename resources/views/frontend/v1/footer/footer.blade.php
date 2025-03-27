@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer vertical-divider">
                     <div class="wrap-footer-menu">
-                        <h5>Каталоги</h5>
+                        <h5>{{__('theme.footer_catalog_title')}}</h5>
                         <ul class="footer-menu">
                             <li class="item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.header-catalog-text')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.popular-products')}}</a></li>
