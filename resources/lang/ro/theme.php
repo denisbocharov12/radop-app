@@ -112,7 +112,7 @@ return array (
     'no-coupons' => 'Nu aveți nici un cupon activ în acest moment',
     'no-description' => 'Nu există o descriere pentru acest produs',
     'no-orders' => 'Nu aveți în prezent nici o comandă',
-    'not-found-product' => 'Nu ai găsit produsul potrivit? Sunați la <a href="tel:079782112">+373 22 78 21 12</a> și Vă vom ajuta.',
+    'not-found-product' => 'Nu ai găsit produsul potrivit? Sunați la <a href="tel:+37379782112">+373 22 78 21 12</a> și Vă vom ajuta.',
     'of' => 'din',
     'office-address' => 'Chișinău, Sarmisegetusa str. 15',
     'on-discount' => 'Produse promoționale',
@@ -307,5 +307,12 @@ return array (
     'information' => 'Informație',
     'conditions-of-use' => 'Termeni și condiții de utilizare',
     'cookie' => 'Politica de utilizare a cookie-urilor',
-
+    'return_and_exchange_products' => 'Retur și schimb de mărfuri',
+    'scroll_to_top_btn' => 'Sus',
+    'footer_site_name' => '«Rădop-OPT» SRL',
+    'footer_site_desc' => 'Articole pentru birou, școală și creativitate',
+    'footer_site_address' => 'MD-2015, mun. Chișinău',
+    'footer_info_address' => 'str. Sarmizegetusa 15',
+    'footer_info_phone' => 'tel: <a href="tel:+373782112">0 (22) 78 21 12</a>',
+    'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
 );

@@ -1,17 +1,18 @@
 <footer>
     @include('frontend.v1.components.auth')
     <section class="section-footer">
-        <div class="container">
+        <div class="container position-relative">
+            <button type="button" class="scroll_to_top_btn" id="scroll_to_top_btn"><i class="icon-arrow-radop-right"></i>{{__('theme.scroll_to_top_btn')}}</button>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 col-site-footer">
                     <div class="wrap-footer-menu">
                         <ul class="footer-menu">
-                            <li class="item">«Rădop-OPT» SRL</li>
-                            <li class="item">Товары для офиса, школы и творчества</li>
-                            <li class="item">MD-2015, мун. Кишинэу</li>
-                            <li class="item">ул. Сармизеджетуса 15</li>
-                            <li class="item">тел. 0 (22) 78 21 12</li>
-                            <li class="item">GSM: +373 79 78 21 12</li>
+                            <li class="item item-site-name"><h5>{{__('theme.footer_site_name')}}</h5></li>
+                            <li class="item"><p>{{__('theme.footer_site_desc')}}</p></li>
+                            <li class="item"><p>{{__('theme.footer_site_address')}}</p></li>
+                            <li class="item mt-4"><p>{{__('theme.footer_info_address')}}</p></li>
+                            <li class="item"><p>{!! __('theme.footer_info_phone') !!}</p></li>
+                            <li class="item"><p>{!! __('theme.footer_info_gsm')!!}</p></li>
                         </ul>
                     </div>
                 </div>
@@ -19,7 +20,7 @@
                     <div class="wrap-footer-menu">
                         <h5>Каталоги</h5>
                         <ul class="footer-menu">
-                            <li class="item"><a href="{{route('theme.shop.index')}}">{{__('theme.header-catalog-text')}}</a></li>
+                            <li class="item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.header-catalog-text')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.popular-products')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.new-products')}}</a></li>
                             <li class="item"><a href="{{ route('theme.home') }}#discount-products-home-anchor">{{__('theme.promotion')}}</a></li>
@@ -46,7 +47,7 @@
                             <li class="item"><a href="{{route('theme.terms-and-conditions.index')}}">{{__('theme.conditions-of-use')}}</a></li>
                             <li class="item"><a href="{{route('theme.privacy-policy.index')}}">{{__('theme.confidentiality-policy')}}</a></li>
                             <li class="item"><a href="{{route('theme.cookie.index')}}">{{__('theme.cookie')}}</a></li>
-                            <li class="item"><a href="{{route('theme.return-rules.index')}}">Возврат и обмен товаров</a></li>
+                            <li class="item"><a href="{{route('theme.return-rules.index')}}">{{__('theme.return_and_exchange_products')}}</a></li>
                         </ul>
                     </div>
                 </div>

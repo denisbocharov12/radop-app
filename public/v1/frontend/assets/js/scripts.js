@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 $(document).ready(function () {
+    $("#scroll_to_top_btn").click(function() {
+        $("html").scrollTop(0);
+    });
+
   const delivery = $(".total-selects__item--delivery .dropdown");
   const payment = $(".total-selects__item--payment .dropdown");
   const deliveryItem = $(
