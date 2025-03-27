@@ -316,4 +316,5 @@ return array (
     'footer_info_phone' => 'тел: <a href="tel:+373782112">0 (22) 78 21 12</a>',
     'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
     'footer_terms_and_conditions' => 'Условия доставки и оплаты',
+    'footer_catalog_title' => 'Каталоги',
 );
