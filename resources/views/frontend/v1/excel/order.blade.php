@@ -51,7 +51,7 @@
             $product = \App\Models\Product::find($item->product_id);
         @endphp
         <tr>
-            <td style="border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->onec_id }}</td>
+            <td style="border: 1px solid black; text-align: left" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{{ $product->title }}</td>
             <td style="border: 1px solid black;">{{ $item->quantity }}</td>
             <td style="border: 1px solid black;">{{ number_format($item->price, 2, '.', ' ') }}</td>

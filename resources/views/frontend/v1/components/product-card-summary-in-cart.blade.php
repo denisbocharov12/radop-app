@@ -13,6 +13,6 @@
             @endphp
             {{$item?->quantity ?? 0}}
         </span>
-        {{__('theme.unit')}}
+        {{__('theme.in_cart_unit')}}
     </p>
 </div>

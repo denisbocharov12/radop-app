@@ -1,7 +1,6 @@
 <?php
 
 return array (
-    '	phone-number' => '',
     'MDL' => 'lei',
     'Weekdays' => '',
     'about-company' => 'Despre companie',
@@ -303,6 +302,7 @@ return array (
     'error-message' => 'A apărut o eroare. Încercați din nou.',
     'min_order_unit' => 'buc.',
     'mini_cart_unit_in_cart' => 'produse',
+    'in_cart_unit' => 'buc.',
     'updates' => 'Actualizări',
     'information' => 'Informație',
     'conditions-of-use' => 'Termeni și condiții de utilizare',

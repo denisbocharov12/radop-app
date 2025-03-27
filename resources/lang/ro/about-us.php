@@ -31,12 +31,12 @@ return array(
     'categories_list' => [
         '- articole de papetărie și alte produse pentru birou;',
         '- hârtie și produse din hârtie;',
-        '- articole pentru școală;',
+        '- articole școlare;',
     ],
 
     'products' => 'Lucrăm direct cu fabricile de producție și oferim prețuri competitive pentru:',
     'products_list' => [
-        '- hârtie pentru echipamente de birou;',
+        '- hârtie pentru tehnicâ de birou;',
         '- articole de scris;',
         '- articole de birou;',
         '- articole școlare;',
