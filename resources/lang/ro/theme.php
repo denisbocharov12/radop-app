@@ -315,4 +315,5 @@ return array (
     'footer_info_address' => 'str. Sarmizegetusa 15',
     'footer_info_phone' => 'tel: <a href="tel:+373782112">0 (22) 78 21 12</a>',
     'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
+    'footer_terms_and_conditions' => 'Condiții de livrare și plată',
 );

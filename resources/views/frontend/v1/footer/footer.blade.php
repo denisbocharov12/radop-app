@@ -33,7 +33,7 @@
                         <h5>{{__('theme.about-company')}}</h5>
                         <ul class="footer-menu">
                             <li class="item"><a href="{{route('theme.contacts.index')}}">{{__('theme.contact')}}</a></li>
-                            <li class="item"><a href="{{route('theme.delivery.index')}}">Условия доставки и оплаты</a></li>
+                            <li class="item"><a href="{{route('theme.delivery.index')}}">{{__('theme.footer_terms_and_conditions')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.news')}}</a></li>
                             <li class="item"><a href="#">{{__('theme.updates')}}</a></li>
                         </ul>
