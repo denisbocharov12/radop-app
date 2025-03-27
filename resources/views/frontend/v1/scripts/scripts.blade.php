@@ -399,7 +399,7 @@
                 if (!response['status']){
                     $('#loginModal').html(response['html']);
                 } else {
-                    window.location.replace(window.location+'/orders');
+                    window.location.replace('{{config('app.url')}}'+'/orders');
                 }
             }
         });

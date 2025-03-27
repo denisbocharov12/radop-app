@@ -62,7 +62,7 @@ final class ThemeUserLoginController extends Controller
 
         Auth::guard('user')->logout();
 
-        toastr()->success(__('theme.logout-message'));
+        toastr()->success(__('theme.logout-message').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
 
         return redirect()->route('theme.home');
     }

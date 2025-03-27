@@ -44,7 +44,7 @@ final class ThemeUserRegisterController extends Controller
 
             $this->themeRegistrationManager->generateActivationToken($user);
 
-            toastr()->success(__('theme.registration-text'),__('theme.success'));
+            toastr()->success(__('theme.registration-text').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
             return redirect()->route('theme.home');
         } catch (DuplicatedUserEmailException) {
             throw new DuplicatedUserEmailValidationException();

@@ -317,4 +317,5 @@ return array (
     'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
     'footer_terms_and_conditions' => 'Condiții de livrare și plată',
     'footer_catalog_title' => 'Cataloage',
+    'notification_close_btn_text' => 'Închide',
 );

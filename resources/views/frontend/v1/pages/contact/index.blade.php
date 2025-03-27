@@ -22,7 +22,7 @@
                                     </p>
                                     <p>
                                         {{ __('contact.email') }} <a
-                                                href="mailto:orders@radop.md">orders@radop.md</a>
+                                                href="mailto:support@radop.md">support@radop.md</a>
                                     </p>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                         href="mailto:contextlux@yandex.ru">contextlux@yandex.ru</a>
                             </p>
                             <p>
-                                {{ __('contact.address') }} {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
+                                <span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
                             </p>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                                         href="mailto:contextlux@yandex.ru">contextlux@yandex.ru</a>
                             </p>
                             <p>
-                                {{ __('contact.address') }} {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
+                                <span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
                             </p>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2721.3464825991464!2d28.8620954763489!3d46.994169330068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c979000d7b986b%3A0xd6b10473ab164368!2sRadop!5e0!3m2!1sru!2s!4v1743005622222!5m2!1sru!2s"
-                        width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+                        width="50%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
                 <div class="divider"></div>
@@ -139,7 +139,7 @@
                         <div class="address-section">
                             <p>{{ __('contact.phone') }} <a href="tel:37322249064">0 (22) 24
                                     90 64</a></p>
-                            <p>{{ __('contact.address') }} {{ __('contact.chisinau') }} {{ __('contact.street_muncheshti') }}
+                            <p><span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_muncheshti') }}
                             </p>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                 </div>
 
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d170.24848621149485!2d28.94449634901965!3d46.942515138919404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c9796f2e9660e1%3A0x1f8453d8712be44e!2sDepozit%20R%C4%83dop!5e0!3m2!1sru!2s!4v1742989945593!5m2!1sru!2s"
-                        width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+                        width="50%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
 
