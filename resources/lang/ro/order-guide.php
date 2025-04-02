@@ -12,7 +12,7 @@ return array(
     'note-3' => '2) Online: Adăugați produsele în coș și finalizați comanda pe site.',
     'note-4' => 'Programul consultanților: Luni - Vineri: 08:00 - 17:00. Managerii noștri vă stau la dispoziție pentru consultanță și vor prelua comanda dumneavoastră.',
     'delivery' => 'Livrare',
-    'delivery-1' => 'Livrarea produselor din magazinul online RADOP.md se realizează pe întreg teritoriul Chișinău și Republicii Moldova prin intermediul serviciului nostru de livrare. Riscul pierderii sau deteriorării produselor trece la Cumpărător din momentul predării comenzii.',
+    'delivery-1' => 'Livrarea produselor din magazinul online RĂDOP.md se realizează pe întreg teritoriul Chișinău și Republicii Moldova prin intermediul serviciului nostru de livrare. Riscul pierderii sau deteriorării produselor trece la Cumpărător din momentul predării comenzii.',
     'delivery-2' => 'Livrarea se face la o oră convenabilă, stabilită în prealabil cu managerii noștri.',
     'delivery-3' => 'Pentru detalii suplimentare despre livrare, consultați secțiunea Livrare sau contactați-ne la: <a href="tel:37322782112">(022) 78 21 12</a>, <a href="tel:37379782112">+373 79 78 21 12</a>.',
     'order-receive' => 'Primirea produselor',

@@ -309,7 +309,7 @@ return array (
     'cookie' => 'Политика использования cookie-файлов',
     'return_and_exchange_products' => 'Возврат и обмен товаров',
     'scroll_to_top_btn' => 'Наверх',
-    'footer_site_name' => '«Rădop-OPT» SRL',
+    'footer_site_name' => '«RĂDOP-OPT» SRL',
     'footer_site_desc' => 'Товары для офиса, школы и творчества',
     'footer_site_address' => 'MD-2015, мун. Кишинэу',
     'footer_info_address' => 'ул. Сармизеджетуса 15',
@@ -317,5 +317,6 @@ return array (
     'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
     'footer_terms_and_conditions' => 'Условия доставки и оплаты',
     'footer_catalog_title' => 'Каталоги',
+    'add_to_cart_product_item' => 'Товар',
     'notification_close_btn_text' => 'Закрыть',
 );

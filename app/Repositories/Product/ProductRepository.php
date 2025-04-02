@@ -73,7 +73,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
-            ->groupBy('onec_id')
+            ->groupBy('products.onec_id')
             ->orderByRaw("
             CASE
                 WHEN sale_price IS NOT NULL AND sale_price != ''

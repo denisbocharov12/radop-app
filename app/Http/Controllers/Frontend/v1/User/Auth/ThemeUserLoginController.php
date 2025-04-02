@@ -60,6 +60,14 @@ final class ThemeUserLoginController extends Controller
 
         auth()->guard('user')->user()->tokens()->delete();
 
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+
+        \Cart::session($sessionId)->clear();
+
         Auth::guard('user')->logout();
 
         toastr()->success(__('theme.logout-message').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');

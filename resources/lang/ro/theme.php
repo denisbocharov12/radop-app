@@ -94,7 +94,7 @@ return array (
     'main-directives-1' => 'Distribuirea en-gros de bunuri pentru birou, scoala si creativitate si livrarea acestora la destinatie.
                         Distributia produselor noastre si in toate retelele de supermarketuri din tara, cum ar fi: METRO Cash&Carry, LOCAL, Green Hills, Velmart, Nr 1, Linella, Bonus.
                         Producem si vindem cu ridicata role pentru casa de marcat, hartie perforata, hartie in rulou, toate tipurile de caiete, hartie notite, mape din carton, agende si calendare, s.a.
-                        Marcam produsele noastre cu propriul brand RADOP-OPT.
+                        Marcam produsele noastre cu propriul brand RĂDOP-OPT.
                         Efectuam fabricarea prin contract de produse sub marcile comerciale ale partenerilor nostri.',
     'main-directives-2' => 'De 19 ani suntem participanti fideli la licitatiile nationale. Printre clientii nostri se numara: OTP Bank SA, VICTORIABANKA SA, Fincombank SA, Inspectoratul General de Politie, CNAS, Posta Moldovei, Banca Nationala a Moldovei, Moldtelecom s.a.',
     'max' => 'până la',
@@ -309,7 +309,7 @@ return array (
     'cookie' => 'Politica de utilizare a cookie-urilor',
     'return_and_exchange_products' => 'Retur și schimb de mărfuri',
     'scroll_to_top_btn' => 'Sus',
-    'footer_site_name' => '«Rădop-OPT» SRL',
+    'footer_site_name' => '«RĂDOP-OPT» SRL',
     'footer_site_desc' => 'Articole pentru birou, școală și creativitate',
     'footer_site_address' => 'MD-2015, mun. Chișinău',
     'footer_info_address' => 'str. Sarmizegetusa 15',
@@ -317,5 +317,6 @@ return array (
     'footer_info_gsm' => 'GSM: <a href="tel:+37379782112">+373 79 78 21 12</a>',
     'footer_terms_and_conditions' => 'Condiții de livrare și plată',
     'footer_catalog_title' => 'Cataloage',
+    'add_to_cart_product_item' => 'Produs',
     'notification_close_btn_text' => 'Închide',
 );

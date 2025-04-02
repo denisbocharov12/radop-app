@@ -23,7 +23,9 @@
                         </div>
                     </a>
                 @endif
-                @include('frontend.v1.pages.shop.parts.product-image')
+                <div class="wrap">
+                    @include('frontend.v1.pages.category.parts.product-category-image')
+                </div>
                 @if(app('wishlist')->get($product->id) !== null)
                     <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}"
                        data-qty="1" class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i class="fa fa-heart"

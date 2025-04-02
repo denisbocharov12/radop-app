@@ -599,7 +599,7 @@ $(document).ready(function () {
     $(document).on('click', function(e) {
         if (!$(e.target).closest(".btn-header-catalog-wrap").length) {
             $('#header-catalog-action').removeClass('show');
-            $('#btn-header-catalog').removeClass('with-exit').find('svg').replaceWith(bars);
+            $('#btn-header-catalog').removeClass('with-exit');
         }
         e.stopPropagation();
     });
