@@ -11,7 +11,7 @@
                         @if(!$user->orders->count())
                             <div class="no-orders text-center">
                                 <p>{{__('theme.no-orders')}}</p>
-                                <a href="{{ route('theme.shop.index') }}"
+                                <a href="{{ route('theme.shop.catalog') }}"
                                    class="btn btn-primary mt-3">{{__('theme.go-to-catalog')}}</a>
                             </div>
                         @else

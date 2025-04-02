@@ -91,7 +91,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <div class="nk-block-content text-center text-lg-center">
-                                    <p class="text-soft">&copy; 2024 RADOP. All Rights Reserved.</p>
+                                    <p class="text-soft">&copy; 2025 RĂDOP. All Rights Reserved.</p>
                                 </div>
                             </div>
                         </div>

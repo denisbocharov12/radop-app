@@ -78,5 +78,5 @@ return array(
         'email' => 'e-mail: <a href="mailto:office@radop.md">office@radop.md</a>',
     ],
 
-    'slogan' => 'RADOP-OPT SRL - Надежность, проверенная годами!'
+    'slogan' => 'RĂDOP-OPT SRL - Надежность, проверенная годами!'
 );

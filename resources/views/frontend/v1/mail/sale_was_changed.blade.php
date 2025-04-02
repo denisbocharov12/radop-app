@@ -6,6 +6,6 @@
         Reducerea personală se calculează automat după ce vă logați pe sait.
         Cumpărături plăcute!
     </p>
-    <p style="margin-top: 15px;">Cu respect RADOP-OPT SRL</p>
+    <p style="margin-top: 15px;">Cu respect RĂDOP-OPT SRL</p>
 </div>
 </body>

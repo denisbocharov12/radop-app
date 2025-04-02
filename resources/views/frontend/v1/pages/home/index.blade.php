@@ -53,7 +53,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home">
+    <section class="section-standart section-catalog section-home" id="popular-products-home-anchor">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
@@ -142,7 +142,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home">
+    <section class="section-standart section-catalog section-home" id="new-products-home-anchor">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
@@ -231,11 +231,11 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home">
+    <section class="section-standart section-catalog section-home" id="discount-products-home-anchor" >
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
-                    <div id="discount-products-home-anchor" style="position: relative; top: -110px; visibility: hidden;"></div>
+                    <div style="position: relative; top: -110px; visibility: hidden;"></div>
                     <div class="heading heading-with-btn">
                         <h1>{{__('theme.on-discount')}}</h1>
                         <a class="section-home-btn" href="{{route('theme.shop.sale')}}">{{__('theme.view-all')}}</a>
@@ -321,7 +321,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-slider section-brand-slider section-home">
+    <section class="section-standart section-slider section-brand-slider section-home" id="brands-home-anchor">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-slider">

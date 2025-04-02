@@ -18,7 +18,7 @@
                     <a href="{{route('user.registration.activation', $token)}}">Activează</a>
                     <p>Dacă nu v-ați înregistrat pe site-ul nostru, vă rugăm să ignorați acest email.</p>
                     <p>Vă mulțumim că ați ales www.radop.md! Suntem bucuroși că sunteți alături de noi!</p>
-                    <p>Dacă aveți întrebări, vă rugăm să contactați serviciul de suport al site-ului la adresa <a href="mailto:radop@mail.ru">radop@mail.ru</a></p>
+                    <p>Dacă aveți întrebări, vă rugăm să contactați serviciul de suport al site-ului la adresa <a href="mailto:support@radop.md">support@radop.md</a></p>
                     <p>Cu respect,</p>
                     <p>Echipa www.radop.md</p>
                     <p><a href="mailto:support@radop.md">support@radop.md</a></p>

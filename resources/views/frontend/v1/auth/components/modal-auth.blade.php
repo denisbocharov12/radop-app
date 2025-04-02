@@ -64,14 +64,14 @@
                     </div>
                 @endif
                 <div class="form-block-wrap">
-                    <button type="submit" class="login-btn" id="login-btn-modal">Войти</button>
+                    <button type="submit" class="login-btn" id="login-btn-modal">{{__('theme.enter')}}</button>
                 </div>
             </form>
         </div>
         <div class="login-separator">
             <p>{{__('theme.or')}}</p>
         </div>
-        <a href="{{route('user.registration.index')}}" class="login-btn login-btn-any register"> Регистрациая </a>
+        <a href="{{route('user.registration.index')}}" class="login-btn login-btn-any register">{{__('theme.registration')}}</a>
         <button type="button" class="login-btn login-btn-any login-btn-google">
             {{__('theme.enter-with')}}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

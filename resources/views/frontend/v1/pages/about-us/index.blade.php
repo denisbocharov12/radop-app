@@ -12,7 +12,7 @@
                 <h2>{{ __('about-us.offers') }}</h2>
                 <p>{{ __('about-us.offers-1') }}</p>
 
-                <h2>{{ __('about-us.brands') }}</h2>
+                <p>{{ __('about-us.brands') }}</p>
                 <p>{{ __('about-us.activities') }}</p>
 
                 <h3>{{ __('about-us.wholesale_distribution') }}</h3>
