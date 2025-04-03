@@ -279,7 +279,7 @@ return array (
     'personal-data-processing' => 'Я согласен на обработку персональных данных',
     'newsletter-of-discounts' => 'Я согласен получать рассылку скидок, акций и новостей компании',
     'registration-physical-person' => 'ФИЗИЧЕСКОЕ ЛИЦО',
-    'registration-physical-person-text-1' => 'В настоящее время наш сайт предназначен исключительно для работы с юридическими лицами.',
+    'registration-physical-person-text-1' => 'В настоящее время наш сайт предназначен для работы с юридическими лицами.',
     'registration-physical-person-text-2' => 'В ближайшем будущем мы планируем расширить функциональность сайта и для физических лиц.',
     'registration-physical-person-text-3' => 'Оставайтесь с нами, чтобы быть в курсе обновлений!',
     'registration-physical-person-text-4' => 'Благодарим за понимание!',

@@ -68,22 +68,23 @@
                     </div>
                 </div>
                 <div class="row mt-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="address-section">
+{{--                            <p>--}}
+{{--                                {{ __('contact.phone') }} <a href="tel:37322782111">0 (22)--}}
+{{--                                    78 21 11</a>--}}
+{{--                            </p>--}}
+{{--                            <p>--}}
+{{--                                {{ __('contact.email') }} <a--}}
+{{--                                        href="mailto:contextlux@yandex.ru">contextlux@yandex.ru</a>--}}
+{{--                            </p>--}}
+                            <h3>{{ __('contact.address') }}</h3>
                             <p>
-                                {{ __('contact.phone') }} <a href="tel:37322782111">0 (22)
-                                    78 21 11</a>
-                            </p>
-                            <p>
-                                {{ __('contact.email') }} <a
-                                        href="mailto:contextlux@yandex.ru">contextlux@yandex.ru</a>
-                            </p>
-                            <p>
-                                <span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
+                                {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="work-hours">
                             <h3>{{ __('contact.work_hours') }}</h3>
                             <p>
@@ -96,10 +97,14 @@
                     </div>
                 </div>
                 <div class="divider"></div>
-                <div class="store-title">{{ __('contact.brand_store') }}</div>
+                <div class="store-title mb-4">{{ __('contact.brand_store') }}</div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="address-section">
+                            <h3>{{ __('contact.address') }}</h3>
+                            <p>
+                                {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
+                            </p>
                             <p>
                                 {{ __('contact.phone') }} <a href="tel:37322782111">0 (22)
                                     78 21 11</a>
@@ -108,12 +113,9 @@
                                 {{ __('contact.email') }} <a
                                         href="mailto:contextlux@yandex.ru">contextlux@yandex.ru</a>
                             </p>
-                            <p>
-                                <span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_sarmizegetusa') }}
-                            </p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="work-hours">
                             <h3>{{ __('contact.work_hours') }}</h3>
                             <p>
@@ -133,35 +135,34 @@
                         referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
                 <div class="divider"></div>
-                <div class="store-title">{{ __('contact.warehouse') }}</div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="address-section">
-                            <p>{{ __('contact.phone') }} <a href="tel:37322249064">0 (22) 24
-                                    90 64</a></p>
-                            <p><span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_muncheshti') }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="work-hours">
-                            <h3>{{ __('contact.work_hours') }}</h3>
-                            <p>
-                                {{ __('contact.monday_friday') }} {{ __('contact.time_0800_1700') }}
-                            </p>
-                            <p>
-                                {{ __('contact.saturday') }}, {{ __('contact.sunday') }} {{ __('contact.weekends') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="store-title">{{ __('contact.warehouse') }}</div>--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-md-6">--}}
+{{--                        <div class="address-section">--}}
+{{--                            <p>{{ __('contact.phone') }} <a href="tel:37322249064">0 (22) 24--}}
+{{--                                    90 64</a></p>--}}
+{{--                            <p><span class="theme-bold">{{ __('contact.address') }}</span> {{ __('contact.chisinau') }} {{ __('contact.street_muncheshti') }}--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-6">--}}
+{{--                        <div class="work-hours">--}}
+{{--                            <h3>{{ __('contact.work_hours') }}</h3>--}}
+{{--                            <p>--}}
+{{--                                {{ __('contact.monday_friday') }} {{ __('contact.time_0800_1700') }}--}}
+{{--                            </p>--}}
+{{--                            <p>--}}
+{{--                                {{ __('contact.saturday') }}, {{ __('contact.sunday') }} {{ __('contact.weekends') }}--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d170.24848621149485!2d28.94449634901965!3d46.942515138919404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c9796f2e9660e1%3A0x1f8453d8712be44e!2sDepozit%20R%C4%83dop!5e0!3m2!1sru!2s!4v1742989945593!5m2!1sru!2s"--}}
+{{--                        width="50%" height="350" style="border:0;" allowfullscreen="" loading="lazy"--}}
+{{--                        referrerpolicy="no-referrer-when-downgrade">--}}
+{{--                </iframe>--}}
 
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d170.24848621149485!2d28.94449634901965!3d46.942515138919404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c9796f2e9660e1%3A0x1f8453d8712be44e!2sDepozit%20R%C4%83dop!5e0!3m2!1sru!2s!4v1742989945593!5m2!1sru!2s"
-                        width="50%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-
-                <div class="divider"></div>
+{{--                <div class="divider"></div>--}}
 
                 <div class="store-title">{{ __('contact.support_service') }}</div>
 
@@ -175,8 +176,6 @@
                                 {{ __('contact.support_text_2') }}
                             </p>
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="address-section">
                             <p>{{ __('contact.phone') }} <a href="tel:37322782112">022 78
                                     21 12</a>
@@ -187,7 +186,7 @@
                             </p>
                             <p>
                                 {{ __('contact.email') }} <a
-                                        href="mailto:support@radop.md">support@radop.md</a>
+                                    href="mailto:support@radop.md">support@radop.md</a>
                             </p>
                         </div>
                     </div>
