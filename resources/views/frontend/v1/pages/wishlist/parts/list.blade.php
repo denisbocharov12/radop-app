@@ -19,7 +19,7 @@
                 @if($product->conditions->sale_price !== '')
                     <a href="{{route('theme.product.index', $product->conditions->slug)}}" class="product-label">
                         <div class="product-label-wrap">
-                            <span class="product-label-span">- {{round((((float)$product->conditions->price - (float)$product->conditions->sale_price) / $product->conditions->price) * 100)}}%</span>
+                            <span class="product-label-span">- {{round((((float)$product->conditions->price * (float)$product->conditions->price_koef - (float)$product->conditions->sale_price) / $product->conditions->price* (float)$product->conditions->price_koef) * 100)}}%</span>
                         </div>
                     </a>
                 @endif
@@ -68,14 +68,14 @@
                     <hr class="product-card-item">
                     <div class="wrap">
                         @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->conditions->sale_price === '')
-                            <span class="price">{{number_format((float)$product->conditions->price - (float)$product->conditions->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                            <span class="price">{{number_format((float)$product->conditions->price * (float)$product->conditions->price_koef - (float)$product->conditions->price * (float)$product->conditions->price_koef * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                         @elseif($product->conditions->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
                             <span class="price"
                                   style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             <span class="old_price"
-                                  style="color: #848484">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                  style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                         @else
-                            <span class="price">{{ number_format($product->conditions->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                            <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                         @endif
 
                     </div>

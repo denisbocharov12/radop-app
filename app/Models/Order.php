@@ -35,6 +35,8 @@ final class Order extends Model
         'total',
         'delivery_charge',
         'city',
+        'fio',
+        'recommended_time',
         'user_type',
     ];
 

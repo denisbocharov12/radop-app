@@ -12,6 +12,8 @@ final class ThemeOrderDataMapper
         return new ThemeOrderData(
             $request->first_name,
             $request->last_name,
+            $request->fio,
+            $request->recommended_time,
             $request->email,
             $request->phone,
             $request->address,

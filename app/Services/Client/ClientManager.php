@@ -7,6 +7,7 @@ use App\Data\Client\ClientUpdateData;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\UserNotFoundException;
+use App\Exceptions\User\UserTypeNotFoundException;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\Profile;
 use App\Models\User;
@@ -41,10 +42,21 @@ class ClientManager
             throw new CityNotFoundException();
         }
 
+        $existedType = $this->userRepository->getTypeById($clientData->typeId);
+
+        if ($existedType === null) {
+            throw new UserTypeNotFoundException();
+        }
+
         $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
-        $lastUserNumber = User::query()->get()->last()->id + 1;
+
+        $lastUserNumber = User::query()->withTrashed()->get()->count() + 1;
 
         $userName =  strtolower($clientData->firstName[0].'_'.$clientData->lastName.'_'.$clientData->role.'_'.$lastUserNumber);
+
+        if ($existedType->key_name === 'iur') {
+            $userName =  strtolower('client_company_name_'.$lastUserNumber);
+        }
 
         $existedUserEmail = $this->userRepository->getFirstByEmailWithTrashed($clientData->email);
 

@@ -1,4 +1,3 @@
-@if(Auth::guard('user')->user() !== null && Auth::guard('user')->user()->type->key_name === 'iur')
 @php
     $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
 @endphp
@@ -58,4 +57,3 @@
     </script>
     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
 </div>
-@endif

@@ -3,7 +3,7 @@
     <img style="width: 100px; display: flex; align-items: center;justify-content: center" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" alt="Radop logo">
 </a>
 <div class="header" style="padding: 10px 0;">
-    <h2>Bună ziua, {{ $order->first_name }} {{ $order->last_name }}</h2>
+    <h2>Bună ziua, {{ $order?->fio }}</h2>
     <p>Vă mulțumim pentru cumpărătura făcută în magazinul nostru! Comanda dvs. nr. {{ $order->order_number }} a fost plasată cu succes și trimisă spre procesare.</p>
     <p>Managerul nostru vă va contacta în cel mai scurt timp pentru a clarifica detaliile comenzii și ale livrării.</p>
     <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:support@radop.md">support@radop.md</a></p>
@@ -19,7 +19,7 @@
             Plată fără numerar
         @endif
     </p>
-    <p style="margin: 5px 0;"><strong>Metoda de livrare:</strong> {{ $order->delivery_method }}</p>
+    <p style="margin: 5px 0;"><strong>Metoda de livrare:</strong> Livrare catre client din suma minima de comanda.</p>
     <p style="margin: 5px 0;"><strong>Adresa de livrare:</strong> {{ $order->address }}</p>
     <p style="margin: 5px 0;"><strong>Datele de contact:</strong> {{ $order->phone }}</p>
 <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>

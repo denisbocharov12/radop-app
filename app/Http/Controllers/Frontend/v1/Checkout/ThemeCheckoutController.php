@@ -8,6 +8,8 @@ use App\Enums\OrderPaymentMethods;
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Exceptions\Checkout\ManagerNotFoundException;
 use App\Exceptions\Checkout\ManagerNotFoundValidationException;
+use App\Exceptions\Checkout\MinOrderSumException;
+use App\Exceptions\Checkout\MinOrderSumValidationException;
 use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\Checkout\OrderErrorValidationException;
 use App\Exceptions\City\CityNotFoundException;
@@ -79,6 +81,8 @@ final class ThemeCheckoutController
             throw new ThemeCityErrorRequiredSumValidationException();
         }  catch (ThemeOrderMakeException) {
             throw new ThemeOrderMakeValidationException();
+        } catch (MinOrderSumException) {
+            throw new MinOrderSumValidationException();
         }
     }
 

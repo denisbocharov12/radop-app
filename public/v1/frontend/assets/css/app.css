@@ -4569,29 +4569,11 @@ font-weight: 300;
 white-space: nowrap;
 transition: all 0.3s;
 }
-.gratitude__row a:first-child {
-margin-right: 15px;
-background-color: #0068a7;
-}
 @media (max-width: 375px) {
 .gratitude__row a:first-child {
   margin-bottom: 10px;
 }
 }
-.gratitude__row a:first-child:hover {
-color: #0068a7;
-background-color: #fff;
-border: 2px solid #0068a7;
-}
-.gratitude__row a:last-child {
-background-color: #e82d25;
-}
-.gratitude__row a:last-child:hover {
-color: #e82d25;
-background-color: #fff;
-border: 2px solid #e82d25;
-}
-
 .liked-goods__title {
 margin-bottom: 10px;
 }

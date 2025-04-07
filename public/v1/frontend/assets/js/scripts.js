@@ -592,6 +592,10 @@ $(document).ready(function () {
       Fancybox.show([{ src: "#loginModal", type: "inline" }]);
   });
 
+    $(".btn-sales-period").click(function(){
+        Fancybox.show([{ src: "#salesPeriodModal", type: "inline" }]);
+    });
+
   $('#btn-header-catalog').click(function(){
       $(this).toggleClass('show');
       $('#header-catalog-action').toggleClass('show');
@@ -623,6 +627,14 @@ $(document).ready(function () {
         $this.parents('.inner').siblings('a.toggle').addClass("expanded"); // ensures all ancestors of this class will also remain expanded
 
         $this.toggleClass("expanded"); // to expand or collapse arrow on click (toggle)
+    });
+
+    $('.togglePassword').click(function(){
+        if ($(this).parent().find('input[type=password]').attr('type') === 'password') {
+            $(this).parent().find('input[type=password]').attr('type', 'text');
+        } else {
+            $(this).parent().find('input[type=text]').attr('type', 'password');
+        }
     });
 
     $('.toggle').dblclick(function(e){

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property string $first_name
  * @property string $last_name
+ * @property string $fio
+ * @property string $recommended_time
  * @property string $email
  * @property string $phone
  * @property string $address
@@ -29,15 +31,17 @@ final class ThemeOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
+            'first_name' => ['nullable', 'string'],
+            'last_name' => ['nullable', 'string'],
+            'fio' => ['required', 'string'],
+            'recommended_time' => ['nullable', 'string'],
             'email' => ['required', 'string'],
             'phone' => ['required', 'string'],
             'address' => ['required', 'string'],
             'city_id' => ['required', 'integer'],
             'note' => ['nullable', 'string'],
             'payment_method' => ['required', 'string'],
-            'delivery_method' => ['required', 'string'],
+            'delivery_method' => ['nullable', 'string'],
             'delivery_charge' => ['nullable', 'string'],
             'company_name' => ['nullable', 'string'],
             'reserve_phone' => ['nullable', 'string'],

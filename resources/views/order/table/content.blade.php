@@ -20,7 +20,7 @@
                 <div class="nk-tb-col order-details">
                     <span>
                         @if($order->user?->type?->key_name === 'fiz')
-                            {{$order->user?->profile?->first_name}} {{$order->user?->profile?->last_name}}
+                            {{$order->fio}}
                         @else
                             {{$order->user?->profile?->organization_name}}
                         @endif

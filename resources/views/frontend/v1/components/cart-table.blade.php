@@ -84,12 +84,12 @@
                     <div class="theme-cart-title-price-wrap">
                         <div class="price-wrap">
                             @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $item->associatedModel->sale_price === '')
-                                <span class="price">{{number_format((float)$item->associatedModel->price - (float)$item->associatedModel->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                                <span class="price">{{number_format((float)$item->associatedModel->price * (float)$item->associatedModel->price_koef - (float)$item->associatedModel->price * (float)$item->associatedModel->price_koef * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                             @elseif($item->associatedModel->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
                                 <span class="price" style="color: #ee0000">{{ number_format($item->associatedModel->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                                <span class="old_price" style="color: #848484">{{ number_format($item->associatedModel->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                <span class="old_price" style="color: #848484">{{ number_format($item->associatedModel->price * (float)$item->associatedModel->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             @else
-                                <span class="price">{{ number_format($item->associatedModel->price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                                <span class="price">{{ number_format($item->associatedModel->price * (float)$item->associatedModel->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
                             @endif
                         </div>
                     </div>
@@ -117,53 +117,54 @@
     </div>
 </div>
 <div class="col-lg-3 col-cart-total">
+    <div class="shopping-cart-total-discount-grade-wrap">
+        <a data-fancybox class="btn-sales-period"
+           data-src="#salesPeriodModal"
+           href="javascript:;">{{__('theme.discount_period_link')}}</a>
+    </div>
     <div class="shopping-cart-total-wrap">
         <div class="shopping-cart-total">
             <div class="total-heading">
                 <h3>{{__('theme.invoice-payable')}}</h3>
             </div>
-            @if(session()->has('coupon'))
-                <div class="sc-details-wrap">
-                    <ul class="details-ul">
+            <div class="sc-details-wrap">
+                <ul class="details-ul">
+                    <li class="item">
+                        <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                    </li>
+                    <li class="item">
+                        <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                    </li>
+                    @php
+                        $foundedDiscountPeriod = null;
+                            $sum = \Cart::session($sessionId)->getTotal();
+                            foreach (\App\Models\DiscountPeriod::orderBy('order')->get() as $discountPeriod) {
+                                if ($discountPeriod->sum_to >= $sum && $discountPeriod->sum_from <= $sum) {
+                                    $foundedDiscountPeriod = $discountPeriod;
+                                }
+                            }
+                        $nextFoundedDiscountPeriod = \App\Models\DiscountPeriod::where('order', (int)$foundedDiscountPeriod->order + 1)->first();
+                    @endphp
+                    @if($foundedDiscountPeriod !== null)
                         <li class="item">
-                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right theme-bold">{{number_format(\Cart::session($sessionId)->getTotal() / ($foundedDiscountPeriod->discount_koef * 100), 1, ',', '')}} {{__('theme.MDL')}}</span>
                         </li>
-                        <li class="item">
-                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                        </li>
-                        <li class="item">
-                            <span class="left">{{__('theme.discount')}} </span><span class="right">- {{number_format(session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="total-wrap">
-                    <p class="total-text">{{__('theme.for-payment')}}</p>
-                    <span>{{number_format((float)str_replace(',','', number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')) - session('coupon')['value'],2)}} {{__('theme.MDL')}}</span>
-                </div>
-            @else
-                <div class="sc-details-wrap">
-                    <ul class="details-ul">
-                        <li class="item">
-                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
-                        </li>
-                        <li class="item">
-                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                        </li>
-                        <li class="item">
-                            <span class="left">{{__('theme.discount')}} </span><span class="right">0.00 {{__('theme.MDL')}}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="total-wrap">
-                    <p class="total-text">{{__('theme.for-payment')}}</p>
-                    <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                </div>
-                <div class="required-sum-wrap">
-                    @if(\Cart::session($sessionId)->getTotal() < (float)Auth::guard('user')->user()->city->required_sum)
-                        <p class="required-sum-text">{{__('theme.required-sum-text', ['sum' => \Illuminate\Support\Facades\Auth::guard('user')->user()->city->required_sum])}}</p>
                     @endif
-                </div>
-            @endif
+                    @if($nextFoundedDiscountPeriod !== null)
+                        <li class="item">
+                            <span class="left">{{__('theme.sum_to_period_discount', ['koef' => $nextFoundedDiscountPeriod->discount_koef])}}</span><span class="right">{{number_format($foundedDiscountPeriod->sum_to - \Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+            <div class="total-wrap">
+                <p class="total-text">{{__('theme.for-payment')}}</p>
+                @if($foundedDiscountPeriod !== null)
+                    <span>{{number_format(\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal() * $foundedDiscountPeriod->discount_koef / 100, 2, ',', '')}} {{__('theme.MDL')}}</span>
+                @else
+                    <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                @endif
+            </div>
             <div class="sc-buttons-wrap">
                 <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn">{{__('theme.place-order')}}</a>
                 <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
