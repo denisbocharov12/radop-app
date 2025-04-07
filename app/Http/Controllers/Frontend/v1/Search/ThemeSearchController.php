@@ -22,10 +22,12 @@ final class ThemeSearchController extends Controller
         $themeSearchData = $this->themeSearchDataMapper->mapFromRequestToNormalized($request);
 
         $products = $this->themeSearchManager->index($themeSearchData);
+        $categories = $this->themeSearchManager->getCategoriesFromQuery($themeSearchData);
 
         return view('frontend.v1.pages.search.index', compact([
             'products',
             'themeSearchData',
+            'categories'
         ]));
     }
 }

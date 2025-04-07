@@ -2795,9 +2795,6 @@ margin-bottom: 50px;
 margin-top: 30px;
 }
 .section-checkout .col-checkout-heading {
-display: flex;
-align-items: flex-end;
-justify-content: space-between;
 margin-bottom: 20px;
 }
 .section-checkout .col-checkout-heading .heading h1 {

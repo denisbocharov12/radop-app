@@ -247,7 +247,7 @@ return array (
     'characteristic_color' => 'Цвет',
     'characteristic_text' => 'Текс',
     'category_not_found' => 'Категория не найдена',
-    'order-delivery' => 'Доставка',
+    'order-delivery' => 'Доставка:',
     'order-payment' => 'Оплата',
     'order-contact-data' => 'Контактные данные',
     'order-delivery-address' => 'Адрес доставки',
@@ -329,5 +329,7 @@ return array (
     'recommended_time_heading' => 'Время доставки',
     'discount_period_link' => 'Правила и условия скидок - тут',
     'sales_period_table_heading' => 'Таблица скидок',
-    'min_required_sum_to_label' => 'Мин. сумма'
+    'min_required_sum_to_label' => 'Мин. сумма:',
+    'search_meta_category_title' => 'Категория:',
+    'search_results_title' => 'Результаты поиска по запросу: ":text"'
 );

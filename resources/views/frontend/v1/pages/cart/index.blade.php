@@ -1,6 +1,7 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
+    @include('frontend.v1.pages.cart.parts.breadcrumbs')
     @php
         $sessionId = config('shopping_cart.default_session_id');
 
@@ -36,7 +37,7 @@
     @endif
     @include('frontend.v1.pages.cart.parts.map')
     @include('frontend.v1.pages.cart.parts.tabs')
-    @include('frontend.v1.components.sales_period_modal')
+{{--    @include('frontend.v1.components.sales_period_modal')--}}
 @endsection
 
 @section('scripts')
