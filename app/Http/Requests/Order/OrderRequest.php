@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property string $first_name
  * @property string $last_name
+ * @property string $fio
+ * @property string $recommended_time
  * @property string $email
  * @property string $phone
  * @property string $address
@@ -38,6 +40,8 @@ class OrderRequest extends FormRequest
         return [
             'first_name' => ['nullable', 'string'],
             'last_name' => ['nullable', 'string'],
+            'fio' => ['required', 'string'],
+            'recommended_time' => ['nullable', 'string'],
             'email' => ['required', 'string'],
             'phone' => ['required', 'string'],
             'address' => ['required', 'string'],
