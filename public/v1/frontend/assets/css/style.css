@@ -5005,6 +5005,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .min-order-sum-warning-text{
     margin-bottom: 10px;
+    margin-top: 10px;
     color: #ff2626db;
     font-weight: 700;
     text-align: center;
@@ -5013,6 +5014,12 @@ header .section-header .row-main .header-menu .col-lg{
     vertical-align: middle;
     font-size: 14px;
     width: 100%;
+    opacity: 0;
+    visibility: hidden;
+}
+.min-order-sum-warning-text.show{
+    visibility: visible;
+    opacity: 1;
 }
 
 .section-search{

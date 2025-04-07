@@ -332,5 +332,5 @@ return array (
     'min_required_sum_to_label' => 'Suma min.:',
     'search_meta_title' => 'Toate',
     'search_results_title' => 'Rezultatele căutării pentru: ":text"',
-    'min_order_sum_warning_message' => 'Min. suma comanda: :sum lei.',
+    'min_order_sum_warning_message' => 'Min. suma comanda:',
 );

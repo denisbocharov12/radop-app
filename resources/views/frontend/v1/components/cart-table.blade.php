@@ -147,9 +147,9 @@
 {{--                @endif--}}
                 <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
             </div>
-            @if(\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum'))
-                <p class="min-order-sum-warning-text">{{__('theme.min_order_sum_warning_message', ['sum' => config('app.min_delivery_sum')])}}</p>
-            @endif
+            <p class="min-order-sum-warning-text {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'show' : ''}}">
+                {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{config('app.min_delivery_sum')}}</span> {{__('theme.MDL')}}
+            </p>
             <div class="sc-buttons-wrap">
                 <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
                 <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
