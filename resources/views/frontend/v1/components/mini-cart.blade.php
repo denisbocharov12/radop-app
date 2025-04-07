@@ -67,9 +67,9 @@
                 </li>
             @endforeach
         </ul>
-        @if(\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum'))
-            <p class="min-order-sum-warning-text">{{__('theme.min_order_sum_warning_message', ['sum' => config('app.min_delivery_sum')])}}</p>
-        @endif
+        <p class="min-order-sum-warning-text {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'show' : ''}}">
+            {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{config('app.min_delivery_sum')}}</span> {{__('theme.MDL')}}
+        </p>
         <div class="heading-shopping-cart mb-2 mt-2">
             <span class="sc-subtotal">
                 {{__('theme.subtotal')}} {{\Cart::session($sessionId)->getTotalQuantity()}} {{mb_strtolower(__('theme.mini_cart_unit_in_cart'))}} {{__('theme.for-amount')}} {{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}

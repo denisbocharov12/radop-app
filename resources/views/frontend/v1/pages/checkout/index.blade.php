@@ -226,9 +226,9 @@
                                         <li class="item">
                                             <span class="left">{{__('theme.discount')}} </span><span class="right"><span>0.00</span> {{__('theme.MDL')}}</span>
                                         </li>
-                                        <li class="item">
-                                            <span class="left">{{__('theme.order-delivery')}} </span><span class="right"><span id="delivery-charge">0.00</span> {{__('theme.MDL')}}</span>
-                                        </li>
+{{--                                        <li class="item">--}}
+{{--                                            <span class="left">{{__('theme.order-delivery')}} </span><span class="right"><span id="delivery-charge">0.00</span> {{__('theme.MDL')}}</span>--}}
+{{--                                        </li>--}}
                                     </ul>
                                 </div>
                                 <div class="total-wrap">
@@ -241,10 +241,10 @@
                                     <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, '.', '')}}</span> {{__('theme.MDL')}}</span>
                                 </div>
                                 <div class="sc-buttons-wrap">
-                                    @if(\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum'))
-                                        <p class="min-order-sum-warning-text">{{__('theme.min_order_sum_warning_message', ['sum' => config('app.min_delivery_sum')])}}</p>
-                                    @endif
-                                    <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit hide {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
+                                    <p class="min-order-sum-warning-text {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'show' : ''}}">
+                                        {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{config('app.min_delivery_sum')}}</span> {{__('theme.MDL')}}
+                                    </p>
+                                    <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
                                     <a href="{{route('theme.shop.catalog')}}" class="sc-btn-continuie sc-btn"
                                     >{{__('theme.сontinue-shopping')}}</a
                                     >
@@ -293,8 +293,11 @@
                 $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
                 if( total < $(this).find(':selected').data('required-sum')) {
                     $('.sc-btn-submit').addClass('hide');
+                    $('.min-order-sum-warning-text').addClass('show');
+                    $('.min-order-sum-warning-text').find('.sum').text($(this).find(':selected').data('required-sum'));
                 } else {
                     $('.sc-btn-submit').removeClass('hide');
+                    $('.min-order-sum-warning-text').removeClass('show');
                 }
 
                 $('#checkout-final-price').text((total + $(this).find(':selected').data('delivery-charge')).toFixed(2));
