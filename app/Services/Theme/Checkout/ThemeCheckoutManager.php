@@ -9,16 +9,19 @@ use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
 use App\Events\OrderCreatedSendAdminEmailEvent;
 use App\Events\OrderCreatedSendManagerEmailEvent;
+use App\Exceptions\Checkout\MinOrderSumException;
 use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\City\ThemeCityErrorRequiredSumException;
 use App\Exceptions\Order\ThemeOrderMakeException;
 use App\Exceptions\User\UserNotFoundException;
+use App\Models\DiscountPeriod;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderProfile;
 use App\Models\User;
 use App\Repositories\City\CityRepository;
+use App\Repositories\DiscountPeriod\DiscountPeriodRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserTypeRepository;
@@ -37,6 +40,7 @@ final class ThemeCheckoutManager
         private readonly OrderStatus $orderStatus,
         private readonly OrderPaymentMethods $orderPaymentMethods,
         private readonly CityRepository $cityRepository,
+        private readonly DiscountPeriodRepository $discountPeriodRepository,
     )
     {
     }
@@ -48,7 +52,6 @@ final class ThemeCheckoutManager
         $authUser = null;
         $managerId = null;
         $userId = null;
-        $discount = Session::get('coupon.value');
         $userType = 'fiz';
 
         if ($user !== null) {
@@ -56,10 +59,6 @@ final class ThemeCheckoutManager
             $userId = $authUser->id;
             $managerId = $user->manager_id;
             $userType = $authUser->type->key_name;
-        }
-
-        if ($authUser === null) {
-            throw new ThemeOrderMakeException();
         }
 
         if (!array_key_exists($orderData->payment_method, $this->orderPaymentMethods->getAll()))
@@ -79,17 +78,46 @@ final class ThemeCheckoutManager
 
         $deliverySum = (float)$existedCity->delivery_sum;
 
+        if ((float)$existedCity->required_sum <= $this->getCartSubtotalValue()) {
+            $deliverySum = 0;
+        }
+
+        if($this->getCartSubtotalValue() < config('app.min_delivery_sum')) {
+            throw new MinOrderSumException();
+        }
+
+        $recommendedTime = null;
+
+        if ($orderData->recommendedTime !== null) {
+            $recommendedTime = $orderData->recommendedTime;
+        }
+
+        $foundedDiscountPeriod = null;
+
+        foreach (DiscountPeriod::orderBy('order')->get() as $discountPeriod) {
+            if ($discountPeriod->sum_to >= $this->getCartSubtotalValue() && $discountPeriod->sum_from <= $this->getCartSubtotalValue()) {
+                $foundedDiscountPeriod = $discountPeriod;
+            }
+        }
+
+        if ($foundedDiscountPeriod === null) {
+            throw new OrderErrorException;
+        }
+
+        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
+
         $order = Order::create([
+            'fio' => $orderData->fio,
             'order_number' => $this->getLatestOrderNumber($userType),
-            'first_name' => $orderData->first_name,
-            'last_name' => $orderData->last_name,
+            'first_name' => $orderData->fio,
+            'last_name' => $orderData->fio,
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderData->address,
             'city' => $orderData->cityId,
             'note' => $orderData->note,
             'payment_method' => $orderData->payment_method,
-            'delivery_method' => $orderData->delivery_method,
+            'delivery_method' => 'theme.default_delivery_method',
             'payment_status' => $this->orderPaymentStatus->getUnpaidPaymentStatus(),
             'status' => $this->orderStatus->getProcessingStatus(),
             'delivery_charge' => $deliverySum,
@@ -98,7 +126,8 @@ final class ThemeCheckoutManager
             'user_type' => $userType,
             'subtotal' => $this->getCartSubtotalValue(),
             'total' => $this->getCartSubtotalValue() - $discount + $deliverySum,
-            'discount' => $discount
+            'discount' => $discount,
+            'recommended_time' => $recommendedTime
         ]);
 
         $orderProfile = OrderProfile::create([

@@ -37,12 +37,12 @@ final class ThemeProductManager
 
     public function addToCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
-        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
-            $response['msg'] = __('theme.add_to_cart_not_permitted');
-            $response['status'] = 'not_permitted';
-
-            return $response;
-        }
+//        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+//            $response['msg'] = __('theme.add_to_cart_not_permitted');
+//            $response['status'] = 'not_permitted';
+//
+//            return $response;
+//        }
 
         $existedProduct = $this->productRepository->getById($addToCartData->productId);
 
@@ -91,12 +91,6 @@ final class ThemeProductManager
             $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
-        $requiredSumStatus = false;
-
-        if (\Cart::session($sessionId)->getSubTotal() < (float)Auth::guard('user')->user()->city->required_sum) {
-            $requiredSumStatus = true;
-        }
-
         if ($result)
         {
             $response['status'] = true;
@@ -113,7 +107,6 @@ final class ThemeProductManager
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
                 $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart', ['product' => $existedProduct])->render();
-                $response['required-sum-status'] = $requiredSumStatus;
             }
         }
 
@@ -149,12 +142,12 @@ final class ThemeProductManager
 
     public function updateCart(AddToCartData $addToCartData, AddToCartRequest $request): array
     {
-        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
-            $response['msg'] = __('theme.add_to_cart_not_permitted');
-            $response['status'] = 'not_permitted';
-
-            return $response;
-        }
+//        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+//            $response['msg'] = __('theme.add_to_cart_not_permitted');
+//            $response['status'] = 'not_permitted';
+//
+//            return $response;
+//        }
 
         $existedProduct = $this->productRepository->getById($addToCartData->productId);
 
@@ -203,12 +196,6 @@ final class ThemeProductManager
             $result = $this->updateInstance($existedProduct,$productQty,$price, $sessionId);
         }
 
-        $requiredSumStatus = false;
-
-        if (\Cart::session($sessionId)->getSubTotal() < (float)Auth::guard('user')->user()->city->required_sum) {
-            $requiredSumStatus = true;
-        }
-
         if ($result)
         {
             $response['status'] = true;
@@ -224,7 +211,6 @@ final class ThemeProductManager
                 $response['cart'] = $cart;
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
-                $response['required-sum-status'] = $requiredSumStatus;
             }
         }
 
@@ -233,12 +219,12 @@ final class ThemeProductManager
 
     public function deleteCartItem(string $productId, Request $request): array
     {
-        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
-            $response['msg'] = __('theme.add_to_cart_not_permitted');
-            $response['status'] = 'not_permitted';
-
-            return $response;
-        }
+//        if (Auth::guard('user')->user() === null || Auth::guard('user')->user()->type->key_name !== 'iur'){
+//            $response['msg'] = __('theme.add_to_cart_not_permitted');
+//            $response['status'] = 'not_permitted';
+//
+//            return $response;
+//        }
 
         $sessionId = config('shopping_cart.default_session_id');
 
@@ -272,7 +258,7 @@ final class ThemeProductManager
             $price = number_format((float)$product->sale_price, 2, '.', '');
         }
         else{
-            $price = number_format((float)$product->price, 2, '.', '');
+            $price = number_format((float)$product->price * (float)$product->price_koef, 2, '.', '');
         }
 
         return $price;
@@ -286,7 +272,7 @@ final class ThemeProductManager
             $price = number_format((float)$product->sale_price, 2, ',', '');
         }
         else{
-            $price = number_format((float)$product->price, 2, ',', '');
+            $price = number_format((float)$product->price * (float)$product->price_koef, 2, ',', '');
         }
 
         return $price;
@@ -294,15 +280,15 @@ final class ThemeProductManager
 
     private function getProductPriceForCart(Product $product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
+        if (Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
             $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
-        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
+        } elseif ($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
             $price = number_format((float)$product->sale_price, 2, '.', '');
-        }
-        else{
-            $price = number_format((float)$product->price, 2, '.', '');
+        } else {
+            $price = number_format((float)$product->price * (float)$product->price_koef, 2, '.', '');
         }
 
         return $price;
     }
+
 }

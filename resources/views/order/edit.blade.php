@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="reserve_phone">Номер телефона</label>
+                                                <label class="form-label" for="reserve_phone">Резервный телефон</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" class="form-control @error('reserve_phone') error @enderror" id="reserve_phone" name="reserve_phone" value="{{$order->profile?->reserve_phone}}" placeholder="Номер телефона">
                                                     @error('reserve_phone')
@@ -160,6 +160,17 @@
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('phone') error @enderror" id="phone" name="phone" value="{{$order->phone}}" placeholder="phone">
                                                     @error('phone')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="fio">Имя / Фамилия</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('fio') error @enderror" id="fio" name="fio" value="{{$order->fio}}" placeholder="Имя фамилия">
+                                                    @error('fio')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>
@@ -195,7 +206,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="order_number">Метод оплаты</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('delivery_method') error @enderror" id="delivery_method" name="delivery_method" value="{{$order->delivery_method}}" placeholder="Метод оплаты">
+                                                    <input type="text" required class="form-control @error('delivery_method') error @enderror" id="delivery_method" name="delivery_method" value="{{$order->delivery_method}}" placeholder="Метод доставки">
                                                     @error('delivery_method')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -276,6 +287,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if($order->recommended_time !== null)
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="recommended_time">Рекомендуемое время</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('recommended_time') error @enderror" id="recommended_time" name="recommended_time" value="{{$order->recommended_time}}" placeholder="Время">
+                                                    @error('recommended_time')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label class="form-label" for="note">Примечание</label>

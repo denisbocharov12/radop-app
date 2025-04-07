@@ -26,15 +26,17 @@ namespace App\Data\Theme\Order;
 final class ThemeOrderData
 {
     public function __construct(
-        public readonly string $first_name,
-        public readonly string $last_name,
+        public readonly ?string $first_name,
+        public readonly ?string $last_name,
+        public readonly string $fio,
+        public readonly ?string $recommendedTime,
         public readonly string $email,
         public readonly string $phone,
         public readonly string $address,
         public readonly int $cityId,
         public readonly ?string $note,
         public readonly string $payment_method,
-        public readonly string $delivery_method,
+        public readonly ?string $delivery_method,
         public readonly ?string $delivery_charge,
         public readonly ?string $company_name,
         public readonly ?string $reserve_phone,

@@ -158,7 +158,7 @@
                     <p>{{__('theme.shipment')}} <span style="font-weight: bold">{{$order->order_number}}</span> {{__('theme.from')}}{{$order->created_at->format('d.m.Y')}} </p>
                 </div>
                 <div class="client" style="margin-top: 15px">
-                    <p><span style="font-weight: bold">{{__('theme.client')}}</span> {{$order->first_name}} {{$order->last_name}} / {{$order->address}} / {{$order->phone}}</p>
+                    <p><span style="font-weight: bold">{{__('theme.client')}}</span> {{$order?->fio}} / {{$order->address}} / {{$order->phone}}</p>
                 </div>
                 <div class="sclad" style="margin-top: 30px">
                     <p style="font-weight: bold; font-size: 16px;">{{__('theme.warehouse')}}</p>

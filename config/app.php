@@ -18,6 +18,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'min_delivery_sum' => env('MIN_DELIVERY_SUM', 500),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

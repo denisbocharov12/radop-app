@@ -28,7 +28,7 @@
     @else
         <tr>
             <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
-            <td style="border: 1px solid black;">{{ $order->first_name . ' ' . $order->last_name }}</td>
+            <td style="border: 1px solid black;">{{ $order?->fio }}</td>
         </tr>
     @endif
 </table>

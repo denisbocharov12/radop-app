@@ -205,7 +205,7 @@
                 <div class="invoice-contact">
                     <span class="overline-title">Инвойс к</span>
                     <div class="invoice-contact-info">
-                        <h4 class="title">{{$order->first_name}} {{$order->last_name}}</h4>
+                        <h4 class="title">{{$order?->fio}}</h4>
                         <ul class="list-plain">
                             <li><em class="icon ni ni-map-pin-fill fs-18px"></em><span>{{$order->address}}</span></li>
                             <li><em class="icon ni ni-call-fill fs-14px"></em><span>{{$order->phone}}</span></li>

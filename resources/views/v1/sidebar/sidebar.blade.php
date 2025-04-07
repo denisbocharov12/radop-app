@@ -197,6 +197,22 @@
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+                            <span class="nk-menu-text">Период скидок</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('discount-period.index')}}" class="nk-menu-link"><span class="nk-menu-text">Периоды скидок</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('discount-period.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка периода скидок</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
                         @hasrole('admin')
                         <a href="{{route('languages.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-text"></em></span>

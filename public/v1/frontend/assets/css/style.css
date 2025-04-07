@@ -4992,12 +4992,44 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: #034486;
 }
 
+.section-checkout .shopping-cart-total-wrap .shopping-cart-total .sc-buttons-wrap .sc-btn.sc-btn-submit.hide{
+    pointer-events: none;
+    cursor: default;
+    background-color: #b0b0b0;
+}
+
 .section-category-blocks {
     margin-top: 30px;
 }
 
 .section-category-blocks .col-heading {
     margin-bottom: 30px;
+}
+.recommended_time_text {
+    display: flex;
+}
+.recommended_time_text span{
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.row-recommended-time.hide{
+    display: none;
+}
+
+.shopping-cart-total-discount-grade-wrap{
+    margin-bottom: 15px;
+}
+
+.shopping-cart-total-discount-grade-wrap a{
+    text-decoration: underline!important;
+    padding: 20px;
+    background-color: #eff3f6;
+    width: 100%;
+    display: flex;
+    border-radius: 10px;
 }
 
 .section-category-blocks .col-heading .heading {
@@ -6041,6 +6073,17 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .login-modal-wrap .login-head h3 {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+
+.modal-wrap .theme-head  {
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.modal-wrap .theme-head  h3 {
     font-weight: 600;
     font-size: 20px;
 }
@@ -7104,25 +7147,20 @@ hr.product-card-item{
     transition: all 0.3s;
 }
 
-.gratitude__row a:first-child {
-    margin-right: 15px;
+.gratitude__row a {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    align-items: center;
     background-color: #0052a6;
 }
 
-.gratitude__row a:first-child:hover {
-    color: #0052a6;
-    background-color: #fff;
-    border: 2px solid #0052a6;
-}
-
-.gratitude__row a:last-child {
-    background-color: #e82d25;
-}
-
-.gratitude__row a:last-child:hover {
-    color: #e82d25;
-    background-color: #fff;
-    border: 2px solid #e82d25;
+.gratitude__row a:hover {
+    color: #fff;
+    background-color: #034486;
+    border: 2px solid #034486;
 }
 
 .liked-goods__title {
@@ -9147,7 +9185,8 @@ hr.product-card-item{
 .section-page .container p, li{
     margin: 0.5em 0;
 }
-.section-page .theme-bold{
+.section-page .theme-bold,
+.theme-bold{
     font-weight: bold;
 }
 .section-page .container ul, ol{

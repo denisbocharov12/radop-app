@@ -36,6 +36,7 @@
     @endif
     @include('frontend.v1.pages.cart.parts.map')
     @include('frontend.v1.pages.cart.parts.tabs')
+    @include('frontend.v1.components.sales_period_modal')
 @endsection
 
 @section('scripts')
@@ -71,9 +72,6 @@
                     }
                     if(response['status'] === 'not_permitted') {
                         toastr["error"](response['msg'])
-                    }
-                    if(!response['required-sum-status']) {
-                        $('.required-sum-text').remove();
                     }
                 }
             })

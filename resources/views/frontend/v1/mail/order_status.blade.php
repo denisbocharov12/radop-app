@@ -9,7 +9,7 @@
     <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
 </a>
 <div class="header" style="padding: 10px 0;">
-    <h2>Bună ziua, {{ $order->first_name }} {{ $order->last_name }}</h2>
+    <h2>Bună ziua, {{ $order?->fio }}</h2>
     <h2>Starea comenzii dvs. nr. {{$order_number}} a fost schimbat la {{__('theme.' . $order->status, [], 'ro')}}</h2>
     <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:radop@mail.ru">radop@mail.ru</a></p>
 </div>
@@ -24,7 +24,7 @@
             Plată fără numerar
         @endif
     </p>
-    <p style="margin: 5px 0;"><strong>Metoda de livrare:</strong> {{ $order->delivery_method }}</p>
+    <p style="margin: 5px 0;"><strong>Metoda de livrare:</strong> Livrare catre client din suma minima de comanda.</p>
     <p style="margin: 5px 0;"><strong>Adresa de livrare:</strong> {{ $order->address }}</p>
     <p style="margin: 5px 0;"><strong>Datele de contact:</strong> {{ $order->phone }}</p>
 <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
