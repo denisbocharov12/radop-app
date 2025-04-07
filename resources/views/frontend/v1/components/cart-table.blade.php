@@ -147,7 +147,7 @@
                     @endphp
                     @if($foundedDiscountPeriod !== null)
                         <li class="item">
-                            <span class="left">{{__('theme.discount')}} </span><span class="right theme-bold">{{number_format(\Cart::session($sessionId)->getTotal() / ($foundedDiscountPeriod->discount_koef * 100), 1, ',', '')}} {{__('theme.MDL')}}</span>
+                            <span class="left">{{__('theme.discount')}} </span><span class="right theme-bold">{{number_format(($foundedDiscountPeriod->discount_koef * \Cart::session($sessionId)->getTotal()) / 100 , 2, ',', '')}} {{__('theme.MDL')}}</span>
                         </li>
                     @endif
                     @if($nextFoundedDiscountPeriod !== null)
