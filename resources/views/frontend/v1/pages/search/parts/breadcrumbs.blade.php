@@ -5,7 +5,7 @@
                 <nav>
                     <ol class="breadcrumb text-white">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.shop')}}</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('theme.search.index')}}">{{__('theme.search_results_title', ['text' => $themeSearchData->search])}}</a></li>
                     </ol>
                 </nav>
             </div>

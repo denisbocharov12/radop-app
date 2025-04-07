@@ -221,13 +221,13 @@
                                             <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
                                         </li>
                                         <li class="item">
-                                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                                            <span class="left">{{__('theme.summary')}} </span><span class="right">{{number_format(\Cart::session($sessionId)->getTotal(), 2, '.', '')}} {{__('theme.MDL')}}</span>
+                                        </li>
+                                        <li class="item">
+                                            <span class="left">{{__('theme.discount')}} </span><span class="right"><span>0.00</span> {{__('theme.MDL')}}</span>
                                         </li>
                                         <li class="item">
                                             <span class="left">{{__('theme.order-delivery')}} </span><span class="right"><span id="delivery-charge">0.00</span> {{__('theme.MDL')}}</span>
-                                        </li>
-                                        <li class="item">
-                                            <span class="left">{{__('theme.min_required_sum_to_label')}} </span><span class="right"><span id="required-sum">500.00</span> {{__('theme.MDL')}}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -238,10 +238,13 @@
 {{--                                    @else--}}
 {{--                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>--}}
 {{--                                    @endif--}}
-                                    <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
+                                    <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, '.', '')}}</span> {{__('theme.MDL')}}</span>
                                 </div>
                                 <div class="sc-buttons-wrap">
-                                    <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit">{{__('theme.place-order')}}</a>
+                                    @if(\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum'))
+                                        <p class="min-order-sum-warning-text">{{__('theme.min_order_sum_warning_message', ['sum' => config('app.min_delivery_sum')])}}</p>
+                                    @endif
+                                    <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit hide {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
                                     <a href="{{route('theme.shop.catalog')}}" class="sc-btn-continuie sc-btn"
                                     >{{__('theme.сontinue-shopping')}}</a
                                     >
@@ -287,8 +290,7 @@
             });
             $('#city_id').change(function(){
                 var total = $('#checkout-final-price').data('total');
-                $('#delivery-charge').text($(this).find(':selected').data('delivery-charge'));
-                $('#required-sum').text($(this).find(':selected').data('required-sum'));
+                $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
                 if( total < $(this).find(':selected').data('required-sum')) {
                     $('.sc-btn-submit').addClass('hide');
                 } else {

@@ -18,9 +18,5 @@
         <div class="contents-shopping-cart" id="cart-update">
             @include('frontend.v1.components.mini-cart')
         </div>
-        <div class="bottom-shopping-cart">
-            <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart">{{__('theme.сontinue-shopping')}}</a>
-            <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red">{{__('theme.place-order')}}</a>
-        </div>
     </div>
 </div>
