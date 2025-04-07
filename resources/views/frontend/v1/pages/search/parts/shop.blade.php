@@ -11,12 +11,11 @@
                     <hr>
                 </div>
                 <div class="col-12 col-search-meta">
-                    <h3 class="col-search-meta-title">{{__('theme.search_meta_category_title')}}</h3>
                     <div class="wrap wrap-items">
+                        <a href="{{route('theme.search.index', ['search' => $themeSearchData->search])}}" title="{{__('theme.search_meta_title')}}" class="wrap-item-link limk-meta theme-bold">{{__('theme.search_meta_title')}} ({{$products->total()}})</a>
                         @foreach($categories as $category)
-                            <a href="{{route('theme.category.index', $category->category_id)}}" title="Категория" class="wrap-item-link limk-meta">{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}</a>
+                            <a href="{{route('theme.category.index', $category->category_id)}}" title="{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}" class="wrap-item-link limk-meta">{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}</a>
                         @endforeach
-
                     </div>
                 </div>
                 <div class="col-12">

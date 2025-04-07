@@ -4470,7 +4470,7 @@ header .section-header .row-main .header-menu .col-lg{
     justify-content: space-between;
     font-weight: 500;
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
 .section-shopping-cart .col-cart-total .shopping-cart-total-wrap .shopping-cart-total .sc-buttons-wrap {
@@ -4478,7 +4478,7 @@ header .section-header .row-main .header-menu .col-lg{
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 .section-shopping-cart .col-cart-total .shopping-cart-total-wrap .shopping-cart-total .sc-buttons-wrap .sc-btn {
@@ -4818,7 +4818,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-checkout .col-checkout-heading {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .section-checkout .col-checkout-heading .heading h1 {
@@ -4996,6 +4996,25 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: #b0b0b0;
 }
 
+.section-checkout .shopping-cart-total-wrap .shopping-cart-total .sc-buttons-wrap .sc-btn.sc-btn-submit.hide-important,
+.hide-important{
+    pointer-events: none!important;
+    cursor: default!important;
+    background-color: #b0b0b0!important;
+}
+
+.min-order-sum-warning-text{
+    margin-bottom: 10px;
+    color: #ff2626db;
+    font-weight: 700;
+    text-align: center;
+    font-style: italic;
+    line-height: 1.2;
+    vertical-align: middle;
+    font-size: 14px;
+    width: 100%;
+}
+
 .section-search{
     margin-top: 30px;
     margin-bottom: 50px;
@@ -5027,7 +5046,7 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 8px 16px;
     border-radius: 10px;
     background-color: transparent;
-    border: 2px solid #0052a6;
+    border: .8px solid #0052a6;
     color: #252525;
     transition: all .4s;
     margin-right: 12.5px;
@@ -5036,7 +5055,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-search .col-search-meta .wrap.wrap-items .wrap-item-link:hover{
     background-color: #0052a6;
-    color: #f0eaff;
+    color: #fff;
 }
 
 .section-search .col-search-meta .col-search-meta-title{

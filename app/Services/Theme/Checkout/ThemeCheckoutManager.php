@@ -76,6 +76,10 @@ final class ThemeCheckoutManager
             throw new ThemeCityErrorRequiredSumException();
         }
 
+        if($this->getCartSubtotalValue() < config('app.min_delivery_sum')) {
+            throw new MinOrderSumException();
+        }
+
         if($this->getCartSubtotalValue() < (float)$existedCity->required_sum) {
             throw new MinOrderSumException();
         }

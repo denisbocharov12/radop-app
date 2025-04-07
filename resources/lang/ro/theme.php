@@ -330,6 +330,7 @@ return array (
     'discount_period_link' => 'Termenii si conditiile reducerilor - aici',
     'sales_period_table_heading' => 'Tabel de reduceri',
     'min_required_sum_to_label' => 'Suma min.:',
-    'search_meta_category_title' => 'Categoria:',
-    'search_results_title' => 'Rezultatele căutării pentru: ":text"'
+    'search_meta_title' => 'Toate',
+    'search_results_title' => 'Rezultatele căutării pentru: ":text"',
+    'min_order_sum_warning_message' => 'Min. suma comanda: :sum lei.',
 );
