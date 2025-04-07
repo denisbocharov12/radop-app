@@ -76,14 +76,14 @@ final class ThemeCheckoutManager
             throw new ThemeCityErrorRequiredSumException();
         }
 
+        if($this->getCartSubtotalValue() < (float)$existedCity->required_sum) {
+            throw new MinOrderSumException();
+        }
+
         $deliverySum = (float)$existedCity->delivery_sum;
 
         if ((float)$existedCity->required_sum <= $this->getCartSubtotalValue()) {
             $deliverySum = 0;
-        }
-
-        if($this->getCartSubtotalValue() < config('app.min_delivery_sum')) {
-            throw new MinOrderSumException();
         }
 
         $recommendedTime = null;
@@ -92,19 +92,19 @@ final class ThemeCheckoutManager
             $recommendedTime = $orderData->recommendedTime;
         }
 
-        $foundedDiscountPeriod = null;
+//        $foundedDiscountPeriod = null;
+//
+//        foreach (DiscountPeriod::orderBy('order')->get() as $discountPeriod) {
+//            if ($discountPeriod->sum_to >= $this->getCartSubtotalValue() && $discountPeriod->sum_from <= $this->getCartSubtotalValue()) {
+//                $foundedDiscountPeriod = $discountPeriod;
+//            }
+//        }
+//
+//        if ($foundedDiscountPeriod === null) {
+//            throw new OrderErrorException;
+//        }
 
-        foreach (DiscountPeriod::orderBy('order')->get() as $discountPeriod) {
-            if ($discountPeriod->sum_to >= $this->getCartSubtotalValue() && $discountPeriod->sum_from <= $this->getCartSubtotalValue()) {
-                $foundedDiscountPeriod = $discountPeriod;
-            }
-        }
-
-        if ($foundedDiscountPeriod === null) {
-            throw new OrderErrorException;
-        }
-
-        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
+//        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
 
         $order = Order::create([
             'fio' => $orderData->fio,
@@ -125,8 +125,8 @@ final class ThemeCheckoutManager
             'manager_id' => $managerId,
             'user_type' => $userType,
             'subtotal' => $this->getCartSubtotalValue(),
-            'total' => $this->getCartSubtotalValue() - $discount + $deliverySum,
-            'discount' => $discount,
+            'total' => $this->getCartSubtotalValue() + $deliverySum,
+            'discount' => 0,
             'recommended_time' => $recommendedTime
         ]);
 

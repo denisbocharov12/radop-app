@@ -17,4 +17,9 @@ final class ThemeSearchManager
     {
         return $this->productRepository->getAllBySearch($themeSearchData->search);
     }
+
+    public function getCategoriesFromQuery(ThemeSearchData $themeSearchData)
+    {
+        return $this->productRepository->getProductCategoryIdsBySearch($themeSearchData->search);
+    }
 }

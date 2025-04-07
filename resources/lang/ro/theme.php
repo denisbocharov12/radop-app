@@ -248,7 +248,7 @@ return array (
     'characteristic_color' => 'Culoare',
     'characteristic_text' => 'Text',
     'category_not_found' => 'Categoria nu a fost gasita',
-    'order-delivery' => 'Livrare',
+    'order-delivery' => 'Livrare:',
     'order-payment' => 'Achitare',
     'order-contact-data' => 'Date de contact',
     'order-product' => 'Produs',
@@ -329,5 +329,7 @@ return array (
     'recommended_time_heading' => 'Timpul de livrare',
     'discount_period_link' => 'Termenii si conditiile reducerilor - aici',
     'sales_period_table_heading' => 'Tabel de reduceri',
-    'min_required_sum_to_label' => 'Suma min.'
+    'min_required_sum_to_label' => 'Suma min.:',
+    'search_meta_category_title' => 'Categoria:',
+    'search_results_title' => 'Rezultatele căutării pentru: ":text"'
 );

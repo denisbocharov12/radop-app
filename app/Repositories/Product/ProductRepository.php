@@ -375,6 +375,21 @@ final class ProductRepository
         ;
     }
 
+    public function getProductCategoryIdsBySearch(string $value): Collection
+    {
+        return Product::query()
+            ->where('products.status', true)
+            ->where('products.site_status', true)
+            ->where('products.title', 'like', "%{$value}%")
+            ->where('products.stock', '!=', 0)
+            ->orWhere('products.onec_id', 'like', "%{$value}%")
+            ->join('product_categories', 'product_categories.product_id', '=', 'products.onec_id')
+            ->select('product_categories.category_id')
+            ->distinct()
+            ->get()
+        ;
+    }
+
     public function getById($productId): ?Product
     {
         return Product::query()->find($productId);

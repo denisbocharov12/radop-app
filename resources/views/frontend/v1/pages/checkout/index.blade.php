@@ -1,6 +1,7 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
+    @include('frontend.v1.pages.checkout.parts.breadcrumbs')
     @php
         $sessionId = config('shopping_cart.default_session_id');
 
@@ -24,8 +25,8 @@
 {{--                            >{{__('theme.сontinue-shopping')}}<i class="fa fa-arrow-right"></i--}}
 {{--                                ></a>--}}
 {{--                        </div>--}}
+                        <hr />
                     </div>
-                    <hr />
                     <div class="col-lg-8 col-xl-9 col-checkout-form">
                         <div class="checkout-form-wrap">
                             <form action="{{route('theme.checkout.store')}}" method="POST" id="checkout" class="checkout">
@@ -81,7 +82,7 @@
                                                 id="email"
                                                 value="{{$user?->email}}"
                                             />
-                                            @error('phone')
+                                            @error('email')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -204,11 +205,11 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-xl-3">
-                        <div class="shopping-cart-total-discount-grade-wrap">
-                            <a class="btn-sales-period" data-fancybox
-                               data-src="#salesPeriodModal"
-                               href="javascript:;">{{__('theme.discount_period_link')}}</a>
-                        </div>
+{{--                        <div class="shopping-cart-total-discount-grade-wrap">--}}
+{{--                            <a class="btn-sales-period" data-fancybox--}}
+{{--                               data-src="#salesPeriodModal"--}}
+{{--                               href="javascript:;">{{__('theme.discount_period_link')}}</a>--}}
+{{--                        </div>--}}
                         <div class="shopping-cart-total-wrap">
                             <div class="shopping-cart-total">
                                 <div class="total-heading">
@@ -228,35 +229,16 @@
                                         <li class="item">
                                             <span class="left">{{__('theme.min_required_sum_to_label')}} </span><span class="right"><span id="required-sum">500.00</span> {{__('theme.MDL')}}</span>
                                         </li>
-                                        @php
-                                            $foundedDiscountPeriod = null;
-                                                $sum = \Cart::session($sessionId)->getTotal();
-                                                foreach (\App\Models\DiscountPeriod::orderBy('order')->get() as $discountPeriod) {
-                                                    if ($discountPeriod->sum_to >= $sum && $discountPeriod->sum_from <= $sum) {
-                                                        $foundedDiscountPeriod = $discountPeriod;
-                                                    }
-                                                }
-                                            $nextFoundedDiscountPeriod = \App\Models\DiscountPeriod::where('order', (int)$foundedDiscountPeriod->order + 1)->first();
-                                        @endphp
-                                        @if($foundedDiscountPeriod !== null)
-                                            <li class="item">
-                                                <span class="left">{{__('theme.discount')}} </span><span class="right theme-bold">{{number_format(($foundedDiscountPeriod->discount_koef * \Cart::session($sessionId)->getTotal()) / 100 , 2, ',', '')}} {{__('theme.MDL')}}</span>
-                                            </li>
-                                        @endif
-                                        @if($nextFoundedDiscountPeriod !== null)
-                                            <li class="item">
-                                                <span class="left">{{__('theme.sum_to_period_discount', ['koef' => $nextFoundedDiscountPeriod->discount_koef])}} </span><span class="right">{{number_format($foundedDiscountPeriod->sum_to - \Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                                            </li>
-                                        @endif
                                     </ul>
                                 </div>
                                 <div class="total-wrap">
                                     <p class="total-text">{{__('theme.for-payment')}}</p>
-                                    @if($foundedDiscountPeriod !== null)
-                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal() * $foundedDiscountPeriod->discount_koef / 100}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum - \Cart::session($sessionId)->getTotal() * $foundedDiscountPeriod->discount_koef / 100, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
-                                    @else
-                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
-                                    @endif
+{{--                                    @if($foundedDiscountPeriod !== null)--}}
+{{--                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal() * $foundedDiscountPeriod->discount_koef / 100}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum - \Cart::session($sessionId)->getTotal() * $foundedDiscountPeriod->discount_koef / 100, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>--}}
+{{--                                    @else--}}
+{{--                                        <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal() - \Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>--}}
+{{--                                    @endif--}}
+                                    <span><span id="checkout-final-price" data-total="{{\Cart::session($sessionId)->getTotal()}}">{{number_format(\Cart::session($sessionId)->getTotal() + (float)$user?->city?->delivery_sum, 2, ',', '')}}</span> {{__('theme.MDL')}}</span>
                                 </div>
                                 <div class="sc-buttons-wrap">
                                     <a href="#" class="sc-btn-checkout sc-btn sc-btn-submit">{{__('theme.place-order')}}</a>
@@ -282,7 +264,7 @@
         </section>
     @endif
     @include('frontend.v1.pages.cart.parts.tabs')
-    @include('frontend.v1.components.sales_period_modal')
+{{--    @include('frontend.v1.components.sales_period_modal')--}}
 @endsection
 
 @section('scripts')
