@@ -63,92 +63,81 @@
                     </a>
                 </div>
             </div>
-            @if(Auth::guard()->user() !== null)
-                <div class="add_to_cart_wrap">
-                    <hr class="product-card-item">
-                    <div class="wrap">
-                        @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->conditions->sale_price === '')
-                            <span class="price">{{number_format((float)$product->conditions->price * (float)$product->conditions->price_koef - (float)$product->conditions->price * (float)$product->conditions->price_koef * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                        @elseif($product->conditions->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
-                            <span class="price"
-                                  style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                            <span class="old_price"
-                                  style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                        @else
-                            <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                        @endif
-
-                    </div>
-                    @include('frontend.v1.components.product_card_summary')
-                    @php
-                        $package = isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1;
-                    @endphp
-                    <div class="qty-add-to-cart qty-add-to-cart-product-card">
-                        <div class="sc-product-qty qty-block">
-                            <div class="input-group-btn">
-                                <button
-                                        onclick="decrementQuantity(this, {{$package}})"
-                                        class="sc-product-decrement btn-quantity-product minus"
-                                        type="button"
-                                        id="button-minus"
-                                >
-                                    -
-                                </button>
-                            </div>
-                            <input
-                                    id="product-{{$product->conditions->id}}-qty"
-                                    type="number"
-                                    min="{{$package}}"
-                                    max="{{$product->conditions->stock}}"
-                                    placeholder="{{$package}}"
-                                    value="{{$package}}"
-                                    name="product-{{$product->conditions->id}}-qty"
-                                    data-product-id="{{$product->conditions->onec_id}}"
-                                    data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product->conditions)}}"
-                                    data-package="{{$package}}"
-                                    class="product-qty-item"
-                            />
-                            <div class="input-group-btn">
-                                <button
-                                        onclick="incrementQuantity(this, {{$package}})"
-                                        class="sc-product-increment btn-quantity-product plus"
-                                        type="button"
-                                        id="button-plus"
-                                >
-                                    +
-                                </button>
-                            </div>
+            <div class="add_to_cart_wrap">
+                <hr class="product-card-item">
+                <div class="wrap">
+                    @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->conditions->sale_price === '')
+                        <span class="price">{{number_format((float)$product->conditions->price - (float)$product->conditions->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                    @elseif($product->conditions->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
+                        <span class="price"
+                              style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                        <span class="old_price"
+                              style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                    @else
+                        <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
+                    @endif
+                </div>
+                @include('frontend.v1.components.product_card_summary', ['product' => $product->conditions])
+                @php
+                    $package = isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1;
+                @endphp
+                <div class="qty-add-to-cart qty-add-to-cart-product-card">
+                    <div class="sc-product-qty qty-block">
+                        <div class="input-group-btn">
+                            <button
+                                onclick="decrementQuantity(this, {{$package}})"
+                                class="sc-product-decrement btn-quantity-product minus"
+                                type="button"
+                                id="button-minus"
+                            >
+                                -
+                            </button>
                         </div>
-                        <script>
-                            function incrementQuantity(button, packageSize) {
-                                var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                var newValue = parseInt(input.value) + packageSize;
-                                if (newValue <= parseInt(input.max)) {
-                                    input.value = newValue;
-                                }
-                            }
-
-                            function decrementQuantity(button, packageSize) {
-                                var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                var newValue = parseInt(input.value) - packageSize;
-                                if (newValue >= parseInt(input.min)) {
-                                    input.value = newValue;
-                                }
-                            }
-                        </script>
-                        <a href="#" data-id="{{$product->conditions->id}}" id="add-to-cart-{{$product->conditions->id}}"
-                           class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                        <input
+                            id="product-{{$product->conditions->id}}-qty"
+                            type="number"
+                            min="{{$package}}"
+                            max="{{$product->conditions->stock}}"
+                            placeholder="{{$package}}"
+                            value="{{$package}}"
+                            name="product-{{$product->conditions->id}}-qty"
+                            data-product-id="{{$product->conditions->onec_id}}"
+                            data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product->conditions)}}"
+                            data-package="{{$package}}"
+                            class="product-qty-item"
+                        />
+                        <div class="input-group-btn">
+                            <button
+                                onclick="incrementQuantity(this, {{$package}})"
+                                class="sc-product-increment btn-quantity-product plus"
+                                type="button"
+                                id="button-plus"
+                            >
+                                +
+                            </button>
+                        </div>
                     </div>
+                    <script>
+                        function incrementQuantity(button, packageSize) {
+                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                            var newValue = parseInt(input.value) + packageSize;
+                            if (newValue <= parseInt(input.max)) {
+                                input.value = newValue;
+                            }
+                        }
+
+                        function decrementQuantity(button, packageSize) {
+                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                            var newValue = parseInt(input.value) - packageSize;
+                            if (newValue >= parseInt(input.min)) {
+                                input.value = newValue;
+                            }
+                        }
+                    </script>
+                    <a href="#" data-id="{{$product->conditions->id}}" id="add-to-cart-{{$product->conditions->id}}"
+                       class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                 </div>
-            @else
-                <hr>
-                <div class="auth-text">
-                    {{__('theme.login-to-view-prices')}}
-                    <a href="javascript:;" class="auth" data-fancybox data-src="#loginModal">{{__('theme.login-to-view-prices-auth')}}</a>
-                    {{__('theme.login-to-view-prices-or')}}
-                    <a href="{{route('user.registration.index')}}">{{__('theme.login-to-view-prices-registration')}}</a>
-                </div>
-            @endif
+            </div>
             @if(!$product->conditions->packages->isEmpty())
                 <div class="packages-wrap">
                     <p>{{__('theme.package')}}:

@@ -9,7 +9,7 @@
                         <i class="icon-ok"></i>
                     </div>
                     <h1 class="gratitude__title">{{__('theme.order-successfully-placed')}}</h1>
-                    <p class="gratitude__">{{__('theme.check-email')}}</p>
+                        <p class="gratitude__">{{__('theme.check-email')}}</p>
                     <div class="gratitude__row">
                         <a class="gratitude__link" href="{{route('theme.home')}}">{{__('theme.on-homepage')}}</a>
                     </div>

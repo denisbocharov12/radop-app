@@ -5072,6 +5072,23 @@ header .section-header .row-main .header-menu .col-lg{
     margin-bottom: 12.5px;
 }
 
+.section-wishlist{
+    margin-bottom: 50px;
+    margin-top: 30px;
+
+}
+
+.section-wishlist .col-wishlist-heading{
+    margin-bottom: 20px;
+}
+
+.section-wishlist .col-wishlist-heading h1{
+    font-weight: bold;
+    font-size: 32px;
+    text-align: left;
+    color: #252525;
+}
+
 .section-category-blocks {
     margin-top: 30px;
 }

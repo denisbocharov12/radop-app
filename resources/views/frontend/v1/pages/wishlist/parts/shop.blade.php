@@ -1,4 +1,10 @@
-<section class="section-standart section-category pt-0">
+<section class="section-standart section-wishlist pt-0">
+    <div class="col-12 col-wishlist-heading">
+        <div class="heading">
+            <h1>{{__('theme.wishlist')}}</h1>
+        </div>
+        <hr />
+    </div>
     <div class="container">
         <div class="row row-category-list">
             @if(app('wishlist')->getContent()->count() < 1)
