@@ -12,7 +12,6 @@ use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use function morphos\Russian\pluralize;
 
 final class ThemeProductManager
 {
@@ -251,9 +250,9 @@ final class ThemeProductManager
         return $response;
     }
 
-    private function getProductCartCountPlural($sessionId): string
+    private function getProductCartCountPlural($sessionId)
     {
-        return pluralize(\Cart::session($sessionId)->getContent()->count(), __('theme.add_to_cart_product_item'));
+        return \Cart::session($sessionId)->getContent()->count();
     }
 
     public static function getProductTotalSum($product)
