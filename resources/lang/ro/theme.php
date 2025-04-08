@@ -135,7 +135,7 @@ return array (
     'password-recovery-enter-email' => 'Introduceți adresa de e-mail pentru a vă recupera parola.',
     'payment' => 'Plata',
     'payment-account' => 'Nr. comandă',
-    'payment-method' => 'Metoda de achitare',
+    'payment-method' => 'Modalități de plată',
     'pending' => 'Așteptare livrare',
     'percent-discount' => 'Rata dobânzii',
     'personal-information' => 'Date personale',

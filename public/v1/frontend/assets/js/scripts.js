@@ -580,6 +580,9 @@ $(document).ready(function () {
   $(".product-qty").select2({
 
   });
+  $(".select-sort-per-page").select2({
+      minimumResultsForSearch: -1
+  });
   $(".select-2-container").select2({
 
   });

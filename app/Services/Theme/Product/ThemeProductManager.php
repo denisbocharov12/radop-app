@@ -12,6 +12,7 @@ use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use function morphos\Russian\pluralize;
 
 final class ThemeProductManager
 {
@@ -97,7 +98,7 @@ final class ThemeProductManager
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
             $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
-            $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
+            $response['cart_count'] = $this->getProductCartCountPlural($sessionId);
             $response['msg']= __('theme.add_to_cart_product_item') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
             $response['product_quantity'] = \Cart::session($sessionId)->get($productId)->quantity;
 
@@ -202,7 +203,7 @@ final class ThemeProductManager
             $response['product_id'] = $productId;
             $response['product_title'] = $existedProduct->title;
             $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
-            $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
+            $response['cart_count'] = $this->getProductCartCountPlural($sessionId);
             $response['msg']= __('theme.order-product') . ' ' . $existedProduct->title . ' ' . __('theme.add-to-cart-with-success');
             $response['product_quantity'] = \Cart::session($sessionId)->get($productId)->quantity;
 
@@ -236,7 +237,7 @@ final class ThemeProductManager
 
         $response['status'] = true;
         $response['total'] = number_format(\Cart::session($sessionId)->getSubTotal(), 2, ',', '');
-        $response['cart_count'] = \Cart::session($sessionId)->getContent()->count();
+        $response['cart_count'] = $this->getProductCartCountPlural($sessionId);
         $response['msg']= __('theme.product_was_deleted_successfully');
 
         if ($request->ajax())
@@ -248,6 +249,11 @@ final class ThemeProductManager
         }
 
         return $response;
+    }
+
+    private function getProductCartCountPlural($sessionId): string
+    {
+        return pluralize(\Cart::session($sessionId)->getContent()->count(), __('theme.add_to_cart_product_item'));
     }
 
     public static function getProductTotalSum($product)

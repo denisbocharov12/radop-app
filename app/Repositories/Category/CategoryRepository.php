@@ -11,6 +11,7 @@ use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -19,7 +20,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class CategoryRepository
 {
-    private const COUNT_OF_PAGINATION = 12;
+    private const COUNT_OF_PAGINATION = 24;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
     {
@@ -37,7 +38,7 @@ class CategoryRepository
         ;
     }
 
-    public function getAllPaginatedWithFiltersToFrontEnd(Category $category): LengthAwarePaginator
+    public function getAllPaginatedWithFiltersToFrontEnd(Category $category, Request $request): LengthAwarePaginator
     {
         $query = $category->products();
 
@@ -69,7 +70,7 @@ class CategoryRepository
                 ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
             END ASC
             ")
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
         ;

@@ -24,7 +24,7 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd();
+        $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
         $allProducts = $this->productRepository->getAll();
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllToShop();

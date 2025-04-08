@@ -14,6 +14,7 @@ use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -28,7 +29,7 @@ final class ProductRepository
     {
     }
 
-    private const COUNT_OF_PAGINATION = 12;
+    private const COUNT_OF_PAGINATION = 24;
     private const COUNT_OF_PRODUCTS_FOR_FRONTEND = 10;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
@@ -49,7 +50,7 @@ final class ProductRepository
         ;
     }
 
-    public function getAllPaginatedWithFiltersToFrontEnd(): LengthAwarePaginator
+    public function getAllPaginatedWithFiltersToFrontEnd(Request $request): LengthAwarePaginator
     {
         $query = Product::query()->distinct();
 
@@ -81,7 +82,7 @@ final class ProductRepository
                 ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
             END ASC
             ")
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
         ;

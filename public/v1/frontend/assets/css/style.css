@@ -9146,6 +9146,79 @@ hr.product-card-item{
     background-color: #0052a6;
     color: #fff;
 }
+.sort-per-page .form-sort-per-page{
+
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default{
+    width: 100%!important;
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default .select2-selection--single{
+    height: auto;
+    border-radius: 5px;
+    border: 0;
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default .select2-selection--single .select2-selection__rendered{
+    padding: 5px 30px 5px 12px;
+    border-radius: 5px;
+    background-color: #0052a6;
+    color: #fff;
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    line-height: 1;
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default .select2-selection--single .select2-selection__arrow{
+    height: 14px;
+    width: 14px;
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default .select2-selection--single .select2-selection__arrow b{
+    position: absolute;
+    border: 0;
+    transform: rotate(90deg) translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    left: -15px;
+    top: calc(50% + 5px);
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b{
+    transform: rotate(-90deg);
+    top: calc(50% - 4px);
+    left: -10px;
+}
+.sort-per-page .form-sort-per-page .select2-container.select2-container--default .select2-selection--single .select2-selection__arrow b:before{
+    content: '\e81e';
+    font-family: "radop";
+    font-style: normal;
+    font-weight: normal;
+    speak: never;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    /* opacity: .8; */
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    /* font-size: 120%; */
+    -webkit-font-smoothing: antialiased;
+    color: #fff;
+    font-size: 12px;
+    margin: 0;
+}
+.select2-container .select2-dropdown{
+    border: 0;
+    border-radius: 0 0 5px 5px;
+}
+.select2-container.select2-container--default .select2-results__option--selected{
+
+}
+.select2-container.select2-container--default .select2-results__option--selectable{
+    padding: 3px 10px;
+    font-size: 14px;
+    margin: 0 0;
+}
 .product-list-mini-brand-wrap{
     margin: 12px 0 0;
 }

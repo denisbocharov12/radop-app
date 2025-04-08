@@ -27,6 +27,7 @@
         "spatie/laravel-query-builder": "^5.7",
         "spatie/laravel-translatable": "^6.6",
         "staudenmeir/laravel-adjacency-list": "*",
+        "wapmorgan/morphos": "^3.2",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {
