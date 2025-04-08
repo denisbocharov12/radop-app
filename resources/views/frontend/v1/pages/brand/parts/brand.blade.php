@@ -1,5 +1,5 @@
 <div class="sort-block">
-    @include('frontend.v1.components.sort-products')
+    @include('frontend.v1.pages.brand.parts.sort-products')
 </div>
 <section class="section-standart section-category pt-0">
     <div class="container">

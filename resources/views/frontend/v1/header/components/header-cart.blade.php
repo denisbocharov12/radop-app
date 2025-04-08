@@ -8,7 +8,7 @@
             }
         @endphp
         <div class="wrap-cart-block-info header-cart-widget">
-            <span class="count">{{\Cart::session($sessionId)->getContent()->count()}}</span> <span>{{__('theme.product')}}</span>
+            <span class="count">{{morphos\Russian\pluralize(\Cart::session($sessionId)->getContent()->count(), __('theme.add_to_cart_product_item'))}}</span>
             <span>/</span>
             <span class="summ">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}}</span> <span>{{__('theme.MDL')}}</span>
         </div>

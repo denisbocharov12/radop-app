@@ -31,7 +31,7 @@ final class ThemeBrandController extends Controller
             throw new BrandNotFoundValidationException();
         }
 
-        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand);
+        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request);
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();

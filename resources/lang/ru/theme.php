@@ -134,7 +134,7 @@ return array (
     'password-recovery-enter-email' => 'Введите свой email для восстановления пароля.',
     'payment' => 'Оплата',
     'payment-account' => 'Платежный счет',
-    'payment-method' => 'Выберите способ оплаты',
+    'payment-method' => 'Способы оплаты',
     'pending' => 'Ожидание доставки',
     'percent-discount' => 'Процентная ставка',
     'personal-information' => 'Персональная информация',

@@ -49,7 +49,7 @@ final class ThemeCategoryController extends Controller
             ]));
         }
 
-        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory);
+        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory, $request);
         $productsByCategory = $this->productRepository->getAllProductsByCategory($existedCategory);
 
         $brands = $this->brandRepository->getAllToFrontEnd();
@@ -62,7 +62,7 @@ final class ThemeCategoryController extends Controller
             'breadcrumbs',
             'query',
             'brands',
-            'attributes'
+            'attributes',
         ]));
     }
 }

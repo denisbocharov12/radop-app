@@ -7,7 +7,16 @@
     <a href="#" class="sort-option" data-sort="condition">{{__('theme.sort-new')}}</a>
     <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
 </div>
-
+<div class="sort-per-page">
+    <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.category.index', $existedCategory->onec_id, ['query' => request()->query()])}}" method="GET">
+        <select name="perPage" id="perPage" class="js2-select select-sort-per-page">
+            <option value="24" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 24 ? 'selected': ''}}>24</option>
+            <option value="48" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 48 ? 'selected': ''}}>48</option>
+            <option value="72" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 72 ? 'selected': ''}}>72</option>
+            <option value="96" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 96 ? 'selected': ''}}>96</option>
+        </select>
+    </form>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const sortOptions = document.querySelectorAll('.sort-option');
