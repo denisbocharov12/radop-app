@@ -84,70 +84,68 @@
                         @include('frontend.v1.components.product_card_summary')
                         <div class="product-item">
                             @php
-                                $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
+                            $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
                             @endphp
-                            @if(Auth::guard('user')->user() !== null)
-                                <div class="add_to_cart_wrap">
-                                    <div class="qty-add-to-cart">
-                                        <div class="sc-product-qty qty-block">
-                                            <div class="input-group-btn">
-                                                <button
-                                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                        class="sc-product-decrement btn-quantity-product minus"
-                                                        type="button"
-                                                        id="button-minus"
-                                                >
-                                                    -
-                                                </button>
-                                            </div>
-                                            <input
-                                                    id="product-{{$product->id}}-qty"
-                                                    type="number"
-                                                    min="1"
-                                                    max="{{$product->stock}}"
-                                                    placeholder="{{$package}}"
-                                                    value="1"
-                                                    name="product-{{$product->id}}-qty"
-                                                    data-product-id="{{$product->onec_id}}"
-                                                    data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
-                                                    data-package="1"
-                                                    class="product-qty-item"
-                                            />
-                                            <div class="input-group-btn">
-                                                <button
-                                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                        class="sc-product-increment btn-quantity-product plus"
-                                                        type="button"
-                                                        id="button-plus"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
+                            <div class="add_to_cart_wrap">
+                                <div class="qty-add-to-cart">
+                                    <div class="sc-product-qty qty-block">
+                                        <div class="input-group-btn">
+                                            <button
+                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                                class="sc-product-decrement btn-quantity-product minus"
+                                                type="button"
+                                                id="button-minus"
+                                            >
+                                                -
+                                            </button>
                                         </div>
-
-                                        <script>
-                                            function incrementQuantityProduct(button, packageSize) {
-                                                var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                                var newValue = parseInt(input.value) + packageSize;
-                                                if (newValue <= parseInt(input.max)) {
-                                                    input.value = newValue;
-                                                }
-                                            }
-
-                                            function decrementQuantityProduct(button, packageSize) {
-                                                var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                                var newValue = parseInt(input.value) - packageSize;
-                                                if (newValue >= parseInt(input.min)) {
-                                                    input.value = newValue;
-                                                }
-                                            }
-                                        </script>
-
-                                        <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}"
-                                           class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                                        <input
+                                            id="product-{{$product->id}}-qty"
+                                            type="number"
+                                            min="1"
+                                            max="{{$product->stock}}"
+                                            placeholder="{{$package}}"
+                                            value="1"
+                                            name="product-{{$product->id}}-qty"
+                                            data-product-id="{{$product->onec_id}}"
+                                            data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
+                                            data-package="1"
+                                            class="product-qty-item"
+                                        />
+                                        <div class="input-group-btn">
+                                            <button
+                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                                class="sc-product-increment btn-quantity-product plus"
+                                                type="button"
+                                                id="button-plus"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
+
+                                    <script>
+                                        function incrementQuantityProduct(button, packageSize) {
+                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                                            var newValue = parseInt(input.value) + packageSize;
+                                            if (newValue <= parseInt(input.max)) {
+                                                input.value = newValue;
+                                            }
+                                        }
+
+                                        function decrementQuantityProduct(button, packageSize) {
+                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
+                                            var newValue = parseInt(input.value) - packageSize;
+                                            if (newValue >= parseInt(input.min)) {
+                                                input.value = newValue;
+                                            }
+                                        }
+                                    </script>
+
+                                    <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}"
+                                       class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                         @php
                             $sessionId = config('shopping_cart.default_session_id');
@@ -156,24 +154,22 @@
                             }
                             $item = \Cart::session($sessionId)->get($product->id);
                         @endphp
-                        @if(Auth::guard('user')->user() !== null)
-                            <div class="product-card-summary-cart product-card-summary-in-cart product-card-summary-in-cart-page mt-2"
-                                 id="product-{{$product->id}}-cart-info">
-                                @if(\Cart::session($sessionId)->get($product->id) !== null)
-                                    <p>
-                                        @if ($item && $item->quantity > 0)
-                                            <span class="already-in-cart" style="display: flex; align-items: center;">
+                        <div class="product-card-summary-cart product-card-summary-in-cart product-card-summary-in-cart-page mt-2"
+                             id="product-{{$product->id}}-cart-info">
+                            @if(\Cart::session($sessionId)->get($product->id) !== null)
+                                <p>
+                                    @if ($item && $item->quantity > 0)
+                                        <span class="already-in-cart" style="display: flex; align-items: center;">
                                         <i class="icon-check"></i>
                                         {{__('theme.already-in-cart')}} - {{ $item?->quantity ?? 0 }} {{ __('theme.in_cart_unit') }}
                                     </span>
-                                        @else
-                                            <span class="summary-title"><i
-                                                        class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.in_cart_unit') }}</span>
-                                        @endif
-                                    </p>
-                                @endif
-                            </div>
-                        @endif
+                                    @else
+                                        <span class="summary-title"><i
+                                                class="icon-check"></i>{{ __('theme.in-cart') }} {{ $item?->quantity ?? 0 }} {{ __('theme.in_cart_unit') }}</span>
+                                    @endif
+                                </p>
+                            @endif
+                        </div>
                         <hr/>
                         <div class="tabs">
                             <button class="tab-button active"
@@ -205,7 +201,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{--UppSale--}}
                     </div>
                 </div>
             </div>
