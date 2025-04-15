@@ -38,6 +38,7 @@ final class Order extends Model
         'fio',
         'recommended_time',
         'user_type',
+        'filial_id',
     ];
 
     protected $casts = [
@@ -77,5 +78,13 @@ final class Order extends Model
     public function profile(): HasOne
     {
         return $this->hasOne(OrderProfile::class);
+    }
+
+    /**
+     * @return BelongsTo<Filial, Order>
+     */
+    public function filial(): BelongsTo
+    {
+        return $this->belongsTo(Filial::class);
     }
 }

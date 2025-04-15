@@ -5368,14 +5368,14 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title {
     font-weight: 500;
-    margin-bottom: 7.5px;
+    margin-bottom: 20px;
+    padding-bottom: 4px;
     font-size: 15px;
+    border-bottom: 1px solid #e2e7ec;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap {
-    padding: 12.5px;
-    border: 1px solid #ededed;
-    border-radius: 8px;
+
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap input.search {
@@ -5504,7 +5504,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .price-input {
     width: 100%;
     display: flex;
-    margin: 25px 0 10px;
+    margin: 30px 0 10px;
     align-items: center;
 }
 
@@ -5516,7 +5516,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: flex;
     width: 100%;
     height: 45px;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     justify-content: center;
 }
@@ -5539,12 +5539,11 @@ header .section-header .row-main .header-menu .col-lg{
     width: 100%;
     height: 100%;
     outline: none;
-    font-size: 19px;
+    font-size: 16px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid #e2e7ec;
-    border-radius: 5px;
-    padding: 7.5px 5px;
+    padding: 5px 5px;
     -moz-appearance: textfield;
 }
 
@@ -5588,24 +5587,35 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap input[type=range]::-webkit-slider-thumb {
-    height: 17px;
-    width: 17px;
-    border-radius: 50%;
-    background: #1F5785;
-    pointer-events: auto;
-    -webkit-appearance: none;
+    width: 10px;
+    height: 18px;
+    z-index: 2;
+    background-image: url(../images/slider-handle.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline: none;
+    background-size: contain;
+    background-position: center center!important;
+    border: 0;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    -webkit-appearance: none;
+    pointer-events: auto;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap input[type=range]::-moz-range-thumb {
-    height: 17px;
-    width: 17px;
-    border: none;
-    border-radius: 50%;
-    background: #1F5785;
-    pointer-events: auto;
-    -moz-appearance: none;
+    width: 30px;
+    height: 18px;
+    z-index: 2;
+    background-image: url(../images/slider-handle.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline: none;
+    background-size: contain;
+    background-position: center center!important;
+    border: 0;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    -webkit-appearance: none;
+    pointer-events: auto;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap.filter-wrap-overflow {
@@ -7294,16 +7304,59 @@ hr.product-card-item{
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .order-parameters__wrapper {
     width: 100%;
     background: #fff;
-    border: 1px solid #dcdcdc;
-    border-radius: 26px;
-    padding: 40px 65px 105px;
+    border-radius: 10px;
+    padding: 0px 20px 20px 20px;
+    border: 0;
 }
 
+.order-parameters__wrapper .wrap-heading{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.order-parameters__wrapper .wrap-heading .heading{
+    margin-right: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #252525;
+    line-height: 24px;
+}
+.order-parameters__wrapper .wrap-heading .order-status{
+    padding: 5px 12px;
+    background-color: #0052a6;
+    border-radius: 10px;
+    color: #f0eaff;
+    font-size: 14px;
+    height: 24px;
+}
+.order-parameters__wrapper .wrap-meta{
+
+}
+.order-parameters__wrapper .wrap-meta p{
+    margin-bottom: 10px;
+}
+.order-parameters__wrapper .wrap-meta p .meta-title{
+    font-weight: 500;
+}
+.order-parameters__wrapper .wrap-meta .order-date{
+
+}
+.order-parameters__wrapper .wrap-meta .order-date{
+
+}
+.order-parameters__wrapper .wrap-meta .order-address{
+
+}
+.order-parameters__wrapper .wrap-meta .order-phone{
+
+}
 .order-parameters__info {
     display: flex;
     justify-content: space-between;
@@ -7382,6 +7435,7 @@ hr.product-card-item{
 
 .order-parameters-table-responsive {
     overflow-x: auto;
+    margin-top: 20px;
 }
 
 .order-parameters-table {

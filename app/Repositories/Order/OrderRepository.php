@@ -37,9 +37,20 @@ class OrderRepository
     {
         return Order::where('order_number', $orderCode)->first();
     }
-//
-//    public function getAll() : Collection
-//    {
-//        return Order::query()->get();
-//    }
+
+    public function getByUserIdPaginated(int $userId): LengthAwarePaginator
+    {
+        $query = Order::query();
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+            ])
+            ->where('user_id', $userId)
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+        ;
+    }
 }

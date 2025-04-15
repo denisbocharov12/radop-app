@@ -333,4 +333,12 @@ return array (
     'search_meta_title' => 'Все',
     'search_results_title' => 'Результаты поиска по запросу: ":text"',
     'min_order_sum_warning_message' => 'Мин. сумма заказа:',
+    'user_not_permitted_to_view_order' => 'Отказано в доступе.',
+    'order_not_found' => 'Заказ не найден.',
+    'filial' => 'Филиал',
+    'order_show_qty' => 'Кол-во',
+    'order_for_payment' => 'К оплате',
+    'order_sum' => 'Сумма',
+    'order_payment_method' => 'Способ оплаты',
+    'filials' => 'Филиалы',
 );

@@ -38,7 +38,7 @@
                                             <span>{{__('theme.min')}}</span>
                                             <input type="number" class="input-min" name="filter[price][from]" @if(is_array($queryPrice) && isset($queryPriceFrom)) value="{{$queryPriceFrom}}" @else value="{{$queryPriceFrom}}"  @endif>
                                         </div>
-                                        <div class="separator">-</div>
+                                        <div class="separator"></div>
                                         <div class="field">
                                             <span>{{__('theme.max')}}</span>
                                             <input type="number" class="input-max" name="filter[price][to]"  @if(is_array($queryPrice) && isset($queryPriceTo)) value="{{$queryPriceTo}}" @else value="{{$queryPriceTo}}"  @endif" >
