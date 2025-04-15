@@ -4,6 +4,13 @@
             <i class="icon-your-order"></i>{{__('theme.my-orders')}}
         </a>
     </li>
+    @if(Auth::guard('user')->user()->type->key_name === 'iur')
+        <li class="my-account-selects__item">
+            <a class="my-account-selects__link" href="#">
+                <i class="icon-building"></i>{{__('theme.filials')}}
+            </a>
+        </li>
+    @endif
     <li class="my-account-selects__item">
         <a class="my-account-selects__link" href="{{route('theme.user.account.index')}}">
             <i class="icon-account"></i>{{__('theme.account')}}

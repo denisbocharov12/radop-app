@@ -86,4 +86,12 @@ final class User extends Authenticatable
     {
         return $this->belongsTo(City::class)->withTrashed();
     }
+
+    /**
+     * @return HasMany<Filial, User>
+     */
+    public function filials(): HasMany
+    {
+        return $this->hasMany(Filial::class);
+    }
 }

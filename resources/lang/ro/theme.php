@@ -333,4 +333,12 @@ return array (
     'search_meta_title' => 'Toate',
     'search_results_title' => 'Rezultatele căutării pentru: ":text"',
     'min_order_sum_warning_message' => 'Min. suma comanda:',
+    'user_not_permitted_to_view_order' => 'Accesul a fost refuzat.',
+    'order_not_found' => 'Comanda nu a fost găsită.',
+    'filial' => 'Filial',
+    'order_show_qty' => 'Cantitate',
+    'order_for_payment' => 'Pentru plată',
+    'order_sum' => 'Sumă',
+    'order_payment_method' => 'Metoda de plată',
+    'filials' => 'Filiale',
 );

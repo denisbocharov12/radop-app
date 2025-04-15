@@ -15,7 +15,7 @@
                                    class="btn btn-primary mt-3">{{__('theme.go-to-catalog')}}</a>
                             </div>
                         @else
-                            @foreach($user->orders as $order)
+                            @foreach($orders as $order)
                                 <li class="my-orders__item order">
                                     <div class="order__block">
                                         <p class="order__number">{{__('theme.order-number')}}{{$order->order_number}}</p>
@@ -27,7 +27,7 @@
                                         </p>
                                         <p class="order__date">
                                             {{__('theme.from')}}
-                                            <time datetime="2022-03-29 16:54"
+                                            <time
                                             >{{$order->created_at}}</time
                                             >
                                         </p>
@@ -41,12 +41,6 @@
                                                     @endif
                                                 @endforeach
                                             </p>
-                                            {{--                                        <p class="order__delivery">--}}
-                                            {{--                                            <i class="icon-time"></i>Ожидается:22 дня и 4 часа--}}
-                                            {{--                                        </p>--}}
-                                            {{--                                        <a class="order__link" href="#">--}}
-                                            {{--                                            Отслеживать заказ--}}
-                                            {{--                                        </a>--}}
                                         </div>
                                         <div class="order__box"  style="max-width: 100%">
                                             <button class="order__button" type="button">
@@ -66,6 +60,7 @@
                                     </div>
                                 </li>
                             @endforeach
+                            {{$orders->links()}}
                         @endif
                     </ul>
                 </div>
