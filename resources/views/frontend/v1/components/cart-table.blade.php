@@ -84,7 +84,7 @@
                     <div class="theme-cart-title-price-wrap">
                         <div class="price-wrap">
                             @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $item->associatedModel->sale_price === '')
-                                <span class="price">{{number_format((float)$item->associatedModel->price * (float)$item->associatedModel->price_koef - (float)$item->associatedModel->price * (float)$item->associatedModel->price_koef * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
+                                <span class="price">{{number_format((float)$item->associatedModel->price - (float)$item->associatedModel->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
                             @elseif($item->associatedModel->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
                                 <span class="price" style="color: #ee0000">{{ number_format($item->associatedModel->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
                                 <span class="old_price" style="color: #848484">{{ number_format($item->associatedModel->price * (float)$item->associatedModel->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
