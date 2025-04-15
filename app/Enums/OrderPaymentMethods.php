@@ -22,10 +22,10 @@ final class OrderPaymentMethods
     public function getAll(): array
     {
         return [
+            'transfer' => __('theme.transfer'),
             'cash' => __('theme.cash'),
             'card' => __('theme.card'),
 //            'card_delivery' => __('theme.card_delivery'),
-            //'transfer' => __('theme.transfer'),
         ];
     }
 }

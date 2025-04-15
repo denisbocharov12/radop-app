@@ -13,7 +13,7 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="theme-wg-wrap">
-                            <p class="theme-widget-title">{{__('theme.by-price')}}</p>
+                            <p class="theme-widget-title theme-widget-title-range">{{__('theme.by-price')}}</p>
                             <div class="filter-widget-wrap">
                                 @php
                                     $queryPrice = $query['price'] ?? null;

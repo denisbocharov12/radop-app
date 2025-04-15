@@ -5371,6 +5371,9 @@ header .section-header .row-main .header-menu .col-lg{
     margin-bottom: 20px;
     padding-bottom: 4px;
     font-size: 15px;
+}
+
+.section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title.theme-widget-title-range{
     border-bottom: 1px solid #e2e7ec;
 }
 

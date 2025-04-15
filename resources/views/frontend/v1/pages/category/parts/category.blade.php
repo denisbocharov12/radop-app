@@ -12,7 +12,7 @@
                         <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET" id="filterForm">
                             <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
                             <div class="theme-wg-wrap">
-                                <p class="theme-widget-title">{{__('theme.by-price')}}</p>
+                                <p class="theme-widget-title theme-widget-title-range">{{__('theme.by-price')}}</p>
                                 <div class="filter-widget-wrap">
                                     @php
                                         $queryPrice = $query['price'] ?? null;
