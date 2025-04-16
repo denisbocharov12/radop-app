@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Frontend\v1\Filial;
+namespace App\Http\Controllers\v1\Filial;
 
 use App\Exceptions\Favorite\FavoriteNotFoundException;
 use App\Exceptions\Favorite\FavoriteNotFoundValidationException;
 use App\Exceptions\Filial\FilialNotFoundException;
 use App\Exceptions\Filial\FilialNotFoundValidationException;
-use App\Exceptions\Filial\FilialNotPermittedToDeleteException;
 use App\Exceptions\Filial\FilialNotPermittedToStoreException;
 use App\Exceptions\Filial\FilialNotPermittedToStoreValidationException;
+use App\Exceptions\NotAjaxRequestException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Exceptions\User\UserNotFoundValidationException;
 use App\Http\Controllers\Controller;
@@ -19,9 +19,8 @@ use App\Models\Filial;
 use App\Repositories\Filial\FilialRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Filial\FilialManager;
-use Illuminate\Support\Facades\Auth;
 
-class ThemeFilialController extends Controller
+final class FilialController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
@@ -33,13 +32,12 @@ class ThemeFilialController extends Controller
 
     public function index()
     {
-        $user = Auth::guard('user')->user();
+        $users = $this->userRepository->getAllIur();
+        $filials = $this->filialRepository->getAllPaginatedWithFilters();
 
-        $filials = $this->filialRepository->getAllByUserId($user->id);
-
-        return view('frontend.v1.pages.filial.index', compact([
+        return view('filial.index', compact([
             'filials',
-            'user'
+            'users'
         ]));
     }
 
@@ -50,7 +48,7 @@ class ThemeFilialController extends Controller
         try {
             $this->filialManager->store($filialData);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
+            return redirect()->route('filial.index');
 
         } catch (UserNotFoundException) {
             throw new UserNotFoundValidationException();
@@ -66,7 +64,7 @@ class ThemeFilialController extends Controller
         try {
             $this->filialManager->update($filial, $filialData);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
+            return redirect()->route('filial.index');
 
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
@@ -76,26 +74,23 @@ class ThemeFilialController extends Controller
 
     public function edit(Filial $filial)
     {
-        return view('frontend.v1.pages.filial.edit', compact([
+        return view('filial.edit', compact([
             'filial',
         ]));
     }
 
-    public function create()
+    public function destroy(FilialDeleteRequest $request)
     {
-        return view('frontend.v1.pages.filial.create',);
-    }
-
-    public function destroy(Filial $filial)
-    {
-        $user = Auth::guard('user')->user();
+        if (!$request->ajax()) {
+            throw new NotAjaxRequestException();
+        }
 
         try {
-            $this->filialManager->delete($filial);
+            $this->filialManager->delete($request);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
-        } catch (FilialNotPermittedToDeleteException) {
-            return redirect()->back()->withErrors(['user_not_permitted_to_delete_filial' => __('theme.user_not_permitted_to_delete_filial')]);
+            return response()->json(['id' => $request->filial_id]);
+        } catch (FilialNotFoundException $e) {
+            throw new FilialNotFoundValidationException();
         }
     }
 }

@@ -341,4 +341,7 @@ return array (
     'order_sum' => 'Сумма',
     'order_payment_method' => 'Способ оплаты',
     'filials' => 'Филиалы',
+    'no_filials' => 'На данный момент у вас нет филиалов',
+    'filial_store' => 'Добавить филиал',
+    'user_not_permitted_to_delete_filial' => ''
 );

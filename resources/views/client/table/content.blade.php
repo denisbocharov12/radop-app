@@ -19,7 +19,7 @@
                 <div class="nk-tb-col">
                     <div class="user-card">
                         <div class="user-name">
-                            <span class="tb-lead">{{$user->profile->first_name}} {{$user->profile->last_name}}</span>
+                            <span class="tb-lead">@if($user->type->key_name === 'iur') {{$user->profile->organization_name}} @else {{$user->profile->first_name}} {{$user->profile->last_name}} @endif</span>
                         </div>
                     </div>
                 </div>

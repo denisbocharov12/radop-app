@@ -38,6 +38,11 @@ class OrderRepository
         return Order::where('order_number', $orderCode)->first();
     }
 
+    public function getAllByFilialId(int $filialId): ?Collection
+    {
+        return Order::where('filial_id', $filialId)->get();
+    }
+
     public function getByUserIdPaginated(int $userId): LengthAwarePaginator
     {
         $query = Order::query();

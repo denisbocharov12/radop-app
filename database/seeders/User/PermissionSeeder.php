@@ -21,7 +21,12 @@ class PermissionSeeder extends Seeder
         'client.show',
         'manager.index',
         'manager.edit',
-        'manager.update'
+        'manager.update',
+        'filial.index',
+        'filial.update',
+        'filial.store',
+        'filial.edit',
+        'filial.delete',
     ];
 
     private array $userPermittedRoutes = [
@@ -32,7 +37,13 @@ class PermissionSeeder extends Seeder
         'theme.user.orders.view.invoice',
         'theme.user.orders.download.invoice',
         'theme.user.account.password.update',
-        'theme.user.coupon.index'
+        'theme.user.coupon.index',
+        'theme.user.filial.index',
+        'theme.user.filial.edit',
+        'theme.user.filial.store',
+        'theme.user.filial.update',
+        'theme.user.filial.delete',
+        'theme.user.filial.create',
     ];
 
     public function run(): void

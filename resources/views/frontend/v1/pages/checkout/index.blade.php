@@ -99,7 +99,7 @@
                                             >
                                                 <option data-delivery-charge="{{0}}" data-required-sum="{{(float)config('app.min_delivery_sum')}}" value="0" selected>{{__('theme.select-city')}}</option>
                                                 @foreach($cities as $city)
-                                                    <option data-delivery-charge="{{(float)$city->delivery_sum}}" data-required-sum="{{(float)$city->required_sum}}" value="{{$city->id}}">{{$city->name}}</option>
+                                                    <option data-delivery-charge="{{(float)$city->delivery_sum}}" data-required-sum="{{(float)$city->required_sum}}" @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->city !== null) {{auth()->guard('user')->user()->city_id === $city->id ? 'selected' : ''}} @endif value="{{$city->id}}">{{$city->name}}</option>
                                                 @endforeach
                                             </select>
                                             @error('city_id')
