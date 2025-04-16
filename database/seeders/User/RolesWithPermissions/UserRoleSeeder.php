@@ -29,7 +29,6 @@ class UserRoleSeeder extends AbstractRoleSeeder
             'theme.user.filial.edit',
             'theme.user.filial.store',
             'theme.user.filial.update',
-            'theme.user.filial.delete',
             'theme.user.filial.create',
         ];
     }

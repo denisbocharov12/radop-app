@@ -113,20 +113,38 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="address">{{__('theme.full-address')}}</label>
-                                            <input
-                                                type="text"
-                                                name="address"
-                                                class="form-control-ch-input @error('address') input-error-validation @enderror"
-                                                required
-                                                id="address"
-                                                value="{{$user?->profile?->address}}"
-                                            />
-                                            @error('address')
-                                            <span class="invalid-feedback d-block" role="alert">
+                                            @if(auth()->guard('user')->user() !== null && auth()->guard('user')->user()->type->key_name === 'iur' && auth()->guard('user')->user()->filials->count() > 0)
+                                                <label for="filial_id">{{__('theme.select_filial')}}</label>
+                                                <select
+                                                    name="filial_id"
+                                                    id="filial_id"
+                                                    class="select-2-container @error('filial_id') input-error-validation @enderror"
+                                                >
+                                                    @foreach(auth()->guard('user')->user()->filials as $filial)
+                                                        <option value="{{$filial->id}}">{{$filial->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('filial_id')
+                                                <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                            @enderror
+                                                @enderror
+                                            @else
+                                                <label for="address">{{__('theme.full-address')}}</label>
+                                                <input
+                                                    type="text"
+                                                    name="address"
+                                                    class="form-control-ch-input @error('address') input-error-validation @enderror"
+                                                    required
+                                                    id="address"
+                                                    value="{{$user?->profile?->address}}"
+                                                />
+                                                @error('address')
+                                                <span class="invalid-feedback d-block" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-checkout">

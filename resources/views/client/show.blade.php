@@ -29,6 +29,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" data-bs-toggle="tab" href="#info"><em class="icon ni ni-info"></em><span>Общая информация</span></a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#filial"><em class="icon ni ni-building-fill"></em><span>Филиалы</span></a>
+                                        </li>
                                         <li class="nav-item nav-item-trigger d-xxl-none">
                                             <a href="#" class="toggle btn btn-icon btn-trigger" data-target="userAside"><em class="icon ni ni-user-list-fill"></em></a>
                                         </li>
@@ -131,8 +134,8 @@
 
                                             </div><!-- .card-inner -->
                                         </div>
-                                        <div class="tab-pane" id="transactions">
-
+                                        <div class="tab-pane" id="filial">
+                                            @include('client.components.filial')
                                         </div>
                                         <div class="tab-pane" id="activity">
 
@@ -161,43 +164,48 @@
     </div>
 @endsection
 
-{{--@section('scripts')--}}
-{{--    <script>--}}
-{{--        function askToDeleteSubject(subject_id, token, path, subjectNumber)--}}
-{{--        {--}}
-{{--            Swal.fire({--}}
-{{--                title: 'Вы хотите удалить объект - #'+subjectNumber+' ?',--}}
-{{--                showDenyButton: true,--}}
-{{--                showCancelButton: true,--}}
-{{--                cancelButtonText: 'Отмена',--}}
-{{--                confirmButtonText: 'Удалить',--}}
-{{--                denyButtonText: `Не удалять`,--}}
-{{--            }).then((result) => {--}}
-{{--                if (result.isConfirmed) {--}}
-{{--                    $.ajax({--}}
-{{--                        url: path,--}}
-{{--                        type: "DELETE",--}}
-{{--                        dataType:"JSON",--}}
-{{--                        data:{--}}
-{{--                            subject_id: subject_id,--}}
-{{--                            _token: token--}}
-{{--                        }--}}
-{{--                    });--}}
-{{--                    Swal.fire('Объект '+subjectNumber+' успешно удален', '', 'success');--}}
-{{--                    $('#subject-id-'+subject_id).fadeOut(1000);--}}
-{{--                } else if (result.isDenied) {--}}
-{{--                    Swal.fire('Вы отменили удаление объекта '+subjectNumber, '', 'info')--}}
-{{--                }--}}
-{{--            })--}}
-{{--        }--}}
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.js-select2').select2({
+                dropdownParent: $(".modal"),
+                allowClear: true
+            });
+        });
 
-{{--        $(document).on('click','.subject-delete',function (e) {--}}
-{{--            e.preventDefault();--}}
-{{--            var subject_id = $(this).data('id');--}}
-{{--            var subjectNumber = $(this).data('number');--}}
-{{--            var token = "{{csrf_token()}}";--}}
-{{--            var path = "{{route('subject.delete')}}";--}}
-{{--            askToDeleteSubject(subject_id, token, path, subjectNumber)--}}
-{{--        });--}}
-{{--    </script>--}}
-{{--@endsection--}}
+        function askToDeleteModel(model_id, token, path) {
+            Swal.fire({
+                title: 'Вы хотите удалить филиал - #' + model_id + ' ?',
+                showDenyButton: true,
+                showCancelButton: true,
+                cancelButtonText: 'Отмена',
+                confirmButtonText: 'Удалить',
+                denyButtonText: `Не удалять`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: path,
+                        type: "DELETE",
+                        dataType: "JSON",
+                        data: {
+                            filial_id: model_id,
+                            _token: token
+                        }
+                    });
+                    Swal.fire('Филиал ' + model_id + ' успешно удален', '', 'success');
+                    $('#model-id-' + model_id).fadeOut(1000);
+                } else if (result.isDenied) {
+                    Swal.fire('Вы отменили удаление филиала ' + model_id, '', 'info')
+                }
+            })
+        }
+
+        $(document).on('click', '.model-delete', function (e) {
+            e.preventDefault();
+            var model_id = $(this).data('id');
+            var token = "{{csrf_token()}}";
+            var path = "{{route('filial.delete')}}";
+            askToDeleteModel(model_id, token, path)
+        });
+    </script>
+@endsection

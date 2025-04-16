@@ -48,12 +48,11 @@ final class ThemeOrderManager
 
         if (!$user->can('view', $order))
             throw new UserIsNotCustomerException();
-
-        $pdf = PDF::loadView('frontend.v1.mail.order', ([
+        $pdf = PDF::loadView('frontend.v1.mail.download_order', ([
             'order' => $order,
             'products' => $order->products,
         ]));
 
-        return $pdf->download();
+        return $pdf->download($order->order_number.'.pdf');
     }
 }

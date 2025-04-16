@@ -13,6 +13,7 @@ use App\Exceptions\Checkout\MinOrderSumException;
 use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\City\ThemeCityErrorRequiredSumException;
+use App\Exceptions\Filial\FilialNotFoundException;
 use App\Exceptions\Order\ThemeOrderMakeException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Models\DiscountPeriod;
@@ -22,6 +23,7 @@ use App\Models\OrderProfile;
 use App\Models\User;
 use App\Repositories\City\CityRepository;
 use App\Repositories\DiscountPeriod\DiscountPeriodRepository;
+use App\Repositories\Filial\FilialRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserTypeRepository;
@@ -34,13 +36,11 @@ final class ThemeCheckoutManager
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly OrderRepository $orderRepository,
-        private readonly UserTypeRepository $userTypeRepository,
         private readonly OrderPaymentStatus $orderPaymentStatus,
         private readonly OrderStatus $orderStatus,
         private readonly OrderPaymentMethods $orderPaymentMethods,
         private readonly CityRepository $cityRepository,
-        private readonly DiscountPeriodRepository $discountPeriodRepository,
+        private readonly FilialRepository $filialRepository,
     )
     {
     }
@@ -48,6 +48,7 @@ final class ThemeCheckoutManager
     public function store(ThemeOrderData $orderData, ?Authenticatable $user): Order
     {
         $sessionId = $this->getSessionId();
+        $orderAddress = $orderData->address;
 
         $authUser = null;
         $managerId = null;
@@ -64,6 +65,12 @@ final class ThemeCheckoutManager
         if (!array_key_exists($orderData->payment_method, $this->orderPaymentMethods->getAll()))
         {
             throw new OrderErrorException();
+        }
+
+        $existedFilial = $this->filialRepository->getById($orderData->filialId);
+
+        if ($existedFilial === null) {
+            throw new FilialNotFoundException();
         }
 
         $existedCity = $this->cityRepository->getById($orderData->cityId);
@@ -110,6 +117,10 @@ final class ThemeCheckoutManager
 
 //        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
 
+        if ($existedFilial !== null) {
+            $orderAddress = $existedFilial->address;
+        }
+
         $order = Order::create([
             'fio' => $orderData->fio,
             'order_number' => $this->getLatestOrderNumber($userType),
@@ -117,7 +128,7 @@ final class ThemeCheckoutManager
             'last_name' => $orderData->fio,
             'email' => $orderData->email,
             'phone' => $orderData->phone,
-            'address' => $orderData->address,
+            'address' => $orderAddress,
             'city' => $orderData->cityId,
             'note' => $orderData->note,
             'payment_method' => $orderData->payment_method,
@@ -131,7 +142,8 @@ final class ThemeCheckoutManager
             'subtotal' => $this->getCartSubtotalValue(),
             'total' => $this->getCartSubtotalValue() + $deliverySum,
             'discount' => 0,
-            'recommended_time' => $recommendedTime
+            'recommended_time' => $recommendedTime,
+            'filial_id' => $orderData->filialId,
         ]);
 
         $orderProfile = OrderProfile::create([
