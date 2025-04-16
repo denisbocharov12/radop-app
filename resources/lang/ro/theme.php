@@ -341,4 +341,6 @@ return array (
     'order_sum' => 'Sumă',
     'order_payment_method' => 'Metoda de plată',
     'filials' => 'Filiale',
+    'no_filials' => 'În prezent nu aveți filiale.',
+    'filial_store' => 'Adăugați o filial',
 );

@@ -23,9 +23,7 @@ final class OrderUpdatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Starea comenzii dvs. nr. №'. $this->order->order_number .' a fost schimbat la ' . __(
-                'theme.' . $this->order->status, [], 'ro'
-            ),
+            subject: 'Comanda dvs. nr. №'.$this->order->order_number.' a fost anulată',
         );
     }
 

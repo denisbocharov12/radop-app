@@ -179,6 +179,19 @@
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-building-fill"></em></span>
+                            <span class="nk-menu-text">Филиалы</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('filial.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все филиалы</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-tile-thumb-fill"></em></span>
                             <span class="nk-menu-text">Менеджеры</span>
                         </a>

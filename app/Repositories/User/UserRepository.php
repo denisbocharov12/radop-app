@@ -122,6 +122,12 @@ final class UserRepository
         return User::query()->get();
     }
 
+    public function getAllIur() : Collection
+    {
+        return User::query()->select('users.*')->join('user_types', 'users.type_id', '=', 'user_types.id')
+            ->where('status', true)->where('user_types.key_name', 'iur')->get();
+    }
+
     public function getAllUsersWithoutManager() : Collection
     {
         return User::query()->role('user')->where('manager_id', null)->get();

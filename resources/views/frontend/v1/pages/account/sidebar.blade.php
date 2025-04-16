@@ -6,7 +6,7 @@
     </li>
     @if(Auth::guard('user')->user()->type->key_name === 'iur')
         <li class="my-account-selects__item">
-            <a class="my-account-selects__link" href="#">
+            <a class="my-account-selects__link" href="{{route('theme.user.filial.index')}}">
                 <i class="icon-building"></i>{{__('theme.filials')}}
             </a>
         </li>

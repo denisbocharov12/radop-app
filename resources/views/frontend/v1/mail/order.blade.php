@@ -1,64 +1,106 @@
-<body style="max-width: 700px; margin: auto; padding: 20px; border: none; color: #000; text-align: center;">
-<a href="{{route('theme.home')}}" class="link-logo">
-    <img style="width: 100px; display: flex; align-items: center;justify-content: center" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" alt="Radop logo">
-</a>
-<div class="header" style="padding: 10px 0;">
-    <h2>Bună ziua, {{ $order?->fio }}</h2>
-    <p>Vă mulțumim pentru cumpărătura făcută în magazinul nostru! Comanda dvs. nr. {{ $order->order_number }} a fost plasată cu succes și trimisă spre procesare.</p>
-    <p>Managerul nostru vă va contacta în cel mai scurt timp pentru a clarifica detaliile comenzii și ale livrării.</p>
-    <p>Dacă aveți întrebări, puteți să ne contactați la numărul de telefon <a href="tel:37379782112">+373 79 78 21 12</a> sau la adresa de email <a href="mailto:support@radop.md">support@radop.md</a></p>
-</div>
-<div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
-<div class="order-details" style="padding: 10px 0;">
-    <p style="margin: 5px 0;"><strong>Număr comandă:</strong> {{ $order->order_number }}</p>
-    <p style="margin: 5px 0;"><strong>Data comenzii:</strong> {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
-    <p style="margin: 5px 0;"><strong>Metoda de plată:</strong>
-        @if($order->payment_method === 'cash')
-            Plată cu numerar
-        @elseif($order->payment_method === 'card')
-            Plată fără numerar
-        @endif
-    </p>
-    <p style="margin: 5px 0;"><strong>Metoda de livrare:</strong> Livrare catre client din suma minima de comanda.</p>
-    <p style="margin: 5px 0;"><strong>Adresa de livrare:</strong> {{ $order->address }}</p>
-    <p style="margin: 5px 0;"><strong>Datele de contact:</strong> {{ $order->phone }}</p>
-<div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
-<div class="order-content" style="padding: 10px 0;">
-    <h3>Conținutul comenzii:</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-        <tr>
-            <th style="padding: 8px; text-align: left; font-weight: bold;">Cod</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold;">Denumire produsului</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold;">Cantitate</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold; min-width: 80px">Preț</th>
-            <th style="padding: 8px; text-align: left; font-weight: bold; min-width: 80px">Sumă</th>
-        </tr>
-        @foreach($products as $product)
-            <tr>
-                <td style="padding: 8px; text-align: left;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
-                <td style="padding: 8px; text-align: left;">{{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}</td>
-                <td style="padding: 8px; text-align: left;">{{ $product->quantity }} buc.</td>
-                <td style="padding: 8px; text-align: left;">{{ $product->price}} lei</td>
-                <td style="padding: 8px; text-align: left;">{{ $product->price * $product->quantity}} lei</td>
-            </tr>
-        @endforeach
-    </table>
-    <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
-    <div class="total" style="overflow: hidden;">
-        <p style="float: left;">Total de plată:</p>
-        <p style="float: right;">{{ $order->total }} lei</p>
-    </div>
-    <div class="separator" style="border-bottom: 2px solid #000; margin: 10px 0;"></div>
-    <div class="additional-information">
-        <h3>Informații suplimentare:</h3>
-        <p><a href="{{route('theme.user.orders.index')}}">Puteți urmări starea comenzii în contul personal.</a></p>
-        <p>Lucrăm constant la îmbunătățirea site-ului nostru. Dacă aveți observații sau sugestii, vă rugăm să ne scrieți la <a href="mailto:support@radop.md">support@radop.md</a> sau să ne sunați la numărul <a href="tel:37379782112">+373 79 78 21 12</a></p>
-        <p>Vă mulțumim că ne-ați ales! Apreciem încrederea acordată.</p>
-        <p>Cu respect,</p>
-        <p>Echipa www.radop.md</p>
-        <p><a href="mailto:support@radop.md">support@radop.md</a></p>
-        <p><a href="tel:37322782112">022 78 21 12</a></p>
-        <p><a href="tel:37379782112">mob. +373 79 78 21 12</a></p>
-    </div>
-</div>
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color:#ffffff; overflow-x: scroll;">
+<table align="center" width="700" style="border-collapse: collapse; margin: 50px auto" >
+    <tbody style="display: inline-grid">
+    <!-- Success Message -->
+    <tr style="margin-bottom: 10px; border: 2px solid #cccccc;  border-radius: 4px;">
+        <td width="70%" style="margin-left: 40px; width: 100%; padding: 20px 50px;">
+            <p style="background-color: #029dd3; color: white;  padding: 15px 20px; text-align: center; border-radius: 4px; font-size: 20px; margin-bottom: 10px">Comandă a fost înregistrată cu succes!</p>
+            <p style="text-align: center; font-size: 14px; margin-top: 10px;">Stimate client, mulțumim pentru comanda plasată pe site-ul nostru.<br>
+                În curând veți primi un apel de la operatorul nostru pentru a clarifica<br>
+                detaliile referitor la comandă.</p>
+        </td>
+        <td style="padding: 20px 40px 20px 0; vertical-align: middle; width: 100%" width="30%">
+            <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" />
+        </td>
+    </tr>
+
+    <!-- Order Information -->
+    <tr  style="margin-bottom: 10px; border: 2px solid #cccccc;  border-radius: 4px;">
+        <td width="50%" style="padding: 10px 20px; font-size: 13px; vertical-align: top; border-right: 2px solid #ccc;">
+            <p><span>Comandă Nr:</span> <span style="color: red;">{{ $order->order_number }}</span></p>
+            <p><span>Data:</span> <span style="color: red;">{{ \Carbon\Carbon::now()->format('d-m-Y , H:i') }}</span></p>
+            <p><span>Nume:</span>
+                <span style="color: red;">
+                    @if($order->user !== null && $order->user->type->key_name === 'iur')
+                        {{ $order->user->profile?->organization_name }}
+                    @else
+                        {{ $order?->fio }}
+                    @endif
+                </span>
+            </p>
+            <p><span>Date de contact:</span> <span style="color: red;">{{ $order->phone }}</span></p>
+        </td>
+        <td width="50%" style="padding: 10px 20px; font-size: 13px; vertical-align: top;">
+            <p><span>Achitare:</span>
+                <span style="color: red;">
+                    @if($order->payment_method === 'cash')
+                        Numerar  la primirea mărfii
+                    @elseif($order->payment_method === 'transfer')
+                        Transfer bancar
+                    @elseif($order->payment_method === 'card')
+                        Cu cardul bancar la primirea mărfii
+                    @endif
+                </span>
+            </p>
+            <p><span>Modalitate de primire a comenzii:</span> <span style="color: red;">Livrare pe adresa</span></p>
+            <p style="color: red;">{{$order->address}}</p>
+        </td>
+    </tr>
+
+    <!-- Product Table -->
+    <tr>
+        <td colspan="2">
+            <table width="700" style="border-collapse: collapse; font-size: 13px; ">
+                <tbody style="width: 100%">
+                <tr style="text-align: center; ">
+                    <td style="width: 40px; padding: 5px 10px; border: 1px solid #ccc;">№</td>
+                    <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">Cod</td>
+                    <td style="width: 400px; padding: 5px 10px; border: 1px solid #ccc;">Denumire produsului</td>
+                    <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">Cantitate, buc.</td>
+                    <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">Preț incl. TVA</td>
+                    <td style="width: 150px; padding: 5px 10px; border: 1px solid #ccc;">Suma totală, ML</td>
+                </tr>
+                @php
+                $i = 1;
+                @endphp
+                @foreach($products as $product)
+                    <tr style="text-align: center; ">
+                        <td style="width: 40px; padding: 5px 10px;  border: 1px solid #ccc; color: red;">{{$i}}</td>
+                        <td style="width: 80px; padding: 5px 10px;  border: 1px solid #ccc; color: red;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
+                        <td style="width: 400px;  padding: 5px 10px; border: 1px solid #ccc; color: red; text-wrap: normal">
+                            {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
+                        </td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; color: red;">{{ $product->quantity }}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->price }}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->quantity * (float)$product->price}}</td>
+                    </tr>
+                    @php
+                    $i++;
+                    @endphp
+                @endforeach
+                <tr>
+                    <td colspan="5" style="padding: 10px 20px; text-align: right; font-size: 14px; border: 1px solid #ccc;">
+                        <strong>Total:</strong>
+                    </td>
+                    <td colspan="1" style="padding: 10px 20px; text-align: right; font-size: 14px; border: 1px solid #ccc;">
+                        <span style="color: red;">{{ $order->total }}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+        <td colspan="2" width="700px" style="padding: 10px 20px; font-size: 14px; color: #555; text-align: center;">
+            Puteți urmări starea comenzii în cabinetul personal.<br>
+            Pentru orice informații sau modificări ale comenzii, contactați
+            <a href="tel:022781212" style="color: #0056b3;">022 78 12 12</a>,
+            <a href="tel:+37378781212" style="color: #0056b3;">+373 78 78 12 12</a><br>
+            Program de lucru: Luni – Vineri: 08:00 – 17:00
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>

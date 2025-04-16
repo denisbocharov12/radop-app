@@ -84,8 +84,7 @@ final class OrderManager
             ]);
         }
 
-        if ($orderData->status === $this->orderStatus->getCanceledStatus() && $orderStatus !== $orderData->status
-            || $orderData->status === $this->orderStatus->getDeliveredStatus() && $orderStatus !== $orderData->status){
+        if ($orderData->status === $this->orderStatus->getCanceledStatus() && $orderStatus !== $orderData->status){
             event(new OrderStatusUpdatedSendEmailEvent($order));
         }
     }
