@@ -25,7 +25,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="last_name">Фамилия</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Фамилия">
+                                            <input type="text" class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Фамилия">
                                             @error('last_name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
