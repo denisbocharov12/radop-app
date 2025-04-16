@@ -19,7 +19,7 @@ class FilialRepository
         return QueryBuilder::for($query)
             ->allowedFilters([
             ])
-            ->defaultSort('id')
+            ->defaultSort('-id')
             ->allowedSorts([
                 'id',
             ])
@@ -43,7 +43,7 @@ class FilialRepository
         return QueryBuilder::for($query)
             ->allowedFilters([
             ])
-            ->defaultSort('id')
+            ->defaultSort('-id')
             ->allowedSorts([
                 'id',
             ])

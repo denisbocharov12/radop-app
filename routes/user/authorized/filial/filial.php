@@ -26,8 +26,4 @@ Route::prefix('filials')->name('filial.')->group(function () {
         ->post('{filial}/update', [ThemeFilialController::class, 'update'])
         ->name('update')
     ;
-    Route::middleware(['app.user-permissions'])
-        ->delete('{filial}/destroy', [ThemeFilialController::class, 'destroy'])
-        ->name('delete')
-    ;
 });

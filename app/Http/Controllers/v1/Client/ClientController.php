@@ -18,6 +18,7 @@ use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\User;
 use App\Repositories\City\CityRepository;
+use App\Repositories\Filial\FilialRepository;
 use App\Repositories\User\UserRepository;
 use App\Exceptions\NotAjaxRequestException;
 use App\Services\Client\ClientManager;
@@ -37,6 +38,7 @@ class ClientController extends Controller
         ClientManager    $clientManager,
         ClientUpdateDataMapper $clientUpdateDataMapper,
         private readonly CityRepository $cityRepository,
+        private readonly FilialRepository $filialRepository,
     )
     {
         $this->userRepository = $userRepository;
@@ -116,11 +118,13 @@ class ClientController extends Controller
 
     public function show(User $user)
     {
+        $filials = $this->filialRepository->getAllByUserId($user->id);
         $userTypes = $this->userRepository->getAllUserTypes();
 
         return view('client.show', compact([
             'user',
-            'userTypes'
+            'userTypes',
+            'filials'
         ]));
     }
 

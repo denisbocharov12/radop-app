@@ -7,13 +7,38 @@
             <div class="my-account__wrapper">
                 @include('frontend.v1.pages.account.sidebar')
                 <div class="my-filials">
-                    <form action="{{route('theme.user.filial.store')}}" class="filial-store" method="POST">
+                    <form action="{{route('theme.user.filial.store')}}" class="filial-store form-filial" method="POST">
                         @csrf
+                        <div class="col-md-12 col-filial-heading">
+                            <h1 class="heading">{{__('theme.create_filial')}}</h1>
+                        </div>
+                        <hr>
+                        <div class="row row-primary">
+                            <div class="col-md-6 col-filial">
+                                <div class="form-control-filial">
+                                    <label for="name">{{__('theme.filial_input_name')}}</label>
+                                    <input type="text"  name="name" class="form-control-filial-input " required id="name" placeholder="{{__('theme.filial_input_name')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-filial">
+                                <div class="form-control-filial">
+                                    <label for="name">{{__('theme.filial_input_address')}}</label>
+                                    <input type="text" name="address" class="form-control-filial-input " required id="name" placeholder="{{__('theme.filial_input_address')}}">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 col-filial">
                                 <div class="form-control-filial">
-                                    <label for="name">Название</label>
-                                    <input type="text" name="name" class="form-control-filial-input " required="" id="name" placeholder="Value">
+                                    <label for="name">{{__('theme.filial_input_contact_name')}}</label>
+                                    <input type="text" name="contact_name" class="form-control-filial-input"  id="contact_name" placeholder="{{__('theme.filial_input_contact_name')}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-filial">
+                                <div class="form-control-filial">
+                                    <button type="submit" class="btn-filial-store">{{__('theme.save_filial')}}</button>
                                 </div>
                             </div>
                         </div>

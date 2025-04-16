@@ -9,25 +9,28 @@ use App\Exceptions\Filial\FilialNotFoundValidationException;
 use App\Exceptions\Filial\FilialNotPermittedToDeleteException;
 use App\Exceptions\Filial\FilialNotPermittedToStoreException;
 use App\Exceptions\Filial\FilialNotPermittedToStoreValidationException;
+use App\Exceptions\Filial\FilialNotPermittedToViewException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Exceptions\User\UserNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\FilialDataMapper;
+use App\Http\Mappers\Theme\ThemeFilialDataMapper;
 use App\Http\Requests\Filial\FilialDeleteRequest;
 use App\Http\Requests\Filial\FilialRequest;
+use App\Http\Requests\Theme\Filial\ThemeFilialRequest;
 use App\Models\Filial;
 use App\Repositories\Filial\FilialRepository;
 use App\Repositories\User\UserRepository;
-use App\Services\Filial\FilialManager;
+use App\Services\Theme\Filial\ThemeFilialManager;
 use Illuminate\Support\Facades\Auth;
 
 class ThemeFilialController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly FilialDataMapper $filialDataMapper,
+        private readonly ThemeFilialDataMapper $themeFilialDataMapper,
         private readonly FilialRepository $filialRepository,
-        private readonly FilialManager $filialManager,
+        private readonly ThemeFilialManager $themeFilialManager,
     ) {
     }
 
@@ -43,39 +46,48 @@ class ThemeFilialController extends Controller
         ]));
     }
 
-    public function store(FilialRequest $request)
+    public function store(ThemeFilialRequest $request)
     {
-        $filialData = $this->filialDataMapper->mapFromRequestToNormalized($request);
+        $user = Auth::guard('user')->user();
+        $filialData = $this->themeFilialDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->filialManager->store($filialData);
+            $this->themeFilialManager->store($filialData, $user);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
+            return redirect()->route('theme.user.filial.index');
 
         } catch (UserNotFoundException) {
             throw new UserNotFoundValidationException();
-        } catch (FilialNotPermittedToStoreException) {
-            throw new FilialNotPermittedToStoreValidationException();
+        } catch (FilialNotPermittedToViewException) {
+            return redirect()->back()->withErrors(['user_not_permitted_to_view_filial' => __('theme.user_not_permitted_to_view_filial')]);
         }
     }
 
-    public function update(Filial $filial, FilialRequest $request)
+    public function update(Filial $filial, ThemeFilialRequest $request)
     {
-        $filialData = $this->filialDataMapper->mapFromRequestToNormalized($request);
+        $user = Auth::guard('user')->user();
+
+        $filialData = $this->themeFilialDataMapper->mapFromRequestToNormalized($request);
 
         try {
-            $this->filialManager->update($filial, $filialData);
+            $this->themeFilialManager->update($filial, $filialData, $user);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
+            return redirect()->route('theme.user.filial.index');
 
-        } catch (UserNotFoundException $e) {
-            throw new UserNotFoundValidationException();
+        } catch (FilialNotPermittedToViewException) {
+            return redirect()->back()->withErrors(['user_not_permitted_to_view_filial' => __('theme.user_not_permitted_to_view_filial')]);
         }
 
     }
 
     public function edit(Filial $filial)
     {
+        $user = Auth::guard('user')->user();
+
+        if (!$user->can('view', $filial)) {
+            return redirect()->back()->withErrors(['user_not_permitted_to_view_filial' => __('theme.user_not_permitted_to_view_filial')]);
+        }
+
         return view('frontend.v1.pages.filial.edit', compact([
             'filial',
         ]));
@@ -88,13 +100,14 @@ class ThemeFilialController extends Controller
 
     public function destroy(Filial $filial)
     {
+
         $user = Auth::guard('user')->user();
 
         try {
-            $this->filialManager->delete($filial);
+            $this->themeFilialManager->delete($filial, $user);
 
-            return redirect()->route('frontend.v1.pages.filial.index');
-        } catch (FilialNotPermittedToDeleteException) {
+            return redirect()->route('theme.user.filial.index');
+        } catch (FilialNotPermittedToViewException) {
             return redirect()->back()->withErrors(['user_not_permitted_to_delete_filial' => __('theme.user_not_permitted_to_delete_filial')]);
         }
     }
