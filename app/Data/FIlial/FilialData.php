@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\Filial;
+namespace App\Data\FIlial;
 
 /**
  * @property int $userId

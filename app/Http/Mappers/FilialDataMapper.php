@@ -2,9 +2,7 @@
 
 namespace App\Http\Mappers;
 
-use App\Data\Favorite\FavoriteData;
 use App\Data\Filial\FilialData;
-use App\Http\Requests\Favorite\FavoriteRequest;
 use App\Http\Requests\Filial\FilialRequest;
 
 class FilialDataMapper
