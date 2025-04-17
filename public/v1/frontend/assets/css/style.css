@@ -1604,7 +1604,7 @@ header .section-header .row-main .header-menu .col-lg{
     left: 11px!important;
     width: calc(100% - 22px) !important;
     overflow-y: scroll;
-    min-height: 430px;
+    min-height: 675px;
 }
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover a.link-megamenu{
     background-color: white;
@@ -1875,6 +1875,7 @@ header .section-header .row-main .header-menu .col-lg{
     border-radius: 0 0 15px 15px;
     overflow-y: scroll;
     width: calc(100% - 0px);
+    min-height: 740px;
 }
 
 .toast-success .toast-title{
@@ -2843,7 +2844,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .col-category-childs .wrap-category-childs .link.parent-link{
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
 }
 .col-category-childs .wrap-category-childs .list.category-list {

@@ -4,7 +4,7 @@
     <!-- Success Message -->
     <tr style="margin-bottom: 10px; border: 2px solid #cccccc;  border-radius: 4px;">
         <td width="70%" style="margin-left: 40px; width: 100%; padding: 20px 50px;">
-            <p style="background-color: #029dd3; color: white;  padding: 15px 20px; text-align: center; border-radius: 4px; font-size: 20px; margin-bottom: 10px">Comandă a fost înregistrată cu succes!</p>
+            <p style="background-color: #0052a6; color: white;  padding: 15px 20px; text-align: center; border-radius: 4px; font-size: 20px; margin-bottom: 10px">Comandă a fost înregistrată cu succes!</p>
             <p style="text-align: center; font-size: 14px; margin-top: 10px;">Stimate client, mulțumim pentru comanda plasată pe site-ul nostru.<br>
                 În curând veți primi un apel de la operatorul nostru pentru a clarifica<br>
                 detaliile referitor la comandă.</p>
@@ -17,10 +17,10 @@
     <!-- Order Information -->
     <tr  style="margin-bottom: 10px; border: 2px solid #cccccc;  border-radius: 4px;">
         <td width="50%" style="padding: 10px 20px; font-size: 13px; vertical-align: top; border-right: 2px solid #ccc;">
-            <p><span>Comandă Nr:</span> <span style="color: red;">{{ $order->order_number }}</span></p>
-            <p><span>Data:</span> <span style="color: red;">{{ \Carbon\Carbon::now()->format('d-m-Y , H:i') }}</span></p>
+            <p><span>Comandă Nr:</span> <span style="color: black;">{{ $order->order_number }}</span></p>
+            <p><span>Data:</span> <span style="color: black;">{{ \Carbon\Carbon::now()->format('d-m-Y , H:i') }}</span></p>
             <p><span>Nume:</span>
-                <span style="color: red;">
+                <span style="color: black;">
                     @if($order->user !== null && $order->user->type->key_name === 'iur')
                         {{ $order->user->profile?->organization_name }}
                     @else
@@ -28,11 +28,11 @@
                     @endif
                 </span>
             </p>
-            <p><span>Date de contact:</span> <span style="color: red;">{{ $order->phone }}</span></p>
+            <p><span>Date de contact:</span> <span style="color: black;">{{ $order->phone }}</span></p>
         </td>
         <td width="50%" style="padding: 10px 20px; font-size: 13px; vertical-align: top;">
             <p><span>Achitare:</span>
-                <span style="color: red;">
+                <span style="color: black;">
                     @if($order->payment_method === 'cash')
                         Numerar  la primirea mărfii
                     @elseif($order->payment_method === 'transfer')
@@ -42,8 +42,8 @@
                     @endif
                 </span>
             </p>
-            <p><span>Modalitate de primire a comenzii:</span> <span style="color: red;">Livrare pe adresa</span></p>
-            <p style="color: red;">{{$order->address}}</p>
+            <p><span>Modalitate de primire a comenzii:</span> <span style="color: black;">Livrare pe adresa</span></p>
+            <p style="color: black;">{{$order->address}}</p>
         </td>
     </tr>
 
@@ -65,12 +65,12 @@
                 @endphp
                 @foreach($products as $product)
                     <tr style="text-align: center; ">
-                        <td style="width: 40px; padding: 5px 10px;  border: 1px solid #ccc; color: red;">{{$i}}</td>
-                        <td style="width: 80px; padding: 5px 10px;  border: 1px solid #ccc; color: red;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
-                        <td style="width: 400px;  padding: 5px 10px; border: 1px solid #ccc; color: red; text-wrap: normal">
+                        <td style="width: 40px; padding: 5px 10px;  border: 1px solid #ccc; color: black;">{{$i}}</td>
+                        <td style="width: 80px; padding: 5px 10px;  border: 1px solid #ccc; color: black;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
+                        <td style="width: 400px;  padding: 5px 10px; border: 1px solid #ccc; color: black; text-wrap: normal">
                             {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
                         </td>
-                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; color: red;">{{ $product->quantity }}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; color: black;">{{ $product->quantity }}</td>
                         <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->price }}</td>
                         <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->quantity * (float)$product->price}}</td>
                     </tr>
@@ -82,8 +82,8 @@
                     <td colspan="5" style="padding: 10px 20px; text-align: right; font-size: 14px; border: 1px solid #ccc;">
                         <strong>Total:</strong>
                     </td>
-                    <td colspan="1" style="padding: 10px 20px; text-align: right; font-size: 14px; border: 1px solid #ccc;">
-                        <span style="color: red;">{{ $order->total }}</span>
+                    <td colspan="1" style="padding: 10px 20px; font-size: 14px; border: 1px solid #ccc; text-align: center;">
+                        <span style="color: black;">{{ $order->total }}</span>
                     </td>
                 </tr>
                 </tbody>
