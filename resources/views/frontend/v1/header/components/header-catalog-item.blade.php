@@ -16,9 +16,6 @@
                         @endif
                         {{$childrenCategory->name}}
                     </a>
-                    @if(count($childrenCategory->children)  > 0)
-                        @include('frontend.v1.header.components.loop.header-menu-item-column', $childrenCategory)
-                    @endif
                 @endforeach
             @endif
         </div>
