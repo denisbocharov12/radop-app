@@ -2,21 +2,11 @@
 
 namespace App\Http\Controllers\Frontend\v1\Filial;
 
-use App\Exceptions\Favorite\FavoriteNotFoundException;
-use App\Exceptions\Favorite\FavoriteNotFoundValidationException;
-use App\Exceptions\Filial\FilialNotFoundException;
-use App\Exceptions\Filial\FilialNotFoundValidationException;
-use App\Exceptions\Filial\FilialNotPermittedToDeleteException;
-use App\Exceptions\Filial\FilialNotPermittedToStoreException;
-use App\Exceptions\Filial\FilialNotPermittedToStoreValidationException;
 use App\Exceptions\Filial\FilialNotPermittedToViewException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Exceptions\User\UserNotFoundValidationException;
 use App\Http\Controllers\Controller;
-use App\Http\Mappers\FilialDataMapper;
 use App\Http\Mappers\Theme\ThemeFilialDataMapper;
-use App\Http\Requests\Filial\FilialDeleteRequest;
-use App\Http\Requests\Filial\FilialRequest;
 use App\Http\Requests\Theme\Filial\ThemeFilialRequest;
 use App\Models\Filial;
 use App\Repositories\Filial\FilialRepository;

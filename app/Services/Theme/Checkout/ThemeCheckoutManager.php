@@ -67,10 +67,12 @@ final class ThemeCheckoutManager
             throw new OrderErrorException();
         }
 
-        $existedFilial = $this->filialRepository->getById($orderData->filialId);
+        if ($orderData->filialId !== null) {
+            $existedFilial = $this->filialRepository->getById($orderData->filialId);
 
-        if ($existedFilial === null) {
-            throw new FilialNotFoundException();
+            if ($existedFilial === null) {
+                throw new FilialNotFoundException();
+            }
         }
 
         $existedCity = $this->cityRepository->getById($orderData->cityId);
@@ -117,7 +119,7 @@ final class ThemeCheckoutManager
 
 //        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
 
-        if ($existedFilial !== null) {
+        if ($orderData->filialId !== null && $existedFilial !== null) {
             $orderAddress = $existedFilial->address;
         }
 
