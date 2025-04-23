@@ -29,7 +29,6 @@
             </form>
         </div>
     </div>
-    @endif
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
