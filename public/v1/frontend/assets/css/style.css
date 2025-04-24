@@ -1599,11 +1599,9 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: #fff;
     padding: 25px 0 0;
     border-radius: 0 0 15px 15px;
-    width: fit-content;
-    /*left: 0;*/
     left: 11px!important;
     width: calc(100% - 22px) !important;
-    overflow-y: scroll;
+    overflow-y: hidden;
     min-height: 675px;
 }
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover a.link-megamenu{
@@ -1998,7 +1996,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content .wrap-content a.heading,
 .section-page-catalog .row-header-catalog .col-list-content .wrap-content a.heading{
-    font-weight: 500 !important;
+    font-weight: 400 !important;
 }
 
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content .wrap-content a.heading:hover,
@@ -2039,7 +2037,7 @@ header .section-header .row-main .header-menu .col-lg{
     color: #252525;
     font-size: 0.825rem;
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 12px 32px 12px 16px;
     width: 100%;
     line-height: initial;
 }
@@ -7914,6 +7912,10 @@ hr.product-card-item{
     transform: rotate(-90deg);
 }
 
+.navbar-menu.theme-navbar-menu {
+    display: none;
+}
+
 @media (min-width: 576px) {
     .container {
         max-width: 540px;
@@ -8332,6 +8334,12 @@ hr.product-card-item{
     }
 }
 @media (max-width: 992px) {
+    header .section-header{
+        background-color: white;
+    }
+    .navbar-menu.theme-navbar-menu {
+        display: block;
+    }
     header{
         top: 0
     }
