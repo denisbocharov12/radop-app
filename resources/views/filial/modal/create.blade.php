@@ -12,17 +12,6 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="name">Название филиала</label>
-                                        <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" placeholder="Филиал #1">
-                                            @error('name')
-                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label class="form-label" for="address">Адрес</label>
                                         <div class="form-control-wrap">
                                             <input type="text" required class="form-control @error('address') error @enderror" id="address" name="address" placeholder="Адрес">
@@ -34,12 +23,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="contact_name">Контактное лицо</label>
+                                        <label class="form-label" for="phone">Телефон</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control @error('contact_name') error @enderror" id="contact_name" name="contact_name" placeholder="Контакное лицо">
-                                            @error('contact_name')
+                                            <input type="text" class="form-control @error('phone') error @enderror" id="phone" name="phone" placeholder="06255122">
+                                            @error('phone')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="city_id">Город</label>
+                                        <div class="form-control-wrap">
+                                            <select required class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
+                                                @foreach($cities as $city)
+                                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

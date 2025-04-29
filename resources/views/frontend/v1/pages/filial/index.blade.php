@@ -25,14 +25,18 @@
                             @foreach($filials as $filial)
                                 <li class="item filial-item">
                                     <div class="wrap">
-                                        <h2 class="heading">{{$filial->name}}</h2>
                                         <div class="wrap-meta">
+                                            <ul class="ul-meta" style="margin-bottom: 15px">
+                                                <li class="meta-item">
+                                                    <span class="theme-bold">{{__('theme.filial_input_city')}}:</span> <p class="theme-text">{{$filial?->city?->name}}</p>
+                                                </li>
+                                            </ul>
                                             <ul class="ul-meta">
                                                 <li class="meta-item">
                                                     <span class="theme-bold">{{__('theme.filial_input_address')}}:</span> <p class="theme-text">{{$filial->address}}</p>
                                                 </li>
                                                 <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_input_contact_name')}}:</span> <p class="theme-text">{{$filial->contact_name}}</p>
+                                                    <span class="theme-bold">{{__('theme.filial_input_phone')}}:</span> <p class="theme-text">{{$filial->phone}}</p>
                                                 </li>
                                                 <li class="meta-item">
                                                     <span class="theme-bold">{{__('theme.filial_count_orders')}}:</span> <p class="theme-text">{{$filial->orders->count()}}</p>

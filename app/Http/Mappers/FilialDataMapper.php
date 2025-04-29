@@ -11,9 +11,9 @@ class FilialDataMapper
     {
         return new FilialData(
             (int) $request->user_id,
-            $request->name,
             $request->address,
-            $request->contact_name
+            $request->phone,
+            $request->city_id,
         );
     }
 }

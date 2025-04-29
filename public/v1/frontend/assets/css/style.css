@@ -6700,6 +6700,14 @@ hr.product-card-item{
     padding: 10px 15px;
     resize: none;
 }
+.form-filial .form-control-filial select{
+    border: 1px solid #e2e7ec;
+    border-radius: 5px;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 15px;
+    resize: none;
+}
 .form-filial .btn-filial-store{
     border: 1px solid #0052a6;
     color: white;

@@ -16,22 +16,35 @@
                         <div class="row row-primary">
                             <div class="col-md-6 col-filial">
                                 <div class="form-control-filial">
-                                    <label for="name">{{__('theme.filial_input_name')}}</label>
-                                    <input type="text"  name="name" class="form-control-filial-input " required id="name" placeholder="{{__('theme.filial_input_name')}}">
+                                    <label for="address">{{__('theme.filial_input_address')}}</label>
+                                    <input type="text" name="address" class="form-control-filial-input @error('address') error @enderror" required id="name" placeholder="{{__('theme.filial_input_address')}}">
+                                    @error('address')
+                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6 col-filial">
                                 <div class="form-control-filial">
-                                    <label for="name">{{__('theme.filial_input_address')}}</label>
-                                    <input type="text" name="address" class="form-control-filial-input " required id="name" placeholder="{{__('theme.filial_input_address')}}">
+                                    <label for="phone">{{__('theme.filial_input_phone')}}</label>
+                                    <input type="text" name="phone" class="form-control-filial-input  @error('phone') error @enderror" id="phone" placeholder="{{__('theme.filial_input_phone')}}">
+                                    @error('phone')
+                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 col-filial">
                                 <div class="form-control-filial">
-                                    <label for="name">{{__('theme.filial_input_contact_name')}}</label>
-                                    <input type="text" name="contact_name" class="form-control-filial-input"  id="contact_name" placeholder="{{__('theme.filial_input_contact_name')}}">
+                                    <label for="phone">{{__('theme.filial_input_city')}}</label>
+                                    <select name="city_id" class="form-control-filial-input @error('city_id') error @enderror" id="city_id">
+                                        @foreach($cities as $city)
+                                            <option value="{{$city->id}}">{{$city->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('city_id')
+                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -47,4 +60,24 @@
             </div>
         </div>
     </section>
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        const element = document.getElementById('phone');
+        const maskOptions = {
+            mask: '{\\0} 000 00 000',
+            lazy: false,
+            overwrite: 'shift',
+        };
+        const mask = IMask(element, maskOptions);
+
+        const codFisk = document.getElementById('cod_fiscal');
+        const options = {
+            mask: /^\d+$/,
+        };
+        const maskCodFisk = IMask(codFisk, options);
+    </script>
+@endsection
+
+@section('scripts')
+
 @endsection

@@ -10,9 +10,9 @@ class ThemeFilialDataMapper
     public function mapFromRequestToNormalized(ThemeFilialRequest $request): ThemeFilialData
     {
         return new ThemeFilialData(
-            $request->name,
             $request->address,
-            $request->contact_name
+            $request->phone,
+            $request->city_id,
         );
     }
 }

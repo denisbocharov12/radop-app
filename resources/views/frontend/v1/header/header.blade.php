@@ -113,114 +113,59 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mobile-menu-block icon-block">
-                        <a href="#" class="hamburger icon-block-link" id="hamburger-open">
-                            <i class="icon-bars"></i>
-                        </a>
-                    </div>
-                    <nav class="nav-drill" id="nav-drill">
-                        <div class="main-wrap-menu-mobile">
-                            <div class="menu-close menu-mobile-account">
-                    <span class="hamburger hamburger-close" id="hamburger-close"
-                    ><i class="fa fa-times"></i
-                        ></span>
-                            </div>
-                            <ul class="nav-items nav-level-1">
-                                <li class="nav-item nav-expand">
-                                    <a class="nav-link nav-expand-link" href="#"> Menu </a>
-                                    <ul class="nav-items nav-expand-content">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"> Level 2 </a>
-                                        </li>
-                                        <li class="nav-item nav-expand">
-                                            <a class="nav-link nav-expand-link" href="#"> Menu </a>
-                                            <ul class="nav-items nav-expand-content">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"> Level 3 </a>
-                                                </li>
-                                                <li class="nav-item nav-expand">
-                                                    <a class="nav-link nav-expand-link" href="#"> Menu </a>
-                                                    <ul class="nav-items nav-expand-content">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#"> Level 4 </a>
-                                                        </li>
-                                                        <li class="nav-item nav-expand">
-                                                            <a class="nav-link nav-expand-link" href="#"> Menu </a>
-                                                            <ul class="nav-items nav-expand-content">
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#"> Level 5 Directory </a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#"> Level 5 Contact </a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#"> Level 5 Quick links </a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#"> Level 5 Launchpad </a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#"> Level 4 Directory </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#"> Level 4 Contact </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#"> Level 4 Quick links </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#"> Level 4 Launchpad </a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"> Level 3 Directory </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"> Level 3 Contact </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"> Level 3 Quick links </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#"> Level 3 Launchpad </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"> Level 2 Directory </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"> Level 2 Contact </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"> Level 2 Quick links </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"> Level 2 Launchpad </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"> Directory </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"> Contact </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"> Quick links </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"> Launchpad </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="select-language-mobile"></div>
-                    </nav>
                 </div>
             </div>
         </div>
     </section>
 </header>
+{{--<div class="theme-navbar-menu navbar-menu">--}}
+{{--    <div class="navbar-menu__container">--}}
+{{--        <div class="navbar-menu__wrapper">--}}
+{{--            <a class="navbar-menu__link navbar-menu__link_catalog"><span class="navbar-menu__icon _icon-catalog-search"></span></a>--}}
+{{--            <a class="navbar-menu__link" href="#"><span class="navbar-menu__icon _icon-cart"></span></a>--}}
+{{--            <a class="navbar-menu__link" href="#"><span class="navbar-menu__icon _icon-favorite"></span></a>--}}
+{{--            <a class="navbar-menu__link" href="#"><span class="navbar-menu__icon _icon-user"></span></a>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
+{{--<div class="theme-navbar-menu catalog-navbar">--}}
+{{--    <div class="catalog-navbar__search">Search...</div>--}}
+{{--    <div class="catalog-navbar__catalog"></div>--}}
+{{--</div>--}}
+{{--<div class="theme-navbar-menu search-menu-navbar">--}}
+{{--    <div class="search-menu-navbar__wrapper">--}}
+{{--        <div class="search-menu-navbar__search">--}}
+{{--            <button class="search-menu-navbar__close">Отмена</button>--}}
+{{--        </div>--}}
+{{--        <ul class="search-menu-navbar__list">--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">jeans</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">top</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">pants</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">lingerie</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">dress</a>--}}
+{{--            </li>--}}
+
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">top</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">pants</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">lingerie</a>--}}
+{{--            </li>--}}
+{{--            <li class="search-menu-navbar__item">--}}
+{{--                <a class="search-menu-navbar__link _icon-search" href="#">dress</a>--}}
+{{--            </li>--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+{{--</div>--}}
