@@ -30,6 +30,7 @@ final class User extends Authenticatable
         'sale',
         'city_id',
         'email_verified_at',
+        'with_sale',
     ];
 
     protected $hidden = [
@@ -40,6 +41,7 @@ final class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'sale' => 'float',
+        'with_sale' => 'boolean',
     ];
 
     /**

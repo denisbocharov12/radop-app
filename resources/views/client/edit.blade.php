@@ -168,6 +168,12 @@
                                                 <li>
                                                     <a href="{{route('client.generate', $user)}}" class="btn btn-warning text-dark ">Распечатать новый пароль</a>
                                                 </li>
+                                                <li>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="with_sale" name="with_sale" {{$user->with_sale ? 'checked' : ''}}>
+                                                        <label class="custom-control-label" for="with_sale">Применить оптовую цену</label>
+                                                    </div>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
