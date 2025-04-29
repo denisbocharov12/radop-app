@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\v1\Filial;
 
+use App\Exceptions\City\CityNotFoundException;
+use App\Exceptions\City\CityNotFoundValidationException;
 use App\Exceptions\Favorite\FavoriteNotFoundException;
 use App\Exceptions\Favorite\FavoriteNotFoundValidationException;
 use App\Exceptions\Filial\FilialNotFoundException;
@@ -16,6 +18,7 @@ use App\Http\Mappers\FilialDataMapper;
 use App\Http\Requests\Filial\FilialDeleteRequest;
 use App\Http\Requests\Filial\FilialRequest;
 use App\Models\Filial;
+use App\Repositories\City\CityRepository;
 use App\Repositories\Filial\FilialRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Filial\FilialManager;
@@ -27,6 +30,7 @@ final class FilialController extends Controller
         private readonly FilialDataMapper $filialDataMapper,
         private readonly FilialRepository $filialRepository,
         private readonly FilialManager $filialManager,
+        private readonly CityRepository $cityRepository,
     ) {
     }
 
@@ -34,10 +38,12 @@ final class FilialController extends Controller
     {
         $users = $this->userRepository->getAllIur();
         $filials = $this->filialRepository->getAllPaginatedWithFilters();
+        $cities = $this->cityRepository->getAll();
 
         return view('filial.index', compact([
             'filials',
-            'users'
+            'users',
+            'cities',
         ]));
     }
 
@@ -54,6 +60,8 @@ final class FilialController extends Controller
             throw new UserNotFoundValidationException();
         } catch (FilialNotPermittedToStoreException) {
             throw new FilialNotPermittedToStoreValidationException();
+        }  catch (CityNotFoundException) {
+            throw new CityNotFoundValidationException();
         }
     }
 
@@ -68,14 +76,18 @@ final class FilialController extends Controller
 
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
+        }  catch (CityNotFoundException) {
+            throw new CityNotFoundValidationException();
         }
-
     }
 
     public function edit(Filial $filial)
     {
+        $cities = $this->cityRepository->getAll();
+
         return view('filial.edit', compact([
             'filial',
+            'cities'
         ]));
     }
 

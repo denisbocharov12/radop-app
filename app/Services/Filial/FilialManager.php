@@ -3,11 +3,13 @@
 namespace App\Services\Filial;
 
 use App\Data\Filial\FilialData;
+use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\Filial\FilialNotFoundException;
 use App\Exceptions\Filial\FilialNotPermittedToStoreException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Requests\Filial\FilialDeleteRequest;
 use App\Models\Filial;
+use App\Repositories\City\CityRepository;
 use App\Repositories\Filial\FilialRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
@@ -19,6 +21,7 @@ class FilialManager
         private readonly UserRepository $userRepository,
         private readonly FilialRepository $filialRepository,
         private readonly OrderRepository $orderRepository,
+        private readonly CityRepository $cityRepository,
     ) {
     }
 
@@ -34,20 +37,32 @@ class FilialManager
             throw new FilialNotPermittedToStoreException();
         }
 
+        $existedCity = $this->cityRepository->getById($filialData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
         $filial = Filial::create([
-            'name' => $filialData->name,
             'address' => $filialData->address,
-            'contact_name' => $filialData->contactName,
+            'phone' => $filialData->phone,
+            'city_id' => $filialData->cityId,
             'user_id' => $existedUser->id,
         ]);
     }
 
     public function update(Filial $filial, FilialData $filialData): void
     {
+        $existedCity = $this->cityRepository->getById($filialData->cityId);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
+        }
+
         $filial->update([
-            'name' => $filialData->name,
             'address' => $filialData->address,
-            'contact_name' => $filialData->contactName,
+            'phone' => $filialData->phone,
+            'city_id' => $filialData->cityId,
         ]);
     }
 

@@ -257,13 +257,28 @@ final class ThemeProductManager
 
     public static function getProductTotalSum($product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
-            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
-        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
-            $price = number_format((float)$product->sale_price, 2, '.', '');
-        }
-        else{
-            $price = number_format((float)$product->price * (float)$product->price_koef, 2, '.', '');
+        $user = Auth::guard('user')->user();
+        $price = (float)$product->price;
+        $priceKoef = (float)$product->price_koef;
+
+        if ($user !== null && $user->with_sale) {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price, 2, '.', '');
+            }
+        } else {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price * $priceKoef, 2, '.', '');
+            }
         }
 
         return $price;
@@ -271,13 +286,28 @@ final class ThemeProductManager
 
     public static function getProductTotalSumWithReplace($product)
     {
-        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
-            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '');
-        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
-            $price = number_format((float)$product->sale_price, 2, ',', '');
-        }
-        else{
-            $price = number_format((float)$product->price * (float)$product->price_koef, 2, ',', '');
+        $user = Auth::guard('user')->user();
+        $price = (float)$product->price;
+        $priceKoef = (float)$product->price_koef;
+
+        if ($user !== null && $user->with_sale) {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, ',', '');
+            }
+            else{
+                $price = number_format($price, 2, ',', '');
+            }
+        } else {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, ',', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, ',', '');
+            }
+            else{
+                $price = number_format($price * $priceKoef, 2, ',', '');
+            }
         }
 
         return $price;
@@ -285,12 +315,28 @@ final class ThemeProductManager
 
     private function getProductPriceForCart(Product $product)
     {
-        if (Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {
-            $price = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, '.', '');
-        } elseif ($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {
-            $price = number_format((float)$product->sale_price, 2, '.', '');
+        $user = Auth::guard('user')->user();
+        $price = (float)$product->price;
+        $priceKoef = (float)$product->price_koef;
+
+        if ($user !== null && $user->with_sale) {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price, 2, '.', '');
+            }
         } else {
-            $price = number_format((float)$product->price * (float)$product->price_koef, 2, '.', '');
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price * $priceKoef, 2, '.', '');
+            }
         }
 
         return $price;

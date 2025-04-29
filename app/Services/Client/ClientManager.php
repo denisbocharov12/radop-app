@@ -94,10 +94,16 @@ class ClientManager
 
     public function update(ClientUpdateData $clientData, User $user)
     {
+        $withSale = false;
+
         $existedCity = $this->cityRepository->getById($clientData->cityId);
 
         if ($existedCity === null) {
             throw new CityNotFoundException();
+        }
+
+        if ($clientData->withSale !== null) {
+            $withSale = true;
         }
 
         $status = $this->entityStatusManager->getEntityStatusFromRequest($clientData->status);
@@ -107,7 +113,8 @@ class ClientManager
             'status' => $status,
             'type_id' => $clientData->typeId,
             'sale' => (float)$clientData->sale,
-            'city_id' => $clientData->cityId
+            'city_id' => $clientData->cityId,
+            'with_sale' => $withSale,
         ]);
 
         $user->assignRole($clientData->role);

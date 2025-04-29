@@ -357,4 +357,6 @@ return array (
     'edit_btn_text' => 'Editează',
     'select_filial' => 'Selectați filial',
     'filial_not_found' => 'Filial nu a fost găsit.',
+    'filial_input_phone' => 'Telefon',
+    'filial_input_city' => 'Oraș',
 );

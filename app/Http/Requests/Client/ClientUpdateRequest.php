@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $type_id
  * @property string $sale
  * @property int $city_id
+ * @property string $with_sale
  */
 class ClientUpdateRequest extends FormRequest
 {
@@ -36,7 +37,8 @@ class ClientUpdateRequest extends FormRequest
             'contact_name' => ['nullable', 'string'],
             'type_id' => ['required', 'integer'],
             'sale' => ['nullable', 'string'],
-            'city_id' => ['required', 'integer']
+            'city_id' => ['required', 'integer'],
+            'with_sale' => ['nullable', 'string'],
         ];
     }
 }

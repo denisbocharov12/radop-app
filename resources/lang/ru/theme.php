@@ -357,4 +357,6 @@ return array (
     'edit_btn_text' => 'Редактировать',
     'select_filial' => 'Выберите филиал',
     'filial_not_found' => 'Филиал не найден.',
+    'filial_input_phone' => 'Контакт',
+    'filial_input_city' => 'Город',
 );

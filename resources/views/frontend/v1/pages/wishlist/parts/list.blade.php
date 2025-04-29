@@ -68,16 +68,7 @@
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
                 <div class="wrap">
-                    @if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->conditions->sale_price === '')
-                        <span class="price">{{number_format((float)$product->conditions->price - (float)$product->conditions->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '')}} {{__('theme.MDL')}}</span>
-                    @elseif($product->conditions->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0)
-                        <span class="price"
-                              style="color: #ee0000">{{ number_format($product->conditions->sale_price, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                        <span class="old_price"
-                              style="color: #848484">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                    @else
-                        <span class="price">{{ number_format($product->conditions->price * (float)$product->conditions->price_koef, 2, ',', '') }} {{__('theme.MDL')}}</span>
-                    @endif
+                    @include('frontend.v1.components.product_price', ['product' => $item->associatedModel])
                 </div>
                 @include('frontend.v1.components.product_card_summary', ['product' => $product->conditions])
                 @php

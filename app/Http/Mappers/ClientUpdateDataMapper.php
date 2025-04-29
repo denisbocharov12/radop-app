@@ -23,6 +23,7 @@ final class ClientUpdateDataMapper
             $request->type_id,
             $request->sale,
             $request->city_id,
+            $request->with_sale,
         );
     }
 }

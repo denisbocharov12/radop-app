@@ -13,9 +13,10 @@ final class Filial extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
         'address',
         'contact_name',
+        'phone',
+        'city_id',
     ];
 
     /**
@@ -32,5 +33,13 @@ final class Filial extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return BelongsTo<City, User>
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class)->withTrashed();
     }
 }
