@@ -16,11 +16,6 @@
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
                         </div>
-                        <div class="item">
-                            <a href="{{route('theme.category.index', 10)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_home_slide_3.jpg" alt=""/>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
