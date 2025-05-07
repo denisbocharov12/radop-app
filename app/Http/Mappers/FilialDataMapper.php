@@ -2,7 +2,7 @@
 
 namespace App\Http\Mappers;
 
-use App\Data\Filial\FilialData;
+use App\Data\FIlial\FilialData;
 use App\Http\Requests\Filial\FilialRequest;
 
 class FilialDataMapper

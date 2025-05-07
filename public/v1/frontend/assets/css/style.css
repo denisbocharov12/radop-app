@@ -1964,11 +1964,10 @@ header .section-header .row-main .header-menu .col-lg{
 
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content a.link.link-megamenu,
 .section-page-catalog .row-header-catalog .col-list-content a.link.link-megamenu{
-    color: #0052a6;
+    color: #252525;
     font-weight: 500!important;
     padding: 7.5px 5px;
     display: inline-block;
-    font-size: 18px;
 }
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content a.link.link-megamenu:hover,
 .section-page-catalog .row-header-catalog .col-list-content a.link.link-megamenu:hover{

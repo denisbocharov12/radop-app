@@ -41,14 +41,14 @@ final class ThemeCheckoutManager
         private readonly OrderPaymentMethods $orderPaymentMethods,
         private readonly CityRepository $cityRepository,
         private readonly FilialRepository $filialRepository,
-    )
-    {
+    ) {
     }
 
     public function store(ThemeOrderData $orderData, ?Authenticatable $user): Order
     {
         $sessionId = $this->getSessionId();
         $orderAddress = $orderData->address;
+        $existedFilial = null;
 
         $authUser = null;
         $managerId = null;
@@ -73,23 +73,35 @@ final class ThemeCheckoutManager
             if ($existedFilial === null) {
                 throw new FilialNotFoundException();
             }
+
+            $existedCity = $existedFilial->city;
+
+            if ((float)$existedFilial->city->required_sum === null || $existedFilial->city->delivery_sum === null) {
+                throw new ThemeCityErrorRequiredSumException();
+            }
+
+            if($this->getCartSubtotalValue() < (float)$existedFilial->city->required_sum) {
+                throw new MinOrderSumException();
+            }
         }
 
-        $existedCity = $this->cityRepository->getById($orderData->cityId);
+        if ($existedFilial === null) {
+            $existedCity = $this->cityRepository->getById($orderData->cityId);
 
-        if ($existedCity === null) {
-            throw new CityNotFoundException();
-        }
+            if ($existedCity === null) {
+                throw new CityNotFoundException();
+            }
 
-        if ((float)$existedCity->required_sum === null || $existedCity->delivery_sum === null) {
-            throw new ThemeCityErrorRequiredSumException();
+            if ((float)$existedCity->required_sum === null || $existedCity->delivery_sum === null) {
+                throw new ThemeCityErrorRequiredSumException();
+            }
+
+            if($this->getCartSubtotalValue() < (float)$existedCity->required_sum) {
+                throw new MinOrderSumException();
+            }
         }
 
         if($this->getCartSubtotalValue() < config('app.min_delivery_sum')) {
-            throw new MinOrderSumException();
-        }
-
-        if($this->getCartSubtotalValue() < (float)$existedCity->required_sum) {
             throw new MinOrderSumException();
         }
 
@@ -119,8 +131,11 @@ final class ThemeCheckoutManager
 
 //        $discount = $this->getCartSubtotalValue() * $foundedDiscountPeriod->discount_koef / 100;
 
+        $cityId = $orderData->cityId;
+
         if ($orderData->filialId !== null && $existedFilial !== null) {
             $orderAddress = $existedFilial->address;
+            $cityId = $existedFilial->city_id;
         }
 
         $order = Order::create([
@@ -131,7 +146,7 @@ final class ThemeCheckoutManager
             'email' => $orderData->email,
             'phone' => $orderData->phone,
             'address' => $orderAddress,
-            'city' => $orderData->cityId,
+            'city' => $cityId,
             'note' => $orderData->note,
             'payment_method' => $orderData->payment_method,
             'delivery_method' => 'theme.default_delivery_method',
