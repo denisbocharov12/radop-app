@@ -17,25 +17,27 @@
                                 <form action="{{route('order.update', $order)}}" method="POST" class="form-validate is-alter">
                                     @csrf
                                     <div class="row g-gs">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="user_id">Пользователь</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2 form-control @error('user_id') error @enderror" data-search="on" name="user_id" id="user_id" data-placeholder="Пользователь" required>
-                                                        <option value="">Пользователь</option>
-                                                        @foreach ($users as $user)
-                                                            <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : '' }}>
-                                                                @if($user?->type?->key_name === 'fiz')
-                                                                    {{$user?->profile?->first_name}} {{$user?->profile?->last_name}}
-                                                                @else
-                                                                    {{$user?->profile?->organization_name}}
-                                                                @endif
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                        @if($order->user !== null)
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="user_id">Пользователь</label>
+                                                    <div class="form-control-wrap">
+                                                        <select class="form-select js-select2 form-control @error('user_id') error @enderror" data-search="on" name="user_id" id="user_id" data-placeholder="Пользователь">
+                                                            <option value="">Пользователь</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : '' }}>
+                                                                    @if($user?->type?->key_name === 'fiz')
+                                                                        {{$user?->profile?->first_name}} {{$user?->profile?->last_name}}
+                                                                    @else
+                                                                        {{$user?->profile?->organization_name}}
+                                                                    @endif
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="manager_id">Менеджер</label>
@@ -254,6 +256,38 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="city">Город</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="city" id="city" data-placeholder="Город">
+                                                        <option value="">Город</option>
+                                                        @foreach ($cities as $city)
+                                                            <option value="{{ $city->id }}" {{ $city->id == $order->city ? 'selected' : '' }}>
+                                                                {{ $city->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if($order->filial_id !== null)
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="filial_id">Филиал</label>
+                                                    <div class="form-control-wrap">
+                                                        <select class="form-select js-select2" data-search="on" name="filial_id" id="filial_id" data-placeholder="Филиал">
+                                                            <option value="">Филиал</option>
+                                                            @foreach ($order->user->filials as $filial)
+                                                                <option value="{{ $filial->id }}" {{ $filial->id == $order->filial_id ? 'selected' : '' }}>
+                                                                    {{ $filial->address }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="discount">Скидка</label>

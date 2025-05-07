@@ -5,7 +5,6 @@ namespace App\Http\Controllers\v1\Order;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
-use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Exceptions\NotAjaxRequestException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderNotFoundValidationException;
@@ -17,8 +16,8 @@ use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
+use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
-use App\Repositories\Product\ProductRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +40,8 @@ class OrderController extends Controller
         OrderPaymentMethods $orderPaymentMethods,
         OrderPaymentStatus $orderPaymentStatus,
         OrderStatus $orderStatus,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        private readonly CityRepository $cityRepository,
     )
     {
         $this->orderDataMapper = $orderDataMapper;
@@ -75,6 +75,8 @@ class OrderController extends Controller
         $managers = $this->userRepository->getManagers();
         $userTypes = $this->userRepository->getAllTypes();
 
+        $cities = $this->cityRepository->getAll();
+
         return view('order.edit', compact([
             'order',
             'paymentMethods',
@@ -83,7 +85,8 @@ class OrderController extends Controller
             'users',
             'managers',
             'userTypes',
-            'product'
+            'product',
+            'cities'
         ]));
     }
 

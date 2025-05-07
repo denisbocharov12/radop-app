@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $note
  * @property int $user_id
  * @property int $manager_id
+ * @property int $filial_id
  * @property string $payment_method
  * @property string $payment_status
  * @property string $status
@@ -48,6 +49,7 @@ class OrderRequest extends FormRequest
             'user_type' => ['required', 'string'],
             'city' => ['nullable', 'string'],
             'note' => ['nullable', 'string'],
+            'filial_id' => ['nullable', 'integer'],
             'user_id' => ['nullable', 'integer'],
             'manager_id' => ['nullable', 'integer'],
             'payment_method' => ['required', 'string'],

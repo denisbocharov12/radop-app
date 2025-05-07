@@ -10,7 +10,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderRepository
 {
-    private const COUNT_OF_PAGINATION = 12;
+    private const COUNT_OF_PAGINATION = 20;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
     {

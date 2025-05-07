@@ -6,6 +6,7 @@ use App\Data\Order\OrderData;
 use App\Enums\OrderStatus;
 use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Excel\Order\OrderExport;
+use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\Order\ManagerNotFoundException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderUniqueCodeException;
@@ -13,6 +14,7 @@ use App\Exceptions\Order\UserNotFoundException;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
+use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,6 +30,7 @@ final class OrderManager
         OrderRepository $orderRepository,
         UserRepository $userRepository,
         private readonly OrderStatus $orderStatus,
+        private readonly CityRepository $cityRepository,
     )
     {
         $this->orderRepository = $orderRepository;
@@ -38,7 +41,7 @@ final class OrderManager
     {
         $orderStatus = $order->status;
 
-        if ($order->user_id !== $orderData->userId) {
+        if ($orderData->userId !== null) {
             $existedUser = $this->userRepository->getById($orderData->userId);
 
             if ($existedUser === null) {
@@ -46,12 +49,18 @@ final class OrderManager
             }
         }
 
-        if ($order->manager_id !== $orderData->managerId) {
+        if ($orderData->managerId !== null) {
             $existedManager = $this->userRepository->getById($orderData->managerId);
 
             if ($existedManager === null) {
                 throw new ManagerNotFoundException();
             }
+        }
+
+        $existedCity = $this->cityRepository->getById($orderData->city);
+
+        if ($existedCity === null) {
+            throw new CityNotFoundException();
         }
 
         $order->update([
@@ -69,6 +78,8 @@ final class OrderManager
             'discount' => $orderData->discount,
             'total' => $orderData->total,
             'delivery_charge' => $orderData->deliveryCharge,
+            'city' => $orderData->city,
+            'filial_id' => $orderData->filialId,
         ]);
 
         if ($orderData->userType === self::IUR_TYPE){
