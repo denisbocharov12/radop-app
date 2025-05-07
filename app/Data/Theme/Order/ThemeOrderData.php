@@ -34,7 +34,7 @@ final class ThemeOrderData
         public readonly string $email,
         public readonly string $phone,
         public readonly ?string $address,
-        public readonly int $cityId,
+        public readonly ?int $cityId,
         public readonly ?int $filialId,
         public readonly ?string $note,
         public readonly string $payment_method,

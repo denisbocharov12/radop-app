@@ -54,7 +54,7 @@
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>
-                                                    <button type="submit" class="btn btn-primary">Обновить пользователя</button>
+                                                    <button type="submit" class="btn btn-primary">Обновить</button>
                                                 </li>
                                             </ul>
                                         </div>

@@ -39,7 +39,7 @@ final class ThemeOrderRequest extends FormRequest
             'email' => ['required', 'string'],
             'phone' => ['required', 'string'],
             'address' => ['nullable', 'string'],
-            'city_id' => ['required', 'integer'],
+            'city_id' => ['nullable', 'integer'],
             'filial_id' => ['nullable', 'integer'],
             'note' => ['nullable', 'string'],
             'payment_method' => ['required', 'string'],
