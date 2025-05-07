@@ -12,6 +12,7 @@ namespace App\Data\Order;
  * @property string $note
  * @property int $userId
  * @property int $managerId
+ * @property int $filialId
  * @property string $paymentMethod
  * @property string $paymentStatus
  * @property string $status
@@ -42,6 +43,7 @@ final class OrderData
         public readonly ?string $note,
         public readonly ?int $userId,
         public readonly ?int $managerId,
+        public readonly ?int $filialId,
         public readonly string $paymentMethod,
         public readonly string $paymentStatus,
         public readonly string $status,
@@ -56,7 +58,8 @@ final class OrderData
         public readonly ?string $tva,
         public readonly ?string $registeredCity,
         public readonly ?string $iurAddress,
-        public readonly ?string $shippingAddress
+        public readonly ?string $shippingAddress,
+        public readonly ?string $city,
     )
     {
     }

@@ -21,6 +21,7 @@ final class OrderDataMapper
             $request->note,
             $request->user_id,
             $request->manager_id,
+            $request->filial_id,
             $request->payment_method,
             $request->payment_status,
             $request->status,
@@ -35,7 +36,8 @@ final class OrderDataMapper
             $request->tva,
             $request->registered_city,
             $request->iur_address,
-            $request->shipping_address
+            $request->shipping_address,
+            $request->city,
         );
     }
 }

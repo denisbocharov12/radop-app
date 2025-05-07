@@ -87,4 +87,12 @@ final class Order extends Model
     {
         return $this->belongsTo(Filial::class);
     }
+
+    /**
+     * @return BelongsTo<City, Order>
+     */
+    public function cityModel(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city');
+    }
 }
