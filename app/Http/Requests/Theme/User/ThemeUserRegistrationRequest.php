@@ -19,7 +19,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $cod_fiscal
  * @property string $contact_name
  * @property string $type_id
- * @property int $city_id
+ * @property int $city_id_fiz
+ * @property int $city_id_iur
  */
 final class ThemeUserRegistrationRequest extends FormRequest
 {
@@ -38,12 +39,23 @@ final class ThemeUserRegistrationRequest extends FormRequest
             'password_confirmation_fiz' => 'required_with:password_fiz|same:password_fiz|min:8',
             'address_fiz' => ['required_if:type_id,1', 'string'],
             'address_iur' => ['required_if:type_id,2', 'string'],
-            'type_id' => ['required', 'integer'],
-            'city_id' => ['required', 'integer'],
+            'type_id' => ['required', 'integer', 'exists:user_types,id'],
+            'city_id_fiz' => ['required_if:type_id,1', 'integer'],
+            'city_id_iur' => ['required_if:type_id,2', 'integer'],
             'organization_name' => ['required_if:type_id,2', 'string'],
             'cod_fiscal' => ['nullable', 'string'],
         ];
     }
+
+//    public function messages()
+//    {
+//        return [
+//            'password.required' => 'Поле обязательно для заполнения',
+//            'password.min:6' => 'Пароль должен содержать не менее 6 знаков',
+//            'rule.required' => 'Поле обязательно к согласию',
+//            'rule_iur.required' => 'Поле обязательно к согласию'
+//        ];
+//    }
 
     public function validationFailed() {
         return redirect()->back()->withErrors($this->validator)->withInput();

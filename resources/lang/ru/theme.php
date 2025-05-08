@@ -359,4 +359,6 @@ return array (
     'filial_not_found' => 'Филиал не найден.',
     'filial_input_phone' => 'Контакт',
     'filial_input_city' => 'Город',
+    'previous_pagination' => 'Предыдущая',
+    'next_pagination' => 'Следующая',
 );

@@ -4,7 +4,7 @@
             <div class="row row-main">
                 <div class="header-logo col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto">
                     <a href="{{route('theme.home')}}" class="link-logo">
-                        <img src="{{asset('/v1/frontend/assets')}}/images/logo-w.svg" alt="" />
+                        <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Moldova" />
                     </a>
                 </div>
                 <div class="header-menu">
@@ -20,7 +20,8 @@
                 </div>
                 <div class="header-search col col-md col-xl col-lg">
                     <div class="wrap">
-                        <form action="#">
+                        <form action="{{route('theme.search.index')}}" method="GET">
+                            @csrf
                             <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
@@ -43,75 +44,30 @@
                         </a>
                     </div>
                     <div class="cart-block icon-block mini-shopping-cart">
-                        <a href="#" class="cart icon-block-link">
-                            <i class="icon-cart-radop"></i>
-                            <span class="count">3</span>
+                        <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">
+                            @php
+                                $sessionId = config('shopping_cart.default_session_id');
+
+                                if (auth()->guard('user')->user()) {
+                                    $sessionId = auth()->guard('user')->user()->id;
+                                }
+                            @endphp
+                            <div class="wrap-cart-block-info header-cart-widget">
+                                <span class="summ">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}}</span> <span>{{__('theme.MDL')}}</span>
+                            </div>
+                            <i class="icon-shopping-cart"></i>
                         </a>
-                        <div class="wrap-shopping-cart">
-                            <div class="heading-shopping-cart">
-                                <span class="sc-subtotal">К оплате: <span class="fw-600">132 MDL</span></span>
-                                <span class="sc-count">3 ед.</span>
-                            </div>
-                            <div class="contents-shopping-cart">
-                                <ul class="content-shopping-cart">
-                                    <li class="item">
-                                        <a href="#" class="sc-product-item">
-                                            <div class="product-info">
-                                                <img class="sc-image" src="" alt="" />
-                                                <div class="sc-item-info-wrap">
-                                                    <p class="sc-title">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing.
-                                                    </p>
-                                                    <div class="sc-product-qty">
-                                                        <div class="input-group-btn">
-                                                            <button
-                                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                                class="sc-product-decrement minus"
-                                                                type="button"
-                                                                id="button-minus"
-                                                            >
-                                                                -
-                                                            </button>
-                                                        </div>
-                                                        <input
-                                                            data-id="1"
-                                                            id="qty-item-1"
-                                                            type="number"
-                                                            min="1"
-                                                            placeholder="1"
-                                                            value="1"
-                                                            class="sc-qty"
-                                                        />
-                                                        <!-- <input
-                                                          type="hidden"
-                                                          data-id="1"
-                                                          data-product-stock="9"
-                                                          id="update-cart-1"
-                                                        /> -->
-                                                        <div class="input-group-btn">
-                                                            <button
-                                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                                class="sc-product-increment plus"
-                                                                type="button"
-                                                                id="button-plus"
-                                                            >
-                                                                +
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span class="sc-price">32.94 MDL</span>
-                                            <div class="item-delete"><i class="icon-trash-radop"></i></div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="bottom-shopping-cart">
-                                <a href="#" class="btn-shopping-cart">{{__('theme.сontinue-shopping')}}</a>
-                                <a href="#" class="btn-shopping-cart red">{{__('theme.place-order')}}</a>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-main row-mobile-search">
+                <div class="header-search header-mobile-search col col-md col-xl col-lg">
+                    <div class="wrap">
+                        <form action="{{route('theme.search.index')}}" method="GET">
+                            @csrf
+                            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
+                            <button type="submit" class="btn-search"><i class="icon-search"></i></button>
+                        </form>
                     </div>
                 </div>
             </div>

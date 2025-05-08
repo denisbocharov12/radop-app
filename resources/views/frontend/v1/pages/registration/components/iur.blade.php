@@ -1,7 +1,5 @@
-<div class="row">
-    <div class="col-12 col-register-wrap">
-        <div id="tabs">
-        <form id="form-iur-submit" action="{{route('user.registration.store')}}" method="POST">
+<div class="tabContent {{old('type_id')  === "2" || old('type_id') === null ? 'show' : 'hide'}}">
+    <form id="form-iur-submit" action="{{route('user.registration.store')}}" method="POST">
         @csrf
         @php
             $userTypeIur = \App\Models\UserType::where('key_name', 'iur')->first();
@@ -88,12 +86,12 @@
                         <path d="M10.2751 13.3906H9.45934C9.28334 13.3906 9.14062 13.5333 9.14062 13.7093C9.14062 13.8854 9.28334 14.0281 9.45934 14.0281H10.2751C10.4511 14.0281 10.5938 13.8854 10.5938 13.7093C10.5938 13.5333 10.4511 13.3906 10.2751 13.3906Z" fill="black"/>
                         <path d="M5.22888 1.36719C5.05288 1.36719 4.91016 1.50988 4.91016 1.68591V2.06837C4.91016 2.24441 5.05288 2.38709 5.22888 2.38709C5.40488 2.38709 5.54759 2.24441 5.54759 2.06837V1.68591C5.54759 1.50988 5.40488 1.36719 5.22888 1.36719Z" fill="black"/>
                     </svg>
-                    <select name="city_id" id="city_id" class="select2-registration">
+                    <select name="city_id_iur" id="city_id_iur" class="select2-registration">
                         @foreach($cities as $city)
                             <option value="{{$city->id}}">{{$city->name}}</option>
                         @endforeach
                     </select>
-                    @error('city_id')
+                    @error('city_id_iur')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -204,15 +202,13 @@
             <div class="form-control form-control-direction" style="text-align: right">
                 <ul class="password-rules">
                     <li id="length-rule" class="rule">❌ {{__('theme.password-rule-length')}}</li>
-                    <li id="uppercase-rule" class="rule">❌ {{__('theme.password-rule-uppercase-letter')}}</li>
-                    <li id="symbol-rule" class="rule">❌ {{__('theme.password-rule-special-symbols')}}</li>
                 </ul>
                 <div class="wrap">
                     <input
                         type="checkbox"
-                        class="custom-checkbox rule-checkbox"
-                        id="terms"
-                        name="terms"
+                        class="custom-checkbox rule-checkbox rule-checkbox-iur"
+                        id="terms_iur"
+                        name="terms_iur"
                         value="1"
                     />
                     <label for="policy_iur">
@@ -249,6 +245,4 @@
             </button>
         </div>
     </form>
-        </div>
-    </div>
 </div>

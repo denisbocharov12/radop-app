@@ -17,7 +17,8 @@ namespace App\Data\Theme\User;
  * @property string $codFiscal
  * @property string $contactName
  * @property int $typeId
- * @property int $cityId
+ * @property int $cityIdFiz
+ * @property int $cityIdIur
  */
 
 final class ThemeUserRegistrationData
@@ -37,7 +38,8 @@ final class ThemeUserRegistrationData
         public readonly ?string $codFiscal,
         public readonly ?string $contactName,
         public readonly int $typeId,
-        public readonly int $cityId,
+        public readonly ?int $cityIdFiz,
+        public readonly ?int $cityIdIur,
     )
     {
     }

@@ -19,10 +19,10 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" style="{{$products->isEmpty() ? '' : 'grid-template-columns: repeat(5, 1fr);'}}">
+                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" >
                         @include('frontend.v1.pages.search.parts.list')
                     </div>
-                    <div class="row mt-5 mb-5">
+                    <div class="theme-pagination">
                         {{$products->links()}}
                     </div>
                 </div>

@@ -359,4 +359,6 @@ return array (
     'filial_not_found' => 'Filial nu a fost găsit.',
     'filial_input_phone' => 'Telefon',
     'filial_input_city' => 'Oraș',
+    'previous_pagination' => 'Anterior',
+    'next_pagination' => 'Următor',
 );

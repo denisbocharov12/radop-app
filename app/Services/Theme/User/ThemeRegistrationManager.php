@@ -30,16 +30,26 @@ final class ThemeRegistrationManager
 
     public function store(ThemeUserRegistrationData $themeUserRegistrationData): User
     {
-        $existedCity = $this->cityRepository->getById($themeUserRegistrationData->cityId);
-
-        if ($existedCity === null) {
-            throw new CityNotFoundException();
-        }
+        $existedCity = null;
 
         $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
 
         if ($existedType === null) {
             throw new UserTypeNotFoundException();
+        }
+
+        if ($existedType->key_name === 'iur') {
+            $existedCity = $this->cityRepository->getById($themeUserRegistrationData->cityIdIur);
+
+            if ($existedCity === null) {
+                throw new CityNotFoundException();
+            }
+        } else {
+            $existedCity = $this->cityRepository->getById($themeUserRegistrationData->cityIdFiz);
+
+            if ($existedCity === null) {
+                throw new CityNotFoundException();
+            }
         }
 
         $lastUserNumber = User::query()->withTrashed()->get()->count() + 1;
@@ -75,7 +85,7 @@ final class ThemeRegistrationManager
             'email_verified_at' => now(),
             'status' => false,
             'type_id' => $themeUserRegistrationData->typeId,
-            'city_id' => $themeUserRegistrationData->cityId,
+            'city_id' => $existedCity->id,
         ]);
 
         $user->assignRole(self::USER_ROLE);
