@@ -104,7 +104,7 @@
                     <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.shop.parts.list')
                     </div>
-                    <div class="row mt-5 mb-5">
+                    <div class="theme-pagination">
                         {{$products->appends(request()->except('page'))->links()}}
                     </div>
                 </div>

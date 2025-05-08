@@ -10,11 +10,13 @@
 {{--            data-src="#loginModal"--}}
             href="{{route('theme.user.orders.index')}}"
         >
-            @if($user->type->key_name === "fiz")
-                {{$user->profile->first_name . ' ' . $user->profile->last_name}}
-            @else
-                {{$user->profile->organization_name}}
-            @endif
+            <span class="theme-text-sp">
+                @if($user->type->key_name === "fiz")
+                    {{$user->profile->first_name . ' ' . $user->profile->last_name}}
+                @else
+                    {{$user->profile->organization_name}}
+                @endif
+            </span>
             <i class="icon-user-radop"></i>
         </a>
     @else
@@ -24,7 +26,9 @@
             data-src="#loginModal"
             href="javascript:;"
         >
-            {{__('theme.login-registration')}}
+            <span class="theme-text-sp">
+               {{__('theme.login-registration')}}
+            </span>
             <i class="icon-user-radop"></i>
         </a>
     @endif
