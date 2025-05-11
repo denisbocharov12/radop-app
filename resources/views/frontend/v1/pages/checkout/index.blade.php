@@ -31,7 +31,14 @@
                                 <div class="row">
                                     <div class="col-md-6 col-checkout">
                                         <div class="form-control-ch">
-                                            <label for="fio">{{ __('theme.fio') }}</label>
+                                            <label for="fio">
+                                                @if (auth()->guard('user')->user() !== null &&
+                                                    auth()->guard('user')->user()->type->key_name === 'iur')
+                                                    {{ __('theme.fio_iur') }}
+                                                @else
+                                                    {{ __('theme.fio') }}
+                                                @endif
+                                            </label>
                                             <input type="text" name="fio"
                                                    class="form-control-ch-input @error('fio') input-error-validation @enderror"
                                                    required id="fio"
@@ -127,6 +134,10 @@
                                                         class="form-select @error('payment_method') input-error-validation @enderror"
                                                         required>
                                                     @foreach ($paymentMethods as $key => $value)
+                                                        @if (auth()->guard('user')->user() !== null &&
+                                                            auth()->guard('user')->user()->type->key_name === 'iur' && $key === 'transfer')
+                                                            <option value="{{ $key }}" selected>{{ $value }}</option>
+                                                        @endif
                                                         <option value="{{ $key }}">{{ $value }}</option>
                                                     @endforeach
                                                 </select>
@@ -138,20 +149,6 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div class="col-md-6 col-checkout">
-                                            <div class="form-control-ch">
-                                                <label for="address">{{ __('theme.full-address') }}</label>
-                                                <input type="text" name="address"
-                                                       class="form-control-ch-input @error('address') input-error-validation @enderror"
-                                                       required id="address" value="{{ $user?->profile?->address }}" />
-                                                @error('address')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-
-                                            </div>
-                                        </div>
                                         <div class="col-md-6 col-checkout">
                                             <div class="form-control-ch">
                                                 <label for="payment_method">{{ __('theme.payment-method') }}</label>
@@ -167,6 +164,20 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-checkout">
+                                            <div class="form-control-ch">
+                                                <label for="address">{{ __('theme.full-address') }}</label>
+                                                <input type="text" name="address"
+                                                       class="form-control-ch-input @error('address') input-error-validation @enderror"
+                                                       required id="address" value="{{ $user?->profile?->address }}" />
+                                                @error('address')
+                                                <span class="invalid-feedback d-block" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+
                                             </div>
                                         </div>
                                     @endif

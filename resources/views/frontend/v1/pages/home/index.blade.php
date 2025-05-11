@@ -73,14 +73,7 @@
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
-                                    @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}"
-                                           class="product-label">
-                                            <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                            </div>
-                                        </a>
-                                    @endif
+                                    @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
@@ -162,14 +155,7 @@
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
-                                    @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}"
-                                           class="product-label">
-                                            <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                            </div>
-                                        </a>
-                                    @endif
+                                    @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
@@ -252,14 +238,7 @@
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
-                                    @if($product->sale_price !== '')
-                                        <a href="{{route('theme.product.index', $product->slug)}}"
-                                           class="product-label">
-                                            <div class="product-label-wrap">
-                                                <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                            </div>
-                                        </a>
-                                    @endif
+                                    @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"

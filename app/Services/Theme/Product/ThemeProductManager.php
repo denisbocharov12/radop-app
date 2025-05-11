@@ -284,6 +284,27 @@ final class ThemeProductManager
         return $price;
     }
 
+    public static function getProductSaleForLabel($product)
+    {
+        $user = Auth::guard('user')->user();
+        $price = (float)$product->price;
+        $priceKoef = (float)$product->price_koef;
+
+        if ($user !== null && $user->with_sale) {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = $price - $price * ($user->sale / 100);
+            }
+        } else {
+            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = $price * $priceKoef - $price * $priceKoef * ($user->sale / 100);
+            } else{
+                $price = $price * $priceKoef;
+            }
+        }
+
+        return round((($price - (float)$product->sale_price) / $price) * 100);
+    }
+
     public static function getProductTotalSumWithReplace($product)
     {
         $user = Auth::guard('user')->user();

@@ -115,11 +115,6 @@ class ProductManager
 
     public function update(ProductData $productData, Product $product, ProductRequest $request): void
     {
-        $existedCategory = $this->categoryRepository->getByOnecId($productData->categoryId);
-
-        if ($existedCategory === null) {
-            throw new CategoryNotFoundException();
-        }
 
         $existedBrand = $this->brandRepository->getByOnecId($productData->brandId);
 
