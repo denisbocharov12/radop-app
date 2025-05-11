@@ -9796,7 +9796,7 @@ hr.product-card-item{
     .sort-options{
         flex-wrap: wrap;
         align-items: flex-end;
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
     .col-theme-filters{
         position: relative;
@@ -10050,9 +10050,6 @@ hr.product-card-item{
     }
 }
 @media (max-width: 500px) {
-    .grid-products-list-wrap{
-        grid-template-columns: repeat(1, 1fr);
-    }
     .my-account-selects {
         justify-content: start;
     }
@@ -10115,6 +10112,9 @@ hr.product-card-item{
     }
 }
 @media (max-width: 375px) {
+    .grid-products-list-wrap{
+        grid-template-columns: repeat(1, 1fr);
+    }
     .my-account-details-form__list {
         grid-gap: 15px;
     }
