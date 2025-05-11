@@ -136,30 +136,30 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="category_id">Категория</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" data-search="on" required name="category_id[]" multiple id="category_id" data-placeholder="Выберите категорию">
-                                                        <option value="">Категория</option>
-                                                        @foreach($categories as $category)
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="form-label" for="category_id">Категория</label>--}}
+{{--                                                <div class="form-control-wrap">--}}
+{{--                                                    <select class="form-select js-select2" data-search="on" required name="category_id[]" multiple id="category_id" data-placeholder="Выберите категорию">--}}
+{{--                                                        <option value="">Категория</option>--}}
+{{--                                                        @foreach($categories as $category)--}}
 
-                                                            @php
-                                                            if (count($product?->categories) > 1) {
-                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();
-                                                            }
-                                                            else {
-                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->first();
-                                                            }
+{{--                                                            @php--}}
+{{--                                                            if (count($product?->categories) > 1) {--}}
+{{--                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->where('category_id', $category->onec_id)->first();--}}
+{{--                                                            }--}}
+{{--                                                            else {--}}
+{{--                                                                $existedProductCategory = \App\Models\ProductCategory::query()->where('product_id', $product->onec_id)->first();--}}
+{{--                                                            }--}}
 
-                                                            @endphp
+{{--                                                            @endphp--}}
 
-                                                            <option {{$existedProductCategory?->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                                            <option {{$existedProductCategory?->category_id === $category->onec_id ? 'selected' : ''}} value="{{$category->onec_id}}">{{$category->name}}</option>--}}
+{{--                                                        @endforeach--}}
+{{--                                                    </select>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="brand_id">Брэнд</label>

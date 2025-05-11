@@ -19,7 +19,9 @@
                 @if($product->conditions->sale_price !== '')
                     <a href="{{route('theme.product.index', $product->conditions->slug)}}" class="product-label">
                         <div class="product-label-wrap">
-                            <span class="product-label-span">- {{round((((float)$product->conditions->price * (float)$product->conditions->price_koef - (float)$product->conditions->sale_price) / $product->conditions->price* (float)$product->conditions->price_koef) * 100)}}%</span>
+                            <span class="product-label-span">
+                                - {{\App\Services\Theme\Product\ThemeProductManager::getProductSaleForLabel($product->conditions)}}%
+                            </span>
                         </div>
                     </a>
                 @endif

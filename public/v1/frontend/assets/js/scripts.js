@@ -574,6 +574,18 @@ $(document).ready(function () {
         var result = (qtyCount*productPrice)/packageCount;
 
         changedElement.html(result.toFixed(2).replace('.',','));
+    });
+
+    $('.product-qty-item').change(function (){
+        var qtyCount = $(this).val();
+        var productId = $(this).data('product-id');
+        var productPrice = $(this).data('price');
+        var packageCount = $(this).data('package');
+
+        var changedElement = $('#product-card-summary-'+productId);
+        var result = (qtyCount*productPrice)/packageCount;
+
+        changedElement.html(result.toFixed(2).replace('.',','));
     })
 
   $(".filter-select").select2();
@@ -789,4 +801,127 @@ $(document).ready(function () {
         }
     })
 });
+
+document.addEventListener("DOMContentLoaded", (() => {
+    const catalog = document.querySelector(".catalog");
+    if (catalog) {
+        const body = document.body;
+        const catalogBtn = document.querySelector(".catalog-btn");
+        const catalogCloseBtn = document.querySelector(".catalog__close-btn");
+        const secondColumn = document.querySelector(".catalog__second-column");
+        const secondColumnList = document.querySelectorAll(".catalog__second-column .column-catalog__item");
+        const thirdColumn = document.querySelector(".catalog__third-column");
+        const thirdColumnList = document.querySelectorAll(".catalog__third-column .column-catalog__item");
+        const allSecondColumnLinks = document.querySelectorAll(".catalog__second-column .drop-menu-list__link");
+        catalogBtn.addEventListener("click", openCatalog);
+        catalog.addEventListener("click", getBack);
+        catalog.addEventListener("click", openSecondColumn);
+        catalogCloseBtn.addEventListener("click", closeBtnHeadler);
+        secondColumn.addEventListener("click", openThirdColumn);
+        let mainCurrentLink = null;
+        let secondCurrenLink = null;
+        function getBack(event) {
+            event.stopPropagation();
+            if (event.target.classList.contains("column-catalog__back")) {
+                const currentCulmn = event.target.closest(".column-catalog");
+                if (currentCulmn) {
+                    currentCulmn.classList.remove("_active");
+                    let columnCatalogItem = currentCulmn.querySelector(".column-catalog__item--active");
+                    if (columnCatalogItem) columnCatalogItem.classList.remove("column-catalog__item--active");
+                    let activeLink = currentCulmn.querySelector(".drop-menu-list__link._active");
+                    if (activeLink) activeLink.classList.remove("_active");
+                }
+            }
+        }
+        function openCatalog(event) {
+            event.stopPropagation();
+            if (event.target.classList.contains("catalog-btn") || event.target.closest(".catalog-btn")) {
+                catalog.classList.add("catalog--active");
+                body.classList.add("body-lock");
+                body.addEventListener("click", removeCatalog);
+            }
+        }
+        function removeCatalog({target}) {
+            if (target.classList.contains("catalog") || target.closest(".catalog")) return;
+            closeMenu();
+        }
+        function openSecondColumn({target}) {
+            console.log(target.classList, target.closest(".main-column-catalog__link"))
+            if (target.classList.contains("main-column-catalog__link") || target.closest(".main-column-catalog__link")) {
+                mainCurrentLink?.classList.remove("_active");
+                secondCurrenLink?.classList.remove("_active");
+                thirdColumn.classList.remove("_active");
+                let currentElem = target.closest(".main-column-catalog__link");
+                currentElem.classList.add("_active");
+                mainCurrentLink = currentElem;
+                secondColumn.classList.add("_active");
+                const elemId = target.dataset.mainCategory;
+                [ ...secondColumnList ].forEach((elem => {
+                    elem.classList.remove("column-catalog__item--active");
+                    if (elem.id === elemId) elem.classList.add("column-catalog__item--active");
+                }));
+            }
+        }
+        function openThirdColumn(event) {
+            if (event.target.closest(".drop-menu-list__link") && event.target.dataset.secondCategory) {
+                event.preventDefault();
+                secondCurrenLink = event.target.closest(".drop-menu-list__link");
+                let clickedElem = secondCurrenLink;
+                if (clickedElem.classList.contains("_active")) {
+                    allSecondColumnLinks.forEach((elem => elem.classList.remove("_active")));
+                    thirdColumn.classList.remove("_active");
+                    return;
+                }
+                allSecondColumnLinks.forEach((elem => elem.classList.remove("_active")));
+                clickedElem.classList.add("_active");
+                thirdColumn.classList.add("_active");
+                const elemId = event.target.dataset.secondCategory;
+                [ ...thirdColumnList ].forEach((elem => {
+                    elem.classList.remove("column-catalog__item--active");
+                    if (elem.id === elemId) elem.classList.add("column-catalog__item--active");
+                }));
+            }
+        }
+        function closeBtnHeadler({target}) {
+            if (target.classList.contains("catalog__close-btn") || target.closest(".catalog__close-btn")) closeMenu();
+        }
+        function closeMenu() {
+            catalog.classList.remove("catalog--active");
+            secondColumn.classList.remove("_active");
+            if (mainCurrentLink) mainCurrentLink.classList.remove("_active");
+            if (secondCurrenLink) secondCurrenLink.classList.remove("_active");
+            [ ...secondColumnList ].forEach((elem => {
+                elem.classList.remove("column-catalog__item--active");
+            }));
+            [ ...thirdColumnList ].forEach((elem => {
+                elem.classList.remove("column-catalog__item--active");
+            }));
+            body.classList.remove("body-lock");
+            body.removeEventListener("click", removeCatalog);
+        }
+    }
+}));
+document.addEventListener("DOMContentLoaded", (() => {
+    const mobileNavBarMenu = document.querySelector(".catalog-navbar");
+    if (mobileNavBarMenu) {
+        const mobileNavBarMenuBtn = document.querySelector(".navbar-menu__link_catalog");
+        const searchMenu = document.querySelector(".search-menu-navbar");
+        const openSearchMenuBtn = document.querySelector(".catalog-navbar__search");
+        const closeSearchMenuBtn = document.querySelector(".search-menu-navbar__close");
+        mobileNavBarMenuBtn.addEventListener("click", navBarCatalogToggle);
+        // openSearchMenuBtn.addEventListener("click", searchMenuOpen);
+        closeSearchMenuBtn.addEventListener("click", closeSearchMenu);
+        function searchMenuOpen(event) {
+            event.stopPropagation();
+            if (event.target.closest(".catalog-navbar__search")) searchMenu.classList.add("_active");
+        }
+        function closeSearchMenu(event) {
+            event.stopPropagation();
+            if (event.target.closest(".search-menu-navbar__close")) searchMenu.classList.remove("_active");
+        }
+        function navBarCatalogToggle(event) {
+            if (event.target.closest(".navbar-menu__link_catalog")) mobileNavBarMenu.classList.toggle("_active");
+        }
+    }
+}));
 

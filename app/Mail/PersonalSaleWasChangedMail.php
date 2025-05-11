@@ -20,7 +20,7 @@ final class PersonalSaleWasChangedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Radop Moldova - Reduceri personale pe sait-ul nostru!',
+            subject: 'Reducere personală',
         );
     }
 
