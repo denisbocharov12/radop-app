@@ -1,6 +1,14 @@
-<div class="sort-block">
-    @include('frontend.v1.pages.brand.parts.sort-products')
-</div>
+<section class="section-standart section-sort">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="sort-block">
+                    @include('frontend.v1.components.sort-products')
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="section-standart section-category pt-0">
     <div class="container">
         <div class="row row-category-list">
