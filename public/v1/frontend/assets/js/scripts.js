@@ -576,7 +576,7 @@ $(document).ready(function () {
         changedElement.html(result.toFixed(2).replace('.',','));
     });
 
-    $('.product-qty-item').change(function (){
+    $('.product-qty-item').on('change', function (){
         var qtyCount = $(this).val();
         var productId = $(this).data('product-id');
         var productPrice = $(this).data('price');
