@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="sort-block">
-                    @include('frontend.v1.components.sort-products')
+                    @include('frontend.v1.pages.shop.parts.sort-products')
                 </div>
             </div>
         </div>

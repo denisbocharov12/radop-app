@@ -5715,7 +5715,7 @@ header .section-header .row-main .header-menu .col-lg{
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.08);
 }
 .grid-products-list-wrap{
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     display: grid;
     column-gap: 10px;
 }
