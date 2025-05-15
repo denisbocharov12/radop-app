@@ -88,6 +88,7 @@
                         <path d="M5.22888 1.36719C5.05288 1.36719 4.91016 1.50988 4.91016 1.68591V2.06837C4.91016 2.24441 5.05288 2.38709 5.22888 2.38709C5.40488 2.38709 5.54759 2.24441 5.54759 2.06837V1.68591C5.54759 1.50988 5.40488 1.36719 5.22888 1.36719Z" fill="black"/>
                     </svg>
                     <select name="city_id_fiz" id="city_id_fiz" required class="select2-registration">
+                        <option value="0" selected >{{ __('theme.select-city') }}</option>
                         @foreach($cities as $city)
                             <option value="{{$city->id}}">{{$city->name}}</option>
                         @endforeach
@@ -197,7 +198,7 @@
             </div>
         </div>
         <div class="center">
-            <div class="form-control form-control-direction" style="text-align: right">
+            <div class="form-control form-control-direction" style="text-align: center">
                 <ul class="password-rules">
                     <li id="length-rule" class="rule">❌ {{__('theme.password-rule-length')}}</li>
                 </ul>

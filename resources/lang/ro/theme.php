@@ -323,7 +323,7 @@ return array (
     'min_delivery_sum_to_order' => 'Pănă la comanda minima: :sum lei.',
     'default_delivery_method' => 'Livrare catre client din suma minima de comanda.',
     'fio' => 'Nume',
-    'iur_fio' => 'Numele companiei',
+    'fio_iur' => 'Numele companiei',
     'show_title_text' => 'Da',
     'hide_title_text' => 'Nu',
     'recommended_time_title' => 'Doriți să specificați un timp de livrare convenabil pentru dvs.?',

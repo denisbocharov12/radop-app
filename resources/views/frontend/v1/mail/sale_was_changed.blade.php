@@ -28,7 +28,7 @@
                             Pentru a vedea prețurile personale, vă rugăm să vă autentificați pe site-ul nostru. Discountul se aplică automat după autentificare, fără alte acțiuni necesare.
                             <br>
                             <br>
-                            Dacă aveți întrebări, vă rugăm să contactați managerul dvs. personal sau serviciul de support la număr <a href="tel:079782112">079 78 21 12</a>.
+                            Dacă aveți întrebări, vă rugăm să contactați managerul dvs. personal sau serviciul de suport la numărul <a href="tel:079782112">079 78 21 12</a>.
                         </p>
                         <p style="margin-top: 15px;">Cu respect RĂDOP-OPT SRL</p>
                     </td>

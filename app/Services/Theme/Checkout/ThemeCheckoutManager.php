@@ -76,13 +76,6 @@ final class ThemeCheckoutManager
 
             $existedCity = $existedFilial->city;
 
-            if ((float)$existedFilial->city->required_sum === null || $existedFilial->city->delivery_sum === null) {
-                throw new ThemeCityErrorRequiredSumException();
-            }
-
-            if($this->getCartSubtotalValue() < (float)$existedFilial->city->required_sum) {
-                throw new MinOrderSumException();
-            }
         }
 
         if ($existedFilial === null) {
@@ -108,6 +101,10 @@ final class ThemeCheckoutManager
         $deliverySum = (float)$existedCity->delivery_sum;
 
         if ((float)$existedCity->required_sum <= $this->getCartSubtotalValue()) {
+            $deliverySum = 0;
+        }
+
+        if ($existedFilial !== null) {
             $deliverySum = 0;
         }
 
