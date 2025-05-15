@@ -323,7 +323,7 @@ return array (
     'min_delivery_sum_to_order' => 'До мин. заказа: :sum лей.',
     'default_delivery_method' => 'Доставка клиенту от минимальной суммы заказа.',
     'fio' => 'Имя',
-    'iur_fio' => 'Название компании',
+    'fio_iur' => 'Название компании',
     'show_title_text' => 'Да',
     'hide_title_text' => 'Нет',
     'recommended_time_title' => 'Желаете указать удобное для вас время доставки?',

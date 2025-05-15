@@ -325,22 +325,22 @@
                     .toFixed(2));
             });
 
-            $('#filial_id').change(function() {
-                var total = $('#checkout-final-price').data('total');
-                $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
-                if (total < $(this).find(':selected').data('required-sum')) {
-                    $('.sc-btn-submit').addClass('hide');
-                    $('.min-order-sum-warning-text').addClass('show');
-                    $('.min-order-sum-warning-text').find('.sum').text($(this).find(':selected').data(
-                        'required-sum'));
-                } else {
-                    $('.sc-btn-submit').removeClass('hide');
-                    $('.min-order-sum-warning-text').removeClass('show');
-                }
-
-                $('#checkout-final-price').text((total + $(this).find(':selected').data('delivery-charge'))
-                    .toFixed(2));
-            });
+            // $('#filial_id').change(function() {
+            //     var total = $('#checkout-final-price').data('total');
+            //     $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
+            //     if (total < $(this).find(':selected').data('required-sum')) {
+            //         $('.sc-btn-submit').addClass('hide');
+            //         $('.min-order-sum-warning-text').addClass('show');
+            //         $('.min-order-sum-warning-text').find('.sum').text($(this).find(':selected').data(
+            //             'required-sum'));
+            //     } else {
+            //         $('.sc-btn-submit').removeClass('hide');
+            //         $('.min-order-sum-warning-text').removeClass('show');
+            //     }
+            //
+            //     $('#checkout-final-price').text((total + $(this).find(':selected').data('delivery-charge'))
+            //         .toFixed(2));
+            // });
 
             $('.show_recommended_time_btn').click(function() {
                 if ($(this).hasClass('show')) {

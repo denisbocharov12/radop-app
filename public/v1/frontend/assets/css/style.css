@@ -1984,7 +1984,6 @@ header .section-header .row-main .header-menu .col-lg{
 .section-page-catalog .row-header-catalog .col-list-content .wrap-content a.link{
     font-weight: 400 !important;
     color: #252525;
-    letter-spacing: 1px;
     padding: 5px;
     border: 0;
 }
@@ -6865,7 +6864,7 @@ hr.product-card-item{
 .section-register .col-register-wrap #tabs .block-botton {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     margin-bottom: 15px;
 }
 
@@ -6899,10 +6898,18 @@ hr.product-card-item{
     width: 50%;
     padding: 22px;
     text-align: center;
-    font-weight: 700;
+    font-weight: 600;
     background-color: #e7e7e7;
     color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
+    font-size: 22px;
+}
+.slick-slider {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 .section-register .col-register-wrap #tabs .tab-block .tab:first-child {

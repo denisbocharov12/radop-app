@@ -49,7 +49,7 @@
                 <h1>{{ __('delivery.payment-method') }}</h1>
                 <p>{!! __('delivery.payment-method-1') !!}</p>
                 <p>{!! __('delivery.payment-method-2') !!}</p>
-{{--                <p class="warning">{!! __('delivery.payment-method-3') !!}</p>--}}
+                <p>{!! __('delivery.payment-method-3') !!}</p>
                 <h2>{{ __('delivery.information') }}</h2>
                 <p>{!! __('delivery.information-1') !!}</p>
                 <p>{!! __('delivery.information-2') !!}</p>
