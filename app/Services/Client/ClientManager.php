@@ -146,6 +146,17 @@ class ClientManager
         $user->profile()->delete();
     }
 
+    public function restore(int $userId): void
+    {
+        $user = $this->userRepository->getById($userId);
+
+        if ($user === null) {
+            throw new UserNotFoundException();
+        }
+
+        $user->restore();
+    }
+
     public function generateNewPassword(User $user): array
     {
         $password = Str::random(10);

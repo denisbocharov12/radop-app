@@ -12,7 +12,7 @@
             </div>
         </div><!-- .nk-tb-item -->
         @foreach($users as $user)
-            <div class="nk-tb-item" id="model-id-{{$user->id}}">
+            <div class="nk-tb-item" id="model-id-{{$user->id}}" style="background-color: {{$user->deleted_at !== null ? 'rgba(255,0,0,0.4);color: black;' : ''}}">
                 <div class="nk-tb-col">
                     <span>#{{$user->id}}</span>
                 </div>
@@ -57,9 +57,14 @@
                                 <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{route('client.show', $user)}}"><em class="icon ni ni-eye"></em><span>Просмотреть</span></a></li>
-                                        <li><a href="{{route('client.edit', $user)}}" data-id="{{$user->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="#" class="model-delete" id="model-delete-{{$user->id}}" data-id="{{$user->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
+                                        @if($user->deleted_at !== null)
+                                            <li><a href="{{route('client.restore', ['user_id' => $user->id])}}"><em class="icon ni ni-arrow-left-fill-c"></em><span>Восстановить</span></a></li>
+                                        @else
+                                            <li><a href="{{route('client.show', $user)}}"><em class="icon ni ni-eye"></em><span>Просмотреть</span></a></li>
+                                            <li><a href="{{route('client.edit', $user)}}" data-id="{{$user->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
+                                            <li><a href="#" class="model-delete" id="model-delete-{{$user->id}}" data-id="{{$user->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
+                                        @endif
+
                                     </ul>
                                 </div>
                             </div>
