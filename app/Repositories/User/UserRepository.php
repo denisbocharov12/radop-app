@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
+use App\Filters\ClientSearchFilter;
+use App\Filters\ClientWithTrashedFilter;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserActivation;
 use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class UserRepository
@@ -86,19 +89,22 @@ final class UserRepository
         return User::query()->get()->last();
     }
 
-    public function getUsers(): LengthAwarePaginator
+    public function getUsersPaginatedWithFilters(): LengthAwarePaginator
     {
         $query = User::query()->role('user');
 
         return QueryBuilder::for($query)
             ->allowedFilters([
-
+                AllowedFilter::custom('search', new ClientSearchFilter()),
+                AllowedFilter::custom('with_trashed', new ClientWithTrashedFilter()),
             ])
             ->defaultSort('-id')
             ->allowedSorts([
                 'id',
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
+            ->withQueryString()
+            ->appends(request()->query())
         ;
     }
 

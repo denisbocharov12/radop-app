@@ -23,6 +23,7 @@ use App\Repositories\User\UserRepository;
 use App\Exceptions\NotAjaxRequestException;
 use App\Services\Client\ClientManager;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -47,9 +48,11 @@ class ClientController extends Controller
         $this->clientUpdateDataMapper = $clientUpdateDataMapper;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->userRepository->getUsers();
+        $query = $request->query('filter');
+
+        $users = $this->userRepository->getUsersPaginatedWithFilters();
         $roles = $this->userRepository->getAllRoles();
         $userTypes = $this->userRepository->getAllUserTypes();
         $cities = $this->cityRepository->getAllSorted();
@@ -59,6 +62,7 @@ class ClientController extends Controller
             'roles',
             'userTypes',
             'cities',
+            'query'
         ]));
     }
 
@@ -138,6 +142,17 @@ class ClientController extends Controller
             $this->clientManager->delete($request);
 
             return response()->json(['id' => $request->user_id]);
+        } catch (UserNotFoundException $e) {
+            throw new UserNotFoundValidationException();
+        }
+    }
+
+    public function restore(Request $request)
+    {
+        try {
+            $this->clientManager->restore((int)$request->input('production_id'));
+
+            return redirect()->route('client.index');
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
         }

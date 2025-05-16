@@ -34,4 +34,8 @@ Route::prefix('clients')->name('client.')->group(function () {
         ->get('{user}/generate', [ClientController::class, 'generateNewPassword'])
         ->name('generate')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/restore', [ClientController::class, 'restore'])
+        ->name('restore')
+    ;
 });
