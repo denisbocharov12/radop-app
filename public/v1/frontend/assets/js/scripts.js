@@ -450,10 +450,10 @@ function showTabsContent(b) {
 }
 
 // EYE
-$(".eye_fiz").on("click", function (e) {
+$(".eye_change_type").on("click", function (e) {
   var t, c;
   e.preventDefault();
-  var t = $("#password_fiz").attr("type");
+  var t = $("#password").attr("type");
   var c = $(this).find("i").attr("class");
   if (c == "fa fa-eye") {
     $(this).find("i").removeClass("fa-eye");
@@ -463,91 +463,11 @@ $(".eye_fiz").on("click", function (e) {
     $(this).find("i").removeClass("fa-eye-slash");
   }
   if (t == "password") {
-    $("#password_fiz").attr("type", "text");
+    $("#password").attr("type", "text");
   } else {
-    $("#password_fiz").attr("type", "password");
+    $("#password").attr("type", "password");
   }
 });
-$(".eye_iur").on("click", function (e) {
-  var t, c;
-  e.preventDefault();
-  var t = $("#password_iur").attr("type");
-  var c = $(this).find("i").attr("class");
-  if (c == "fa fa-eye") {
-    $(this).find("i").removeClass("fa-eye");
-    $(this).find("i").addClass("fa-eye-slash");
-  } else {
-    $(this).find("i").addClass("fa-eye");
-    $(this).find("i").removeClass("fa-eye-slash");
-  }
-  if (t == "password") {
-    $("#password_iur").attr("type", "text");
-  } else {
-    $("#password_iur").attr("type", "password");
-  }
-});
-
-$('.eye_iur_confirm').on("click", function (e) {
-    var t, c;
-    e.preventDefault();
-    var t = $("#password_confirmation_iur").attr("type");
-    var c = $(this).find("i").attr("class");
-    if (c == "fa fa-eye") {
-        $(this).find("i").removeClass("fa-eye");
-        $(this).find("i").addClass("fa-eye-slash");
-    } else {
-        $(this).find("i").addClass("fa-eye");
-        $(this).find("i").removeClass("fa-eye-slash");
-    }
-    if (t == "password") {
-        $("#password_confirmation_iur").attr("type", "text");
-    } else {
-        $("#password_confirmation_iur").attr("type", "password");
-    }
-});
-
-//DESCTOP MENU
-// const ham_open_dk = $('#desktop-menu');
-// const ham_close_dk = $('.overlay-close');
-// const navExpand_dk = [].slice.call(document.querySelectorAll('.nav-expand-dk'))
-// const backLink_dk = `<li class="nav-item">
-//         <a class="nav-link-dk nav-back-link" href="javascript:;">
-//           Назад
-//         </a>
-//       </li>`
-
-// navExpand_dk.forEach(item => {
-//     item.querySelector('.nav-expand-content-dk').insertAdjacentHTML('afterbegin', backLink_dk)
-//     item.querySelector('.nav-link-dk').addEventListener('click', () => item.classList.add('active'))
-//     item.querySelector('.nav-back-link').addEventListener('click', () => item.classList.remove('active'))
-// })
-// ham_open_dk.click(function(){
-//     ham_open_dk.addClass('active');
-//     $('#nav-drill-desck').addClass('nav-is-toggled');
-//     $('.overlay-close').addClass('active');
-// })
-// ham_close_dk.click(function(){
-//     ham_open_dk.removeClass('active');
-//     $('#nav-drill-desck').removeClass('nav-is-toggled');
-//     $('.overlay-close').removeClass('active');
-// });
-
-// Header
-
-// $(window).scroll(function () {
-//   var header = $(document).scrollTop();
-//   var headerHeight = $('#header').outerHeight();
-//   if (header > 0) {
-//     $('#header').addClass('fixed');
-//   } else {
-//     $('#header').removeClass('fixed');
-//   }
-//   if (header > 250) {
-//     $('#header').addClass('in-view');
-//   } else {
-//     $('#header').removeClass('in-view');
-//   }
-// });
 $(function () {
   $(".vertical-tabs").delegate("li:not(.chosen)", "click", function () {
     $(this)
@@ -916,7 +836,7 @@ document.addEventListener("DOMContentLoaded", (() => {
         const closeSearchMenuBtn = document.querySelector(".search-menu-navbar__close");
         mobileNavBarMenuBtn.addEventListener("click", navBarCatalogToggle);
         // openSearchMenuBtn.addEventListener("click", searchMenuOpen);
-        closeSearchMenuBtn.addEventListener("click", closeSearchMenu);
+        // closeSearchMenuBtn.addEventListener("click", closeSearchMenu);
         function searchMenuOpen(event) {
             event.stopPropagation();
             if (event.target.closest(".catalog-navbar__search")) searchMenu.classList.add("_active");

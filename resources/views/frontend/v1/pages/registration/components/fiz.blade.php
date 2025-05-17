@@ -100,7 +100,7 @@
                     @enderror
                 </div>
                 <div class="form-control form-password form-control-direction">
-                    <a href="#" class="qu eye eye_iur"><i class="fa fa-eye-slash"></i></a>
+                    <a href="#" class="qu eye eye_fiz"><i class="fa fa-eye-slash"></i></a>
                     <svg class="icon-style" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="gray">
                         <path d="M8 1a3 3 0 0 1 3 3v2h1a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h1V4a3 3 0 0 1 3-3zm0 2a1 1 0 0 0-1 1v2h2V4a1 1 0 0 0-1-1zm4 5H4v5h8V8z"/>
                     </svg>
@@ -176,7 +176,7 @@
                     @enderror
                 </div>
                 <div class="form-control form-password form-control-direction">
-                    <a href="#" class="qu eye eye_iur_confirm"><i class="fa fa-eye-slash"></i></a>
+                    <a href="#" class="qu eye eye_fiz_confirm"><i class="fa fa-eye-slash"></i></a>
                     <svg class="icon-style" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="gray">
                         <path d="M8 1a3 3 0 0 1 3 3v2h1a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h1V4a3 3 0 0 1 3-3zm0 2a1 1 0 0 0-1 1v2h2V4a1 1 0 0 0-1-1zm4 5H4v5h8V8z"/>
                     </svg>

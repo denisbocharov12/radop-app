@@ -159,6 +159,83 @@
                 overwrite: 'shift',
             };
             const maskPhoneFiz = IMask(phoneFiz, optionsPhoneFiz);
+
+            // EYE
+            $(".eye_fiz").on("click", function (e) {
+                var t, c;
+                e.preventDefault();
+                var t = $("#password_fiz").attr("type");
+                var c = $(this).find("i").attr("class");
+                if (c == "fa fa-eye") {
+                    $(this).find("i").removeClass("fa-eye");
+                    $(this).find("i").addClass("fa-eye-slash");
+                } else {
+                    $(this).find("i").addClass("fa-eye");
+                    $(this).find("i").removeClass("fa-eye-slash");
+                }
+                if (t == "password") {
+                    $("#password_fiz").attr("type", "text");
+                } else {
+                    $("#password_fiz").attr("type", "password");
+                }
+            });
+
+            $('.eye_fiz_confirm').on("click", function (e) {
+                var t, c;
+                e.preventDefault();
+                var t = $("#password_confirmation_fiz").attr("type");
+                var c = $(this).find("i").attr("class");
+                if (c == "fa fa-eye") {
+                    $(this).find("i").removeClass("fa-eye");
+                    $(this).find("i").addClass("fa-eye-slash");
+                } else {
+                    $(this).find("i").addClass("fa-eye");
+                    $(this).find("i").removeClass("fa-eye-slash");
+                }
+                if (t == "password") {
+                    $("#password_confirmation_fiz").attr("type", "text");
+                } else {
+                    $("#password_confirmation_fiz").attr("type", "password");
+                }
+            });
+
+            $(".eye_iur").on("click", function (e) {
+                var t, c;
+                e.preventDefault();
+                var t = $("#password_iur").attr("type");
+                var c = $(this).find("i").attr("class");
+                if (c == "fa fa-eye") {
+                    $(this).find("i").removeClass("fa-eye");
+                    $(this).find("i").addClass("fa-eye-slash");
+                } else {
+                    $(this).find("i").addClass("fa-eye");
+                    $(this).find("i").removeClass("fa-eye-slash");
+                }
+                if (t == "password") {
+                    $("#password_iur").attr("type", "text");
+                } else {
+                    $("#password_iur").attr("type", "password");
+                }
+            });
+
+            $('.eye_iur_confirm').on("click", function (e) {
+                var t, c;
+                e.preventDefault();
+                var t = $("#password_confirmation_iur").attr("type");
+                var c = $(this).find("i").attr("class");
+                if (c == "fa fa-eye") {
+                    $(this).find("i").removeClass("fa-eye");
+                    $(this).find("i").addClass("fa-eye-slash");
+                } else {
+                    $(this).find("i").addClass("fa-eye");
+                    $(this).find("i").removeClass("fa-eye-slash");
+                }
+                if (t == "password") {
+                    $("#password_confirmation_iur").attr("type", "text");
+                } else {
+                    $("#password_confirmation_iur").attr("type", "password");
+                }
+            });
         })
     </script>
 @endsection
