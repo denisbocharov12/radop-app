@@ -137,8 +137,9 @@
                                                         @if (auth()->guard('user')->user() !== null &&
                                                             auth()->guard('user')->user()->type->key_name === 'iur' && $key === 'transfer')
                                                             <option value="{{ $key }}" selected>{{ $value }}</option>
+                                                        @else
+                                                            <option value="{{ $key }}">{{ $value }}</option>
                                                         @endif
-                                                        <option value="{{ $key }}">{{ $value }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('payment_method')
