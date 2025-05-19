@@ -289,7 +289,7 @@ final class ThemeProductManager
         $user = Auth::guard('user')->user();
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
-        $productSale = (float)$product->sale_price;
+        $productSale = $product->sale_price;
 
         if ($productSale === '' || $productSale === 0) {
             $productSale = 0;
