@@ -58,6 +58,13 @@ final class ProductImportJsonJob implements ShouldQueue
                 $shtrihCode = $product->shtrih_code;
             }
 
+            // TODO: Add default value for admin
+            $priceKoef = 1.25;
+
+            if (isset($product->price_koef) && $product->price_koef > 0) {
+                $priceKoef = $product->price_koef;
+            }
+
             $data = [
                 'title' => [
                     'ro' => isset($product->name_ro_full) ? $product->name_ro_full : '',
@@ -70,7 +77,7 @@ final class ProductImportJsonJob implements ShouldQueue
                 'brand_id' => $product->brand_id,
                 'shtrih_code' => $shtrihCode,
                 'characteristic' => json_encode($characteristics),
-                'price_koef' => isset($product->price_koef) ? (float)$product->price_koef : null,
+                'price_koef' => $priceKoef,
             ];
 
             Product::updateOrCreate(['onec_id' => $product->id], $data);
