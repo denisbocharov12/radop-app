@@ -289,9 +289,9 @@ final class ThemeProductManager
         $user = Auth::guard('user')->user();
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
-        $productSale = 0;
+        $productSale = 0.0;
 
-        if ($product->sale_price !== '' || $product->sale_price !== 0) {
+        if ((float)$product->sale_price !== 0.0) {
             $productSale = (float)$product->sale_price;
         }
 
@@ -307,7 +307,7 @@ final class ThemeProductManager
             }
         }
 
-        return round((($price - $productSale) / $price) * 100);
+        return (($price - $productSale) / $price) * 100;
     }
 
     public static function getProductTotalSumWithReplace($product)
