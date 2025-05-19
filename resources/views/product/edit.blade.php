@@ -65,7 +65,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="sale_price">Цена на скидке</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('sale_price') error @enderror" value="{{$product->sale_price}}" id="sale_price" name="sale_price" placeholder="254">
+                                                    <input type="number" step="0.01" class="form-control @error('sale_price') error @enderror" value="{{$product->sale_price}}" id="sale_price" name="sale_price" placeholder="254">
                                                     @error('sale_price')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
