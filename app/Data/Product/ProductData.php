@@ -47,6 +47,7 @@ final class ProductData
         public readonly ?string $iurPrice,
         public readonly string $condition,
         public readonly ?string $shtrih_code,
+        public readonly ?int $minOrder,
     )
     {
     }

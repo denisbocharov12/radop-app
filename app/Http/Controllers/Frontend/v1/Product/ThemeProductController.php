@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Product;
 
-use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Product\ProductNotFoundException;
 use App\Exceptions\Product\ProductNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\AddToCartDataMapper;
 use App\Http\Requests\Theme\Product\AddToCartRequest;
-use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\Theme\Product\ThemeProductManager;

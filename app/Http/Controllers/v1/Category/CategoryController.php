@@ -132,4 +132,28 @@ class CategoryController extends Controller
 
         return response()->json(['status' => true, 'text' => 'Категории успешно отсортированы']);
     }
+
+    public function sortCatalogIndex()
+    {
+        $categories = $this->categoryRepository->getAllParentsSortedByCatalogOrder();
+
+        return view('category.catalog_sorts', compact([
+            'categories',
+        ]));
+    }
+
+    public function sortCatalogOrder(Request $request)
+    {
+        $categories = $this->categoryRepository->getAllParentsSortedByCatalogOrder();
+
+        foreach ($categories as $category) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $category->id) {
+                    $category->update(['catalog_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Категории каталога успешно отсортированы']);
+    }
 }

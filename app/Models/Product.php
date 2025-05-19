@@ -44,6 +44,7 @@ final class Product extends Model implements HasMedia
         'characteristic',
         'deleted_at',
         'price_koef',
+        'min_order',
     ];
 
     protected $casts = [
