@@ -25,6 +25,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $iur_price
  * @property string $condition
  * @property string $shtrih_code
+ * @property int $min_order
  */
 class ProductRequest extends FormRequest
 {
@@ -52,6 +53,7 @@ class ProductRequest extends FormRequest
             'iur_price' => ['nullable', 'numeric'],
             'condition' => ['required', 'string'],
             'shtrih_code' => ['nullable', 'string'],
+            'min_order' => ['nullable', 'integer'],
         ];
     }
 }

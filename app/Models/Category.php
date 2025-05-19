@@ -39,6 +39,7 @@ final class Category extends Model implements HasMedia
         'summary',
         'status',
         'order',
+        'catalog_order',
         'deleted_at',
     ];
 

@@ -91,6 +91,11 @@ class CategoryRepository
         return Category::query()->orderBy('order')->get();
     }
 
+    public function getAllParentsSortedByCatalogOrder(): Collection
+    {
+        return Category::query()->where('parent_id', null)->orderBy('catalog_order')->get();
+    }
+
     public function getAllWithTrashed(): Collection
     {
         return Category::withTrashed()->get();
