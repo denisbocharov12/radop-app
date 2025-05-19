@@ -107,7 +107,7 @@ class ClientController extends Controller
 
     public function edit(User $user)
     {
-        $users = $this->userRepository->getUsers();
+        $users = $this->userRepository->getAllUsers();
         $roles = $this->userRepository->getAllRoles();
         $userTypes = $this->userRepository->getAllUserTypes();
         $cities = $this->cityRepository->getAllSorted();
@@ -116,6 +116,7 @@ class ClientController extends Controller
             'roles',
             'userTypes',
             'user',
+            'users',
             'cities'
         ]));
     }
