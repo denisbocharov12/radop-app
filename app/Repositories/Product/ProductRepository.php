@@ -95,6 +95,7 @@ final class ProductRepository
         return QueryBuilder::for($query)
             ->where('status', true)
             ->where('site_status', true)
+            ->whereNotNull('price_koef')
             ->get();
     }
 
@@ -107,6 +108,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('popular_order')
             ->take(15)
             ->get()
@@ -138,6 +140,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
@@ -154,6 +157,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('popular_order')
             ->get();
     }
@@ -169,6 +173,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('hot_order')
+            ->whereNotNull('price_koef')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->take(15)
             ->get()
@@ -185,6 +190,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('hot_order')
             ->take(15)
             ->get()
@@ -200,6 +206,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('new_order')
             ->take(15)
             ->get()
@@ -231,6 +238,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
@@ -248,6 +256,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('new_order')
             ->get();
     }
@@ -255,6 +264,7 @@ final class ProductRepository
     public function getAllDiscountProducts()
     {
         return Product::where('sale_price', '!=', 0)
+            ->whereNotNull('price_koef')
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
@@ -286,6 +296,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
@@ -298,6 +309,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('sale_order')
             ->get();
     }
@@ -313,6 +325,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('featured_order')
+            ->whereNotNull('price_koef')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -327,6 +340,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
             ->orderBy('featured_order')
             ->get();
     }
@@ -342,6 +356,7 @@ final class ProductRepository
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
+            ->whereNotNull('price_koef')
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }
@@ -358,7 +373,6 @@ final class ProductRepository
             ->allowedSorts([
                 'id',
             ])
-            ->where('')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
         ;
@@ -368,6 +382,7 @@ final class ProductRepository
     {
         return Product::where('status', true)
             ->where('site_status', true)
+            ->whereNotNull('price_koef')
             ->where('products.title', 'like', "%{$value}%")
             ->where('stock', '!=', 0)
             ->orWhere('products.onec_id', 'like', "%{$value}%")
