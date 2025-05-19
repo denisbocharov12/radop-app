@@ -291,7 +291,7 @@ final class ThemeProductManager
         $priceKoef = (float)$product->price_koef;
         $productSale = 0;
 
-        if ($product->sale_price !== '') {
+        if ($product->sale_price !== '' || $product->sale_price !== 0) {
             $productSale = (float)$product->sale_price;
         }
 
