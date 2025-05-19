@@ -108,6 +108,23 @@ final class UserRepository
         ;
     }
 
+    public function getAllUsers(): LengthAwarePaginator
+    {
+        $query = User::query()->role('user');
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+                AllowedFilter::custom('search', new ClientSearchFilter()),
+                AllowedFilter::custom('with_trashed', new ClientWithTrashedFilter()),
+            ])
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+        ;
+    }
+
     public function getManagers(): ?Collection
     {
         return User::role('manager')->get();
