@@ -1,4 +1,4 @@
-@if($product->sale_price !== '')
+@if($product->sale_price !== '' && $product->price_koef !== null)
     <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
         <div class="product-label-wrap">
             <span class="product-label-span">

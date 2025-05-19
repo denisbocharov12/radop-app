@@ -293,7 +293,7 @@ final class ThemeProductManager
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+            } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
                 $price = number_format((float)$product->sale_price, 2, ',', '');
             }
             else{
@@ -302,14 +302,14 @@ final class ThemeProductManager
         } else {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, ',', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+            } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
                 $price = number_format((float)$product->sale_price, 2, ',', '');
             } else{
                 $price = number_format($price * $priceKoef, 2, ',', '');
             }
         }
 
-        return round((($price - (float)$product->sale_price) / $price) * 100);
+        return round((((float)$price - (float)$product->sale_price) / (float)$price) * 100);
     }
 
     public static function getProductTotalSumWithReplace($product)
