@@ -289,32 +289,27 @@ final class ThemeProductManager
         $user = Auth::guard('user')->user();
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
-        $productSale = 0.0;
-
-        if ((float)$product->sale_price !== 0.0) {
-            $productSale = (float)$product->sale_price;
-        }
 
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = $price - $price * ($user->sale / 100);
+                $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
+            } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, ',', '');
+            }
+            else{
+                $price = number_format($price, 2, ',', '');
             }
         } else {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = $price * $priceKoef - $price * $priceKoef * ($user->sale / 100);
+                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, ',', '');
+            } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, ',', '');
             } else{
-                $price = $price * $priceKoef;
+                $price = number_format($price * $priceKoef, 2, ',', '');
             }
         }
 
-        return round($productSale);
-    }
-
-    function calculatePercentage($numerator, $denominator) {
-        if ($denominator == 0) {
-            return 0;
-        }
-        return ($numerator / $denominator) * 100;
+        return round((((float)$price - (float)$product->sale_price) / (float)$price) * 100);
     }
 
     public static function getProductTotalSumWithReplace($product)
