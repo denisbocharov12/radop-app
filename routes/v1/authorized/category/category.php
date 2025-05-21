@@ -39,4 +39,13 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->post('/sorts', [CategoryController::class, 'sortOrder'])
         ->name('sort.order')
     ;
+
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/catalog', [CategoryController::class, 'sortCatalogIndex'])
+        ->name('sort.index.catalog')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/catalog', [CategoryController::class, 'sortCatalogOrder'])
+        ->name('sort.order.catalog')
+    ;
 });

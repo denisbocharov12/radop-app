@@ -10,7 +10,7 @@
                 <div class="header-catalog" id="header-catalog-action">
                     <div class="row row-header-catalog">
                         @if(!empty($themeParentCategories))
-                            @foreach($themeParentCategories as $parentCategory)
+                            @foreach($themeParentCategories->sortBy('catalog_order') as $parentCategory)
                                 @include('frontend.v1.header.components.header-catalog-item', $parentCategory)
                             @endforeach
                         @endif
