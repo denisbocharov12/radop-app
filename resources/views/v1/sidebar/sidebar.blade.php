@@ -59,6 +59,9 @@
                                 <a href="{{route('category.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('category.sort.index.catalog')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий каталога</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
                             </li>
                             <li class="nk-menu-item">
