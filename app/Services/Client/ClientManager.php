@@ -117,6 +117,8 @@ class ClientManager
             'with_sale' => $withSale,
         ]);
 
+        $user->roles()->detach();
+
         $user->assignRole($clientData->role);
 
         $user->save();
