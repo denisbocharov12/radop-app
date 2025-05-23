@@ -41,6 +41,7 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
             ])
+            ->where('status', true)
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
