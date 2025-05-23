@@ -1728,7 +1728,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content a.heading {
     color: #252525;
-    font-weight: 500!important;
+    font-weight: 600!important;
     padding: 5px 0px!important;
     display: inline-block;
 }
@@ -1741,8 +1741,8 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link {
-    color: #252525;
-    font-weight: 300!important;
+    color: #505050;
+    font-weight: 400!important;
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content ul li.item a.link:hover {
@@ -1983,7 +1983,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-page-catalog .row-header-catalog .col-list-content .wrap-content a.heading,
 .section-page-catalog .row-header-catalog .col-list-content .wrap-content a.link{
     font-weight: 400 !important;
-    color: #252525;
+    color: #505050;
     padding: 5px;
     border: 0;
 }
@@ -2833,7 +2833,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .col-category-childs .wrap-category-childs a{
-    color: #252525;
+    color: #505050;
 }
 .col-category-childs .wrap-category-childs a:hover{
     text-decoration: underline!important;
