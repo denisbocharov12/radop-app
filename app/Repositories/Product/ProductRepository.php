@@ -209,7 +209,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->orderBy('new_order')
-            ->take(15)
+            ->take(30)
             ->get()
         ;
     }
