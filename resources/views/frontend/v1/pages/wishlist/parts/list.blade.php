@@ -70,7 +70,7 @@
             <div class="add_to_cart_wrap">
                 <hr class="product-card-item">
                 <div class="wrap">
-                    @include('frontend.v1.components.product_price', ['product' => $item->associatedModel])
+                    @include('frontend.v1.components.product_price', ['product' => $item->conditions])
                 </div>
                 @include('frontend.v1.components.product_card_summary', ['product' => $product->conditions])
                 @php
