@@ -5,6 +5,7 @@
 <script src="{{asset('/v1/frontend/assets')}}/libs/select2/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/slick/slick.min.js"></script>
+<script src="{{asset('/v1/frontend/assets')}}/libs/hoverDelay/jquery.hoverDelay.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/js/scripts.js"></script>
 
