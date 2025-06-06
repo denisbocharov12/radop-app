@@ -5,14 +5,17 @@
 //   $(this).next('.megamenu-wrap').toggleClass('open');
 // });
 
-$('a.link-megamenu').hover(function(e){
-    e.preventDefault();
-    $(this).toggleClass('active');
-    $(this).parents('.megamenu').find('.active').not(this).removeClass('active');
-
-    $(this).parents().find('.open').removeClass('open');
-    if ($(this).hasClass('active')) {
-        $(this).next('.megamenu-wrap').toggleClass('open');
+$('a.link-megamenu').hoverDelay({
+    delayIn: 500,
+    delayOut:200,
+    handlerIn: function($element){
+        $element.addClass('active');
+        $element.next('.megamenu-wrap').addClass('open');
+    },
+    handlerOut: function($element){
+        $element.removeClass('active');
+        $element.parents('.megamenu').find('.active').not(this).removeClass('active');
+        $element.parents().find('.open').removeClass('open');
     }
 });
 

@@ -1608,10 +1608,10 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: white;
     color: #0052a6;
 }
-.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover .megamenu-wrap {
-    display: block;
-    padding-bottom: 20px;
-}
+/*.section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover .megamenu-wrap {*/
+/*    display: block;*/
+/*    padding-bottom: 20px;*/
+/*}*/
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap::after {
     content: "";
     position: absolute;
