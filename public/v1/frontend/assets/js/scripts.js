@@ -6,18 +6,21 @@
 // });
 
 $('a.link-megamenu').hoverDelay({
-    delayIn: 500,
-    delayOut:200,
+    delayIn: 400,
+    delayOut: 200,
     handlerIn: function($element){
         $element.addClass('active');
         $element.next('.megamenu-wrap').addClass('open');
     },
     handlerOut: function($element){
-        $element.removeClass('active');
-        $element.parents('.megamenu').find('.active').not(this).removeClass('active');
-        $element.parents().find('.open').removeClass('open');
+        $('.megamenu-wrap.open').on('mouseleave', function () {
+            $(this).removeClass('open');
+            $('a.link-megamenu').removeClass('active');
+            $(this).children().find('a.link-megamenu.active').removeClass('active');
+        });
     }
 });
+
 
 $('main').click(function (){
     $('.megamenu-wrap').removeClass('open');
