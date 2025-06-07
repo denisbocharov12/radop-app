@@ -10,14 +10,21 @@ $('a.link-megamenu').hoverDelay({
     delayOut: 200,
     handlerIn: function($element){
         $element.addClass('active');
+        $('a.link-megamenu').not($element).removeClass('active');
+        $('.megamenu-wrap.open').removeClass('open');
         $element.next('.megamenu-wrap').addClass('open');
     },
     handlerOut: function($element){
         $('.megamenu-wrap.open').on('mouseleave', function () {
-            $(this).removeClass('open');
-            $('a.link-megamenu').removeClass('active');
-            $(this).children().find('a.link-megamenu.active').removeClass('active');
+            $element.removeClass('open');
+            $element.removeClass('active');
+            $element.children().find('a.link-megamenu.active').removeClass('active');
+            $element.next('.megamenu-wrap').removeClass('open');
         });
+        if ($element.hasClass('active')) {
+            $(this).removeClass('active');
+        }
+        $element.removeClass('active');
     }
 });
 
