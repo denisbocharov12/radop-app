@@ -21,8 +21,12 @@ $('a.link-megamenu').hoverDelay({
             $element.children().find('a.link-megamenu.active').removeClass('active');
             $element.next('.megamenu-wrap').removeClass('open');
         });
+        $('.theme-wrapper-sticky').on('mouseenter', function () {
+            $('.megamenu-wrap.open').removeClass('open');
+            $element.removeClass('active');
+        });
         if ($element.hasClass('active')) {
-            $(this).removeClass('active');
+            $element.removeClass('active');
         }
         $element.removeClass('active');
     }
