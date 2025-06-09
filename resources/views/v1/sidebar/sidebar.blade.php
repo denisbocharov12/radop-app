@@ -26,7 +26,7 @@
                         @hasrole('admin')
                         <a href="{{route('order.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>
-                            <span class="nk-menu-text">Заказы</span>
+                            <span class="nk-menu-text">Заказы <span id="new_orders" class="badge badge-danger round"></span></span>
                         </a>
                         @endhasrole
                         <ul class="nk-menu-sub">
@@ -41,7 +41,7 @@
                         @hasrole('manager')
                         <a href="{{route('order.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>
-                            <span class="nk-menu-text">Заказы</span>
+                            <span class="nk-menu-text">Заказы <span id="new_orders" class="badge badge-danger round">4</span></span>
                         </a>
                         @endhasrole
                     </li><!-- .nk-menu-item -->
@@ -56,12 +56,6 @@
                                 <a href="{{route('category.index')}}" class="nk-menu-link"><span class="nk-menu-text">Категории</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{route('category.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{route('category.sort.index.catalog')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий каталога</span></a>
-                            </li>
-                            <li class="nk-menu-item">
                                 <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
                             </li>
                             <li class="nk-menu-item">
@@ -69,6 +63,50 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                            </li>
+
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
+                            </li>
+                            @endhasrole
+
+                            @hasrole('manager')
+                            <li class="nk-menu-item">
+                                <a href="{{route('category.index')}}" class="nk-menu-link"><span class="nk-menu-text">Категории</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('city.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка городов</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-sort-v"></em></span>
+                            <span class="nk-menu-text">Сортировка</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('category.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('category.sort.index.catalog')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий каталога</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('brand.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка брэндов</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('product.sort.index.featured')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Featured" товаров</span></a>
@@ -86,19 +124,7 @@
                                 <a href="{{route('product.sort.index.new')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "New" товаров</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
-                            </li>
-                            <li class="nk-menu-item">
                                 <a href="{{route('attribute.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка аттрибутов</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{route('city.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка городов</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{route('deliveryMethod.index')}}" class="nk-menu-link"><span class="nk-menu-text">Методы доставки</span></a>
                             </li>
                             @endhasrole
 
@@ -115,6 +141,22 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('city.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка городов</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-map-pin"></em></span>
+                            <span class="nk-menu-text">Города</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
                             <li class="nk-menu-item">
                                 <a href="{{route('city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Города</span></a>
                             </li>

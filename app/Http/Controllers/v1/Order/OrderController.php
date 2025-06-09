@@ -158,4 +158,11 @@ class OrderController extends Controller
             throw new OrderNotFoundValidationException();
         }
     }
+
+    public function getStatusByLastTenMinutes()
+    {
+        $ordersCount = $this->orderRepository->getLastTenMinutesOrders();
+
+        return response()->json(['count' => $ordersCount]);
+    }
 }

@@ -37,6 +37,9 @@ $('main').click(function (){
     $('.megamenu-wrap').removeClass('open');
     $('a.link-megamenu').removeClass('active');
 });
+$('a.link-megamenu').hover(function () {
+    $(this).toggleClass('active');
+});
 
 document.addEventListener("DOMContentLoaded", () => {
 

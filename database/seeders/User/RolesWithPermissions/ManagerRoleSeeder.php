@@ -28,7 +28,8 @@ class ManagerRoleSeeder extends AbstractRoleSeeder
             'client.show',
             'manager.index',
             'manager.edit',
-            'manager.update'
+            'manager.update',
+            'order.status.last-ten-minutes',
         ];
     }
 }

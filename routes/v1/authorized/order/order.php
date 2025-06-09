@@ -42,4 +42,8 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->get('/{order}/download-excel', [OrderController::class, 'downloadExcel'])
         ->name('download.excel')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/orders/status', [OrderController::class, 'getStatusByLastTenMinutes'])
+        ->name('status.last-ten-minutes')
+    ;
 });

@@ -58,4 +58,17 @@ class OrderRepository
             ->paginate(self::COUNT_OF_PAGINATION)
         ;
     }
+
+    /**
+     * @return int
+     */
+    public function getLastTenMinutesOrders(): int
+    {
+        return Order::query()
+            ->whereBetween('created_at', [
+                now()->subMinutes(10),
+                now(),
+            ])
+            ->count();
+    }
 }

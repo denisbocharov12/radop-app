@@ -27,6 +27,7 @@ class PermissionSeeder extends Seeder
         'filial.store',
         'filial.edit',
         'filial.delete',
+        'order.status.last-ten-minutes',
     ];
 
     private array $userPermittedRoutes = [
