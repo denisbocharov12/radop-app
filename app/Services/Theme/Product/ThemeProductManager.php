@@ -156,6 +156,12 @@ final class ThemeProductManager
             throw new ProductNotFoundException();
         }
 
+        if ($existedProduct->min_order !== null && (int)$addToCartData->productQty < $existedProduct->min_order) {
+            $response['msg'] = 'Минимальное количество для заказа: ' . $existedProduct->min_order;
+            $response['status'] = 'min_order_error';
+            return $response;
+        }
+
         $sessionId = config('shopping_cart.default_session_id');
 
         if (auth()->guard('user')->user()) {

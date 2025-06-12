@@ -102,10 +102,11 @@
                                         <input
                                             id="product-{{$product->id}}-qty"
                                             type="number"
-                                            min="1"
+                                            min="{{$product->min_order ?? 1}}"
                                             max="{{$product->stock}}"
                                             placeholder="{{$package}}"
-                                            value="1"
+                                            value="{{$product->min_order ?? 1}}"
+                                            step="{{$product->min_order ?? 1}}"
                                             name="product-{{$product->id}}-qty"
                                             data-product-id="{{$product->onec_id}}"
                                             data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
@@ -170,6 +171,11 @@
                                 </p>
                             @endif
                         </div>
+                        @if($product->min_order !== null && $product->min_order > 1)
+                            <div class="packages-wrap-min-to-order">
+                                <p style="text-align: left">{{__('theme.package-min-to-order')}}: {{$product->min_order}} {{__('theme.min_order_unit')}}</p>
+                            </div>
+                        @endif
                         <hr/>
                         <div class="tabs">
                             <button class="tab-button active"

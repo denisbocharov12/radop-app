@@ -42,9 +42,11 @@
                                         data-id="{{$item->id}}"
                                         id="qty-item-{{$item->id}}"
                                         type="number"
-                                        min="1"
-                                        placeholder="1"
+                                        min="{{$item->associatedModel->min_order ?? 1}}"
+                                        max="{{$item->associatedModel->stock}}"
+                                        placeholder="{{$item->associatedModel->min_order ?? 1}}"
                                         value="{{$item->quantity}}"
+                                        step="{{$item->associatedModel->min_order ?? 1}}"
                                         class="sc-qty"
                                     />
                                     <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-{{$item->id}}">

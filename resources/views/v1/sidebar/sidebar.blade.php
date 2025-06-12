@@ -26,7 +26,7 @@
                         @hasrole('admin')
                         <a href="{{route('order.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-cart"></em></span>
-                            <span class="nk-menu-text">Заказы <span id="new_orders" class="badge badge-danger round">0</span></span>
+                            <span class="nk-menu-text">Заказы <span id="new_orders" class="badge badge-danger round"></span></span>
                         </a>
                         @endhasrole
                         <ul class="nk-menu-sub">

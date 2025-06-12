@@ -53,7 +53,7 @@ class ProductRequest extends FormRequest
             'iur_price' => ['nullable', 'numeric'],
             'condition' => ['required', 'string'],
             'shtrih_code' => ['nullable', 'string'],
-            'min_order' => ['nullable', 'integer'],
+            'min_order' => ['nullable', 'integer', 'min:1'],
         ];
     }
 }

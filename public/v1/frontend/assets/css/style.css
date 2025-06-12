@@ -5020,6 +5020,23 @@ header .section-header .row-main .header-menu .col-lg{
     opacity: 1;
 }
 
+.product-min-order-info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.min-order-notice {
+    font-size: 14px;
+    color: #0052a6;
+    font-weight: 500;
+    margin: 0;
+}
+
+.min-order-notice .mini-heading {
+    font-weight: 600;
+    color: #252525;
+}
+
 .section-search{
     margin-top: 30px;
     margin-bottom: 50px;
