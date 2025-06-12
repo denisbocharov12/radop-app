@@ -16,6 +16,28 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * @param string|null $onec_id
+ * @param array $title
+ * @param string|null $slug
+ * @param int|null $stock
+ * @param string|null $unit
+ * @param float $price
+ * @param float|null $sale_price
+ * @param bool $status
+ * @param bool $site_status
+ * @param string|null $brand_id
+ * @param string|null $shtrih_code
+ * @param int|null $sale_order
+ * @param int|null $featured_oder
+ * @param int|null $popular_order
+ * @param int|null $new_order
+ * @param int|null $hot_order
+ * @param string|null $characteristic
+ * @param string|null $deleted_at
+ * @param float|null $price_koef
+ * @param string|null $min_order
+ */
 final class Product extends Model implements HasMedia
 {
     use HasFactory;

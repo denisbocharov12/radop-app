@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">
-                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="{{$product->min_order ?? 1}}" min="{{$product->min_order ?? 1}}" max="{{$product->stock}}" id="product-{{$product->id}}-qty" step="{{$product->min_order ?? 1}}">
                                             </div>
                                             <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                         </div>
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">
-                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="{{$product->min_order ?? 1}}" min="{{$product->min_order ?? 1}}" max="{{$product->stock}}" id="product-{{$product->id}}-qty" step="{{$product->min_order ?? 1}}">
                                             </div>
                                             <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                         </div>
@@ -199,7 +199,7 @@
                                         </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">
-                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="1" min="1" max="{{$product->stock}}" id="product-{{$product->id}}-qty">
+                                                <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="{{$product->min_order ?? 1}}" min="{{$product->min_order ?? 1}}" max="{{$product->stock}}" id="product-{{$product->id}}-qty" step="{{$product->min_order ?? 1}}">
                                             </div>
                                             <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                         </div>

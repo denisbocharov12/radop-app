@@ -81,6 +81,7 @@ class ProductManager
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
             'shtrih_code' => $productData->shtrih_code,
+            'min_order' => $productData->minOrder,
         ]);
 
         $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;
@@ -138,6 +139,7 @@ class ProductManager
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
             'shtrih_code' => $productData->shtrih_code,
+            'min_order' => $productData->minOrder,
         ]);
 
         $product->slug = Str::slug($productData->title_ru) . '-' . $product->id;

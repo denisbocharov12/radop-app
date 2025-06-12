@@ -14,7 +14,7 @@
                         </div>
                         <div class="card">
                             <div class="card-inner">
-                                <form action="{{route('product.update', $product)}}" enctype="multipart/form-data" method="POST" class="form-validate is-alter">
+                                <form action="{{route('product.update', $product)}}" enctype="multipart/form-data" method="POST" class=" is-alter">
                                     @csrf
                                     <div class="row gy-4">
                                         <div class="col-md-6">
@@ -99,6 +99,17 @@
                                                 <label class="form-label" for="sku">SKU</label>
                                                 <div class="form-control-wrap">
                                                     <input required type="text" class="form-control" id="sku" name="sku" placeholder="sku" value="{{$product->data?->sku}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="min_order">Минимальный заказ</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="number" class="form-control @error('min_order') error @enderror" id="min_order" name="min_order" placeholder="1" value="{{$product->min_order}}">
+                                                    @error('min_order')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>

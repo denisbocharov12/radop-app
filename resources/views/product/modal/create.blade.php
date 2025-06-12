@@ -84,6 +84,17 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="form-label" for="min_order">Минимальный заказ</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control @error('min_order') error @enderror" id="min_order" name="min_order" placeholder="1">
+                                            @error('min_order')
+                                            <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label" for="upp_sale">Похожие товары</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" data-search="on" multiple name="upp_sale[]" id="upp_sale" data-placeholder="Похожие товары">
