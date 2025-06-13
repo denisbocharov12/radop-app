@@ -387,7 +387,8 @@ final class ProductRepository
             ->where('products.title', 'like', "%{$value}%")
             ->where('stock', '!=', 0)
             ->orWhere('products.onec_id', 'like', "%{$value}%")
-            ->paginate(15)
+            ->orWhere('shtrih_code', 'like', "%{$value}%")
+            ->paginate(16)
             ->appends(request()->query())
         ;
     }
