@@ -364,4 +364,8 @@ return array (
     'next_pagination' => 'Următor',
     'back_btn_text' => 'Înapoi',
     'cancel_btn_text' => 'Anulează',
+    'cart-auth-modal-title' => 'Autorizare sau înregistrare',
+    'cart-auth-modal-text' => 'Înainte de a plasa o comandă, vă rugăm să vă autentificați. Dacă nu aveți un cont, vă rugăm să vă înregistrați mai întâi.',
+    'cart-auth-modal-login' => 'Autentificare',
+    'cart-auth-modal-register' => 'Înregistrare',
 );

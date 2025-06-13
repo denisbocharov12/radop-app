@@ -18,6 +18,7 @@ use App\Exceptions\City\ThemeCityErrorRequiredSumValidationException;
 use App\Exceptions\City\ThemeCityNotFoundValidationException;
 use App\Exceptions\Order\ThemeOrderMakeException;
 use App\Exceptions\Order\ThemeOrderMakeValidationException;
+use App\Exceptions\User\UserIsNotAuthenticatedException;
 use App\Http\Mappers\Theme\ThemeOrderDataMapper;
 use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
 use App\Repositories\City\CityRepository;
@@ -38,9 +39,16 @@ final class ThemeCheckoutController
     ) {
     }
 
+    /**
+     * @throws UserIsNotAuthenticatedException
+     */
     public function index()
     {
         $user = Auth::guard('user')->user();
+
+        if (!$user) {
+            throw new UserIsNotAuthenticatedException();
+        }
 
         $paymentMethods = $this->orderPaymentMethods->getAll();
         $popularProducts = $this->productRepository->getAllPopularProducts();
