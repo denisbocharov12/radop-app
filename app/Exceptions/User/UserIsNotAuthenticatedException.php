@@ -12,6 +12,6 @@ final class UserIsNotAuthenticatedException extends Exception
      */
     public function render(): RedirectResponse
     {
-        return redirect()->route('theme.home')->withErrors(['Ошибка: Вы не авторизованы.']);
+        return redirect()->route('theme.home')->withErrors(__('theme.not_authenticated'));
     }
 }

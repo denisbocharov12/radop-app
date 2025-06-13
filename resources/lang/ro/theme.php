@@ -368,4 +368,5 @@ return array (
     'cart-auth-modal-text' => 'Înainte de a plasa o comandă, vă rugăm să vă autentificați. Dacă nu aveți un cont, vă rugăm să vă înregistrați mai întâi.',
     'cart-auth-modal-login' => 'Autentificare',
     'cart-auth-modal-register' => 'Înregistrare',
+    'not_authenticated' => 'Nu sunteți autorizat și nu puteți vizualiza această pagină.',
 );
