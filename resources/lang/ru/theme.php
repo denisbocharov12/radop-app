@@ -364,4 +364,9 @@ return array (
     'next_pagination' => 'Следующая',
     'back_btn_text' => 'Назад',
     'cancel_btn_text' => 'Отмена',
+    'cart-auth-modal-title' => 'Авторизация или регистрация',
+    'cart-auth-modal-text' => 'Перед размещением заказа, пожалуйста, войдите в систему. Если у вас нет учетной записи, пожалуйста, сначала зарегистрируйтесь.',
+    'cart-auth-modal-login' => 'Войти',
+    'cart-auth-modal-register' => 'Регистрация',
+    'not_authenticated' => 'Вы не авторизованы и не можете просмотреть эту страницу.',
 );

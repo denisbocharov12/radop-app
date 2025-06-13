@@ -146,9 +146,14 @@
                 {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{config('app.min_delivery_sum')}}</span> {{__('theme.MDL')}}
             </p>
             <div class="sc-buttons-wrap">
-                <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
+                @if(auth()->guard('user')->user())
+                    <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
+                @else
+                    <a href="javascript:;" class="sc-btn-checkout sc-btn cart-auth-modal-btn {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
+                @endif
                 <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
             </div>
         </div>
     </div>
 </div>
+@include('frontend.v1.components.cart_auth_modal')

@@ -9,19 +9,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\ThemeLoginDataMapper;
 use App\Http\Requests\Theme\User\ThemeUserLoginRequest;
 use App\Models\User;
-use App\Repositories\User\UserRepository;
 use App\Services\Theme\User\ThemeUserManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use App\Repositories\Product\ProductRepository;
 
 final class ThemeUserLoginController extends Controller
 {
     public function __construct(
-        private readonly ThemeUserManager $themeUserManager,
-        private readonly UserRepository $userRepository,
-        private readonly ThemeLoginDataMapper $themeLoginDataMapper
+        private readonly ThemeUserManager     $themeUserManager,
+        private readonly ThemeLoginDataMapper $themeLoginDataMapper,
+        private readonly ProductRepository    $productRepository
     )
     {
     }
@@ -43,6 +42,25 @@ final class ThemeUserLoginController extends Controller
             $user = Auth::guard('user')->user();
             $user->createToken(config('app.name'));
 
+            $guestSessionId = config('shopping_cart.default_session_id');
+            $userSessionId = $user->id;
+            $guestCart = \Cart::session($guestSessionId)->getContent();
+            foreach ($guestCart as $item) {
+                $product = $this->productRepository->getById($item->id);
+                if ($product === null) {
+                    continue;
+                }
+                \Cart::session($userSessionId)->add([
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'price' => $item->price,
+                    'quantity' => $item->quantity,
+                    'attributes' => $item->attributes,
+                    'associatedModel' => $product,
+                ]);
+            }
+            \Cart::session($guestSessionId)->clear();
+
             $response = $this->themeUserManager->generateResponse(true);
 
             return response()->json($response);
@@ -54,7 +72,8 @@ final class ThemeUserLoginController extends Controller
         //return redirect()->back()->withErrors(['auth' => 'Неверный логин или пароль.']);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
 
         Session::forget('user');
 
@@ -70,7 +89,7 @@ final class ThemeUserLoginController extends Controller
 
         Auth::guard('user')->logout();
 
-        toastr()->success(__('theme.logout-message').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
+        toastr()->success(__('theme.logout-message') . '<button type="button" class="btn-toast-clear" onclick="toastr.clear()">' . __('theme.notification_close_btn_text') . '</button>');
 
         return redirect()->route('theme.home');
     }
