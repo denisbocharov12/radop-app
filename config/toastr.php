@@ -27,5 +27,6 @@ return array(
         'positionClass' => "toast-top-right theme-toast-center-center",
         'progressBar' => false,
         'closeButton' => true,
+        'timeOut' => 1000000,
     ),
 );
