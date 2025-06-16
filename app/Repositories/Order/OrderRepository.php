@@ -2,10 +2,12 @@
 
 namespace App\Repositories\Order;
 
+use App\Data\Order\UpdateOrderStatusesData;
 use App\Models\Order;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 
 class OrderRepository
@@ -16,16 +18,51 @@ class OrderRepository
     {
         $query = Order::query();
 
+        if ($search = request('filter.fio')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('fio', 'like', "%$search%")
+                    ->orWhereHas('user.profile', function ($q2) use ($search) {
+                        $q2->where('organization_name', 'like', "%$search%");
+                    });
+            });
+        }
+
         return QueryBuilder::for($query)
             ->allowedFilters([
-
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('city'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('payment_status'),
+                AllowedFilter::exact('filial_id'),
+                AllowedFilter::exact('user_type'),
+                AllowedFilter::exact('payment_method'),
+                AllowedFilter::exact('fio'),
+                'email',
+                'order_number',
+                'phone',
+                'fio',
+                'address',
             ])
             ->defaultSort('-id')
             ->allowedSorts([
                 'id',
+                'city',
+                'status',
+                'payment_status',
+                'user_id',
+                'email',
+                'order_number',
+                'phone',
+                'fio',
+                'address',
+                'filial_id',
+                'delivery_charge',
+                'total',
+                'created_at',
+                'updated_at',
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
-            ;
+        ;
     }
 
     public function getById($orderId): ?Order
@@ -70,5 +107,10 @@ class OrderRepository
                 now(),
             ])
             ->count();
+    }
+
+    public function getOrdersByIds(UpdateOrderStatusesData $data): Collection
+    {
+        return Order::query()->whereIn('id', $data->order_ids)->get();
     }
 }

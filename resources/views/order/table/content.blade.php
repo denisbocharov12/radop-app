@@ -1,21 +1,82 @@
 <div class="card-inner p-0">
     <div class="nk-tb-list nk-tb-ulist">
         <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Фамилия Имя</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Номер телефона</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Email</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Номер заказа</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Статус заказа</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Адресс</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Город</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Филиал</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Доставка</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Итого</span></div>
+            <div class="nk-tb-col" style="width: 40px;">
+                <input type="checkbox" id="select-all-orders-head">
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'id') ? '-id' : 'id' }}" class="text-dark">
+                    <span class="sub-text">ID</span>
+                    @if(request('sort') == 'id') ▲@elseif(request('sort') == '-id') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'fio') ? '-fio' : 'fio' }}" class="text-dark">
+                    <span class="sub-text">Фамилия Имя</span>
+                    @if(request('sort') == 'fio') ▲@elseif(request('sort') == '-fio') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'phone') ? '-phone' : 'phone' }}" class="text-dark">
+                    <span class="sub-text">Номер телефона</span>
+                    @if(request('sort') == 'phone') ▲@elseif(request('sort') == '-phone') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'email') ? '-email' : 'email' }}" class="text-dark">
+                    <span class="sub-text">Email</span>
+                    @if(request('sort') == 'email') ▲@elseif(request('sort') == '-email') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'order_number') ? '-order_number' : 'order_number' }}" class="text-dark">
+                    <span class="sub-text">Номер заказа</span>
+                    @if(request('sort') == 'order_number') ▲@elseif(request('sort') == '-order_number') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'status') ? '-status' : 'status' }}" class="text-dark">
+                    <span class="sub-text">Статус заказа</span>
+                    @if(request('sort') == 'status') ▲@elseif(request('sort') == '-status') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'address') ? '-address' : 'address' }}" class="text-dark">
+                    <span class="sub-text">Адресс</span>
+                    @if(request('sort') == 'address') ▲@elseif(request('sort') == '-address') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'city') ? '-city' : 'city' }}" class="text-dark">
+                    <span class="sub-text">Город</span>
+                    @if(request('sort') == 'city') ▲@elseif(request('sort') == '-city') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'filial_id') ? '-filial_id' : 'filial_id' }}" class="text-dark">
+                    <span class="sub-text">Филиал</span>
+                    @if(request('sort') == 'filial_id') ▲@elseif(request('sort') == '-filial_id') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'delivery_charge') ? '-delivery_charge' : 'delivery_charge' }}" class="text-dark">
+                    <span class="sub-text">Доставка</span>
+                    @if(request('sort') == 'delivery_charge') ▲@elseif(request('sort') == '-delivery_charge') ▼@endif
+                </a>
+            </div>
+            <div class="nk-tb-col">
+                <a href="?sort={{ (request('sort') == 'total') ? '-total' : 'total' }}" class="text-dark">
+                    <span class="sub-text">Итого</span>
+                    @if(request('sort') == 'total') ▲@elseif(request('sort') == '-total') ▼@endif
+                </a>
+            </div>
             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
             <div class="nk-tb-item" id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}">
+                <div class="nk-tb-col" style="width: 40px;">
+                    <input type="checkbox" class="order-checkbox" value="{{$order->id}}">
+                </div>
                 <div class="nk-tb-col order-details">
                     <span>#{{$order->id}}</span>
                 </div>

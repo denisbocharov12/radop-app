@@ -3,6 +3,7 @@
 namespace App\Services\Order;
 
 use App\Data\Order\OrderData;
+use App\Data\Order\UpdateOrderStatusesData;
 use App\Enums\OrderStatus;
 use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Excel\Order\OrderExport;
@@ -188,4 +189,23 @@ final class OrderManager
         return Excel::download(new OrderExport($order), $filePath, \Maatwebsite\Excel\Excel::XLS);
     }
 
+    public function updateOrderStatuses(UpdateOrderStatusesData $data): void
+    {
+        $orders = $this->orderRepository->getOrdersByIds($data);
+        $canceledStatus = $this->orderStatus->getCanceledStatus();
+
+        foreach ($orders as $order) {
+            $oldStatus = $order->status;
+            $order->update(
+                [
+                    'status' => $data->status
+                ],
+            );
+            $order->status = $data->status;
+            $order->save();
+            if ($data->status === $canceledStatus && $oldStatus !== $data->status) {
+                event(new OrderStatusUpdatedSendEmailEvent($order));
+            }
+        }
+    }
 }

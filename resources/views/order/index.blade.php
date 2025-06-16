@@ -49,6 +49,60 @@
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
             });
+
+            // Синхронизация чекбоксов выделения всех заказов
+            $('#select-all-orders, #select-all-orders-head').on('change', function() {
+                var checked = $(this).is(':checked');
+                $('.order-checkbox').prop('checked', checked);
+                $('#select-all-orders, #select-all-orders-head').prop('checked', checked);
+            });
+            $('.order-checkbox').on('change', function() {
+                if ($('.order-checkbox:checked').length === $('.order-checkbox').length) {
+                    $('#select-all-orders, #select-all-orders-head').prop('checked', true);
+                } else {
+                    $('#select-all-orders, #select-all-orders-head').prop('checked', false);
+                }
+            });
+
+            // Массовое изменение статуса
+            $('#bulk-status-update-btn').on('click', function(e) {
+                e.preventDefault();
+                var orderIds = $('.order-checkbox:checked').map(function() { return $(this).val(); }).get();
+                var status = $('#bulk-status-select').val();
+                if (orderIds.length === 0) {
+                    Swal.fire('Ошибка', 'Выберите хотя бы один заказ', 'error');
+                    return;
+                }
+                if (!status) {
+                    Swal.fire('Ошибка', 'Выберите статус', 'error');
+                    return;
+                }
+                $.ajax({
+                    url: "{{ route('order.orders.update-statuses') }}",
+                    type: "POST",
+                    data: {
+                        order_ids: orderIds,
+                        status: status,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Успех',
+                            text: 'Статус успешно обновлён. Страница будет перезагружена...',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Ошибка', xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Произошла ошибка', 'error');
+                    }
+                });
+            });
         });
 
         function askToDeleteOrder(model_id, token, path)
