@@ -206,7 +206,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="order_number">Метод оплаты</label>
+                                                <label class="form-label" for="order_number">Метод доставки</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('delivery_method') error @enderror" id="delivery_method" name="delivery_method" value="{{$order->delivery_method}}" placeholder="Метод доставки">
                                                     @error('delivery_method')

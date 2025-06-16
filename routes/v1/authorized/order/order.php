@@ -46,4 +46,8 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->get('/orders/status', [OrderController::class, 'getStatusByLastTenMinutes'])
         ->name('status.last-ten-minutes')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('/orders/update-statuses', [OrderController::class, 'updateOrderStatuses'])
+        ->name('orders.update-statuses')
+    ;
 });

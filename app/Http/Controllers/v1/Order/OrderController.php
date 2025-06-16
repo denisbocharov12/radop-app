@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Order;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
+use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Exceptions\NotAjaxRequestException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderNotFoundValidationException;
@@ -12,58 +13,62 @@ use App\Exceptions\Order\OrderUniqueCodeException;
 use App\Exceptions\Order\OrderUniqueCodeValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\OrderDataMapper;
+use App\Http\Mappers\UpdateOrderDataMapper;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
+use App\Http\Requests\Order\UpdateOrderStatusesRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Excel;
 
 class OrderController extends Controller
 {
-    private OrderDataMapper $orderDataMapper;
-    private OrderRepository $orderRepository;
-    private OrderManager $orderManager;
-    private OrderPaymentMethods $orderPaymentMethods;
-    private OrderPaymentStatus $orderPaymentStatus;
-    private OrderStatus $orderStatus;
-    private UserRepository $userRepository;
-
     public function __construct(
-        OrderDataMapper $orderDataMapper,
-        OrderRepository $orderRepository,
-        OrderManager $orderManager,
-        OrderPaymentMethods $orderPaymentMethods,
-        OrderPaymentStatus $orderPaymentStatus,
-        OrderStatus $orderStatus,
-        UserRepository $userRepository,
+        private readonly OrderDataMapper $orderDataMapper,
+        private readonly OrderRepository $orderRepository,
+        private readonly OrderManager $orderManager,
+        private readonly OrderPaymentMethods $orderPaymentMethods,
+        private readonly OrderPaymentStatus $orderPaymentStatus,
+        private readonly OrderStatus $orderStatus,
+        private readonly UserRepository $userRepository,
         private readonly CityRepository $cityRepository,
-    )
-    {
-        $this->orderDataMapper = $orderDataMapper;
-        $this->orderRepository = $orderRepository;
-        $this->orderManager = $orderManager;
-        $this->orderPaymentMethods = $orderPaymentMethods;
-        $this->orderPaymentStatus = $orderPaymentStatus;
-        $this->orderStatus = $orderStatus;
-        $this->userRepository = $userRepository;
+        private readonly UpdateOrderDataMapper $updateOrderDataMapper,
+    ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::guard()->user()->id;
         $orders = $this->orderRepository->getAllPaginatedWithFilters();
-
         $user = $this->userRepository->getById($userId);
+        $cities = $this->cityRepository->getAll();
+        $orderStatus = $this->orderStatus->getAll();
+        $paymentStatus = $this->orderPaymentStatus->getAll();
+        $users = $this->userRepository->getAll();
+        $filters = $request->all();
+        $sort = $request->get('sort', '-id');
+        $userTypes = $this->userRepository->getAllTypes();
+        $paymentMethods = $this->orderPaymentMethods->getAll();
 
         return view('order.index', compact([
             'orders',
-            'user'
+            'user',
+            'cities',
+            'orderStatus',
+            'paymentStatus',
+            'users',
+            'filters',
+            'sort',
+            'userTypes',
+            'paymentMethods',
         ]));
     }
 
@@ -120,7 +125,8 @@ class OrderController extends Controller
         }
     }
 
-    public function viewPDF(Order $order) {
+    public function viewPDF(Order $order)
+    {
         try {
             return $this->orderManager->viewPDF($order);
         } catch (OrderNotFoundException $e) {
@@ -128,7 +134,8 @@ class OrderController extends Controller
         }
     }
 
-    public function downloadPDF(Order $order){
+    public function downloadPDF(Order $order)
+    {
         try {
             return $this->orderManager->downloadPDF($order);
         } catch (OrderNotFoundException $e) {
@@ -136,7 +143,8 @@ class OrderController extends Controller
         }
     }
 
-    public function viewInvoice(Order $order){
+    public function viewInvoice(Order $order)
+    {
         try {
             return $this->orderManager->viewInvoice($order);
         } catch (OrderNotFoundException $e) {
@@ -144,7 +152,8 @@ class OrderController extends Controller
         }
     }
 
-    public function downloadInvoice(Order $order){
+    public function downloadInvoice(Order $order)
+    {
         try {
             return $this->orderManager->downloadInvoice($order);
         } catch (OrderNotFoundException $e) {
@@ -152,7 +161,8 @@ class OrderController extends Controller
         }
     }
 
-    public function downloadExcel(Order $order){
+    public function downloadExcel(Order $order)
+    {
         try {
             return $this->orderManager->downloadExcel($order);
         } catch (OrderNotFoundException $e) {
@@ -165,5 +175,14 @@ class OrderController extends Controller
         $ordersCount = $this->orderRepository->getLastTenMinutesOrders();
 
         return response()->json(['count' => $ordersCount]);
+    }
+
+    public function updateOrderStatuses(UpdateOrderStatusesRequest $request): JsonResponse
+    {
+        $data = $this->updateOrderDataMapper->mapFromRequestToNormalized($request);
+
+        $this->orderManager->updateOrderStatuses($data);
+
+        return response()->json(['status' => 'success']);
     }
 }
