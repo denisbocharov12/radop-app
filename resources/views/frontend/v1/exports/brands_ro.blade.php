@@ -44,7 +44,7 @@
             <td style="border: 1px solid black;">{{ $product->sheets_in_pack }}</td>
             <td style="border: 1px solid black;">{{ $product->packs_in_box }}</td>
             <td style="border: 1px solid black;">{{ $product->packs_on_pallet }}</td>
-            <td style="border: 1px solid black;">{!! $product->data->description !!}</td>
+            <td style="border: 1px solid black;">{!! $product->data?->description !!}</td>
             <td style="border: 1px solid black; font-weight: 700">{{ $product->price }}</td>
         </tr>
     @endforeach
