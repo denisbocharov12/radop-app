@@ -202,12 +202,12 @@
         <div class="center">
             <div class="form-control form-control-direction" style="text-align: center">
                 <ul class="password-rules">
-                    <li id="length-rule" class="rule">❌ {{__('theme.password-rule-length')}}</li>
+                    <li id="length-rule-iur" class="rule">❌ {{__('theme.password-rule-length')}}</li>
                 </ul>
                 <div class="wrap">
                     <input
                         type="checkbox"
-                        class="custom-checkbox rule-checkbox rule-checkbox-iur"
+                        class="custom-checkbox rule-checkbox rule-checkbox-iur rule-checkbox-iur"
                         id="terms_iur"
                         name="terms_iur"
                         value="1"
