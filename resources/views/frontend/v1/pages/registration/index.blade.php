@@ -60,33 +60,33 @@
                 tabContent[b].classList.add('show');
             }
         }
-        document.addEventListener("DOMContentLoaded", function () {
-            const checkboxesFiz = document.querySelectorAll(".rule-checkbox-fiz");
-            const checkboxesIur = document.querySelectorAll(".rule-checkbox-iur");
-            const submitButtonFiz = document.getElementById("form_submit_fiz");
-            const submitButtonIur = document.getElementById("form_submit_iur");
-
-            function updateSubmitButtonStateFiz() {
-                const allChecked = Array.from(checkboxesFiz).every(checkbox => checkbox.checked);
-                submitButtonFiz.disabled = !allChecked;
-            }
-
-            function updateSubmitButtonStateIur() {
-                const allChecked = Array.from(checkboxesIur).every(checkbox => checkbox.checked);
-                submitButtonIur.disabled = !allChecked;
-            }
-
-            checkboxesFiz.forEach(checkbox => {
-                checkbox.addEventListener("change", updateSubmitButtonStateFiz);
-            });
-
-            checkboxesIur.forEach(checkbox => {
-                checkbox.addEventListener("change", updateSubmitButtonStateIur);
-            });
-
-            updateSubmitButtonStateFiz();
-            updateSubmitButtonStateIur();
-        });
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const checkboxesFiz = document.querySelectorAll(".rule-checkbox-fiz");
+        //     const checkboxesIur = document.querySelectorAll(".rule-checkbox-iur");
+        //     const submitButtonFiz = document.getElementById("form_submit_fiz");
+        //     const submitButtonIur = document.getElementById("form_submit_iur");
+        //
+        //     function updateSubmitButtonStateFiz() {
+        //         const allChecked = Array.from(checkboxesFiz).every(checkbox => checkbox.checked);
+        //         submitButtonFiz.disabled = !allChecked;
+        //     }
+        //
+        //     function updateSubmitButtonStateIur() {
+        //         const allChecked = Array.from(checkboxesIur).every(checkbox => checkbox.checked);
+        //         submitButtonIur.disabled = !allChecked;
+        //     }
+        //
+        //     checkboxesFiz.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateFiz);
+        //     });
+        //
+        //     checkboxesIur.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateIur);
+        //     });
+        //
+        //     updateSubmitButtonStateFiz();
+        //     updateSubmitButtonStateIur();
+        // });
         document.addEventListener("DOMContentLoaded", function () {
             const passwordInputIur = document.getElementById("password_iur");
             const passwordInputFiz = document.getElementById("password_fiz");
@@ -121,33 +121,33 @@
                 }
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
-            const checkboxesIur = document.querySelectorAll(".rule-checkbox-iur");
-            const checkboxesFiz = document.querySelectorAll(".rule-checkbox-fiz");
-            const submitButtonIur = document.getElementById("form_submit_iur");
-            const submitButtonFiz = document.getElementById("form_submit_fiz");
-
-            function updateSubmitButtonStateIur() {
-                const allChecked = Array.from(checkboxesIur).every(checkbox => checkbox.checked);
-                submitButtonIur.disabled = !allChecked;
-            }
-
-            function updateSubmitButtonStateFiz() {
-                const allChecked = Array.from(checkboxesFiz).every(checkbox => checkbox.checked);
-                submitButtonFiz.disabled = !allChecked;
-            }
-
-            checkboxesIur.forEach(checkbox => {
-                checkbox.addEventListener("change", updateSubmitButtonStateIur);
-            });
-
-            checkboxesFiz.forEach(checkbox => {
-                checkbox.addEventListener("change", updateSubmitButtonStateIur);
-            });
-
-            updateSubmitButtonStateIur();
-            updateSubmitButtonStateFiz();
-        });
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const checkboxesIur = document.querySelectorAll(".rule-checkbox-iur");
+        //     const checkboxesFiz = document.querySelectorAll(".rule-checkbox-fiz");
+        //     const submitButtonIur = document.getElementById("form_submit_iur");
+        //     const submitButtonFiz = document.getElementById("form_submit_fiz");
+        //
+        //     function updateSubmitButtonStateIur() {
+        //         const allChecked = Array.from(checkboxesIur).every(checkbox => checkbox.checked);
+        //         submitButtonIur.disabled = !allChecked;
+        //     }
+        //
+        //     function updateSubmitButtonStateFiz() {
+        //         const allChecked = Array.from(checkboxesFiz).every(checkbox => checkbox.checked);
+        //         submitButtonFiz.disabled = !allChecked;
+        //     }
+        //
+        //     checkboxesIur.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateIur);
+        //     });
+        //
+        //     checkboxesFiz.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateIur);
+        //     });
+        //
+        //     updateSubmitButtonStateIur();
+        //     updateSubmitButtonStateFiz();
+        // });
 
         $(document).ready(function(){
             $(".select2-registration").select2();
