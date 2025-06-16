@@ -60,37 +60,50 @@
                 tabContent[b].classList.add('show');
             }
         }
-        document.addEventListener("DOMContentLoaded", function () {
-            const checkboxes = document.querySelectorAll(".rule-checkbox");
-            const submitButton = document.getElementById("form_submit_iur");
-
-            function updateSubmitButtonState() {
-                const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-                submitButton.disabled = !allChecked;
-            }
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", updateSubmitButtonState);
-            });
-
-            updateSubmitButtonState();
-        });
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const checkboxesFiz = document.querySelectorAll(".rule-checkbox-fiz");
+        //     const checkboxesIur = document.querySelectorAll(".rule-checkbox-iur");
+        //     const submitButtonFiz = document.getElementById("form_submit_fiz");
+        //     const submitButtonIur = document.getElementById("form_submit_iur");
+        //
+        //     function updateSubmitButtonStateFiz() {
+        //         const allChecked = Array.from(checkboxesFiz).every(checkbox => checkbox.checked);
+        //         submitButtonFiz.disabled = !allChecked;
+        //     }
+        //
+        //     function updateSubmitButtonStateIur() {
+        //         const allChecked = Array.from(checkboxesIur).every(checkbox => checkbox.checked);
+        //         submitButtonIur.disabled = !allChecked;
+        //     }
+        //
+        //     checkboxesFiz.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateFiz);
+        //     });
+        //
+        //     checkboxesIur.forEach(checkbox => {
+        //         checkbox.addEventListener("change", updateSubmitButtonStateIur);
+        //     });
+        //
+        //     updateSubmitButtonStateFiz();
+        //     updateSubmitButtonStateIur();
+        // });
         document.addEventListener("DOMContentLoaded", function () {
             const passwordInputIur = document.getElementById("password_iur");
             const passwordInputFiz = document.getElementById("password_fiz");
-            const lengthRule = document.getElementById("length-rule");
+            const lengthRuleFiz = document.getElementById("length-rule-fiz");
+            const lengthRuleIur = document.getElementById("length-rule-iur");
 
             passwordInputIur.addEventListener("input", function () {
                 const password = passwordInputIur.value;
 
                 if (password.length >= 8 && password.length <= 20) {
-                    lengthRule.textContent = "✅ {{__('theme.password-rule-length')}}";
-                    lengthRule.classList.add("valid");
-                    lengthRule.classList.remove("invalid");
+                    lengthRuleIur.textContent = "✅ {{__('theme.password-rule-length')}}";
+                    lengthRuleIur.classList.add("valid");
+                    lengthRuleIur.classList.remove("invalid");
                 } else {
-                    lengthRule.textContent = "❌ {{__('theme.password-rule-length')}}";
-                    lengthRule.classList.add("invalid");
-                    lengthRule.classList.remove("valid");
+                    lengthRuleIur.textContent = "❌ {{__('theme.password-rule-length')}}";
+                    lengthRuleIur.classList.add("invalid");
+                    lengthRuleIur.classList.remove("valid");
                 }
             });
 
@@ -98,13 +111,13 @@
                 const password = passwordInputFiz.value;
 
                 if (password.length >= 8 && password.length <= 20) {
-                    lengthRule.textContent = "✅ {{__('theme.password-rule-length')}}";
-                    lengthRule.classList.add("valid");
-                    lengthRule.classList.remove("invalid");
+                    lengthRuleFiz.textContent = "✅ {{__('theme.password-rule-length')}}";
+                    lengthRuleFiz.classList.add("valid");
+                    lengthRuleFiz.classList.remove("invalid");
                 } else {
-                    lengthRule.textContent = "❌ {{__('theme.password-rule-length')}}";
-                    lengthRule.classList.add("invalid");
-                    lengthRule.classList.remove("valid");
+                    lengthRuleFiz.textContent = "❌ {{__('theme.password-rule-length')}}";
+                    lengthRuleFiz.classList.add("invalid");
+                    lengthRuleFiz.classList.remove("valid");
                 }
             });
         });
