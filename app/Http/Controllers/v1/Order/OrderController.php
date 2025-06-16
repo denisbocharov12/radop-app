@@ -22,6 +22,7 @@ use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
 use Illuminate\Support\Facades\Auth;
 use PDF;
+use Excel;
 
 class OrderController extends Controller
 {
