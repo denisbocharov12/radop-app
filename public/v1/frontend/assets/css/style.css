@@ -10262,6 +10262,12 @@ hr.product-card-item{
     }
 }
 @media (max-width: 576px) {
+    #toast-container.theme-toast-center-center>.toast-success{
+        width: 300px!important;
+    }
+    .theme-toast-center-center .toast .toast-close-button{
+        top: -76px!important;
+    }
     .wrapper.theme-wrapper .theme-container-wrapper {
         padding: 0;
     }
