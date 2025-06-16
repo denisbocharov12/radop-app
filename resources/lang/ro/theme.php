@@ -369,4 +369,12 @@ return array (
     'cart-auth-modal-login' => 'Autentificare',
     'cart-auth-modal-register' => 'Înregistrare',
     'not_authenticated' => 'Nu sunteți autorizat și nu puteți vizualiza această pagină.',
+    'package_photo' => 'Foto pachet',
+    'box_photo' => 'Foto cutie',
+    'barcode_excel' => 'Barcode',
+    'sheets_in_package' => 'Foi în pachet',
+    'packaging' => 'Ambalaj, pac.',
+    'box' => 'în cutie',
+    'pallet' => 'pe palet',
+    'price_excel' => 'Preț MDL, incl. TVA',
 );

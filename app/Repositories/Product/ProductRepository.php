@@ -471,4 +471,9 @@ final class ProductRepository
             ->get()
         ;
     }
+
+    public function getAllByBrandOnceId(int $brandId): ?Collection
+    {
+        return Product::query()->where('brand_id', $brandId)->get();
+    }
 }

@@ -369,4 +369,12 @@ return array (
     'cart-auth-modal-login' => 'Войти',
     'cart-auth-modal-register' => 'Регистрация',
     'not_authenticated' => 'Вы не авторизованы и не можете просмотреть эту страницу.',
+    'package_photo' => 'Фото пачки',
+    'box_photo' => 'Фото коробки',
+    'barcode_excel' => 'Штрихкод',
+    'sheets_in_package' => 'Листов в пачке',
+    'packaging' => 'Упаковка, пач.',
+    'box' => 'в коробе',
+    'pallet' => 'на палете',
+    'price_excel' => 'Цена MDL, вкл. НДС',
 );
