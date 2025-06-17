@@ -42,10 +42,33 @@ input[type=number]{
 
 .theme-wrapper-bg-white.theme-wrapper-sticky {
     background-color: white;
-    position: sticky;
+    position: relative;
     z-index: 999;
     top: 0;
     border-bottom: 2px solid #0052a6;
+}
+
+.header-js-sticky{
+    position: fixed;
+    margin: 0 auto;
+    top: 0;
+    left: 50%;
+    z-index: 9999;
+    padding: 0 30px;
+    background-color: #0052a6;
+    transform: translate(-50%, 0);
+}
+
+.header-js-sticky::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #0052a6;
+    z-index: -1;
+    transform-origin: top left;
 }
 
 .wrapper.theme-wrapper #main .container {
@@ -5877,6 +5900,11 @@ header .section-header .row-main .header-menu .col-lg{
     object-fit: contain;
     height: 100%;
 }
+.text-wrap{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
 
 .product-item-category .wrap-image img:last-child {
     display: none;
@@ -6500,6 +6528,7 @@ hr.product-card-item{
 
 .section-register .col-register-wrap #tabs form .center .form-control-direction {
     flex-direction: column;
+    width: 100%;
 }
 
 .section-register .col-register-wrap #tabs form .center .custom-checkbox {
@@ -6536,7 +6565,9 @@ hr.product-card-item{
 
 .section-register .col-register-wrap #tabs form .form-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .section-register .col-register-wrap #tabs form .right {
@@ -6747,7 +6778,10 @@ hr.product-card-item{
     background-color: #fff;
     border: 1px solid #0052a6;
 }
-
+.section-register .col-register-wrap #tabs form .form-control input:focus,
+.section-register .col-register-wrap #tabs form .form-control input:active{
+    box-shadow: 0px 0px 4px 1px rgba(0, 89, 145, 0.25);
+}
 .section-register .col-register-wrap #tabs form .right .form-control input:disabled {
     background-color: #d2d2d2;
 }
@@ -6769,21 +6803,13 @@ hr.product-card-item{
     color: #034486;
 }
 
-.section-register .col-register-wrap #tabs form .left {
-    width: 50%;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 15px;
-}
-
-.section-register .col-register-wrap #tabs form .left .form-control-direction {
+.section-register .col-register-wrap #tabs form .form-control-direction {
     flex-direction: column;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control {
+.section-register .col-register-wrap #tabs form .form-control {
     display: flex;
-    width: 100%;
+    width: calc(50% - 7.5px);
     margin-bottom: 20px;
     padding: 0;
     border-radius: 0;
@@ -6791,7 +6817,7 @@ hr.product-card-item{
     background-color: transparent;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control input {
+.section-register .col-register-wrap #tabs form .form-control input {
     display: block;
     color: #252525;
     padding: 15px 40px;
@@ -6800,7 +6826,7 @@ hr.product-card-item{
     border: 1px solid #0052a6;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control input:disabled {
+.section-register .col-register-wrap #tabs form .form-control input:disabled {
     background-color: #d2d2d2;
 }
 
@@ -6835,37 +6861,37 @@ hr.product-card-item{
     padding: 0;
     line-height: 1;
 }
-.section-register .col-register-wrap #tabs form .left .form-control .invalid-feedback {
+.section-register .col-register-wrap #tabs form .form-control .invalid-feedback {
     font-size: 12px;
     margin-left: 4px;
     margin-top: 4px;
     color: red;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control .ui-widget {
+.section-register .col-register-wrap #tabs form .form-control .ui-widget {
     display: flex;
     width: 100%;
     position: relative;
     align-items: center;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control .ui-widget label {
+.section-register .col-register-wrap #tabs form .form-control .ui-widget label {
     position: absolute;
     font-size: 12px;
     left: 25px;
     position: absolute;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-control .ui-widget input {
+.section-register .col-register-wrap #tabs form .form-control .ui-widget input {
     width: 100%;
     padding: 15px 20px 15px 130px;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-password {
+.section-register .col-register-wrap #tabs form .form-password {
     position: relative;
 }
 
-.section-register .col-register-wrap #tabs form .left .form-password a {
+.section-register .col-register-wrap #tabs form .form-password a {
     color: #034486;
     font-size: 18px;
     position: absolute;
@@ -6874,7 +6900,7 @@ hr.product-card-item{
     transform: translate(0, -50%);
 }
 
-.section-register .col-register-wrap #tabs form .left .form-password a:hover {
+.section-register .col-register-wrap #tabs form .form-password a:hover {
     color: #034486;
 }
 
@@ -6949,6 +6975,10 @@ hr.product-card-item{
     text-align: center;
     font-weight: 700;
     color: #fff;
+}
+
+.active-important{
+    display: block!important;
 }
 
 .section-register .col-register-wrap #tabs .tabContent {
@@ -9925,10 +9955,6 @@ hr.product-card-item{
         font-size: 14px;
     }
 
-    .section-register .col-register-wrap #tabs form .left {
-        width: 100% !important;
-    }
-
     .section-register .col-register-wrap #tabs form .right {
         width: 100% !important;
     }
@@ -10239,13 +10265,9 @@ hr.product-card-item{
         flex-direction: column;
     }
 
-    .section-register .col-register-wrap #tabs form .left {
-        width: calc(100% - 30px);
-        padding-bottom: 0;
-    }
-
-    .section-register .col-register-wrap #tabs form .left .form-control {
+    .section-register .col-register-wrap #tabs form .form-control {
         margin-bottom: 25px;
+        width: 100%;
     }
 
     .section-register .col-register-wrap #tabs form .right {
@@ -10262,6 +10284,25 @@ hr.product-card-item{
     }
 }
 @media (max-width: 576px) {
+    .text-wrap{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .section-register .col-register-wrap #tabs form .center .custom-checkbox + label::before{
+        width: 20px;
+        height: 20px;
+    }
+    .section-register .col-register-wrap #tabs form .center .form-control label{
+        display: flex;
+        flex-direction: column;
+    }
+    .section-register .col-register-wrap #tabs form .center .form-control label a{
+        margin-left: 0;
+    }
+    .section-register .col-register-wrap #tabs form .center .form-control label p{
+        margin: 0;
+    }
     #toast-container.theme-toast-center-center>.toast-success{
         width: 300px!important;
     }
@@ -10360,12 +10401,39 @@ hr.product-card-item{
         flex-direction: column;
     }
 
-    .section-register .col-register-wrap #tabs form .left {
-        padding-bottom: 0;
+    .section-register .col-register-wrap #tabs form .form-control {
+        margin-bottom: 15px;
+        width: 100% !important;
     }
 
-    .section-register .col-register-wrap #tabs form .left .form-control {
-        margin-bottom: 15px;
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(1) {
+        order: 1;
+    }
+
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(2) {
+        order: 1;
+    }
+
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(3) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(4) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(5) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(6) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(7) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(8) {
+        order: 1;
+    }
+    .section-register .col-register-wrap #tabs form .form-control:nth-child(2) {
+        order: 1;
     }
 
     .section-register .col-register-wrap #tabs form .right {
@@ -10491,15 +10559,15 @@ hr.product-card-item{
     }
 }
 @media (max-width: 480px) {
-    .section-register .col-register-wrap #tabs form .left .form_toggle {
+    .section-register .col-register-wrap #tabs form .form_toggle {
         flex-direction: column;
     }
 
-    .section-register .col-register-wrap #tabs form .left .form_toggle-item {
+    .section-register .col-register-wrap #tabs form .form_toggle-item {
         width: 100%;
     }
 
-    .section-register .col-register-wrap #tabs form .left .item-1 {
+    .section-register .col-register-wrap #tabs form .item-1 {
         margin-bottom: 20px;
     }
 }
