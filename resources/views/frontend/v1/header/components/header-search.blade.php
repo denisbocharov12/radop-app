@@ -1,6 +1,6 @@
 <div class="header-search header-with-menu col col-md col-xl col-lg">
     @include('frontend.v1.header.components.top-bar')
-    <div class="wrap">
+    <div class="wrap" id="header-js-sticky">
         <div class="btn-header-catalog-wrap">
             <button id="btn-header-catalog" class="btn-header-catalog">
                 <span class="animated-burger-icon"></span>
