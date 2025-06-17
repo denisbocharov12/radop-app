@@ -502,7 +502,16 @@ $(function () {
   });
 });
 $(document).ready(function () {
-
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 105) {
+            $('#header-js-sticky').addClass('header-js-sticky container');
+        } else {
+            $('#header-js-sticky').removeClass('header-js-sticky container');
+            if ($('.row-header-catalog .header-catalog').hasClass('show')) {
+                $('.row-header-catalog .header-catalog').removeClass('show');
+            }
+        }
+    });
     $("a.scroll-element").click(function(e) {
         e.preventDefault();
         var target = $(this).data("anchor");
