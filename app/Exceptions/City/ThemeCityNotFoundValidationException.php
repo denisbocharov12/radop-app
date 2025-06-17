@@ -19,6 +19,6 @@ class ThemeCityNotFoundValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(__('theme.city_not_found'));
+        return Redirect::back()->withErrors(['city_not_found' => __('theme.city_not_found')])->withInput();
     }
 }

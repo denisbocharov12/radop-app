@@ -20,7 +20,7 @@ final class BrandRoExport implements ShouldAutoSize, FromView, WithTitle
     public function view(): View
     {
         app()->setlocale('ro');
-//dd($this->products->first()->packages);
+
         return view('frontend.v1.exports.brands_ro', [
             'products' => $this->products,
         ]);
