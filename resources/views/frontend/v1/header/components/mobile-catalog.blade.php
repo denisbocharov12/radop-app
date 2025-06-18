@@ -1,13 +1,31 @@
 <div class="theme-navbar-menu navbar-menu">
     <div class="navbar-menu__container">
-        <div class="navbar-menu__wrapper">
+        <div class="navbar-menu__wrapper icon-block">
             <a class="navbar-menu__link navbar-menu__link_catalog catalog-btn theme-mobile-catalog-btn">
-{{--                <span class="animated-burger-icon"></span>--}}
                 <i class="icon-radop-bars"></i>
+                <p>{{ __('theme.header-catalog-text') }}</p>
             </a>
-            <a class="navbar-menu__link" href="{{route('theme.cart.index')}}"><i class="icon-shopping-cart"></i></a>
-            <a class="navbar-menu__link" href="{{route('theme.wishlist.index')}}"><i class="icon-heart-radop"></i></a>
-            <a class="navbar-menu__link" href="#"><i class="icon-user-radop"></i></a>
+            <a class="navbar-menu__link" href="#">
+                <i class="icon-search"></i>
+                <p>{{ __('theme.search_footer') }}</p>
+            </a>
+            <a
+                    class="navbar-menu__link user icon-block-link"
+                    data-fancybox
+                    data-src="#loginModal"
+                    href="javascript:;"
+            >
+                <i class="icon-user-radop"></i>
+                <p>{{ __('theme.login_register') }}</p>
+            </a>
+            <a class="navbar-menu__link" href="{{route('theme.wishlist.index')}}">
+                <i class="icon-heart-radop"></i>
+                <p>{{ __('theme.wishlist') }}</p>
+            </a>
+            <a class="navbar-menu__link" href="#">
+                <i class="icon-th-thumb-empty"></i>
+                <p>{{ __('theme.other') }}</p>
+            </a>
         </div>
     </div>
 </div>
@@ -130,5 +148,18 @@
 
             <button class="catalog__close-btn _icon-close" type="button"></button>
         </div>
+    </div>
+</div>
+<div class="mobile-sticky-header d-md-none">
+    <div class="mobile-sticky-header__inner">
+        <a href="tel:+37379782112" class="mobile-sticky-header__phone">
+            <i class="icon-phone"></i> +373 79 78 21 12
+        </a>
+        <a href="{{route('theme.cart.index')}}" class="mobile-sticky-header__cart">
+            <i class="icon-shopping-cart"></i>
+            <span class="mobile-sticky-header__cart-sum">
+                {{number_format(\Cart::session(auth()->guard('user')->user()?->id ?? config('shopping_cart.default_session_id'))->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}
+            </span>
+        </a>
     </div>
 </div>

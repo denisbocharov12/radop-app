@@ -377,4 +377,11 @@ return array (
     'box' => 'în cutie',
     'pallet' => 'pe palet',
     'price_excel' => 'Preț MDL, incl. TVA',
+    'header_text' => 'Produse pentru birou, școală și creativitate',
+    'login_register' => 'Autentificare/Înregistrare',
+    'search_footer' => 'Căutare',
+    'other' => 'Altele',
+    'show-all-filters' => 'Arată toate filtrele',
+    'filters' => 'Filtre',
+    'cancel' => 'Anulează',
 );

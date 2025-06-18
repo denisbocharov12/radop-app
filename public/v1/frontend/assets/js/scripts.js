@@ -874,4 +874,164 @@ document.addEventListener("DOMContentLoaded", (() => {
         }
     }
 }));
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('filtersModal');
+    const openBtn = document.querySelector('[data-bs-target="#filtersModal"]');
+    const closeBtn = document.querySelector('[data-bs-dismiss="modal"]');
+    const cancelBtn = document.querySelector('.modal-footer .btn-secondary');
 
+    function openModal() {
+        modal.style.display = 'block';
+        modal.classList.add('show');
+        document.body.classList.add('modal-open');
+
+        const backdrop = document.createElement('div');
+        backdrop.className = 'modal-backdrop fade show';
+        document.body.appendChild(backdrop);
+
+        initializeRangeSlider();
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.remove();
+        }
+    }
+
+    function initializeRangeSlider() {
+        const rangevalue = modal.querySelector(".slider .progress");
+        const rangeInputvalue = modal.querySelectorAll(".range-input input");
+        const priceInputvalue = modal.querySelectorAll(".price-input input");
+
+        if (!rangevalue || rangeInputvalue.length === 0 || priceInputvalue.length === 0) {
+            return;
+        }
+
+        let priceGap = 1;
+
+        for (let i = 0; i < priceInputvalue.length; i++) {
+            priceInputvalue[i].addEventListener("input", e => {
+                let minp = parseInt(priceInputvalue[0].value);
+                let maxp = parseInt(priceInputvalue[1].value);
+                let diff = maxp - minp;
+
+                if (minp < 0) {
+                    alert("minimum price cannot be less than 0");
+                    priceInputvalue[0].value = 0;
+                    minp = 0;
+                }
+
+                if (maxp > 10000) {
+                    alert("maximum price cannot be greater than 10000");
+                    priceInputvalue[1].value = 10000;
+                    maxp = 10000;
+                }
+
+                if (minp > maxp - priceGap) {
+                    priceInputvalue[0].value = maxp - priceGap;
+                    minp = maxp - priceGap;
+
+                    if (minp < 0) {
+                        priceInputvalue[0].value = 0;
+                        minp = 0;
+                    }
+                }
+
+                if (diff >= priceGap && maxp <= rangeInputvalue[1].max) {
+                    if (e.target.className === "input-min") {
+                        rangeInputvalue[0].value = minp;
+                        let value1 = rangeInputvalue[0].max;
+                        rangevalue.style.left = `${(minp / value1) * 100}%`;
+                    }
+                    else {
+                        rangeInputvalue[1].value = maxp;
+                        let value2 = rangeInputvalue[1].max;
+                        rangevalue.style.right = `${100 - (maxp / value2) * 100}%`;
+                    }
+                }
+            });
+        }
+
+        for (let i = 0; i < rangeInputvalue.length; i++) {
+            rangeInputvalue[i].addEventListener("input", e => {
+                let minVal = parseInt(rangeInputvalue[0].value);
+                let maxVal = parseInt(rangeInputvalue[1].value);
+                let diff = maxVal - minVal;
+
+                if (diff < priceGap) {
+                    if (e.target.className === "range-min") {
+                        rangeInputvalue[0].value = maxVal - priceGap;
+                    }
+                    else {
+                        rangeInputvalue[1].value = minVal + priceGap;
+                    }
+                }
+                else {
+                    priceInputvalue[0].value = minVal;
+                    priceInputvalue[1].value = maxVal;
+                    rangevalue.style.left = `${(minVal / rangeInputvalue[0].max) * 100}%`;
+                    rangevalue.style.right = `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
+                }
+            });
+        }
+
+        setInitialRangeValues();
+    }
+
+    function setInitialRangeValues() {
+        const rangevalue = modal.querySelector(".slider .progress");
+        const rangeInputvalue = modal.querySelectorAll(".range-input input");
+        const priceInputvalue = modal.querySelectorAll(".price-input input");
+
+        if (rangevalue && rangeInputvalue.length >= 2 && priceInputvalue.length >= 2) {
+            const minVal = parseInt(rangeInputvalue[0].value);
+            const maxVal = parseInt(rangeInputvalue[1].value);
+
+            rangevalue.style.left = `${(minVal / rangeInputvalue[0].max) * 100}%`;
+            rangevalue.style.right = `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
+        }
+    }
+
+    if (openBtn) {
+        openBtn.addEventListener('click', openModal);
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
+});
+// Show sticky mobile header script
+document.addEventListener('DOMContentLoaded', function() {
+    var stickyHeader = document.querySelector('.mobile-sticky-header');
+    var mainHeader = document.getElementById('header');
+    if (!stickyHeader || !mainHeader) return;
+    var observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+            stickyHeader.style.display = 'none';
+        } else {
+            stickyHeader.style.display = 'flex';
+        }
+    }, { threshold: 0 });
+    observer.observe(mainHeader);
+});

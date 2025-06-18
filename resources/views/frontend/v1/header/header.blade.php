@@ -7,6 +7,14 @@
                         <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Moldova" />
                     </a>
                 </div>
+                <div class="col d-block d-md-none contact-info-mobile text-center">
+                    <div class="slogan small-text">
+                        {{ __('theme.header_text') }}
+                    </div>
+                    <div class="phone-number mt-1">
+                        <a href="tel:+37379782112">+373 79 78 21 12</a>
+                    </div>
+                </div>
                 <div class="header-menu">
                     <div class="header-main-menu">
                         <ul class="menu w-100 justify-content-center">
@@ -28,7 +36,7 @@
                     </div>
                 </div>
                 <div class="header-account header-account-responsive col-auto col-sm-auto col-md-auto col-lg-auto">
-                    <div class="login-registration-block icon-block">
+                    <div class="login-registration-block icon-block d-none d-lg-block">
                         <a
                             class="user icon-block-link"
                             data-fancybox
@@ -38,7 +46,7 @@
                             <i class="icon-user-radop"></i>
                         </a>
                     </div>
-                    <div class="wishlist-block icon-block">
+                    <div class="wishlist-block icon-block d-none d-lg-block">
                         <a href="{{route('theme.wishlist.index')}}" class="wishlist icon-block-link">
                             <i class="icon-heart-radop"></i>
                         </a>
@@ -74,4 +82,5 @@
         </div>
     </section>
 </header>
+
 @include('frontend.v1.header.components.mobile-catalog')
