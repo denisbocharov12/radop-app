@@ -170,7 +170,7 @@ return array (
     'sales-department' => 'Departamentul de vânzări',
     'save' => 'Salvează',
     'search' => 'Căutare',
-    'search-on-site' => 'Căutare după numele sau codul produsului',
+    'search-on-site' => 'Căutare după nume, cod sau cod de bare al produsului...',
     'search-result' => 'În rezultatul căutării',
     'search-text' => 'Introduceți numele sau produsului',
     'second-name' => 'Prenume',
