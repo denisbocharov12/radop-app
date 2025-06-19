@@ -7,6 +7,7 @@ namespace App\Excel\Order;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 

@@ -54,7 +54,7 @@ input[type=number]{
     top: 0;
     left: 50%;
     z-index: 9999;
-    padding: 0 30px;
+    padding: 0 10px !important;
     background-color: #0052a6;
     transform: translate(-50%, 0);
 }
