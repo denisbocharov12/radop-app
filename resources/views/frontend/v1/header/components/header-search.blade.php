@@ -48,7 +48,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -65,59 +64,3 @@
         toggleCartBlock();
     });
 </script>
-{{--<style>--}}
-{{--.sticky-cart-in-search {--}}
-{{--    position: relative;--}}
-{{--    margin-left: 10px;--}}
-{{--    border-radius: 12px;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .cart.icon-block-link {--}}
-{{--    display: flex;--}}
-{{--    align-items: center;--}}
-{{--    color: #0052a6;--}}
-{{--    padding: 8px 15px;--}}
-{{--    border-radius: 10px;--}}
-{{--    background-color: #eff3f6;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .cart.icon-block-link .wrap-cart-block-info {--}}
-{{--    border-bottom: 1px dashed #0052a6;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .cart.icon-block-link i {--}}
-{{--    font-size: 22px;--}}
-{{--    color: #0052a6;--}}
-{{--    margin-left: 7px;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .wrap-shopping-cart {--}}
-{{--    display: none;--}}
-{{--    background-color: #eeeeee;--}}
-{{--    border-radius: 10px;--}}
-{{--    padding: 20px;--}}
-{{--    max-width: 390px;--}}
-{{--    min-width: 390px;--}}
-{{--    position: absolute;--}}
-{{--    right: -20px;--}}
-{{--    top: calc(100% + 10px);--}}
-{{--    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);--}}
-{{--    z-index: 9999;--}}
-{{--}--}}
-{{--.sticky-cart-in-search:hover .wrap-shopping-cart {--}}
-{{--    display: block;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .wrap-shopping-cart::after {--}}
-{{--    content: "";--}}
-{{--    position: absolute;--}}
-{{--    right: 26px;--}}
-{{--    top: -26px;--}}
-{{--    border: 14px solid transparent;--}}
-{{--    border-bottom: 14px solid #eeeeee;--}}
-{{--}--}}
-{{--.sticky-cart-in-search .wrap-shopping-cart::before {--}}
-{{--    content: "";--}}
-{{--    position: absolute;--}}
-{{--    top: -20px;--}}
-{{--    left: 0;--}}
-{{--    width: 100%;--}}
-{{--    height: 20px;--}}
-{{--    background-color: transparent;--}}
-{{--}--}}
-{{--</style>--}}
