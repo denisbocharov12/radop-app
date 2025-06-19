@@ -2067,7 +2067,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-header .row-main .header-search .wrap form .search {
     border: 1px solid #0052a6;
     color: #252525;
-    font-size: 0.825rem;
+    font-size: 14px;
     border-radius: 10px;
     padding: 12px 32px 12px 16px;
     width: 100%;
@@ -10744,4 +10744,63 @@ hr.product-card-item{
     background: rgba(0, 0, 0, 0.65);
     justify-content: center;
     align-items: center;
+}
+.section-header .container p, li {
+    margin: 0;
+}
+.section-header.section-header-top .header-with-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+.section-header .row-main .header-account {
+    justify-content: space-between;
+    padding: 0 0 0 5px;
+}
+.section-header .row-main .header-search .wrap form {
+    padding: 0;
+}
+.section-header .row-main .header-account .icon-block a.icon-block-link {
+    background-color: #eff3f6;
+    padding: 10px 15px;
+}
+.section-header .row-main .header-account .icon-block a.icon-block-link.cart {
+    padding: 10px 15px;
+}
+.section-header .row-main .header-logo {
+    padding: 0 5px 0 0;
+}
+.section-header .row-main .header-search .header-js-sticky form .search{
+    padding: 8px 32px 8px 16px;
+}
+.section-header .row-main .header-search .header-js-sticky .btn-header-catalog-wrap{
+    margin: 0 60px;
+}
+.section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {
+    padding: 6px 15px;
+}
+.section-header .row-main #sticky-cart-block {
+    height: auto;
+    padding: 0 0 0 50px;
+}
+@media (max-width: 1400px) {
+    .section-header .row-main .header-account .icon-block a.icon-block-link.cart {
+        padding: 5px 15px;
+    }
+    .section-header .row-main .header-account .icon-block a.icon-block-link {
+        padding: 5px 15px;
+    }
+    .section-header.section-header-top .header-with-menu {
+        height: 68px;
+    }
+    .section-header .row-main .header-account {
+        height: 68px;
+    }
+    .theme-text-sp {
+        font-size: 14px;
+    }
+    .section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {
+        padding: 4px 15px;
+    }
 }
