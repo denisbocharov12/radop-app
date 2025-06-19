@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Excel\Brand;
+namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-final class BrandRuExport implements ShouldAutoSize, FromView, WithTitle
+final class BrandRoExport implements ShouldAutoSize, FromView, WithTitle
 {
     public function __construct(
         private readonly Collection $products,
@@ -19,7 +19,7 @@ final class BrandRuExport implements ShouldAutoSize, FromView, WithTitle
 
     public function view(): View
     {
-        app()->setlocale('ru');
+        app()->setlocale('ro');
 
         return view('frontend.v1.exports.brands_ro', [
             'products' => $this->products,
@@ -28,6 +28,6 @@ final class BrandRuExport implements ShouldAutoSize, FromView, WithTitle
 
     public function title(): string
     {
-        return 'RU';
+        return 'RO';
     }
 }
