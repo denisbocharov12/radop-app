@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Excel\Brand;
+namespace App\Exports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
