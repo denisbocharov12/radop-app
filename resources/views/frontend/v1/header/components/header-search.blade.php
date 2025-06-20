@@ -41,8 +41,8 @@
                     <i class="icon-shopping-cart"></i>
                 </a>
                 <div class="wrap-shopping-cart">
-                    <div class="contents-shopping-cart" id="cart-update">
-                        @include('frontend.v1.components.mini-cart')
+                    <div class="contents-shopping-cart cart-update">
+                        @include('frontend.v1.components.mini-cart-sticky')
                     </div>
                 </div>
             </div>

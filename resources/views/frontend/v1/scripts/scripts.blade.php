@@ -119,12 +119,12 @@
             },
             success: function (response) {
                 if (response['status'] === true) {
-                    $('#cart-update').html(response['cart']);
+                    $('.cart-update').html(response['cart']);
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
-                    $('#cart-page').html(response['cart-page']);
+                    $('.cart-page').html(response['cart-page']);
                     $('#product-card-summary-in-cart-' + product_id).html(response['in-cart']);
                     if(!$('#col-product-' + product_id).hasClass('product-item-category-in-cart')) {
                         $('#col-product-' + product_id).addClass('product-item-category-in-cart');
@@ -191,12 +191,12 @@
             },
             success:function (response) {
                 if (response['status'] === true){
-                    $('#cart-update').html(response['cart']);
+                    $('.cart-update').html(response['cart']);
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
-                    $('#cart-page').html(response['cart-page']);
+                    $('.cart-page').html(response['cart-page']);
                     //toastr["success"](response['msg'])
                 }
                 if(response['status'] === 'not_permitted') {
@@ -305,12 +305,13 @@
 
     $(document).on('click', '.btn-quantity', function (e) {
         e.preventDefault();
-        var rowId = $(this).parent('.input-group-btn').parent('.sc-product-qty').find('input[type=number]').data("id");
-        update_mini_cart(rowId);
+        var $qtyInput = $(this).closest('.sc-product-qty').find('input[type=number]');
+        var rowId = $qtyInput.data('id');
+        var product_qty = $qtyInput.val();
+        update_mini_cart(rowId, product_qty);
     });
 
-    function update_mini_cart(rowId) {
-        var product_qty =  $('#qty-item-'+rowId).val();
+    function update_mini_cart(rowId, product_qty) {
         var token = '{{csrf_token()}}';
         var path = "{{route('theme.product.update')}}";
         $.ajax({
@@ -323,12 +324,12 @@
             },
             success: function (response) {
                 if(response['status']){
-                    $('#cart-update').html(response['cart']);
+                    $('.cart-update').html(response['cart']);
                     $('.mini-cart-count').html(response['cart_count']);
                     $('.mini-cart-subtotal').html(response['total']);
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
-                    $('#cart-page').html(response['cart-page']);
+                    $('.cart-page').html(response['cart-page']);
                 }
                 if(response['status'] === 'not_in_stock') {
                     toastr["warning"](response['msg'])

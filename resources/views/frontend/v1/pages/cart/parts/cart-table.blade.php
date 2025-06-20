@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="cart-page">
+        <div class="row cart-page">
             @include('frontend.v1.components.cart-table')
         </div>
     </div>
