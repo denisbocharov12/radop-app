@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" id="cart-page">
+                <div class="row cart-page">
                     @include('frontend.v1.components.cart-table')
                 </div>
             </div>
@@ -63,10 +63,10 @@
                 },
                 success: function (response) {
                     if(response['status']){
-                        $('#cart-update').html(response['cart']);
+                        $('.cart-update').html(response['cart']);
                         $('.mini-cart-count').html(response['cart_count']);
                         $('.mini-cart-subtotal').html(response['total']);
-                        $('#cart-page').html(response['cart-page']);
+                        $('.cart-page').html(response['cart-page']);
                     }
                     if(response['status'] === 'not_in_stock') {
                         toastr["warning"](response['msg'])

@@ -328,12 +328,12 @@
                 },
                 success: function (response) {
                     if (response['status'] == true) {
-                        $('#cart-update').html(response['cart']);
+                        $('.cart-update').html(response['cart']);
                         $('.mini-cart-count').html(response['cart_count']);
                         $('.mini-cart-subtotal').html(response['total']);
                         $('.header-cart-widget .count').html(response['cart_count']);
                         $('.header-cart-widget .summ').html(response['total']);
-                        $('#cart-page').html(response['cart-page']);
+                        $('.cart-page').html(response['cart-page']);
                         toastr["success"](response['msg']);
                     }
                     if (response['status'] == "not_in_stock") {

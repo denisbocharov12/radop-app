@@ -10778,7 +10778,12 @@ hr.product-card-item{
     margin: 0 60px;
 }
 .section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {
-    padding: 6px 15px;
+    background: none;
+    color: #FFFFFF;
+    /*padding: 6px 15px;*/
+}
+.section-header .row-main #sticky-cart-block .icon-shopping-cart:before{
+    color: #FFFFFF;
 }
 .section-header .row-main #sticky-cart-block {
     height: auto;
@@ -10800,7 +10805,7 @@ hr.product-card-item{
     .theme-text-sp {
         font-size: 14px;
     }
-    .section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {
-        padding: 4px 15px;
-    }
+    /*.section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {*/
+    /*    padding: 4px 15px;*/
+    /*}*/
 }
