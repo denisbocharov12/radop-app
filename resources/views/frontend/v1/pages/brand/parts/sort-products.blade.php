@@ -51,7 +51,6 @@
                 document.querySelector('.default-option').classList.add('active');
             }
 
-
             option.addEventListener('click', function(e) {
                 e.preventDefault();
                 sortOptions.forEach(opt => opt.classList.remove('active'));

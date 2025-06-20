@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-breadcrumb">
                 <nav>
-                    <ol class="breadcrumb text-white">
+                    <ol class="breadcrumb text-white d-none d-md-flex">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
                         <li class="breadcrumb-item"><a href="{{route('theme.cart.index')}}">{{__('theme.cart')}}</a></li>
                     </ol>

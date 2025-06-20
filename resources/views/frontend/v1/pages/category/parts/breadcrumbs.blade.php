@@ -18,7 +18,7 @@
                         @endphp
                         <li class="breadcrumb-item active fw-bold" style="color: #000000" aria-current="page">
                             @if(isset($last['url']))
-                                <a href="{{$last['url']}}">{{$last['name']}}</a>
+                                <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['name']}}</a>
                             @else
                                 {{$last['name'] ?? $last->name ?? ''}}
                             @endif

@@ -883,6 +883,26 @@ document.addEventListener("DOMContentLoaded", (() => {
         }
     }
 }));
+document.addEventListener("DOMContentLoaded", (() => {
+    const searchNavBarMenu = document.querySelector(".search-navbar");
+    if (searchNavBarMenu) {
+        const mobileSearchNavBarMenuBtn = document.querySelector(".navbar-menu__link_search");
+        mobileSearchNavBarMenuBtn.addEventListener("click", navBarCatalogToggle);
+        function navBarCatalogToggle(event) {
+            if (event.target.closest(".navbar-menu__link_search")) searchNavBarMenu.classList.toggle("_active");
+        }
+    }
+}));
+document.addEventListener("DOMContentLoaded", (() => {
+    const otherNavBarMenu = document.querySelector(".other-navbar");
+    if (otherNavBarMenu) {
+        const mobileOtherNavBarMenuBtn = document.querySelector(".navbar-menu__link_other");
+        mobileOtherNavBarMenuBtn.addEventListener("click", navBarCatalogToggle);
+        function navBarCatalogToggle(event) {
+            if (event.target.closest(".navbar-menu__link_other")) otherNavBarMenu.classList.toggle("_active");
+        }
+    }
+}));
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('filtersModal');
     const openBtn = document.querySelector('[data-bs-target="#filtersModal"]');

@@ -86,4 +86,4 @@
         @endif
     </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
-</form> 
+</form>

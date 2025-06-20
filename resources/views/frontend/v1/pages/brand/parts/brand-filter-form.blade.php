@@ -34,5 +34,41 @@
             </div>
         </div>
     </div>
+    <div class="theme-wg-wrap">
+        <p class="theme-widget-title">{{__('theme.attributes')}}</p>
+        @if(!empty($attributes))
+            <ul class="theme-toggle-list">
+                @foreach($attributes as $key => $attributeValues)
+                    <li class="theme-toggle-item">
+                        <div class="theme-toggle-item-title">
+                            <i class="icon-arrow-filter-radop-left"></i>
+                            <p class="theme-widget-title">{{$key}}</p>
+                        </div>
+                        @php
+                            $attributeValues = collect($attributeValues)->map(function($attribute) {
+                                    return \App\Models\AttributeValue::find($attribute->id);
+                                })->sortBy('value');
+
+                            $activeStyle = 'display: none';
+
+                            foreach ($attributeValues as $attribute) {
+                                if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
+                                    $activeStyle = 'display:flex';
+                                }
+                            }
+                        @endphp
+                        <div class="theme-toggle-item-content" style="{{$activeStyle}}">
+                            @foreach($attributeValues as $attribute)
+                                <div class="col-6">
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
+                                    <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
 </form>
