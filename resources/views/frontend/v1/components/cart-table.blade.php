@@ -51,7 +51,6 @@
                                         onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
                                         class="sc-product-decrement btn-quantity-cart minus"
                                         type="button"
-                                        id="button-minus"
                                     >
                                         -
                                     </button>
@@ -73,7 +72,6 @@
                                         onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
                                         class="sc-product-increment btn-quantity-cart plus"
                                         type="button"
-                                        id="button-plus"
                                     >
                                         +
                                     </button>

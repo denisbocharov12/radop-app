@@ -39,7 +39,7 @@
                                     </div>
                                     <input
                                         data-id="{{$item->id}}"
-                                        id="qty-item-mini-{{$item->id}}"
+                                        id="qty-item-sticky-{{$item->id}}"
                                         type="number"
                                         min="{{$item->associatedModel->min_order ?? 1}}"
                                         max="{{$item->associatedModel->stock}}"
@@ -48,7 +48,7 @@
                                         step="{{$item->associatedModel->min_order ?? 1}}"
                                         class="sc-qty"
                                     />
-                                    <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-mini-{{$item->id}}">
+                                    <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-sticky-{{$item->id}}">
                                     <div class="input-group-btn">
                                         <button
                                             onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
@@ -83,4 +83,4 @@
 <div class="bottom-shopping-cart">
     <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart ">{{__('theme.сontinue-shopping')}}</a>
     <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
-</div>
+</div> 

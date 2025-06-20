@@ -331,7 +331,7 @@ return [
     // If you want to display the locales in particular order in the language selector you should write the order here.
     //CAUTION: Please consider using the appropriate locale code otherwise it will not work
     //Example: 'localesOrder' => ['es','en'],
-    'localesOrder' => [],
+    'localesOrder' => ['ro', 'ru'],
 
     // If you want to use custom language URL segments like 'at' instead of 'de-AT', you can map them to allow the
     // LanguageNegotiator to assign the desired locales based on HTTP Accept Language Header. For example, if you want
@@ -349,5 +349,5 @@ return [
         '/admin/*'
     ],
 
-    'httpMethodsIgnored' => ['POST', 'PUT', 'PATCH', 'DELETE'],
+    'httpMethodsIgnored' => ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
 ];

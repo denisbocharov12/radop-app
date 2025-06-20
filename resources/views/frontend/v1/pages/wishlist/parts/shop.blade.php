@@ -29,7 +29,7 @@
                 <div class="wrap-slider theme-slider" id="partners-slider">
                     @foreach($themeBrands as $brand)
                         <div class="item">
-                            <a href="{{route('theme.brand.index', $brand->id)}}">
+                            <a href="{{route('theme.brand.index', $brand->onec_id)}}">
                                 <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" />
                             </a>
                         </div>

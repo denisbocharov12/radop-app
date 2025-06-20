@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Frontend\v1\User\Auth;
 
+use App\Exceptions\City\CityNotFoundException;
+use App\Exceptions\City\CityNotFoundValidationException;
+use App\Exceptions\City\ThemeCityNotFoundValidationException;
 use App\Exceptions\User\DuplicatedUserEmailException;
 use App\Exceptions\User\DuplicatedUserEmailValidationException;
 use App\Exceptions\User\UserTypeNotFoundException;
@@ -50,6 +53,8 @@ final class ThemeUserRegisterController extends Controller
             throw new DuplicatedUserEmailValidationException();
         } catch (UserTypeNotFoundException) {
             throw new UserTypeNotFoundValidationException();
+        } catch (CityNotFoundException) {
+            throw new ThemeCityNotFoundValidationException();
         }
     }
 

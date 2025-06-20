@@ -22,8 +22,8 @@
             <td style="border: 1px solid black;">{{ $i + 1 }}</td>
             <td style="border: 1px solid black;">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{!! $product->title !!}</td>
-            <td style="border: 1px solid black;">{{ $product->brand?->title }}</td>
-            <td style="border: 1px solid black;">"{{ $product->shtrih_code }}"</td>
+            <td style="border: 1px solid black;">{{ $product->brand->title }}</td>
+            <td style="border: 1px solid black;">="{{ $product->shtrih_code }}"</td>
             <td style="border: 1px solid black;">{{ $product->sheets_in_pack }}</td>
             <td style="border: 1px solid black;">{{ $product->packs_in_box }}</td>
             <td style="border: 1px solid black;">{{ $product->packs_on_pallet }}</td>

@@ -9,7 +9,7 @@
                     <div id="tabs">
                         <div class="tab-block">
                             <div class="tab {{old('type_id')  === "2" ? 'active' : ''}} {{old('type_id') === null ? 'active' : ''}}">{{__('theme.legal-person')}}</div>
-                            <div class="tab {{old('type_id')  === "1" ? 'active' : ''}} {{old('type_id')  !== null && old('type_id')  === "2" ? 'active  show-important-active' : ''}}">{{__('theme.physical-person')}}</div>
+                            <div class="tab {{old('type_id')  === "1" ? 'active' : ''}} {{old('type_id')  !== null && old('type_id')  === "1" ? 'active  show-important-active' : ''}}">{{__('theme.physical-person')}}</div>
                         </div>
                         @include('frontend.v1.pages.registration.components.iur')
                         @include('frontend.v1.pages.registration.components.fiz')
