@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="sort-block d-none d-md-block">
+                <div class="sort-block d-none d-md-flex">
                     @include('frontend.v1.components.sort-products')
                 </div>
             </div>
