@@ -33,12 +33,12 @@
                             $sessionId = auth()->guard('user')->user()->id;
                         }
                     @endphp
+                    <i class="icon-shopping-cart"></i>
                     <div class="wrap-cart-block-info header-cart-widget">
                         <span class="count">{{\Cart::session($sessionId)->getContent()->count()}}</span> <span>{{__('theme.product')}}</span>
                         <span>/</span>
                         <span class="summ">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}}</span> <span>{{__('theme.MDL')}}</span>
                     </div>
-                    <i class="icon-shopping-cart"></i>
                 </a>
                 <div class="wrap-shopping-cart">
                     <div class="contents-shopping-cart cart-update">
