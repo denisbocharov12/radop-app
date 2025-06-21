@@ -384,4 +384,6 @@ return array (
     'show-all-filters' => 'Показать все фильтры',
     'filters' => 'Фильтры',
     'cancel' => 'Отмена',
+    'sort-product' => 'Товара',
+    'sort-products' => 'Товаров',
 );

@@ -1,5 +1,5 @@
-<span class="sort-label">{{__('theme.sort-label')}}</span>
-<div class="sort-options">
+<span class="sort-label d-none d-md-block">{{__('theme.sort-label')}}</span>
+<div class="sort-options d-none d-md-block">
     <a href="#" class="sort-option default-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
     <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
     <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
@@ -7,7 +7,7 @@
     <a href="#" class="sort-option" data-sort="condition">{{__('theme.sort-new')}}</a>
     <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
 </div>
-<div class="sort-per-page">
+<div class="sort-per-page d-none d-md-block">
     <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.shop.index')}}" method="GET">
         <select name="perPage" id="perPage" class="js2-select select-sort-per-page">
             <option value="24" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 24 ? 'selected': ''}}>24</option>

@@ -192,7 +192,7 @@
         </a>
         <a href="{{route('theme.cart.index')}}" class="mobile-sticky-header__cart">
             <i class="icon-shopping-cart"></i>
-            <span class="mobile-sticky-header__cart-sum">
+            <span class="mobile-sticky-header__cart-sum" id="mobile-cart-info">
                 {{number_format(\Cart::session(auth()->guard('user')->user()?->id ?? config('shopping_cart.default_session_id'))->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}
             </span>
         </a>

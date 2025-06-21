@@ -384,4 +384,6 @@ return array (
     'show-all-filters' => 'Arată toate filtrele',
     'filters' => 'Filtre',
     'cancel' => 'Anulează',
+    'sort-product' => 'Produs',
+    'sort-products' => 'Produse',
 );
