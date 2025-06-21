@@ -9422,9 +9422,6 @@ hr.product-card-item{
     .my-account-details__text {
         max-width: 290px;
     }
-    .section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item{
-        margin-right: 5px;
-    }
     .section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item a.link{
         font-size: 14px;
     }
