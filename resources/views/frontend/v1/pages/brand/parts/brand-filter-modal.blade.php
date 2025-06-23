@@ -7,7 +7,7 @@
             </div>
             <div class="row row-category-list modal-body">
                 <div class="col-theme-filters">
-                    @include('frontend.v1.pages.brand.parts.brand-filter-form')
+                    @include('frontend.v1.pages.brand.parts.brand-filter-form-modal')
                 </div>
             </div>
         </div>
