@@ -138,7 +138,7 @@ final class ProductRepository
                 'popular_order',
                 'stock',
             ])
-            ->whereIn('onec_id', $productIds)
+            ->whereIn('product_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
@@ -236,7 +236,7 @@ final class ProductRepository
                 'popular_order',
                 'stock',
             ])
-            ->whereIn('onec_id', $productIds)
+            ->whereIn('product_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
@@ -299,7 +299,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
+            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.product_id')
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
