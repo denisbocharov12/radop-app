@@ -60,7 +60,14 @@
                         <div class="theme-toggle-item-content" style="{{$activeStyle}}">
                             @foreach($attributeValues as $attribute)
                                 <div class="col-6">
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
+                                    <input
+                                            type="checkbox"
+                                            class="theme-checkbox"
+                                            {{ isset($query['attribute'][$attribute->attribute_onec_id]) && in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : '' }}
+                                            id="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}"
+                                            name="filter[attribute][{{$attribute->attribute_onec_id}}][]"
+                                            value="{{ str_replace(',', '.', $attribute->value) }}"
+                                    >
                                     <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
                                 </div>
                             @endforeach
