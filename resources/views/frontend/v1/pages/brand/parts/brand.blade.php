@@ -10,58 +10,41 @@
         </div>
     </div>
 </section>
+@include('frontend.v1.components.show-filter-button')
 <section class="section-standart section-category pt-0">
     <div class="container">
         <div class="row row-category-list">
-                <div class="col-12 col-md-3 col-theme-filters">
-                    <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
-{{--                        <div class="theme-wg-wrap">--}}
-{{--                            <p class="theme-widget-title">{{__('theme.search')}}</p>--}}
-{{--                            <div class="filter-widget-wrap">--}}
-{{--                                <input type="text" name="filter[search]" value="{{isset($query['search']) ? $query['search'] : ''}}" placeholder="{{__('theme.search-text')}}" class="search">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                        <div class="theme-wg-wrap">
-                            <p class="theme-widget-title theme-widget-title-range">{{__('theme.by-price')}}</p>
-                            <div class="filter-widget-wrap">
-                                @php
-                                    $queryPrice = $query['price'] ?? null;
-                                    $queryPriceFrom = $query['price']['from'] ?? null;
-                                    $queryPriceTo = $query['price']['to'] ?? null;
-                                @endphp
-                                <div class="price-range-wrap">
-                                    <div class="slider">
-                                        <div class="progress"
-                                             @if(is_array($queryPrice) && isset($queryPriceFrom) && isset($queryPriceTo))
-                                             style="left:{{$queryPriceFrom/10}}%; right:{{100 - $queryPriceTo/10}}%"
-                                            @endif
-                                        >
-                                        </div>
-                                    </div>
-                                    <div class="range-input">
-                                        <input type="range" class="range-min" min="0" max="1000" @if(is_array($queryPrice) && isset($queryPriceFrom)) value="{{$queryPriceFrom}}" @else value="1" @endif step="1">
-                                        <input type="range" class="range-max" min="0" max="1000" @if(is_array($queryPrice) && isset($queryPriceTo)) value="{{$queryPriceTo}}" @else value="1000" @endif step="1">
-                                    </div>
-                                </div>
-                                <div class="price-input">
-                                    <div class="field">
-                                        <span>{{__('theme.min')}}</span>
-                                        <input type="number" class="input-min" name="filter[price][from]" @if(is_array($queryPrice) && isset($queryPriceFrom)) value="{{$queryPriceFrom}}" @else value="{{$queryPriceFrom}}"  @endif>
-                                    </div>
-                                    <div class="separator"></div>
-                                    <div class="field">
-                                        <span>{{__('theme.max')}}</span>
-                                        <input type="number" class="input-max" name="filter[price][to]"  @if(is_array($queryPrice) && isset($queryPriceTo)) value="{{$queryPriceTo}}" @else value="{{$queryPriceTo}}"  @endif" >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
-                    </form>
+                <div class="col-12 col-md-3 col-theme-filters d-none d-md-block">
+                    @include('frontend.v1.pages.brand.parts.brand-filter-form')
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
+                    <div id="mobile-sort-block" class="mobile-sort-block">
+                        <span class="mobile-sort-label">{{__('theme.sort-label')}}</span>
+                        <span class="mobile-sort-selected" id="mobileSortSelected"></span>
+                    </div>
+                    <div id="mobileSortModal" class="mobile-sort-modal">
+                        <div class="mobile-sort-modal-content">
+                            <div class="mobile-sort-option default-option" data-sort="price">{{ __('theme.sort-price-asc') }}</div>
+                            <div class="mobile-sort-option" data-sort="price_desc">{{ __('theme.sort-price-desc') }}</div>
+                            <div class="mobile-sort-option" data-sort="title">{{ __('theme.sort-title') }}</div>
+                            <div class="mobile-sort-option" data-sort="popular_order">{{ __('theme.sort-popular') }}</div>
+                            <div class="mobile-sort-option" data-sort="condition">{{ __('theme.sort-new') }}</div>
+                            <div class="mobile-sort-option" data-sort="stock">{{ __('theme.sort-stock') }}</div>
+                        </div>
+                    </div>
                     <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.brand.parts.list')
+                    </div>
+                    <div id="mobile-per-page-block" class="mobile-per-page-block">
+                        <div class="mobile-per-page-selected" id="mobilePerPageSelected">{{$products->perPage()}} товаров <span class="arrow">&#9660;</span></div>
+                    </div>
+                    <div id="mobilePerPageModal" class="mobile-per-page-modal">
+                        <div class="mobile-per-page-modal-content">
+                            <div class="mobile-per-page-option" data-value="24">24 {{ __('theme.sort-product') }}</div>
+                            <div class="mobile-per-page-option" data-value="48">48 {{ __('theme.sort-products') }}</div>
+                            <div class="mobile-per-page-option" data-value="72">72 {{ __('theme.sort-product') }}</div>
+                            <div class="mobile-per-page-option" data-value="96">96 {{ __('theme.sort-products') }}</div>
+                        </div>
                     </div>
                     <div class="theme-pagination">
                         {{$products->links()}}
@@ -69,4 +52,6 @@
                 </div>
         </div>
     </div>
+    @include('frontend.v1.pages.brand.parts.brand-filter-modal')
 </section>
+@include('frontend.v1.components.sort-js')

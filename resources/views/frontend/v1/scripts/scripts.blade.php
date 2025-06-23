@@ -124,6 +124,7 @@
                     $('.mini-cart-subtotal').html(response['total']);
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
+                    $('#mobile-cart-info').html(response['total'] + ' ' + '{{__("theme.MDL")}}');
                     $('.cart-page').html(response['cart-page']);
                     $('#product-card-summary-in-cart-' + product_id).html(response['in-cart']);
                     if(!$('#col-product-' + product_id).hasClass('product-item-category-in-cart')) {

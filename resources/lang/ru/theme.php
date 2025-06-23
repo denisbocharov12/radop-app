@@ -377,4 +377,13 @@ return array (
     'box' => 'в коробе',
     'pallet' => 'на палете',
     'price_excel' => 'Цена MDL, вкл. НДС',
+    'header_text' => 'Товары для офиса, школы и творчества',
+    'login_register' => 'Вход/Регистрация',
+    'search_footer' => 'Поиск',
+    'other' => 'Прочее',
+    'show-all-filters' => 'Показать все фильтры',
+    'filters' => 'Фильтры',
+    'cancel' => 'Отмена',
+    'sort-product' => 'Товара',
+    'sort-products' => 'Товаров',
 );
