@@ -109,7 +109,6 @@ final class BrandRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
             ->groupBy('products.onec_id')
             ->orderByRaw("
             CASE
