@@ -36,19 +36,19 @@
                     </div>
                 </div>
                 <div class="header-account header-account-responsive col-auto col-sm-auto col-md-auto col-lg-auto">
-                    <div class="login-registration-block icon-block d-none d-lg-block">
-                        <a
-                            class="user icon-block-link"
-                            data-fancybox
-                            data-src="#loginModal"
-                            href="javascript:;"
-                        >
-                            <i class="icon-user-radop"></i>
-                        </a>
-                    </div>
                     <div class="wishlist-block icon-block d-none d-lg-block">
                         <a href="{{route('theme.wishlist.index')}}" class="wishlist icon-block-link">
                             <i class="icon-heart-radop"></i>
+                        </a>
+                    </div>
+                    <div class="login-registration-block icon-block d-none d-lg-block">
+                        <a
+                                class="user icon-block-link"
+                                data-fancybox
+                                data-src="#loginModal"
+                                href="javascript:;"
+                        >
+                            <i class="icon-user-radop"></i>
                         </a>
                     </div>
                     <div class="cart-block icon-block mini-shopping-cart">
@@ -60,10 +60,10 @@
                                     $sessionId = auth()->guard('user')->user()->id;
                                 }
                             @endphp
+                            <i class="icon-shopping-cart"></i>
                             <div class="wrap-cart-block-info header-cart-widget">
                                 <span class="summ">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}}</span> <span>{{__('theme.MDL')}}</span>
                             </div>
-                            <i class="icon-shopping-cart"></i>
                         </a>
                     </div>
                 </div>
@@ -82,5 +82,4 @@
         </div>
     </section>
 </header>
-
 @include('frontend.v1.header.components.mobile-catalog')
