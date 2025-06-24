@@ -7,12 +7,9 @@
                         <img src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Moldova" />
                     </a>
                 </div>
-                <div class="col d-block d-md-none contact-info-mobile text-center">
-                    <div class="slogan small-text">
-                        {{ __('theme.header_text') }}
-                    </div>
-                    <div class="phone-number mt-1">
-                        <a href="tel:+37379782112">+373 79 78 21 12</a>
+                <div class="col-auto d-block d-md-none contact-info-mobile text-center">
+                    <div class="phone-number">
+                        <a href="tel:+37379782112">079 782 112</a>
                     </div>
                 </div>
                 <div class="header-menu">
@@ -65,6 +62,16 @@
                                 <span class="summ">{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}}</span> <span>{{__('theme.MDL')}}</span>
                             </div>
                         </a>
+                    </div>
+                </div>
+                <div class="language-switch-mobile col-auto d-flex d-lg-none">
+                    <div class="language-switcher">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <a href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                               class="lang-option @if(LaravelLocalization::getCurrentLocale() == $localeCode) active @endif">
+                                {{ strtoupper($localeCode) }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>

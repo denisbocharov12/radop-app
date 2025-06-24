@@ -51,13 +51,15 @@
                     <div class="form-block-wrap">
                         <input type="text" name="username" required class="input-login" placeholder="Email" />
                     </div>
-                    <div class="form-block-wrap">
+                    <div class="form-block-wrap form-password">
+                        <a href="#" class="qu eye eye_password"><i class="fa fa-eye-slash"></i></a>
                         <input
                             type="password"
                             name="password"
                             required
                             class="input-login input-password"
                             placeholder="{{__('theme.password')}}"
+                            id="password"
                         />
                     </div>
                     <div class="form-block-wrap">
@@ -124,3 +126,40 @@
         </div>
     @endif
 </div>
+
+<style>
+    .form-password {
+        position: relative;
+    }
+    .form-password .eye {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        color: #000;
+        text-decoration: none;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".eye_password").forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const input = document.querySelector("#password");
+                const icon = btn.querySelector("i");
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                } else {
+                    input.type = "password";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                }
+            });
+        });
+    });
+</script>
