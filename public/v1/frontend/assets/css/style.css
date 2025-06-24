@@ -10041,7 +10041,7 @@ hr.product-card-item{
         padding: 0;
     }
     .grid-products-list-wrap{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
     }
     .my-account-details__title {
         display: flex;
@@ -10800,16 +10800,14 @@ hr.product-card-item{
         font-size: 14px;
     }
 }
+.contact-info-mobile{
+    padding: 0 4px;
+}
 
 .contact-info-mobile .slogan {
     font-size: 14px;
     line-height: 1;
     color: #0052a6;
-}
-
-.contact-info-mobile .phone-number {
-    border-top: 1px solid #aab8c8;
-    padding-top: 5px;
 }
 
 .contact-info-mobile .phone-number a{
@@ -11034,7 +11032,7 @@ body.modal-open {
 }
 .mobile-sticky-header__phone {
     color: #fff;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 1.1rem;
     text-decoration: none;
     display: flex;
@@ -11053,6 +11051,7 @@ body.modal-open {
     border-radius: 12px;
     padding: 0.2rem 0.7rem;
     font-size: 1rem;
+    font-weight: 400;
 }
 .pagination-sm .page-link {
     padding: 0.25rem 0.5rem;
@@ -11237,7 +11236,6 @@ body.modal-open {
     margin-bottom: 1em;
     text-decoration: underline;
     text-align: left;
-    padding-left: 0.5em;
 }
 .catalog-category-link {
     font-weight: bold;
@@ -11295,6 +11293,16 @@ body.modal-open {
     }
     .catalog-category-link, .catalog-category-title {
         font-size: 18px;
+    }
+    .catalog-category-link {
+        font-weight: bold;
+        font-size: 16px;
+        background-color: #f2f3f5;
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        text-decoration: none;
+        color: #333;
     }
     .catalog-subcategory-link {
         font-size: 16px;
@@ -11473,5 +11481,38 @@ body.modal-open {
     }
     .flaer-wrap img {
         border-radius: 10px;
+    }
+}
+.theme-catalog-navbar .catalog-navbar__catalog .catalog .drop-menu-list__item{
+    margin: 4px 0;
+}
+.section-header .language-switch-mobile{
+    padding: 0;
+}
+.section-header .language-switch-mobile .language-switcher{
+    display: flex;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+}
+.section-header .language-switch-mobile .language-switcher .lang-option{
+    padding: 5px 12px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.section-header .language-switch-mobile .language-switcher .lang-option.active{
+    background-color: #0052a6;
+    color: #ffffff;
+}
+.section-header .language-switch-mobile .language-switcher .lang-option:not(.active){
+    background-color: #e7e9eb;
+    color: #212529;
+}
+@media (max-width: 375px) {
+    .section-header .row-main .contact-info-mobile {
+        display: none !important;
     }
 }

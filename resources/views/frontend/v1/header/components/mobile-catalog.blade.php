@@ -111,12 +111,11 @@
     <div class="catalog-navbar__catalog">
         <div class="catalog theme-catalog-body">
             <div class="catalog__main-column main-column-catalog">
-                <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link">Все товары</a>
                 <ul class="main-column-catalog__list column-style">
                     @if(!empty($themeParentCategories))
                         @foreach($themeParentCategories as $parentCategory)
                             <li class="main-column-catalog__item">
-                                <a class="main-column-catalog__link catalog-category-link _icon-women" @if(count($parentCategory->children) > 0) href="#" data-main-category="#{{$parentCategory->id}}" @else href="{{route('theme.category.index', $parentCategory->onec_id)}}"  @endif>
+                                <a class="main-column-catalog__link catalog-category-link" @if(count($parentCategory->children) > 0) href="#" data-main-category="{{$parentCategory->id}}" @else href="{{route('theme.category.index', $parentCategory->onec_id)}}"  @endif>
                                     {{$parentCategory->name}}
                                 </a>
                             </li>
@@ -129,53 +128,35 @@
                 @if(!empty($themeParentCategories))
                     @foreach($themeParentCategories as $parentCategory)
                         @if(count($parentCategory->children) > 0)
-                            @php
-                            if ($parentCategory->children->first()?->parent_id !== null) {
-                                $parentCategoryPhp = \App\Models\Category::where('onec_id', $parentCategory->children->first()->parent_id)->first();
-                            }
-                            @endphp
-                                <div class="column-catalog__item column-style" id="#{{$parentCategoryPhp->id}}">
-                                    <h3 class="column-catalog__title">
-                                        <span class="column-catalog__back catalog-back-arrow" title="Назад"></span>
-                                        <span class="catalog-category-title">{{$parentCategoryPhp->name}}</span>
-                                    </h3>
-                                    <ul class="column-catalog__list drop-menu-list">
-                                        @foreach($parentCategory->children as $children)
-                                            <li class="drop-menu-list__item">
-                                                <a class="drop-menu-list__link catalog-subcategory-link" @if(count($children->children) > 0) href="#" data-second-category="#{{$children->id}}" @else  href="{{route('theme.category.index', $children->onec_id)}}" @endif>{{$children->name}}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                        @endif
-                    @endforeach
-                @endif
-            </div>
-
-            <div class="catalog__third-column column-catalog">
-                @if(!empty($themeParentCategories))
-                    @foreach($themeParentCategories as $parentCategory)
-                        @if(count($parentCategory->children) > 0)
-                            @foreach($parentCategory->children as $parentCategory)
-                                @php
-                                    if ($parentCategory->children->first()?->parent_id !== null) {
-                                        $parentCategoryPhp = \App\Models\Category::where('onec_id', $parentCategory->children->first()->parent_id)->first();
-                                    }
-                                @endphp
-                                <div class="column-catalog__item column-style" id="#{{$parentCategoryPhp->id}}">
-                                    <h3 class="column-catalog__title">
-                                        <span class="column-catalog__back catalog-back-arrow" title="Назад"></span>
-                                        <span class="catalog-category-title">{{$parentCategoryPhp->name}}</span>
-                                    </h3>
-                                    <ul class="column-catalog__list drop-menu-list">
-                                        @foreach($parentCategory->children as $children)
-                                            <li class="drop-menu-list__item">
-                                                <a class="drop-menu-list__link catalog-subcategory-link" href="{{route('theme.category.index', $children->onec_id)}}">{{$children->name}}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endforeach
+                            <div class="column-catalog__item column-style" id="{{$parentCategory->id}}">
+                                <h3 class="column-catalog__title">
+                                    <span class="column-catalog__back catalog-back-arrow" title="Назад"></span>
+                                    <span class="catalog-category-title">{{$parentCategory->name}}</span>
+                                </h3>
+                                <ul class="column-catalog__list drop-menu-list">
+                                    <li>
+                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 16px;">{{ __('theme.all-brand-products') }}</a>
+                                    </li>
+                                    @foreach($parentCategory->children as $secondLevelCategory)
+                                        <li class="drop-menu-list__item" style="margin-bottom: 10px;">
+                                            <a href="{{ route('theme.category.index', $secondLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: bold; font-size: 16px;">
+                                                {{ $secondLevelCategory->name }}
+                                            </a>
+                                            @if(count($secondLevelCategory->children) > 0)
+                                                <ul class="column-catalog__list drop-menu-list" style="padding-left: 15px; margin-top: 5px;">
+                                                    @foreach($secondLevelCategory->children as $thirdLevelCategory)
+                                                        <li class="drop-menu-list__item">
+                                                            <a href="{{ route('theme.category.index', $thirdLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: normal; font-size: 14px;">
+                                                                {{ $thirdLevelCategory->name }}
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
                     @endforeach
                 @endif
