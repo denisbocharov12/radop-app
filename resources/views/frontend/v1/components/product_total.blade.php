@@ -1,5 +1,8 @@
+@php
+    $rawPrice = \App\Services\Theme\Product\ThemeProductManager::getRawProductPrice($product);
+@endphp
 @if($product->min_order !== null && $product->min_order > 1)
-    {{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) * $product->min_order}}
+    {{number_format($rawPrice * $product->min_order, 2, ',', ' ')}}
 @else
-    {{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSumWithReplace($product)}}
+    {{number_format($rawPrice, 2, ',', ' ')}}
 @endif

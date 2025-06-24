@@ -12,6 +12,7 @@ use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\PriceHelper;
 
 final class ThemeProductManager
 {
@@ -261,33 +262,42 @@ final class ThemeProductManager
         return \Cart::session($sessionId)->getContent()->count();
     }
 
-    public static function getProductTotalSum($product)
+    /**
+     * @param Product $product
+     * @return float
+     */
+    public static function getRawProductPrice(Product $product): float
     {
         $user = Auth::guard('user')->user();
-        $price = (float)$product->price;
-        $priceKoef = (float)$product->price_koef;
+        $rawPrice = 0.0;
 
         if ($user !== null && $user->with_sale) {
-            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, '.', '');
-            }
-            else{
-                $price = number_format($price, 2, '.', '');
+            if ($user->sale !== null && $user->sale > 0 && empty($product->sale_price)) {
+                $rawPrice = (float)$product->price - ((float)$product->price * ($user->sale / 100));
+            } elseif (!empty($product->sale_price)) {
+                $rawPrice = (float)$product->sale_price;
+            } else {
+                $rawPrice = (float)$product->price;
             }
         } else {
-            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, '.', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, '.', '');
-            }
-            else{
-                $price = number_format($price * $priceKoef, 2, '.', '');
+            $priceKoef = (float)$product->price_koef;
+            if ($user && $user->sale !== null && $user->sale > 0 && empty($product->sale_price)) {
+                $basePrice = (float)$product->price * $priceKoef;
+                $rawPrice = $basePrice - ($basePrice * ($user->sale / 100));
+            } elseif (!empty($product->sale_price)) {
+                $rawPrice = (float)$product->sale_price;
+            } else {
+                $rawPrice = (float)$product->price * $priceKoef;
             }
         }
 
-        return $price;
+        return PriceHelper::roundPrice($rawPrice);
+    }
+
+    public static function getProductTotalSum($product)
+    {
+        $price = self::getRawProductPrice($product);
+        return number_format($price, 2, ',', '');
     }
 
     public static function getProductSaleForLabel($product)
@@ -320,31 +330,8 @@ final class ThemeProductManager
 
     public static function getProductTotalSumWithReplace($product)
     {
-        $user = Auth::guard('user')->user();
-        $price = (float)$product->price;
-        $priceKoef = (float)$product->price_koef;
-
-        if ($user !== null && $user->with_sale) {
-            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, ',', '');
-            }
-            else{
-                $price = number_format($price, 2, ',', '');
-            }
-        } else {
-            if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, ',', '');
-            } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, ',', '');
-            }
-            else{
-                $price = number_format($price * $priceKoef, 2, ',', '');
-            }
-        }
-
-        return $price;
+        $price = self::getRawProductPrice($product);
+        return number_format($price, 2, ',', ' ');
     }
 
     private function getProductPriceForCart(Product $product)
@@ -377,3 +364,4 @@ final class ThemeProductManager
     }
 
 }
+
