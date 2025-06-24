@@ -10809,15 +10809,11 @@ hr.product-card-item{
 
 .contact-info-mobile .phone-number a{
     color: #0052a6;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 @media (max-width: 425px) {
     .contact-info-mobile .slogan {
-        font-size: 13px;
-    }
-
-    .contact-info-mobile .phone-number a {
         font-size: 13px;
     }
 }
@@ -11515,4 +11511,12 @@ body.modal-open {
 }
 .product-item-category a.product-label .product-label-wrap {
     display: none;
+}
+@media (max-width: 576px) {
+    .section-header .row-main .header-account .icon-block a.icon-block-link.cart {
+        padding: 5px;
+    }
+    header .section-header .row-main .header-account .icon-block {
+        margin-left: 0;
+    }
 }

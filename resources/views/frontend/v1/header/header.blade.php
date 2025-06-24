@@ -64,7 +64,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="language-switch-mobile col-auto d-flex d-md-none">
+                <div class="language-switch-mobile col-auto d-flex d-lg-none">
                     <div class="language-switcher">
                         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                             <a href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
