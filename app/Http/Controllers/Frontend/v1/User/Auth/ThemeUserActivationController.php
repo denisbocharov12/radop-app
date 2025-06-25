@@ -12,19 +12,22 @@ final class ThemeUserActivationController extends Controller
 {
     public function __construct(
         private readonly ThemeRegistrationManager $themeRegistrationManager
-    )
-    {
+    ) {
     }
 
-
+    /**
+     * @throws UserActivationIsActiveValidationException
+     */
     public function index(string $token)
     {
         try {
-            $this->themeRegistrationManager->activateUser($token);
+            $user = $this->themeRegistrationManager->activateUser($token);
 
-            if ()
-
-            toastr()->success(__('theme.registration-success-text-iur').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
+            if ($user->type->key_name === 'iur') {
+                toastr()->success(__('theme.registration-success-text-iur').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
+            } elseif ($user->type->key_name === 'fiz') {
+                toastr()->success(__('theme.registration-success-text-fiz').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
+            }
 
             return redirect()->route('user.login.form');
         } catch (UserActivationIsActiveException) {

@@ -30,8 +30,6 @@ final class ThemeRegistrationManager
 
     public function store(ThemeUserRegistrationData $themeUserRegistrationData): User
     {
-        $existedCity = null;
-
         $existedType = $this->userRepository->getTypeById($themeUserRegistrationData->typeId);
 
         if ($existedType === null) {
@@ -120,7 +118,7 @@ final class ThemeRegistrationManager
         event(new UserActivationSendEmailEvent($user,$token));
     }
 
-    public function activateUser($token): void
+    public function activateUser($token): ?User
     {
         $existedUserActivation = $this->userRepository->getUserActivationByToken($token);
 
@@ -137,5 +135,7 @@ final class ThemeRegistrationManager
         $existedUser->update([
             'status' => true
         ]);
+        
+        return $existedUser;
     }
 }
