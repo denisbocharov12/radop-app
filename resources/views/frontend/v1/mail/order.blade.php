@@ -10,7 +10,7 @@
                 detaliile referitor la comandă.</p>
         </td>
         <td style="padding: 20px 40px 20px 0; vertical-align: middle; width: 100%" width="30%">
-            <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" />
+            <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" alt="Radop Logo" />
         </td>
     </tr>
 
@@ -64,15 +64,15 @@
                 $i = 1;
                 @endphp
                 @foreach($products as $product)
-                    <tr style="text-align: center; ">
+                    <tr style="text-align: center;">
                         <td style="width: 40px; padding: 5px 10px;  border: 1px solid #ccc; color: black;">{{$i}}</td>
                         <td style="width: 80px; padding: 5px 10px;  border: 1px solid #ccc; color: black;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
-                        <td style="width: 400px;  padding: 5px 10px; border: 1px solid #ccc; color: black; text-wrap: normal">
+                        <td style="width: 400px;  padding: 5px 10px; border: 1px solid #ccc; color: black; text-wrap: normal; text-align: left;">
                             {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
                         </td>
-                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; color: black;">{{ $product->quantity }}</td>
-                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->price }}</td>
-                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc;">{{ $product->quantity * (float)$product->price}}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; color: black; text-align: right">{{ $product->quantity }}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; text-align: right">{{ number_format($product->price, 2, ',', ' ') }}</td>
+                        <td style="width: 80px; padding: 5px 10px; border: 1px solid #ccc; text-align: right">{{ number_format($product->quantity * (float)$product->price, 2, ',', ' ') }}</td>
                     </tr>
                     @php
                     $i++;
@@ -82,8 +82,8 @@
                     <td colspan="5" style="padding: 10px 20px; text-align: right; font-size: 14px; border: 1px solid #ccc;">
                         <strong>Total:</strong>
                     </td>
-                    <td colspan="1" style="padding: 10px 20px; font-size: 14px; border: 1px solid #ccc; text-align: center;">
-                        <span style="color: black;">{{ $order->total }}</span>
+                    <td colspan="1" style="padding: 10px 20px; font-size: 14px; border: 1px solid #ccc; text-align: right;">
+                        <strong>{{ number_format($order->total, 2, ',', ' ') }}</strong>
                     </td>
                 </tr>
                 </tbody>

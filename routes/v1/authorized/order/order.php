@@ -50,4 +50,5 @@ Route::prefix('orders')->name('order.')->group(function () {
         ->post('/orders/update-statuses', [OrderController::class, 'updateOrderStatuses'])
         ->name('orders.update-statuses')
     ;
+    Route::post('/orders/assign-manager', [OrderController::class, 'assignManager'])->name('order.assign-manager');
 });

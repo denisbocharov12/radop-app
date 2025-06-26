@@ -16,7 +16,7 @@
         <td style="border: 1px solid black;">{{ $order->user_type == 'fiz' ? __('theme.physical-person') : __('theme.legal-person') }}</td>
     </tr>
 
-    @if($order->user_type !== 'fiz' && $order->user !== null)
+    @if($order->user_type === 'iur' && $order->user !== null)
         <tr>
             <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
             <td style="border: 1px solid black;">{{ $order->user->profile->organization_name }}</td>
@@ -25,12 +25,24 @@
             <td style="border: 1px solid black;"><strong>{{ __('theme.cod-fiscal') }}</strong></td>
             <td style="border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}" align="left">{!! $order->user->profile->cod_fiscal !!}</td>
         </tr>
-    @else
+        <tr>
+            <td style="border: 1px solid black;"><strong>{{ __('theme.filial') }}</strong></td>
+            <td style="border: 1px solid black;">{{ $order->filial?->address }}</td>
+        </tr>
+    @elseif($order->user_type === 'fiz' && $order->user !== null)
         <tr>
             <td style="border: 1px solid black;"><strong>{{ __('theme.client') }}</strong></td>
             <td style="border: 1px solid black;">{{ $order?->fio }}</td>
         </tr>
     @endif
+    <tr>
+        <td style="border: 1px solid black;"><strong>{{ __('theme.phone-number') }}</strong></td>
+        <td style="border: 1px solid black;">{{ $order->phone }}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black;"><strong>{{ __('theme.email-address') }}</strong></td>
+        <td style="border: 1px solid black;">{{ $order->email }}</td>
+    </tr>
 </table>
 
 <br>

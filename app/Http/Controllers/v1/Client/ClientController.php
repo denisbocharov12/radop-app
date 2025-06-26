@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\v1\Client;
 
-use App\Data\Client\ClientData;
 use App\Events\PersonalSaleWasChangedEvent;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\City\CityNotFoundValidationException;
@@ -27,25 +26,14 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    private UserRepository $userRepository;
-    private ClientDataMapper $clientDataMapper;
-    private ClientManager $clientManager;
-    private ClientUpdateDataMapper $clientUpdateDataMapper;
-
-
     public function __construct(
-        UserRepository   $userRepository,
-        ClientDataMapper $clientDataMapper,
-        ClientManager    $clientManager,
-        ClientUpdateDataMapper $clientUpdateDataMapper,
+        private readonly UserRepository $userRepository,
+        private readonly ClientDataMapper $clientDataMapper,
+        private readonly ClientManager $clientManager,
+        private readonly ClientUpdateDataMapper $clientUpdateDataMapper,
         private readonly CityRepository $cityRepository,
         private readonly FilialRepository $filialRepository,
-    )
-    {
-        $this->userRepository = $userRepository;
-        $this->clientDataMapper = $clientDataMapper;
-        $this->clientManager = $clientManager;
-        $this->clientUpdateDataMapper = $clientUpdateDataMapper;
+    ) {
     }
 
     public function index(Request $request)
@@ -66,6 +54,10 @@ class ClientController extends Controller
         ]));
     }
 
+    /**
+     * @throws CityNotFoundValidationException
+     * @throws DuplicatedUserEmailValidationException
+     */
     public function store(ClientRequest $request)
     {
         $clientData = $this->clientDataMapper->mapFromRequestToNormalized($request);
@@ -82,6 +74,10 @@ class ClientController extends Controller
         }
     }
 
+    /**
+     * @throws DuplicatedUserEmailValidationException
+     * @throws CityNotFoundValidationException
+     */
     public function update(User $user, ClientUpdateRequest $request)
     {
         $clientData = $this->clientUpdateDataMapper->mapFromRequestToNormalized($request);
@@ -133,6 +129,10 @@ class ClientController extends Controller
         ]));
     }
 
+    /**
+     * @throws UserNotFoundValidationException
+     * @throws NotAjaxRequestException
+     */
     public function destroy(UserDeleteRequest $request)
     {
         if (!$request->ajax()) {
@@ -148,6 +148,9 @@ class ClientController extends Controller
         }
     }
 
+    /**
+     * @throws UserNotFoundValidationException
+     */
     public function restore(Request $request)
     {
         try {

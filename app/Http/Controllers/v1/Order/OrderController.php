@@ -5,15 +5,18 @@ namespace App\Http\Controllers\v1\Order;
 use App\Enums\OrderPaymentMethods;
 use App\Enums\OrderPaymentStatus;
 use App\Enums\OrderStatus;
-use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Exceptions\NotAjaxRequestException;
+use App\Exceptions\Order\ManagerNotFoundException;
+use App\Exceptions\Order\ManagerNotFoundValidationException;
 use App\Exceptions\Order\OrderNotFoundException;
 use App\Exceptions\Order\OrderNotFoundValidationException;
 use App\Exceptions\Order\OrderUniqueCodeException;
 use App\Exceptions\Order\OrderUniqueCodeValidationException;
 use App\Http\Controllers\Controller;
+use App\Http\Mappers\AssignManagerDataMapper;
 use App\Http\Mappers\OrderDataMapper;
 use App\Http\Mappers\UpdateOrderDataMapper;
+use App\Http\Requests\Order\AssignManagerRequest;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Http\Requests\Order\UpdateOrderStatusesRequest;
@@ -23,31 +26,32 @@ use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Order\OrderManager;
+use Excel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
-use Excel;
 
 class OrderController extends Controller
 {
     public function __construct(
-        private readonly OrderDataMapper $orderDataMapper,
-        private readonly OrderRepository $orderRepository,
-        private readonly OrderManager $orderManager,
-        private readonly OrderPaymentMethods $orderPaymentMethods,
-        private readonly OrderPaymentStatus $orderPaymentStatus,
-        private readonly OrderStatus $orderStatus,
-        private readonly UserRepository $userRepository,
-        private readonly CityRepository $cityRepository,
-        private readonly UpdateOrderDataMapper $updateOrderDataMapper,
+        private readonly OrderDataMapper         $orderDataMapper,
+        private readonly OrderRepository         $orderRepository,
+        private readonly OrderManager            $orderManager,
+        private readonly OrderPaymentMethods     $orderPaymentMethods,
+        private readonly OrderPaymentStatus      $orderPaymentStatus,
+        private readonly OrderStatus             $orderStatus,
+        private readonly UserRepository          $userRepository,
+        private readonly CityRepository          $cityRepository,
+        private readonly UpdateOrderDataMapper   $updateOrderDataMapper,
+        private readonly AssignManagerDataMapper $assignManagerMapper,
     ) {
     }
 
     public function index(Request $request)
     {
         $userId = Auth::guard()->user()->id;
-        $orders = $this->orderRepository->getAllPaginatedWithFilters();
+        $orders = $this->orderRepository->getAllPaginatedWithFiltersAndSorts();
         $user = $this->userRepository->getById($userId);
         $cities = $this->cityRepository->getAll();
         $orderStatus = $this->orderStatus->getAll();
@@ -57,6 +61,7 @@ class OrderController extends Controller
         $sort = $request->get('sort', '-id');
         $userTypes = $this->userRepository->getAllTypes();
         $paymentMethods = $this->orderPaymentMethods->getAll();
+        $managers = $this->userRepository->getManagers();
 
         return view('order.index', compact([
             'orders',
@@ -69,6 +74,7 @@ class OrderController extends Controller
             'sort',
             'userTypes',
             'paymentMethods',
+            'managers',
         ]));
     }
 
@@ -161,6 +167,9 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * @throws OrderNotFoundValidationException
+     */
     public function downloadExcel(Order $order)
     {
         try {
@@ -184,5 +193,28 @@ class OrderController extends Controller
         $this->orderManager->updateOrderStatuses($data);
 
         return response()->json(['status' => 'success']);
+    }
+
+    /**
+     * @throws ManagerNotFoundValidationException
+     * @throws OrderNotFoundValidationException
+     */
+    public function assignManager(AssignManagerRequest $request): JsonResponse
+    {
+        $data = $this->assignManagerMapper->mapFromRequestToNormalized($request);
+
+        try {
+            $result = $this->orderManager->assignManager($data);
+
+            return response()->json([
+                'message' => 'Менеджер успешно назначен',
+                'order' => $result['order'],
+                'manager' => $result['manager']
+            ]);
+        } catch (OrderNotFoundException $e) {
+            throw new OrderNotFoundValidationException();
+        } catch (ManagerNotFoundException $e) {
+            throw new ManagerNotFoundValidationException();
+        }
     }
 }

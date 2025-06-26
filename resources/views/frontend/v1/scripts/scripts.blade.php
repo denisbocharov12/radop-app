@@ -312,6 +312,16 @@
         update_mini_cart(rowId, product_qty);
     });
 
+    $(document).on('change', '.sc-qty', function (e) {
+        e.preventDefault();
+        var rowId = $(this).data('id');
+        var product_qty = $(this).val();
+        if (product_qty <= 0) {
+            product_qty = 1;
+        }
+        update_mini_cart(rowId, product_qty);
+    });
+
     function update_mini_cart(rowId, product_qty) {
         var token = '{{csrf_token()}}';
         var path = "{{route('theme.product.update')}}";

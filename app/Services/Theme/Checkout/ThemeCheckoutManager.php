@@ -14,23 +14,15 @@ use App\Exceptions\Checkout\OrderErrorException;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\City\ThemeCityErrorRequiredSumException;
 use App\Exceptions\Filial\FilialNotFoundException;
-use App\Exceptions\Order\ThemeOrderMakeException;
 use App\Exceptions\User\UserNotFoundException;
-use App\Models\DiscountPeriod;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderProfile;
 use App\Models\User;
 use App\Repositories\City\CityRepository;
-use App\Repositories\DiscountPeriod\DiscountPeriodRepository;
 use App\Repositories\Filial\FilialRepository;
-use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
-use App\Repositories\User\UserTypeRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 
 final class ThemeCheckoutManager
 {
@@ -75,7 +67,6 @@ final class ThemeCheckoutManager
             }
 
             $existedCity = $existedFilial->city;
-
         }
 
         if ($existedFilial === null) {
@@ -148,7 +139,7 @@ final class ThemeCheckoutManager
             'payment_method' => $orderData->payment_method,
             'delivery_method' => __('theme.default_delivery_method'),
             'payment_status' => $this->orderPaymentStatus->getUnpaidPaymentStatus(),
-            'status' => $this->orderStatus->getProcessingStatus(),
+            'status' => $this->orderStatus->getNewStatus(),
             'delivery_charge' => $deliverySum,
             'user_id' => $userId,
             'manager_id' => $managerId,
@@ -160,7 +151,7 @@ final class ThemeCheckoutManager
             'filial_id' => $orderData->filialId,
         ]);
 
-        $orderProfile = OrderProfile::create([
+        OrderProfile::create([
             'order_id' => $order->id,
             'company_name' => $orderData->company_name,
             'reserve_phone' => $orderData->reserve_phone,
@@ -228,9 +219,9 @@ final class ThemeCheckoutManager
     private function getLatestOrderNumber(string $userType): string
     {
         $latestOrder = 1;
-        $orderPrefix = 'PF1';
+        $orderPrefix = 'PF-1';
         if ($userType === 'iur') {
-            $orderPrefix = 'PJ1';
+            $orderPrefix = 'PJ-1';
         }
         $orderCount = Order::withTrashed()->count();
 
