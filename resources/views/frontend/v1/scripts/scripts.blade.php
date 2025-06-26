@@ -1,6 +1,4 @@
 <!-- JavaScript -->
-<script src="//code.jivo.ru/widget/4jE0F88ZIv" async></script>
-
 <script src="{{asset('/v1/frontend/assets')}}/libs/jquery/jquery-3.6.0.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/select2/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
