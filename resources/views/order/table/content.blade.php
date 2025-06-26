@@ -110,7 +110,7 @@
                     <span>{{$order->user?->profile?->cod_fiscal}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$order->manager?->profile?->first_name}}</span>
+                    <span>{{$order->manager?->profile?->last_name}} {{$order->manager?->profile?->first_name}}</span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$order->created_at->format('d.m.Y H:i:s')}}</span>

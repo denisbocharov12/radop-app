@@ -242,6 +242,9 @@
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
                             <li class="nk-menu-item">
+                                <a href="{{route('manager.list.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все менеджеры</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('manager.index')}}" class="nk-menu-link"><span class="nk-menu-text">Назначить менеджера</span></a>
                             </li>
                             @endhasrole

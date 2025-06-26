@@ -180,4 +180,18 @@ final class UserRepository
     {
         return User::find($id);
     }
+
+    public function getManagersPaginated(): LengthAwarePaginator
+    {
+        $query = User::query();
+
+        return QueryBuilder::for($query)
+            ->role('manager')
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+        ;
+    }
 }
