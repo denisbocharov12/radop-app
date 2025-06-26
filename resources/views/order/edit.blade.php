@@ -70,83 +70,6 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="company_name">Название компании</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('company_name') error @enderror" id="company_name" name="company_name" value="{{$order->profile?->company_name}}" placeholder="Название компании">
-                                                    @error('company_name')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="bank">Банк</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('bank') error @enderror" id="bank" name="bank" value="{{$order->profile?->bank}}" placeholder="Банк">
-                                                    @error('bank')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="idno">Банковский код IDNO</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('idno') error @enderror" id="idno" name="idno" value="{{$order->profile?->idno}}" placeholder="Банковский код IDNO">
-                                                    @error('idno')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="tva">TVA</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('tva') error @enderror" id="tva" name="tva" value="{{$order->profile?->tva}}" placeholder="TVA">
-                                                    @error('tva')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="iur_address">Юридический адрес</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('iur_address') error @enderror" id="iur_address" name="iur_address" value="{{$order->profile?->iur_address}}" placeholder="Юридический адрес">
-                                                    @error('iur_address')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="shipping_address">Адрес доставки</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('shipping_address') error @enderror" id="shipping_address" name="shipping_address" value="{{$order->profile?->shipping_address}}" placeholder="Адрес доставки">
-                                                    @error('shipping_address')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="reserve_phone">Резервный телефон</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('reserve_phone') error @enderror" id="reserve_phone" name="reserve_phone" value="{{$order->profile?->reserve_phone}}" placeholder="Номер телефона">
-                                                    @error('reserve_phone')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label class="form-label" for="email">Email</label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" required class="form-control @error('email') error @enderror" id="email" name="email" value="{{$order->email}}" placeholder="Email">
@@ -167,9 +90,16 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="fio">Имя / Фамилия</label>
+                                                <label class="form-label" for="fio">
+                                                    @if($order->user_type === 'fiz')
+                                                        Имя / Фамилия
+                                                    @elseif($order->user_type === 'iur')
+                                                        Название компании
+                                                    @endif
+                                                </label>
                                                 <div class="form-control-wrap">
                                                     <input type="text" class="form-control @error('fio') error @enderror" id="fio" name="fio" value="{{$order->fio}}" placeholder="Имя фамилия">
                                                     @error('fio')

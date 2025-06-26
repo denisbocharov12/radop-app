@@ -58,7 +58,7 @@ final class UserRepository
         return User::where('name', $userName)->first();
     }
 
-    public function getById(int $userId): ?User
+    public function getById($userId): ?User
     {
         return User::find($userId);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\v1\Manager;
 
 use App\Exceptions\User\UserNotFoundException;
@@ -9,13 +11,10 @@ use App\Http\Mappers\Manager\ManagerCreateDataMapper;
 use App\Http\Mappers\Manager\ManagerUpdateDataMapper;
 use App\Http\Requests\Manager\ManagerCreateRequest;
 use App\Http\Requests\Manager\ManagerUpdateRequest;
-use App\Models\Profile;
-use App\Models\User;
 use App\Repositories\City\CityRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Manager\ManagerListManager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class ManagerListController extends Controller
 {
@@ -79,7 +78,7 @@ class ManagerListController extends Controller
     public function updateForm(ManagerUpdateRequest $request, $user)
     {
         $data = $this->managerUpdateDataMapper->mapFromRequestToNormalized($request);
-//dd($data);
+
         try {
             $manager = $this->managerListManager->update($data, $user);
 

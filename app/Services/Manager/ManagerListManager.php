@@ -1,21 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Services\Manager;
 
-use App\Data\Filial\FilialData;
 use App\Data\Manager\ManagerCreateData;
 use App\Data\Manager\ManagerUpdateData;
-use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\Filial\FilialNotFoundException;
-use App\Exceptions\Filial\FilialNotPermittedToStoreException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Requests\Filial\FilialDeleteRequest;
-use App\Models\Filial;
 use App\Models\Profile;
 use App\Models\User;
-use App\Repositories\City\CityRepository;
-use App\Repositories\Filial\FilialRepository;
-use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\EntityStatusManager;
 use Illuminate\Support\Facades\Hash;
@@ -79,24 +74,5 @@ class ManagerListManager
         ]);
 
         return $manager;
-    }
-
-    public function delete(FilialDeleteRequest $request): void
-    {
-        $filialId = (int)$request->filial_id;
-
-        $filial = $this->filialRepository->getById($filialId);
-
-        if ($filial === null) {
-            throw new FilialNotFoundException();
-        }
-
-        $orders = $this->orderRepository->getAllByFilialId($filial->id);
-
-        foreach ($orders as $order) {
-            $order->update(['filial_id' => null]);
-        }
-
-        $filial->delete();
     }
 }
