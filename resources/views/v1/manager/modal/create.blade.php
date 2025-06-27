@@ -14,7 +14,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="first_name">Имя</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" placeholder="Имя">
+                                            <input type="text" class="form-control @error('first_name') error @enderror" id="first_name" name="first_name" placeholder="Имя">
                                             @error('first_name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
@@ -25,7 +25,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="last_name">Фамилия</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" required class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Фамилия">
+                                            <input type="text" class="form-control @error('last_name') error @enderror" id="last_name" name="last_name" placeholder="Фамилия">
                                             @error('last_name')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
@@ -75,7 +75,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="city_id">Город</label>
                                         <div class="form-control-wrap">
-                                            <select required class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
+                                            <select class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
                                                 @foreach($cities as $city)
                                                     <option value="{{$city->id}}">{{$city->name}}</option>
                                                 @endforeach

@@ -43,7 +43,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="email">Email</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('last_name') error @enderror" id="email" name="email" value="{{ $manager->email }}" placeholder="Email">
+                                                    <input type="text" required class="form-control @error('last_name') error @enderror" id="email" name="email" value="{{ $manager->email }}" placeholder="Email">
                                                     @error('email')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -54,7 +54,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="phone">Телефон</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('phone') error @enderror" id="phone" name="phone" value="{{ $manager->profile->phone }}" placeholder="Телефон">
+                                                    <input type="text" required class="form-control @error('phone') error @enderror" id="phone" name="phone" value="{{ $manager->profile->phone }}" placeholder="Телефон">
                                                     @error('phone')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -65,7 +65,7 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="city_id">Город</label>
                                                 <div class="form-control-wrap">
-                                                    <select required class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
+                                                    <select class="form-select js-select2" data-search="on" name="city_id" id="city_id" data-placeholder="Город">
                                                         @foreach($cities as $city)
                                                             <option value="{{$city->id}}" {{$city->id === $manager->city_id ? 'selected' : ''}}>{{$city->name}}</option>
                                                         @endforeach
