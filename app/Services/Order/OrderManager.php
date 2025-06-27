@@ -2,6 +2,7 @@
 
 namespace App\Services\Order;
 
+use App\Data\Order\AssignManagerData;
 use App\Data\Order\OrderData;
 use App\Data\Order\UpdateOrderStatusesData;
 use App\Enums\OrderStatus;
@@ -186,6 +187,10 @@ final class OrderManager
 
         $filePath = "order_{$order->id}.xls";
 
+        $order->update([
+            'status' =>  $this->orderStatus->getProcessingStatus()
+        ]);
+
         return Excel::download(new OrderExport($order), $filePath, \Maatwebsite\Excel\Excel::XLS);
     }
 
@@ -207,5 +212,28 @@ final class OrderManager
                 event(new OrderStatusUpdatedSendEmailEvent($order));
             }
         }
+    }
+
+    public function assignManager(AssignManagerData $data): array
+    {
+        $order = $this->orderRepository->getById($data->order_id);
+        if ($order === null) {
+            throw new OrderNotFoundException();
+        }
+
+        $manager = $this->userRepository->getById($data->manager_id);
+        if ($manager === null) {
+            throw new ManagerNotFoundException();
+        }
+
+        $order->manager_id = $manager->id;
+        $order->save();
+
+        $manager->load('profile');
+
+        return [
+            'order' => $order,
+            'manager' => $manager,
+        ];
     }
 }

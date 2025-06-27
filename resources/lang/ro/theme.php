@@ -59,7 +59,7 @@ return array (
     'discount-type' => 'Tipul de cupon',
     'discount-value' => 'Valoare',
     'dismissed' => 'A lansat',
-    'email-address' => '',
+    'email-address' => 'Email',
     'empty-cart' => 'Coșul este gol',
     'end-date' => 'Expirarea cuponului',
     'enter' => 'Autentificare',
@@ -386,4 +386,5 @@ return array (
     'cancel' => 'Anulează',
     'sort-product' => 'Produs',
     'sort-products' => 'Produse',
+    'new' => 'Comandă nouă',
 );

@@ -47,6 +47,8 @@
                                         value="{{$item->quantity}}"
                                         step="{{$item->associatedModel->min_order ?? 1}}"
                                         class="sc-qty"
+                                        oninput="if (this.value !== '' && this.max !== '' && Number(this.value) > Number(this.max)) { this.value = this.max; }"
+                                        onblur="if (this.value === '') { this.value = this.min; } this.dispatchEvent(new Event('change', { bubbles: true }));"
                                     />
                                     <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-sticky-{{$item->id}}">
                                     <div class="input-group-btn">

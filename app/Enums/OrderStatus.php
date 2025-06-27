@@ -29,9 +29,15 @@ final class OrderStatus
         return 'canceled';
     }
 
+    public function getNewStatus(): string
+    {
+        return 'new';
+    }
+
     public function getAll(): array
     {
         return [
+            'new' => __('theme.new'),
             'pending' => __('theme.pending'),
             'processing' => __('theme.processing'),
             //'sent' => __('theme.sent'),

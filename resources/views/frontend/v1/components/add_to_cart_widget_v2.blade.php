@@ -26,6 +26,8 @@
             data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
             data-package="1"
             class="product-qty-item"
+            oninput="handleInput(this)"
+            onblur="handleBlur(this)"
         />
         <div class="input-group-btn">
             <button
@@ -40,6 +42,20 @@
     </div>
 
     <script>
+        function handleInput(input) {
+            if (input.value !== '' && input.max !== '' && Number(input.value) > Number(input.max)) {
+                input.value = input.max;
+            }
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        function handleBlur(input) {
+            if (input.value === '') {
+                input.value = input.min;
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+
         function incrementQuantity(button, packageSize) {
             var input = button.parentNode.parentNode.querySelector('input[type=number]');
             var newValue = parseInt(input.value) + packageSize;

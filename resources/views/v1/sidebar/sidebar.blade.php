@@ -7,8 +7,7 @@
         </div>
         <div class="nk-sidebar-brand">
             <a href="{{route('dashboard.index')}}" class="logo-link nk-sidebar-logo">
-                <img class="logo-light logo-img" src="{{asset('/v1/dashboard')}}/assets/images/logo_white_radop.svg" alt="logo">
-                <img class="logo-dark logo-img" src="{{asset('/v1/dashboard')}}/assets/images/logo_colored_radop.svg" alt="logo-dark">
+                <img style="width: 40px" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
             </a>
         </div>
     </div><!-- .nk-sidebar-element -->
@@ -242,6 +241,9 @@
                         </a>
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('manager.list.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все менеджеры</span></a>
+                            </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('manager.index')}}" class="nk-menu-link"><span class="nk-menu-text">Назначить менеджера</span></a>
                             </li>

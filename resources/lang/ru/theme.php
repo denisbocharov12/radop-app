@@ -59,7 +59,7 @@ return array (
     'discount-type' => 'Тип купона',
     'discount-value' => 'Значение',
     'dismissed' => 'Отпустил:',
-    'email-address' => '',
+    'email-address' => 'Email',
     'empty-cart' => 'Корзина пуста',
     'end-date' => 'Конец действия купона',
     'enter' => 'Войти',
@@ -386,4 +386,5 @@ return array (
     'cancel' => 'Отмена',
     'sort-product' => 'Товара',
     'sort-products' => 'Товаров',
+    'new' => 'Новый заказ',
 );

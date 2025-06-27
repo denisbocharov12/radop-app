@@ -58,7 +58,7 @@ final class UserRepository
         return User::where('name', $userName)->first();
     }
 
-    public function getById(int $userId): ?User
+    public function getById($userId): ?User
     {
         return User::find($userId);
     }
@@ -179,5 +179,19 @@ final class UserRepository
     public function getManagerById(int $id): User
     {
         return User::find($id);
+    }
+
+    public function getManagersPaginated(): LengthAwarePaginator
+    {
+        $query = User::query();
+
+        return QueryBuilder::for($query)
+            ->role('manager')
+            ->defaultSort('-id')
+            ->allowedSorts([
+                'id',
+            ])
+            ->paginate(self::COUNT_OF_PAGINATION)
+        ;
     }
 }

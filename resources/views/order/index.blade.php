@@ -40,6 +40,7 @@
             </div>
         </div>
     </div>
+    @include('order.modal.add_manager')
     <!-- content @e -->
 @endsection
 
@@ -139,6 +140,39 @@
             var token = "{{csrf_token()}}";
             var path = "{{route('order.delete')}}";
             askToDeleteOrder(model_id, token, path)
+        });
+
+        $(document).on('click', '.modal-add-manager', function(e) {
+            e.preventDefault();
+            var orderId = $(this).data('id');
+            $('#order_id').val(orderId);
+            $('#addManagerModal').modal('show');
+        });
+
+        $('#addManagerForm').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = "{{ route('order.order.assign-manager') }}";
+            var data = form.serialize();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function(response) {
+                    $('#addManagerModal').modal('hide');
+                    Swal.fire({
+                        title: 'Успех!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire('Ошибка', xhr.responseJSON.message, 'error');
+                }
+            });
         });
 
         document.getElementById('filterOrdersSwitch').addEventListener('change', () => {

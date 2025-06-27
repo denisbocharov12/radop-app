@@ -134,9 +134,9 @@
                 </div>
                 {{-- Фамилия имя --}}
                 <div class="col-md-2">
-                    <label>Фамилия Имя / Название огранизации</label>
-                    <input type="text" name="filter[fio]" class="form-control"
-                           value="{{ request('filter.fio') }}">
+                    <label>Фискальный код</label>
+                    <input type="text" name="filter[cod_fiscal]" class="form-control"
+                           value="{{ request('filter.cod_fiscal') }}">
                 </div>
                 {{-- Адрес --}}
                 <div class="col-md-2">
@@ -144,6 +144,20 @@
                     <input type="text" name="filter[address]" class="form-control"
                            value="{{ request('filter.address') }}">
                 </div>
+                {{-- Дата --}}
+                <div class="col-md-2">
+                    <label>Дата</label>
+                    <input type="text" name="filter[created_at]" class="form-control datepicker-filter-created-at"
+                           value="{{ request('filter.created_at') }}">
+                </div>
+                {{-- Менеджер --}}
+                <div class="col-md-2">
+                    <label>Менеджер</label>
+                    <input type="text" name="filter[manager]" class="form-control datepicker-filter-created-at"
+                           value="{{ request('filter.manager') }}">
+                </div>
+            </div>
+            <div class="row g-2 align-items-end mt-1 d-flex justify-content-end">
                 {{-- Кнопки --}}
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
@@ -152,11 +166,25 @@
             </div>
         </form>
     </div>
+{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/css/bootstrap-datepicker.min.css">--}}
+{{--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/js/bootstrap-datepicker.min.js"></script>--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/locales/bootstrap-datepicker.ru.min.js"></script>--}}
     <script>
         document.getElementById('filter-toggle').addEventListener('click', function(e) {
             e.preventDefault();
             var panel = document.getElementById('filter-panel');
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         });
+        // $(function() {
+        //     $('.datepicker-filter-created-at').datepicker({
+        //         format: 'dd.mm.yyyy',
+        //         autoclose: true,
+        //         todayHighlight: true,
+        //         language: 'ru',
+        //         clearBtn: true
+        //     });
+        // });
     </script>
 </div><!-- .card-inner -->
