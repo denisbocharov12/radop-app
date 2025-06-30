@@ -46,7 +46,7 @@
                                                         <option value="">Менеджер</option>
                                                         @foreach ($managers as $manager)
                                                             <option value="{{ $manager->id }}" {{ $order->manager_id == $manager->id ? 'selected' : '' }}>
-                                                                {{ $manager->name }}
+                                                                {{ $manager?->profile?->last_name }} {{ $manager?->profile?->first_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -304,12 +304,12 @@
                                         <tr>
                                             <td>{{ $product->where('id',$item->product_id)->first()->title }}</td>
                                             <td>{{ $item->quantity }} шт.</td>
-                                            <td>{{ $item->price }} {{__('theme.MDL')}}</td>
+                                            <td>{{ number_format($item->price, 2, ',', ' ') }} {{__('theme.MDL')}}</td>
                                         </tr>
                                     @endforeach
                                     <td>Итого</td>
                                     <td>{{ $order->products->sum('quantity') }} шт.</td>
-                                    <td>{{ $order->total }} {{__('theme.MDL')}}</td>
+                                    <td>{{ number_format($order->total, 2, ',', ' ') }} {{__('theme.MDL')}}</td>
                                     </tbody>
                                 </table>
                             </div>

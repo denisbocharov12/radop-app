@@ -138,11 +138,11 @@
                     <input type="text" name="filter[cod_fiscal]" class="form-control"
                            value="{{ request('filter.cod_fiscal') }}">
                 </div>
-                {{-- Адрес --}}
+                {{-- Клиент --}}
                 <div class="col-md-2">
-                    <label>Адрес</label>
-                    <input type="text" name="filter[address]" class="form-control"
-                           value="{{ request('filter.address') }}">
+                    <label>Клиент</label>
+                    <input type="text" name="filter[fio]" class="form-control"
+                           value="{{ request('filter.fio') }}">
                 </div>
                 {{-- Дата --}}
                 <div class="col-md-2">
@@ -153,8 +153,15 @@
                 {{-- Менеджер --}}
                 <div class="col-md-2">
                     <label>Менеджер</label>
-                    <input type="text" name="filter[manager]" class="form-control datepicker-filter-created-at"
-                           value="{{ request('filter.manager') }}">
+                    <select name="filter[manager_id]" class="form-select">
+                        <option value="">Все</option>
+                        @foreach($managers as $key => $manager)
+                            <option value="{{ $manager->id }}"
+                                    {{ request('filter.manager_id') == $manager->id ? 'selected' : '' }}>
+                                {{ $manager?->profile?->first_name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="row g-2 align-items-end mt-1 d-flex justify-content-end">

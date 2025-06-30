@@ -42,14 +42,7 @@
                                             <input type="text" name="fio"
                                                    class="form-control-ch-input @error('fio') input-error-validation @enderror"
                                                    required id="fio"
-                                                   value="
-                                                    @if (auth()->guard('user')->user() !== null &&
-                                                    auth()->guard('user')->user()->type->key_name === 'iur')
-                                                   {{ $user?->profile?->organization_name }}
-                                                   @else
-                                                   {{ $user?->profile?->first_name }} {{ $user?->profile?->last_name }}
-                                                   @endif
-                                                    " />
+                                                   value="@if (auth()->guard('user')->user() !== null && auth()->guard('user')->user()->type->key_name === 'iur'){{ $user?->profile?->organization_name }}@else{{ $user?->profile?->first_name }} {{ $user?->profile?->last_name }}@endif"/>
                                             @error('fio')
                                             <span class="invalid-feedback d-block" role="alert">
                                                     <strong>{{ $message }}</strong>

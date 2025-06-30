@@ -47,6 +47,7 @@ class OrderRepository
                 AllowedFilter::exact('user_type'),
                 AllowedFilter::exact('payment_method'),
                 AllowedFilter::exact('fio'),
+                AllowedFilter::exact('manager_id'),
                 'email',
                 'order_number',
                 'phone',

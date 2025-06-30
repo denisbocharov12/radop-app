@@ -2435,7 +2435,7 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 3px 5px 2px 5px;
     text-align: center;
     display: inline-block;
-    width: 40px;
+    width: 50px;
     font-size: 14px;
     margin: 0 2px;
     align-items: center;
@@ -5802,6 +5802,7 @@ header .section-header .row-main .header-menu .col-lg{
     text-transform: uppercase;
     font-weight: 500;
     z-index: 2;
+    opacity: 0.6;
 }
 .product-item-category .product-wrap-main.product-wrap-main-with-sale a.add_to_wishlist{
     top: 55px;
@@ -6154,7 +6155,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 .product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block .product-qty-item{
     padding: 5px;
-    width: 48px;
+    width: 50px;
     height: 28px;
 }
 .product-item-category .add_to_cart_wrap .wrap {
