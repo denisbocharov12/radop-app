@@ -4,12 +4,21 @@
 <style>
     .text-dark {
         display: flex;
+        justify-content: center;
     }
     .new-order {
-        background-color: #fdf3cd;
+        background-color: #d4f4e1;
     }
     .processing-order {
-        background-color: #d4f4e1;
+        background-color: #fdf3cd;
+    }
+    .nk-tb-col{
+        border-left: 1px solid;
+        border-right: 1px solid;
+    }
+    .nk-tb-col{
+        border-left: 1px solid #dbdfea;
+        border-right: 1px solid #dbdfea;
     }
 </style>
 <div class="card-inner p-0">
@@ -87,9 +96,8 @@
             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
         </div><!-- .nk-tb-item -->
         @foreach($orders as $order)
-            <div class="nk-tb-item @if($order->status === $orderStatusEnum->getProcessingStatus()) processing-order @elseif($order->status === $orderStatusEnum->getNewStatus()) new-order @endif"
+            <div class="nk-tb-item @if($order->status === $orderStatusEnum->getPendingStatus()) processing-order @elseif($order->status === $orderStatusEnum->getNewStatus()) new-order @endif"
                  id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}"
-
             >
                 <div class="nk-tb-col" style="width: 40px;">
                     <input type="checkbox" class="order-checkbox" value="{{$order->id}}">
@@ -113,7 +121,8 @@
                     <span>{{$order->manager?->profile?->last_name}} {{$order->manager?->profile?->first_name}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{$order->created_at->format('d.m.Y H:i:s')}}</span>
+                    <span>{{$order->created_at->format('d.m.Y')}}</span><br>
+                    <span>{{$order->created_at->format('H:i:s')}}</span>
                 </div>
                 <div class="nk-tb-col order-details">
                     <span>{{$order->order_number}}</span>
@@ -131,7 +140,7 @@
                     <span>{{$order->filial?->address}}</span>
                 </div>
                 <div class="nk-tb-col order-details">
-                    <span>{{$order->total}}</span>
+                    <span>{{ number_format($order->total, 2, ',', ' ')}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools order-details">
                     <ul class="nk-tb-actions gx-2">
@@ -140,14 +149,14 @@
                                 <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                        <li><a href="#" class="modal-add-manager" id="modal-add-manager-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-user-add"></em><span>Добавить/изменить менеджера</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.pdf', $order)}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть PDF</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf', $order)}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice', $order)}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>
                                         <li><a data-id="{{$order->id}}" href="{{route('order.download.excel', $order)}}"><em class="icon ni ni-download"></em><span>Скачать Excel</a></li>
+                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть заказ</span></a></li>
+                                        <li><a href="#" class="modal-add-manager" id="modal-add-manager-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-user-add"></em><span>Назначить менеджера</span></a></li>
+                                        <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
+{{--                                        <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>--}}
+{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf', $order)}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>--}}
+{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>--}}
+{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice', $order)}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>--}}
                                     </ul>
                                 </div>
                             </div>

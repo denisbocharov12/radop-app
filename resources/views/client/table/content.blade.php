@@ -3,8 +3,8 @@
         <div class="nk-tb-item nk-tb-head">
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Имя/Фамилия</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Пользователь</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Роль</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Фискальный код</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Менеджер</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Телефон</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Город</span></div>
@@ -26,14 +26,14 @@
                 <div class="nk-tb-col">
                     <div class="user-card">
                         <div class="user-name">
-                            <span class="tb-lead"><a class="text-decoration-underline" href="#">{{$user->name}}</a></span>
+                            <span class="tb-lead">{{$user?->profile->cod_fiscal}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="nk-tb-col">
                     <div class="user-card">
                         <div class="user-name">
-                            <span class="tb-lead"><a class="text-decoration-underline" href="#">{{$user->roles->first()->name}}</a></span>
+                            <span class="tb-lead">{{$user?->manager?->profile->first_name}}</span>
                         </div>
                     </div>
                 </div>

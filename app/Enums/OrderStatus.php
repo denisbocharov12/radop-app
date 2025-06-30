@@ -39,7 +39,7 @@ final class OrderStatus
         return [
             'new' => __('theme.new'),
             'pending' => __('theme.pending'),
-            'processing' => __('theme.processing'),
+//            'processing' => __('theme.processing'),
             //'sent' => __('theme.sent'),
             'delivered' => __('theme.delivered'),
             'canceled' => __('theme.canceled'),

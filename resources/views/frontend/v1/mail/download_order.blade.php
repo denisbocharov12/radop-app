@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "DejaVu Sans", sans-serif;
             background-color: #ffffff;
         }
         .wrapper {
@@ -37,7 +37,7 @@
         }
         .message-text p.description {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
         }
         .logo {
             width: 25%;
@@ -105,7 +105,7 @@
         .footer {
             padding: 20px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #555;
         }
         .footer a {
@@ -166,7 +166,7 @@
 
     <!-- Products Header -->
     <div style="margin-top: 10px; font-size: 13px; text-align: center; margin-bottom: 3px">
-        <div style="display: inline-block; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">#</div>
+        <div style="display: inline-block; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">№</div>
         <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Cod</div>
         <div style="display: inline-block; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px;">Denumire produsului</div>
         <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Cantitate</div>
@@ -182,17 +182,17 @@
             <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; color: red;">
                 {{ \App\Models\Product::find($product->product_id)->onec_id }}
             </div>
-            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px; color: red;">
+            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px; color: red; text-align: left;">
                 {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
             </div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; color: red;">
+            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; color: red; text-align: right;">
                 {{ $product->quantity }}
             </div>
-            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">
-                {{ $product->price }}
+            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; text-align: right;">
+                {{ number_format($product->price, 2, ',', '.') }}
             </div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 100px; border: 1px solid #ccc; padding: 5px;">
-                {{ $product->quantity * (float)$product->price }}
+            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 100px; border: 1px solid #ccc; padding: 5px; text-align: right;">
+                {{ number_format($product->quantity * (float)$product->price, 2, ',', ' ') }}
             </div>
         </div>
     @php $i++; @endphp
@@ -200,7 +200,7 @@
 
 <!-- Total -->
     <div style="margin-top: 5px; font-size: 14px; text-align: right; border: 1px solid #ccc; padding: 10px 20px;">
-        <strong>Total:</strong> <span style="color: red;">{{ $order->total }}</span>
+        <strong>Total:</strong> <span style="color: red;">{{ number_format($order->total, 2, ',', ' ') }}</span>
     </div>
 
     <!-- Footer -->

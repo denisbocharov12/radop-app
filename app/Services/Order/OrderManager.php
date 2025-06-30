@@ -155,8 +155,9 @@ final class OrderManager
             throw new OrderNotFoundException();
         }
 
-        $pdf = PDF::loadView('invoice.order-printing', compact([
-            'order'
+        $pdf = PDF::loadView('frontend.v1.mail.download_order', ([
+            'order' => $order,
+            'products' => $order->products,
         ]));
 
         return $pdf->stream();
@@ -186,10 +187,6 @@ final class OrderManager
         }
 
         $filePath = "order_{$order->id}.xls";
-
-        $order->update([
-            'status' =>  $this->orderStatus->getProcessingStatus()
-        ]);
 
         return Excel::download(new OrderExport($order), $filePath, \Maatwebsite\Excel\Excel::XLS);
     }
