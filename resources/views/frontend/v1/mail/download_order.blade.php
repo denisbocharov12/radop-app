@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $order->order_number }}</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=cyrillic" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #ffffff;
             line-height: 1;
         }
