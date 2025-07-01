@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $order->order_number }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=cyrillic" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: "DejaVu Sans", sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             background-color: #ffffff;
+            line-height: 1;
         }
         .wrapper {
             max-width: 700px;
@@ -37,7 +39,7 @@
         }
         .message-text p.description {
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
         }
         .logo {
             width: 25%;
@@ -55,16 +57,13 @@
             display: inline-block;
             vertical-align: top;
             padding: 10px 20px;
-            font-size: 13px;
+            font-size: 14px;
         }
         .info-block.left {
             border-right: 2px solid #ccc;
         }
-        .red {
-            color: red;
-        }
         .product-header, .product-row {
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
             margin-top: 10px;
         }
@@ -105,7 +104,7 @@
         .footer {
             padding: 20px;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
         }
         .footer a {
@@ -134,10 +133,10 @@
     <!-- Order Info -->
     <div class="order-info">
         <div class="info-block left">
-            <p>Comanda Nr: <span class="red">{{ $order->order_number }}</span></p>
-            <p>Data: <span class="red">{{ \Carbon\Carbon::now()->format('d-m-Y , H:i') }}</span></p>
+            <p>Comanda Nr: <span>{{ $order->order_number }}</span></p>
+            <p>Data: <span>{{ \Carbon\Carbon::now()->format('d-m-Y , H:i') }}</span></p>
             <p>Nume:
-                <span class="red">
+                <span>
             @if($order->user !== null && $order->user->type->key_name === 'iur')
                         {{ $order->user->profile?->organization_name }}
                     @else
@@ -145,11 +144,11 @@
                     @endif
           </span>
             </p>
-            <p>Date de contact: <span class="red">{{ $order->phone }}</span></p>
+            <p>Date de contact: <span>{{ $order->phone }}</span></p>
         </div>
         <div class="info-block">
             <p>Achitare:
-                <span class="red">
+                <span>
             @if($order->payment_method === 'cash')
                         Numerar la primirea marfii
                     @elseif($order->payment_method === 'transfer')
@@ -159,13 +158,13 @@
                     @endif
           </span>
             </p>
-            <p>Modalitate de primire a comenzii: <span class="red">Livrare pe adresa</span></p>
-            <p class="red">{{ $order->address }}</p>
+            <p>Modalitate de primire a comenzii: <span>Livrare pe adresa</span></p>
+            <p>{{ $order->address }}</p>
         </div>
     </div>
 
     <!-- Products Header -->
-    <div style="margin-top: 10px; font-size: 13px; text-align: center; margin-bottom: 3px">
+    <div style="margin-top: 10px; font-size: 14px; text-align: center; margin-bottom: 3px">
         <div style="display: inline-block; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">№</div>
         <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Cod</div>
         <div style="display: inline-block; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px;">Denumire produsului</div>
@@ -177,15 +176,15 @@
     <!-- Products Rows -->
     @php $i = 1; @endphp
     @foreach($products as $product)
-        <div style="font-size: 13px; text-align: center;">
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px; color: red;">{{ $i }}</div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; color: red;">
+        <div style="font-size: 14px; text-align: center;">
+            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">{{ $i }}</div>
+            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">
                 {{ \App\Models\Product::find($product->product_id)->onec_id }}
             </div>
-            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px; color: red; text-align: left;">
+            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px; text-align: left;">
                 {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
             </div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; color: red; text-align: right;">
+            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; text-align: right;">
                 {{ $product->quantity }}
             </div>
             <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; text-align: right;">
@@ -200,7 +199,7 @@
 
 <!-- Total -->
     <div style="margin-top: 5px; font-size: 14px; text-align: right; border: 1px solid #ccc; padding: 10px 20px;">
-        <strong>Total:</strong> <span style="color: red;">{{ number_format($order->total, 2, ',', ' ') }}</span>
+        <strong>Total:</strong> <span>{{ number_format($order->total, 2, ',', ' ') }}</span>
     </div>
 
     <!-- Footer -->

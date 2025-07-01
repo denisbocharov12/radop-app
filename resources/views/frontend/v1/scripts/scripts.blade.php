@@ -310,17 +310,48 @@
         update_mini_cart(rowId, product_qty);
     });
 
-    $(document).on('change', '.sc-qty', function (e) {
-        e.preventDefault();
-        var rowId = $(this).data('id');
-        var product_qty = $(this).val();
-        if (product_qty <= 0) {
-            product_qty = 1;
+    let cartQtyTimeout = {};
+    let lastActiveQtyInputId = null;
+    let lastActiveQtyInputPos = null;
+
+    $(document).on('input', '.sc-qty', function (e) {
+        var $input = $(this);
+        var rowId = $input.data('id');
+        var product_qty = $input.val();
+        lastActiveQtyInputId = $input.attr('id');
+        // сохраняем позицию курсора
+        lastActiveQtyInputPos = $input[0].selectionStart;
+        if (cartQtyTimeout[rowId]) {
+            clearTimeout(cartQtyTimeout[rowId]);
         }
-        update_mini_cart(rowId, product_qty);
+        cartQtyTimeout[rowId] = setTimeout(function () {
+            if (product_qty <= 0) {
+                product_qty = 1;
+                $input.val(1);
+            }
+            update_mini_cart(rowId, product_qty, true);
+        }, 1500);
     });
 
-    function update_mini_cart(rowId, product_qty) {
+    function restoreFocusToQtyInput() {
+        if (!lastActiveQtyInputId) return;
+        setTimeout(function() {
+            var $input = $('#' + lastActiveQtyInputId);
+            if ($input.length) {
+                var val = $input.val();
+                $input.focus();
+                // восстанавливаем позицию курсора
+                if (lastActiveQtyInputPos !== null) {
+                    var pos = Math.min(lastActiveQtyInputPos, val.length);
+                    $input[0].setSelectionRange(pos, pos);
+                } else {
+                    $input[0].setSelectionRange(val.length, val.length);
+                }
+            }
+        }, 150);
+    }
+
+    function update_mini_cart(rowId, product_qty, refocus) {
         var token = '{{csrf_token()}}';
         var path = "{{route('theme.product.update')}}";
         $.ajax({
@@ -339,6 +370,9 @@
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
                     $('.cart-page').html(response['cart-page']);
+                    // if (refocus) {
+                    //     restoreFocusToQtyInput();
+                    // }
                 }
                 if(response['status'] === 'not_in_stock') {
                     toastr["warning"](response['msg'])

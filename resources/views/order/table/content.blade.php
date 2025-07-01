@@ -17,7 +17,7 @@
         border-right: 1px solid;
     }
     .nk-tb-col{
-        border-left: 1px solid #dbdfea;
+        border-left: 0;
         border-right: 1px solid #dbdfea;
     }
 </style>

@@ -10,12 +10,12 @@
                     <div class="order-parameters__wrapper">
                         <div class="wrap-heading">
                             <h2 class="heading">{{__('theme.order-number')}}{{$order->order_number}}</h2>
-                            <span class="order-status">
+                            <span class="order-status @if($order->status === 'canceled')canceled @endif">
                             @foreach($orderStatus as $status => $key)
                                     @if($order->status == $status)
                                         {{$key}}
                                     @endif
-                                @endforeach
+                            @endforeach
                         </span>
                         </div>
                         <div class="wrap-meta">
