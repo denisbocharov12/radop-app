@@ -7,7 +7,7 @@
             <p style="background-color: #e5304f; color: white;  padding: 15px 20px; text-align: center; border-radius: 4px; font-size: 20px; margin-bottom: 10px">Comandă a fost anulată!</p>
             <p style="text-align: center; font-size: 14px; margin-top: 10px;">Dacă aveți observatii sau sugestii, vă rugăm să ne scrieți la<br>
                 <a href="mailto:support@radop.md">support@radop.md</a> sau să ne sunați la numărul +373 79 78 21 12<br>
-                Vă mulțumim că ne-ati ales! Apreciem încblackerea acordată.</p>
+                Vă mulțumim că ne-ati ales! Apreciem încrederea acordată.</p>
         </td>
         <td style="padding: 20px 40px 20px 0; vertical-align: middle; width: 100%" width="30%">
             <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" />

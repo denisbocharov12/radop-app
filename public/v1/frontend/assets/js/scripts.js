@@ -1027,17 +1027,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-// Show sticky mobile header script
-document.addEventListener('DOMContentLoaded', function() {
-    var stickyHeader = document.querySelector('.mobile-sticky-header');
-    var mainHeader = document.getElementById('header');
-    if (!stickyHeader || !mainHeader) return;
-    var observer = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting) {
-            stickyHeader.style.display = 'none';
-        } else {
-            stickyHeader.style.display = 'flex';
-        }
+// Show sticky mobile header script and scroll to top btn
+document.addEventListener('DOMContentLoaded', function () {
+    const scrollBtn = document.getElementById('scroll_to_top_btn');
+    const stickyHeader = document.querySelector('.mobile-sticky-header');
+    const mainHeader = document.getElementById('header');
+    const footer = document.querySelector('footer');
+
+    if (!scrollBtn || !stickyHeader || !mainHeader || !footer) return;
+
+    // Observer для sticky header
+    const headerObserver = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting) {
+    stickyHeader.style.display = 'flex';
+    scrollBtn.classList.add('fixed');
+    } else {
+        stickyHeader.style.display = 'none';
+        scrollBtn.classList.remove('fixed');
+    }
     }, { threshold: 0 });
-    observer.observe(mainHeader);
+    headerObserver.observe(mainHeader);
+
+    // Observer для футера
+    const footerObserver = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) {
+    scrollBtn.classList.remove('fixed');
+    scrollBtn.classList.add('in-footer');
+    } else {
+        scrollBtn.classList.remove('in-footer');
+        if (!mainHeader.getBoundingClientRect().top >= 0) {
+        scrollBtn.classList.add('fixed');
+    }
+    }
+    }, {
+        root: null,
+        threshold: 0,
+    });
+    footerObserver.observe(footer);
 });

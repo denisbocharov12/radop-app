@@ -22,7 +22,7 @@
             <td style="border: 1px solid black;">{{ $order->user->profile->organization_name }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"><strong>Фикс. код:</strong></td>
+            <td style="border: 1px solid black;"><strong>Фиск. код:</strong></td>
             <td style="border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}" align="left">{!! $order->user->profile->cod_fiscal !!}</td>
         </tr>
         <tr>
