@@ -94,11 +94,25 @@
                 </a>
             </div>
             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
-        </div><!-- .nk-tb-item -->
+        </div>
         @foreach($orders as $order)
+            @php
+                $lastHistory = $order->orderHistory->first();
+                $historyData = null;
+                if ($lastHistory) {
+                    $data = json_decode($lastHistory->data, true);
+                    $historyData = [
+                        'created_at' => $lastHistory->created_at,
+                        'type_localized' => __('theme.history_' . $lastHistory->type),
+                        'status_localized' => $orderStatusEnum->getAll()[$lastHistory->order_status] ?? $lastHistory->order_status,
+                        'total' => $data['order']['total'] ?? '',
+                        'products_count' => isset($data['products']) ? count($data['products']) : 0,
+                    ];
+                }
+            @endphp
             <div class="nk-tb-item @if($order->status === $orderStatusEnum->getPendingStatus()) processing-order @elseif($order->status === $orderStatusEnum->getNewStatus()) new-order @endif"
                  id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}"
-            >
+                 data-history='@json($historyData)'>
                 <div class="nk-tb-col" style="width: 40px;">
                     <input type="checkbox" class="order-checkbox" value="{{$order->id}}">
                 </div>
@@ -167,3 +181,99 @@
         @endforeach
     </div><!-- .nk-tb-list -->
 </div><!-- .card-inner -->
+
+@section('scripts')
+    <script>
+        $(function() {
+            var $tooltip = $('#order-history-tooltip');
+            if (!$tooltip.length) {
+                $tooltip = $('<div id="order-history-tooltip"></div>')
+                    .css({
+                        position: 'absolute',
+                        display: 'none',
+                        zIndex: 9999,
+                        background: '#fff',
+                        border: '1px solid #ccc',
+                        borderRadius: '8px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        padding: '12px 16px',
+                        minWidth: '220px',
+                        pointerEvents: 'none',
+                        fontSize: '14px',
+                        maxWidth: '350px',
+                        wordBreak: 'break-word'
+                    })
+                    .appendTo('body');
+            }
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                var d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr;
+                var day = ('0' + d.getDate()).slice(-2);
+                var month = ('0' + (d.getMonth() + 1)).slice(-2);
+                var year = d.getFullYear();
+                var hours = ('0' + d.getHours()).slice(-2);
+                var minutes = ('0' + d.getMinutes()).slice(-2);
+                return day + '.' + month + '.' + year + ' ' + hours + ':' + minutes;
+            }
+
+            $('.nk-tb-item[data-history]').on('mousemove', function(e) {
+                var raw = $(this).attr('data-history');
+                var data = null;
+                try {
+                    data = raw ? JSON.parse(raw) : null;
+                } catch (err) {
+                    data = null;
+                }
+                var html = '';
+                html += '<div style="font-weight:bold;font-size:15px;margin-bottom:6px;">Последнее изменение</div>';
+                if (data) {
+                    html += '<div><b>Дата:</b> ' + formatDate(data.created_at) + '</div>';
+                    html += '<div><b>Тип:</b> ' + data.type_localized + '</div>';
+                    html += '<div><b>Статус:</b> ' + data.status_localized + '</div>';
+                    html += '<div><b>Сумма:</b> ' + data.total + '</div>';
+                    html += '<div><b>Товаров:</b> ' + data.products_count + '</div>';
+                } else {
+                    html += '<div>Нет истории</div>';
+                }
+                $tooltip.html(html).show();
+
+                // Ограничение по границам таблицы
+                var $table = $(this).closest('.nk-tb-list');
+                var tableOffset = $table.offset();
+                var tableWidth = $table.outerWidth();
+                var tableHeight = $table.outerHeight();
+                var tooltipWidth = $tooltip.outerWidth();
+                var tooltipHeight = $tooltip.outerHeight();
+
+                var left = e.pageX + 20;
+                var top = e.pageY + 10;
+
+                // Если тултип выходит за правую границу
+                if (left + tooltipWidth > tableOffset.left + tableWidth) {
+                    left = tableOffset.left + tableWidth - tooltipWidth - 10;
+                }
+                // Если тултип выходит за нижнюю границу
+                if (top + tooltipHeight > tableOffset.top + tableHeight) {
+                    top = tableOffset.top + tableHeight - tooltipHeight - 10;
+                }
+                // Если тултип выходит за левую границу
+                if (left < tableOffset.left) {
+                    left = tableOffset.left + 10;
+                }
+                // Если тултип выходит за верхнюю границу
+                if (top < tableOffset.top) {
+                    top = tableOffset.top + 10;
+                }
+
+                $tooltip.css({
+                    left: left,
+                    top: top
+                });
+            }).on('mouseleave', function() {
+                $tooltip.hide();
+            });
+        });
+    </script>
+@endsection

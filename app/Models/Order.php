@@ -95,4 +95,12 @@ final class Order extends Model
     {
         return $this->belongsTo(City::class, 'city');
     }
+
+    /**
+     * @return HasMany<OrderHistory>
+     */
+    public function orderHistory(): HasMany
+    {
+        return $this->hasMany(OrderHistory::class);
+    }
 }

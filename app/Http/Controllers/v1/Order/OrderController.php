@@ -89,6 +89,8 @@ class OrderController extends Controller
 
         $cities = $this->cityRepository->getAll();
 
+        $history = $order->orderHistory()->get();
+
         return view('order.edit', compact([
             'order',
             'paymentMethods',
@@ -98,7 +100,8 @@ class OrderController extends Controller
             'managers',
             'userTypes',
             'product',
-            'cities'
+            'cities',
+            'history',
         ]));
     }
 
