@@ -90,4 +90,24 @@ final class ThemeProductController extends Controller
             throw new ProductNotFoundException();
         }
     }
+    public function quickView(Request $request)
+    {
+        $productId = (int)$request->input('product_id');
+
+        $product = $this->productRepository->getById($productId);
+
+        if ($product === null) {
+            throw new ProductNotFoundValidationException();
+        }
+
+        $similarProducts = null;
+
+        if (!$product->categories->isEmpty()) {
+            $similarProducts = $this->productRepository->getAllSimilarProducts($product);
+        }
+
+        $renderedView = view('frontend.v1.pages.product.quick-view', compact(['product', 'similarProducts']))->render();
+
+        return response()->json($renderedView);
+    }
 }

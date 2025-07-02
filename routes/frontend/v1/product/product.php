@@ -16,4 +16,6 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::post('/deleteCartItem', [ThemeProductController::class, 'deleteCartItem'])
         ->name('delete')
     ;
+    Route::post('/quick-view', [ThemeProductController::class, 'quickView'])
+        ->name('quick-view');
 });

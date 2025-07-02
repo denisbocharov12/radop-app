@@ -541,7 +541,7 @@ $(document).ready(function () {
         var result = (qtyCount*productPrice)/packageCount;
 
         changedElement.html(result.toFixed(2).replace('.',','));
-    })
+    });
 
   $(".filter-select").select2();
   $(".product-qty").select2({
