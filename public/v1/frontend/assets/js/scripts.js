@@ -1036,6 +1036,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!scrollBtn || !stickyHeader || !mainHeader || !footer) return;
 
+    // Скрыть кнопку при загрузке
+    scrollBtn.style.display = 'none';
+
+    // Показать кнопку только при скролле вниз
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 100) {
+            scrollBtn.style.display = '';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
     // Observer для sticky header
     const headerObserver = new IntersectionObserver(function (entries) {
     if (!entries[0].isIntersecting) {

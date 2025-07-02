@@ -314,6 +314,70 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">История изменений заказа</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Тип</th>
+                                        <th>Статус</th>
+                                        <th>Данные</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($history as $item)
+                                        @php
+                                            $type = $item->type;
+                                            $badge = '';
+                                            $icon = '';
+                                            if ($type === 'edited') {
+                                                $badge = 'bg-primary';
+                                                $icon = '<i class="fas fa-pen"></i>';
+                                            } elseif ($type === 'updated_status') {
+                                                $badge = 'bg-warning';
+                                                $icon = '<i class="fas fa-exchange-alt"></i>';
+                                            } elseif ($type === 'downloaded_excel') {
+                                                $badge = 'bg-success';
+                                                $icon = '<i class="fas fa-file-excel"></i>';
+                                            } else {
+                                                $badge = 'bg-secondary';
+                                                $icon = '<i class="fas fa-info-circle"></i>';
+                                            }
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $item->created_at }}</td>
+                                            <td>
+                                                <span class="badge {{ $badge }} text-white" style="font-size: 1em;">
+                                                    {!! $icon !!}
+                                                    {{ __('theme.history_' . $type) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @foreach($orderStatus as $key => $status)
+                                                    @if($key === $item->order_status)
+                                                        <span class="badge bg-info text-white">{{ $status }}</span>
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @php $data = json_decode($item->data, true); @endphp
+                                                @if(isset($data['order']))
+                                                    <div>Сумма: {{ $data['order']['total'] ?? '' }}</div>
+                                                @endif
+                                                @if(isset($data['products']))
+                                                    <div>Товаров: {{ count($data['products']) }}</div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div><!-- .nk-block -->
                 </div>
             </div>

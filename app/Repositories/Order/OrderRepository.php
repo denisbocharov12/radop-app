@@ -19,6 +19,7 @@ class OrderRepository
     public function getAllPaginatedWithFiltersAndSorts(): LengthAwarePaginator
     {
         $query = Order::query()
+            ->with(['orderHistory' => function($q) { $q->latest()->limit(1); }])
             ->leftJoin('users', 'orders.user_id', '=', 'users.id')
             ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
             ->leftJoin('users as managers', 'orders.manager_id', '=', 'managers.id')

@@ -94,11 +94,25 @@
                 </a>
             </div>
             <div class="nk-tb-col nk-tb-col-tools text-end"></div>
-        </div><!-- .nk-tb-item -->
+        </div>
         @foreach($orders as $order)
+            @php
+                $lastHistory = $order->orderHistory->first();
+                $historyData = null;
+                if ($lastHistory) {
+                    $data = json_decode($lastHistory->data, true);
+                    $historyData = [
+                        'created_at' => $lastHistory->created_at,
+                        'type_localized' => __('theme.history_' . $lastHistory->type),
+                        'status_localized' => $orderStatusEnum->getAll()[$lastHistory->order_status] ?? $lastHistory->order_status,
+                        'total' => $data['order']['total'] ?? '',
+                        'products_count' => isset($data['products']) ? count($data['products']) : 0,
+                    ];
+                }
+            @endphp
             <div class="nk-tb-item @if($order->status === $orderStatusEnum->getPendingStatus()) processing-order @elseif($order->status === $orderStatusEnum->getNewStatus()) new-order @endif"
                  id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}"
-            >
+                 data-history='@json($historyData)'>
                 <div class="nk-tb-col" style="width: 40px;">
                     <input type="checkbox" class="order-checkbox" value="{{$order->id}}">
                 </div>

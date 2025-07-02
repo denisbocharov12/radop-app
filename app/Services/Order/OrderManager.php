@@ -6,6 +6,7 @@ use App\Data\Order\AssignManagerData;
 use App\Data\Order\OrderData;
 use App\Data\Order\UpdateOrderStatusesData;
 use App\Enums\OrderStatus;
+use App\Enums\OrderHistoryTypes;
 use App\Events\OrderStatusUpdatedSendEmailEvent;
 use App\Excel\Order\OrderExport;
 use App\Exceptions\City\CityNotFoundException;
@@ -16,6 +17,7 @@ use App\Exceptions\Order\UserNotFoundException;
 use App\Http\Requests\Order\OrderDeleteRequest;
 use App\Http\Requests\Order\OrderRequest;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Repositories\City\CityRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\User\UserRepository;
@@ -33,6 +35,7 @@ final class OrderManager
         UserRepository $userRepository,
         private readonly OrderStatus $orderStatus,
         private readonly CityRepository $cityRepository,
+        private readonly OrderHistoryTypes $orderHistoryTypes,
     )
     {
         $this->orderRepository = $orderRepository;
@@ -100,6 +103,16 @@ final class OrderManager
         if ($orderData->status === $this->orderStatus->getCanceledStatus() && $orderStatus !== $orderData->status){
             event(new OrderStatusUpdatedSendEmailEvent($order));
         }
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'type' => $this->orderHistoryTypes->getEditedType(),
+            'order_status' => $order->status,
+            'data' => json_encode([
+                'order' => $order->toArray(),
+                'products' => $order->products()->get()->toArray(),
+            ], JSON_UNESCAPED_UNICODE),
+        ]);
     }
 
     public function delete(OrderDeleteRequest $request): void
@@ -186,6 +199,16 @@ final class OrderManager
             throw new OrderNotFoundException();
         }
 
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'type' => $this->orderHistoryTypes->getDownloadedExcelType(),
+            'order_status' => $order->status,
+            'data' => json_encode([
+                'order' => $order->toArray(),
+                'products' => $order->products()->get()->toArray(),
+            ], JSON_UNESCAPED_UNICODE),
+        ]);
+
         $filePath = "order_{$order->id}.xls";
 
         return Excel::download(new OrderExport($order), $filePath, \Maatwebsite\Excel\Excel::XLS);
@@ -208,6 +231,16 @@ final class OrderManager
             if ($data->status === $canceledStatus && $oldStatus !== $data->status) {
                 event(new OrderStatusUpdatedSendEmailEvent($order));
             }
+
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'type' => $this->orderHistoryTypes->getUpdatedStatusType(),
+                'order_status' => $order->status,
+                'data' => json_encode([
+                    'order' => $order->toArray(),
+                    'products' => $order->products()->get()->toArray(),
+                ], JSON_UNESCAPED_UNICODE),
+            ]);
         }
     }
 

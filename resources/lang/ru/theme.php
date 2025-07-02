@@ -387,4 +387,7 @@ return array (
     'sort-product' => 'Товара',
     'sort-products' => 'Товаров',
     'new' => 'Новый заказ',
+    'history_edited' => 'Изменён',
+    'history_updated_status' => 'Изменён статус',
+    'history_downloaded_excel' => 'Скачан Excel',
 );
