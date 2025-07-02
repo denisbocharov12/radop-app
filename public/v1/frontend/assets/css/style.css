@@ -2258,6 +2258,19 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-header .row-main .header-account .icon-block a.icon-block-link.wishlist i {
     margin-left: 0;
+    position: relative;
+}
+
+.wishlist_count{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    background-color: #e82d25;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 5px;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
 }
 
 .section-header .row-main .header-account .icon-block a.icon-block-link.wishlist:hover {
@@ -8603,7 +8616,7 @@ hr.product-card-item{
     color: #f1f1f1;
     border-radius: 5px;
     opacity: 0;
-    transition: all .2s;
+    transition: all .5s;
     width: 70%;
     display: flex;
     align-items: center;
@@ -8639,7 +8652,7 @@ hr.product-card-item{
 
 .product-item-category:hover .quick-view-btn {
     opacity: 1;
-    transform: translate(50%, 150px);
+    transform: translate(50%, 165px);
 }
 
 .theme-fancybox-container .product-slider-main .product-image {

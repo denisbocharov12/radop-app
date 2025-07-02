@@ -57,6 +57,7 @@ final class ThemeWishListController extends Controller
                 array(),
                 $existedProduct
             );
+
             $wishListCount = $wishList->getContent()->count();
 
             return response()->json([
