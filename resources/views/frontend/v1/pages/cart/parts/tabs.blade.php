@@ -41,6 +41,7 @@
                                         <div class="wrap">
                                             @include('frontend.v1.pages.category.parts.product-category-image')
                                         </div>
+                                        @include('frontend.v1.pages.product.components.quick-view')
                                         @if(app('wishlist')->get($product->id) !== null)
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                                data-id="{{$product->id}}" data-qty="1"
@@ -123,6 +124,7 @@
                                         <div class="wrap">
                                             @include('frontend.v1.pages.category.parts.product-category-image')
                                         </div>
+                                        @include('frontend.v1.pages.product.components.quick-view')
                                         @if(app('wishlist')->get($product->id) !== null)
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                                data-id="{{$product->id}}" data-qty="1"
@@ -203,6 +205,7 @@
                                         <div class="wrap">
                                             @include('frontend.v1.pages.category.parts.product-category-image')
                                         </div>
+                                        @include('frontend.v1.pages.product.components.quick-view')
                                         @if(app('wishlist')->get($product->id) !== null)
                                             <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                                data-id="{{$product->id}}" data-qty="1"

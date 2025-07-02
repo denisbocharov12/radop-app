@@ -75,6 +75,7 @@
                                     @include('frontend.v1.pages.product.components.label')
                                     @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
+                                    @include('frontend.v1.pages.product.components.quick-view')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                            data-id="{{$product->id}}" data-qty="1"
@@ -157,6 +158,7 @@
                                     @include('frontend.v1.pages.product.components.label')
                                     @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
+                                    @include('frontend.v1.pages.product.components.quick-view')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                            data-id="{{$product->id}}" data-qty="1"
@@ -240,6 +242,7 @@
                                     @include('frontend.v1.pages.product.components.label')
                                     @include('frontend.v1.components.product_sale_label')
                                     @include('frontend.v1.pages.shop.parts.product-image')
+                                    @include('frontend.v1.pages.product.components.quick-view')
                                     @if(app('wishlist')->get($product->id) !== null)
                                         <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
                                            data-id="{{$product->id}}" data-qty="1"
