@@ -234,7 +234,7 @@ final class OrderManager
 
             OrderHistory::create([
                 'order_id' => $order->id,
-                'type' => $historyTypes->getUpdatedStatusType(),
+                'type' => $this->orderHistoryTypes->getUpdatedStatusType(),
                 'order_status' => $order->status,
                 'data' => json_encode([
                     'order' => $order->toArray(),
