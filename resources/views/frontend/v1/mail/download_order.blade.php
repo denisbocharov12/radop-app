@@ -204,8 +204,8 @@
         @endforeach
 
         <!-- Total Row -->
-        <tr style="text-align: right; font-weight: bold;">
-            <td colspan="5" style="text-align: right; padding: 10px;">Total:</td>
+        <tr style="text-align: right;">
+            <td colspan="5" style="text-align: right; padding: 10px; font-weight: bold;">Total:</td>
             <td style="text-align: center;">{{ number_format($order->total, 2, ',', ' ') }}</td>
         </tr>
         </tbody>
