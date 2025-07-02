@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <title>{{ $order->order_number }}</title>
     <style>
+        table.order-table,
+        table.order-table th,
+        table.order-table td {
+            border: 1px solid #ccc;
+        }
+        table.order-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
             background-color: #ffffff;
             line-height: 1;
         }
@@ -20,6 +29,12 @@
             border-radius: 4px;
             padding: 20px;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            text-align: center;
+            margin-top: 20px;
         }
         .message-text {
             width: 70%;
@@ -33,12 +48,12 @@
             padding: 15px 20px;
             text-align: center;
             border-radius: 4px;
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 10px;
         }
         .message-text p.description {
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
         }
         .logo {
             width: 25%;
@@ -56,13 +71,13 @@
             display: inline-block;
             vertical-align: top;
             padding: 10px 20px;
-            font-size: 14px;
+            font-size: 12px;
         }
         .info-block.left {
             border-right: 2px solid #ccc;
         }
         .product-header, .product-row {
-            font-size: 14px;
+            font-size: 12px;
             text-align: center;
             margin-top: 10px;
         }
@@ -95,7 +110,7 @@
         .w220 { width: 245px; }
         .total {
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 12px;
             text-align: right;
             border: 1px solid #ccc;
             padding: 10px 20px;
@@ -103,7 +118,7 @@
         .footer {
             padding: 20px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             color: #555;
         }
         .footer a {
@@ -117,11 +132,11 @@
     <!-- Success Message -->
     <div class="box">
         <div class="message-text">
-            <p class="title">Comanda a fost înregistrata cu succes!</p>
+            <p class="title">Comandă a fost înregistrată cu succes!</p>
             <p class="description">
-                Stimate client, multumim pentru comanda plasata pe site-ul nostru.<br>
-                În curând veti primi un apel de la operatorul nostru pentru a clarifica<br>
-                detaliile referitor la comanda.
+                Stimate client, mulțumim pentru comanda plasată pe site-ul nostru.<br>
+                În curând veți primi un apel de la operatorul nostru pentru a clarifica<br>
+                detaliile referitor la comandă.
             </p>
         </div>
         <div class="logo">
@@ -162,44 +177,39 @@
         </div>
     </div>
 
-    <!-- Products Header -->
-    <div style="margin-top: 10px; font-size: 14px; text-align: center; margin-bottom: 3px">
-        <div style="display: inline-block; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">№</div>
-        <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Cod</div>
-        <div style="display: inline-block; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px;">Denumire produsului</div>
-        <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Cantitate</div>
-        <div style="display: inline-block; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">Pret</div>
-        <div style="display: inline-block; margin: 0 -2px; width: 100px; border: 1px solid #ccc; padding: 5px;">Total</div>
-    </div>
+    <!-- Products Table -->
+    <table class="order-table" style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 20px;" border="1">
+        <thead>
+        <tr style="text-align: center;">
+            <th style="width: 40px; font-weight: normal; padding: 5px;">№</th>
+            <th style="width: 80px; font-weight: normal; padding: 5px;">Cod</th>
+            <th style="width: 245px; font-weight: normal; padding: 5px;">Denumire produsului</th>
+            <th style="width: 80px; font-weight: normal; padding: 5px;">Cantitate, buc.</th>
+            <th style="width: 80px; font-weight: normal; padding: 5px;">Preț incl. TVA</th>
+            <th style="width: 100px; font-weight: normal; padding: 5px;">Suma totală, ML</th>
+        </tr>
+        </thead>
+        <tbody>
+        @php $i = 1; @endphp
+        @foreach($products as $product)
+            <tr style="text-align: center;">
+                <td style="padding: 5px;">{{ $i }}</td>
+                <td style="padding: 5px;">{{ \App\Models\Product::find($product->product_id)->onec_id }}</td>
+                <td style="padding: 5px;">{{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}</td>
+                <td style="padding: 5px;">{{ $product->quantity }}</td>
+                <td style="padding: 5px;">{{ number_format($product->price, 2, ',', '.') }}</td>
+                <td style="padding: 5px;">{{ number_format($product->quantity * (float)$product->price, 2, ',', ' ') }}</td>
+            </tr>
+            @php $i++; @endphp
+        @endforeach
 
-    <!-- Products Rows -->
-    @php $i = 1; @endphp
-    @foreach($products as $product)
-        <div style="font-size: 14px; text-align: center;">
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 40px; border: 1px solid #ccc; padding: 5px;">{{ $i }}</div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px;">
-                {{ \App\Models\Product::find($product->product_id)->onec_id }}
-            </div>
-            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 245px; border: 1px solid #ccc; padding: 5px; text-align: left;">
-                {{ \App\Models\Product::find($product->product_id)->getTranslation('title', 'ro') }}
-            </div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; text-align: right;">
-                {{ $product->quantity }}
-            </div>
-            <div style="display: inline-block;  height: 40px; margin: 0 -2px; width: 80px; border: 1px solid #ccc; padding: 5px; text-align: right;">
-                {{ number_format($product->price, 2, ',', '.') }}
-            </div>
-            <div style="display: inline-block;   height: 40px; margin: 0 -2px; width: 100px; border: 1px solid #ccc; padding: 5px; text-align: right;">
-                {{ number_format($product->quantity * (float)$product->price, 2, ',', ' ') }}
-            </div>
-        </div>
-    @php $i++; @endphp
-@endforeach
-
-<!-- Total -->
-    <div style="margin-top: 5px; font-size: 14px; text-align: right; border: 1px solid #ccc; padding: 10px 20px;">
-        <strong>Total:</strong> <span>{{ number_format($order->total, 2, ',', ' ') }}</span>
-    </div>
+        <!-- Total Row -->
+        <tr style="text-align: right; font-weight: bold;">
+            <td colspan="5" style="text-align: right; padding: 10px;">Total:</td>
+            <td style="text-align: center;">{{ number_format($order->total, 2, ',', ' ') }}</td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- Footer -->
     <div class="footer">

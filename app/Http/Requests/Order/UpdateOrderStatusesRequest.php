@@ -15,7 +15,7 @@ class UpdateOrderStatusesRequest extends FormRequest
         return [
             'order_ids' => ['required', 'array'],
             'order_ids.*' => ['integer', 'exists:orders,id'],
-            'status' => ['required', 'string', 'in:pending,processing,delivered,canceled'],
+            'status' => ['required', 'string'],
         ];
     }
 }

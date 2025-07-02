@@ -359,7 +359,7 @@
                                             <td>
                                                 @foreach($orderStatus as $key => $status)
                                                     @if($key === $item->order_status)
-                                                        <span class="badge bg-info text-white"></span>
+                                                        <span class="badge bg-info text-white">{{ $status }}</span>
                                                     @endif
                                                 @endforeach
                                             </td>
