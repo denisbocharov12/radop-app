@@ -25,6 +25,7 @@
             },
             beforeSend:function () {
                 $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#add_to_wishlist-quick-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
                 var heartIcon = '<i class="fa fa-heart" style="color: red"></i>';
@@ -33,8 +34,17 @@
                         .removeClass('add-to-wishlist-btn')
                         .addClass('delete-from-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.remove-from-wishlist')}}');
+
+                    $('#add_to_wishlist-quick-' + product_id)
+                        .removeClass('add-to-wishlist-btn')
+                        .addClass('delete-from-wishlist-btn')
+                        .html(heartIcon + ' {{__('theme.remove-from-wishlist')}}');
                 } else {
                     $('#add_to_wishlist-' + product_id)
+                        .removeClass('add-to-wishlist-btn')
+                        .addClass('delete-from-wishlist-btn')
+                        .html(heartIcon);
+                    $('#add_to_wishlist-quick-' + product_id)
                         .removeClass('add-to-wishlist-btn')
                         .addClass('delete-from-wishlist-btn')
                         .html(heartIcon);
@@ -67,6 +77,7 @@
             },
             beforeSend:function () {
                 $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#add_to_wishlist-quick-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
                 var heartIcon = '<i class="fa fa-heart"></i>';
@@ -75,8 +86,16 @@
                         .removeClass('delete-from-wishlist-btn')
                         .addClass('add-to-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.add-to-wishlist')}}');
+                    $('#add_to_wishlist-quick-' + product_id)
+                        .removeClass('delete-from-wishlist-btn')
+                        .addClass('add-to-wishlist-btn')
+                        .html(heartIcon + ' {{__('theme.add-to-wishlist')}}');
                 } else {
                     $('#add_to_wishlist-' + product_id)
+                        .removeClass('delete-from-wishlist-btn')
+                        .addClass('add-to-wishlist-btn')
+                        .html(heartIcon);
+                    $('#add_to_wishlist-quick-' + product_id)
                         .removeClass('delete-from-wishlist-btn')
                         .addClass('add-to-wishlist-btn')
                         .html(heartIcon);
@@ -142,7 +161,7 @@
 
                     </span>
                     </p>
-                `;
+                    `;
                     $('#product-' + product_id + '-cart-info').html(cartHtml);
 
                     toastr["success"](response['msg']);
@@ -174,6 +193,79 @@
         });
     });
 
+    $(document).on('click', '.add_to_cart_btn_quick', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('id');
+        var product_qty = $('#product-quick-' + product_id + '-qty').val();
+        var token = "{{csrf_token()}}";
+        var path = "{{route('theme.product.store')}}";
+
+        $.ajax({
+            url: path,
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                product_id: product_id,
+                product_qty: product_qty,
+                _token: token
+            },
+            beforeSend: function () {
+                $('#add-to-cart-quick-' + product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+            },
+            complete: function () {
+                $('#add-to-cart-quick-' + product_id).html('{{__('theme.add-to-cart')}}');
+            },
+            success: function (response) {
+                if (response['status'] === true) {
+                    $('.cart-update').html(response['cart']);
+                    $('.mini-cart-count').html(response['cart_count']);
+                    $('.mini-cart-subtotal').html(response['total']);
+                    $('.header-cart-widget .count').html(response['cart_count']);
+                    $('.header-cart-widget .summ').html(response['total']);
+                    $('#mobile-cart-info').html(response['total'] + ' ' + '{{__("theme.MDL")}}');
+                    $('.cart-page').html(response['cart-page']);
+                    $('#product-card-summary-in-cart-quick-' + product_id).html(response['in-cart']);
+
+                    var quantity = response['product_quantity'];
+                    var cartHtml = `
+                    <p>
+                    <span class="already-in-cart" style="display: flex; align-items: center;">
+                            <i class="icon-check"></i>
+                            {{__('theme.already-in-cart')}} - ${quantity} {{__('theme.unit')}}
+
+                    </span>
+                    </p>
+                    `;
+                    $('#product-quick-' + product_id + '-cart-info').html(cartHtml);
+
+                    toastr["success"](response['msg']);
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+                if(response['status'] === 'not_in_stock') {
+                    toastr["warning"](response['msg'])
+                }
+                if(response['status'] === 'not_permitted') {
+                    toastr["error"](response['msg'])
+                }
+            }
+        });
+    });
 
     $(document).on('click','.remove-cart-btn',function (e) {
         e.preventDefault();
@@ -455,6 +547,146 @@
             e.preventDefault();
             Fancybox.show([{ src: "#forgetPasswordModal", type: "inline" }]);
         });
+
+        $('.quick-view-btn').click(function(e) {
+            e.preventDefault();
+            var path = "{{route('theme.product.quick-view')}}";
+            var productId = $(this).data('id');
+            var token = '{{csrf_token()}}';
+
+            $.ajax({
+                url: path,
+                type: "POST",
+                dataType:"JSON",
+                data: {
+                    product_id: productId,
+                    _token: token
+                },
+                success: function(response) {
+                    Fancybox.show([{
+                            html: response,
+                    }
+                    ],
+                        {
+                            dragToClose: false,
+                            hideScrollbar: true,
+                            type: "inline",
+
+                            on: {
+                                "resize": () => {
+                                    $('.fancybox__content').addClass('container theme-fancybox-container');
+                                },
+                                "done": () => {
+                                    const $rootSingle = $(".product-slider-main");
+                                    const $rootNav = $(".product-slider-thumb");
+
+                                    $rootSingle.slick({
+                                        slide: ".product-image",
+                                        slidesToShow: 1,
+                                        slidesToScroll: 1,
+                                        arrows: false,
+                                        fade: false,
+                                        adaptiveHeight: true,
+                                        infinite: false,
+                                        useTransform: true,
+                                        speed: 400,
+                                        cssEase: "cubic-bezier(0.77, 0, 0.18, 1)",
+                                    });
+
+                                    $rootNav
+                                        .on("init", function (event, slick) {
+                                            $(this).find(".slick-slide.slick-current").addClass("is-active");
+                                        })
+                                        .slick({
+                                            slide: ".product-image",
+                                            slidesToShow: 3,
+                                            arrows: true,
+                                            slidesToScroll: 1,
+                                            dots: false,
+                                            focusOnSelect: false,
+                                            infinite: false,
+                                            prevArrow: "<i class='icon-arrow-radop-left prev-arrow'></i>",
+                                            nextArrow: "<i class='icon-arrow-radop-right next-arrow'></i>",
+                                            responsive: [
+                                                {
+                                                    breakpoint: 1024,
+                                                    settings: {
+                                                        slidesToShow: 5,
+                                                        slidesToScroll: 5,
+                                                    },
+                                                },
+                                                {
+                                                    breakpoint: 640,
+                                                    settings: {
+                                                        slidesToShow: 4,
+                                                        slidesToScroll: 4,
+                                                    },
+                                                },
+                                                {
+                                                    breakpoint: 420,
+                                                    settings: {
+                                                        slidesToShow: 3,
+                                                        slidesToScroll: 3,
+                                                    },
+                                                },
+                                            ],
+                                        });
+                                    $rootSingle.on("afterChange", function (event, slick, currentSlide) {
+                                        $rootNav.slick("slickGoTo", currentSlide);
+                                        $rootNav.find(".slick-slide.is-active").removeClass("is-active");
+                                        $rootNav
+                                            .find('.slick-slide[data-slick-index="' + currentSlide + '"]')
+                                            .addClass("is-active");
+                                    });
+
+                                    $rootNav.on("click", ".slick-slide", function (event) {
+                                        event.preventDefault();
+                                        var goToSingleSlide = $(this).data("slick-index");
+
+                                        $rootSingle.slick("slickGoTo", goToSingleSlide);
+                                    });
+
+                                    const tabButtons = document.querySelectorAll('.tab-button');
+                                    const tabPanes = document.querySelectorAll('.tab-pane');
+
+                                    tabButtons.forEach(function (button) {
+                                        button.addEventListener('click', function () {
+                                            const targetTab = this.dataset.tab;
+
+                                            // Удаляем класс 'active' со всех вкладок и кнопок
+                                            tabButtons.forEach(function (btn) {
+                                                btn.classList.remove('active');
+                                            });
+                                            tabPanes.forEach(function (pane) {
+                                                pane.classList.remove('active');
+                                            });
+
+                                            // Добавляем класс 'active' к выбранной вкладке и кнопке
+                                            this.classList.add('active');
+                                            const targetPane = document.getElementById(targetTab);
+                                            targetPane.classList.add('active');
+                                        });
+                                    });
+
+                                    $('.btn-quantity-product').click(function (){
+                                        var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
+                                        var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
+                                        var productPrice = $(this).parent().parent('.qty-block').find('.product-qty-item').data('price');
+                                        var packageCount = $(this).parent().parent('.qty-block').find('.product-qty-item').data('package');
+
+                                        var changedElement = $('#product-card-summary-quick-'+productId);
+                                        var result = (qtyCount*productPrice)/packageCount;
+                                        console.log(productId);
+                                        changedElement.html(result.toFixed(2).replace('.',','));
+                                    });
+                                },
+                            },
+                        }
+                    );
+                }
+            });
     });
+    });
+
 </script>
 @yield('scripts')

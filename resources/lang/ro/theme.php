@@ -387,4 +387,5 @@ return array (
     'sort-product' => 'Produs',
     'sort-products' => 'Produse',
     'new' => 'Comandă nouă',
+    'quick-view-btn-text' => 'Vizualizare rapidă',
 );
