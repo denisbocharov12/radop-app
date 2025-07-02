@@ -3,7 +3,7 @@
 @endphp
 <div class="product-slider-main">
     @foreach($imagesArray as $key => $file)
-        <a href="/{{$file}}" class="product-image" data-fancybox="gallery">
+        <a href="/{{$file}}" class="product-image">
             <img src="/{{$file}}" alt="{{$product->title}}">
         </a>
     @endforeach
