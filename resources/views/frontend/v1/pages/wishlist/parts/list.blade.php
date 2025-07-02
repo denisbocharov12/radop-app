@@ -15,7 +15,7 @@
          id="item-wishlist-{{$product->conditions->id}}" data-id="{{$product->id}}">
         <div class="product-wrap">
             <div class="product-wrap-main {{$product->conditions->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
-                @include('frontend.v1.pages.product.components.label')
+                @include('frontend.v1.pages.product.components.label', ['product' => $product->conditions])
                 @if($product->conditions->sale_price !== '')
                     <a href="{{route('theme.product.index', $product->conditions->slug)}}" class="product-label">
                         <div class="product-label-wrap">

@@ -53,6 +53,7 @@
             success: function (response) {
                 if (response['status']) {
                     toastr["success"](response['msg']);
+                    $('#wishlist_count').html(response['wishlist_count']);
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
                 }
@@ -104,6 +105,7 @@
             success: function (response) {
                 if (response['status']) {
                     toastr["success"](response['msg']);
+                    $('#wishlist_count').html(response['wishlist_count']);
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
                 }

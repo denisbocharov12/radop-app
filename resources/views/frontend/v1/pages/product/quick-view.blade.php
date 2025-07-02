@@ -24,6 +24,7 @@
                                    data-qty="1"
                                    class="add_to_wishlist delete-from-wishlist-btn"
                                    data-has-text="true"
+                                   data-quick="true"
                                    tabindex="0">
                                     <i class="fa fa-heart"
                                        style="color: red"></i> {{__('theme.remove-from-wishlist')}}
@@ -34,7 +35,8 @@
                                    data-id="{{$product->id}}"
                                    data-qty="1"
                                    class="add_to_wishlist add-to-wishlist-btn"
-                                   data-has-text="true">
+                                   data-has-text="true"
+                                   data-quick="true">
                                     <i class="fa fa-heart"></i> {{__('theme.add-to-wishlist')}}
                                 </a>
                             @endif
