@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-lg-7 col-product-images">
                 @include('frontend.v1.pages.product.components.label')
-                @include('frontend.v1.pages.product.parts.gallery')
+                @include('frontend.v1.pages.product.parts.quick-gallery')
             </div>
             <div class="col-12 col-lg-5 col-product-info">
                 <div class="product-info-wrap">

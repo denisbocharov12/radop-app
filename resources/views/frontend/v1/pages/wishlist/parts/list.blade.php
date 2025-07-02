@@ -28,6 +28,7 @@
                 <div class="wrap">
                     @include('frontend.v1.pages.wishlist.parts.product-image')
                 </div>
+                @include('frontend.v1.pages.product.components.quick-view', ['product' => $product->conditions])
                 @if(app('wishlist')->get($product->conditions->id) !== null)
                     <a href="javascript:void(0);" id="add_to_wishlist-{{$product->conditions->id}}"
                        data-id="{{$product->conditions->id}}" data-qty="1"
