@@ -3,6 +3,6 @@
 {{--        <span class="theme-text-sp">--}}
 {{--            {{__('theme.wishlist')}}--}}
 {{--        </span>--}}
-        <i class="icon-heart-radop"><span class="wishlist_count" id="wishlist_count">{{app('wishlist')->getContent()->count()}}</span></i>
+        <i class="icon-heart-radop"><span class="wishlist_count" id="wishlist_count" @if(app('wishlist')->getContent()->count() == 0) style="display:none"@endif>{{app('wishlist')->getContent()->count()}}</span></i>
     </a>
 </div>
