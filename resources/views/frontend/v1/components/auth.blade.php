@@ -60,6 +60,16 @@
                             class="input-login input-password"
                             placeholder="{{__('theme.password')}}"
                             id="password"
+                            style="display: block;"
+                        />
+                        <input
+                            type="text"
+                            name="password"
+                            required
+                            class="input-login input-password"
+                            placeholder="{{__('theme.password')}}"
+                            id="password_text"
+                            style="display: none;"
                         />
                     </div>
                     <div class="form-block-wrap">
@@ -144,22 +154,47 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const passInput = document.getElementById("password");
+        const textInput = document.getElementById("password_text");
+
         document.querySelectorAll(".eye_password").forEach(function (btn) {
             btn.addEventListener("click", function (e) {
                 e.preventDefault();
-                const input = document.querySelector("#password");
                 const icon = btn.querySelector("i");
 
-                if (input.type === "password") {
-                    input.type = "text";
+                if (passInput.style.display !== "none") {
+                    textInput.value = passInput.value;
+                    passInput.style.display = "none";
+                    textInput.style.display = "block";
                     icon.classList.remove("fa-eye-slash");
                     icon.classList.add("fa-eye");
                 } else {
-                    input.type = "password";
+                    passInput.value = textInput.value;
+                    passInput.style.display = "block";
+                    textInput.style.display = "none";
                     icon.classList.remove("fa-eye");
                     icon.classList.add("fa-eye-slash");
                 }
             });
         });
+
+        // Синхронизация значений
+        passInput.addEventListener("input", function () {
+            textInput.value = passInput.value;
+        });
+        textInput.addEventListener("input", function () {
+            passInput.value = textInput.value;
+        });
+
+        const loginForm = document.getElementById("form-login-modal");
+        if (loginForm) {
+            loginForm.addEventListener("submit", function () {
+                if (textInput.style.display === "block") {
+                    passInput.value = textInput.value;
+                    passInput.style.display = "block";
+                    textInput.style.display = "none";
+                }
+            });
+        }
     });
 </script>
