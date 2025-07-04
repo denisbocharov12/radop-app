@@ -8608,7 +8608,7 @@ hr.product-card-item{
 }
 .quick-view-btn{
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 15%;
     /*transform: translate(50%, -100%);*/
     font-size: 13px;
