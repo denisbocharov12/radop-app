@@ -99,7 +99,7 @@
                 <div class="sc-details-wrap">
                     <ul class="details-ul">
                         <li class="item">
-                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} {{ __('theme.cart-quantity') }}</span>
                         </li>
                         <li class="item">
                             <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
@@ -117,7 +117,7 @@
                 <div class="sc-details-wrap">
                     <ul class="details-ul">
                         <li class="item">
-                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} ед.</span>
+                            <span class="left">{{__('theme.quantity-shortly')}} </span><span class="right">{{\Cart::session($sessionId)->getContent()->count()}} {{ __('theme.cart-quantity') }}</span>
                         </li>
                         <li class="item">
                             <span class="left">{{__('theme.summary')}} </span><span class="right">{{\Cart::session($sessionId)->getTotal()}} {{__('theme.MDL')}}</span>
