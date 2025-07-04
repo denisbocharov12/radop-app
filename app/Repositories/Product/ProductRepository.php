@@ -381,6 +381,7 @@ final class ProductRepository
     {
         return Product::where('status', true)
             ->where('site_status', true)
+            ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->where('products.title', 'like', "%{$value}%")
             ->where('stock', '!=', 0)
