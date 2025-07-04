@@ -230,7 +230,7 @@
                                         <li class="item">
                                             <span class="left">{{ __('theme.quantity-shortly') }} </span><span
                                                 class="right">{{ \Cart::session($sessionId)->getContent()->count() }}
-                                                ед.</span>
+                                                {{ __('theme.cart-quantity') }}</span>
                                         </li>
                                         <li class="item">
                                             <span class="left">{{ __('theme.summary') }} </span><span

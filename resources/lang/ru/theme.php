@@ -391,4 +391,5 @@ return array (
     'history_updated_status' => 'Изменён статус',
     'history_downloaded_excel' => 'Скачан Excel',
     'quick-view-btn-text' => 'Быстрый просмотр',
+    'cart-quantity' => 'ед.',
 );
