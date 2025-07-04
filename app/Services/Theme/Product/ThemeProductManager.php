@@ -58,38 +58,26 @@ final class ThemeProductManager
         }
 
         $productId = $existedProduct->id;
-
-        (int)$productQty = $addToCartData->productQty;
-
+        $productQty = (int)$addToCartData->productQty;
         $productStock = $existedProduct->stock;
-
         $price = $this->getProductPriceForCart($existedProduct);
 
-        $cartArray = [];
+        $cartProduct = \Cart::session($sessionId)->get($productId);
+        $cartQty = $cartProduct ? (int)$cartProduct->quantity : 0;
 
-        foreach (\Cart::session($sessionId)->getContent() as $item)
-        {
-            $cartArray[$item->id] = $item->id;
+        if ($cartQty >= $productStock) {
+            $response['msg'] = __('theme.product_not_in_stock_for_buy');
+            $response['status'] = 'not_in_stock';
+            return $response;
         }
 
-        $productKey = array_search($productId, $cartArray);
-
-        if (in_array($productId, $cartArray))
-        {
-            $exProduct = \Cart::session($sessionId)->get($productKey);
-
-            if ($productStock < (int)$exProduct->qty + (int)$productQty)
-            {
-                $response['msg'] = __('theme.product_not_in_stock_for_buy');
-                $response['status'] = 'not_in_stock';
-                $result = false;
-            } else
-            {
-                $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
-            }
-        } else {
-            $result = $this->addToInstance($existedProduct,$productQty,$price, $sessionId);
+        if ($productStock < $cartQty + $productQty) {
+            $response['msg'] = __('theme.product_not_in_stock_for_buy');
+            $response['status'] = 'not_in_stock';
+            return $response;
         }
+
+        $result = $this->addToInstance($existedProduct, $productQty, $price, $sessionId);
 
         if ($result)
         {
