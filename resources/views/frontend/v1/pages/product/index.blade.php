@@ -360,32 +360,6 @@
                 }
             });
         })
-
-        // динамический пересчёт итоговой цены и ограничение по max
-        $(document).on('input change', '.product-qty-item', function () {
-            var qtyCount = $(this).val();
-            var max = $(this).attr('max');
-            if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
-                $(this).val(max);
-                qtyCount = max;
-            }
-            var productId = $(this).data('product-id');
-            var productPrice = $(this).data('price');
-            var packageCount = $(this).data('package');
-            var changedElement = $('#product-card-summary-' + productId);
-            if (changedElement.length === 0) {
-                changedElement = $('#product-card-summary-cart-' + productId);
-            }
-            if (changedElement.length === 0) {
-                changedElement = $('#product-card-summary-in-cart-' + productId);
-            }
-            if (changedElement.length === 0) {
-                changedElement = $('#product-' + productId + '-cart-info');
-            }
-            var result = (qtyCount * productPrice) / packageCount;
-            changedElement.html(result.toFixed(2).replace('.', ','));
-        });
-
         document.addEventListener('DOMContentLoaded', function () {
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabPanes = document.querySelectorAll('.tab-pane');
