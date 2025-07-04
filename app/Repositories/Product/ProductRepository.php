@@ -381,15 +381,15 @@ final class ProductRepository
     {
         return Product::where('status', true)
             ->where('site_status', true)
-            ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->where('products.title', 'like', "%{$value}%")
+            ->where(function ($query) use ($value) {
+                $query->where('products.title', 'like', "%{$value}%")
+                    ->orWhere('products.onec_id', 'like', "%{$value}%")
+                    ->orWhere('shtrih_code', 'like', "%{$value}%");
+            })
             ->where('stock', '!=', 0)
-            ->orWhere('products.onec_id', 'like', "%{$value}%")
-            ->orWhere('shtrih_code', 'like', "%{$value}%")
             ->paginate(16)
-            ->appends(request()->query())
-        ;
+            ->appends(request()->query());
     }
 
     public function getProductCategoryIdsBySearch(string $value): Collection
