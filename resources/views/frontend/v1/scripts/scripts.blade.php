@@ -54,11 +54,6 @@
                 if (response['status']) {
                     toastr["success"](response['msg']);
                     $('#wishlist_count').html(response['wishlist_count']);
-                    if (parseInt(response['wishlist_count']) > 0) {
-                        $('#wishlist_count').show();
-                    } else {
-                        $('#wishlist_count').hide();
-                    }
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
                 }
@@ -111,11 +106,6 @@
                 if (response['status']) {
                     toastr["success"](response['msg']);
                     $('#wishlist_count').html(response['wishlist_count']);
-                    if (parseInt(response['wishlist_count']) > 0) {
-                        $('#wishlist_count').show();
-                    } else {
-                        $('#wishlist_count').hide();
-                    }
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
                 }
@@ -691,20 +681,6 @@
                                         console.log(productId);
                                         changedElement.html(result.toFixed(2).replace('.',','));
                                     });
-                                    $('.product-qty-item').on('input change', function () {
-                                        var qtyCount = $(this).val();
-                                        var max = $(this).attr('max');
-                                        if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
-                                            $(this).val(max);
-                                            qtyCount = max;
-                                        }
-                                        var productId = $(this).data('product-id');
-                                        var productPrice = $(this).data('price');
-                                        var packageCount = $(this).data('package');
-                                        var changedElement = $('#product-card-summary-quick-'+productId);
-                                        var result = (qtyCount*productPrice)/packageCount;
-                                        changedElement.html(result.toFixed(2).replace('.',','));
-                                    });
                                 },
                             },
                         }
@@ -712,12 +688,6 @@
                 }
             });
     });
-
-    if (parseInt($('#wishlist_count').html()) > 0) {
-        $('#wishlist_count').show();
-    } else {
-        $('#wishlist_count').hide();
-    }
     });
 
 </script>

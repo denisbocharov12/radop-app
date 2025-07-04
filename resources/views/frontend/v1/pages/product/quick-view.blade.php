@@ -1,4 +1,4 @@
-<section class="section-product mb-5" style="min-width: 80%; max-width: 80%">
+<section class="section-product mb-5">
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-7 col-product-images">
