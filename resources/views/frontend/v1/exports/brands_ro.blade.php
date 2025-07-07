@@ -21,7 +21,7 @@
     <tbody>
     @foreach($products as $i => $product)
         @php
-            $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+//            $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
         @endphp
         <tr>
             <td></td>
@@ -31,17 +31,18 @@
             <td style="border: 1px solid black;">{{ $product->brand?->title }}</td>
             <td style="border: 1px solid black;">{{ $product->shtrih_code }}</td>
             <td style="border: 1px solid black;">
-                @if(count($imagesArray) > 1)
-                    @foreach($imagesArray as $key => $file)
-                        @switch($key)
-                            @case(0)
-                                <img src="{{config('app.url')}}/{{$file}}" alt="{{$product->title}}" />
-                                @break
-                        @endswitch
-                    @endforeach
-                @elseif(count($imagesArray) == 1)
-                    <img src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" />
-                @endif
+                Photo
+{{--                @if(count($imagesArray) > 1)--}}
+{{--                    @foreach($imagesArray as $key => $file)--}}
+{{--                        @switch($key)--}}
+{{--                            @case(0)--}}
+{{--                                <img src="{{config('app.url')}}/{{$file}}" alt="{{$product->title}}" />--}}
+{{--                                @break--}}
+{{--                        @endswitch--}}
+{{--                    @endforeach--}}
+{{--                @elseif(count($imagesArray) == 1)--}}
+{{--                    <img src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" />--}}
+{{--                @endif--}}
             </td>
             <td style="border: 1px solid black;">{{ $product->packages->min('value') }}</td>
             <td style="border: 1px solid black;">{{ $product->packages->max('value') }}</td>
