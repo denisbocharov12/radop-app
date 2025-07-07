@@ -8653,8 +8653,8 @@ hr.product-card-item{
 
 .product-item-category:hover .quick-view-btn {
     opacity: 1;
-    background: #0052a6;
-    color: #f1f1f1;
+    background-color: #ffffff;
+    color: #0052a6;
     box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
     border-radius: 34px;
     font-size: 13px;
