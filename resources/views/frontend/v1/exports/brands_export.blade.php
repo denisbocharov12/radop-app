@@ -21,7 +21,7 @@
     <tbody>
     @foreach($products as $i => $product)
         @php
-//            $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+            $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
         @endphp
         <tr>
             <td></td>
@@ -30,30 +30,17 @@
             <td style="border: 1px solid black;">{!! $product->title !!}</td>
             <td style="border: 1px solid black;">{{ $product->brand?->title }}</td>
             <td style="border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->shtrih_code }}</td>
-            <td style="border: 1px solid black;">
-                Photo
-{{--                @if(count($imagesArray) > 1)--}}
-{{--                    @foreach($imagesArray as $key => $file)--}}
-{{--                        @switch($key)--}}
-{{--                            @case(0)--}}
-{{--                                <img src="{{config('app.url')}}/{{$file}}" alt="{{$product->title}}" />--}}
-{{--                                @break--}}
-{{--                        @endswitch--}}
-{{--                    @endforeach--}}
-{{--                @elseif(count($imagesArray) == 1)--}}
-{{--                    <img src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" />--}}
-{{--                @endif--}}
-            </td>
+            @if(count($imagesArray) > 1)
+                <td style="border: 1px solid black;"><img src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" /></td>
+            @elseif(count($imagesArray) == 1)
+                <td style="border: 1px solid black;"><img src="{{config('app.url')}}/{{$imagesArray[0]}}" alt="{{$product->title}}" /></td>
+            @else
+                <td style="border: 1px solid black;"></td>
+            @endif
             <td style="border: 1px solid black;">{{ $product->packages->min('value') }}</td>
             <td style="border: 1px solid black;">{{ $product->packages->max('value') }}</td>
-            <td style="border: 1px solid black;">
-                @if($product->values)
-                    @foreach($product->values as $value)
-                        <span>
-                        {{$value->attribute?->name}}: {{$value->value}}
-                    </span>
-                    @endforeach
-                @endif
+            <td>
+                {{ $product->values->map(fn($value) => $value->attribute?->name . ': ' . $value->value)->implode(chr(10)) }}
             </td>
             <td style="border: 1px solid black; font-weight: 700">{{ number_format($product->price, 2, ',', ' ') }}</td>
         </tr>
