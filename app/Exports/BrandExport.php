@@ -93,7 +93,7 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
             $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 
             if (!empty($imagesArray)) {
-                $imageUrl = config('app.url') . $imagesArray[0];
+                $imageUrl = config('app.url') . '/' . $imagesArray[0];
 
                 $tempPath = storage_path('app/temp_product_' . $product->onec_id . '.jpg');
                 file_put_contents($tempPath, file_get_contents($imageUrl));
