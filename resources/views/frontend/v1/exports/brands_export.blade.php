@@ -34,7 +34,7 @@
             <td>{{ $product->packages->min('value') }}</td>
             <td>{{ $product->packages->max('value') }}</td>
             <td>
-                {{ $product->values->map(fn($value) => $value->attribute?->name . ': ' . $value->value)->implode(chr(10)) }}
+                {!! $product->values->map(fn($value) => $value->attribute?->name . ': ' . $value->value)->implode(chr(10)) !!}
             </td>
             <td style="font-weight: 700">{{ number_format($product->price, 2, ',', ' ') }}</td>
         </tr>
