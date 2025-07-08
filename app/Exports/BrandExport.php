@@ -84,25 +84,44 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
         $drawings = [];
         $rowOffset = 4; // С какого ряда начинаются товары
 
+        // Примерная ширина колонки G в пикселях
+        // В PhpSpreadsheet ширина колонки 1 = примерно 7.5 пикселей, поэтому 40 * 7.5 = 300
+        $columnWidthInPixels = 40 * 7.5;
+        $imageHeight = 120;
+
         foreach ($this->products as $index => $product) {
             $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
 
             if (!empty($imagesArray)) {
-                // Скачиваем картинку во временное хранилище (если URL)
-                $imageUrl = config('app.url') . '/' . $imagesArray[0];
+                $imageUrl = asset($imagesArray[0]);
 
-                $tempPath = storage_path('app/temp_product_' . $index . '.jpg');
+                $tempPath = storage_path('app/temp_product_' . $product->onec_id . '.jpg');
                 file_put_contents($tempPath, file_get_contents($imageUrl));
 
                 $drawing = new Drawing();
                 $drawing->setName('Product Image');
                 $drawing->setDescription($product->title);
-                $drawing->setPath($tempPath); // Локальный путь
-                $drawing->setHeight(100);
-                $drawing->setCoordinates('G' . ($rowOffset + $index)); // Строка в колонке G
+                $drawing->setPath($tempPath);
+                $drawing->setHeight($imageHeight);
+                $drawing->setCoordinates('G' . ($rowOffset + $index));
+
+                // Получаем фактическую ширину изображения в пикселях
+                // Примерно, высота = 120, пропорции картинки сохраняются
+                // Прикинем ширину изображения, чтобы сдвинуть по горизонтали
+
+                // Установим горизонтальный сдвиг для центрирования
+                $imageWidth = $drawing->getWidth();
+                $offsetX = intval(($columnWidthInPixels - $imageWidth) / 2);
+                if ($offsetX < 0) {
+                    $offsetX = 0; // чтобы не было отрицательного сдвига
+                }
+                $drawing->setOffsetX($offsetX);
+
+                // Вертикально сдвинуть не нужно, т.к. высота строки равна высоте картинки (120)
+                // Но если хотите сдвинуть по вертикали, можно также setOffsetY()
+
                 $drawings[] = $drawing;
 
-                // Сохраняем путь для удаления потом (опционально)
                 $this->downloadedImages[] = $tempPath;
             }
         }
