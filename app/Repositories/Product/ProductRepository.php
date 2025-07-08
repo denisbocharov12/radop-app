@@ -473,6 +473,10 @@ final class ProductRepository
 
     public function getAllByBrandOnceId(int $brandId): ?Collection
     {
-        return Product::query()->where('brand_id', $brandId)->get();
+        return Product::query()->where('brand_id', $brandId)
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->get();
     }
 }
