@@ -154,7 +154,7 @@
                     <span>{{$order->filial?->address}}</span>
                 </div>
                 <div class="nk-tb-col order-details">
-                    <span>{{ number_format($order->total, 2, ',', ' ')}}</span>
+                    <span style="white-space: nowrap">{{ number_format($order->total, 2, ',', ' ')}}</span>
                 </div>
                 <div class="nk-tb-col nk-tb-col-tools order-details">
                     <ul class="nk-tb-actions gx-2">
