@@ -36,7 +36,7 @@
             <td style="white-space: pre-line;">
                 {!! $product->values
                     ->map(fn($value) => $value->attribute?->name . ': ' . $value->value)
-                    ->implode("\n") !!}
+                    ->implode('<br>') !!}
             </td>
             <td style="font-weight: 700">{{ number_format($product->price, 2, ',', ' ') }}</td>
         </tr>
