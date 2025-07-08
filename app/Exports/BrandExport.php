@@ -11,9 +11,15 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 
-final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithStyles
+final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithDrawings
 {
+    private array $downloadedImages = [];
+
     public function __construct(
         private readonly Collection $products,
     ) {
@@ -28,15 +34,7 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
 
     public function title(): string
     {
-        $language = app()->getLocale();
-
-        $title = 'RO';
-
-        if ($language === 'ru') {
-            $title = 'RU';
-        }
-
-        return $title;
+        return app()->getLocale() === 'ru' ? 'RU' : 'RO';
     }
 
     public function columnWidths(): array
@@ -72,6 +70,52 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
 
+        $sheet->getStyle("A2:K{$endRow}")
+            ->getBorders()
+            ->getAllBorders()
+            ->setBorderStyle(Border::BORDER_MEDIUM)
+            ->setColor(new Color(Color::COLOR_BLACK));
+
         return [];
+    }
+
+    public function drawings(): array
+    {
+        $drawings = [];
+        $rowOffset = 4; // С какого ряда начинаются товары
+
+        foreach ($this->products as $index => $product) {
+            $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
+
+            if (!empty($imagesArray)) {
+                // Скачиваем картинку во временное хранилище (если URL)
+                $imageUrl = config('app.url') . '/' . $imagesArray[0];
+
+                $tempPath = storage_path('app/temp_product_' . $index . '.jpg');
+                file_put_contents($tempPath, file_get_contents($imageUrl));
+
+                $drawing = new Drawing();
+                $drawing->setName('Product Image');
+                $drawing->setDescription($product->title);
+                $drawing->setPath($tempPath); // Локальный путь
+                $drawing->setHeight(100);
+                $drawing->setCoordinates('G' . ($rowOffset + $index)); // Строка в колонке G
+                $drawings[] = $drawing;
+
+                // Сохраняем путь для удаления потом (опционально)
+                $this->downloadedImages[] = $tempPath;
+            }
+        }
+
+        return $drawings;
+    }
+
+    public function __destruct()
+    {
+        foreach ($this->downloadedImages as $filePath) {
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
     }
 }
