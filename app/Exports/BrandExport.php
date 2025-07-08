@@ -4,21 +4,74 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-final class BrandExport implements WithMultipleSheets
+final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithStyles
 {
     public function __construct(
-        private readonly Collection $products
-    ){
+        private readonly Collection $products,
+    ) {
     }
 
-    public function sheets(): array
+    public function view(): View
+    {
+        return view('frontend.v1.exports.brands_export', [
+            'products' => $this->products,
+        ]);
+    }
+
+    public function title(): string
+    {
+        $language = app()->getLocale();
+
+        $title = 'RO';
+
+        if ($language === 'ru') {
+            $title = 'RU';
+        }
+
+        return $title;
+    }
+
+    public function columnWidths(): array
     {
         return [
-            new BrandRoExport($this->products),
-            new BrandRuExport($this->products),
+            'A' => 0.5,  // Пустой столбец
+            'B' => 4,    // №
+            'C' => 10,   // Код
+            'D' => 50,   // Наименование
+            'E' => 15,   // Бренд
+            'F' => 20,   // Штрихкод
+            'G' => 40,   // Фото
+            'H' => 10,   // Упаковка (пачка)
+            'I' => 10,   // Упаковка (короб)
+            'J' => 50,   // Характеристики
+            'K' => 15,   // Цена
         ];
+    }
+
+    public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+    {
+        $productsCount = $this->products->count();
+        $startRow = 4;
+        $endRow = $startRow + $productsCount - 1;
+
+        for ($row = $startRow; $row <= $endRow; $row++) {
+            $sheet->getRowDimension($row)->setRowHeight(120);
+        }
+
+        $sheet->getStyle("A2:K{$endRow}")
+            ->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+            ->setVertical(Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
+
+        return [];
     }
 }

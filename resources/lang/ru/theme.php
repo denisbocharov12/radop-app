@@ -33,7 +33,7 @@ return array (
     'category' => 'Категории',
     'check-email' => '',
     'chisinau' => 'Кишинёв',
-    'client' => 'Клиент:',
+    'client' => 'Клиент',
     'client_type' => 'Тип клиента:',
     'closed' => 'Закрыто',
     'cod-fiscal' => 'Фискальный код',

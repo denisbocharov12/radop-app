@@ -7,13 +7,12 @@ namespace App\Exports;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-final class BrandRoExport implements FromView, ShouldAutoSize, WithTitle, WithColumnWidths, WithStyles
+final class BrandRoExport implements FromView, WithTitle, WithColumnWidths, WithStyles
 {
     public function __construct(
         private readonly Collection $products,
@@ -24,7 +23,7 @@ final class BrandRoExport implements FromView, ShouldAutoSize, WithTitle, WithCo
     {
         app()->setLocale('ro');
 
-        return view('frontend.v1.exports.brands_ro', [
+        return view('frontend.v1.exports.brands_export', [
             'products' => $this->products,
         ]);
     }
@@ -54,7 +53,7 @@ final class BrandRoExport implements FromView, ShouldAutoSize, WithTitle, WithCo
     public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
     {
         $productsCount = $this->products->count();
-        $startRow = 4; // С какой строки начинаются товары (строка 3)
+        $startRow = 4;
         $endRow = $startRow + $productsCount - 1;
 
         for ($row = $startRow; $row <= $endRow; $row++) {
@@ -64,7 +63,8 @@ final class BrandRoExport implements FromView, ShouldAutoSize, WithTitle, WithCo
         $sheet->getStyle("A2:K{$endRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-            ->setVertical(Alignment::VERTICAL_CENTER);
+            ->setVertical(Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
 
         return [];
     }

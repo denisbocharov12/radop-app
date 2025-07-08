@@ -33,7 +33,7 @@ return array (
     'category' => 'Categorii',
     'check-email' => 'Verificați email-ul cu detaliile comenzii. În scurt timp veti fi contactat de un operator.',
     'chisinau' => 'Chișinău',
-    'client' => 'Client:',
+    'client' => 'Client',
     'client_type' => 'Tipul clientului:',
     'closed' => 'Închis',
     'cod-fiscal' => 'Cod fiscal',
