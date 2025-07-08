@@ -87,7 +87,7 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
         // Примерная ширина колонки G в пикселях
         // В PhpSpreadsheet ширина колонки 1 = примерно 7.5 пикселей, поэтому 40 * 7.5 = 300
         $columnWidthInPixels = 40 * 7.5;
-        $imageHeight = 120;
+        $rowHeight = 120;
 
         foreach ($this->products as $index => $product) {
             $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
@@ -102,7 +102,7 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
                 $drawing->setName('Product Image');
                 $drawing->setDescription($product->title);
                 $drawing->setPath($tempPath);
-                $drawing->setHeight($imageHeight);
+                $drawing->setHeight($rowHeight);
                 $drawing->setCoordinates('G' . ($rowOffset + $index));
 
                 // Получаем фактическую ширину изображения в пикселях
@@ -117,8 +117,12 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
                 }
                 $drawing->setOffsetX($offsetX);
 
-                // Вертикально сдвинуть не нужно, т.к. высота строки равна высоте картинки (120)
-                // Но если хотите сдвинуть по вертикали, можно также setOffsetY()
+                $imageHeight = $drawing->getHeight();
+                $offsetY = intval(($rowHeight - $imageHeight) / 2);
+                if ($offsetY < 0) {
+                    $offsetY = 0;
+                }
+                $drawing->setOffsetY($offsetY);
 
                 $drawings[] = $drawing;
 
