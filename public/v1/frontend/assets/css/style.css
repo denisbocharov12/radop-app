@@ -10384,6 +10384,11 @@ hr.product-card-item{
     .section-register .col-register-wrap #tabs {
         max-width: 70%;
     }
+
+    .quick-view-btn {
+        top: 33%;
+        font-size: 11px;
+    }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
     header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap {
@@ -10416,6 +10421,11 @@ hr.product-card-item{
 
     .section-checkout .col-checkout-form .checkout-form-wrap {
         padding-right: 0px;
+    }
+
+    .quick-view-btn {
+        top: 35%;
+        font-size: 11px;
     }
 }
 @media (min-width: 576px) and (max-width: 768px) {
