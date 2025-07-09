@@ -27,7 +27,7 @@
             <td></td>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>
-            <td>{!! $product->title !!}</td>
+            <td>{{ $product->title }}</td>
             <td>{{ $product->brand?->title }}</td>
             <td data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->shtrih_code }}</td>
             <td></td>
@@ -35,7 +35,7 @@
             <td>{{ $product->packages->max('value') }}</td>
             <td style="white-space: pre-line;">
                 {!! $product->values
-                    ->map(fn($value) => $value->attribute?->name . ': ' . $value->value)
+                    ->map(fn($value) => e($value->attribute?->name . ': ' . $value->value))
                     ->implode('<br>') !!}
             </td>
             <td style="font-weight: 700">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
