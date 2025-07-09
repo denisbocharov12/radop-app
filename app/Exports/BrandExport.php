@@ -82,11 +82,11 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
     public function drawings(): array
     {
         $drawings = [];
-        $rowOffset = 4; // С какого ряда начинаются товары
+        $rowOffset = 4;
 
         $cmToPixels = fn($cm) => intval($cm * 37.795275591);
-        $widthInPixels = $cmToPixels(4);  // 4 см ширина
-        $heightInPixels = $cmToPixels(6); // 6 см высота
+        $widthInPixels = $cmToPixels(4);
+        $heightInPixels = $cmToPixels(6);
 
         foreach ($this->products as $index => $product) {
             $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
@@ -97,6 +97,10 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
                 $tempPath = storage_path('app/temp_product_' . $product->onec_id . '.jpg');
                 file_put_contents($tempPath, file_get_contents($imageUrl));
 
+                $image = \Intervention\Image\Facades\Image::make($tempPath);
+                $image->resize($widthInPixels, $heightInPixels);
+                $image->save($tempPath);
+
                 $drawing = new Drawing();
                 $drawing->setName('Product Image');
                 $drawing->setDescription($product->title);
@@ -104,15 +108,6 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
                 $drawing->setWidth($widthInPixels);
                 $drawing->setHeight($heightInPixels);
                 $drawing->setCoordinates('G' . ($rowOffset + $index));
-
-                $columnWidthInPixels = 40 * 7.5;
-                $rowHeight = 120;
-
-                $offsetX = intval(($columnWidthInPixels - $widthInPixels) / 2);
-                $drawing->setOffsetX(max(0, $offsetX));
-
-                $offsetY = intval(($rowHeight - $heightInPixels) / 2);
-                $drawing->setOffsetY(max(0, $offsetY));
 
                 $drawings[] = $drawing;
                 $this->downloadedImages[] = $tempPath;
