@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Category;
 
-use App\Exceptions\Category\CategoryNotFoundException;
-use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
+use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
@@ -14,6 +13,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeCategoryController extends Controller
 {
@@ -27,6 +27,9 @@ final class ThemeCategoryController extends Controller
     {
     }
 
+    /**
+     * @throws ThemeCategoryNotFoundException
+     */
     public function index(Request $request, string $onecId)
     {
         $query = $request->query('filter');
@@ -64,5 +67,21 @@ final class ThemeCategoryController extends Controller
             'brands',
             'attributes',
         ]));
+    }
+
+    /**
+     * @throws ThemeCategoryNotFoundException
+     */
+    public function export(string $onecId)
+    {
+        $existedCategory = $this->categoryRepository->getByOnecId($onecId);
+
+        if ($existedCategory === null) {
+            throw new ThemeCategoryNotFoundException();
+        }
+
+        $products = $this->categoryRepository->getAllByCategoryOnecId($existedCategory);
+
+        return Excel::download(new CategoryExport($products), 'radop_categories_' . $onecId . '.xlsx');
     }
 }

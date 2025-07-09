@@ -4,6 +4,7 @@
             <div class="col-12">
                 <div class="sort-block d-none d-md-flex">
                     @include('frontend.v1.components.sort-products')
+                    @include('frontend.v1.pages.category.parts.export-excel')
                 </div>
             </div>
         </div>

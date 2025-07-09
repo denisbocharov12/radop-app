@@ -1,5 +1,5 @@
 <div class="export-excel">
-    <a href="{{route('theme.brand.export', $existedBrand->id)}}" class="export-excel-link">
+    <a href="{{route('theme.category.export', $existedCategory->onec_id)}}" class="export-excel-link">
         <svg width="24px" height="24px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>

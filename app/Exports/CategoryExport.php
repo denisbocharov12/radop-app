@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 
-final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithDrawings
+final class CategoryExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithDrawings
 {
     private array $downloadedImages = [];
 
@@ -40,21 +40,21 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
     public function columnWidths(): array
     {
         return [
-            'A' => 0.5,  // Пустой столбец
-            'B' => 4,    // №
-            'C' => 10,   // Код
-            'D' => 50,   // Наименование
-            'E' => 15,   // Бренд
-            'F' => 20,   // Штрихкод
-            'G' => 40,   // Фото
-            'H' => 10,   // Упаковка (пачка)
-            'I' => 10,   // Упаковка (короб)
-            'J' => 50,   // Характеристики
-            'K' => 15,   // Цена
+            'A' => 0.5,
+            'B' => 4,
+            'C' => 10,
+            'D' => 50,
+            'E' => 15,
+            'F' => 20,
+            'G' => 40,
+            'H' => 10,
+            'I' => 10,
+            'J' => 50,
+            'K' => 15,
         ];
     }
 
-    public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+    public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet): array
     {
         $productsCount = $this->products->count();
         $startRow = 4;
