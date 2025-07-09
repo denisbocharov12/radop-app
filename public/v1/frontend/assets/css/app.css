@@ -5509,3 +5509,48 @@ header .section-header .row-main .header-account .nav-drill.nav-is-toggled {
   margin-bottom: 20px;
 }
 }
+
+/* Стили для Fancybox галереи товаров */
+.product-image-link {
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.product-image-link:hover {
+  opacity: 0.8;
+}
+
+.fancybox__container {
+  z-index: 9999;
+}
+
+.fancybox__toolbar {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.fancybox__thumbs {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.fancybox__thumb {
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.fancybox__thumb.is-selected {
+  border-color: #007bff;
+}
+
+.fancybox__slide {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.fancybox__content {
+  background: transparent;
+}
+
+.fancybox__image {
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
