@@ -85,8 +85,8 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
         $rowOffset = 4;
 
         $cmToPixels = fn($cm) => intval($cm * 37.795275591);
-        $widthInPixels = $cmToPixels(4);
-        $heightInPixels = $cmToPixels(6);
+        $widthInPixels = $cmToPixels(6);
+        $heightInPixels = $cmToPixels(4);
 
         foreach ($this->products as $index => $product) {
             $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
