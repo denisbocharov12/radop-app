@@ -7,19 +7,14 @@
         @foreach($imagesArray as $key => $file)
             @switch($key)
                 @case(0)
-                    <a href="{{config('app.url')}}/{{$file}}" data-fancybox="product-gallery-{{$product->onec_id}}">
+                    <a href="{{config('app.url')}}/{{$file}}" data-fancybox-product>
                         <img class="product-card-gallery-image" src="{{config('app.url')}}/{{$file}}" loading="lazy" alt="{{$product->title}}" />
                     </a>
                     @break
             @endswitch
         @endforeach
-        @foreach($imagesArray as $key => $file)
-            @if($key > 0)
-                <a href="{{config('app.url')}}/{{$file}}" data-fancybox="product-gallery-{{$product->onec_id}}" style="display: none;"></a>
-            @endif
-        @endforeach
     @elseif(count($imagesArray) == 1)
-        <a href="{{config('app.url')}}/{{$imagesArray[0]}}" data-fancybox="product-gallery-{{$product->onec_id}}">
+        <a href="{{config('app.url')}}/{{$imagesArray[0]}}" data-fancybox-product>
             <img class="product-card-gallery-image" src="{{config('app.url')}}/{{$imagesArray[0]}}" loading="lazy" alt="{{$product->title}}" />
         </a>
     @endif
