@@ -38,7 +38,7 @@
                     ->map(fn($value) => $value->attribute?->name . ': ' . $value->value)
                     ->implode('<br>') !!}
             </td>
-            <td style="font-weight: 700">{{ number_format($product->price, 2, ',', ' ') }}</td>
+            <td style="font-weight: 700">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
         </tr>
     @endforeach
     </tbody>

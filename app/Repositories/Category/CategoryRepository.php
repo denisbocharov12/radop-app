@@ -120,4 +120,25 @@ class CategoryRepository
     {
         return Category::query()->where('name', $name)->first();
     }
+
+    public function getAllByCategoryOnecId(Category $category): ?Collection
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('stock', '!=', 0)
+            ->defaultSort('price')
+            ->where('status', true)
+            ->where('site_status', true)
+            ->groupBy('products.onec_id')
+            ->orderByRaw("
+            CASE
+                WHEN sale_price IS NOT NULL AND sale_price != ''
+                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
+                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
+            END ASC
+            ")
+            ->get()
+            ;
+    }
 }

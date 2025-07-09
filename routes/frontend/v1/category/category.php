@@ -8,4 +8,7 @@ Route::prefix('category')->name('category.')->group(function () {
     Route::get('/{onecId}', [ThemeCategoryController::class, 'index'])
         ->name('index')
     ;
+    Route::get('/{onecId}/export', [ThemeCategoryController::class, 'export'])
+        ->name('export')
+    ;
 });
