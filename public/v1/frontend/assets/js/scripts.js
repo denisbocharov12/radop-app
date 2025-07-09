@@ -621,6 +621,30 @@ $(document).ready(function () {
         }
     });
 
+    Fancybox.bind('[data-fancybox^="product-gallery-"]', {
+        hash : false,
+        Carousel : {
+            infinite: false,
+        },
+        Thumbs : {
+            autoStart: true,
+            axis: "x"
+        },
+        Toolbar : {
+            display: [
+                { id: "prev", position: "center" },
+                { id: "counter", position: "center" },
+                { id: "next", position: "center" },
+                "zoom",
+                "slideshow",
+                "fullscreen",
+                "download",
+                "thumbs",
+                "close"
+            ]
+        }
+    });
+
     $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
 
         var content = $(this).next('.theme-toggle-item-content');
