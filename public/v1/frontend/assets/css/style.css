@@ -2952,8 +2952,8 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .theme-slider .slick-dots li button {
-    width: 14px;
-    height: 14px;
+    width: 9px;
+    height: 9px;
     position: relative;
     background-color: rgba(233, 233, 233, 0.6);
     font-size: 0;
