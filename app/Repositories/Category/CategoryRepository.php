@@ -59,7 +59,6 @@ class CategoryRepository
                 'popular_order',
                 'stock',
             ])
-            ->defaultSort('price')
             ->where('status', true)
             ->where('site_status', true)
             ->groupBy('products.onec_id')

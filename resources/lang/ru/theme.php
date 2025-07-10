@@ -394,4 +394,5 @@ return array (
     'cart-quantity' => 'ед.',
     'photo' => 'Фото',
     'characteristics' => 'Характеристики',
+    'download-catalog' => 'Скачать каталог',
 );

@@ -85,7 +85,6 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
         $rowOffset = 4;
 
         $cmToPixels = fn($cm) => intval($cm * 37.795275591);
-        $widthInPixels = $cmToPixels(6);
         $heightInPixels = $cmToPixels(4);
 
         foreach ($this->products as $index => $product) {
@@ -97,15 +96,14 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
                 $tempPath = storage_path('app/temp_product_' . $product->onec_id . '.jpg');
                 file_put_contents($tempPath, file_get_contents($imageUrl));
 
-                $image = \Intervention\Image\Facades\Image::make($tempPath);
-                $image->resize($widthInPixels, $heightInPixels);
-                $image->save($tempPath);
+//                $image = \Intervention\Image\Facades\Image::make($tempPath);
+//                $image->resize($widthInPixels, $heightInPixels);
+//                $image->save($tempPath);
 
                 $drawing = new Drawing();
                 $drawing->setName('Product Image');
                 $drawing->setDescription($product->title);
                 $drawing->setPath($tempPath);
-                $drawing->setWidth($widthInPixels);
                 $drawing->setHeight($heightInPixels);
                 $drawing->setCoordinates('G' . ($rowOffset + $index));
 
