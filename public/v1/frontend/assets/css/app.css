@@ -571,6 +571,7 @@ display: flex;
 padding-right: 14px !important;
 text-transform: uppercase;
 line-height: 1.15;
+letter-spacing: 1px;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item .link-megamenu img {
   width: 22px;
@@ -736,7 +737,7 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item.me
 margin-top: 0;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap .container-megamenu .row-megamenu .col-content-megamenu .row-list-content .col-list-content a.heading {
-color: #252525;
+color: #404040;
 font-weight: 500;
 display: inline-block;
 }

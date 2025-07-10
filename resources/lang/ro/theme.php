@@ -391,4 +391,5 @@ return array (
     'cart-quantity' => 'produse',
     'photo' => 'Foto',
     'characteristics' => 'Caracteristice',
+    'download-catalog' => 'Descărcați catalogul',
 );

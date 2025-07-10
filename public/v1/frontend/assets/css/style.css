@@ -1614,7 +1614,6 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 15px 0;
     color: #fff;
     font-weight: 500 !important;
-    letter-spacing: 1px;
 }
 
 .section-header .row-main .header-menu .header-main-menu ul.menu .item:last-child {
@@ -2890,7 +2889,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .col-category-childs .wrap-category-childs .link.parent-link{
-    font-weight: 500;
+    font-weight: 700;
     display: inline-block;
 }
 .col-category-childs .wrap-category-childs .list.category-list {
@@ -5636,7 +5635,7 @@ header .section-header .row-main .header-menu .col-lg{
     right: 0%;
     position: absolute;
     border-radius: 5px;
-    background: #1F5785;
+    background: #0052a6;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .filter-widget-wrap .range-input {
@@ -8504,7 +8503,7 @@ hr.product-card-item{
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 94px;
     padding: 10px 0;
     justify-content: flex-end;
     border-block: 1px solid #eee;
@@ -8608,7 +8607,7 @@ hr.product-card-item{
 }
 .quick-view-btn{
     position: absolute;
-    top: 40%;
+    top: 38%;
     left: 15%;
     /*transform: translate(50%, -100%);*/
     font-size: 13px;
@@ -8622,10 +8621,6 @@ hr.product-card-item{
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.quick-view-btn:hover {
-    /*background-color: rgba(0, 82, 166, 0.95);*/
-    /*color: #f1f1f1;*/
 }
 .product-item .add_to_cart_wrap .add_to_cart_btn_quick{
     background-color: #0052a6;
@@ -10031,6 +10026,9 @@ hr.product-card-item{
         align-items: flex-end;
         justify-content: flex-start;
     }
+    .sort-block{
+        gap: 5px;
+    }
     .col-theme-filters{
         position: relative;
         top: 0;
@@ -10384,13 +10382,20 @@ hr.product-card-item{
     .section-register .col-register-wrap #tabs {
         max-width: 70%;
     }
-
+    .sort-block{
+        gap: 26px;
+    }
+    .product-item-category:hover .quick-view-btn{
+        font-size: 11px;
+    }
     .quick-view-btn {
         top: 33%;
-        font-size: 11px;
     }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
+    .sort-block{
+        gap: 19px;
+    }
     header .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu .megamenu-wrap {
         max-height: 650px;
     }
@@ -11719,4 +11724,30 @@ body.modal-open {
     header .section-header .row-main .header-account .icon-block {
         margin-left: 0;
     }
+}
+
+.export-excel .export-excel-link{
+    color: #000;
+}
+
+.export-excel .export-excel-link span:hover{
+    text-decoration: underline;
+}
+
+.page-sort-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    border: none;
+    background: transparent;
+}
+input[type="range"]::-moz-range-thumb {
+    appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: none;
 }
