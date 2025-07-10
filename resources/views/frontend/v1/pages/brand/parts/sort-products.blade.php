@@ -1,21 +1,23 @@
 <span class="sort-label d-none d-md-block">{{__('theme.sort-label')}}</span>
-<div class="sort-options d-none d-md-block">
-    <a href="#" class="sort-option default-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
-    <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
-    <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
-    <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
-    <a href="#" class="sort-option" data-sort="condition">{{__('theme.sort-new')}}</a>
-    <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
-</div>
-<div class="sort-per-page d-none d-md-block">
-    <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
-        <select name="perPage" id="perPage" class="js2-select select-sort-per-page">
-            <option value="24" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 24 ? 'selected': ''}}>24</option>
-            <option value="48" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 48 ? 'selected': ''}}>48</option>
-            <option value="72" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 72 ? 'selected': ''}}>72</option>
-            <option value="96" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 96 ? 'selected': ''}}>96</option>
-        </select>
-    </form>
+<div class="page-sort-block">
+    <div class="sort-options d-none d-md-block">
+        <a href="#" class="sort-option default-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
+        <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
+        <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
+        <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
+        <a href="#" class="sort-option" data-sort="condition">{{__('theme.sort-new')}}</a>
+        <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
+    </div>
+    <div class="sort-per-page d-none d-md-block">
+        <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
+            <select name="perPage" id="perPage" class="js2-select select-sort-per-page">
+                <option value="24" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 24 ? 'selected': ''}}>24</option>
+                <option value="48" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 48 ? 'selected': ''}}>48</option>
+                <option value="72" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 72 ? 'selected': ''}}>72</option>
+                <option value="96" {{request()->has('perPage') && request()->query('perPage') !== null && (int)request()->query('perPage') === 96 ? 'selected': ''}}>96</option>
+            </select>
+        </form>
+    </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
