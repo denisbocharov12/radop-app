@@ -7,8 +7,13 @@
                 <div class="col-12 col-main-content">
                     <div id="main-banner" class="theme-slider">
                         <div class="item">
-                            <a href="{{route('theme.category.index', 23)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_1_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            <a href="{{ route('theme.category.index', 342) }}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('theme.category.index', 61) }}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
                         </div>
                         <div class="item">
@@ -17,13 +22,8 @@
                             </a>
                         </div>
                         <div class="item">
-                            <a href="#">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="#">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            <a href="{{route('theme.category.index', 23)}}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_1_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
                         </div>
                     </div>
