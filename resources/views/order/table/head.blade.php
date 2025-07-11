@@ -53,8 +53,8 @@
                     <select name="filter[city]" class="form-select">
                         <option value="">Все</option>
                         @foreach($cities as $city)
-                            <option value="{{ $city->name }}"
-                                    {{ request('filter.city') == $city->name ? 'selected' : '' }}>
+                            <option value="{{ $city->id }}"
+                                    {{ request('filter.city') == $city->id ? 'selected' : '' }}>
                                 {{ $city->name }}
                             </option>
                         @endforeach
