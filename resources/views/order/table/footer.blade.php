@@ -1,3 +1,3 @@
 <div class="card-inner">
-    {{$orders->links()}}
+    {{$orders->appends(request()->except('page'))->links()}}
 </div><!-- .card-inner -->
