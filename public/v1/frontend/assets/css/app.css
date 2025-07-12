@@ -570,8 +570,6 @@ align-items: center;
 display: flex;
 padding-right: 14px !important;
 text-transform: uppercase;
-line-height: 1.15;
-letter-spacing: 1px;
 }
 header .section-header .row-main .header-menu .header-main-menu ul.menu .item .link-megamenu img {
   width: 22px;
