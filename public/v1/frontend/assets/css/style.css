@@ -2552,21 +2552,20 @@ header .section-header .row-main .header-menu .col-lg{
     position: absolute;
     cursor: pointer;
     color: #0052a6;
-    padding: 6px 3px;
+    padding: 10px 10px;
     background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     z-index: 1;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 .theme-slider .slick-arrow.icon-arrow-radop-right {
-    right: 10px;
-    top: 50%;
-    transform: translate(0, -50%);
+    right: 0;
 }
 .theme-slider .slick-arrow.icon-arrow-radop-left {
-    left: 10px;
-    top: 50%;
-    transform: translate(0, -50%);
+    left: 0;
 }
 .theme-slider .slick-arrow:hover{
     background-color: rgba(255, 255, 255, 0.6);
@@ -2641,7 +2640,7 @@ header .section-header .row-main .header-menu .col-lg{
     height: 28px;
     background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
+    border-radius: 0;
     z-index: 1;
 }
 .catalog-slider .slick-arrow:hover{
@@ -2650,7 +2649,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 .catalog-slider .slick-arrow.next-arrow {
     right: 15px;
-    top: 50%;
+    top: 35%;
     transform: translate(0, -50%);
 }
 
@@ -2659,8 +2658,8 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .catalog-slider .slick-arrow.prev-arrow {
-    left: 15px;
-    top: 50%;
+    left: 17px;
+    top: 35%;
     transform: translate(0, -50%);
 }
 
@@ -5817,9 +5816,9 @@ header .section-header .row-main .header-menu .col-lg{
     z-index: 2;
     opacity: 0.9;
 }
-.product-item-category .product-wrap-main.product-wrap-main-with-sale a.add_to_wishlist{
-    top: 55px;
-}
+/*.product-item-category .product-wrap-main.product-wrap-main-with-sale a.add_to_wishlist{*/
+/*    top: 55px;*/
+/*}*/
 .product-item-category .product-wrap .product-label-s-wrap.product-label-s-wrap-right
 {
     top: 31px;
@@ -10969,7 +10968,7 @@ hr.product-card-item{
     padding: 8px 32px 8px 16px;
 }
 .section-header .row-main .header-search .header-js-sticky .btn-header-catalog-wrap{
-    margin: 0 60px;
+    margin: 0 40px;
 }
 .section-header .row-main #sticky-cart-block .icon-block a.icon-block-link.cart {
     background: none;
@@ -11750,4 +11749,7 @@ input[type="range"]::-moz-range-thumb {
     -moz-appearance: none;
     background: none;
     border: none;
+}
+#sticky-header-logo {
+    margin: 0 0 0 40px;
 }
