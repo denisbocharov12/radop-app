@@ -11751,5 +11751,6 @@ input[type="range"]::-moz-range-thumb {
     border: none;
 }
 #sticky-header-logo {
-    margin: 0 0 0 40px;
+    margin: 0 0 0 30px;
+    padding: 0;
 }
