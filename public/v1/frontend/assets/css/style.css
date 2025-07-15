@@ -2649,7 +2649,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 .catalog-slider .slick-arrow.next-arrow {
     right: 15px;
-    top: 35%;
+    top: 32%;
     transform: translate(0, -50%);
 }
 
@@ -2659,7 +2659,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .catalog-slider .slick-arrow.prev-arrow {
     left: 17px;
-    top: 35%;
+    top: 32%;
     transform: translate(0, -50%);
 }
 
