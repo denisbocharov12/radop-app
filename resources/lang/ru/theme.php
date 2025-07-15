@@ -10,7 +10,7 @@ return array (
     'accounting' => 'Бухгалтерия',
     'activate-account' => 'Активировать аккаунт',
     'add-to-cart' => 'В корзину',
-    'add-to-cart-with-success' => 'успешно добавлен в корзину',
+    'add-to-cart-with-success' => 'добавлен в корзину',
     'add-to-wishlist' => 'Добавить в избранное',
     'address' => 'Адрес',
     'agree-with' => 'Я согласен с',

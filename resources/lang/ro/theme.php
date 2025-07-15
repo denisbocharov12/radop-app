@@ -10,7 +10,7 @@ return array (
     'accounting' => 'Contabilitate',
     'activate-account' => 'Activați contul',
     'add-to-cart' => 'În coș',
-    'add-to-cart-with-success' => 'a fost adăugat cu succes în coș',
+    'add-to-cart-with-success' => 'a fost adăugat în coș',
     'add-to-wishlist' => 'Adăugați la Favorite',
     'address' => 'Adresa',
     'agree-with' => 'Sunt de acord cu',
