@@ -17,6 +17,11 @@
                             </a>
                         </div>
                         <div class="item">
+                            <a href="{{ route('theme.category.index', 330) }}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_paper_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
                             <a href="{{route('theme.category.index', 97)}}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
