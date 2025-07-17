@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\ThemeLoginDataMapper;
 use App\Http\Requests\Theme\User\ThemeUserLoginRequest;
 use App\Models\User;
+use App\Services\Theme\Product\ThemeProductManager;
 use App\Services\Theme\User\ThemeUserManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,8 @@ final class ThemeUserLoginController extends Controller
     public function __construct(
         private readonly ThemeUserManager     $themeUserManager,
         private readonly ThemeLoginDataMapper $themeLoginDataMapper,
-        private readonly ProductRepository    $productRepository
+        private readonly ProductRepository    $productRepository,
+        private readonly ThemeProductManager $themeProductManager,
     )
     {
     }
@@ -50,10 +52,11 @@ final class ThemeUserLoginController extends Controller
                 if ($product === null) {
                     continue;
                 }
+                $price = $this->themeProductManager->getProductTotalSum($product);
                 \Cart::session($userSessionId)->add([
                     'id' => $item->id,
                     'name' => $item->name,
-                    'price' => $item->price,
+                    'price' => $price,
                     'quantity' => $item->quantity,
                     'attributes' => $item->attributes,
                     'associatedModel' => $product,
