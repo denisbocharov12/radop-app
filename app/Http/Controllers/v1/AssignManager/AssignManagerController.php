@@ -45,6 +45,6 @@ class AssignManagerController extends Controller
             'manager_id'=>$manager_id
         ]);
 
-        return redirect()->route('manager.index');
+        return redirect()->route('client.index');
     }
 }
