@@ -15,14 +15,15 @@
                 <div class="product-item-category" style="margin-bottom: 0; border: none;">
                     <div class="product-wrap">
                         <div class="product-wrap-main">
+                            <div class="wrap">
+                                @include('frontend.v1.pages.category.parts.product-category-image')
+                            </div>
                             @include('frontend.v1.pages.product.components.quick-view')
                             @include('frontend.v1.pages.product.components.label')
                         </div>
                     </div>
                 </div>
-                <div class="wrap">
-                    @include('frontend.v1.pages.category.parts.product-category-image')
-                </div>
+
             </div>
             <div class="col-lg-6 col-12">
                 <div class="card-body p-2">
