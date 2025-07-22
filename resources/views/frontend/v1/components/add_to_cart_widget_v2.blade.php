@@ -14,7 +14,7 @@
             </button>
         </div>
         <input
-            id="product-{{$product->id}}-qty"
+{{--            id="product-{{$product->id}}-qty"--}}
             type="number"
             min="{{$product->min_order ?? 1}}"
             max="{{$product->stock}}"

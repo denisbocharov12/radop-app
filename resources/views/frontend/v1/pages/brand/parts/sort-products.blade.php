@@ -1,12 +1,34 @@
-<span class="sort-label d-none d-md-block">{{__('theme.sort-label')}}</span>
+@php
+    $currentSort = request()->query('sort');
+    $sortOptions = [
+        ['key' => 'price', 'label' => __('theme.sort-price-asc')],
+        ['key' => 'price_desc', 'label' => __('theme.sort-price-desc')],
+        ['key' => 'title', 'label' => __('theme.sort-title')],
+        ['key' => 'popular_order', 'label' => __('theme.sort-popular')],
+        ['key' => 'condition', 'label' => __('theme.sort-new')],
+        ['key' => 'stock', 'label' => __('theme.sort-stock')],
+    ];
+    $activeOption = $sortOptions[0];
+    foreach ($sortOptions as $option) {
+        if ($currentSort === $option['key'] || ($currentSort === '-price' && $option['key'] === 'price_desc')) {
+            $activeOption = $option;
+            break;
+        }
+    }
+@endphp
 <div class="page-sort-block">
-    <div class="sort-options d-none d-md-block">
-        <a href="#" class="sort-option default-option" data-sort="price">{{__('theme.sort-price-asc')}}</a>
-        <a href="#" class="sort-option" data-sort="price_desc">{{__('theme.sort-price-desc')}}</a>
-        <a href="#" class="sort-option" data-sort="title">{{__('theme.sort-title')}}</a>
-        <a href="#" class="sort-option" data-sort="popular_order">{{__('theme.sort-popular')}}</a>
-        <a href="#" class="sort-option" data-sort="condition">{{__('theme.sort-new')}}</a>
-        <a href="#" class="sort-option" data-sort="stock">{{__('theme.sort-stock')}}</a>
+    <span class="sort-label d-none d-md-block">{{__('theme.sort-label')}}</span>
+    <div class="sort-dropdown d-none d-md-block">
+        <button type="button" class="sort-dropdown-toggle">
+            <span class="sort-option active">{{$activeOption['label']}}</span>
+        </button>
+        <div class="sort-dropdown-menu">
+            @foreach($sortOptions as $option)
+                @if($option['key'] !== $activeOption['key'])
+                    <a href="#" class="sort-option" data-sort="{{$option['key']}}">{{$option['label']}}</a>
+                @endif
+            @endforeach
+        </div>
     </div>
     <div class="sort-per-page d-none d-md-block">
         <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
@@ -21,44 +43,39 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const sortOptions = document.querySelectorAll('.sort-option');
-        const currentUrl = new URL(window.location.href);
-        const currentSort = currentUrl.searchParams.get('sort');
-
-        function updateUrlWithParams(params) {
-            const url = new URL(window.location.href);
-            for (const [key, value] of Object.entries(params)) {
-                if (value) {
-                    url.searchParams.set(key, value);
-                } else {
-                    url.searchParams.delete(key);
-                }
-            }
-            return url.toString();
+        const dropdown = document.querySelector('.sort-dropdown');
+        const toggle = dropdown.querySelector('.sort-dropdown-toggle');
+        const menu = dropdown.querySelector('.sort-dropdown-menu');
+        const options = menu.querySelectorAll('.sort-option');
+        let opened = false;
+        function openMenu() {
+            menu.style.display = 'block';
+            opened = true;
         }
-
-        function applySort(sort) {
-            const newUrl = updateUrlWithParams({ sort: sort });
-            window.location.href = newUrl;
+        function closeMenu() {
+            menu.style.display = 'none';
+            opened = false;
         }
-
-        sortOptions.forEach(option => {
-            const optionSort = option.getAttribute('data-sort');
-
-            if (currentSort === optionSort || (currentSort === '-price' && optionSort === 'price_desc')) {
-                option.classList.add('active');
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (opened) {
+                closeMenu();
+            } else {
+                openMenu();
             }
-
-            if (currentSort === null) {
-                document.querySelector('.default-option').classList.add('active');
+        });
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                closeMenu();
             }
-
+        });
+        options.forEach(option => {
             option.addEventListener('click', function(e) {
                 e.preventDefault();
-                sortOptions.forEach(opt => opt.classList.remove('active'));
-                this.classList.add('active');
                 const sort = this.getAttribute('data-sort');
-                applySort(sort === 'price_desc' ? '-price' : sort);
+                const url = new URL(window.location.href);
+                url.searchParams.set('sort', sort === 'price_desc' ? '-price' : sort);
+                window.location.href = url.toString();
             });
         });
     });

@@ -516,16 +516,27 @@ $(document).ready(function () {
         $('html, body').animate({scrollTop:$('#'+target).offset().top - 300}, 300, 'linear');
     });
 
-    $('.btn-quantity-product').click(function (){
-        var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
-        var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
-        var productPrice = $(this).parent().parent('.qty-block').find('.product-qty-item').data('price');
-        var packageCount = $(this).parent().parent('.qty-block').find('.product-qty-item').data('package');
+    $('.btn-quantity-product').click(function () {
+        var qtyBlock = $(this).closest('.qty-block');
+        var qtyCount = qtyBlock.find('.product-qty-item').val();
+        var productId = qtyBlock.find('.product-qty-item').data('product-id');
+        var productPrice = qtyBlock.find('.product-qty-item').data('price');
+        var packageCount = qtyBlock.find('.product-qty-item').data('package');
 
-        var changedElement = $('#product-card-summary-'+productId);
-        var result = (qtyCount*productPrice)/packageCount;
+        var result = (qtyCount * productPrice) / packageCount;
+        var formatted = result.toFixed(2).replace('.', ',');
 
-        changedElement.html(result.toFixed(2).replace('.',','));
+        // определяем, в каком контейнере клик
+        let isInTableView = $(this).closest('#productsTableView').length > 0;
+        let isInListView = $(this).closest('#productsListView').length > 0;
+
+        if (isInTableView) {
+            $('#productsTableView .product-card-summary-' + productId).html(formatted);
+        }
+
+        if (isInListView) {
+            $('#productsListView .product-card-summary-' + productId).html(formatted);
+        }
     });
 
     $('.product-qty-item').on('change', function (){
@@ -659,15 +670,29 @@ $(document).ready(function () {
 
     });
 
-    let inputs = $('.theme-toggle-item-content').children('.theme-checkbox');
-
-    inputs.each(function(){
-       if ($(this).is(':checked')) {
-           $(this).parent('.theme-toggle-item-content').css('display', 'flex');
-       }
+    // Для модального окна
+    let inputsModal = $('#filtersModal .theme-toggle-item-content').children('.theme-checkbox');
+    inputsModal.each(function(){
+        if ($(this).is(':checked')) {
+            $(this).parent('.theme-toggle-item-content').css('display', 'flex');
+        }
     });
-});
 
+    // Для ПК фильтра
+    let inputsPC = $('.col-theme-filters .theme-toggle-item-content').children('.theme-checkbox');
+    inputsPC.each(function(){
+        if ($(this).is(':checked')) {
+            $(this).parent('.theme-toggle-item-content').css('display', 'flex');
+        }
+    });
+    // let inputs = $('.theme-toggle-item-content').children('.theme-checkbox');
+    //
+    // inputs.each(function(){
+    //    if ($(this).is(':checked')) {
+    //        $(this).parent('.theme-toggle-item-content').css('display', 'flex');
+    //    }
+    // });
+});
 
 $(document).ready(function(){
 

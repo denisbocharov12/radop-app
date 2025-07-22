@@ -117,7 +117,7 @@ final class ProductRepository
         ;
     }
 
-    public function getAllPopularProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
+    public function getAllPopularProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
         $productIds = $popularProductProfiles->pluck('product_id');
@@ -143,7 +143,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -214,7 +214,7 @@ final class ProductRepository
         ;
     }
 
-    public function getAllNewProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
+    public function getAllNewProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
         $productIds = $newProductProfile->pluck('product_id');
@@ -240,7 +240,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -274,7 +274,7 @@ final class ProductRepository
          ;
     }
 
-    public function getAllDiscountProductsPaginatedWithFiltersAndSort(): LengthAwarePaginator
+    public function getAllDiscountProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
     {
         return QueryBuilder::for(Product::query())
             ->allowedFilters([
@@ -297,7 +297,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate(self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
