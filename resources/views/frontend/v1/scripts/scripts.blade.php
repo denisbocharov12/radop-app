@@ -25,6 +25,7 @@
             },
             beforeSend:function () {
                 $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#add_to_wishlist-list-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
                 $('#add_to_wishlist-quick-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
@@ -34,13 +35,20 @@
                         .removeClass('add-to-wishlist-btn')
                         .addClass('delete-from-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.remove-from-wishlist')}}');
-
+                    $('#add_to_wishlist-list-' + product_id)
+                        .removeClass('add-to-wishlist-btn')
+                        .addClass('delete-from-wishlist-btn')
+                        .html(heartIcon + ' {{__('theme.remove-from-wishlist')}}');
                     $('#add_to_wishlist-quick-' + product_id)
                         .removeClass('add-to-wishlist-btn')
                         .addClass('delete-from-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.remove-from-wishlist')}}');
                 } else {
                     $('#add_to_wishlist-' + product_id)
+                        .removeClass('add-to-wishlist-btn')
+                        .addClass('delete-from-wishlist-btn')
+                        .html(heartIcon);
+                    $('#add_to_wishlist-list-' + product_id)
                         .removeClass('add-to-wishlist-btn')
                         .addClass('delete-from-wishlist-btn')
                         .html(heartIcon);
@@ -83,6 +91,7 @@
             },
             beforeSend:function () {
                 $('#add_to_wishlist-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#add_to_wishlist-list-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
                 $('#add_to_wishlist-quick-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
@@ -92,12 +101,20 @@
                         .removeClass('delete-from-wishlist-btn')
                         .addClass('add-to-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.add-to-wishlist')}}');
+                    $('#add_to_wishlist-list-' + product_id)
+                        .removeClass('delete-from-wishlist-btn')
+                        .addClass('add-to-wishlist-btn')
+                        .html(heartIcon + ' {{__('theme.add-to-wishlist')}}');
                     $('#add_to_wishlist-quick-' + product_id)
                         .removeClass('delete-from-wishlist-btn')
                         .addClass('add-to-wishlist-btn')
                         .html(heartIcon + ' {{__('theme.add-to-wishlist')}}');
                 } else {
                     $('#add_to_wishlist-' + product_id)
+                        .removeClass('delete-from-wishlist-btn')
+                        .addClass('add-to-wishlist-btn')
+                        .html(heartIcon);
+                    $('#add_to_wishlist-list-' + product_id)
                         .removeClass('delete-from-wishlist-btn')
                         .addClass('add-to-wishlist-btn')
                         .html(heartIcon);
@@ -123,11 +140,13 @@
         });
     });
 
-
     $(document).on('click', '.add_to_cart_btn', function (e) {
         e.preventDefault();
-        var product_id = $(this).data('id');
-        var product_qty = $('#product-' + product_id + '-qty').val();
+
+        var $button = $(this);
+        var product_id = $button.data('id');
+        // var product_qty = $('#product-' + product_id + '-qty').val();
+        var product_qty = $button.closest('.qty-add-to-cart').find('input.product-qty-item').val();
         var token = "{{csrf_token()}}";
         var path = "{{route('theme.product.store')}}";
 
@@ -141,10 +160,10 @@
                 _token: token
             },
             beforeSend: function () {
-                $('#add-to-cart-' + product_id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $button.html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
-                $('#add-to-cart-' + product_id).html('{{__('theme.add-to-cart')}}');
+                $button.html('{{__('theme.add-to-cart')}}');
             },
             success: function (response) {
                 if (response['status'] === true) {

@@ -42,7 +42,7 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort();
+        $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request);
         $allNewProducts = $this->productRepository->getAllNewProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
@@ -59,7 +59,7 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort();
+        $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request);
         $allPopularProducts = $this->productRepository->getAllPopularProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
@@ -76,7 +76,7 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
-        $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort();
+        $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request);
         $allSaleProducts = $this->productRepository->getAllDiscountProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);

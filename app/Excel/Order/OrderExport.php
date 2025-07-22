@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Excel\Order;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
-final class OrderExport implements ShouldAutoSize, FromView
+final class OrderExport implements ShouldAutoSize, FromView, WithStyles
 {
     public function __construct(
         private readonly Order $order,
@@ -26,5 +27,14 @@ final class OrderExport implements ShouldAutoSize, FromView
             'order' => $this->order,
             'products' => $products,
         ]);
+    }
+
+    public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+    {
+        $sheet->getStyle('A:Z')
+            ->getAlignment()
+            ->setWrapText(true);
+
+        return [];
     }
 }

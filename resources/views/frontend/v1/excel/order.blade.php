@@ -66,15 +66,15 @@
             <td style="border: 1px solid black; text-align: center" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{{ $product->title }}</td>
             <td style="border: 1px solid black; text-align: center">{{ $item->quantity }}</td>
-            <td style="border: 1px solid black; text-align: right">{{ number_format($item->price, 2, '.', ' ') }}</td>
-            <td style="border: 1px solid black;">{{ $item->price * $item->quantity }}</td>
+            <td style="border: 1px solid black; text-align: right">{{ number_format($item->price, 2, ',', ' ') }}</td>
+            <td style="border: 1px solid black; text-align: right">{{ number_format($item->price * $item->quantity, 2, ',', ' ') }}</td>
         </tr>
     @endforeach
     </tbody>
     <tfoot>
     <tr>
         <td colspan="4" style="border: 1px solid black; text-align: right;" ><strong>Итого</strong></td>
-        <td style="border: 1px solid black; text-align: right"><strong>{{ number_format($order->total, 2, '.', ' ') }}</strong></td>
+        <td style="border: 1px solid black; text-align: right"><strong>{{ number_format($order->total, 2, ',', ' ') }}</strong></td>
     </tr>
     </tfoot>
 </table>
@@ -83,11 +83,22 @@
     <br>
 
     <table style="width: 100%;">
+        <tbody>
         <tr>
             <td>
             <td style="width: 300px; word-wrap: break-word; word-break: break-word;">
-                <strong>Комментарий: </strong>{{ $order->note }}
+                <strong>Комментарий: </strong>
+            </td>
+            <td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>
+            <td style="width: 300px; word-wrap: break-word; word-break: break-word;">
+                {{ $order->note }}
             </td>
         </tr>
+        </tfoot>
     </table>
 @endif

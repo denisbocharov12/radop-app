@@ -3,8 +3,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="sort-block">
+                    <div class="view-mode-switch">
+                        <button id="viewTable" class="btn btn-light me-2 active" type="button"><i class="fa fa-th"></i> Таблица</button>
+                        <button id="viewList" class="btn btn-light" type="button"><i class="fa fa-list"></i> Список</button>
+                    </div>
                     @include('frontend.v1.pages.brand.parts.sort-products')
-                    @include('frontend.v1.pages.brand.parts.export-excel')
                 </div>
             </div>
         </div>
@@ -32,8 +35,11 @@
                             <div class="mobile-sort-option" data-sort="stock">{{ __('theme.sort-stock') }}</div>
                         </div>
                     </div>
-                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
+                    <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.brand.parts.list')
+                    </div>
+                    <div id="productsListView" style="display:none;">
+                        @include('frontend.v1.pages.brand.parts.list-view')
                     </div>
                     <div id="mobile-per-page-block" class="mobile-per-page-block">
                         <div class="mobile-per-page-selected" id="mobilePerPageSelected">{{$products->perPage()}} товаров <span class="arrow">&#9660;</span></div>
@@ -55,3 +61,31 @@
     @include('frontend.v1.pages.brand.parts.brand-filter-modal')
 </section>
 @include('frontend.v1.components.sort-js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnTable = document.getElementById('viewTable');
+        const btnList = document.getElementById('viewList');
+        const tableView = document.getElementById('productsTableView');
+        const listView = document.getElementById('productsListView');
+        function setViewMode(mode) {
+            if (mode === 'list') {
+                tableView.style.display = 'none';
+                listView.style.display = '';
+                btnList.classList.add('active');
+                btnTable.classList.remove('active');
+            } else {
+                tableView.style.display = '';
+                listView.style.display = 'none';
+                btnTable.classList.add('active');
+                btnList.classList.remove('active');
+            }
+            localStorage.setItem('brandViewMode', mode);
+        }
+        btnTable.addEventListener('click', function() { setViewMode('table'); });
+        btnList.addEventListener('click', function() { setViewMode('list'); });
+        const savedMode = localStorage.getItem('brandViewMode');
+        if (savedMode === 'list') {
+            setViewMode('list');
+        }
+    });
+</script>
