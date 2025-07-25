@@ -149,7 +149,7 @@
                 @else
                     <a href="javascript:;" class="sc-btn-checkout sc-btn cart-auth-modal-btn {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
                 @endif
-                <a href="{{route('theme.shop.index')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
+                <a href="{{route('theme.shop.catalog')}}" class="sc-btn-continuie sc-btn">{{__('theme.сontinue-shopping')}}</a>
             </div>
         </div>
     </div>
