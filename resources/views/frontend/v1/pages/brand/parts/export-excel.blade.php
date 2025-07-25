@@ -1,7 +1,7 @@
 <div class="export-excel">
     <a href="{{route('theme.brand.export', $existedBrand->id)}}" class="export-excel-link">
         <span>{{ __('theme.download-catalog') }}</span>
-        <svg width="24px" height="24px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
+        <svg width="36px" height="36px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
                 <linearGradient id="a" x1="4.494" y1="-2092.086" x2="13.832" y2="-2075.914"
@@ -11,7 +11,6 @@
                     <stop offset="1" stop-color="#0b6631"/>
                 </linearGradient>
             </defs>
-{{--            <title>file_type_excel</title>--}}
             <path d="M19.581,15.35,8.512,13.4V27.809A1.192,1.192,0,0,0,9.705,29h19.1A1.192,1.192,0,0,0,30,27.809h0V22.5Z"
                   style="fill:#185c37"/>
             <path d="M19.581,3H9.705A1.192,1.192,0,0,0,8.512,4.191h0V9.5L19.581,16l5.861,1.95L30,16V9.5Z"

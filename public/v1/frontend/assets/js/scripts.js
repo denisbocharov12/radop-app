@@ -1099,3 +1099,68 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     footerObserver.observe(footer);
 });
+// change products list view (table/list)
+document.addEventListener('DOMContentLoaded', function() {
+    const btnTable = document.getElementById('viewTable');
+    const btnList = document.getElementById('viewList');
+    const tableView = document.getElementById('productsTableView');
+    const listView = document.getElementById('productsListView');
+    function setViewMode(mode) {
+        if (mode === 'list') {
+            tableView.style.display = 'none';
+            listView.style.display = '';
+            btnList.classList.add('active');
+            btnTable.classList.remove('active');
+        } else {
+            tableView.style.display = '';
+            listView.style.display = 'none';
+            btnTable.classList.add('active');
+            btnList.classList.remove('active');
+        }
+        localStorage.setItem('brandViewMode', mode);
+    }
+    btnTable.addEventListener('click', function() { setViewMode('table'); });
+    btnList.addEventListener('click', function() { setViewMode('list'); });
+    const savedMode = localStorage.getItem('brandViewMode');
+    if (savedMode === 'list') {
+        setViewMode('list');
+    }
+});
+// open sort options for products pages
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.querySelector('.sort-dropdown');
+    const toggle = dropdown.querySelector('.sort-dropdown-toggle');
+    const menu = dropdown.querySelector('.sort-dropdown-menu');
+    const options = menu.querySelectorAll('.sort-option');
+    let opened = false;
+    function openMenu() {
+        menu.style.display = 'block';
+        opened = true;
+    }
+    function closeMenu() {
+        menu.style.display = 'none';
+        opened = false;
+    }
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (opened) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            closeMenu();
+        }
+    });
+    options.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sort = this.getAttribute('data-sort');
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', sort === 'price_desc' ? '-price' : sort);
+            window.location.href = url.toString();
+        });
+    });
+});

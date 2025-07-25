@@ -83,6 +83,6 @@
         </p>
     @endif
 <div class="bottom-shopping-cart">
-    <a href="{{route('theme.shop.index')}}" class="btn-shopping-cart ">{{__('theme.сontinue-shopping')}}</a>
+    <a href="{{route('theme.shop.catalog')}}" class="btn-shopping-cart ">{{__('theme.сontinue-shopping')}}</a>
     <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
 </div> 

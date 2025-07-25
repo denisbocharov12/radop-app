@@ -109,13 +109,15 @@
 }
 
 .product_item_article {
-    color: #555;
+    color: #000;
     font-size: 12px;
-    font-weight: 500;
     padding: 3px;
-    background-color: #ffea98;
     display: inline-block;
     line-height: 1;
+    border: 1px solid #ffd100;
+}
+.product_item_article span{
+    color: #555;
 }
 
 .product-card-summary{

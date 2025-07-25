@@ -45,7 +45,7 @@
                                             </h3>
                                         </div>
                                         <div class="product-item-article-wrap">
-                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                            <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
@@ -111,7 +111,7 @@
                                             </h3>
                                         </div>
                                         <div class="product-item-article-wrap">
-                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                            <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">
@@ -176,7 +176,7 @@
                                             </h3>
                                         </div>
                                         <div class="product-item-article-wrap">
-                                            <h3 class="product_item_article">{{__('theme.code')}}: {{$product->onec_id}}</h3>
+                                            <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
                                         </div>
                                     </div>
                                     <div class="add_to_cart_wrap">

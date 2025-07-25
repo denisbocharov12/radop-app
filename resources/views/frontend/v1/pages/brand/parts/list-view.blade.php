@@ -19,6 +19,17 @@
                                 @include('frontend.v1.pages.category.parts.product-category-image')
                             </div>
                             @include('frontend.v1.pages.product.components.quick-view')
+                            @if(app('wishlist')->get($product->id) !== null)
+                                <a href="javascript:void(0);" id="add_to_wishlist-list-{{$product->id}}" data-id="{{$product->id}}"
+                                   data-qty="1" class="add_to_wishlist delete-from-wishlist-btn" tabindex="0" data-has-text="false">
+                                    <i class="fa fa-heart" style="color: red"></i>
+                                </a>
+                            @else
+                                <a href="javascript:void(0);" id="add_to_wishlist-list-{{$product->id}}" data-id="{{$product->id}}"
+                                   data-qty="1" class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
+                                    <i class="fa fa-heart"></i>
+                                </a>
+                            @endif
                             @include('frontend.v1.pages.product.components.label')
                         </div>
                     </div>
@@ -35,9 +46,9 @@
                         </div>
                     </div>
                     <div class="product-item-code-wrap">
-                        <h3 class="product_item_article">@lang('theme.code'): {{$product->onec_id}}</h3>
+                        <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
                         @if($product->shtrih_code)
-                            <h3 class="product_item_barcode">@lang('theme.barcode'): {{$product->shtrih_code}}</h3>
+                            <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> {{$product->shtrih_code}}</h3>
                         @endif
                     </div>
                     <div class="product-item-details">
@@ -78,17 +89,6 @@
                         @endif
                     </span>
                     </div>
-                    @if(app('wishlist')->get($product->id) !== null)
-                        <a href="javascript:void(0);" id="add_to_wishlist-list-{{$product->id}}" data-id="{{$product->id}}"
-                           data-qty="1" class="add_to_wishlist delete-from-wishlist-btn" tabindex="0" data-has-text="false">
-                            <i class="fa fa-heart" style="color: red"></i>
-                        </a>
-                    @else
-                        <a href="javascript:void(0);" id="add_to_wishlist-list-{{$product->id}}" data-id="{{$product->id}}"
-                           data-qty="1" class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
-                            <i class="fa fa-heart"></i>
-                        </a>
-                    @endif
                 </div>
                 <div class="product-item-category" style="margin-bottom: 0; padding: 0">
                     <div class="add_to_cart_wrap" style="margin: 0;">

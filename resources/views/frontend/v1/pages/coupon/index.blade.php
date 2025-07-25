@@ -11,7 +11,7 @@
                         @if($user->sale === null || $user->sale === 0 || $user->sale === 0.0)
                             <div class="no-coupons text-center">
                                 <p>{{ __('theme.no-my-sale') }}</p>
-                                <a href="{{ route('theme.shop.index') }}" class="btn btn-primary mt-3">{{ __('theme.go-to-catalog') }}</a>
+                                <a href="{{ route('theme.shop.catalog') }}" class="btn btn-primary mt-3">{{ __('theme.go-to-catalog') }}</a>
                             </div>
                         @else
                             <li class="coupons__item coupon">
