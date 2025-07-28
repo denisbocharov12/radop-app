@@ -518,13 +518,13 @@ $(document).ready(function () {
     $('.btn-quantity-product').click(function () {
         var qtyBlock = $(this).closest('.qty-block');
         var input = qtyBlock.find('.product-qty-item');
-        
+
         if ($(this).hasClass('minus')) {
             input[0].stepDown();
         } else if ($(this).hasClass('plus')) {
             input[0].stepUp();
         }
-        
+
         var qtyCount = input.val();
         var productId = input.data('product-id');
         var productPrice = input.data('price');
@@ -698,6 +698,7 @@ $(document).ready(function () {
 
     // Обработчик для ПК версии
     $('.col-theme-filters .theme-toggle-list li .theme-toggle-item-title').click(function () {
+    $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
 
         var content = $(this).next('.theme-toggle-item-content');
 
