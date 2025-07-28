@@ -68,7 +68,7 @@
                                             name="filter[attribute][{{$attribute->attribute_onec_id}}][]"
                                             value="{{ str_replace(',', '.', $attribute->value) }}"
                                     >
-                                    <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                    <label for="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}">{{$attribute->value}}</label>
                                 </div>
                             @endforeach
                         </div>

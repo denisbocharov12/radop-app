@@ -696,7 +696,8 @@ $(document).ready(function () {
         }
     });
 
-    $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
+    // Обработчик для ПК версии
+    $('.col-theme-filters .theme-toggle-list li .theme-toggle-item-title').click(function () {
 
         var content = $(this).next('.theme-toggle-item-content');
 
@@ -710,8 +711,23 @@ $(document).ready(function () {
 
     });
 
-    // Для модального окна
-    let inputsModal = $('#filtersModal .theme-toggle-item-content').children('.theme-checkbox');
+    // Обработчик для модального окна (работает для всех модальных окон: brand, category, shop)
+    $('#filtersModal .col-theme-filters-modal .theme-toggle-list li .theme-toggle-item-title').click(function () {
+
+        var content = $(this).next('.theme-toggle-item-content');
+
+        if (content.is(':hidden')) {
+            content.slideDown('0').css('display', 'flex');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
+        } else {
+            content.slideUp('0');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(0deg)');
+        }
+
+    });
+
+    // Для модального окна (работает для всех модальных окон: brand, category, shop)
+    let inputsModal = $('#filtersModal .col-theme-filters-modal .theme-toggle-item-content').children('.theme-checkbox');
     inputsModal.each(function(){
         if ($(this).is(':checked')) {
             $(this).parent('.theme-toggle-item-content').css('display', 'flex');
@@ -736,16 +752,14 @@ $(document).ready(function () {
 
 $(document).ready(function(){
 
-    const rangevalue =
-        document.querySelector(".slider .progress");
-    const rangeInputvalue =
-        document.querySelectorAll(".range-input input");
+    // Range slider для ПК версии (вне модального окна)
+    const pcContainer = document.querySelector(".col-theme-filters");
+    if (pcContainer) {
+        const rangevalue = pcContainer.querySelector(".slider .progress");
+        const rangeInputvalue = pcContainer.querySelectorAll(".range-input input");
+        const priceInputvalue = pcContainer.querySelectorAll(".price-input input");
 
-    let priceGap = 1;
-
-
-    const priceInputvalue =
-        document.querySelectorAll(".price-input input");
+        let priceGap = 1;
 
 
     for (let i = 0; i < priceInputvalue.length; i++) {
@@ -829,6 +843,7 @@ $(document).ready(function(){
                     `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
             }
         });
+    }
     }
 });
 
