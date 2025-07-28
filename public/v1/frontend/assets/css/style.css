@@ -6482,7 +6482,7 @@ hr.product-card-item{
     font-weight: 400;
 }
 .product-mini-brand-wrap a span.brand-text{
-    color: #223fd9;
+    color: #0990d9;
     display: flex;
     align-items: center;
     font-size: 14px;
@@ -8759,7 +8759,7 @@ hr.product-card-item{
     color: #252525;
 }
 .product-list-mini-brand-wrap a span.brand-text{
-    color: #223fd9;
+    color: #0990d9;
     display: flex;
     align-items: center;
     font-size: 12px;
@@ -11744,11 +11744,12 @@ body.modal-open {
     justify-content: flex-end;
 }
 .export-excel .export-excel-link{
-    color: #000;
+    color: #0990d9;
+    font-size: 14px;
 }
 
-.export-excel .export-excel-link span:hover{
-    text-decoration: underline;
+.export-excel .export-excel-link span{
+    border-bottom: .1em dotted;
 }
 
 .page-sort-block {
