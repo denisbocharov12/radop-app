@@ -698,7 +698,6 @@ $(document).ready(function () {
 
     // Обработчик для ПК версии
     $('.col-theme-filters .theme-toggle-list li .theme-toggle-item-title').click(function () {
-    $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
 
         var content = $(this).next('.theme-toggle-item-content');
 
