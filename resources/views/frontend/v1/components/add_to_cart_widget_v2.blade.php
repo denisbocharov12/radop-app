@@ -4,14 +4,13 @@
 <div class="qty-add-to-cart qty-add-to-cart-product-card">
     <div class="sc-product-qty qty-block">
         <div class="input-group-btn">
-            <button
-                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                class="sc-product-decrement btn-quantity-product minus"
-                type="button"
-                id="button-minus"
-            >
-                -
-            </button>
+                    <button
+            class="sc-product-decrement btn-quantity-product minus"
+            type="button"
+            id="button-minus"
+        >
+            -
+        </button>
         </div>
         <input
 {{--            id="product-{{$product->id}}-qty"--}}
@@ -26,51 +25,18 @@
             data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product)}}"
             data-package="1"
             class="product-qty-item"
-            oninput="handleInput(this)"
-            onblur="handleBlur(this)"
         />
         <div class="input-group-btn">
-            <button
-                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                class="sc-product-increment btn-quantity-product plus"
-                type="button"
-                id="button-plus"
-            >
-                +
-            </button>
+                    <button
+            class="sc-product-increment btn-quantity-product plus"
+            type="button"
+            id="button-plus"
+        >
+            +
+        </button>
         </div>
     </div>
 
-    <script>
-        function handleInput(input) {
-            if (input.value !== '' && input.max !== '' && Number(input.value) > Number(input.max)) {
-                input.value = input.max;
-            }
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-        }
 
-        function handleBlur(input) {
-            if (input.value === '') {
-                input.value = input.min;
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-        }
-
-        function incrementQuantity(button, packageSize) {
-            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-            var newValue = parseInt(input.value) + packageSize;
-            if (newValue <= parseInt(input.max)) {
-                input.value = newValue;
-            }
-        }
-
-        function decrementQuantity(button, packageSize) {
-            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-            var newValue = parseInt(input.value) - packageSize;
-            if (newValue >= parseInt(input.min)) {
-                input.value = newValue;
-            }
-        }
-    </script>
     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}" class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
 </div>

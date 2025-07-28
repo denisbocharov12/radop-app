@@ -1,5 +1,4 @@
-<form action="{{ url()->current() }}" method="GET" id="filterForm">
-    <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
+<form action="{{route('theme.shop.index')}}" method="GET">
     <div class="theme-wg-wrap">
         @if(!empty($attributes))
             <ul class="theme-toggle-list">
@@ -57,23 +56,23 @@
                             <p class="theme-widget-title">{{$key}}</p>
                         </div>
                         @php
-                        $attributeValues = collect($attributeValues)->map(function($attribute) {
+                            $attributeValues = collect($attributeValues)->map(function($attribute) {
                                 return \App\Models\AttributeValue::find($attribute->id);
                             })->sortBy('value');
 
-                        $activeStyle = 'display: none';
+                            $activeStyle = 'display: none';
 
-                        foreach ($attributeValues as $attribute) {
-                            if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
-                                $activeStyle = 'display:flex';
+                            foreach ($attributeValues as $attribute) {
+                                if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
+                                    $activeStyle = 'display:flex';
+                                }
                             }
-                        }
                         @endphp
                         <div class="theme-toggle-item-content" style="{{$activeStyle}}">
                             @foreach($attributeValues as $attribute)
                                 <div class="col-6">
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
-                                    <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : ''}} id="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
+                                    <label for="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}">{{$attribute->value}}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -87,8 +86,8 @@
                     <div class="theme-toggle-item-content">
                         @foreach($brands as $brand)
                             <div class="col-6">
-                                <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
-                                <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>
+                                <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="mobile-brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
+                                <label for="mobile-brand-{{$brand->onec_id}}">{{$brand->title}}</label>
                             </div>
                         @endforeach
                     </div>
@@ -97,4 +96,4 @@
         @endif
     </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
-</form>
+</form> 

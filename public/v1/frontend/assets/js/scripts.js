@@ -32,7 +32,6 @@ $('a.link-megamenu').hoverDelay({
     }
 });
 
-
 $('main').click(function (){
     $('.megamenu-wrap').removeClass('open');
     $('a.link-megamenu').removeClass('active');
@@ -518,10 +517,18 @@ $(document).ready(function () {
 
     $('.btn-quantity-product').click(function () {
         var qtyBlock = $(this).closest('.qty-block');
-        var qtyCount = qtyBlock.find('.product-qty-item').val();
-        var productId = qtyBlock.find('.product-qty-item').data('product-id');
-        var productPrice = qtyBlock.find('.product-qty-item').data('price');
-        var packageCount = qtyBlock.find('.product-qty-item').data('package');
+        var input = qtyBlock.find('.product-qty-item');
+
+        if ($(this).hasClass('minus')) {
+            input[0].stepDown();
+        } else if ($(this).hasClass('plus')) {
+            input[0].stepUp();
+        }
+
+        var qtyCount = input.val();
+        var productId = input.data('product-id');
+        var productPrice = input.data('price');
+        var packageCount = input.data('package');
 
         var result = (qtyCount * productPrice) / packageCount;
         var formatted = result.toFixed(2).replace('.', ',');
@@ -529,6 +536,7 @@ $(document).ready(function () {
         // определяем, в каком контейнере клик
         let isInTableView = $(this).closest('#productsTableView').length > 0;
         let isInListView = $(this).closest('#productsListView').length > 0;
+        let isInHomePage = $(this).closest('.section-home').length > 0;
 
         if (isInTableView) {
             $('#productsTableView .product-card-summary-' + productId).html(formatted);
@@ -537,18 +545,50 @@ $(document).ready(function () {
         if (isInListView) {
             $('#productsListView .product-card-summary-' + productId).html(formatted);
         }
+
+        if (isInHomePage) {
+            $('.section-home .product-card-summary-' + productId).html(formatted);
+        }
     });
 
-    $('.product-qty-item').on('change', function (){
+    $('.product-qty-item').on('change input', function (){
         var qtyCount = $(this).val();
         var productId = $(this).data('product-id');
         var productPrice = $(this).data('price');
         var packageCount = $(this).data('package');
 
-        var changedElement = $('#product-card-summary-'+productId);
-        var result = (qtyCount*productPrice)/packageCount;
+        // Проверяем максимальное значение
+        if (qtyCount !== '' && $(this).attr('max') !== '' && Number(qtyCount) > Number($(this).attr('max'))) {
+            $(this).val($(this).attr('max'));
+            qtyCount = $(this).attr('max');
+        }
 
-        changedElement.html(result.toFixed(2).replace('.',','));
+        var result = (qtyCount*productPrice)/packageCount;
+        var formatted = result.toFixed(2).replace('.',',');
+
+        // определяем, в каком контейнере находится input
+        let isInTableView = $(this).closest('#productsTableView').length > 0;
+        let isInListView = $(this).closest('#productsListView').length > 0;
+        let isInHomePage = $(this).closest('.section-home').length > 0;
+
+        if (isInTableView) {
+            $('#productsTableView .product-card-summary-' + productId).html(formatted);
+        }
+
+        if (isInListView) {
+            $('#productsListView .product-card-summary-' + productId).html(formatted);
+        }
+
+        if (isInHomePage) {
+            $('.section-home .product-card-summary-' + productId).html(formatted);
+        }
+    });
+
+    $('.product-qty-item').on('blur', function (){
+        if ($(this).val() === '') {
+            $(this).val($(this).attr('min'));
+            $(this).trigger('change');
+        }
     });
 
   $(".filter-select").select2();
@@ -632,6 +672,32 @@ $(document).ready(function () {
         }
     });
 
+    Fancybox.bind('[data-fancybox^="product-gallery-"]', {
+        hash : false,
+        Carousel : {
+            infinite: false,
+        },
+        Thumbs : {
+            autoStart: true,
+            axis: "x"
+        },
+        Toolbar : {
+            display: [
+                { id: "prev", position: "center" },
+                { id: "counter", position: "center" },
+                { id: "next", position: "center" },
+                "zoom",
+                "slideshow",
+                "fullscreen",
+                "download",
+                "thumbs",
+                "close"
+            ]
+        }
+    });
+
+    // Обработчик для ПК версии
+    $('.col-theme-filters .theme-toggle-list li .theme-toggle-item-title').click(function () {
     $('.theme-toggle-list li .theme-toggle-item-title').click(function () {
 
         var content = $(this).next('.theme-toggle-item-content');
@@ -646,8 +712,23 @@ $(document).ready(function () {
 
     });
 
-    // Для модального окна
-    let inputsModal = $('#filtersModal .theme-toggle-item-content').children('.theme-checkbox');
+    // Обработчик для модального окна (работает для всех модальных окон: brand, category, shop)
+    $('#filtersModal .col-theme-filters-modal .theme-toggle-list li .theme-toggle-item-title').click(function () {
+
+        var content = $(this).next('.theme-toggle-item-content');
+
+        if (content.is(':hidden')) {
+            content.slideDown('0').css('display', 'flex');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
+        } else {
+            content.slideUp('0');
+            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(0deg)');
+        }
+
+    });
+
+    // Для модального окна (работает для всех модальных окон: brand, category, shop)
+    let inputsModal = $('#filtersModal .col-theme-filters-modal .theme-toggle-item-content').children('.theme-checkbox');
     inputsModal.each(function(){
         if ($(this).is(':checked')) {
             $(this).parent('.theme-toggle-item-content').css('display', 'flex');
@@ -672,16 +753,14 @@ $(document).ready(function () {
 
 $(document).ready(function(){
 
-    const rangevalue =
-        document.querySelector(".slider .progress");
-    const rangeInputvalue =
-        document.querySelectorAll(".range-input input");
+    // Range slider для ПК версии (вне модального окна)
+    const pcContainer = document.querySelector(".col-theme-filters");
+    if (pcContainer) {
+        const rangevalue = pcContainer.querySelector(".slider .progress");
+        const rangeInputvalue = pcContainer.querySelectorAll(".range-input input");
+        const priceInputvalue = pcContainer.querySelectorAll(".price-input input");
 
-    let priceGap = 1;
-
-
-    const priceInputvalue =
-        document.querySelectorAll(".price-input input");
+        let priceGap = 1;
 
 
     for (let i = 0; i < priceInputvalue.length; i++) {
@@ -765,6 +844,7 @@ $(document).ready(function(){
                     `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
             }
         });
+    }
     }
 });
 

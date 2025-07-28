@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="row row-category-list modal-body">
-                <div class="col-theme-filters">
+                <div class="col-theme-filters-modal">
                     @include('frontend.v1.pages.brand.parts.brand-filter-form-modal')
                 </div>
             </div>

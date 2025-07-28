@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Models\AttributeValue;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
+use App\Exports\BrandExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeShopController extends Controller
 {
@@ -16,8 +17,7 @@ final class ThemeShopController extends Controller
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
         private readonly AttributeRepository $attributeRepository,
-    )
-    {
+    ) {
     }
 
     public function index(Request $request)
@@ -92,5 +92,23 @@ final class ThemeShopController extends Controller
     public function catalog(Request $request)
     {
         return view('frontend.v1.pages.shop.catalog');
+    }
+
+    public function exportNewProducts()
+    {
+        $products = $this->productRepository->getAllNewProducts();
+        return Excel::download(new BrandExport($products), 'radop_new_products.xlsx');
+    }
+
+    public function exportPopularProducts()
+    {
+        $products = $this->productRepository->getAllPopularProducts();
+        return Excel::download(new BrandExport($products), 'radop_popular_products.xlsx');
+    }
+
+    public function exportSaleProducts()
+    {
+        $products = $this->productRepository->getAllDiscountProducts();
+        return Excel::download(new BrandExport($products), 'radop_sale_products.xlsx');
     }
 }

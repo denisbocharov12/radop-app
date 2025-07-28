@@ -1,7 +1,7 @@
 <section class="section-standart section-breadcrumb">
     <div class="container">
-        <div class="row">
-            <div class="col-12 col-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-6 col-sm-7 col-md-9 col-breadcrumb">
                 <nav>
                     <ol class="breadcrumb text-white d-none d-md-flex">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
@@ -22,6 +22,9 @@
                         </li>
                     </ol>
                 </nav>
+            </div>
+            <div class="col-6 col-sm-5 col-md-3">
+                @include('frontend.v1.pages.shop.parts.export-excel')
             </div>
         </div>
     </div>

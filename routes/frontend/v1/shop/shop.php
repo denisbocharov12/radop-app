@@ -10,11 +10,20 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/new', [ThemeShopController::class, 'newProducts'])
         ->name('new')
     ;
+    Route::get('/new/export', [ThemeShopController::class, 'exportNewProducts'])
+        ->name('new.export')
+    ;
     Route::get('/popular', [ThemeShopController::class, 'popularProducts'])
         ->name('popular')
     ;
+    Route::get('/popular/export', [ThemeShopController::class, 'exportPopularProducts'])
+        ->name('popular.export')
+    ;
     Route::get('/sale', [ThemeShopController::class, 'saleProducts'])
         ->name('sale')
+    ;
+    Route::get('/sale/export', [ThemeShopController::class, 'exportSaleProducts'])
+        ->name('sale.export')
     ;
     Route::get('/catalog', [ThemeShopController::class, 'catalog'])
         ->name('catalog')
