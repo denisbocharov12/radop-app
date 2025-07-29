@@ -69,7 +69,7 @@ final class OrderReportExport implements FromCollection, WithHeadings, WithMappi
             $order->fio,
             $order->created_at->format('d.m.Y'),
             $order->cityModel?->name ?? $order->city,
-            $order->filial?->name ?? '-',
+            $order->filial?->address ?? '-',
             number_format((float)$order->total, 2, '.', ' '),
         ];
     }
