@@ -12,13 +12,14 @@ use Spatie\QueryBuilder\AllowedSort;
 use Carbon\Carbon;
 
 
-class OrderRepository
+final class OrderRepository
 {
     private const COUNT_OF_PAGINATION = 20;
 
     public function getAllPaginatedWithFiltersAndSorts(): LengthAwarePaginator
     {
         $query = Order::query()
+            ->with(['orderHistory' => function($q) { $q->latest()->limit(1); }])
             ->leftJoin('users', 'orders.user_id', '=', 'users.id')
             ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
             ->leftJoin('users as managers', 'orders.manager_id', '=', 'managers.id')
@@ -140,5 +141,27 @@ class OrderRepository
     public function getOrdersByIds(UpdateOrderStatusesData $data): Collection
     {
         return Order::query()->whereIn('id', $data->order_ids)->get();
+    }
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param int|null $userId
+     * @return Collection
+     */
+    public function getOrdersForReport(string $startDate, string $endDate, ?int $userId = null): Collection
+    {
+        $query = Order::query()
+            ->with(['cityModel', 'filial'])
+            ->whereBetween('created_at', [
+                Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay(),
+                Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay(),
+            ]);
+
+        if ($userId !== null) {
+            $query->where('manager_id', $userId);
+        }
+
+        return $query->orderBy('created_at', 'desc')->get();
     }
 }
