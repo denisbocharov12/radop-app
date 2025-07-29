@@ -35,7 +35,7 @@ final class OrderReportManager
                 'client' => $order->fio,
                 'date' => $order->created_at->format('d.m.Y'),
                 'city' => $order->cityModel?->name ?? $order->city,
-                'filial' => $order->filial?->name ?? '-',
+                'filial' => $order->filial?->address ?? '-',
                 'sum' => $order->total,
             ];
 
