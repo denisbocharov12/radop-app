@@ -154,9 +154,9 @@ class ClientController extends Controller
     public function restore(Request $request)
     {
         try {
-            $this->clientManager->restore((int)$request->input('production_id'));
+            $this->clientManager->restore((int)$request->input('user_id'));
 
-            return redirect()->route('client.index');
+            return redirect()->route('client.index')->with('success', 'Пользователь успешно восстановлен');
         } catch (UserNotFoundException $e) {
             throw new UserNotFoundValidationException();
         }

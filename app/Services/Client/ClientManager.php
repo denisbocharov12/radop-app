@@ -150,7 +150,7 @@ class ClientManager
 
     public function restore(int $userId): void
     {
-        $user = $this->userRepository->getById($userId);
+        $user = $this->userRepository->getByWithTrashedId($userId);
 
         if ($user === null) {
             throw new UserNotFoundException();
