@@ -273,6 +273,12 @@
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
+                        <a href="{{route('reports.orders.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-table-view"></em></span>
+                            <span class="nk-menu-text">Отчеты</span>
+                        </a>
+                    </li>
+                    <li class="nk-menu-item has-sub">
                         @hasrole('admin')
                         <a href="{{route('languages.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><em class="icon ni ni-text"></em></span>
