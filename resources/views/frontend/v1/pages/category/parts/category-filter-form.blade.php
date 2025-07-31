@@ -5,7 +5,7 @@
             <ul class="theme-toggle-list">
                 <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
-                        <i class="icon-arrow-filter-radop-left"></i>
+                        <i class="icon-arrow-filter-radop-left" style="transform: rotate(90deg);"></i>
                         <p class="theme-widget-title">
                             {{ __('theme.by-price') }}
                         </p>
@@ -15,10 +15,10 @@
                         $queryPriceFrom = $query['price']['from'] ?? null;
                         $queryPriceTo = $query['price']['to'] ?? null;
 
-                        $activePriceStyle = 'display: none';
-                        if (is_array($queryPrice) && ($queryPriceFrom || $queryPriceTo)) {
-                            $activePriceStyle = 'display: flex';
-                        }
+                        $activePriceStyle = 'display: flex';
+//                        if (is_array($queryPrice) && ($queryPriceFrom || $queryPriceTo)) {
+//                            $activePriceStyle = 'display: flex';
+//                        }
                     @endphp
                     <div class="theme-toggle-item-content" style="{{ $activePriceStyle }}; flex-direction: column; gap: 10px;">
                         <div class="filter-widget-wrap">
@@ -39,12 +39,12 @@
                             <div class="price-input">
                                 <div class="field">
                                     <span>{{ __('theme.min') }}</span>
-                                    <input type="number" class="input-min" name="filter[price][from]" value="{{ $queryPriceFrom ?? 0 }}">
+                                    <input type="number" class="input-min" name="filter[price][from]">
                                 </div>
                                 <div class="separator"></div>
                                 <div class="field">
                                     <span>{{ __('theme.max') }}</span>
-                                    <input type="number" class="input-max" name="filter[price][to]" value="{{ $queryPriceTo ?? 1000 }}">
+                                    <input type="number" class="input-max" name="filter[price][to]">
                                 </div>
                             </div>
                         </div>

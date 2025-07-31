@@ -1,7 +1,7 @@
 <section class="section-standart section-breadcrumb">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-6 col-sm-7 col-md-9 col-breadcrumb">
+            <div class="col-12 col-breadcrumb d-none d-md-flex mb-4">
                 <nav>
                     <ol class="breadcrumb text-white d-none d-md-flex">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
@@ -10,7 +10,25 @@
                             @include('frontend.v1.pages.category.parts.breadcrumb-item', $item)
                         @endforeach
                     </ol>
-                    <ol class="breadcrumb text-white d-flex d-md-none">
+{{--                    <ol class="breadcrumb text-white d-flex d-md-none">--}}
+{{--                        @php--}}
+{{--                            $all = collect([['url' => route('theme.home'), 'name' => __('theme.home')], ['url' => route('theme.shop.catalog'), 'name' => __('theme.shop')]])--}}
+{{--                                ->merge($breadcrumbs ?? []);--}}
+{{--                            $last = $all->last();--}}
+{{--                        @endphp--}}
+{{--                        <li class="breadcrumb-item active fw-bold" style="color: #000000" aria-current="page">--}}
+{{--                            @if(isset($last['url']))--}}
+{{--                                <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['name']}}</a>--}}
+{{--                            @else--}}
+{{--                                {{$last['name'] ?? $last->name ?? ''}}--}}
+{{--                            @endif--}}
+{{--                        </li>--}}
+{{--                    </ol>--}}
+                </nav>
+            </div>
+            <div class="col-6 col-sm-7 col-md-9">
+                <nav>
+                    <ol class="breadcrumb text-white d-flex mb-0">
                         @php
                             $all = collect([['url' => route('theme.home'), 'name' => __('theme.home')], ['url' => route('theme.shop.catalog'), 'name' => __('theme.shop')]])
                                 ->merge($breadcrumbs ?? []);

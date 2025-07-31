@@ -145,8 +145,13 @@
 
         var $button = $(this);
         var product_id = $button.data('id');
-        // var product_qty = $('#product-' + product_id + '-qty').val();
-        var product_qty = $button.closest('.qty-add-to-cart').find('input.product-qty-item').val();
+        var $qtyInput = $button.closest('.qty-add-to-cart').find('input.product-qty-item');
+        var product_qty = parseInt($qtyInput.val());
+        var min_order = parseInt($qtyInput.attr('min')) || 1;
+        if (product_qty % min_order !== 0) {
+            toastr["warning"]('{{ __('theme.min-order-text') }} ' + min_order);
+            return false;
+        }
         var token = "{{csrf_token()}}";
         var path = "{{route('theme.product.store')}}";
 
@@ -219,6 +224,9 @@
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr["error"](response['msg'])
+                }
+                if(response['status'] === 'min_order_error') {
+                    toastr["warning"](response['msg'])
                 }
             }
         });
@@ -293,6 +301,9 @@
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr["error"](response['msg'])
+                }
+                if(response['status'] === 'min_order_error') {
+                    toastr["warning"](response['msg'])
                 }
             }
         });
@@ -524,6 +535,26 @@
                         "newestOnTop": false,
                         "progressBar": false,
                         "positionClass": "toast-bottom-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    toastr["warning"](response['msg'])
+                }
+                if(response['status'] === 'min_order_error') {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
                         "preventDuplicates": false,
                         "onclick": null,
                         "showDuration": "300",

@@ -31,6 +31,7 @@ final class ProductRepository
 
     private const COUNT_OF_PAGINATION = 24;
     private const COUNT_OF_PRODUCTS_FOR_FRONTEND = 10;
+    private const PRODUCTS_FOR_HOME_PAGE_SLIDER = 50;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
     {
@@ -112,7 +113,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->orderBy('popular_order')
-            ->take(15)
+            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
             ->get()
         ;
     }
@@ -209,7 +210,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->orderBy('new_order')
-            ->take(30)
+            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
             ->get()
         ;
     }
@@ -269,7 +270,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->orderBy('sale_order')
-            ->take(15)
+            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
             ->get()
          ;
     }
