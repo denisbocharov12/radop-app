@@ -395,4 +395,6 @@ return array (
     'view' => 'Vizualizare',
     'view-list' => 'Listă',
     'view-table' => 'Tabel',
+    'min-order' => 'Cantitatea minimă pentru comandă:',
+    'min-order-text' => 'Acest produs poate fi achiziționat numai în cantități multiple ale comenzii minime:',
 );

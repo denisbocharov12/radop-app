@@ -50,7 +50,8 @@ final class ThemeCheckoutController
             throw new UserIsNotAuthenticatedException();
         }
 
-        $paymentMethods = $this->orderPaymentMethods->getAll();
+        $userType = $user->type->key_name;
+        $paymentMethods = $this->orderPaymentMethods->getAllByUserType($userType);
         $popularProducts = $this->productRepository->getAllPopularProducts();
         $discountProducts = $this->productRepository->getAllDiscountProducts();
         $featuredProducts = $this->productRepository->getAllFeaturedProducts();

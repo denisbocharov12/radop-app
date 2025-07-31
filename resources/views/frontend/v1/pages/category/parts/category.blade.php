@@ -7,8 +7,8 @@
                     @include('frontend.v1.components.sort-products')
                     <div class="view-mode-switch">
                         <span>{{ __('theme.view') }}:</span>
-                        <button id="viewTable" class="btn btn-light me-2 active" type="button"><i class="fa fa-th"></i> {{ __('theme.view-table') }}</button>
-                        <button id="viewList" class="btn btn-light" type="button"><i class="fa fa-list"></i> {{ __('theme.view-list') }}</button>
+                        <button id="viewTable" class="btn me-2 active" type="button"><i class="fa fa-th"></i> {{ __('theme.view-table') }}</button>
+                        <button id="viewList" class="btn" type="button"><i class="fa fa-list"></i> {{ __('theme.view-list') }}</button>
                     </div>
                     <div class="sort-per-page d-none d-md-block">
                         <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.category.index', $existedCategory->onec_id, ['query' => request()->query()])}}" method="GET">

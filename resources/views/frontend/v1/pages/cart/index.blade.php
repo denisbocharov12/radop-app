@@ -45,6 +45,13 @@
         $(document).on('click', '.btn-quantity-cart', function (e) {
             e.preventDefault();
             var rowId = $(this).parent('.input-group-btn').parent('.sc-product-qty').find('input[type=number]').data("id");
+            var $qtyInput = $('#qty-item-cart-' + rowId);
+            var product_qty = parseInt($qtyInput.val());
+            var min_order = parseInt($qtyInput.attr('min')) || 1;
+            if (product_qty % min_order !== 0) {
+                toastr["warning"]('{{ __('theme.min-order-text') }} ' + min_order);
+                return false;
+            }
             var productStock = $('#update-cart-page-'+rowId).data('product-stock');
             update_mini_cart_page(rowId, productStock);
         });
@@ -75,6 +82,9 @@
                     }
                     if(response['status'] === 'not_permitted') {
                         toastr["error"](response['msg'])
+                    }
+                    if(response['status'] === 'min_order_error') {
+                        toastr["warning"](response['msg'])
                     }
                 }
             })

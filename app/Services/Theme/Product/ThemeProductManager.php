@@ -145,7 +145,12 @@ final class ThemeProductManager
         }
 
         if ($existedProduct->min_order !== null && (int)$addToCartData->productQty < $existedProduct->min_order) {
-            $response['msg'] = 'Минимальное количество для заказа: ' . $existedProduct->min_order;
+            $response['msg'] = __('theme.min-order') . ' ' . $existedProduct->min_order;
+            $response['status'] = 'min_order_error';
+            return $response;
+        }
+        if ($existedProduct->min_order !== null && ((int)$addToCartData->productQty % (int)$existedProduct->min_order !== 0)) {
+            $response['msg'] = __('theme.min-order-text') . ' ' . $existedProduct->min_order;
             $response['status'] = 'min_order_error';
             return $response;
         }

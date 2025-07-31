@@ -28,4 +28,21 @@ final class OrderPaymentMethods
 //            'card_delivery' => __('theme.card_delivery'),
         ];
     }
+
+    public function getAllByUserType(string $userType): array
+    {
+        if ($userType === 'iur'){
+            return [
+                'transfer' => __('theme.transfer'),
+                'cash' => __('theme.cash'),
+                'card' => __('theme.card'),
+            ];
+        }
+
+        return [
+            'cash' => __('theme.cash'),
+            'card' => __('theme.card'),
+            'transfer' => __('theme.transfer'),
+        ];
+    }
 }

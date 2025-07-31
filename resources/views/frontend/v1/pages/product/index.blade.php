@@ -91,16 +91,15 @@
                                     <div class="sc-product-qty qty-block">
                                         <div class="input-group-btn">
                                             <button
-                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                                class="sc-product-decrement btn-quantity-product minus"
-                                                type="button"
-                                                id="button-minus"
+                                                    class="sc-product-decrement btn-quantity-product minus"
+                                                    type="button"
+                                                    id="button-minus"
                                             >
                                                 -
                                             </button>
                                         </div>
                                         <input
-                                            id="product-{{$product->id}}-qty"
+{{--                                            id="product-{{$product->id}}-qty"--}}
                                             type="number"
                                             min="{{$product->min_order ?? 1}}"
                                             max="{{$product->stock}}"
@@ -115,34 +114,14 @@
                                         />
                                         <div class="input-group-btn">
                                             <button
-                                                onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                                class="sc-product-increment btn-quantity-product plus"
-                                                type="button"
-                                                id="button-plus"
+                                                    class="sc-product-increment btn-quantity-product plus"
+                                                    type="button"
+                                                    id="button-plus"
                                             >
                                                 +
                                             </button>
                                         </div>
                                     </div>
-
-                                    <script>
-                                        function incrementQuantityProduct(button, packageSize) {
-                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                            var newValue = parseInt(input.value) + packageSize;
-                                            if (newValue <= parseInt(input.max)) {
-                                                input.value = newValue;
-                                            }
-                                        }
-
-                                        function decrementQuantityProduct(button, packageSize) {
-                                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                            var newValue = parseInt(input.value) - packageSize;
-                                            if (newValue >= parseInt(input.min)) {
-                                                input.value = newValue;
-                                            }
-                                        }
-                                    </script>
-
                                     <a href="#" data-id="{{$product->id}}" id="add-to-cart-{{$product->id}}"
                                        class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
                                 </div>
@@ -277,16 +256,21 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        @if($product->brand !== null)
+                                            @include('frontend.v1.components.product-list-mini-brand-wrap')
+                                        @endif
                                     </div>
-                                    <div class="add_to_cart_wrap">
-                                        <hr class="product-card-item">
-                                        <div class="wrap">
-                                            @include('frontend.v1.components.product_price')
+                                    <div class="product-card-bottom">
+                                        <div class="add_to_cart_wrap">
+                                            <hr class="product-card-item">
+                                            <div class="wrap">
+                                                @include('frontend.v1.components.product_price')
+                                            </div>
+                                            @include('frontend.v1.components.product_card_summary')
+                                            @include('frontend.v1.components.add_to_cart_widget_v2')
                                         </div>
-                                        @include('frontend.v1.components.product_card_summary')
-                                        @include('frontend.v1.components.add_to_cart_widget_v2')
+                                        @include('frontend.v1.components.packages_card_wrap')
                                     </div>
-                                    @include('frontend.v1.components.packages_card_wrap')
                                 </div>
                                 @include('frontend.v1.components.in_cart_widget')
                             </div>

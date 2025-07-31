@@ -46,6 +46,17 @@
                         </div>
                     </div>
                     <div class="product-item-code-wrap">
+                        <div class="product-item-article-wrap">
+                            <div class="details-wrap">
+                                <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
+                                    @if($product->stock > 0)
+                                        {{__('theme.in-stock')}}
+                                    @else
+                                        {{__('theme.out-of-stock')}}
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
                         <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
                         @if($product->shtrih_code)
                             <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> {{$product->shtrih_code}}</h3>
@@ -79,18 +90,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-12 product-price-wrap">
-                <div class="product-item-article-wrap">
-                    <div class="details-wrap">
-                    <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                        @if($product->stock > 0)
-                            {{__('theme.in-stock')}}
-                        @else
-                            {{__('theme.out-of-stock')}}
-                        @endif
-                    </span>
-                    </div>
-                </div>
-                <div class="product-item-category" style="margin-bottom: 0; padding: 0">
+                <div class="product-item-category">
                     <div class="add_to_cart_wrap" style="margin: 0;">
                         <div class="wrap">
                             @include('frontend.v1.components.product_price')
@@ -100,12 +100,8 @@
                     </div>
                 </div>
                 @include('frontend.v1.components.packages_card_wrap')
-                @if($product->min_order !== null && $product->min_order > 1)
-                    <div class="packages-wrap-min-to-order">
-                        <p style="text-align: left">{{__('theme.package-min-to-order')}}: {{$product->min_order}} {{__('theme.min_order_unit')}}</p>
-                    </div>
-                @endif
             </div>
+{{--            @include('frontend.v1.components.in_cart_widget')--}}
         </div>
     </div>
 @endforeach
