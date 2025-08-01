@@ -20,6 +20,10 @@
                             <a href="{{ route('theme.category.index', 330) }}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_paper_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
+                        </div><div class="item">
+                            <a href="/category/388?sort=&filter%5Bprice%5D%5Bfrom%5D=&filter%5Bprice%5D%5Bto%5D=&filter%5Bbrand%5D%5B%5D=5">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_pix_for_childrens_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            </a>
                         </div>
                         <div class="item">
                             <a href="{{route('theme.category.index', 97)}}">
