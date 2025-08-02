@@ -536,18 +536,13 @@ $(document).ready(function () {
         // определяем, в каком контейнере клик
         let isInTableView = $(this).closest('#productsTableView').length > 0;
         let isInListView = $(this).closest('#productsListView').length > 0;
-        let isInHomePage = $(this).closest('.section-home').length > 0;
 
         if (isInTableView) {
             $('#productsTableView .product-card-summary-' + productId).html(formatted);
-        }
-
-        if (isInListView) {
+        } else if (isInListView) {
             $('#productsListView .product-card-summary-' + productId).html(formatted);
-        }
-
-        if (isInHomePage) {
-            $('.section-home .product-card-summary-' + productId).html(formatted);
+        } else {
+            $('.product-card-summary-' + productId).html(formatted);
         }
     });
 
@@ -569,18 +564,13 @@ $(document).ready(function () {
         // определяем, в каком контейнере находится input
         let isInTableView = $(this).closest('#productsTableView').length > 0;
         let isInListView = $(this).closest('#productsListView').length > 0;
-        let isInHomePage = $(this).closest('.section-home').length > 0;
 
         if (isInTableView) {
             $('#productsTableView .product-card-summary-' + productId).html(formatted);
-        }
-
-        if (isInListView) {
+        } else if (isInListView) {
             $('#productsListView .product-card-summary-' + productId).html(formatted);
-        }
-
-        if (isInHomePage) {
-            $('.section-home .product-card-summary-' + productId).html(formatted);
+        } else {
+            $('.product-card-summary-' + productId).html(formatted);
         }
     });
 
