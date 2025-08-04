@@ -7,6 +7,11 @@
                 <div class="col-12 col-main-content">
                     <div id="main-banner" class="theme-slider">
                         <div class="item">
+                            <a href="{{ route('theme.brand.index', 9) }}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_marco_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
                             <a href="{{ route('theme.category.index', 342) }}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
@@ -20,7 +25,13 @@
                             <a href="{{ route('theme.category.index', 330) }}">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_paper_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
-                        </div><div class="item">
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('theme.brand.index', 19) }}">
+                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_luxor_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
+                            </a>
+                        </div>
+                        <div class="item">
                             <a href="/category/388?sort=&filter%5Bprice%5D%5Bfrom%5D=&filter%5Bprice%5D%5Bto%5D=&filter%5Bbrand%5D%5B%5D=5">
                                 <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_pix_for_childrens_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
                             </a>
