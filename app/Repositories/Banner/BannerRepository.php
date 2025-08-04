@@ -21,4 +21,12 @@ final class BannerRepository
     {
         return Banner::where('active', true)->orderBy('order')->get();
     }
+
+    public function checkIfBannedWithSameOrderExists(string $order, Banner $banner): bool
+    {
+        return Banner::where('order', $order)
+            ->where('active', true)
+            ->where('id', '!=', $banner->id)
+            ->exists();
+    }
 }

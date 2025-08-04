@@ -80,8 +80,14 @@ class BannerController extends Controller
 
         $order = $bannerData->order;
 
-        if (Banner::where('order', $order)->exists()) {
-            $order = Banner::max('order') + 1;
+        $isActivating = !$banner->active && $bannerData->active;
+
+        if ($isActivating) {
+            $existing = $this->bannerRepository->checkIfBannedWithSameOrderExists($order, $banner);
+
+            if ($existing) {
+                $order = Banner::max('order') + 1;
+            }
         }
 
         $banner->update([
