@@ -34,7 +34,7 @@
                                 ->merge($breadcrumbs ?? []);
                             $last = $all->last();
                         @endphp
-                        <li class="breadcrumb-item active fw-bold" style="color: #000000" aria-current="page">
+                        <li class="breadcrumb-item active" style="color: #000000" aria-current="page">
                             @if(isset($last['url']))
                                 <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['name']}}</a>
                             @else
