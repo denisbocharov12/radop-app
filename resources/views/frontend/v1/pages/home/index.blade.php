@@ -5,53 +5,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-main-content">
-                    <div id="main-banner" class="theme-slider">
-                        <div class="item">
-                            <a href="{{ route('theme.brand.index', 9) }}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_marco_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{ route('theme.category.index', 342) }}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{ route('theme.category.index', 61) }}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_back_to_school_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{ route('theme.category.index', 330) }}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_paper_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{ route('theme.brand.index', 19) }}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_luxor_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="/category/388?sort=&filter%5Bprice%5D%5Bfrom%5D=&filter%5Bprice%5D%5Bto%5D=&filter%5Bbrand%5D%5B%5D=5">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_pix_for_childrens_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{route('theme.category.index', 97)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_2_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="{{route('theme.category.index', 23)}}">
-                                <img src="{{asset('/v1/frontend/assets')}}/images/banner_radop_ELEVEN_slide_1_{{str_replace('_', '-', app()->getLocale())}}.jpg" alt=""/>
-                            </a>
-                        </div>
+                    <div id="main-banner" data-autoplay-speed="{{ $autoplaySpeed }}" class="theme-slider">
+                        @foreach($banners as $banner)
+                            <div class="item">
+                                <a href="{{ $banner->link }}">
+                                    <img src="{{ asset('storage/' . ($locale === 'ro' ? $banner->image_path_ro : $banner->image_path_ru)) }}" alt="Баннер">
+{{--                                    <img src="{{ asset('storage/' . $banner->image_path) }}" alt="{{ $banner->title }}">--}}
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="section-standart section-flaer">
+    <section class="section-standart section-flaer d-none d-sm-block">
         <div class="container container-flaer container-flaer-m0">
             <div class="row">
                 <div class="col-12 col-lg-4 col-flaer">

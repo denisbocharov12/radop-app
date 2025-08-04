@@ -8242,11 +8242,6 @@ hr.product-card-item{
 .product-additional-info ul a.colored{
     text-decoration: underline!important;
 }
-.product-additional-info ul li:first-child {
-    padding: 3px;
-    width: fit-content;
-    border: 1px solid #34af31;
-}
 .product-info-row .product-add-to-wishlist-wrap{
     margin-left: 10px;
 }
@@ -10800,6 +10795,9 @@ hr.product-card-item{
     }
 }
 @media (max-width: 576px) {
+    #main-banner .item a img{
+        object-fit: contain;
+    }
     .quick-view-btn {
         top: 33%;
         font-size: 11px;
@@ -10842,7 +10840,7 @@ hr.product-card-item{
     }
 
     #main-banner .item {
-        min-height: 250px;
+        min-height: 135px;
     }
 
     .fancybox-container .fancybox-slide--html {
@@ -12255,7 +12253,9 @@ input[type="range"]::-moz-range-thumb {
 /*    right: 0;*/
 /*    width: 200px;*/
 /*}*/
-
+.breadcrumb .breadcrumb-item.active{
+    font-size: 24px;
+}
 @media (min-width: 241px) and (max-width: 480px) {
     #toast-container>div {
         padding: 6px 6px 6px 50px;
@@ -12266,5 +12266,8 @@ input[type="range"]::-moz-range-thumb {
     }
     #toast-container .toast .toast-message{
         font-size: 12px;
+    }
+    .breadcrumb .breadcrumb-item.active{
+        font-size: 16px;
     }
 }

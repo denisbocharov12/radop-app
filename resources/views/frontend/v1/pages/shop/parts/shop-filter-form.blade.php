@@ -15,10 +15,10 @@
                         $queryPriceFrom = $query['price']['from'] ?? null;
                         $queryPriceTo = $query['price']['to'] ?? null;
 
-                        $activePriceStyle = 'display: none';
-                        if (is_array($queryPrice) && ($queryPriceFrom || $queryPriceTo)) {
-                            $activePriceStyle = 'display: flex';
-                        }
+                        $activePriceStyle = 'display: flex';
+//                        if (is_array($queryPrice) && ($queryPriceFrom || $queryPriceTo)) {
+//                            $activePriceStyle = 'display: flex';
+//                        }
                     @endphp
                     <div class="theme-toggle-item-content" style="{{ $activePriceStyle }}; flex-direction: column; gap: 10px;">
                         <div class="filter-widget-wrap">
@@ -31,8 +31,8 @@
                                     ></div>
                                 </div>
                                 <div class="range-input">
-                                    <input type="range" class="range-min" min="0" max="1000" value="{{ $queryPriceFrom ?? 0 }}" step="1">
-                                    <input type="range" class="range-max" min="0" max="1000" value="{{ $queryPriceTo ?? 1000 }}" step="1">
+                                    <input type="range" class="range-min" min="0" max="1000" step="1">
+                                    <input type="range" class="range-max" min="0" max="1000" step="1">
                                 </div>
                             </div>
 
@@ -51,29 +51,42 @@
                     </div>
                 </li>
                 @foreach($attributes as $key => $attributeValues)
+                    @php
+                        $attributeValues = collect($attributeValues)->map(function($attribute) {
+                            return \App\Models\AttributeValue::find($attribute->id);
+                        })->sortBy('value');
+                    @endphp
+
+                    @if($attributeValues->count() <= 1)
+                        @continue
+                    @endif
+
                     <li class="theme-toggle-item">
                         <div class="theme-toggle-item-title">
                             <i class="icon-arrow-filter-radop-left"></i>
-                            <p class="theme-widget-title">{{$key}}</p>
+                            <p class="theme-widget-title">{{ $key }}</p>
                         </div>
+
                         @php
-                        $attributeValues = collect($attributeValues)->map(function($attribute) {
-                                return \App\Models\AttributeValue::find($attribute->id);
-                            })->sortBy('value');
+                            $activeStyle = 'display: none';
 
-                        $activeStyle = 'display: none';
-
-                        foreach ($attributeValues as $attribute) {
-                            if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
-                                $activeStyle = 'display:flex';
+                            foreach ($attributeValues as $attribute) {
+                                if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
+                                    $activeStyle = 'display:flex';
+                                }
                             }
-                        }
                         @endphp
-                        <div class="theme-toggle-item-content" style="{{$activeStyle}}">
+
+                        <div class="theme-toggle-item-content" style="{{ $activeStyle }}">
                             @foreach($attributeValues as $attribute)
                                 <div class="col-6">
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute']) && in_array(str_replace(',','.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : ''}} id="attribute-{{$attribute->id}}" name="filter[attribute][{{$attribute->attribute_onec_id}}][]" value="{{str_replace(',','.', $attribute->value)}}">
-                                    <label for="attribute-{{$attribute->id}}">{{$attribute->value}}</label>
+                                    <input type="checkbox" class="theme-checkbox" id="attribute-{{ $attribute->id }}"
+                                           name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
+                                           value="{{ str_replace(',', '.', $attribute->value) }}"
+                                            {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
+                                                in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
+                                                ? 'checked' : '' }}>
+                                    <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
                                 </div>
                             @endforeach
                         </div>
