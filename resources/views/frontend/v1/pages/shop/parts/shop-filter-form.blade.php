@@ -31,20 +31,20 @@
                                     ></div>
                                 </div>
                                 <div class="range-input">
-                                    <input type="range" class="range-min" min="0" max="1000" step="1">
-                                    <input type="range" class="range-max" min="0" max="1000" step="1">
+                                    <input type="range" class="range-min" min="0" max="1000" value="{{ $queryPriceFrom ?? 0 }}" step="1">
+                                    <input type="range" class="range-max" min="0" max="1000" value="{{ $queryPriceTo ?? 1000 }}" step="1">
                                 </div>
                             </div>
 
                             <div class="price-input">
                                 <div class="field">
                                     <span>{{ __('theme.min') }}</span>
-                                    <input type="number" class="input-min" name="filter[price][from]" value="{{ $queryPriceFrom ?? 0 }}">
+                                    <input type="number" class="input-min" name="filter[price][from]">
                                 </div>
                                 <div class="separator"></div>
                                 <div class="field">
                                     <span>{{ __('theme.max') }}</span>
-                                    <input type="number" class="input-max" name="filter[price][to]" value="{{ $queryPriceTo ?? 1000 }}">
+                                    <input type="number" class="input-max" name="filter[price][to]">
                                 </div>
                             </div>
                         </div>
