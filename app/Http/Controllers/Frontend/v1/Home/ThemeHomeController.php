@@ -22,9 +22,9 @@ final class ThemeHomeController extends Controller
 
     public function index()
     {
-        $popularProducts = $this->productRepository->getAllPopularProducts();
-        $newProducts = $this->productRepository->getAllNewProducts();
-        $discountProducts = $this->productRepository->getAllDiscountProducts();
+        $popularProducts = $this->productRepository->getPopularProductsForHomePage();
+        $newProducts = $this->productRepository->getNewProductsForHomePage();
+        $discountProducts = $this->productRepository->getDiscountProductsForHomePage();
         $banners = $this->bannerRepository->getAllActiveForFront();
         $locale = app()->getLocale();
         $autoplaySpeed = BannerSetting::first()?->rotation_speed ?? 3000;

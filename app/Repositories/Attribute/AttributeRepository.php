@@ -5,6 +5,7 @@ namespace App\Repositories\Attribute;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +83,33 @@ final class AttributeRepository
             ->join('products', 'product_categories.product_id', '=', 'products.onec_id')
             ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
             ->where('product_categories.category_id', $id)
+            ->where('products.status', true)
+            ->where('products.site_status', true)
+            ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+            ->orderBy('order')
+            ->get()
+            ->groupBy('attribute_onec_id')
+        ;
+
+        foreach ($join as $key => $value)
+        {
+            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+
+            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
+        }
+
+        return $collect;
+    }
+
+    public function getAllByProductsIds(array $productIds): ?array
+    {
+        $collect = array();
+
+        $join = DB::table('categories')
+            ->join('product_categories', 'product_categories.category_id', '=', 'categories.onec_id' )
+            ->join('products', 'product_categories.product_id', '=', 'products.onec_id')
+            ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'products.onec_id')
+            ->whereIn('product_categories.category_id', $productIds)
             ->where('products.status', true)
             ->where('products.site_status', true)
             ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
