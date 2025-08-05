@@ -7,100 +7,102 @@
 @endphp
 
 <div class="col-lg-9 col-cart-contents">
-    <table class="theme-cart-table">
-        <thead class="theme-cart-table-thead">
-            <tr>
-                <th></th>
-                <th>{{__('theme.cart-table-name')}}</th>
-                <th class="text-center">{{__('theme.cart-table-quantity')}}</th>
-                <th class="text-center">{{__('theme.cart-table-price')}}</th>
-                <th class="text-center">{{__('theme.cart-table-sum')}}</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(\Cart::session($sessionId)->getContent()->sort() as $item)
-            @php
-                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
-            @endphp
-            <tr class="theme-cart-item-row">
-                <td class="theme-cart-item-img">
-                    <a href="{{route('theme.product.index',$item->model->slug)}}">
-                        @foreach($imagesArray as $key => $file)
-                            @switch($key)
-                                @case(0)
-                                <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
-                                @break
-                            @endswitch
-                        @endforeach
-                    </a>
-                </td>
-                <td class="theme-cart-item-row-title">
-                    <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
-                        <h5 class="item-title">
-                            {{$item->associatedModel->title}}
-                        </h5>
-                    </a>
-                </td>
-                <td class="text-center theme-cart-item-qty">
-                    <div class="d-flex aling-items-center justify-content-center number-spinner-box">
-                        <div class="cart-item-info">
-                            <div class="sc-product-qty qty-block">
-                                <div class="input-group-btn">
-                                    <button
-                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
-                                        class="sc-product-decrement btn-quantity-cart minus"
-                                        type="button"
-                                    >
-                                        -
-                                    </button>
-                                </div>
-                                <input
-                                    data-id="{{$item->id}}"
-                                    id="qty-item-cart-{{$item->id}}"
-                                    type="number"
-                                    min="{{$item->associatedModel->min_order ?? 1}}"
-                                    max="{{$item->associatedModel->stock}}"
-                                    placeholder="{{$item->associatedModel->min_order ?? 1}}"
-                                    value="{{$item->quantity}}"
-                                    step="{{$item->associatedModel->min_order ?? 1}}"
-                                    class="sc-qty"
-                                />
-                                <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-page-{{$item->id}}">
-                                <div class="input-group-btn">
-                                    <button
-                                        onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
-                                        class="sc-product-increment btn-quantity-cart plus"
-                                        type="button"
-                                    >
-                                        +
-                                    </button>
+    <div class="table-responsive">
+        <table class="theme-cart-table">
+            <thead class="theme-cart-table-thead">
+                <tr>
+                    <th></th>
+                    <th>{{__('theme.cart-table-name')}}</th>
+                    <th class="text-center">{{__('theme.cart-table-quantity')}}</th>
+                    <th class="text-center">{{__('theme.cart-table-price')}}</th>
+                    <th class="text-center">{{__('theme.cart-table-sum')}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(\Cart::session($sessionId)->getContent()->sort() as $item)
+                @php
+                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+                @endphp
+                <tr class="theme-cart-item-row">
+                    <td class="theme-cart-item-img">
+                        <a href="{{route('theme.product.index',$item->model->slug)}}">
+                            @foreach($imagesArray as $key => $file)
+                                @switch($key)
+                                    @case(0)
+                                    <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                    @break
+                                @endswitch
+                            @endforeach
+                        </a>
+                    </td>
+                    <td class="theme-cart-item-row-title">
+                        <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
+                            <h5 class="item-title">
+                                {{$item->associatedModel->title}}
+                            </h5>
+                        </a>
+                    </td>
+                    <td class="text-center theme-cart-item-qty">
+                        <div class="d-flex aling-items-center justify-content-center number-spinner-box">
+                            <div class="cart-item-info">
+                                <div class="sc-product-qty qty-block">
+                                    <div class="input-group-btn">
+                                        <button
+                                            onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
+                                            class="sc-product-decrement btn-quantity-cart minus"
+                                            type="button"
+                                        >
+                                            -
+                                        </button>
+                                    </div>
+                                    <input
+                                        data-id="{{$item->id}}"
+                                        id="qty-item-cart-{{$item->id}}"
+                                        type="number"
+                                        min="{{$item->associatedModel->min_order ?? 1}}"
+                                        max="{{$item->associatedModel->stock}}"
+                                        placeholder="{{$item->associatedModel->min_order ?? 1}}"
+                                        value="{{$item->quantity}}"
+                                        step="{{$item->associatedModel->min_order ?? 1}}"
+                                        class="sc-qty"
+                                    />
+                                    <input type="hidden" data-id="{{$item->id}}" data-product-stock="{{$item->associatedModel->stock}}" id="update-cart-page-{{$item->id}}">
+                                    <div class="input-group-btn">
+                                        <button
+                                            onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
+                                            class="sc-product-increment btn-quantity-cart plus"
+                                            type="button"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-                <td class="text-center theme-cart-item-price">
-                    <div class="theme-cart-title-price-wrap">
-                        <div class="price-wrap">
-                            @include('frontend.v1.components.product_price', ['product' => $item->associatedModel])
+                    </td>
+                    <td class="text-center theme-cart-item-price">
+                        <div class="theme-cart-title-price-wrap">
+                            <div class="price-wrap">
+                                @include('frontend.v1.components.product_price', ['product' => $item->associatedModel])
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td class="text-center theme-cart-item-total">
-                    <div class="theme-cart-title-price-wrap">
-                        <div class="price-wrap">
-                            <span class="total-price">{{number_format($item->quantity * $item->price, 2, ',', '')}} {{__('theme.MDL')}}</span>
+                    </td>
+                    <td class="text-center theme-cart-item-total">
+                        <div class="theme-cart-title-price-wrap">
+                            <div class="price-wrap">
+                                <span class="total-price">{{number_format($item->quantity * $item->price, 2, ',', '')}} {{__('theme.MDL')}}</span>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td class="theme-cart-item-delete">
-                    <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    </td>
+                    <td class="theme-cart-item-delete">
+                        <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     <div class="row">
         <div class="col-12 col-cart-destroy">
             <div class="wrap">
