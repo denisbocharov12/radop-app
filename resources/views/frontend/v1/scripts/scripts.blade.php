@@ -768,6 +768,20 @@
     } else {
         $('#wishlist_count').hide();
     }
+
+    $(document).on('click', '.export-excel-link', function (e) {
+        var $link = $(this);
+        var $span = $link.find('span');
+        var originalText = $span.text();
+        var loaderIcon = '<i class="fa fa-spin fa-spinner"></i>';
+
+        $span.html(loaderIcon);
+
+        setTimeout(function() {
+            $span.text(originalText);
+        }, 2500);
+    });
+
     });
 
 </script>
