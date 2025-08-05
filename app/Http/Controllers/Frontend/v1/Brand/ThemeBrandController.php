@@ -41,10 +41,10 @@ final class ThemeBrandController extends Controller
         }
 
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request);
-        $productIds = $products->pluck('id')->toArray();
+
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
-        $attributes = $this->attributeRepository->getAllByProductsIds($productIds);
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
