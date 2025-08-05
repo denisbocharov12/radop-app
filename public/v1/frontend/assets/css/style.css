@@ -10584,6 +10584,22 @@ hr.product-card-item{
     }
 }
 @media (max-width: 500px) {
+    .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-qty .cart-item-info{
+        margin: 0;
+    }
+    .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-delete .item-delete{
+        padding: 0;
+        margin: 0;
+    }
+    .theme-cart-table .theme-cart-table-thead th:first-child{
+        display: none;
+    }
+    .theme-cart-table tbody td:first-child{
+        display: none;
+    }
+    .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-row-title{
+        width: 25%;
+    }
     .my-account-selects {
         justify-content: start;
     }
