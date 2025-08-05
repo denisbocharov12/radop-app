@@ -26,27 +26,29 @@
 {{--                    </ol>--}}
                 </nav>
             </div>
-            <div class="col-6 col-sm-7 col-md-9">
-                <nav>
-                    <ol class="breadcrumb text-white d-flex mb-0">
-                        @php
-                            $all = collect([['url' => route('theme.home'), 'name' => __('theme.home')], ['url' => route('theme.shop.catalog'), 'name' => __('theme.shop')]])
-                                ->merge($breadcrumbs ?? []);
-                            $last = $all->last();
-                        @endphp
-                        <li class="breadcrumb-item active" style="color: #000000" aria-current="page">
-                            @if(isset($last['url']))
-                                <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['name']}}</a>
-                            @else
-                                {{$last['name'] ?? $last->name ?? ''}}
-                            @endif
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="col-6 col-sm-5 col-md-3">
-                @include('frontend.v1.pages.category.parts.export-excel')
-            </div>
+            @if($existedCategory->children->isEmpty())
+                <div class="col-6 col-sm-7 col-md-9">
+                    <nav>
+                        <ol class="breadcrumb text-white d-flex mb-0">
+                            @php
+                                $all = collect([['url' => route('theme.home'), 'name' => __('theme.home')], ['url' => route('theme.shop.catalog'), 'name' => __('theme.shop')]])
+                                    ->merge($breadcrumbs ?? []);
+                                $last = $all->last();
+                            @endphp
+                            <li class="breadcrumb-item active" style="color: #000000" aria-current="page">
+                                @if(isset($last['url']))
+                                    <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['name']}}</a>
+                                @else
+                                    {{$last['name'] ?? $last->name ?? ''}}
+                                @endif
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-6 col-sm-5 col-md-3">
+                    @include('frontend.v1.pages.category.parts.export-excel')
+                </div>
+            @endif
         </div>
     </div>
 </section>

@@ -113,6 +113,21 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->orderBy('popular_order')
+            ->get()
+        ;
+    }
+
+    public function getPopularProductsForHomePage()
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->orderBy('popular_order')
             ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
             ->get()
         ;
@@ -210,9 +225,24 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->orderBy('new_order')
-            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
             ->get()
         ;
+    }
+
+    public function getNewProductsForHomePage()
+    {
+        $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+        $productIds = $newProductProfile->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->orderBy('new_order')
+            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
+            ->get()
+            ;
     }
 
     public function getAllNewProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
@@ -263,6 +293,18 @@ final class ProductRepository
     }
 
     public function getAllDiscountProducts()
+    {
+        return Product::where('sale_price', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->orderBy('sale_order')
+            ->get()
+         ;
+    }
+
+    public function getDiscountProductsForHomePage()
     {
         return Product::where('sale_price', '!=', 0)
             ->whereNotNull('price_koef')
