@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -75,6 +76,41 @@ final class Product extends Model implements HasMedia
     ];
 
     public $translatable = ['title'];
+//
+//    /**
+//     * @param Media|null $media
+//     * @return void
+//     */
+//    public function registerMediaConversions(Media $media = null): void
+//    {
+//        $this->addMediaConversion('thumb')
+//            ->width(150)
+//            ->height(150)
+//            ->sharpen(10)
+//            ->performOnCollections('products')
+//            ->nonQueued();
+//
+//        $this->addMediaConversion('medium')
+//            ->width(300)
+//            ->height(300)
+//            ->sharpen(10)
+//            ->performOnCollections('products')
+//            ->nonQueued();
+//
+//        $this->addMediaConversion('large')
+//            ->width(600)
+//            ->height(600)
+//            ->sharpen(10)
+//            ->performOnCollections('products')
+//            ->nonQueued();
+//
+//        $this->addMediaConversion('product-card')
+//            ->width(400)
+//            ->height(300)
+//            ->sharpen(10)
+//            ->performOnCollections('products')
+//            ->nonQueued();
+//    }
 
     /**
      * Return the sluggable configuration array for this model.

@@ -16,9 +16,6 @@
                 <div class="vertical-tabs-content">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
                         @foreach($popularProducts as $product)
-                            @php
-                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
-                            @endphp
                             <div class="product_item product-item-category">
                                 <div class="product-wrap drop-shadow">
                                     @include('frontend.v1.pages.product.components.label')
@@ -82,9 +79,6 @@
                 <div class="vertical-tabs-content">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
                         @foreach($discountProducts as $product)
-                            @php
-                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
-                            @endphp
                             <div class="product_item product-item-category">
                                 <div class="product-wrap drop-shadow">
                                     @include('frontend.v1.pages.product.components.label')
@@ -147,9 +141,6 @@
                 <div class="vertical-tabs-content">
                     <div class="col cart-catalog-slider" style="margin-top: 0">
                         @foreach($featuredProducts as $product)
-                            @php
-                                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id);
-                            @endphp
                             <div class="product_item product-item-category">
                                 <div class="product-wrap drop-shadow">
                                     @include('frontend.v1.pages.product.components.label')
