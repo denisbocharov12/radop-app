@@ -10,7 +10,6 @@
                             <div class="item">
                                 <a href="{{ $banner->link }}">
                                     <img src="{{ asset('storage/' . ($locale === 'ro' ? $banner->image_path_ro : $banner->image_path_ru)) }}" alt="Баннер">
-{{--                                    <img src="{{ asset('storage/' . $banner->image_path) }}" alt="{{ $banner->title }}">--}}
                                 </a>
                             </div>
                         @endforeach

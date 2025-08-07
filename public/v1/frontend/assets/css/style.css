@@ -12284,3 +12284,10 @@ input[type="range"]::-moz-range-thumb {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+.theme-slider {
+    opacity: 0;
+}
+
+.theme-slider.slick-initialized {
+    opacity: 1;
+}
