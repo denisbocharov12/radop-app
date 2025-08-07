@@ -10,7 +10,6 @@ use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -38,9 +37,20 @@ class CategoryRepository
         ;
     }
 
-    public function getAllPaginatedWithFiltersToFrontEnd(Category $category, Request $request): LengthAwarePaginator
+    public function getAllPaginatedWithFiltersToFrontEnd(Category $category, Request $request, string $defaultSort): LengthAwarePaginator
     {
-        $query = $category->products();
+        $query = $category->products()
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
+
+        $defaultSortObj = $defaultSort;
+
+        if ($defaultSort === 'price') {
+            $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === '-price') {
+            $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === 'condition') {
+            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        }
 
         return QueryBuilder::for($query)
             ->allowedFilters([
@@ -55,21 +65,15 @@ class CategoryRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 'popular_order',
                 'stock',
             ])
+            ->defaultSort($defaultSortObj)
             ->where('status', true)
             ->where('site_status', true)
             ->groupBy('products.onec_id')
-            ->orderByRaw("
-            CASE
-                WHEN sale_price IS NOT NULL AND sale_price != ''
-                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
-                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
-            END ASC
-            ")
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
         ;

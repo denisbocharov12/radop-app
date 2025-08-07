@@ -10,24 +10,21 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
+use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeBrandController extends Controller
 {
-
-    private const PUBLIC_DISK = 'public';
-
     public function __construct(
         private readonly BrandRepository $brandRepository,
         private readonly ThemeBrandManager $themeBrandManager,
         private readonly AttributeRepository $attributeRepository,
         private readonly ProductRepository $productRepository,
-    )
-    {
+        private readonly PageSortSettingRepository $pageSortSettingRepository,
+    ) {
     }
 
     public function index(Request $request, string $onecId)
@@ -40,7 +37,8 @@ final class ThemeBrandController extends Controller
             throw new BrandNotFoundValidationException();
         }
 
-        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request);
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
+        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
@@ -52,7 +50,8 @@ final class ThemeBrandController extends Controller
             'breadcrumbs',
             'query',
             'brands',
-            'attributes'
+            'attributes',
+            'defaultSort',
         ]));
     }
 

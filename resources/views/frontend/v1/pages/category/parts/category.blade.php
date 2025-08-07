@@ -4,7 +4,7 @@
             <div class="col-lg-3"></div>
             <div class="col-md-12 col-lg-9 col-12">
                 <div class="sort-block">
-                    @include('frontend.v1.components.sort-products')
+                    @include('frontend.v1.components.sort-products', ['defaultSort' => $defaultSort])
                     <div class="view-mode-switch">
                         <span>{{ __('theme.view') }}:</span>
                         <button id="viewTable" class="btn me-2 active" type="button"><i class="fa fa-th"></i> {{ __('theme.view-table') }}</button>
@@ -49,12 +49,16 @@
                     </div>
                     <div id="mobileSortModal" class="mobile-sort-modal">
                         <div class="mobile-sort-modal-content">
-                            <div class="mobile-sort-option default-option" data-sort="price">{{ __('theme.sort-price-asc') }}</div>
-                            <div class="mobile-sort-option" data-sort="price_desc">{{ __('theme.sort-price-desc') }}</div>
-                            <div class="mobile-sort-option" data-sort="title">{{ __('theme.sort-title') }}</div>
-                            <div class="mobile-sort-option" data-sort="popular_order">{{ __('theme.sort-popular') }}</div>
-                            <div class="mobile-sort-option" data-sort="condition">{{ __('theme.sort-new') }}</div>
-                            <div class="mobile-sort-option" data-sort="stock">{{ __('theme.sort-stock') }}</div>
+                            @foreach([
+                                ['key' => 'price', 'label' => __('theme.sort-price-asc')],
+                                ['key' => 'price_desc', 'label' => __('theme.sort-price-desc')],
+                                ['key' => 'title', 'label' => __('theme.sort-title')],
+                                ['key' => 'popular_order', 'label' => __('theme.sort-popular')],
+                                ['key' => 'condition', 'label' => __('theme.sort-new')],
+                                ['key' => 'stock', 'label' => __('theme.sort-stock')],
+                            ] as $option)
+                                <div class="mobile-sort-option @if($loop->first) default-option @endif" data-sort="{{ $option['key'] }}">{{ $option['label'] }}</div>
+                            @endforeach
                         </div>
                     </div>
                     <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">

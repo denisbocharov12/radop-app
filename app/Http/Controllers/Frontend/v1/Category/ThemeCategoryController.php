@@ -7,9 +7,11 @@ namespace App\Http\Controllers\Frontend\v1\Category;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
+use App\Models\PageSortSetting;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
+use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use Illuminate\Http\Request;
@@ -23,8 +25,8 @@ final class ThemeCategoryController extends Controller
         private readonly ThemeCategoryManager $themeCategoryManager,
         private readonly BrandRepository $brandRepository,
         private readonly AttributeRepository $attributeRepository,
-    )
-    {
+        private readonly PageSortSettingRepository $pageSortSettingRepository,
+    ) {
     }
 
     /**
@@ -52,7 +54,9 @@ final class ThemeCategoryController extends Controller
             ]));
         }
 
-        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory, $request);
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForCategoryPage();
+
+        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory, $request, $defaultSort);
         $productsByCategory = $this->productRepository->getAllProductsByCategory($existedCategory);
 
         $brands = $this->brandRepository->getAllToFrontEnd();
@@ -66,6 +70,7 @@ final class ThemeCategoryController extends Controller
             'query',
             'brands',
             'attributes',
+            'defaultSort',
         ]));
     }
 

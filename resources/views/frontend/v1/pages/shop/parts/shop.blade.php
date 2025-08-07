@@ -4,7 +4,7 @@
             <div class="col-lg-3"></div>
             <div class="col-md-12 col-lg-9 col-12">
                 <div class="sort-block">
-                    @include('frontend.v1.components.sort-products')
+                    @include('frontend.v1.components.sort-products', ['defaultSort' => $defaultSort])
                     <div class="view-mode-switch">
                         <span>{{ __('theme.view') }}:</span>
                         <button id="viewTable" class="btn me-2 active" type="button"><i class="fa fa-th"></i> {{ __('theme.view-table') }}</button>
