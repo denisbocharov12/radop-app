@@ -4,22 +4,11 @@ namespace App\Http\Controllers\v1\OneC;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OneC\OneCRequest;
-use App\Models\Attribute;
-use App\Models\AttributeValue;
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductAttribute;
-use App\Models\ProductCategory;
-use App\Models\ProductProfile;
 use App\Repositories\Onec\OnecRepository;
 use App\Services\ONEC\ONECManager;
-use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use function PHPUnit\Framework\isEmpty;
+use App\Jobs\ImportProductImagesJob;
 
 class OneCController extends Controller
 {
@@ -205,6 +194,18 @@ class OneCController extends Controller
 
     public function importImages()
     {
+        $products = Product::where('status', true)
+            ->pluck('id')
+            ->chunk(70);
+
+        $jobCount = 0;
+
+        foreach ($products as $productIds) {
+            ImportProductImagesJob::dispatch($productIds->toArray(), true);
+            $jobCount++;
+        }
+
+        toastr()->success("Добавлено {$jobCount} задач в очередь для импорта изображений");
         return redirect()->route('import-export-data.index');
     }
 

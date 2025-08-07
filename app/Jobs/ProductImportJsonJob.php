@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
+use App\Services\Product\ProductImagesManager;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -70,7 +71,6 @@ final class ProductImportJsonJob implements ShouldQueue
                     'ro' => isset($product->name_ro_full) ? $product->name_ro_full : '',
                     'ru' => isset($product->name_ru_full) ? $product->name_ru_full : '',
                 ],
-                //'slug' => Str::slug($product->name_ru_full) . '-' . $product->id,
                 'price' => $product->price,
                 'status' => $status,
                 'stock' => $product->stock,
@@ -80,7 +80,7 @@ final class ProductImportJsonJob implements ShouldQueue
                 'price_koef' => $priceKoef,
             ];
 
-            Product::updateOrCreate(['onec_id' => $product->id], $data);
+            $productModel = Product::updateOrCreate(['onec_id' => $product->id], $data);
 
             ProductProfile::updateOrCreate(['product_id' => $product->id], [
                 'sku' => $product->id
@@ -108,6 +108,9 @@ final class ProductImportJsonJob implements ShouldQueue
                 }
 
             }
+
+            ProductImagesManager::clearProductImages($productModel);
+            ProductImagesManager::importProductImages($productModel);
         }
     }
 }

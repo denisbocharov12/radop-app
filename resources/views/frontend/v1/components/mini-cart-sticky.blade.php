@@ -8,20 +8,24 @@
 @if(\Cart::session($sessionId)->getContent()->count() > 0)
         <ul class="content-shopping-cart">
             @foreach(\Cart::session($sessionId)->getContent()->sort()  as $item)
-                @php
-                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
-                @endphp
                 <li class="item">
                     <div class="sc-product-item">
                         <div class="product-info">
                             <a href="{{route('theme.product.index', $item->associatedModel->slug)}}" >
-                                @foreach($imagesArray as $key => $file)
-                                    @switch($key)
-                                        @case(0)
-                                        <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
-                                        @break
-                                    @endswitch
-                                @endforeach
+                                @if($item->associatedModel->hasMedia('products'))
+                                    <img src="{{$item->associatedModel->getFirstMediaUrl('products')}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                @else
+                                    @php
+                                        $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+                                    @endphp
+                                    @foreach($imagesArray as $key => $file)
+                                        @switch($key)
+                                            @case(0)
+                                                <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                                @break
+                                        @endswitch
+                                    @endforeach
+                                @endif
                             </a>
                             <div class="sc-item-info-wrap">
                                 <p class="sc-title">
@@ -85,4 +89,4 @@
 <div class="bottom-shopping-cart">
     <a href="{{route('theme.shop.catalog')}}" class="btn-shopping-cart ">{{__('theme.сontinue-shopping')}}</a>
     <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
-</div> 
+</div>

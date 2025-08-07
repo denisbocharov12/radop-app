@@ -9,20 +9,24 @@
 <div class="col-lg-9 col-cart-contents">
     <div class="cart-items-wrap">
         @foreach(\Cart::session($sessionId)->getContent() as $item)
-            @php
-                $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
-            @endphp
             <div class="cart-item drop-shadow">
                 <div class="cart-item-wrap">
                     <div class="cart-product">
                         <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
-                            @foreach($imagesArray as $key => $file)
-                                @switch($key)
-                                    @case(0)
-                                    <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
-                                    @break
-                                @endswitch
-                            @endforeach
+                            @if($item->associatedModel->hasMedia('products'))
+                                <img src="{{$item->associatedModel->getFirstMediaUrl('products')}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                            @else
+                                @php
+                                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+                                @endphp
+                                @foreach($imagesArray as $key => $file)
+                                    @switch($key)
+                                        @case(0)
+                                            <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                            @break
+                                    @endswitch
+                                @endforeach
+                            @endif
                         </a>
                         <div class="theme-cart-title-price-wrap">
                             <h5 class="item-title">
