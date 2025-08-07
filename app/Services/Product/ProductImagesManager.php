@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Image\Image;
+use Spatie\ImageOptimizer\OptimizerChain;
+use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
 
 final class ProductImagesManager
 {
@@ -39,15 +41,11 @@ final class ProductImagesManager
      * @param string $filePath
      * @return string
      */
-    private static function optimizeImage(string $filePath): string
+    private static function optimizeImage(string $filePath): void
     {
-        $optimizedPath = $filePath . '_optimized';
-
         Image::load($filePath)
             ->optimize()
-            ->save($optimizedPath);
-
-        return $optimizedPath;
+            ->save();
     }
 
 
@@ -74,12 +72,11 @@ final class ProductImagesManager
 
                 File::copy($file, $tempPath);
 
-                $optimizedPath = self::optimizeImage($tempPath);
+                //$optimizedPath = self::optimizeImage($tempPath);
+
+                $product->addMedia($tempPath)->toMediaCollection('products', 'media');
+
                 File::delete($tempPath);
-
-                $product->addMedia($optimizedPath)->toMediaCollection('products', 'media');
-
-                File::delete($optimizedPath);
             }
         }
     }
