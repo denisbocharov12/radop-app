@@ -4,12 +4,8 @@
             <div class="col-lg-3"></div>
             <div class="col-md-12 col-lg-9 col-12">
                 <div class="sort-block">
-                    @include('frontend.v1.pages.brand.parts.sort-products')
-                    <div class="view-mode-switch">
-                        <span>{{ __('theme.view') }}:</span>
-                        <button id="viewTable" class="btn me-2 active" type="button"><i class="fa fa-th"></i> {{ __('theme.view-table') }}</button>
-                        <button id="viewList" class="btn" type="button"><i class="fa fa-list"></i> {{ __('theme.view-list') }}</button>
-                    </div>
+                    @include('frontend.v1.components.sort-products', ['defaultSort' => $defaultSort])
+                    @include('frontend.v1.components.table-view-switch')
                     <div class="sort-per-page d-none d-md-block">
                         <form class="form-sort-per-page" id="form-sort-per-page" action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
                             <select name="perPage" id="perPage" class="js2-select select-sort-per-page">
@@ -40,20 +36,7 @@
                     </div>
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
-                    <div id="mobile-sort-block" class="mobile-sort-block">
-                        <span class="mobile-sort-label">{{__('theme.sort-label')}}</span>
-                        <span class="mobile-sort-selected" id="mobileSortSelected"></span>
-                    </div>
-                    <div id="mobileSortModal" class="mobile-sort-modal">
-                        <div class="mobile-sort-modal-content">
-                            <div class="mobile-sort-option default-option" data-sort="price">{{ __('theme.sort-price-asc') }}</div>
-                            <div class="mobile-sort-option" data-sort="price_desc">{{ __('theme.sort-price-desc') }}</div>
-                            <div class="mobile-sort-option" data-sort="title">{{ __('theme.sort-title') }}</div>
-                            <div class="mobile-sort-option" data-sort="popular_order">{{ __('theme.sort-popular') }}</div>
-                            <div class="mobile-sort-option" data-sort="condition">{{ __('theme.sort-new') }}</div>
-                            <div class="mobile-sort-option" data-sort="stock">{{ __('theme.sort-stock') }}</div>
-                        </div>
-                    </div>
+                    @include('frontend.v1.components.mobile-sort-products', ['defaultSort' => $defaultSort])
                     <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                         @include('frontend.v1.pages.brand.parts.list')
                     </div>

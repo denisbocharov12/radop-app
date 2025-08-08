@@ -133,12 +133,23 @@ final class ProductRepository
         ;
     }
 
-    public function getAllPopularProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
+    public function getAllPopularProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
         $productIds = $popularProductProfiles->pluck('product_id');
 
-        return QueryBuilder::for(Product::query())
+        $defaultSortObj = $defaultSort;
+
+        if ($defaultSort === 'price') {
+            $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === '-price') {
+            $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === 'condition') {
+            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        }
+
+        return QueryBuilder::for(Product::query()
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -150,16 +161,17 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 'popular_order',
                 'stock',
             ])
+            ->defaultSort($defaultSortObj)
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -245,12 +257,23 @@ final class ProductRepository
             ;
     }
 
-    public function getAllNewProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
+    public function getAllNewProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
         $productIds = $newProductProfile->pluck('product_id');
 
-        return QueryBuilder::for(Product::query())
+        $defaultSortObj = $defaultSort;
+
+        if ($defaultSort === 'price') {
+            $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === '-price') {
+            $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === 'condition') {
+            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        }
+
+        return QueryBuilder::for(Product::query()
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -262,16 +285,17 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 'popular_order',
                 'stock',
             ])
+            ->defaultSort($defaultSortObj)
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -317,9 +341,20 @@ final class ProductRepository
          ;
     }
 
-    public function getAllDiscountProductsPaginatedWithFiltersAndSort(Request $request): LengthAwarePaginator
+    public function getAllDiscountProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
-        return QueryBuilder::for(Product::query())
+        $defaultSortObj = $defaultSort;
+
+        if ($defaultSort === 'price') {
+            $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === '-price') {
+            $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === 'condition') {
+            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        }
+
+        return QueryBuilder::for(Product::query()
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -331,16 +366,17 @@ final class ProductRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 'popular_order',
                 'stock',
             ])
+            ->defaultSort($defaultSortObj)
             ->where('sale_price', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }

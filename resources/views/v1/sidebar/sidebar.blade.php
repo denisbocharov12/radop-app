@@ -322,6 +322,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('banner.banner-settings.edit')}}" class="nk-menu-link"><span class="nk-menu-text">Настройка скорости переключения</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('page-setting.page-sort-settings.index') }}" class="nk-menu-link"><span class="nk-menu-text">Настройки сортировки страниц</span></a>
+                            </li>
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->

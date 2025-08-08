@@ -68,76 +68,17 @@
                     @endif
                 </div>
             </div>
-            <div class="add_to_cart_wrap">
-                <hr class="product-card-item">
-                <div class="wrap">
-                    @include('frontend.v1.components.product_price', ['product' => $product->conditions])
-                </div>
-                @include('frontend.v1.components.product_card_summary', ['product' => $product->conditions])
-                @php
-                    $package = isset($product->conditions->packages->where('order_status', true)->first()->value) ? $product->conditions->packages->sortBy('value')->first()->value : 1;
-                @endphp
-                <div class="qty-add-to-cart qty-add-to-cart-product-card">
-                    <div class="sc-product-qty qty-block">
-                        <div class="input-group-btn">
-                            <button
-                                onclick="decrementQuantity(this, {{$package}})"
-                                class="sc-product-decrement btn-quantity-product minus"
-                                type="button"
-                                id="button-minus"
-                            >
-                                -
-                            </button>
-                        </div>
-                        <input
-                            id="product-{{$product->conditions->id}}-qty"
-                            type="number"
-                            min="{{$product->conditions->min_order ?? $package}}"
-                            max="{{$product->conditions->stock}}"
-                            placeholder="{{$product->conditions->min_order ?? $package}}"
-                            value="{{$product->conditions->min_order ?? $package}}"
-                            step="{{$product->conditions->min_order ?? $package}}"
-                            name="product-{{$product->conditions->id}}-qty"
-                            data-product-id="{{$product->conditions->onec_id}}"
-                            data-price="{{\App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product->conditions)}}"
-                            data-package="{{$package}}"
-                            class="product-qty-item"
-                        />
-                        <div class="input-group-btn">
-                            <button
-                                onclick="incrementQuantity(this, {{$package}})"
-                                class="sc-product-increment btn-quantity-product plus"
-                                type="button"
-                                id="button-plus"
-                            >
-                                +
-                            </button>
-                        </div>
+            <div class="product-card-bottom">
+                <div class="add_to_cart_wrap">
+                    <hr class="product-card-item">
+                    <div class="wrap">
+                        @include('frontend.v1.components.product_price', ['product' => $product->conditions])
                     </div>
-                    <script>
-                        function incrementQuantity(button, packageSize) {
-                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                            var newValue = parseInt(input.value) + packageSize;
-                            if (newValue <= parseInt(input.max)) {
-                                input.value = newValue;
-                            }
-                        }
-
-                        function decrementQuantity(button, packageSize) {
-                            var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                            var newValue = parseInt(input.value) - packageSize;
-                            if (newValue >= parseInt(input.min)) {
-                                input.value = newValue;
-                            }
-                        }
-                    </script>
-                    <a href="#" data-id="{{$product->conditions->id}}" id="add-to-cart-{{$product->conditions->id}}"
-                       class="add_to_cart_btn">{{__('theme.add-to-cart')}}</a>
+                    @include('frontend.v1.components.product_card_summary', ['product' => $product->conditions])
+                    @include('frontend.v1.components.add_to_cart_widget_v2', ['product' => $product->conditions])
                 </div>
-            </div>
-            @if(!$product->conditions->packages->isEmpty())
                 @include('frontend.v1.components.packages_card_wrap', ['product' => $product->conditions])
-            @endif
+            </div>
         </div>
         @include('frontend.v1.components.in_cart_widget')
     </div>
