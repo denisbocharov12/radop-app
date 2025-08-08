@@ -12229,8 +12229,8 @@ input[type="range"]::-moz-range-thumb {
     padding: 10px;
 }
 .product-list-item .product-item-category .add_to_cart_wrap .qty-add-to-cart{
-    padding-bottom: 28px;
-    margin: 19px auto 0 auto;
+    padding-bottom: 29px;
+    margin: 20px auto 0 auto;
     border-top: 1px solid rgba(33, 37, 41, 0.25);
     border-bottom: 1px solid rgba(33, 37, 41, 0.25);
 }
