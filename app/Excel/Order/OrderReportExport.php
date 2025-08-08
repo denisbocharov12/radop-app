@@ -14,9 +14,10 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-final class OrderReportExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents
+final class OrderReportExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents
 {
     use Exportable;
 
@@ -42,7 +43,9 @@ final class OrderReportExport implements FromCollection, WithHeadings, WithMappi
             '№',
             'ID',
             'Клиент',
+            'Фискальный код',
             'Дата',
+            'Номер телефона',
             'Город',
             'Филиал',
             'Сумма',
@@ -58,19 +61,36 @@ final class OrderReportExport implements FromCollection, WithHeadings, WithMappi
         if($order->user?->type?->key_name === 'fiz') {
             if($order->fio === null) {
                 $order->fio = $order->user?->profile?->fio ?? '-';
+            } else {
+                $order->fio = $order->user->profile->first_name . ' ' . $order->user->profile->last_name;
             }
         } else {
             $order->fio = $order->user?->profile?->organization_name ?? '-';
+        }
+
+        if (number_format((float)$order?->user?->profile?->cod_fiscal, 0, '.', ' ') === '0') {
+            $fiscCode = '-';
+        } else {
+            $fiscCode = number_format((float)$order?->user?->profile?->cod_fiscal, 0, '.', ' ');
         }
 
         return [
             $order->order_number,
             $order->id,
             $order->fio,
+            $fiscCode,
             $order->created_at->format('d.m.Y'),
+            $order->phone,
             $order->cityModel?->name ?? $order->city,
             $order->filial?->address ?? '-',
             number_format((float)$order->total, 2, '.', ' '),
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'D' => DataType::TYPE_STRING,
         ];
     }
 
@@ -85,8 +105,11 @@ final class OrderReportExport implements FromCollection, WithHeadings, WithMappi
                 'font' => ['bold' => true],
                 'alignment' => ['horizontal' => 'center'],
             ],
-            'G'  => [
+            'I'  => [
                 'font' => ['bold' => true],
+                'alignment' => ['horizontal' => 'right'],
+            ],
+            'D'  => [
                 'alignment' => ['horizontal' => 'right'],
             ],
         ];

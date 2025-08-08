@@ -199,4 +199,15 @@ final class UserRepository
             ->paginate(self::COUNT_OF_PAGINATION)
         ;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getUsersWithOrders(): Collection
+    {
+        return User::with(['profile', 'type'])
+            ->whereHas('orders')
+            ->orderBy('name')
+            ->get();
+    }
 }

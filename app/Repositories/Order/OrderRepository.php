@@ -21,7 +21,7 @@ final class OrderRepository
         $query = Order::query()
             ->with(['orderHistory' => function($q) { $q->latest()->limit(1); }])
             ->leftJoin('users', 'orders.user_id', '=', 'users.id')
-            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->leftJoin('profiles', 'orders.user_id', '=', 'profiles.user_id')
             ->leftJoin('users as managers', 'orders.manager_id', '=', 'managers.id')
             ->leftJoin('profiles as manager_profile', 'managers.id', '=', 'manager_profile.user_id')
             ->select('orders.*');
@@ -47,7 +47,6 @@ final class OrderRepository
                 AllowedFilter::exact('filial_id'),
                 AllowedFilter::exact('user_type'),
                 AllowedFilter::exact('payment_method'),
-                AllowedFilter::exact('fio'),
                 AllowedFilter::exact('manager_id'),
                 'email',
                 'order_number',
@@ -160,6 +159,74 @@ final class OrderRepository
 
         if ($userId !== null) {
             $query->where('manager_id', $userId);
+        }
+
+        return $query->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param int|null $cityId
+     * @return Collection
+     */
+    public function getOrdersForCityReport(string $startDate, string $endDate, ?int $cityId = null): Collection
+    {
+        $query = Order::query()
+            ->with(['cityModel', 'filial', 'user.profile', 'user.type'])
+            ->whereBetween('created_at', [
+                Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay(),
+                Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay(),
+            ]);
+
+        if ($cityId !== null) {
+            $query->where('city', $cityId);
+        }
+
+        return $query->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param string|null $statusId
+     * @return Collection
+     */
+    public function getOrdersForStatusReport(string $startDate, string $endDate, ?string $statusId = null): Collection
+    {
+        $query = Order::query()
+            ->with(['cityModel', 'filial', 'user.profile', 'user.type'])
+            ->whereBetween('created_at', [
+                Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay(),
+                Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay(),
+            ]);
+
+        if ($statusId !== null) {
+            $query->where('status', $statusId);
+        }
+
+        return $query->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param string|null $userTypeId
+     * @return Collection
+     */
+    public function getOrdersForUserTypeReport(string $startDate, string $endDate, ?string $userTypeId = null): Collection
+    {
+        $query = Order::query()
+            ->with(['cityModel', 'filial', 'user.profile', 'user.type'])
+            ->whereBetween('created_at', [
+                Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay(),
+                Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay(),
+            ]);
+
+        if ($userTypeId !== null) {
+            $query->whereHas('user.type', function ($q) use ($userTypeId) {
+                $q->where('key_name', $userTypeId);
+            });
         }
 
         return $query->orderBy('created_at', 'desc')->get();

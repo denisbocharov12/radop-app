@@ -28,6 +28,21 @@ class PermissionSeeder extends Seeder
         'filial.edit',
         'filial.delete',
         'order.status.last-ten-minutes',
+        'reports.orders.index',
+        'reports.orders.generate',
+        'reports.orders.download',
+        'reports.users.index',
+        'reports.users.generate',
+        'reports.users.download',
+        'reports.orders-city.index',
+        'reports.orders-city.generate',
+        'reports.orders-city.download',
+        'reports.orders-status.index',
+        'reports.orders-status.generate',
+        'reports.orders-status.download',
+        'reports.orders-user-type.index',
+        'reports.orders-user-type.generate',
+        'reports.orders-user-type.download',
     ];
 
     private array $userPermittedRoutes = [
