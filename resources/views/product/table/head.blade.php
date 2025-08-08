@@ -10,8 +10,9 @@
             <span style="margin-right: 20px; font-weight: 500;">Выделить все товары</span>
             <select id="bulk-condition-select" class="form-select" style="width: 200px; margin-right: 10px;">
                 <option value="">Выбрать состояние</option>
-                <option value="new">New</option>
-                <option value="popular">Popular</option>
+                <option value="new">Новинка</option>
+                <option value="popular">Популярный товар</option>
+                <option value="regular">Обычный</option>
             </select>
             <button id="bulk-condition-update-btn" class="btn btn-primary">Изменить состояние</button>
         </div>
