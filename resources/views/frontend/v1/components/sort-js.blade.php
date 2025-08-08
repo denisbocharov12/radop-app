@@ -48,7 +48,7 @@
             function getSortText(sort) {
                 if(!sort) return '{{__('theme.sort-price-desc')}}';
                 if(sort === 'price') return '{{__('theme.sort-price-asc')}}';
-                if(sort === 'price_desc') return '{{__('theme.sort-price-desc')}}';
+                if(sort === '-price') return '{{__('theme.sort-price-desc')}}';
                 if(sort === 'title') return '{{__('theme.sort-title')}}';
                 if(sort === 'popular_order') return '{{__('theme.sort-popular')}}';
                 if(sort === 'condition') return '{{__('theme.sort-new')}}';
@@ -58,12 +58,9 @@
             // выделяем активный и отображаем выбранный вариант
             var found = false;
             sortOptions.forEach(function(opt){
-                var optSort = opt.getAttribute('data-sort');
-                if((!currentSort && optSort === 'price') || (currentSort === optSort) || (currentSort === '-price' && optSort === 'price_desc')) {
-                    opt.classList.add('active');
-                    sortSelected.innerHTML = getSortText(optSort) + ' <span class="arrow">&#9650;</span>';
-                    found = true;
-                }
+                const defaultSort = $('#mobile-sort-block').data('default-sort');
+                sortSelected.innerHTML = getSortText(defaultSort) + ' <span class="arrow">&#9650;</span>';
+                found = true;
             });
             if (!found) {
                 sortSelected.innerHTML = getSortText(currentSort) + ' <span class="arrow">&#9650;</span>';
