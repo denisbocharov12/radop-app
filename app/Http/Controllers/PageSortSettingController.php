@@ -8,42 +8,37 @@ use Illuminate\Http\JsonResponse;
 
 class PageSortSettingController extends Controller
 {
-    protected $repository;
-
-    public function __construct(PageSortSettingRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private readonly PageSortSettingRepository $pageSortSettingRepository
+    ) {
     }
 
-    // Получить все настройки
     public function index(): JsonResponse
     {
-        return response()->json($this->repository->getAll());
+        return response()->json($this->pageSortSettingRepository->getAll());
     }
 
-    // Получить настройку по странице
     public function show(string $page): JsonResponse
     {
-        $setting = $this->repository->getByPage($page);
+        $setting = $this->pageSortSettingRepository->getByPage($page);
         if (!$setting) {
             return response()->json(['message' => 'Not found'], 404);
         }
         return response()->json($setting);
     }
 
-    // Обновить/создать настройку
     public function update(Request $request, string $page): JsonResponse
     {
         $request->validate([
             'default_sort' => 'required|string',
         ]);
-        $setting = $this->repository->setDefaultSort($page, $request->input('default_sort'));
+        $setting = $this->pageSortSettingRepository->setDefaultSort($page, $request->input('default_sort'));
         return response()->json($setting);
     }
 
     public function webIndex()
     {
-        $settings = $this->repository->getAll()->keyBy('page');
+        $settings = $this->pageSortSettingRepository->getAll()->keyBy('page');
         $sortOptions = [
             'price' => 'По возрастанию цены',
             '-price' => 'По убыванию цены',
@@ -65,7 +60,7 @@ class PageSortSettingController extends Controller
         $pages = ['brand', 'category', 'shop'];
         foreach ($pages as $page) {
             if ($request->has($page)) {
-                $this->repository->setDefaultSort($page, $request->input($page));
+                $this->pageSortSettingRepository->setDefaultSort($page, $request->input($page));
             }
         }
         return redirect()->route('page-setting.page-sort-settings.index')->with('success', 'Настройки сохранены!');
