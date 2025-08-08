@@ -34,10 +34,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-lg-6 col-12">
-                <div class="card-body p-2">
+                <div class="card-body">
                     <div class="product-item-category">
                         <div class="product-item-title-wrap">
                             <h3 class="product_item_name">
@@ -66,10 +65,10 @@
                         <div class="product-details-wrap">
                             <div class="details-list-wrap">
                                 <ul class="ul-details">
-                                    @foreach($product->values as $value)
+                                    @foreach($product->values->take(5) as $value)
                                         <li class="item">
-                                            <span class="left">{{$value->attribute?->name}}</span>
-                                            <span class="right">{{$value->value}}</span>
+                                            <span class="left">{{ $value->attribute?->name }}</span>
+                                            <span class="right">{{ $value->value }}</span>
                                         </li>
                                     @endforeach
                                 </ul>

@@ -1,6 +1,23 @@
-<form action="{{route('product.index')}}" method="GET" class="card-inner position-relative card-tools-toggle">
-    @csrf
-    <div class="card-title-group">
+<div class="card-inner position-relative card-tools-toggle">
+    <div class="mb-3 p-3" style="background: #f8f9fa; border-radius: 8px; border: 1px solid #e5e7eb;">
+        <div class="mb-1" style="font-size: 15px; color: #555;">
+            1. Отметьте товары галочками или кнопкой "Выделить все".<br>
+            2. Выберите состояние.<br>
+            3. Нажмите "Изменить состояние".
+        </div>
+        <div class="d-flex align-items-center mb-2">
+            <input type="checkbox" id="select-all-products" style="margin-right: 10px;">
+            <span style="margin-right: 20px; font-weight: 500;">Выделить все товары</span>
+            <select id="bulk-condition-select" class="form-select" style="width: 200px; margin-right: 10px;">
+                <option value="">Выбрать состояние</option>
+                <option value="new">New</option>
+                <option value="popular">Popular</option>
+            </select>
+            <button id="bulk-condition-update-btn" class="btn btn-primary">Изменить состояние</button>
+        </div>
+    </div>
+    <form action="{{route('product.index')}}" method="GET" class="card-title-group">
+        @csrf
         <div class="card-tools">
             <input type="text" name="filter[search]" style="padding: 0" value="{{isset($query['search']) ? $query['search'] : ''}}" class="form-control border-transparent form-focus-none" placeholder="Поиск по ...">
         </div><!-- .card-tools -->
@@ -44,5 +61,5 @@
                 </li><!-- li -->
             </ul><!-- .btn-toolbar -->
         </div><!-- .card-tools -->
-    </div><!-- .card-title-group -->
-</form><!-- .card-inner -->
+    </form><!-- .card-title-group -->
+</div><!-- .card-inner -->

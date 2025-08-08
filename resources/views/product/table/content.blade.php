@@ -1,6 +1,7 @@
 <div class="card-inner p-0">
     <div class="nk-tb-list nk-tb-ulist">
         <div class="nk-tb-item nk-tb-head">
+            <div class="nk-tb-col" style="width:30px"><input type="checkbox" id="select-all-products-head"></div>
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Название товара</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Бренд</span></div>
@@ -15,6 +16,7 @@
         </div><!-- .nk-tb-item -->
         @foreach($products as $product)
             <div class="nk-tb-item" id="product-id-{{$product->id}}">
+                <div class="nk-tb-col" style="width:30px"><input type="checkbox" class="product-checkbox" value="{{$product->id}}"></div>
                 <div class="nk-tb-col">
                     <span>#{{$product->id}}</span>
                 </div>

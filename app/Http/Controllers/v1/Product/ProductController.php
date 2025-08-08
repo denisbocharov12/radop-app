@@ -14,13 +14,13 @@ use App\Exceptions\Product\ProductNotFoundException;
 use App\Exceptions\Product\ProductNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\ProductDataMapper;
+use App\Http\Mappers\Product\UpdateProductConditionDataMapper;
+use App\Http\Requests\Product\UpdateProductConditionsRequest;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductIndexRequest;
-use App\Http\Requests\Product\ProductMediaDeleteRequest;
 use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
-use App\Models\ProductProfile;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
@@ -29,26 +29,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private ProductRepository $productRepository;
-    private ProductManager $productManager;
-    private ProductDataMapper $productDataMapper;
-    private CategoryRepository $categoryRepository;
-    private BrandRepository $brandRepository;
-
     public function __construct(
-        ProductRepository                  $productRepository,
-        ProductManager                     $productManager,
-        ProductDataMapper                  $productDataMapper,
-        CategoryRepository                 $categoryRepository,
-        BrandRepository                    $brandRepository,
+        private readonly ProductRepository $productRepository,
+        private readonly ProductManager $productManager,
+        private readonly ProductDataMapper $productDataMapper,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly BrandRepository $brandRepository,
         private readonly ProductConditions $productConditions,
-    )
-    {
-        $this->productRepository = $productRepository;
-        $this->productManager = $productManager;
-        $this->productDataMapper = $productDataMapper;
-        $this->categoryRepository = $categoryRepository;
-        $this->brandRepository = $brandRepository;
+        private readonly UpdateProductConditionDataMapper $updateProductConditionDataMapper,
+    ) {
     }
 
     public function index(ProductIndexRequest $request)
@@ -140,6 +129,15 @@ class ProductController extends Controller
         } catch (AttachmentNotFoundException $e) {
             throw new AttachmentNotFoundValidationException();
         }
+    }
+
+    public function updateProductConditions(UpdateProductConditionsRequest $request)
+    {
+        $data = $this->updateProductConditionDataMapper->mapFromRequestToNormalized($request);
+
+        $this->productManager->updateProductConditions($data);
+
+        return response()->json(['status' => 'success']);
     }
 
     public function sortFeatured()
