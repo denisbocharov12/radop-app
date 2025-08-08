@@ -12,6 +12,7 @@ use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,6 +25,7 @@ final class ThemeBrandController extends Controller
         private readonly AttributeRepository $attributeRepository,
         private readonly ProductRepository $productRepository,
         private readonly PageSortSettingRepository $pageSortSettingRepository,
+//        private readonly SeoMetaRepository $seoMetaRepository,
     ) {
     }
 
@@ -36,6 +38,13 @@ final class ThemeBrandController extends Controller
         if ($existedBrand === null) {
             throw new BrandNotFoundValidationException();
         }
+
+//        $seo = $this->seoMetaRepository->get('brand', $existedBrand->onec_id, app()->getLocale());
+//
+//        seo()
+//            ->title($seo->title ?? $existedBrand->title)
+//            ->description($seo->description ?? $existedBrand->description)
+//            ->image($seo->og_image ?? $existedBrand->getFirstMediaUrl());
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);

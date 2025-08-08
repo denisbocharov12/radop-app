@@ -22,7 +22,7 @@
                                         <p class="order__product">
                                         <span
                                             style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                            {{$products->where('id',$order->products->first()->product_id)->first()->title}} ...
+                                            {{$products->where('id',$order->products->first()->product_id)->first()?->title}} ...
                                         </span>
                                         </p>
                                         <p class="order__date">

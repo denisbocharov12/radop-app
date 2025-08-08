@@ -5,7 +5,6 @@
         $sessionId = auth()->guard('user')->user()->id;
     }
 @endphp
-
 <div class="col-lg-9 col-cart-contents">
     <div class="table-responsive">
         <table class="theme-cart-table">
@@ -21,19 +20,23 @@
             </thead>
             <tbody>
                 @foreach(\Cart::session($sessionId)->getContent()->sort() as $item)
-                @php
-                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
-                @endphp
                 <tr class="theme-cart-item-row">
                     <td class="theme-cart-item-img">
                         <a href="{{route('theme.product.index',$item->model->slug)}}">
-                            @foreach($imagesArray as $key => $file)
-                                @switch($key)
-                                    @case(0)
-                                    <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
-                                    @break
-                                @endswitch
-                            @endforeach
+                            @if($item->associatedModel->hasMedia('products'))
+                                <img src="{{$item->associatedModel->getFirstMediaUrl('products')}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                            @else
+                                @php
+                                    $imagesArray = \App\Services\Product\ProductImagesManager::getProductImagesFromAbsolutePath($item->associatedModel->onec_id);
+                                @endphp
+                                @foreach($imagesArray as $key => $file)
+                                    @switch($key)
+                                        @case(0)
+                                            <img src="/{{$file}}" alt="{{$item->associatedModel->title}}" class="sc-image" />
+                                            @break
+                                    @endswitch
+                                @endforeach
+                            @endif
                         </a>
                     </td>
                     <td class="theme-cart-item-row-title">

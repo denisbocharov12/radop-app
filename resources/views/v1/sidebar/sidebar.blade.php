@@ -272,11 +272,31 @@
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
+
                     <li class="nk-menu-item has-sub">
-                        <a href="{{route('reports.orders.index')}}" class="nk-menu-link">
+                        <a href="#" class="nk-menu-link  nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-table-view"></em></span>
                             <span class="nk-menu-text">Отчеты</span>
                         </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.orders.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по заказам</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.users.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по клиенту</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.orders-city.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по городу</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.orders-status.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по статусу заказов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.orders-user-type.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по типам пользователей</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
                     </li>
                     <li class="nk-menu-item has-sub">
                         @hasrole('admin')

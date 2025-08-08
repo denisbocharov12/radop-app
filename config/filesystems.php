@@ -47,7 +47,7 @@ return [
         'media' => [
             'driver' => 'local',
             'root' => storage_path('app/media'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL').'/media',
             'visibility' => 'public',
         ],
 
@@ -63,6 +63,12 @@ return [
             'root' => storage_path('app/telegram'),
             'url' => env('APP_URL').'/storage/app/telegram',
             'visibility' => 'public',
+        ],
+
+        'temp_import' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp_import'),
+            'visibility' => 'private',
         ],
 
         's3' => [
