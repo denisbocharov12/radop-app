@@ -52,7 +52,7 @@ final class ThemeBrandController extends Controller
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->onec_id);
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
