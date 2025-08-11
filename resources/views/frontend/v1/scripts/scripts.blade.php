@@ -8,6 +8,29 @@
 <script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.21"></script>
 
 <script>
+    window.getLimitedStockWarning = function(maxQty, unit){
+        try {
+            return @json(__('theme.limited_stock_warning', ['qty' => 'MAX_QTY', 'unit' => 'UNIT']))
+                .replace('MAX_QTY', String(maxQty))
+                .replace('UNIT', String(unit || '{{__("theme.package_unit")}}'));
+        } catch (e) {
+            return 'Доступно только ' + maxQty + ' ' + (unit || '{{__("theme.package_unit")}}');
+        }
+    }
+    window.getLimitedStockWarnings = function(maxQty, unit){
+        try {
+            const msg1 = @json(__('theme.limited_stock_only_qty', ['qty' => 'MAX_QTY', 'unit' => 'UNIT']))
+                .replace('MAX_QTY', String(maxQty))
+                .replace('UNIT', String(unit || '{{__("theme.package_unit")}}'));
+            const msg2 = @json(__('theme.limited_stock_contact'));
+            return [msg1, msg2];
+        } catch (e) {
+            return [
+                'Доступно только ' + maxQty + ' ' + (unit || '{{__("theme.package_unit")}}'),
+                '📞 +373 79 782 112'
+            ];
+        }
+    }
     $(document).on('click', '.add-to-wishlist-btn', function (e) {
         e.preventDefault();
         var product_id = $(this).data('id');
@@ -220,7 +243,9 @@
                     }
                 }
                 if(response['status'] === 'not_in_stock') {
-                    toastr["warning"](response['msg'])
+                    var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
+                    toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                    toastr["warning"](_msg)
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr["error"](response['msg'])
@@ -297,7 +322,9 @@
                     }
                 }
                 if(response['status'] === 'not_in_stock') {
-                    toastr["warning"](response['msg'])
+                    var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
+                    toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                    toastr["warning"](_msg)
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr["error"](response['msg'])
@@ -509,8 +536,9 @@
                     // }
                 }
                 if(response['status'] === 'not_in_stock') {
-                    toastr["warning"](response['msg'])
+                    var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
                     toastr.options = {
+                        "escapeHtml": false,
                         "closeButton": false,
                         "debug": false,
                         "newestOnTop": false,
@@ -527,6 +555,7 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
+                    toastr["warning"](_msg)
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr.options = {
@@ -731,14 +760,41 @@
                                     });
 
                                     $('.btn-quantity-product').click(function (){
-                                        var qtyCount = $(this).parent().parent('.qty-block').find('.product-qty-item').val();
-                                        var productId = $(this).parent().parent('.qty-block').find('.product-qty-item').data('product-id');
-                                        var productPrice = $(this).parent().parent('.qty-block').find('.product-qty-item').data('price');
-                                        var packageCount = $(this).parent().parent('.qty-block').find('.product-qty-item').data('package');
+                                        var $input = $(this).parent().parent('.qty-block').find('.product-qty-item');
+                                        var max = Number($input.attr('max'));
+                                        var step = Number($input.attr('step')) || 1;
+                                        var current = Number($input.val()) || 0;
+
+                                        if ($(this).hasClass('plus') && !isNaN(max)) {
+                                            if (current >= max || current + step > max) {
+                                                $input.val(max);
+                                                var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $input.attr('data-unit') || undefined) : null;
+                                                if (typeof toastr !== 'undefined') {
+                                                    if (msgs && msgs.length) {
+                                                        var html = msgs.join('<br/><br/>');
+                                                        toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                                                        toastr["warning"](html);
+                                                    } else {
+                                                        toastr["warning"]('Доступно только ' + max);
+                                                    }
+                                                }
+                                            } else {
+                                                $input[0].stepUp();
+                                                $input.data('warnedMaxShown', false);
+                                            }
+                                        }
+                                        if ($(this).hasClass('minus')) {
+                                            $input[0].stepDown();
+                                            $input.data('warnedMaxShown', false);
+                                        }
+
+                                        var qtyCount = $input.val();
+                                        var productId = $input.data('product-id');
+                                        var productPrice = $input.data('price');
+                                        var packageCount = $input.data('package');
 
                                         var changedElement = $('#product-card-summary-quick-'+productId);
                                         var result = (qtyCount*productPrice)/packageCount;
-                                        console.log(productId);
                                         changedElement.html(result.toFixed(2).replace('.',','));
                                     });
                                     $('.product-qty-item').on('input change', function () {
@@ -746,7 +802,22 @@
                                         var max = $(this).attr('max');
                                         if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
                                             $(this).val(max);
+                                            if (!$(this).data('warnedMaxShown')) {
+                                                var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
+                                                if (typeof toastr !== 'undefined') {
+                                                    if (msgs && msgs.length) {
+                                                        var html = msgs.join('<br/><br/>');
+                                                        toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                                                        toastr["warning"](html);
+                                                    } else {
+                                                        toastr["warning"]('Доступно только ' + max);
+                                                    }
+                                                }
+                                                $(this).data('warnedMaxShown', true);
+                                            }
                                             qtyCount = max;
+                                        } else {
+                                            $(this).data('warnedMaxShown', false);
                                         }
                                         var productId = $(this).data('product-id');
                                         var productPrice = $(this).data('price');

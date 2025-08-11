@@ -66,13 +66,12 @@ final class ThemeProductManager
         $cartQty = $cartProduct ? (int)$cartProduct->quantity : 0;
 
         if ($cartQty >= $productStock) {
-            $response['msg'] = __('theme.product_not_in_stock_for_buy');
+            $response['msg'] = $this->buildLimitedStockMessage($existedProduct->stock);
             $response['status'] = 'not_in_stock';
             return $response;
         }
-
         if ($productStock < $cartQty + $productQty) {
-            $response['msg'] = __('theme.product_not_in_stock_for_buy');
+            $response['msg'] = $this->buildLimitedStockMessage($existedProduct->stock);
             $response['status'] = 'not_in_stock';
             return $response;
         }
@@ -184,7 +183,7 @@ final class ThemeProductManager
 
             if ($productStock < (int)$exProduct->qty + (int)$productQty)
             {
-                $response['msg'] = __('theme.product_not_in_stock_for_buy');
+                $response['msg'] = $this->buildLimitedStockMessage($existedProduct->stock);
                 $response['status'] = 'not_in_stock';
                 $result = false;
             } else
@@ -214,6 +213,14 @@ final class ThemeProductManager
         }
 
         return $response;
+    }
+
+    private function buildLimitedStockMessage(string $available): string
+    {
+        $unit = __('theme.in_cart_unit');
+        $line1 = __('theme.limited_stock_only_qty', ['qty' => $available, 'unit' => $unit]);
+        $line2 = __('theme.limited_stock_contact');
+        return $line1 . "\n\n" . $line2;
     }
 
     public function deleteCartItem(string $productId, Request $request): array
