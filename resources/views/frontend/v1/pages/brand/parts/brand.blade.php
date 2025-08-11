@@ -1,6 +1,6 @@
 <section class="section-standart section-sort">
     <div class="container">
-        <div class="row" style="border-block: 1px solid #eee; margin-bottom: 25px">
+        <div class="row d-none d-md-flex" style="border-block: 1px solid #eee; margin-bottom: 25px">
             <div class="col-lg-3"></div>
             <div class="col-md-12 col-lg-9 col-12">
                 <div class="sort-block">
@@ -37,10 +37,15 @@
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
                     @include('frontend.v1.components.mobile-sort-products', ['defaultSort' => $defaultSort])
-                    <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
-                        @include('frontend.v1.pages.brand.parts.list')
+                    <div class="d-none d-md-block">
+                        <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
+                            @include('frontend.v1.pages.brand.parts.list')
+                        </div>
+                        <div id="productsListView" style="display:none;">
+                            @include('frontend.v1.pages.brand.parts.list-view')
+                        </div>
                     </div>
-                    <div id="productsListView" style="display:none;">
+                    <div class="d-block d-md-none">
                         @include('frontend.v1.pages.brand.parts.list-view')
                     </div>
                     <div id="mobile-per-page-block" class="mobile-per-page-block">
