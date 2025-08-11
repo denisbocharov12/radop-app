@@ -522,8 +522,31 @@ $(document).ready(function () {
 
         if ($(this).hasClass('minus')) {
             input[0].stepDown();
+            input.data('warnedMaxShown', false);
         } else if ($(this).hasClass('plus')) {
-            input[0].stepUp();
+            var max = Number(input.attr('max'));
+            var step = Number(input.attr('step')) || 1;
+            var current = Number(input.val()) || 0;
+            if (!isNaN(max)) {
+                if (current >= max || current + step > max) {
+                    input.val(max);
+                    var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(input).attr('data-unit') || undefined) : null;
+                    if (typeof toastr !== 'undefined') {
+                        if (msgs && msgs.length) {
+                            var html = msgs.join('<br/><br/>');
+                            toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                            toastr["warning"](html);
+                        } else {
+                            toastr["warning"]('Доступно только ' + max);
+                        }
+                    }
+                } else {
+                    input[0].stepUp();
+                    input.data('warnedMaxShown', false);
+                }
+            } else {
+                input[0].stepUp();
+            }
         }
 
         var qtyCount = input.val();
@@ -552,17 +575,31 @@ $(document).ready(function () {
         var productId = $(this).data('product-id');
         var productPrice = $(this).data('price');
         var packageCount = $(this).data('package');
+        var max = $(this).attr('max');
 
-        // Проверяем максимальное значение
-        if (qtyCount !== '' && $(this).attr('max') !== '' && Number(qtyCount) > Number($(this).attr('max'))) {
-            $(this).val($(this).attr('max'));
-            qtyCount = $(this).attr('max');
+        if (qtyCount !== '' && max !== '' && Number(qtyCount) > Number(max)) {
+            $(this).val(max);
+            if (!$(this).data('warnedMaxShown')) {
+                var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
+                if (typeof toastr !== 'undefined') {
+                    if (msgs && msgs.length) {
+                        var html = msgs.join('<br/><br/>');
+                        toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                        toastr["warning"](html);
+                    } else {
+                        toastr["warning"]('Доступно только ' + max);
+                    }
+                }
+                $(this).data('warnedMaxShown', true);
+            }
+            qtyCount = max;
+        } else {
+            $(this).data('warnedMaxShown', false);
         }
 
         var result = (qtyCount*productPrice)/packageCount;
         var formatted = result.toFixed(2).replace('.',',');
 
-        // определяем, в каком контейнере находится input
         let isInTableView = $(this).closest('#productsTableView').length > 0;
         let isInListView = $(this).closest('#productsListView').length > 0;
 
