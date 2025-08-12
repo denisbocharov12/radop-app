@@ -11,11 +11,12 @@
             <thead class="theme-cart-table-thead">
                 <tr>
                     <th></th>
-                    <th>{{__('theme.cart-table-name')}}</th>
+                    <th class="d-none d-md-table-cell">{{__('theme.cart-table-name')}}</th>
                     <th class="text-center">{{__('theme.cart-table-quantity')}}</th>
                     <th class="text-center">{{__('theme.cart-table-price')}}</th>
                     <th class="text-center">{{__('theme.cart-table-sum')}}</th>
                     <th></th>
+                    <th class="d-table-cell d-md-none">{{__('theme.cart-table-name')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +40,7 @@
                             @endif
                         </a>
                     </td>
-                    <td class="theme-cart-item-row-title">
+                    <td class="theme-cart-item-row-title d-none d-md-table-cell">
                         <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
                             <h5 class="item-title">
                                 {{$item->associatedModel->title}}
@@ -100,6 +101,13 @@
                     </td>
                     <td class="theme-cart-item-delete">
                         <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
+                    </td>
+                    <td class="theme-cart-item-row-title d-table-cell d-md-none">
+                        <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
+                            <h5 class="item-title">
+                                {{$item->associatedModel->title}}
+                            </h5>
+                        </a>
                     </td>
                 </tr>
                 @endforeach
