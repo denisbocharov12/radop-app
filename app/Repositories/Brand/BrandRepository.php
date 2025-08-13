@@ -86,9 +86,20 @@ final class BrandRepository
         return Brand::query()->where('title', $name)->first();
     }
 
-    public function getAllPaginatedWithFiltersToFrontEnd(Brand $brand, Request $request): LengthAwarePaginator
+    public function getAllPaginatedWithFiltersToFrontEnd(Brand $brand, Request $request, string $defaultSort): LengthAwarePaginator
     {
-        $query = $brand->products();
+        $query = Product::where('brand_id', $brand->onec_id)
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
+
+        $defaultSortObj = $defaultSort;
+
+        if ($defaultSort === 'price') {
+            $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === '-price') {
+            $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
+        } elseif ($defaultSort === 'condition') {
+            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        }
 
         return QueryBuilder::for($query)
             ->allowedFilters([
@@ -103,21 +114,15 @@ final class BrandRepository
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
-                AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
+                AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 'popular_order',
                 'stock',
             ])
+            ->defaultSort($defaultSortObj)
             ->where('status', true)
             ->where('site_status', true)
             ->groupBy('products.onec_id')
-            ->orderByRaw("
-            CASE
-                WHEN sale_price IS NOT NULL AND sale_price != ''
-                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
-                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
-            END ASC
-            ")
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
         ;

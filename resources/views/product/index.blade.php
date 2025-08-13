@@ -60,6 +60,50 @@
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
             });
+
+            $('#select-all-products, #select-all-products-head').on('change', function() {
+                const checked = $(this).is(':checked');
+                $('.product-checkbox').prop('checked', checked);
+                $('#select-all-products, #select-all-products-head').prop('checked', checked);
+            });
+
+            $('#bulk-condition-update-btn').on('click', function(e) {
+                e.preventDefault();
+                const productIds = $('.product-checkbox:checked').map(function() { return $(this).val(); }).get();
+                const condition = $('#bulk-condition-select').val();
+
+                if (productIds.length === 0) {
+                    Swal.fire('Ошибка', 'Выберите хотя бы один товар', 'error');
+                    return;
+                }
+                if (!condition) {
+                    Swal.fire('Ошибка', 'Выберите состояние', 'error');
+                    return;
+                }
+
+                $.ajax({
+                    url: "{{ route('product.products.update-conditions') }}",
+                    type: "POST",
+                    data: {
+                        product_ids: productIds,
+                        condition: condition,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function() {
+                        Swal.fire({
+                            title: 'Успех',
+                            text: 'Состояние успешно обновлено. Страница будет перезагружена...',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function(){ location.reload(); }, 1500);
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Ошибка', xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Произошла ошибка', 'error');
+                    }
+                });
+            });
         });
 
         function askToDeleteProduct(product_id, token, path)

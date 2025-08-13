@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Brand;
 
-use App\Enums\PageTypes;
 use App\Exceptions\Brand\BrandNotFoundValidationException;
 use App\Exports\BrandExport;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
+use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeBrandController extends Controller
 {
-    use SEOTools;
     private const PUBLIC_DISK = 'public';
 
     public function __construct(
@@ -31,8 +28,8 @@ final class ThemeBrandController extends Controller
         private readonly ProductRepository $productRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
-    )
-    {
+        private readonly PageSortSettingRepository $pageSortSettingRepository,
+    ) {
     }
 
     public function index(Request $request, string $onecId)
@@ -61,7 +58,8 @@ final class ThemeBrandController extends Controller
             $this->seo()->jsonLd()->setType('Article');
         }
 
-        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request);
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
+        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
@@ -73,7 +71,8 @@ final class ThemeBrandController extends Controller
             'breadcrumbs',
             'query',
             'brands',
-            'attributes'
+            'attributes',
+            'defaultSort',
         ]));
     }
 

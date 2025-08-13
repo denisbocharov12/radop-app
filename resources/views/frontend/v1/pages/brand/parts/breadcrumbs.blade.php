@@ -1,9 +1,9 @@
 <section class="section-standart section-breadcrumb">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-12 col-breadcrumb d-none d-md-flex mb-4">
+            <div class="col-12 col-breadcrumb d-md-flex mb-4">
                 <nav>
-                    <ol class="breadcrumb text-white d-none d-md-flex">
+                    <ol class="breadcrumb text-white d-md-flex">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
                         <li class="breadcrumb-item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.shop')}}</a></li>
                         @foreach($breadcrumbs as $item)

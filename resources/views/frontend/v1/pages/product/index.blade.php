@@ -321,8 +321,9 @@
                         toastr["success"](response['msg']);
                     }
                     if (response['status'] == "not_in_stock") {
-                        toastr["warning"]("Данного товара нет в наличии больше указанной цифры...")
+                        var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
                         toastr.options = {
+                            "escapeHtml": false,
                             "closeButton": false,
                             "debug": false,
                             "newestOnTop": false,
@@ -339,18 +340,34 @@
                             "showMethod": "fadeIn",
                             "hideMethod": "fadeOut"
                         }
+                        toastr["warning"](_msg)
                     }
                 }
             });
         })
 
-        // динамический пересчёт итоговой цены и ограничение по max
+        // динамический пересчёт итоговой цены и ограничение по max + предупреждение
         $(document).on('input change', '.product-qty-item', function () {
             var qtyCount = $(this).val();
             var max = $(this).attr('max');
             if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
                 $(this).val(max);
+                if (!$(this).data('warnedMaxShown')) {
+                    var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
+                    if (typeof toastr !== 'undefined') {
+                        if (msgs && msgs.length) {
+                            var html = msgs.join('<br/><br/>');
+                            toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                            toastr["warning"](html);
+                        } else {
+                            toastr["warning"]('Доступно только ' + max);
+                        }
+                    }
+                    $(this).data('warnedMaxShown', true);
+                }
                 qtyCount = max;
+            } else {
+                $(this).data('warnedMaxShown', false);
             }
             var productId = $(this).data('product-id');
             var productPrice = $(this).data('price');

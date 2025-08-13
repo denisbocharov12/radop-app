@@ -71,4 +71,8 @@ Route::prefix('products')->name('product.')->group(function () {
         ->post('/sorts/hot', [ProductController::class, 'sortHotOrder'])
         ->name('sort.order.hot')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('/products/update-conditions', [ProductController::class, 'updateProductConditions'])
+        ->name('products.update-conditions')
+    ;
 });

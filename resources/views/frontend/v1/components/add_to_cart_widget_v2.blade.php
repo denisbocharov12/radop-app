@@ -8,6 +8,7 @@
             class="sc-product-decrement btn-quantity-product minus"
             type="button"
             id="button-minus"
+            style="touch-action: manipulation;"
         >
             -
         </button>
@@ -31,6 +32,7 @@
             class="sc-product-increment btn-quantity-product plus"
             type="button"
             id="button-plus"
+            style="touch-action: manipulation;"
         >
             +
         </button>

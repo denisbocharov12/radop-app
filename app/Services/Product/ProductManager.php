@@ -7,10 +7,8 @@ use App\Exceptions\Attachments\AttachmentNotFoundException;
 use App\Exceptions\Brand\BrandNotFoundException;
 use App\Exceptions\Category\CategoryNotFoundException;
 use App\Exceptions\Product\ProductNotFoundException;
-use App\Http\Requests\Category\CategoryDeleteRequest;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
-use App\Http\Requests\Product\ProductMediaDeleteRequest;
 use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -26,29 +24,15 @@ use Illuminate\Support\Str;
 
 class ProductManager
 {
-    private CategoryRepository $categoryRepository;
-    private ProductRepository $productRepository;
-    private BrandRepository $brandRepository;
-    private AttachmentsManager $attachmentsManager;
-    private AttachmentsRepository $attachmentsRepository;
-    private EntityStatusManager $entityStatusManager;
-
     public function __construct(
-        CategoryRepository    $categoryRepository,
-        ProductRepository     $productRepository,
-        BrandRepository       $brandRepository,
-        AttachmentsManager    $attachmentsManager,
-        AttachmentsRepository $attachmentsRepository,
-        EntityStatusManager   $entityStatusManager,
+        private readonly CategoryRepository    $categoryRepository,
+        private readonly ProductRepository     $productRepository,
+        private readonly BrandRepository       $brandRepository,
+        private readonly AttachmentsManager    $attachmentsManager,
+        private readonly AttachmentsRepository $attachmentsRepository,
+        private readonly EntityStatusManager   $entityStatusManager,
         private readonly ONECManager $ONECManager,
-    )
-    {
-        $this->categoryRepository = $categoryRepository;
-        $this->productRepository = $productRepository;
-        $this->brandRepository = $brandRepository;
-        $this->attachmentsManager = $attachmentsManager;
-        $this->attachmentsRepository = $attachmentsRepository;
-        $this->entityStatusManager = $entityStatusManager;
+    ) {
     }
 
     public function store(ProductData $productData, ProductRequest $request): void
@@ -187,6 +171,19 @@ class ProductManager
         }
 
         $this->attachmentsManager->deleteAttachmentsFromModel($product, (int)$request->id);
+    }
+
+    public function updateProductConditions(\App\Data\Product\UpdateProductConditionsData $data): void
+    {
+        $products = Product::query()->whereIn('id', $data->product_ids)->get();
+
+        foreach ($products as $product) {
+            $profile = $product->data;
+            if ($profile instanceof ProductProfile) {
+                $profile->update(['condition' => $data->condition]);
+                $profile->save();
+            }
+        }
     }
 
     private function attachCategoriesToProduct(Product $product, array $categories): void
