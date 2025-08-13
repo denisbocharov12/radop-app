@@ -94,6 +94,21 @@ final class PageTypes
         return 'shop_catalog';
     }
 
+    public function getNewProductsType(): string
+    {
+        return 'new_products';
+    }
+
+    public function getPopularProductsType(): string
+    {
+        return 'popular_products';
+    }
+
+    public function getSaleProductsType(): string
+    {
+        return 'sale_products';
+    }
+
     public function getCartType(): string
     {
         return 'cart';
@@ -136,6 +151,9 @@ final class PageTypes
             'delivery' => 'Доставка',
             'shop' => 'Магазин',
             'shop_catalog' => 'Каталог',
+            'new_products' => 'Новые товары',
+            'sale_products' => 'Товары со скидкой',
+            'popular_products' => 'Популярные товары',
             'my_orders' => 'Мои заказы',
             'privacy_policy' => 'Политика конфиденциальности',
             'terms_conditions' => 'Условия использования',
@@ -163,6 +181,9 @@ final class PageTypes
             'delivery' => 'Доставка',
             'shop' => 'Магазин',
             'shop_catalog' => 'Каталог',
+            'new_products' => 'Новые товары',
+            'sale_products' => 'Товары со скидкой',
+            'popular_products' => 'Популярные товары',
             'my_orders' => 'Мои заказы',
             'privacy_policy' => 'Политика конфиденциальности',
             'terms_conditions' => 'Условия использования',

@@ -54,7 +54,7 @@ final class ThemeProductController extends Controller
 
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? $product->title);
-            $this->seo()->setDescription($seo->description ?? strip_tags((string)$product->description));
+            $this->seo()->setDescription($seo->description ?? strip_tags((string)$product?->data->summary));
             $this->seo()->addImages($product->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
             (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());

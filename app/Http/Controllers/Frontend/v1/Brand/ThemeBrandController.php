@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Brand;
 
+use App\Enums\PageTypes;
 use App\Exceptions\Brand\BrandNotFoundValidationException;
 use App\Exports\BrandExport;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,7 @@ use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 

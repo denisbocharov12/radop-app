@@ -40,7 +40,7 @@ final class ThemeShopController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllToShop();
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getShopType(), app()->getLocale());
 
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
@@ -64,7 +64,6 @@ final class ThemeShopController extends Controller
             'allProducts',
         ]));
     }
-
     public function newProducts(Request $request)
     {
         $query = $request->query('filter');
@@ -75,7 +74,8 @@ final class ThemeShopController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getNewProductsType(), app()->getLocale());
+
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
             $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
@@ -95,7 +95,6 @@ final class ThemeShopController extends Controller
             'defaultSort',
         ]));
     }
-
     public function popularProducts(Request $request)
     {
         $query = $request->query('filter');
@@ -106,7 +105,8 @@ final class ThemeShopController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getPopularProductsType(), app()->getLocale());
+
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
             $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
@@ -137,7 +137,7 @@ final class ThemeShopController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSaleProductsType(), app()->getLocale());
 
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));

@@ -31,7 +31,7 @@ final class ThemeWishListController extends Controller
     {
         $themeBrands = $this->brandRepository->getLimited();
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getAccountType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getWishListType(), app()->getLocale());
         if ($seo !== null) {
             $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
             $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
