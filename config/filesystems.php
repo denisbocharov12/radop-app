@@ -58,6 +58,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'banners' => [
+            'driver' => 'local',
+            'root' => storage_path('app/banners'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
         'telegram' => [
             'driver' => 'local',
             'root' => storage_path('app/telegram'),
@@ -100,6 +107,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('media') => storage_path('app/media'),
         public_path('files') => storage_path('app/files'),
+        public_path('banners') => storage_path('app/banners'),
     ],
 
 ];

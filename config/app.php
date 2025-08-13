@@ -205,6 +205,7 @@ return [
 
         PropertyServiceProvider::class,
         WishListProvider::class,
+        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
     ],
 
     /*

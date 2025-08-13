@@ -10,7 +10,7 @@ use App\Http\Middleware\CheckPermissions;
 use App\Http\Middleware\CheckUserPermissions;
 use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\ExecuteWriteRequestInTransaction;
-use App\Http\Middleware\Localization;
+use App\Http\Middleware\SetDefaultSeoTitleFromLocalize;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        SetDefaultSeoTitleFromLocalize::class,
     ];
 
     /**
@@ -98,6 +99,6 @@ class Kernel extends HttpKernel
         'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
         'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
-        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
     ];
 }

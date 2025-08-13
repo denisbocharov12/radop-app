@@ -4,23 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Product;
 
+use App\Enums\PageTypes;
 use App\Exceptions\Product\ProductNotFoundException;
 use App\Exceptions\Product\ProductNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\AddToCartDataMapper;
 use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\Theme\Product\ThemeProductManager;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 
 final class ThemeProductController extends Controller
 {
+    use SEOTools;
+
     public function __construct(
         private readonly ThemeProductManager $themeProductManager,
         private readonly ProductRepository $productRepository,
         private readonly AddToCartDataMapper $addToCartDataMapper,
         private readonly ThemeCategoryManager $themeCategoryManager,
+        private readonly SeoMetaRepository $seoMetaRepository,
+        private readonly PageTypes $pageTypes,
     ) {
     }
 
@@ -40,6 +48,22 @@ final class ThemeProductController extends Controller
         }
         if (!$product->categories->isEmpty()) {
             $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($product->categories->first());
+        }
+
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getProductType(), (string)($product->onec_id ?? $product->id), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? $product->title);
+            $this->seo()->setDescription($seo->description ?? strip_tags((string)$product->description));
+            $this->seo()->addImages($product->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+            SEOMeta::setKeywords($seoKeywords);
+
+            $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
+            $this->seo()->opengraph()->addProperty('type', 'product');
+            $this->seo()->jsonLd()->setType('Product');
         }
 
         return view('frontend.v1.pages.product.index', compact([

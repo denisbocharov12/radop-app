@@ -3,20 +3,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Shop;
 
+use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\SeoMetaRepository;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 use App\Exports\BrandExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeShopController extends Controller
 {
+    use SEOTools;
+
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
         private readonly AttributeRepository $attributeRepository,
+        private readonly SeoMetaRepository $seoMetaRepository,
+        private readonly PageTypes $pageTypes,
     ) {
     }
 
@@ -28,6 +36,22 @@ final class ThemeShopController extends Controller
         $allProducts = $this->productRepository->getAll();
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllToShop();
+
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+            SEOMeta::setKeywords($seoKeywords);
+
+            $this->seo()->opengraph()->setUrl(route('theme.shop.index'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
@@ -47,6 +71,18 @@ final class ThemeShopController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
 
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+            SEOMeta::setKeywords($seoKeywords);
+            $this->seo()->opengraph()->setUrl(route('theme.shop.new'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
+
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
@@ -63,6 +99,18 @@ final class ThemeShopController extends Controller
         $allPopularProducts = $this->productRepository->getAllPopularProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
+
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+            SEOMeta::setKeywords($seoKeywords);
+            $this->seo()->opengraph()->setUrl(route('theme.shop.popular'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
 
         return view('frontend.v1.pages.shop.index', compact([
             'products',
@@ -81,6 +129,19 @@ final class ThemeShopController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);
 
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+            SEOMeta::setKeywords($seoKeywords);
+            $this->seo()->opengraph()->setUrl(route('theme.shop.sale'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
+
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
@@ -91,6 +152,19 @@ final class ThemeShopController extends Controller
 
     public function catalog(Request $request)
     {
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getShopCatalogType(), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+            SEOMeta::setKeywords($seoKeywords);
+            $this->seo()->opengraph()->setUrl(route('theme.shop.sale'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
+
         return view('frontend.v1.pages.shop.catalog');
     }
 
