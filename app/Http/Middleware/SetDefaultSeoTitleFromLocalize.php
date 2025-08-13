@@ -2,11 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 final class SetDefaultSeoTitleFromLocalize
 {
