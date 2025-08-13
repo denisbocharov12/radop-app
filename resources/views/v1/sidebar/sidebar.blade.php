@@ -307,6 +307,14 @@
                         @endhasrole
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
+                        @hasrole('admin')
+                        <a href="{{route('seo_meta.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><em class="icon ni ni-stop-circle-fill"></em></span>
+                            <span class="nk-menu-text">SEO</span>
+                        </a>
+                        @endhasrole
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-setting"></em></span>
                             <span class="nk-menu-text">Настройки сайта</span>

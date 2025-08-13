@@ -28,6 +28,15 @@ final class AttachmentsManager
         }
     }
 
+    public function storeToFilesAttachmentsFromRequestToModelWithResponsiveImages(Request $request, Model $model)
+    {
+        if ($request->hasFile('attachments')) {
+            foreach ($request->attachments as $key => $mediaItem) {
+                $model->addMedia($request->attachments[$key])->toMediaCollection(self::FILE_DISK);
+            }
+        }
+    }
+
     public function syncAttachmentsFromRequestToModel()
     {
 

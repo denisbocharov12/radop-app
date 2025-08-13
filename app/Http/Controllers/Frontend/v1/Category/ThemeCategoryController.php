@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Category;
 
+use App\Enums\PageTypes;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
@@ -13,12 +14,17 @@ use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeCategoryController extends Controller
 {
+    use SEOTools;
+
     public function __construct(
         private readonly CategoryRepository $categoryRepository,
         private readonly ProductRepository $productRepository,
@@ -26,6 +32,8 @@ final class ThemeCategoryController extends Controller
         private readonly BrandRepository $brandRepository,
         private readonly AttributeRepository $attributeRepository,
         private readonly PageSortSettingRepository $pageSortSettingRepository,
+        private readonly SeoMetaRepository $seoMetaRepository,
+        private readonly PageTypes $pageTypes,
     ) {
     }
 
@@ -45,6 +53,22 @@ final class ThemeCategoryController extends Controller
         $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($existedCategory);
 
         $themeBrands = $this->brandRepository->getLimited();
+
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? $existedCategory->title);
+            $this->seo()->setDescription($seo->description ?? strip_tags((string)$existedCategory->description));
+            $this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+            SEOMeta::setKeywords($seoKeywords);
+
+            $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
+            $this->seo()->opengraph()->addProperty('type', 'category');
+            $this->seo()->jsonLd()->setType('CollectionPage');
+        }
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([

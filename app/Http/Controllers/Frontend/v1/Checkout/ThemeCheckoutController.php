@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Checkout;
 
 use App\Enums\OrderPaymentMethods;
+use App\Enums\PageTypes;
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Exceptions\Checkout\ManagerNotFoundException;
 use App\Exceptions\Checkout\ManagerNotFoundValidationException;
@@ -24,11 +25,16 @@ use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
 use App\Repositories\City\CityRepository;
 use App\Repositories\DeliveryMethod\DeliveryMethodRepository;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Checkout\ThemeCheckoutManager;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Support\Facades\Auth;
 
 final class ThemeCheckoutController
 {
+    use SEOTools;
+
     public function __construct(
         private readonly ThemeCheckoutManager $themeCheckoutManager,
         private readonly ThemeOrderDataMapper $themeOrderDataMapper,
@@ -36,6 +42,8 @@ final class ThemeCheckoutController
         private readonly ProductRepository $productRepository,
         private readonly CityRepository $cityRepository,
         private readonly DeliveryMethodRepository $deliveryMethodRepository,
+        private readonly SeoMetaRepository $seoMetaRepository,
+        private readonly PageTypes $pageTypes,
     ) {
     }
 
@@ -57,6 +65,22 @@ final class ThemeCheckoutController
         $featuredProducts = $this->productRepository->getAllFeaturedProducts();
         $deliveryMethods = $this->deliveryMethodRepository->getAllActive();
         $cities = $this->cityRepository->getAllSorted();
+
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getCheckoutType(), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+            SEOMeta::setKeywords($seoKeywords);
+
+            $this->seo()->opengraph()->setUrl(route('theme.checkout.index'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
 
         return view('frontend.v1.pages.checkout.index', compact([
             'paymentMethods',
@@ -100,6 +124,22 @@ final class ThemeCheckoutController
         $popularProducts = $this->productRepository->getAllPopularProducts();
         $discountProducts = $this->productRepository->getAllDiscountProducts();
         $featuredProducts = $this->productRepository->getAllFeaturedProducts();
+
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getOrderType(), app()->getLocale());
+
+        if ($seo !== null) {
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+            SEOMeta::setKeywords($seoKeywords);
+
+            $this->seo()->opengraph()->setUrl(route('theme.thankyou.index'));
+            $this->seo()->opengraph()->addProperty('type', 'page');
+            $this->seo()->jsonLd()->setType('WebPage');
+        }
 
         return view('frontend.v1.pages.thankyou.index', compact([
             'popularProducts',
