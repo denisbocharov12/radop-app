@@ -88,7 +88,7 @@ final class BrandRepository
 
     public function getAllPaginatedWithFiltersToFrontEnd(Brand $brand, Request $request, string $defaultSort): LengthAwarePaginator
     {
-        $query = $brand->products()
+        $query = Product::where('brand_id', $brand->onec_id)
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
 
         $defaultSortObj = $defaultSort;
