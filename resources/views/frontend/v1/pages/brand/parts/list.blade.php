@@ -12,15 +12,15 @@
         $item = \Cart::session($sessionId)->get($product->id);
     @endphp
     <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-         id="col-product-{{$product->id}}">
+         id="col-product-{{$product->id}}" data-onec-id="{{$product->onec_id}}">
         <div class="product-wrap">
             <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                 @include('frontend.v1.pages.product.components.label')
                 @include('frontend.v1.components.product_sale_label')
                 <div class="wrap">
-                    @include('frontend.v1.pages.category.parts.product-category-image')
+                    @include('frontend.v1.pages.brand.parts.product-brand-image', ['product' => $product])
                 </div>
-                @include('frontend.v1.pages.product.components.quick-view')
+                @include('frontend.v1.pages.product.components.quick-view', ['product' => $product])
                 @if(app('wishlist')->get($product->id) !== null)
                     <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}"
                        data-qty="1" class="add_to_wishlist delete-from-wishlist-btn" tabindex="0" data-has-text="false">
