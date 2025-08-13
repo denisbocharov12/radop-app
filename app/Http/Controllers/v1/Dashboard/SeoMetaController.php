@@ -7,34 +7,26 @@ use App\Exceptions\Attachments\AttachmentNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Models\SeoMeta;
-use App\Repositories\SeoMetaRepository;
 use Illuminate\Http\Request;
 use App\Services\SeoMetaManager;
 use App\Http\Requests\SeoMeta\SeoMetaRequest;
 use App\Http\Requests\SeoMeta\SeoMetaUpdateRequest;
 use App\Http\Mappers\SeoMeta\SeoMetaDataMapper;
-use App\Data\SeoMeta\SeoMetaData;
 use App\Enums\PageTypes;
 
 class SeoMetaController extends Controller
 {
-    private SeoMetaRepository $seoMetaRepository;
     private SeoMetaManager $seoMetaManager;
     private SeoMetaDataMapper $seoMetaDataMapper;
     private PageTypes $pageTypes;
 
-    public function __construct(SeoMetaRepository $seoMetaRepository, SeoMetaManager $seoMetaManager, SeoMetaDataMapper $seoMetaDataMapper, PageTypes $pageTypes)
+    public function __construct(SeoMetaManager $seoMetaManager, SeoMetaDataMapper $seoMetaDataMapper, PageTypes $pageTypes)
     {
-        $this->seoMetaRepository = $seoMetaRepository;
         $this->seoMetaManager = $seoMetaManager;
         $this->seoMetaDataMapper = $seoMetaDataMapper;
         $this->pageTypes = $pageTypes;
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\View\View
-     */
     public function index(Request $request)
     {
         $groups = SeoMeta::query()
@@ -71,9 +63,6 @@ class SeoMetaController extends Controller
         ]);
     }
 
-    /**
-     * @return \Illuminate\View\View
-     */
     public function create()
     {
         $pageTypes = $this->pageTypes->getAll();
@@ -83,10 +72,6 @@ class SeoMetaController extends Controller
         return view('v1.seo_meta.create', compact('pageTypes', 'staticPages', 'dynamicPages'));
     }
 
-    /**
-     * @param SeoMetaRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(SeoMetaRequest $request)
     {
         $data = $this->seoMetaDataMapper->mapFromRequestToData($request);
@@ -96,10 +81,6 @@ class SeoMetaController extends Controller
         return redirect()->route('seo_meta.index');
     }
 
-    /**
-     * @param SeoMeta $seoMeta
-     * @return \Illuminate\View\View
-     */
     public function edit(SeoMeta $seoMeta)
     {
         $pageTypes = $this->pageTypes->getAll();
