@@ -4,7 +4,7 @@ namespace App\Http\Requests\SeoMeta;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeoMetaUpdateRequest extends FormRequest
+final class SeoMetaUpdateRequest extends FormRequest
 {
     public function rules(): array
     {

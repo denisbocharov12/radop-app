@@ -67,10 +67,6 @@ final class ThemeOrderController extends Controller
         ]));
     }
 
-    /**
-     * @param Order $order
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
-     */
     public function viewInvoice(Order $order)
     {
         $user = Auth::guard('user')->user();
@@ -85,22 +81,6 @@ final class ThemeOrderController extends Controller
             return redirect()->back()->withErrors(['user_not_permitted_to_view_order' => __('theme.user_not_permitted_to_view_order')]);
         }
 
-        $seo = $this->seoMetaRepository->get($this->pageTypes->getMyOrdersType(), (string)$order->id, app()->getLocale());
-
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
-            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
-
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-            SEOMeta::setKeywords($seoKeywords);
-
-            $this->seo()->opengraph()->setUrl(request()->url());
-            $this->seo()->opengraph()->addProperty('type', 'page');
-            $this->seo()->jsonLd()->setType('WebPage');
-        }
-
         return view('frontend.v1.pages.order.show', compact([
             'user',
             'orderStatus',
@@ -108,10 +88,6 @@ final class ThemeOrderController extends Controller
         ]));
     }
 
-    /**
-     * @param Order $order
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
-     */
     public function downloadInvoice(Order $order)
     {
         $user = Auth::guard('user')->user();

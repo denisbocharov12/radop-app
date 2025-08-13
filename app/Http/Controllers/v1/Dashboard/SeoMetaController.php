@@ -13,7 +13,6 @@ use App\Services\SeoMetaManager;
 use App\Http\Requests\SeoMeta\SeoMetaRequest;
 use App\Http\Requests\SeoMeta\SeoMetaUpdateRequest;
 use App\Http\Mappers\SeoMeta\SeoMetaDataMapper;
-use App\Data\SeoMeta\SeoMetaData;
 use App\Enums\PageTypes;
 
 class SeoMetaController extends Controller
