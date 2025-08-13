@@ -60,7 +60,7 @@ final class ProductImportJsonJob implements ShouldQueue
             }
 
             // TODO: Add default value for admin
-            $priceKoef = 1.25;
+            $priceKoef = 1;
 
             if (isset($product->price_koef) && $product->price_koef > 0) {
                 $priceKoef = $product->price_koef;
