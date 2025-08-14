@@ -46,19 +46,17 @@ final class ThemeBrandController extends Controller
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandType(), $existedBrand->onec_id, app()->getLocale());
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? $existedBrand->title);
-            $this->seo()->setDescription($seo->description ?? $existedBrand->description);
-            $this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
+        $this->seo()->setTitle($seo->title ?? $existedBrand->title);
+        $this->seo()->setDescription($seo->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
 
-            (array)$seoKeywords = $seo?->keywords === null ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+        (array)$seoKeywords = $seo?->keywords === null ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 
-            SeoMeta::setKeywords($seoKeywords);
+        SeoMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
-            $this->seo()->opengraph()->addProperty('type', 'articles');
-            $this->seo()->jsonLd()->setType('Article');
-        }
+        $this->seo()->opengraph()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
+        $this->seo()->opengraph()->addProperty('type', 'articles');
+        $this->seo()->jsonLd()->setType('Article');
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
