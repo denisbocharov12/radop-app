@@ -81,6 +81,7 @@ class CategoryRepository
             ->where('site_status', true)
             ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id')
+            ->orderBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())

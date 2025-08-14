@@ -17,6 +17,7 @@ final class ThemePriceSort implements Sort
                 THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
                 ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
             END $direction
-        ");
+        ")
+        ->orderBy('products.onec_id');
     }
 }

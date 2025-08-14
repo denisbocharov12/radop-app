@@ -14,6 +14,7 @@ final class ThemeConditionSort implements Sort
                 WHEN product_profiles.condition = 'new' THEN 0
                 ELSE 1
             END
-        ");
+        ")
+        ->orderBy('products.onec_id');
     }
 }
