@@ -2919,6 +2919,10 @@ header .section-header .row-main .header-menu .col-lg{
     min-height: 400px;
     position: relative;
 }
+#main-banner:not(.slick-initialized) .item { display: none; }
+#main-banner:not(.slick-initialized) .item:first-child { display: block; }
+#main-banner { opacity: 0; }
+#main-banner.slick-initialized { opacity: 1; transition: opacity .2s linear; }
 #main-banner:hover{
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
 }
