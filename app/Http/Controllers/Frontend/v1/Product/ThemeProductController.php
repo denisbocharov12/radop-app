@@ -52,19 +52,32 @@ final class ThemeProductController extends Controller
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getProductType(), (string)($product->onec_id ?? $product->id), app()->getLocale());
 
+        $this->seo()->setTitle($seo->title ?? $product->title);
+        $this->seo()->setDescription($seo?->description ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->addImages($product?->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
         if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? $product->title);
-            $this->seo()->setDescription($seo->description ?? strip_tags((string)$product?->data->summary));
-            $this->seo()->addImages($product->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
-
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-            SEOMeta::setKeywords($seoKeywords);
-
-            $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
-            $this->seo()->opengraph()->addProperty('type', 'product');
-            $this->seo()->jsonLd()->setType('Product');
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            } else {
+                $imageUrl = $product->getFirstMediaUrl('products') ?: config('seotools.meta.defaults.default_image');
+            }
+        } else {
+            if ($product->hasMedia('products')) {
+                $imageUrl = $product->getFirstMediaUrl('products');
+            }
         }
+
+        $this->seo()->addImages($imageUrl);
+
+        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+        SEOMeta::setKeywords($seoKeywords);
+        $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
+        $this->seo()->opengraph()->addProperty('type', 'product');
+        $this->seo()->jsonLd()->setType('Product');
 
         return view('frontend.v1.pages.product.index', compact([
             'product',

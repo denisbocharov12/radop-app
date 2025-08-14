@@ -56,19 +56,32 @@ final class ThemeCategoryController extends Controller
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, app()->getLocale());
 
+        $this->seo()->setTitle($seo->title ?? $existedCategory->name);
+        $this->seo()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
+
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
         if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? $existedCategory->title);
-            $this->seo()->setDescription($seo->description ?? strip_tags((string)$existedCategory->summary));
-            $this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
-
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-            SEOMeta::setKeywords($seoKeywords);
-
-            $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
-            $this->seo()->opengraph()->addProperty('type', 'category');
-            $this->seo()->jsonLd()->setType('CollectionPage');
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            } else {
+                $imageUrl = $existedCategory->getFirstMediaUrl('media') ?: config('seotools.meta.defaults.default_image');
+            }
+        } else {
+            if ($existedCategory->hasMedia('media')) {
+                $imageUrl = $existedCategory->getFirstMediaUrl('media');
+            }
         }
+
+        $this->seo()->addImages($imageUrl);
+
+        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+        SEOMeta::setKeywords($seoKeywords);
+
+        $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
+        $this->seo()->opengraph()->addProperty('type', 'category');
+        $this->seo()->jsonLd()->setType('Article');
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([
