@@ -53,8 +53,8 @@ final class ThemeProductController extends Controller
         $seo = $this->seoMetaRepository->get($this->pageTypes->getProductType(), (string)($product->onec_id ?? $product->id), app()->getLocale());
 
         $this->seo()->setTitle($seo->title ?? $product->title);
-        $this->seo()->setDescription($seo->description ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
-        $this->seo()->addImages($product->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+        $this->seo()->setDescription($seo?->description ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->addImages($product?->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
         (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 

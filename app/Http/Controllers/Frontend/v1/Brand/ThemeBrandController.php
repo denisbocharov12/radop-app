@@ -47,8 +47,8 @@ final class ThemeBrandController extends Controller
         $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandType(), $existedBrand->onec_id, app()->getLocale());
 
         $this->seo()->setTitle($seo->title ?? $existedBrand->title);
-        $this->seo()->setDescription($seo->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
-        $this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
+        $this->seo()->setDescription($seo?->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
+        //$this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand?->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
 
         (array)$seoKeywords = $seo?->keywords === null ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 

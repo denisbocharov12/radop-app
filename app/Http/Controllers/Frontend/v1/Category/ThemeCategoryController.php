@@ -56,9 +56,9 @@ final class ThemeCategoryController extends Controller
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, app()->getLocale());
 
-        $this->seo()->setTitle($seo->title ?? $existedCategory->title);
-        $this->seo()->setDescription($seo->description ?? strip_tags((string)$existedCategory->summary));
-        $this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+        $this->seo()->setTitle($seo->title ?? $existedCategory->name);
+        $this->seo()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
+        //$this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
         (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 
