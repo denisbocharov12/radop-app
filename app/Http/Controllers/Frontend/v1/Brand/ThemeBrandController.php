@@ -50,7 +50,22 @@ final class ThemeBrandController extends Controller
 
         $this->seo()->setTitle($seo->title ?? $existedBrand->title);
         $this->seo()->setDescription($seo?->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
-        //$this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand?->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
+
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
+        if ($seo !== null) {
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            } else {
+                $imageUrl = $existedBrand->getFirstMediaUrl('media') ?: config('seotools.meta.defaults.default_image');
+            }
+        } else {
+            if ($existedBrand->hasMedia('media')) {
+                $imageUrl = $existedBrand->getFirstMediaUrl('media');
+            }
+        }
+
+        $this->seo()->addImages($imageUrl);
 
         (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 

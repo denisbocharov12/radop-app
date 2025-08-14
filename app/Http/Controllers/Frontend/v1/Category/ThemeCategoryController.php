@@ -58,7 +58,22 @@ final class ThemeCategoryController extends Controller
 
         $this->seo()->setTitle($seo->title ?? $existedCategory->name);
         $this->seo()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
-        //$this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
+        if ($seo !== null) {
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            } else {
+                $imageUrl = $existedCategory->getFirstMediaUrl('media') ?: config('seotools.meta.defaults.default_image');
+            }
+        } else {
+            if ($existedCategory->hasMedia('media')) {
+                $imageUrl = $existedCategory->getFirstMediaUrl('media');
+            }
+        }
+
+        $this->seo()->addImages($imageUrl);
 
         (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 

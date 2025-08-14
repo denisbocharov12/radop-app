@@ -56,6 +56,22 @@ final class ThemeProductController extends Controller
         $this->seo()->setDescription($seo?->description ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
         $this->seo()->addImages($product?->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
+        if ($seo !== null) {
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            } else {
+                $imageUrl = $product->getFirstMediaUrl('products') ?: config('seotools.meta.defaults.default_image');
+            }
+        } else {
+            if ($product->hasMedia('products')) {
+                $imageUrl = $product->getFirstMediaUrl('products');
+            }
+        }
+
+        $this->seo()->addImages($imageUrl);
+
         (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 
         SEOMeta::setKeywords($seoKeywords);
