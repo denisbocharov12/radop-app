@@ -56,19 +56,17 @@ final class ThemeCategoryController extends Controller
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, app()->getLocale());
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? $existedCategory->title);
-            $this->seo()->setDescription($seo->description ?? strip_tags((string)$existedCategory->summary));
-            $this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
+        $this->seo()->setTitle($seo->title ?? $existedCategory->title);
+        $this->seo()->setDescription($seo->description ?? strip_tags((string)$existedCategory->summary));
+        $this->seo()->addImages($existedCategory->getFirstMediaUrl('media') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 
-            SEOMeta::setKeywords($seoKeywords);
+        SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
-            $this->seo()->opengraph()->addProperty('type', 'category');
-            $this->seo()->jsonLd()->setType('CollectionPage');
-        }
+        $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
+        $this->seo()->opengraph()->addProperty('type', 'category');
+        $this->seo()->jsonLd()->setType('Article');
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([
