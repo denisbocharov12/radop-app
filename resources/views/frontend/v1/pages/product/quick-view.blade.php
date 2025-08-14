@@ -99,7 +99,6 @@
                                 <div class="sc-product-qty qty-block">
                                     <div class="input-group-btn">
                                         <button
-                                            onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepDown()"
                                             class="sc-product-decrement btn-quantity-product minus"
                                             type="button"
                                             id="button-minus"
@@ -123,7 +122,6 @@
                                     />
                                     <div class="input-group-btn">
                                         <button
-                                            onclick="this.parentNode.parentNode.querySelector('input[type=number]').stepUp()"
                                             class="sc-product-increment btn-quantity-product plus"
                                             type="button"
                                             id="button-plus"
@@ -132,25 +130,6 @@
                                         </button>
                                     </div>
                                 </div>
-
-                                <script>
-                                    function incrementQuantityProduct(button, packageSize) {
-                                        var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                        var newValue = parseInt(input.value) + packageSize;
-                                        if (newValue <= parseInt(input.max)) {
-                                            input.value = newValue;
-                                        }
-                                    }
-
-                                    function decrementQuantityProduct(button, packageSize) {
-                                        var input = button.parentNode.parentNode.querySelector('input[type=number]');
-                                        var newValue = parseInt(input.value) - packageSize;
-                                        if (newValue >= parseInt(input.min)) {
-                                            input.value = newValue;
-                                        }
-                                    }
-                                </script>
-
                                 <a href="#" data-id="{{$product->id}}" id="add-to-cart-quick-{{$product->id}}"
                                    class="add_to_cart_btn_quick">{{__('theme.add-to-cart')}}</a>
                             </div>

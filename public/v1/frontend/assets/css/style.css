@@ -8035,6 +8035,31 @@ hr.product-card-item{
     display: none;
 }
 
+/* mobile cart row separators and layout */
+.theme-cart-item-row { }
+.theme-cart-item-row > td {
+    border-bottom: 1px solid #e6e6e6;
+}
+.theme-cart-item-row:first-child > td {
+    border-top: 1px solid #e6e6e6;
+}
+
+@media (max-width: 767.98px) {
+    .cart-item-mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    .cart-item-mobile-header .item-title {
+        font-size: 14px;
+        margin: 0;
+        color: #252525;
+        padding-top: 5px;
+    }
+}
+
 .brand-block {
     display: flex;
     align-items: center;
