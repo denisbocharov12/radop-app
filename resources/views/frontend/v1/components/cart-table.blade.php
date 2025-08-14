@@ -12,11 +12,10 @@
                 <tr>
                     <th></th>
                     <th class="d-none d-md-table-cell">{{__('theme.cart-table-name')}}</th>
-                    <th class="text-center">{{__('theme.cart-table-quantity')}}</th>
+                    <th class="text-center"><div class="d-block d-md-none">{{__('theme.cart-table-name')}}/</div>{{__('theme.cart-table-quantity')}}</th>
                     <th class="text-center">{{__('theme.cart-table-price')}}</th>
                     <th class="text-center">{{__('theme.cart-table-sum')}}</th>
                     <th></th>
-                    <th class="d-table-cell d-md-none">{{__('theme.cart-table-name')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +47,11 @@
                         </a>
                     </td>
                     <td class="text-center theme-cart-item-qty">
+                        <div class="d-md-none cart-item-mobile-header">
+                            <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
+                                <h5 class="item-title">{{$item->associatedModel->title}}</h5>
+                            </a>
+                        </div>
                         <div class="d-flex aling-items-center justify-content-center number-spinner-box">
                             <div class="cart-item-info">
                                 <div class="sc-product-qty qty-block">
@@ -101,13 +105,6 @@
                     </td>
                     <td class="theme-cart-item-delete">
                         <a href="javascript:void(0)" data-id="{{$item->id}}" class="item-delete remove-cart-btn"><i class="icon-trash-radop"></i></a>
-                    </td>
-                    <td class="theme-cart-item-row-title d-table-cell d-md-none">
-                        <a href="{{route('theme.product.index',$item->model->slug)}}" class="d-flex">
-                            <h5 class="item-title">
-                                {{$item->associatedModel->title}}
-                            </h5>
-                        </a>
                     </td>
                 </tr>
                 @endforeach

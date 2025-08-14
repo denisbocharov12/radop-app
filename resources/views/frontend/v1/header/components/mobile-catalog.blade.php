@@ -135,18 +135,18 @@
                                 </h3>
                                 <ul class="column-catalog__list drop-menu-list">
                                     <li>
-                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 16px;">{{ __('theme.all-brand-products') }}</a>
+                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 18px;">{{ __('theme.all-brand-products') }}</a>
                                     </li>
                                     @foreach($parentCategory->children as $secondLevelCategory)
                                         <li class="drop-menu-list__item" style="margin-bottom: 10px;">
-                                            <a href="{{ route('theme.category.index', $secondLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: bold; font-size: 16px;">
+                                            <a href="{{ route('theme.category.index', $secondLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: bold; font-size: 18px;">
                                                 {{ $secondLevelCategory->name }}
                                             </a>
                                             @if(count($secondLevelCategory->children) > 0)
                                                 <ul class="column-catalog__list drop-menu-list" style="padding-left: 15px; margin-top: 5px;">
                                                     @foreach($secondLevelCategory->children as $thirdLevelCategory)
                                                         <li class="drop-menu-list__item">
-                                                            <a href="{{ route('theme.category.index', $thirdLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: normal; font-size: 14px;">
+                                                            <a href="{{ route('theme.category.index', $thirdLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: normal; font-size: 16px;">
                                                                 {{ $thirdLevelCategory->name }}
                                                             </a>
                                                         </li>
@@ -161,7 +161,6 @@
                     @endforeach
                 @endif
             </div>
-
             <button class="catalog__close-btn _icon-close" type="button"></button>
         </div>
     </div>

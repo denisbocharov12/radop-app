@@ -130,7 +130,9 @@ $(document).ready(function () {
     }
   });
     const speed = $('#main-banner').data('autoplay-speed');
-  $("#main-banner").slick({
+  $("#main-banner")
+    .on('init', function(){ $(this).addClass('slick-initialized'); })
+    .slick({
     autoplay: true,
     dots: true,
     autoplaySpeed: speed,

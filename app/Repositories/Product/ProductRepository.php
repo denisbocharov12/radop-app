@@ -133,6 +133,11 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @param Request $request
+     * @param string $defaultSort
+     * @return LengthAwarePaginator
+     */
     public function getAllPopularProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
@@ -149,6 +154,7 @@ final class ProductRepository
         }
 
         return QueryBuilder::for(Product::query()
+            ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
@@ -171,6 +177,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
+            ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -257,6 +264,11 @@ final class ProductRepository
             ;
     }
 
+    /**
+     * @param Request $request
+     * @param string $defaultSort
+     * @return LengthAwarePaginator
+     */
     public function getAllNewProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
@@ -273,6 +285,7 @@ final class ProductRepository
         }
 
         return QueryBuilder::for(Product::query()
+            ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
@@ -295,6 +308,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
+            ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -341,6 +355,11 @@ final class ProductRepository
          ;
     }
 
+    /**
+     * @param Request $request
+     * @param string $defaultSort
+     * @return LengthAwarePaginator
+     */
     public function getAllDiscountProductsPaginatedWithFiltersAndSort(Request $request, string $defaultSort): LengthAwarePaginator
     {
         $defaultSortObj = $defaultSort;
@@ -354,6 +373,7 @@ final class ProductRepository
         }
 
         return QueryBuilder::for(Product::query()
+            ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
@@ -376,6 +396,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
+            ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());

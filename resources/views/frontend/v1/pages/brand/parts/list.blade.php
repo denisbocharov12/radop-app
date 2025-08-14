@@ -4,13 +4,10 @@
 @foreach($products as $product)
     @php
         $sessionId = config('shopping_cart.default_session_id');
-
         if (auth()->guard('user')->user()) {
             $sessionId = auth()->guard('user')->user()->id;
         }
-
         $item = \Cart::session($sessionId)->get($product->id);
-        $product = \App\Models\Product::where('onec_id', $product->onec_id)->first();
     @endphp
     @if($product !== null)
         <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"

@@ -37,9 +37,16 @@ class CategoryRepository
         ;
     }
 
+    /**
+     * @param Category $category
+     * @param Request $request
+     * @param string $defaultSort
+     * @return LengthAwarePaginator
+     */
     public function getAllPaginatedWithFiltersToFrontEnd(Category $category, Request $request, string $defaultSort): LengthAwarePaginator
     {
         $query = $category->products()
+            ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
 
         $defaultSortObj = $defaultSort;
@@ -72,6 +79,7 @@ class CategoryRepository
             ->defaultSort($defaultSortObj)
             ->where('status', true)
             ->where('site_status', true)
+            ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
