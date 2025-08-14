@@ -16,11 +16,13 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class ThemeBrandController extends Controller
 {
+    use SEOTools;
     private const PUBLIC_DISK = 'public';
 
     public function __construct(
@@ -50,7 +52,7 @@ final class ThemeBrandController extends Controller
         $this->seo()->setDescription($seo?->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
         //$this->seo()->addImages($seo->getFirstMediaUrl('files') ? $existedBrand?->getFirstMediaUrl('media') : config('seotools.meta.defaults.default_image'));
 
-        (array)$seoKeywords = $seo?->keywords === null ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
 
         SeoMeta::setKeywords($seoKeywords);
 
