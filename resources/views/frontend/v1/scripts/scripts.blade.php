@@ -759,7 +759,8 @@
                                         });
                                     });
 
-                                    $('.btn-quantity-product').click(function (){
+                                    var $modalContent = $('.fancybox__content');
+                                    $modalContent.off('click.quickQty', '.btn-quantity-product').on('click.quickQty', '.btn-quantity-product', function (){
                                         var $input = $(this).parent().parent('.qty-block').find('.product-qty-item');
                                         var max = Number($input.attr('max'));
                                         var step = Number($input.attr('step')) || 1;
@@ -797,7 +798,7 @@
                                         var result = (qtyCount*productPrice)/packageCount;
                                         changedElement.html(result.toFixed(2).replace('.',','));
                                     });
-                                    $('.product-qty-item').on('input change', function () {
+                                    $modalContent.off('input.quickQty change.quickQty', '.product-qty-item').on('input.quickQty change.quickQty', '.product-qty-item', function () {
                                         var qtyCount = $(this).val();
                                         var max = $(this).attr('max');
                                         if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
