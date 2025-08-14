@@ -12,11 +12,10 @@
                 <tr>
                     <th></th>
                     <th class="d-none d-md-table-cell">{{__('theme.cart-table-name')}}</th>
-                    <th class="text-center"><div class="d-block d-md-none">{{__('theme.cart-table-name')}}</div>{{__('theme.cart-table-quantity')}}</th>
+                    <th class="text-center"><div class="d-block d-md-none">{{__('theme.cart-table-name')}}/</div>{{__('theme.cart-table-quantity')}}</th>
                     <th class="text-center">{{__('theme.cart-table-price')}}</th>
                     <th class="text-center">{{__('theme.cart-table-sum')}}</th>
                     <th></th>
-{{--                    <th class="d-none d-md-none">{{__('theme.cart-table-name')}}</th>--}}
                 </tr>
             </thead>
             <tbody>
