@@ -11862,9 +11862,6 @@ body.modal-open {
         font-size: 1em;
         margin-bottom: 0.7em;
     }
-    .product-list-mini-brand-wrap a{
-        min-height: 25px;
-    }
     .catalog-category-link, .catalog-category-title {
         font-size: 18px;
     }
@@ -12406,6 +12403,9 @@ input[type="range"]::-moz-range-thumb {
     .product-list-item .product-item-category .add_to_cart_wrap .qty-add-to-cart a.add_to_cart_btn {
         margin: 10px auto 0 auto;
     }
+}
+.product-list-mini-brand-wrap a{
+    min-height: 25px;
 }
 .product-list-item .product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card .sc-product-qty.qty-block {
     width: 100%;
