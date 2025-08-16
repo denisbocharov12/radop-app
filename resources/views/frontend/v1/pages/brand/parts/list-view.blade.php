@@ -56,7 +56,10 @@
                                 </span>
                             </div>
                         </div>
-                        <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
+                        <h3 class="product_item_article">
+                            <span>@lang('theme.code'):</span>
+                            <span class="product-code">{{$product->onec_id}}</span>
+                        </h3>
                         @if($product->shtrih_code)
                             <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> {{$product->shtrih_code}}</h3>
                         @endif

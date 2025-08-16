@@ -10043,11 +10043,11 @@ hr.product-card-item{
         margin: 5px 0;
     }
     .product-item-category .add_to_cart_wrap .wrap span.price{
-        font-size: 14px;
+        font-size: 16px;
     }
-    .product-item-category .add_to_cart_wrap .wrap span.old_price{
-        font-size: 12px;
-    }
+    /*.product-item-category .add_to_cart_wrap .wrap span.old_price{*/
+    /*    font-size: 14px;*/
+    /*}*/
     .product-item-category .add_to_cart_wrap .qty-add-to-cart.qty-add-to-cart-product-card{
         flex-direction: column;
     }
@@ -11391,6 +11391,12 @@ hr.product-card-item{
     .contact-info-mobile .slogan {
         font-size: 13px;
     }
+    .product-item-category .add_to_cart_wrap .wrap span.sale-product-price{
+        font-size: 14px;
+    }
+    .product-item-category .add_to_cart_wrap .wrap span.sale-product-old-price{
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 375px) {
@@ -12328,6 +12334,9 @@ input[type="range"]::-moz-range-thumb {
     .product-list-item .product-item-category .add_to_cart_wrap .wrap span.price {
         font-size: 22px;
     }
+    .product-list-item .product-item-category .add_to_cart_wrap .wrap span.old_price{
+        font-size: 14px;
+    }
 }
 /*.product-list-item .packages-wrap{*/
 /*    margin-bottom: 35px;*/
@@ -12426,4 +12435,31 @@ input[type="range"]::-moz-range-thumb {
     fill: #0052a6;
     width: 25px;
     height: 25px;
+}
+.product_item_article {
+    color: #000;
+    font-size: 12px;
+    padding: 3px;
+    display: inline-block;
+    line-height: 1;
+    border: 1px solid #ffd100;
+}
+.product_item_article span{
+    color: #555;
+}
+.product_item_article .product-code {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-decoration: none !important;
+}
+.product_item_article .product-code:focus {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }

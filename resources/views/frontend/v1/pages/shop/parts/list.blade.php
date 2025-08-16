@@ -37,19 +37,8 @@
                         <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::limit($product->title, 80, '...')}}</a>
                     </h3>
                 </div>
-                <div class="product-item-article-wrap">
-                    <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
-                    <div class="details-wrap">
-                    <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                        @if($product->stock > 0)
-                            {{__('theme.in-stock')}}
-                        @else
-                            {{__('theme.out-of-stock')}}
-                        @endif
-                    </span>
-                    </div>
-                </div>
-                @if($product->brand !== null)
+                @include('frontend.v1.components.product-item-article')
+            @if($product->brand !== null)
                     @include('frontend.v1.components.product-list-mini-brand-wrap')
                 @endif
             </div>
