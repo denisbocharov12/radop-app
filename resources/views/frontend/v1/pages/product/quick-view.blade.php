@@ -13,7 +13,10 @@
                     <div class="product-info-row">
                         <div class="product-sku">
                             <div class="product-item-article-wrap">
-                                <h3 class="product_item_article"><span>@lang('theme.code'):</span> {{$product->onec_id}}</h3>
+                                <h3 class="product_item_article">
+                                    <span>@lang('theme.code'):</span>
+                                    <span class="product-code">{{$product->onec_id}}</span>
+                                </h3>
                             </div>
                         </div>
                         <div class="product-add-to-wishlist-wrap">
