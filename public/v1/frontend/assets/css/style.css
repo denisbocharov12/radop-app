@@ -12448,16 +12448,8 @@ input[type="range"]::-moz-range-thumb {
     color: #555;
 }
 .product_item_article .product-code {
-    color: #000 !important;
-    -webkit-text-fill-color: #000 !important;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    text-decoration: none !important;
+    color: #000;
+    text-decoration: none;
 }
 .product_item_article .product-code:focus {
     outline: none;
