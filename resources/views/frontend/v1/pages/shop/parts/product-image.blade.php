@@ -2,7 +2,7 @@
     @if($product->hasMedia('products'))
         <a href="{{$product->getFirstMediaUrl('products')}}" data-fancybox-product>
             <img class="product-card-gallery-image"
-                 src="{{$product->getFirstMediaUrl('products')}}"
+                 src="{{ $product->getFirstMedia('products')->getUrl('medium') }}"
                  loading="lazy"
                  alt="{{$product->title}}" />
         </a>

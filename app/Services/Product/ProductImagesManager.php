@@ -41,11 +41,20 @@ final class ProductImagesManager
      * @param string $filePath
      * @return string
      */
-    private static function optimizeImage(string $filePath): void
+    private static function optimizeImage(string $filePath): string
     {
+        $pathInfo = pathinfo($filePath);
+        $optimizedPath = $pathInfo['dirname']
+            . DIRECTORY_SEPARATOR
+            . $pathInfo['filename']
+            . '-optimized.'
+            . $pathInfo['extension'];
+
         Image::load($filePath)
             ->optimize()
-            ->save();
+            ->save($optimizedPath);
+
+        return $optimizedPath;
     }
 
 
@@ -72,11 +81,14 @@ final class ProductImagesManager
 
                 File::copy($file, $tempPath);
 
-                //$optimizedPath = self::optimizeImage($tempPath);
+                $optimizedPath = self::optimizeImage($tempPath);
 
-                $product->addMedia($tempPath)->toMediaCollection('products', 'media');
+                $product->addMedia($optimizedPath)
+                    ->withResponsiveImages()
+                    ->toMediaCollection('products', 'media');
 
                 File::delete($tempPath);
+                File::delete($optimizedPath);
             }
         }
     }
@@ -108,6 +120,7 @@ final class ProductImagesManager
                 Storage::disk($tempDisk)->put($optimizedFileName, File::get($optimizedPath));
 
                 $product->addMediaFromDisk($optimizedFileName, $tempDisk)
+                    ->withResponsiveImages()
                     ->toMediaCollection('products', 'media');
 
                 Storage::disk($tempDisk)->delete($fileName);
@@ -174,6 +187,7 @@ final class ProductImagesManager
                 $optimizedPath = self::optimizeImage($originalPath);
 
                 $mediaItem->copyMedia($optimizedPath)
+                    ->withResponsiveImages()
                     ->toMediaCollection('products', 'media');
 
                 File::delete($optimizedPath);
