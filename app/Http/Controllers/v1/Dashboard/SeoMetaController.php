@@ -20,6 +20,11 @@ class SeoMetaController extends Controller
     private SeoMetaDataMapper $seoMetaDataMapper;
     private PageTypes $pageTypes;
 
+    /**
+     * @param SeoMetaManager $seoMetaManager
+     * @param SeoMetaDataMapper $seoMetaDataMapper
+     * @param PageTypes $pageTypes
+     */
     public function __construct(SeoMetaManager $seoMetaManager, SeoMetaDataMapper $seoMetaDataMapper, PageTypes $pageTypes)
     {
         $this->seoMetaManager = $seoMetaManager;
@@ -27,42 +32,59 @@ class SeoMetaController extends Controller
         $this->pageTypes = $pageTypes;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function index(Request $request)
     {
-        $groups = SeoMeta::query()
-            ->select('page_type', 'page_id')
-            ->groupBy('page_type', 'page_id')
-            ->orderBy('page_type')
-            ->orderBy('page_id')
-            ->paginate(20);
-
-        $groupedSeoMetas = $groups->getCollection()->map(function ($item) {
-            $ru = SeoMeta::query()
-                ->where('page_type', $item->page_type)
-                ->where('page_id', $item->page_id)
-                ->where('locale', 'ru')
-                ->first();
-            $ro = SeoMeta::query()
-                ->where('page_type', $item->page_type)
-                ->where('page_id', $item->page_id)
-                ->where('locale', 'ro')
-                ->first();
-
-            return [
-                'page_type' => $item->page_type,
-                'page_id' => $item->page_id,
-                'ru' => $ru,
-                'ro' => $ro,
-            ];
-        });
-
-        $groups->setCollection($groupedSeoMetas);
-
-        return view('v1.seo_meta.index', [
-            'seoMetas' => $groups,
-        ]);
+        return view('v1.seo_meta.index');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSeoMetas(Request $request)
+    {
+        $locale = $request->get('locale', 'ru');
+        $search = $request->get('search', '');
+        $page = $request->get('page', 1);
+
+        $query = SeoMeta::query()
+            ->where('locale', $locale)
+            ->orderBy('page_type')
+            ->orderBy('page_id');
+
+        if ($search) {
+            $query->where('page_type', 'like', "%$search%")
+                ->orWhere('title', 'like', "%$search%");
+        }
+
+        $seoMetas = $query->paginate(20, ['*'], 'page', $page);
+
+        $seoMetas->getCollection()->transform(function ($item) {
+            $pageTypes = $this->pageTypes->getAll();
+            $item->page_type_label = $pageTypes[$item->page_type] ?? $item->page_type;
+            return $item;
+        });
+
+        $response = [
+            'data' => $seoMetas->items(),
+            'pagination' => [
+                'current_page' => $seoMetas->currentPage(),
+                'last_page' => $seoMetas->lastPage(),
+                'per_page' => $seoMetas->perPage(),
+                'total' => $seoMetas->total(),
+            ]
+        ];
+
+        return response()->json($response);
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         $pageTypes = $this->pageTypes->getAll();
@@ -81,30 +103,21 @@ class SeoMetaController extends Controller
         return redirect()->route('seo_meta.index');
     }
 
+    /**
+     * @param SeoMeta $seoMeta
+     * @return \Illuminate\View\View
+     */
     public function edit(SeoMeta $seoMeta)
     {
         $pageTypes = $this->pageTypes->getAll();
         $staticPages = $this->pageTypes->getStaticPages();
         $dynamicPages = $this->pageTypes->getDynamicPages();
 
-        $ru = SeoMeta::query()
-            ->where('page_type', $seoMeta->page_type)
-            ->where('page_id', $seoMeta->page_id)
-            ->where('locale', 'ru')
-            ->first();
-        $ro = SeoMeta::query()
-            ->where('page_type', $seoMeta->page_type)
-            ->where('page_id', $seoMeta->page_id)
-            ->where('locale', 'ro')
-            ->first();
-
         return view('v1.seo_meta.edit', [
             'pageTypes' => $pageTypes,
             'staticPages' => $staticPages,
             'dynamicPages' => $dynamicPages,
             'seoMeta' => $seoMeta,
-            'seoMetaRu' => $ru,
-            'seoMetaRo' => $ro,
         ]);
     }
 
@@ -134,6 +147,21 @@ class SeoMetaController extends Controller
     }
 
     /**
+     * @param SeoMeta $seoMeta
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyAjax(SeoMeta $seoMeta)
+    {
+        try {
+            $this->seoMetaManager->clearSeoMediaCollection($seoMeta);
+            $seoMeta->delete();
+            return response()->json(['status' => true, 'message' => 'Запись успешно удалена']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => 'Ошибка при удалении записи'], 500);
+        }
+    }
+
+    /**
      * @param ModelMediaDeleteRequest $request
      * @param SeoMeta $seoMeta
      * @return \Illuminate\Http\JsonResponse
@@ -142,7 +170,7 @@ class SeoMetaController extends Controller
     public function deleteMedia(ModelMediaDeleteRequest $request, SeoMeta $seoMeta)
     {
         try {
-            $this->seoMetaManager->deleteMediaFromBrand($request, $seoMeta);
+            $this->seoMetaManager->deleteMediaFromSeo($request, $seoMeta);
 
             return response()->json(['status' => true]);
         } catch (AttachmentNotFoundException $e) {

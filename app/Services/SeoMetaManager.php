@@ -53,7 +53,7 @@ final class SeoMetaManager
         return $seoMeta;
     }
 
-    public function deleteMediaFromBrand(ModelMediaDeleteRequest $request, SeoMeta $seoMeta): void
+    public function deleteMediaFromSeo(ModelMediaDeleteRequest $request, SeoMeta $seoMeta): void
     {
         $existedAttachment = $this->attachmentsRepository->getById($seoMeta, (int)$request->id);
 
@@ -63,5 +63,10 @@ final class SeoMetaManager
         }
 
         $this->attachmentsManager->deleteAttachmentsFromModel($seoMeta, (int)$request->id);
+    }
+
+    public function clearSeoMediaCollection(SeoMeta $seoMeta): void
+    {
+        $seoMeta->clearMediaCollection('files');
     }
 }
