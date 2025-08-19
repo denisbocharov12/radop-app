@@ -62,27 +62,24 @@ final class ProductImagesManager
         }
 
         foreach ($files as $file) {
-            $product->addMedia($file)
-                ->preservingOriginal()
-                ->toMediaCollection('products', 'media');
-//            if (File::exists($file)) {
-//                $fileName = basename($file);
-//                $tempPath = storage_path('app/temp/' . $fileName);
-//
-//                if (!File::exists(dirname($tempPath))) {
-//                    File::makeDirectory(dirname($tempPath), 0755, true);
-//                }
-//
-//                //File::copy($file, $tempPath);
-//
-//                //$optimizedPath = self::optimizeImage($tempPath);
-//
-//                $product->addMedia($file)
-//                    ->toMediaCollection('products', 'media');
-//
-//                //File::delete($tempPath);
-//                //File::delete($optimizedPath);
-//            }
+            if (File::exists($file)) {
+                $fileName = basename($file);
+                $tempPath = storage_path('app/temp/' . $fileName);
+
+                if (!File::exists(dirname($tempPath))) {
+                    File::makeDirectory(dirname($tempPath), 0755, true);
+                }
+
+                File::copy($file, $tempPath);
+
+                //$optimizedPath = self::optimizeImage($tempPath);
+
+                $product->addMedia($file)
+                    ->toMediaCollection('products', 'media');
+
+                File::delete($tempPath);
+                //File::delete($optimizedPath);
+            }
         }
     }
 
