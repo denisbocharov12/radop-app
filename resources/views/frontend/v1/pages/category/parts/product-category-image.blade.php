@@ -1,6 +1,6 @@
 <div class="wrap-image-with-gallery wrap-product-card-gallery">
     @if($product->hasMedia('products'))
-        <a href="{{$product->getFirstMediaUrl('products', 'medium')}}" data-fancybox-product>
+        <a href="{{$product->getFirstMediaUrl('products')}}" data-fancybox-product>
             <img class="product-card-gallery-image"
                  src="{{$product->getFirstMediaUrl('products', 'medium')}}"
                  loading="lazy"

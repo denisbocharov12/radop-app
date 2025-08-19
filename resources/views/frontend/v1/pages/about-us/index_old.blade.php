@@ -61,7 +61,7 @@
                             @foreach($themeBrands as $brand)
                                 <div class="item">
                                     <a href="{{route('theme.brand.index', $brand->id)}}">
-                                        <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" />
+                                        <img src="{{$brand->getFirstMediaUrl('media')}}" alt="{{$brand->title}}" loading="lazy" />
                                     </a>
                                 </div>
                             @endforeach
