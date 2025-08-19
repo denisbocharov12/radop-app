@@ -9,7 +9,7 @@
                     <div class="nk-block nk-block-lg">
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование SEO записи</h4>
+                                <h4 class="title nk-block-title">Редактирование SEO записи - {{$seoMeta->locale}} версии</h4>
                             </div>
                         </div>
                         <div class="card">
@@ -17,12 +17,13 @@
                                 <form action="{{route('seo_meta.update', $seoMeta)}}" enctype="multipart/form-data" method="POST" class="form-validate is-alter">
                                     @csrf
                                     @method('PUT')
+                                    <input type="hidden" name="locale" value="{{$seoMeta->locale}}" required>
                                     <div class="row g-gs">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="page_type">Тип страницы</label>
                                                 <div class="form-control-wrap">
-                                                    <select class="form-select" id="page_type" required>
+                                                    <select class="form-select" id="page_type" name="page_type" required>
                                                         <option value="">Выберите тип страницы</option>
                                                         @foreach($pageTypes as $value => $label)
                                                             <option value="{{ $value }}" {{ old('page_type', $seoMeta->page_type) == $value ? 'selected' : '' }}>
@@ -171,7 +172,7 @@
             var path = "{{route('seo_meta.media.delete', $seoMeta)}}";
             $.ajax({
                 url: path,
-                type: "POST",
+                type: "GET",
                 dataType:"JSON",
                 data:{
                     id: image_id,
@@ -190,14 +191,14 @@
             e.preventDefault();
             const id = $(this).data('id');
             const pageType = $(this).data('page-type');
-            
+
             if (confirm(`Вы уверены, что хотите удалить SEO запись для "${pageType}"?`)) {
                 const deleteBtn = $(this);
-                
+
                 deleteBtn.prop('disabled', true).html('<em class="icon ni ni-loader"></em><span>Удаление...</span>');
-                
+
                 $.ajax({
-                    url: `{{ route('seo_meta.destroy.ajax', '') }}/${id}`,
+                    url: `/admin/seo/${id}/ajax-delete`,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -209,7 +210,7 @@
                             } else {
                                 alert('Запись успешно удалена');
                             }
-                            
+
                             setTimeout(function() {
                                 window.location.href = '{{ route("seo_meta.index") }}';
                             }, 1000);
