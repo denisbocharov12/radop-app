@@ -43,6 +43,15 @@ class PermissionSeeder extends Seeder
         'reports.orders-user-type.index',
         'reports.orders-user-type.generate',
         'reports.orders-user-type.download',
+        'seo_meta.index',
+        'seo_meta.get',
+        'seo_meta.create',
+        'seo_meta.store',
+        'seo_meta.edit',
+        'seo_meta.update',
+        'seo_meta.media.delete',
+        'seo_meta.destroy',
+        'seo_meta.destroy.ajax',
     ];
 
     private array $userPermittedRoutes = [
