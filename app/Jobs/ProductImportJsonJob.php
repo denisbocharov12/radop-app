@@ -13,7 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
 final class ProductImportJsonJob implements ShouldQueue
 {
@@ -108,12 +107,18 @@ final class ProductImportJsonJob implements ShouldQueue
                 }
 
             }
+            ProductImagesManager::clearProductImages($productModel);
 
-            if (!ProductImagesManager::hasProductImages($productModel)) {
-                ProductImagesManager::importProductImages($productModel);
-            } else {
-                ProductImagesManager::updateProductImages($productModel);
-            }
+            ProductImagesManager::importProductImagesSafe($productModel);
+//            foreach ($product->getMedia('products') as $mediaItem) {
+//                $customFileRemover->removeAllFiles($mediaItem);
+//            }
+//
+//            if (!ProductImagesManager::hasProductImages($productModel)) {
+//                ProductImagesManager::importProductImagesSafe($productModel);
+//            } else {
+//                ProductImagesManager::updateProductImages($productModel);
+//            }
         }
     }
 }
