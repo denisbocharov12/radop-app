@@ -199,7 +199,7 @@ class OneCController extends Controller
     {
         $products = Product::where('status', true)
             ->pluck('id')
-            ->chunk(70);
+            ->chunk(40);
 
         $jobCount = 0;
 
@@ -219,7 +219,7 @@ class OneCController extends Controller
                 $q->where('collection_name', 'media');
             })
             ->pluck('id')
-            ->chunk(70);
+            ->chunk(40);
 
         $jobCount = 0;
 
