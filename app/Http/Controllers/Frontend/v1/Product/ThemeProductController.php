@@ -54,7 +54,6 @@ final class ThemeProductController extends Controller
 
         $this->seo()->setTitle($seo->title ?? $product->title);
         $this->seo()->setDescription($seo?->description ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
-        $this->seo()->addImages($product?->getFirstMediaUrl('products') ?: ($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image')));
 
         $imageUrl = config('seotools.meta.defaults.default_image');
 
