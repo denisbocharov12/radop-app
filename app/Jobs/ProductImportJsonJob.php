@@ -107,9 +107,9 @@ final class ProductImportJsonJob implements ShouldQueue
                 }
 
             }
-            ProductImagesManager::clearProductImages($productModel);
-
-            ProductImagesManager::importProductImagesSafe($productModel);
+//            ProductImagesManager::clearProductImages($productModel);
+//
+//            ProductImagesManager::importProductImagesSafe($productModel);
 //            foreach ($product->getMedia('products') as $mediaItem) {
 //                $customFileRemover->removeAllFiles($mediaItem);
 //            }
