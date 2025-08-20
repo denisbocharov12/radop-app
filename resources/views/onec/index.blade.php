@@ -241,6 +241,16 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-inner">
+                                    <h5 class="card-title">Оптимизация изображений для брендов</h5>
+                                    <p class="text-muted">Оптимизация изображений для всех брендов</p>
+                                    <form action="{{route('import-export-data.brand-images.optimize')}}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary"><span>Оптимизировать изображения для уже загруженных брендов</span><em class="icon ni ni-reload"></em></button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div> <!-- nk-block -->
                 </div>

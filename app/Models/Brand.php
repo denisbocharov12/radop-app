@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 final class Brand extends Model implements HasMedia
@@ -54,5 +55,19 @@ final class Brand extends Model implements HasMedia
                 'source' => 'title'
             ]
         ];
+    }
+
+    /**
+     * @param Media|null $media
+     * @return void
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10)
+            ->performOnCollections('media')
+            ->queued();
     }
 }
