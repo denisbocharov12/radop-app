@@ -59,7 +59,7 @@ final class ONECManager
                 $header = [];
                 $batch  = Bus::batch([]);
 
-                $productChunks = array_chunk($productsData, 100);
+                $productChunks = array_chunk($productsData, 75);
 
                 $updatedProducts = Product::all();
 

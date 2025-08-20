@@ -88,14 +88,14 @@ final class Product extends Model implements HasMedia
             ->height(75)
             ->sharpen(10)
             ->performOnCollections('products')
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('medium')
             ->width(300)
             ->height(300)
             ->sharpen(10)
             ->performOnCollections('products')
-            ->nonQueued();
+            ->queued();
     }
 
     /**

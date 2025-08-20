@@ -41,7 +41,9 @@ final class ImportProductImagesJob implements ShouldQueue
                 }
 
                 if (!ProductImagesManager::hasProductImages($product)) {
-                    ProductImagesManager::importProductImages($product);
+                    ProductImagesManager::importProductImagesSafe($product);
+                } else {
+                    ProductImagesManager::updateProductImages($product);
                 }
             } catch (\Exception $e) {
                 Log::error("Ошибка при импорте изображений для товара {$product->onec_id}: {$e->getMessage()}", [
