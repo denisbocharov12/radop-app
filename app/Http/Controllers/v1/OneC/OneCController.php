@@ -196,7 +196,7 @@ class OneCController extends Controller
     {
         $products = Product::where('status', true)
             ->pluck('id')
-            ->chunk(50);
+            ->chunk(40);
 
         $jobCount = 0;
 

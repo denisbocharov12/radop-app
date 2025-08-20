@@ -6,8 +6,6 @@ use App\Models\Product;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Image\Image;
-use Spatie\ImageOptimizer\OptimizerChain;
-use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
 
 final class ProductImagesManager
 {
@@ -87,6 +85,47 @@ final class ProductImagesManager
      * @param Product $product
      * @return void
      */
+    public static function updateProductImages(Product $product): void
+    {
+        $files = self::getProductImagesFiles($product->onec_id);
+
+        if (empty($files)) {
+            return;
+        }
+
+        $existingMedia = $product->getMedia('products');
+        $existingFileNames = $existingMedia->pluck('file_name')->toArray();
+
+        foreach ($files as $file) {
+            if (File::exists($file)) {
+                $fileName = basename($file);
+
+                if (in_array($fileName, $existingFileNames)) {
+                    $mediaItem = $existingMedia->where('file_name', $fileName)->first();
+
+                    if ($mediaItem !== null) {
+                        $tempPath = storage_path('app/temp/' . $fileName);
+
+                        if (!File::exists(dirname($tempPath))) {
+                            File::makeDirectory(dirname($tempPath), 0755, true);
+                        }
+
+                        File::copy($file, $tempPath);
+
+                        $mediaItem->addMedia($tempPath)
+                            ->toMediaCollection('products', 'media');
+
+                        File::delete($tempPath);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @return void
+     */
     public static function importProductImagesSafe(Product $product): void
     {
         $files = self::getProductImagesFiles($product->onec_id);
@@ -104,17 +143,15 @@ final class ProductImagesManager
                 Storage::disk($tempDisk)->put($fileName, File::get($file));
 
                 $tempPath = Storage::disk($tempDisk)->path($fileName);
-                $optimizedPath = self::optimizeImage($tempPath);
 
-                $optimizedFileName = basename($optimizedPath);
-                Storage::disk($tempDisk)->put($optimizedFileName, File::get($optimizedPath));
+                $fileName = basename($tempPath);
+                Storage::disk($tempDisk)->put($fileName, File::get($tempPath));
 
-                $product->addMediaFromDisk($optimizedFileName, $tempDisk)
+                $product->addMediaFromDisk($fileName, $tempDisk)
                     ->toMediaCollection('products', 'media');
 
                 Storage::disk($tempDisk)->delete($fileName);
-                Storage::disk($tempDisk)->delete($optimizedFileName);
-                File::delete($optimizedPath);
+                File::delete($tempPath);
             }
         }
     }
