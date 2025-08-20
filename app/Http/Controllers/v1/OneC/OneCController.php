@@ -5,10 +5,13 @@ namespace App\Http\Controllers\v1\OneC;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OneC\OneCRequest;
 use App\Models\Product;
+use App\Models\Brand;
 use App\Repositories\Onec\OnecRepository;
 use App\Services\ONEC\ONECManager;
 use Illuminate\Http\Request;
 use App\Jobs\ImportProductImagesJob;
+use App\Jobs\ImportBrandImagesJob;
+use App\Jobs\OptimizeBrandImagesJob;
 
 class OneCController extends Controller
 {
@@ -206,6 +209,26 @@ class OneCController extends Controller
         }
 
         toastr()->success("Добавлено {$jobCount} задач в очередь для импорта изображений");
+        return redirect()->route('import-export-data.index');
+    }
+
+    public function optimizeBrandImages()
+    {
+        $brands = Brand::where('status', true)
+            ->whereHas('media', function ($q) {
+                $q->where('collection_name', 'media');
+            })
+            ->pluck('id')
+            ->chunk(40);
+
+        $jobCount = 0;
+
+        foreach ($brands as $brandIds) {
+            OptimizeBrandImagesJob::dispatch($brandIds->toArray(), true);
+            $jobCount++;
+        }
+
+        toastr()->success("Добавлено {$jobCount} задач в очередь для оптимизации изображений брендов");
         return redirect()->route('import-export-data.index');
     }
 
