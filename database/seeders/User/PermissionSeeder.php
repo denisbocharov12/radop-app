@@ -52,6 +52,15 @@ class PermissionSeeder extends Seeder
         'seo_meta.media.delete',
         'seo_meta.destroy',
         'seo_meta.destroy.ajax',
+        'banner.index',
+        'banner.sort.index',
+        'banner.sort.order',
+        'banner.store',
+        'banner.edit',
+        'banner.update',
+        'banner.delete',
+        'banner.banner-settings.edit',
+        'banner.banner-settings.update',
     ];
 
     private array $userPermittedRoutes = [

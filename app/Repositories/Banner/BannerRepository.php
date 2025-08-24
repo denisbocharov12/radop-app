@@ -29,4 +29,9 @@ final class BannerRepository
             ->where('id', '!=', $banner->id)
             ->exists();
     }
+
+    public function getById(int $id): ?Banner
+    {
+        return Banner::find($id);
+    }
 }

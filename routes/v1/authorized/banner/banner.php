@@ -42,4 +42,8 @@ Route::prefix('banners')->name('banner.')->group(function () {
         ->post('/banner-settings', [BannerController::class, 'updateBannerSettings'])
         ->name('banner-settings.update')
     ;
+    Route::middleware(['app.permissions'])
+        ->delete('destroy', [BannerController::class, 'destroy'])
+        ->name('delete')
+    ;
 });

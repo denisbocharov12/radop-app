@@ -7,6 +7,11 @@ use App\Models\Banner;
 use App\Models\BannerSetting;
 use App\Repositories\Banner\BannerRepository;
 use App\Http\Requests\BannerRequest;
+use App\Http\Requests\Banner\BannerDeleteRequest;
+use App\Services\Banner\BannerManager;
+use App\Exceptions\Banner\BannerNotFoundValidationException;
+use App\Exceptions\Banner\BannerNotFoundException;
+use App\Exceptions\NotAjaxRequestException;
 use Illuminate\Http\Request;
 
 class BannerController extends Controller
@@ -14,6 +19,7 @@ class BannerController extends Controller
     public function __construct(
         private readonly BannerDataMapper $bannerDataMapper,
         private readonly BannerRepository $bannerRepository,
+        private readonly BannerManager $bannerManager,
     ){
     }
 
@@ -141,5 +147,20 @@ class BannerController extends Controller
         BannerSetting::updateOrCreate([], $validated);
 
         return redirect()->back()->with('success', 'Настройки обновлены.');
+    }
+
+    public function destroy(BannerDeleteRequest $request)
+    {
+        if (!$request->ajax()) {
+            throw new NotAjaxRequestException();
+        }
+
+        try {
+            $this->bannerManager->delete($request);
+
+            return response()->json(['id' => $request->banner_id]);
+        } catch (BannerNotFoundException $e) {
+            throw new BannerNotFoundValidationException();
+        }
     }
 }
