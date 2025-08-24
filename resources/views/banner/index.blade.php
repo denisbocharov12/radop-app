@@ -60,5 +60,42 @@
                 dropdownParent: $(".modal")
             });
         });
+
+        function askToDeleteBanner(banner_id, token, path)
+        {
+            Swal.fire({
+                title: 'Вы хотите удалить баннер - #'+banner_id+' ?',
+                showDenyButton: true,
+                showCancelButton: true,
+                cancelButtonText: 'Отмена',
+                confirmButtonText: 'Удалить',
+                denyButtonText: `Не удалять`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: path,
+                        type: "DELETE",
+                        dataType:"JSON",
+                        data:{
+                            banner_id: banner_id,
+                            _token: token
+                        }
+                    });
+                    Swal.fire('Баннер '+banner_id+' успешно удален', '', 'success');
+                    $('#brand-id-'+banner_id).fadeOut(1000);
+                } else if (result.isDenied) {
+                    Swal.fire('Вы отменили удаление баннера '+banner_id, '', 'info')
+                }
+            })
+        }
+
+        $(document).on('click','.banner-delete',function (e) {
+            e.preventDefault();
+            var banner_id = $(this).data('id');
+            var token = "{{csrf_token()}}";
+            var path = "{{route('banner.delete')}}";
+            askToDeleteBanner(banner_id, token, path)
+        });
+
     </script>
 @endsection

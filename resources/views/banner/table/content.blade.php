@@ -42,6 +42,7 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('banner.edit', $banner)}}" data-id="{{$banner->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
+                                        <li><a href="#" class="banner-delete" id="banner-delete-{{$banner->id}}" data-id="{{$banner->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
                                     </ul>
                                 </div>
                             </div>
