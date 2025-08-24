@@ -6,7 +6,7 @@
         'title' => __('theme.sort-title'),
         'popular_order' => __('theme.sort-popular'),
         'condition' => __('theme.sort-new'),
-        'stock' => __('theme.sort-stock'),
+//        'stock' => __('theme.sort-stock'),
     ];
     $activeKey = $currentSort;
     $activeLabel = $sortOptions[$activeKey] ?? reset($sortOptions);

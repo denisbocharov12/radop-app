@@ -31,7 +31,7 @@ final class ProductRepository
 
     private const COUNT_OF_PAGINATION = 24;
     private const COUNT_OF_PRODUCTS_FOR_FRONTEND = 10;
-    private const PRODUCTS_FOR_HOME_PAGE_SLIDER = 50;
+    private const PRODUCTS_FOR_HOME_PAGE_SLIDER = 20;
 
     public function getAllPaginatedWithFilters(): LengthAwarePaginator
     {
