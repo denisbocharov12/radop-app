@@ -26,6 +26,7 @@
         "spatie/laravel-medialibrary": "^10.0.0",
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-query-builder": "^5.7",
+        "spatie/laravel-sitemap": "^7.3",
         "spatie/laravel-translatable": "^6.6",
         "staudenmeir/laravel-adjacency-list": "*",
         "wapmorgan/morphos": "^3.2",

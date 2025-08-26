@@ -5,7 +5,7 @@
 <script src="{{asset('/v1/frontend/assets')}}/libs/slick/slick.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/hoverDelay/jquery.hoverDelay.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.21"></script>
+<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.22"></script>
 
 <script>
     window.getLimitedStockWarning = function(maxQty, unit){
@@ -666,10 +666,15 @@
                             on: {
                                 "resize": () => {
                                     $('.fancybox__content').addClass('container theme-fancybox-container');
+                                    $(".product-slider-main").css('opacity', '0');
+                                    $(".product-slider-thumb").css('opacity', '0');
                                 },
                                 "done": () => {
                                     const $rootSingle = $(".product-slider-main");
                                     const $rootNav = $(".product-slider-thumb");
+
+                                    $rootSingle.css('opacity', '1');
+                                    $rootNav.css('opacity', '1');
 
                                     $rootSingle.slick({
                                         slide: ".product-image",
