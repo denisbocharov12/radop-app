@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,16 +12,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Spatie\Translatable\HasTranslations;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-final class Category extends Model implements HasMedia
+final class Category extends Model implements HasMedia, Sitemapable
 {
     use HasFactory;
     use InteractsWithMedia;
     use SoftDeletes;
     use HasTranslations;
     use HasRecursiveRelationships;
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('theme.category.index', $this->onec_id))
+            ->setLastModificationDate(Carbon::create($this->updated_at));
+    }
 
     public function getParentKeyName(): string
     {

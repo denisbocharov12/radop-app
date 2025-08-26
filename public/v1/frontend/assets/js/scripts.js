@@ -505,7 +505,7 @@ $(function () {
 });
 $(document).ready(function () {
     $(window).scroll(function() {
-        if ($(this).scrollTop() > 105) {
+        if ($(this).scrollTop() > 117) {
             $('#header-js-sticky').addClass('header-js-sticky container');
         } else {
             $('#header-js-sticky').removeClass('header-js-sticky container');

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -39,13 +42,19 @@ use Spatie\Translatable\HasTranslations;
  * @param float|null $price_koef
  * @param string|null $min_order
  */
-final class Product extends Model implements HasMedia
+final class Product extends Model implements HasMedia, Sitemapable
 {
     use HasFactory;
     use SoftDeletes;
     use InteractsWithMedia;
     use Sluggable;
     use HasTranslations;
+
+    public function toSitemapTag(): Url | string | array
+    {
+        return Url::create(route('theme.product.index', $this->slug))
+            ->setLastModificationDate(Carbon::create($this->updated_at));
+    }
 
     protected $fillable = [
         'onec_id',
