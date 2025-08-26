@@ -666,10 +666,15 @@
                             on: {
                                 "resize": () => {
                                     $('.fancybox__content').addClass('container theme-fancybox-container');
+                                    $(".product-slider-main").css('opacity', '0');
+                                    $(".product-slider-thumb").css('opacity', '0');
                                 },
                                 "done": () => {
                                     const $rootSingle = $(".product-slider-main");
                                     const $rootNav = $(".product-slider-thumb");
+
+                                    $rootSingle.css('opacity', '1');
+                                    $rootNav.css('opacity', '1');
 
                                     $rootSingle.slick({
                                         slide: ".product-image",
