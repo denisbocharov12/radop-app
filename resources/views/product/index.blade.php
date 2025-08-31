@@ -2,6 +2,22 @@
 
 @section('content')
     <!-- content @s -->
+    <style>
+        .text-dark {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nk-tb-col {
+            border-left: 1px solid;
+            border-right: 1px solid;
+        }
+
+        .nk-tb-col {
+            border-left: 0;
+            border-right: 1px solid #dbdfea;
+        }
+    </style>
     <div class="nk-content ">
         <div class="container-fluid">
             <div class="nk-content-inner">
