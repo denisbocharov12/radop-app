@@ -6,6 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -41,6 +42,15 @@ final class Brand extends Model implements HasMedia
     public function products(): HasMany
     {
         return $this->hasMany(Product::class,'brand_id','onec_id');
+    }
+
+    /**
+     *
+     * @return HasOne<BrandViewCount>
+     */
+    public function viewCounts(): HasOne
+    {
+        return $this->hasOne(BrandViewCount::class);
     }
 
     /**

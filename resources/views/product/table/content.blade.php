@@ -8,8 +8,10 @@
             <div class="nk-tb-col"><span class="sub-text">Категория</span></div>
             <div class="nk-tb-col"><span class="sub-text">Цена</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Цена на скидке</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Кол-во</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Остатки</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Cостояние товара</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Кол-во просмотров</span></div>
+            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус выгрузки</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус сайта</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
             </div>
@@ -41,6 +43,12 @@
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$product->stock}}</span>
+                </div>
+                <div class="nk-tb-col tb-col-lg">
+                    <span>{{$product?->data?->condition}}</span>
+                </div>
+                <div class="nk-tb-col tb-col-lg">
+                    <span>{{$product?->viewCounts?->sum('view_count')}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     @if($product->status)

@@ -15,6 +15,7 @@ use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
+use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ final class ThemeBrandController extends Controller
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
         private readonly PageSortSettingRepository $pageSortSettingRepository,
+        private readonly ViewCountManager $viewCountManager,
     ) {
     }
 
@@ -81,6 +83,8 @@ final class ThemeBrandController extends Controller
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
+
+        $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
