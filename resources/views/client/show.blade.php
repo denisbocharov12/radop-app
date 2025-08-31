@@ -118,7 +118,7 @@
                                                                 <div class="profile-ud wider"><span class="profile-ud-label">Менеджер</span><span class="profile-ud-value"><a href="{{route('manager.edit', $user->id)}}" class="btn btn-dim btn-primary">Назначить менеджера</a></span></div>
                                                             </div>
                                                         @endif
-                                                        @if($user->type->key_name === 'iur')
+                                                        @if($user?->type->key_name === 'iur')
                                                             <div class="profile-ud-item">
                                                                 <div class="profile-ud wider"><span class="profile-ud-label">Название компании</span><span class="profile-ud-value">{{$user->profile->organization_name}}</span></div>
                                                             </div>
