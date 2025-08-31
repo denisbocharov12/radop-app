@@ -170,4 +170,13 @@ final class Product extends Model implements HasMedia, Sitemapable
     {
         return $this->hasMany(Package::class, 'product_onec_id','onec_id');
     }
+
+    /**
+     *
+     * @return HasOne<ProductViewCount>
+     */
+    public function viewCounts(): HasOne
+    {
+        return $this->hasOne(ProductViewCount::class);
+    }
 }

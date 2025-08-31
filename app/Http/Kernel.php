@@ -12,6 +12,7 @@ use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\ExecuteWriteRequestInTransaction;
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\SetDefaultSeoTitleFromLocalize;
+use App\Http\Middleware\ViewCountMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -95,6 +96,7 @@ class Kernel extends HttpKernel
         'app.client-auth' => CheckIfClientAuth::class,
         'app.client-status'  => CheckClientStatus::class,
         'app.auth' => CheckIfUserAuth::class,
+        'view.count' => ViewCountMiddleware::class,
 
         'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,

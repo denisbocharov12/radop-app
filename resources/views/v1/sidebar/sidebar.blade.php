@@ -295,6 +295,15 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('reports.orders-user-type.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по типам пользователей</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.view-count.product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по просмотрам товаров</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.view-count.brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по просмотрам брендов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.view-count.category.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по просмотрам категорий</span></a>
+                            </li>
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li>

@@ -9,6 +9,7 @@ use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
+use App\Filters\Theme\ThemeCategoryViewCountSort;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -57,6 +58,8 @@ class CategoryRepository
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === 'condition') {
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'popular_order') {
+            $defaultSortObj = AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order');
         }
 
         return QueryBuilder::for($query)
@@ -73,7 +76,7 @@ class CategoryRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort($defaultSortObj)
@@ -152,5 +155,16 @@ class CategoryRepository
             ")
             ->get()
             ;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAllWithViewCounts(): Collection
+    {
+        return Category::query()
+            ->with('viewCounts')
+            ->orderBy('id')
+            ->get();
     }
 }

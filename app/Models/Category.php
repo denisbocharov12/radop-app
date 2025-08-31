@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
@@ -77,6 +78,15 @@ final class Category extends Model implements HasMedia, Sitemapable
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id', 'onec_id');
+    }
+
+    /**
+     *
+     * @return HasOne<CategoryViewCount>
+     */
+    public function viewCounts(): HasOne
+    {
+        return $this->hasOne(CategoryViewCount::class);
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
+use App\Filters\Theme\ThemeBrandViewCountSort;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -106,6 +107,8 @@ final class BrandRepository
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === 'condition') {
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'popular_order') {
+            $defaultSortObj = AllowedSort::custom('popular_order', new ThemeBrandViewCountSort(), 'popular_order');
         }
 
         return QueryBuilder::for($query)
@@ -122,7 +125,7 @@ final class BrandRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeBrandViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort($defaultSortObj)
@@ -146,5 +149,16 @@ final class BrandRepository
             ->get()
             ->pluck('brand')
             ->unique('id');
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAllWithViewCounts(): Collection
+    {
+        return Brand::query()
+            ->with('viewCounts')
+            ->orderBy('id')
+            ->get();
     }
 }

@@ -8,7 +8,6 @@ use App\Enums\PageTypes;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
-use App\Models\PageSortSetting;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -16,6 +15,7 @@ use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
+use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
@@ -34,6 +34,7 @@ final class ThemeCategoryController extends Controller
         private readonly PageSortSettingRepository $pageSortSettingRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly ViewCountManager $viewCountManager,
     ) {
     }
 
@@ -82,6 +83,8 @@ final class ThemeCategoryController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
         $this->seo()->opengraph()->addProperty('type', 'category');
         $this->seo()->jsonLd()->setType('Article');
+
+        $this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([

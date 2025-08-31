@@ -9,6 +9,7 @@ use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
+use App\Filters\Theme\ThemeProductViewCountSort;
 use App\Models\Category;
 use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
@@ -70,7 +71,7 @@ final class ProductRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort('price')
@@ -152,6 +153,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === 'condition') {
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'popular_order') {
+            $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
         return QueryBuilder::for(Product::query()
@@ -169,7 +172,7 @@ final class ProductRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort($defaultSortObj)
@@ -283,6 +286,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === 'condition') {
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'popular_order') {
+            $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
         return QueryBuilder::for(Product::query()
@@ -300,7 +305,7 @@ final class ProductRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort($defaultSortObj)
@@ -371,6 +376,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === 'condition') {
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'popular_order') {
+            $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
         return QueryBuilder::for(Product::query()
@@ -388,7 +395,7 @@ final class ProductRepository
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
                 'title',
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
-                'popular_order',
+                AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
             ->defaultSort($defaultSortObj)
@@ -578,6 +585,17 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
+            ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAllWithViewCounts(): Collection
+    {
+        return Product::query()
+            ->with('viewCounts')
+            ->orderBy('id')
             ->get();
     }
 }

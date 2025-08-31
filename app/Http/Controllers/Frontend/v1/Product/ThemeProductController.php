@@ -14,6 +14,7 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\Theme\Product\ThemeProductManager;
+use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ final class ThemeProductController extends Controller
         private readonly ThemeCategoryManager $themeCategoryManager,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly ViewCountManager $viewCountManager,
     ) {
     }
 
@@ -81,6 +83,8 @@ final class ThemeProductController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
+
+        $this->viewCountManager->incrementProductViewCount($product, $request);
 
         return view('frontend.v1.pages.product.index', compact([
             'product',
@@ -145,6 +149,8 @@ final class ThemeProductController extends Controller
         if (!$product->categories->isEmpty()) {
             $similarProducts = $this->productRepository->getAllSimilarProducts($product);
         }
+
+        $this->viewCountManager->incrementProductViewCount($product, $request);
 
         $renderedView = view('frontend.v1.pages.product.quick-view', compact(['product', 'similarProducts']))->render();
 

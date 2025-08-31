@@ -6,7 +6,7 @@
         ['key' => 'title', 'label' => __('theme.sort-title')],
         ['key' => 'popular_order', 'label' => __('theme.sort-popular')],
         ['key' => 'condition', 'label' => __('theme.sort-new')],
-        ['key' => 'stock', 'label' => __('theme.sort-stock')],
+        //['key' => 'stock', 'label' => __('theme.sort-stock')],
     ];
     $activeOption = $sortOptions[0];
     foreach ($sortOptions as $option) {
