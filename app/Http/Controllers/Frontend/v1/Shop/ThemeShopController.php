@@ -35,6 +35,7 @@ final class ThemeShopController extends Controller
     {
         $query = $request->query('filter');
 
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
         $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
         $allProducts = $this->productRepository->getAll();
         $brands = $this->brandRepository->getAllToFrontEnd();
@@ -62,6 +63,7 @@ final class ThemeShopController extends Controller
             'brands',
             'attributes',
             'allProducts',
+            'defaultSort',
         ]));
     }
     public function newProducts(Request $request)
@@ -161,6 +163,8 @@ final class ThemeShopController extends Controller
 
     public function catalog(Request $request)
     {
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getShopCatalogType(), app()->getLocale());
 
         if ($seo !== null) {
@@ -174,7 +178,9 @@ final class ThemeShopController extends Controller
             $this->seo()->jsonLd()->setType('WebPage');
         }
 
-        return view('frontend.v1.pages.shop.catalog');
+        return view('frontend.v1.pages.shop.catalog', compact([
+            'defaultSort',
+        ]));
     }
 
     public function exportNewProducts()

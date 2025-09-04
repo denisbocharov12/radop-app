@@ -2,7 +2,7 @@
 
 @section('content')
     @include('frontend.v1.pages.shop.parts.breadcrumbs')
-    @include('frontend.v1.pages.shop.parts.shop')
+    @include('frontend.v1.pages.shop.parts.shop', ['defaultSort' => $defaultSort])
 @endsection
 
 @section('scripts')
