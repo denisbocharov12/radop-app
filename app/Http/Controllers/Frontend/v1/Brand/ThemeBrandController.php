@@ -84,7 +84,7 @@ final class ThemeBrandController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
 
-        $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
+        //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',

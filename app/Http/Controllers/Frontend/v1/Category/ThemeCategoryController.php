@@ -84,7 +84,7 @@ final class ThemeCategoryController extends Controller
         $this->seo()->opengraph()->addProperty('type', 'category');
         $this->seo()->jsonLd()->setType('Article');
 
-        $this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
+        //$this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([
