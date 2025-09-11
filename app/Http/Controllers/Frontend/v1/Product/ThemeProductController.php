@@ -58,7 +58,7 @@ final class ThemeProductController extends Controller
             $this->seo()->setDescription($seo?->description ? $seo?->description : trans('seo.description', [], app()->getLocale()));
 
         } else {
-            $this->seo()->setDescription(strip_tags((string)$product?->data->summary) ? strip_tags((string)$product?->data->summary) : trans('seo.description', [], app()->getLocale()));
+            $this->seo()->setDescription(strip_tags((string)$product?->data?->summary) ? strip_tags((string)$product?->data?->summary) : trans('seo.description', [], app()->getLocale()));
         }
 
         $imageUrl = config('seotools.meta.defaults.default_image');
@@ -84,7 +84,7 @@ final class ThemeProductController extends Controller
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
 
-        $this->viewCountManager->incrementProductViewCount($product, $request);
+        //$this->viewCountManager->incrementProductViewCount($product, $request);
 
         return view('frontend.v1.pages.product.index', compact([
             'product',
@@ -150,7 +150,7 @@ final class ThemeProductController extends Controller
             $similarProducts = $this->productRepository->getAllSimilarProducts($product);
         }
 
-        $this->viewCountManager->incrementProductViewCount($product, $request);
+        //$this->viewCountManager->incrementProductViewCount($product, $request);
 
         $renderedView = view('frontend.v1.pages.product.quick-view', compact(['product', 'similarProducts']))->render();
 

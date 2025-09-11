@@ -150,6 +150,12 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary"><span>Импортировать описания</span><em class="icon ni ni-setting"></em></button>
                                         </form>
+                                        <form action="{{route('import-export-data.descriptions.reset')}}" method="POST" class=" mt-2">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите сбросить все описания товаров?')">
+                                                <span>Сбросить описания</span><em class="icon ni ni-trash"></em>
+                                            </button>
+                                        </form>
                                     </div>
                                     @if($descriptionBatch !== null)
                                         @php

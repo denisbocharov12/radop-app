@@ -46,4 +46,8 @@ Route::prefix('data-import-export')->name('import-export-data.')->group(function
         ->post('/brand-images/optimize', [OneCController::class, 'optimizeBrandImages'])
         ->name('brand-images.optimize')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('/descriptions/reset', [OneCController::class, 'resetProductDescriptions'])
+        ->name('descriptions.reset')
+    ;
 });

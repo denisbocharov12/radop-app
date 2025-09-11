@@ -61,6 +61,7 @@ class PermissionSeeder extends Seeder
         'banner.delete',
         'banner.banner-settings.edit',
         'banner.banner-settings.update',
+        'import-export-data.descriptions.reset',
     ];
 
     private array $userPermittedRoutes = [

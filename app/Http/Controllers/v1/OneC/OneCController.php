@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OneC\OneCRequest;
 use App\Models\Product;
 use App\Models\Brand;
+use App\Models\ProductProfile;
 use App\Repositories\Onec\OnecRepository;
 use App\Services\ONEC\ONECManager;
 use Illuminate\Http\Request;
 use App\Jobs\ImportProductImagesJob;
-use App\Jobs\ImportBrandImagesJob;
 use App\Jobs\OptimizeBrandImagesJob;
 
 class OneCController extends Controller
@@ -229,6 +229,19 @@ class OneCController extends Controller
         }
 
         toastr()->success("Добавлено {$jobCount} задач в очередь для оптимизации изображений брендов");
+        return redirect()->route('import-export-data.index');
+    }
+
+    public function resetProductDescriptions(Request $request)
+    {
+        $updatedCount = ProductProfile::query()->get()->each(function ($product) {
+            $product->update(['summary' => [
+                'ru' => '',
+                'ro' => '',
+            ]]);
+        })->count();
+
+        toastr()->success("Сброшено описаний для {$updatedCount} товаров");
         return redirect()->route('import-export-data.index');
     }
 
