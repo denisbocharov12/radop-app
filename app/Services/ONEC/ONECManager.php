@@ -53,13 +53,12 @@ final class ONECManager
                 DB::beginTransaction();
 
                 ProductCategory::query()->truncate();
-                //ProductProfile::query()->truncate();
 
                 $productsData = $json->Product;
                 $header = [];
-                $batch  = Bus::batch([]);
+                $batch  = Bus::batch([])->onQueue('high');
 
-                $productChunks = array_chunk($productsData, 75);
+                $productChunks = array_chunk($productsData, 50);
 
                 $updatedProducts = Product::all();
 
