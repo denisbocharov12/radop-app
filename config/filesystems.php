@@ -44,6 +44,14 @@ return [
             'throw' => false,
         ],
 
+        'sitemap' => [
+            'driver' => 'local',
+            'root' => storage_path('app/sitemap'),
+            'url' => env('APP_URL').'/sitemap',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'media' => [
             'driver' => 'local',
             'root' => storage_path('app/media'),
@@ -108,6 +116,7 @@ return [
         public_path('media') => storage_path('app/media'),
         public_path('files') => storage_path('app/files'),
         public_path('banners') => storage_path('app/banners'),
+        public_path('sitemap') => storage_path('app/sitemap'),
     ],
 
 ];
