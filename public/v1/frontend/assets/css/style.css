@@ -4632,7 +4632,8 @@ header .section-header .row-main .header-menu .col-lg{
 .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-img a{
     display: block;
     margin-right: 10px;
-    width: calc(100% - 6px);
+    width: 80px;
+    padding: 20px 0;
 }
 .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-row-title{
     vertical-align: middle;
@@ -8755,6 +8756,10 @@ hr.product-card-item{
     margin-right: 6px;
 }
 
+.col-theme-cart-count{
+    vertical-align: middle;
+}
+
 .upp-sale-products-wrap{
     display: flex;
     gap: 10px;
@@ -10163,6 +10168,9 @@ hr.product-card-item{
         flex-direction: row;
         height: auto;
     }
+    .theme-cart-table tbody .theme-cart-item-row .theme-cart-item-img a{
+        width: 50px;
+    }
     .my-account-details__inner {
         column-gap: 30px;
     }
@@ -10865,6 +10873,9 @@ hr.product-card-item{
 @media (max-width: 576px) {
     #main-banner .item a img{
         object-fit: contain;
+    }
+    .theme-cart-table .theme-cart-table-thead th:first-child{
+        width: 30px;
     }
     .quick-view-btn {
         top: 33%;

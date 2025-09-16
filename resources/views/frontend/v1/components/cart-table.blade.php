@@ -10,6 +10,7 @@
         <table class="theme-cart-table">
             <thead class="theme-cart-table-thead">
                 <tr>
+                    <th class="text-center">№</th>
                     <th></th>
                     <th class="d-none d-md-table-cell">{{__('theme.cart-table-name')}}</th>
                     <th class="text-center"><div class="d-block d-md-none">{{__('theme.cart-table-name')}}/</div>{{__('theme.cart-table-quantity')}}</th>
@@ -19,8 +20,10 @@
                 </tr>
             </thead>
             <tbody>
+                @php $count = 1; @endphp
                 @foreach(\Cart::session($sessionId)->getContent()->sort() as $item)
                 <tr class="theme-cart-item-row">
+                    <td class="text-center col-theme-cart-count">{{ $count++ }}</td>
                     <td class="theme-cart-item-img">
                         <a href="{{route('theme.product.index',$item->model->slug)}}">
                             @if($item->associatedModel->hasMedia('products'))
