@@ -60,13 +60,13 @@ final class ONECManager
 
                 $productChunks = array_chunk($productsData, 50);
 
-                $updatedProducts = Product::all();
-
-                $updatedProducts->each(function ($product) {
-                    $product->update([
-                        'status' => false,
-                    ]);
-                });
+//                $updatedProducts = Product::all();
+//
+//                $updatedProducts->each(function ($product) {
+//                    $product->update([
+//                        'status' => false,
+//                    ]);
+//                });
 
                 foreach ($productChunks as $productChunk) {
                     $batch->add(new ProductImportJsonJob($productChunk, $header));
