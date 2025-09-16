@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Sitemap\SitemapGenerator;
 
 final class SitemapGenerateCommand extends Command
@@ -32,6 +31,6 @@ final class SitemapGenerateCommand extends Command
     public function handle()
     {
         SitemapGenerator::create(config('app.url'))
-            ->writeToFile(Storage::disk('sitemap')->path('sitemap.xml'));
+            ->writeToFile(public_path('sitemap.xml'));
     }
 }
