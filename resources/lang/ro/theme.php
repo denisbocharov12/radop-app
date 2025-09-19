@@ -399,4 +399,5 @@ return array (
     'min-order-text' => 'Acest produs poate fi achiziționat numai în cantități multiple ale comenzii minime:',
     'limited_stock_only_qty' => '❗️ Produsul este în cantitate limitată! În acest moment sunt disponibile doar :qty :unit',
     'limited_stock_contact' => '📞 Pentru a comanda sau a verifica stocul, contactați managerul nostru: +373 79 782 112',
+    'account_text' => 'Cabinetul meu',
 );

@@ -1,6 +1,6 @@
 <section class="section-standart section-sort">
     <div class="container">
-        <div class="row d-none d-md-flex" style="border-block: 1px solid #eee; margin-bottom: 25px">
+        <div class="row d-none d-md-flex" style="border-block: 1px solid #eee; margin-bottom: 10px">
             <div class="col-lg-3"></div>
             <div class="col-md-12 col-lg-9 col-12">
                 <div class="sort-block">

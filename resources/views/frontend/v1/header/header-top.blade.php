@@ -7,7 +7,7 @@
                 <div class="wrap-header-account-with-contacts">
                     @include('frontend.v1.header.components.top-bar-contacts')
                 </div>
-                <div class="d-flex">
+                <div class="d-flex theme-components-wrap">
                     @include('frontend.v1.header.components.header-wishlist')
                     @include('frontend.v1.header.components.header-account')
                     @include('frontend.v1.header.components.header-cart')

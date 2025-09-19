@@ -16,7 +16,13 @@
                     href="javascript:;"
             >
                 <i class="icon-user-radop"></i>
-                <p>{{ __('theme.login_register') }}</p>
+                <p>
+                    @if(\Illuminate\Support\Facades\Auth::guard('user')->user() !== null)
+                        {{ __('theme.account_text') }}
+                    @else
+                        {{ __('theme.login_register') }}
+                    @endif
+                </p>
             </a>
             <a class="navbar-menu__link" href="{{route('theme.wishlist.index')}}">
                 <i class="icon-heart-radop"></i>
