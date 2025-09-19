@@ -1055,8 +1055,28 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
 .section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list {
     display: flex;
 }
+.theme-components-wrap{
+    width: 100%;
+    justify-content: right;
+}
+
+.theme-components-wrap .login-registration-block,
+.theme-components-wrap .cart-block{
+    width: 100%;
+}
+
+.theme-components-wrap .login-registration-block a.icon-block-link{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-breadcrumb .col-breadcrumb {
+    margin-bottom: 15px;
+}
+
 .section-header.section-header-top .wrap-header-account-with-contacts .header-top-bar-contacts ul.list li.item {
-    padding: 0 5px 0 5px;
+    padding: 0 7.5px 0 7.5px;
     margin-right: 0;
     display: flex;
     border-right: 1px solid #0052a6;
@@ -1088,10 +1108,10 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
     padding-left: 0;
 }
 .section-header.section-header-top .header-with-menu{
-    height: 78px;
+    height: 70px;
 }
 .section-header .row-main .header-account{
-    height: 78px;
+    height: 70px;
 }
 .section-header.section-header-top .header-with-menu .wrap-top-menu{
     margin-bottom: 0px;
@@ -1519,7 +1539,7 @@ textarea {
     align-items: center;
 }
 .section-header.section-header-top{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     margin-top: 10px;
 }
 .section-header .row-main {
@@ -1538,7 +1558,7 @@ textarea {
 }
 
 .section-header .row-main .header-logo .link-logo img {
-    height: 78px;
+    height: 70px;
     width: auto;
 }
 
@@ -3392,7 +3412,7 @@ header .section-header .row-main .header-menu .col-lg{
 
 .section-breadcrumb {
     margin-top: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .section-breadcrumb .col-breadcrumb-mobile nav .breadcrumb {
@@ -9970,10 +9990,10 @@ hr.product-card-item{
         margin-top: 0;
     }
     .section-header .row-main .header-logo .link-logo img{
-        height: 68px;
+        height: 60px;
     }
     .section-header.section-header-top{
-        margin-bottom: 7.5px;
+        margin-bottom: 10px;
     }
     .section-header .row-main .header-menu .header-main-menu ul.menu .item .link-megamenu{
         font-size: 12px;
@@ -11378,10 +11398,10 @@ hr.product-card-item{
         padding: 5px 15px;
     }
     .section-header.section-header-top .header-with-menu {
-        height: 68px;
+        height: 60px;
     }
     .section-header .row-main .header-account {
-        height: 68px;
+        height: 60px;
     }
     .theme-text-sp {
         font-size: 14px;
