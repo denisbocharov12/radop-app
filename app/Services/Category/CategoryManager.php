@@ -18,6 +18,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Services\Attachments\AttachmentsManager;
 use App\Services\EntityStatusManager;
 use App\Services\ONEC\ONECManager;
+use Illuminate\Support\Facades\DB;
 
 final class CategoryManager
 {
@@ -117,5 +118,19 @@ final class CategoryManager
         }
 
         $this->attachmentsManager->deleteAttachmentsFromModel($category, (int)$request->id);
+    }
+
+    /**
+     * @param string $categoryOnecId
+     * @param string $productOnecId
+     * @param int $sort
+     * @return void
+     */
+    public function updateProductSortInCategory(string $categoryOnecId, string $productOnecId, int $sort): void
+    {
+        DB::table('product_categories')
+            ->where('category_id', $categoryOnecId)
+            ->where('product_id', $productOnecId)
+            ->update(['sort' => $sort]);
     }
 }

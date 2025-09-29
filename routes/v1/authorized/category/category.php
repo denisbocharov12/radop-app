@@ -39,7 +39,6 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->post('/sorts', [CategoryController::class, 'sortOrder'])
         ->name('sort.order')
     ;
-
     Route::middleware(['app.permissions'])
         ->get('/sorts/catalog', [CategoryController::class, 'sortCatalogIndex'])
         ->name('sort.index.catalog')
@@ -47,5 +46,17 @@ Route::prefix('categories')->name('category.')->group(function () {
     Route::middleware(['app.permissions'])
         ->post('/sorts/catalog', [CategoryController::class, 'sortCatalogOrder'])
         ->name('sort.order.catalog')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/select-category', [CategoryController::class, 'selectCategoryForSort'])
+        ->name('select.category')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sort-products-order', [CategoryController::class, 'sortProducts'])
+        ->name('sort.products.order.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sort-products-order', [CategoryController::class, 'sortProductsOrder'])
+        ->name('sort.products.order')
     ;
 });

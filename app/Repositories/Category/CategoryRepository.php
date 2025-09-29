@@ -14,6 +14,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -62,7 +63,7 @@ class CategoryRepository
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order');
         }
 
-        return QueryBuilder::for($query)
+        $queryBuilder = QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -79,11 +80,23 @@ class CategoryRepository
                 AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order'),
                 'stock',
             ])
-            ->defaultSort($defaultSortObj)
             ->where('status', true)
             ->where('site_status', true)
             ->with(['brand', 'values', 'media', 'packages', 'data'])
-            ->groupBy('products.onec_id')
+            ->groupBy('products.onec_id');
+
+        $hasCustomSort = DB::table('product_categories')
+            ->where('category_id', $category->onec_id)
+            ->whereNotNull('sort')
+            ->exists();
+
+        if ($hasCustomSort) {
+            $queryBuilder = $queryBuilder->orderBy('product_categories.sort');
+        } else {
+            $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+        }
+
+        return $queryBuilder
             ->orderBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
@@ -167,4 +180,16 @@ class CategoryRepository
             ->orderBy('id')
             ->get();
     }
+
+    /**
+     * @param Category $category
+     * @return Collection
+     */
+    public function getAllProductsByCategoryWithSort(Category $category): Collection
+    {
+        return $category->products()->orderBy('product_categories.sort')
+            ->get()
+        ;
+    }
+
 }

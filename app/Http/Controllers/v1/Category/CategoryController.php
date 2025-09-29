@@ -156,4 +156,85 @@ class CategoryController extends Controller
 
         return response()->json(['status' => true, 'text' => 'Категории каталога успешно отсортированы']);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function sortProducts(Request $request)
+    {
+        $categoryId = $request->query('category_id');
+        
+        if (!$categoryId) {
+            return redirect()->route('category.select.category')
+                ->with('error', 'Не выбрана категория');
+        }
+
+        $category = $this->categoryRepository->getByOnecId($categoryId);
+        
+        if (!$category) {
+            return redirect()->route('category.select.category')
+                ->with('error', 'Категория не найдена');
+        }
+
+        $products = $this->categoryRepository->getAllProductsByCategoryWithSort($category);
+
+        return view('category.sort-products', compact([
+            'category',
+            'products'
+        ]));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sortProductsOrder(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        
+        if (!$categoryId) {
+            return response()->json(['status' => false, 'text' => 'Не выбрана категория'], 400);
+        }
+
+        $category = $this->categoryRepository->getByOnecId($categoryId);
+        
+        if (!$category) {
+            return response()->json(['status' => false, 'text' => 'Категория не найдена'], 404);
+        }
+
+        $products = $this->categoryRepository->getAllProductsByCategoryWithSort($category);
+
+        foreach ($products as $product) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $product->onec_id) {
+                    $this->categoryManager->updateProductSortInCategory($category->onec_id, $product->onec_id, $order['position']);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Товары в категории успешно отсортированы']);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function selectCategoryForSort(Request $request)
+    {
+        $categories = $this->categoryRepository->getAll();
+        $selectedCategory = null;
+
+        if ($request->has('category_id') && $request->category_id) {
+            $selectedCategory = $this->categoryRepository->getByOnecId($request->category_id);
+            if ($selectedCategory) {
+                $selectedCategory->load('products');
+            }
+        }
+
+        return view('category.select-category', compact([
+            'categories',
+            'selectedCategory'
+        ]));
+    }
 }

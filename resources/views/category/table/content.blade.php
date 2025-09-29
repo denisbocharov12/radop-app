@@ -38,6 +38,7 @@
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <ul class="link-list-opt no-bdr">
                                         <li><a href="{{route('category.edit', $category)}}" data-id="{{$category->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
+                                        <li><a href="{{route('category.sort.products.order.index', ['category_id' => $category->onec_id])}}" data-id="{{$category->id}}" ><em class="icon ni ni-sort"></em><span>Сортировка товаров</span></a></li>
                                         <li><a href="#" class="category-delete" id="category-delete-{{$category->id}}" data-id="{{$category->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
                                     </ul>
                                 </div>
