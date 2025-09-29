@@ -110,6 +110,6 @@ final class Category extends Model implements HasMedia, Sitemapable
             'product_id',
             'onec_id',
             'onec_id'
-        );
+        )->withPivot('sort');
     }
 }

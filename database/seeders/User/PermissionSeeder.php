@@ -62,6 +62,9 @@ class PermissionSeeder extends Seeder
         'banner.banner-settings.edit',
         'banner.banner-settings.update',
         'import-export-data.descriptions.reset',
+        'category.select.category',
+        'category.sort.products.order.index',
+        'category.sort.products.order',
     ];
 
     private array $userPermittedRoutes = [
