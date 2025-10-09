@@ -7,10 +7,14 @@ use App\Http\Requests\Theme\Search\ThemeSearchRequest;
 
 final class ThemeSearchDataMapper
 {
+    /**
+     * @param ThemeSearchRequest $request
+     * @return ThemeSearchData
+     */
     public function mapFromRequestToNormalized(ThemeSearchRequest $request): ThemeSearchData
     {
         return new ThemeSearchData(
-            $request->search
+            trim($request->search)
         );
     }
 }

@@ -15,6 +15,7 @@ use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
+use App\Services\Search\SearchQueryNormalizer;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -25,7 +26,8 @@ use Spatie\QueryBuilder\QueryBuilder;
 final class ProductRepository
 {
     public function __construct(
-        private readonly ProductConditions $productConditions
+        private readonly ProductConditions $productConditions,
+        private readonly SearchQueryNormalizer $searchQueryNormalizer
     )
     {
     }
@@ -485,29 +487,73 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @param string $value
+     * @return LengthAwarePaginator
+     */
     public function getAllBySearch(string $value): LengthAwarePaginator
     {
+        $words = $this->searchQueryNormalizer->extractWords($value);
+        $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
+
         return Product::where('status', true)
             ->where('site_status', true)
             ->whereNotNull('price_koef')
-            ->where(function ($query) use ($value) {
-                $query->where('products.title', 'like', "%{$value}%")
+            ->where(function ($query) use ($words, $variants, $value) {
+                foreach ($variants as $variant) {
+                    $query->orWhere('products.title', 'like', "%{$variant}%");
+                    $query->orWhere('products.onec_id', 'like', "%{$variant}%");
+                    $query->orWhere('shtrih_code', 'like', "%{$variant}%");
+                }
+
+                if (count($words) > 1) {
+                    $query->orWhere(function ($subQuery) use ($words) {
+                        foreach ($words as $word) {
+                            $subQuery->where('products.title', 'like', "%{$word}%");
+                        }
+                    });
+                }
+
+                $query->orWhere('products.title', 'like', "%{$value}%")
                     ->orWhere('products.onec_id', 'like', "%{$value}%")
                     ->orWhere('shtrih_code', 'like', "%{$value}%");
             })
             ->where('stock', '!=', 0)
+            ->distinct()
             ->paginate(16)
             ->appends(request()->query());
     }
 
+    /**
+     * @param string $value
+     * @return Collection
+     */
     public function getProductCategoryIdsBySearch(string $value): Collection
     {
+        $words = $this->searchQueryNormalizer->extractWords($value);
+        $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
+
         return Product::query()
             ->where('products.status', true)
             ->where('products.site_status', true)
-            ->where('products.title', 'like', "%{$value}%")
             ->where('products.stock', '!=', 0)
-            ->orWhere('products.onec_id', 'like', "%{$value}%")
+            ->where(function ($query) use ($words, $variants, $value) {
+                foreach ($variants as $variant) {
+                    $query->orWhere('products.title', 'like', "%{$variant}%");
+                    $query->orWhere('products.onec_id', 'like', "%{$variant}%");
+                }
+
+                if (count($words) > 1) {
+                    $query->orWhere(function ($subQuery) use ($words) {
+                        foreach ($words as $word) {
+                            $subQuery->where('products.title', 'like', "%{$word}%");
+                        }
+                    });
+                }
+
+                $query->orWhere('products.title', 'like', "%{$value}%")
+                    ->orWhere('products.onec_id', 'like', "%{$value}%");
+            })
             ->join('product_categories', 'product_categories.product_id', '=', 'products.onec_id')
             ->select('product_categories.category_id')
             ->distinct()
