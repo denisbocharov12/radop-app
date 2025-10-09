@@ -38,7 +38,6 @@
 <div class="search-navbar">
     <div class="search-navbar-wrap">
         <form action="{{route('theme.search.index')}}" method="GET">
-            @csrf
             <input type="text" class="catalog-navbar__search" name="search" placeholder="{{__('theme.search-on-site')}}">
             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
         </form>
