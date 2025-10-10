@@ -11,12 +11,6 @@ use Spatie\QueryBuilder\Filters\Filter;
 
 final class ProductSearchFilter implements Filter
 {
-    public function __construct(
-        private readonly SearchQueryNormalizer $searchQueryNormalizer
-    )
-    {
-    }
-
     /**
      * @param Builder<Model> $query
      * @param mixed $value
@@ -24,8 +18,10 @@ final class ProductSearchFilter implements Filter
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
-        $words = $this->searchQueryNormalizer->extractWords($value);
-        $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
+        $searchQueryNormalizer = app(SearchQueryNormalizer::class);
+        
+        $words = $searchQueryNormalizer->extractWords($value);
+        $variants = $searchQueryNormalizer->generateSearchVariants($value);
 
         $brandsIds = Brand::query()
             ->where(function ($brandQuery) use ($variants, $value) {
@@ -43,7 +39,7 @@ final class ProductSearchFilter implements Filter
                 $query->orWhere('products.title', 'like', "%{$variant}%");
                 $query->orWhere('products.onec_id', 'like', "%{$variant}%");
             }
-            
+
             if (count($words) > 1) {
                 $query->orWhere(function ($subQuery) use ($words) {
                     foreach ($words as $word) {
@@ -51,7 +47,7 @@ final class ProductSearchFilter implements Filter
                     }
                 });
             }
-            
+
             $query->orWhere('products.title', 'like', "%{$value}%")
                 ->orWhere('products.onec_id', 'like', "%{$value}%")
                 ->orWhereIn('products.brand_id', $brandsIds)
