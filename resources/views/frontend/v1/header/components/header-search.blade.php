@@ -25,19 +25,21 @@
                 </div>
             </div>
         </div>
-        <form action="{{route('theme.search.index')}}" method="GET" class="form-with-history">
-            <input type="text" class="search search-sticky" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
-            <button type="submit" class="btn-search"><i class="icon-search"></i></button>
+        <div class="sticky-search-wrapper">
+            <form action="{{route('theme.search.index')}}" method="GET" class="form-with-history">
+                <input type="text" class="search search-sticky" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
+                <button type="submit" class="btn-search"><i class="icon-search"></i></button>
+            </form>
             <div class="search-history-dropdown search-history-sticky" id="search-history-dropdown-sticky" style="display: none;">
                 <div class="search-history-header">
-                    <span class="search-history-title">{{__('theme.search_history')}}</span>
+                    <span class="search-history-title" data-history-title="{{__('theme.search_history')}}" data-suggestions-title="{{__('theme.search_suggestions')}}">{{__('theme.search_history')}}</span>
                     <button type="button" class="search-history-clear" id="search-history-clear-sticky" data-empty-text="{{__('theme.search_history_empty')}}">
                         <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
                     </button>
                 </div>
                 <div class="search-history-list" id="search-history-list-sticky"></div>
             </div>
-        </form>
+        </div>
         <div id="sticky-cart-block" class="header-account" style="display: none;">
             <div class="cart-block icon-block mini-shopping-cart">
                 <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">

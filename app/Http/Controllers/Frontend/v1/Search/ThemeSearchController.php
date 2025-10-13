@@ -19,7 +19,7 @@ final class ThemeSearchController extends Controller
     use SEOTools;
 
     private const SEARCH_HISTORY_KEY = 'search_history';
-    private const MAX_HISTORY_ITEMS = 10;
+    private const MAX_HISTORY_ITEMS = 5;
 
     public function __construct(
         private readonly ThemeSearchManager $themeSearchManager,
@@ -72,7 +72,7 @@ final class ThemeSearchController extends Controller
     private function saveSearchQuery(string $query): void
     {
         $query = trim($query);
-        
+
         if (empty($query)) {
             return;
         }
@@ -98,6 +98,30 @@ final class ThemeSearchController extends Controller
         return response()->json([
             'success' => true,
             'data' => array_values($history)
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getSuggestions(Request $request): JsonResponse
+    {
+        $query = $request->input('query', '');
+        $locale = $request->input('locale', app()->getLocale());
+
+        if (empty($query) || mb_strlen(trim($query)) < 2) {
+            return response()->json([
+                'success' => true,
+                'data' => []
+            ]);
+        }
+
+        $suggestions = $this->themeSearchManager->getSuggestions($query, $locale);
+
+        return response()->json([
+            'success' => true,
+            'data' => $suggestions->values()->toArray()
         ]);
     }
 

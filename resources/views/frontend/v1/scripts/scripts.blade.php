@@ -5,7 +5,7 @@
 <script src="{{asset('/v1/frontend/assets')}}/libs/slick/slick.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/hoverDelay/jquery.hoverDelay.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.24"></script>
+<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.25"></script>
 
 <script>
     window.getLimitedStockWarning = function(maxQty, unit){
