@@ -14,6 +14,7 @@ use App\Repositories\Order\OrderRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Order\ThemeOrderManager;
+use App\Services\Theme\Product\ThemeProductManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Support\Facades\Auth;
@@ -99,5 +100,47 @@ final class ThemeOrderController extends Controller
         } catch (OrderNotFoundException $e){
             throw new OrderNotFoundValidationException();
         }
+    }
+
+    public function repeatOrder(Order $order)
+    {
+        $user = Auth::guard('user')->user();
+
+        if (!$user->can('view', $order)) {
+            return redirect()->back()->withErrors(['user_not_permitted_to_view_order' => __('theme.user_not_permitted_to_view_order')]);
+        }
+
+        $existedOrder = $this->orderRepository->getById($order->id);
+
+        if ($existedOrder === null) {
+            return redirect()->back()->withErrors(['order_not_found' => __('theme.order_not_found')]);
+        }
+
+        $sessionId = config('shopping_cart.default_session_id');
+
+        if ($user) {
+            $sessionId = $user->id;
+        }
+
+        foreach ($existedOrder->products as $orderItem) {
+            $product = $orderItem->product;
+
+            if ($product && $product->stock > 0) {
+                $price = ThemeProductManager::getProductTotalSum($product);
+
+                \Cart::session($sessionId)->add([
+                    'id' => $product->id,
+                    'name' => $product->title,
+                    'price' => (float)$price,
+                    'quantity' => (int)$orderItem->quantity,
+                    'attributes' => [],
+                    'associatedModel' => $product
+                ]);
+            }
+        }
+
+        toastr()->success(__('theme.order_repeated_successfully'));
+
+        return redirect()->route('theme.cart.index');
     }
 }

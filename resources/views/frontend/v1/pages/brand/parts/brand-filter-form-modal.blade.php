@@ -38,12 +38,12 @@
                             <div class="price-input">
                                 <div class="field">
                                     <span>{{ __('theme.min') }}</span>
-                                    <input type="number" class="input-min" name="filter[price][from]">
+                                    <input type="number" class="input-min" name="filter[price][from]" value="{{ $queryPriceFrom ?? 0 }}">
                                 </div>
                                 <div class="separator"></div>
                                 <div class="field">
                                     <span>{{ __('theme.max') }}</span>
-                                    <input type="number" class="input-max" name="filter[price][to]">
+                                    <input type="number" class="input-max" name="filter[price][to]" value="{{ $queryPriceTo ?? 1000 }}">
                                 </div>
                             </div>
                         </div>

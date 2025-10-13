@@ -86,6 +86,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'export' => [
+            'driver' => 'local',
+            'root' => storage_path('app/export'),
+            'url' => env('APP_URL').'/export',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -117,6 +124,7 @@ return [
         public_path('files') => storage_path('app/files'),
         public_path('banners') => storage_path('app/banners'),
         public_path('sitemap') => storage_path('app/sitemap'),
+        public_path('export') => storage_path('app/export'),
     ],
 
 ];

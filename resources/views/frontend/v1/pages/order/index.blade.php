@@ -49,6 +49,10 @@
                                             <div class="order__options d-flex align-items-center">
                                                 <a class="order-dropdown__link"
                                                    data-id="{{$order->id}}"
+                                                   href="{{route('theme.user.orders.repeat', $order)}}">{{__('theme.order-repeat')}}
+                                                </a>
+                                                <a class="order-dropdown__link"
+                                                   data-id="{{$order->id}}"
                                                    href="{{route('theme.user.orders.view.invoice', $order)}}">{{__('theme.order-view-invoice')}}
                                                 </a>
                                                 <a class="order-dropdown__link"

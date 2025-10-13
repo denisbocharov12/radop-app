@@ -13,8 +13,7 @@ use App\Repositories\SeoMetaRepository;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
-use App\Exports\BrandExport;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use App\Models\PageSortSetting;
 
 final class ThemeShopController extends Controller
@@ -183,21 +182,75 @@ final class ThemeShopController extends Controller
         ]));
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function exportNewProducts()
     {
-        $products = $this->productRepository->getAllNewProducts();
-        return Excel::download(new BrandExport($products), 'radop_new_products.xlsx');
+        $locale = app()->getLocale();
+        $fileName = "radop_new_products_new_{$locale}.xlsx";
+        
+        if (Storage::disk('export')->exists($fileName)) {
+            $url = asset("export/{$fileName}");
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'message' => __('theme.export-file-ready'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => __('theme.export-file-not-found'),
+        ], 404);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function exportPopularProducts()
     {
-        $products = $this->productRepository->getAllPopularProducts();
-        return Excel::download(new BrandExport($products), 'radop_popular_products.xlsx');
+        $locale = app()->getLocale();
+        $fileName = "radop_popular_products_popular_{$locale}.xlsx";
+        
+        if (Storage::disk('export')->exists($fileName)) {
+            $url = asset("export/{$fileName}");
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'message' => __('theme.export-file-ready'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => __('theme.export-file-not-found'),
+        ], 404);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function exportSaleProducts()
     {
-        $products = $this->productRepository->getAllDiscountProducts();
-        return Excel::download(new BrandExport($products), 'radop_sale_products.xlsx');
+        $locale = app()->getLocale();
+        $fileName = "radop_sale_products_sale_{$locale}.xlsx";
+        
+        if (Storage::disk('export')->exists($fileName)) {
+            $url = asset("export/{$fileName}");
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'message' => __('theme.export-file-ready'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => __('theme.export-file-not-found'),
+        ], 404);
     }
 }

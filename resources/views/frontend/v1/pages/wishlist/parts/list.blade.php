@@ -1,7 +1,7 @@
 @if(app('wishlist')->getContent()->count() < 1)
     @include('frontend.v1.pages.wishlist.parts.not-found')
 @endif
-@foreach(app('wishlist')->getContent()->sort() as $product)
+@foreach(app('wishlist')->getContent()->sortBy("attributes.added_at") as $product)
     @php
         $sessionId = config('shopping_cart.default_session_id');
 
@@ -38,7 +38,7 @@
                 @else
                     <a href="javascript:void(0);" id="add_to_wishlist-{{$product->conditions->id}}"
                        data-id="{{$product->conditions->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
-                        <i class="fa fa-heart"></i>
+                        <i class="icon-heart"></i>
                     </a>
                 @endif
                 <div class="product-item-title-wrap">

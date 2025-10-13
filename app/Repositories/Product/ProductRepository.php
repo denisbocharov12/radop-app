@@ -495,21 +495,32 @@ final class ProductRepository
     {
         $words = $this->searchQueryNormalizer->extractWords($value);
         $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
+        $stemmedWords = $this->searchQueryNormalizer->stemWords($words);
 
         return Product::where('status', true)
             ->where('site_status', true)
             ->whereNotNull('price_koef')
-            ->where(function ($query) use ($words, $variants, $value) {
+            ->where(function ($query) use ($words, $variants, $value, $stemmedWords) {
                 foreach ($variants as $variant) {
                     $query->orWhere('products.title', 'like', "%{$variant}%");
                     $query->orWhere('products.onec_id', 'like', "%{$variant}%");
                     $query->orWhere('shtrih_code', 'like', "%{$variant}%");
                 }
 
+                foreach ($stemmedWords as $stem) {
+                    $query->orWhere('products.title', 'like', "%{$stem}%");
+                }
+
                 if (count($words) > 1) {
                     $query->orWhere(function ($subQuery) use ($words) {
                         foreach ($words as $word) {
                             $subQuery->where('products.title', 'like', "%{$word}%");
+                        }
+                    });
+                    
+                    $query->orWhere(function ($subQuery) use ($stemmedWords) {
+                        foreach ($stemmedWords as $stem) {
+                            $subQuery->where('products.title', 'like', "%{$stem}%");
                         }
                     });
                 }
@@ -532,21 +543,32 @@ final class ProductRepository
     {
         $words = $this->searchQueryNormalizer->extractWords($value);
         $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
+        $stemmedWords = $this->searchQueryNormalizer->stemWords($words);
 
         return Product::query()
             ->where('products.status', true)
             ->where('products.site_status', true)
             ->where('products.stock', '!=', 0)
-            ->where(function ($query) use ($words, $variants, $value) {
+            ->where(function ($query) use ($words, $variants, $value, $stemmedWords) {
                 foreach ($variants as $variant) {
                     $query->orWhere('products.title', 'like', "%{$variant}%");
                     $query->orWhere('products.onec_id', 'like', "%{$variant}%");
+                }
+
+                foreach ($stemmedWords as $stem) {
+                    $query->orWhere('products.title', 'like', "%{$stem}%");
                 }
 
                 if (count($words) > 1) {
                     $query->orWhere(function ($subQuery) use ($words) {
                         foreach ($words as $word) {
                             $subQuery->where('products.title', 'like', "%{$word}%");
+                        }
+                    });
+                    
+                    $query->orWhere(function ($subQuery) use ($stemmedWords) {
+                        foreach ($stemmedWords as $stem) {
+                            $subQuery->where('products.title', 'like', "%{$stem}%");
                         }
                     });
                 }

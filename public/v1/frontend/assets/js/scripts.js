@@ -1294,3 +1294,144 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+class SearchHistory {
+    constructor(inputSelector, dropdownSelector, listSelector, clearButtonSelector) {
+        this.input = document.querySelector(inputSelector);
+        this.dropdown = document.querySelector(dropdownSelector);
+        this.list = document.querySelector(listSelector);
+        this.clearButton = document.querySelector(clearButtonSelector);
+        
+        if (!this.input || !this.dropdown || !this.list || !this.clearButton) {
+            return;
+        }
+        
+        this.init();
+    }
+    
+    init() {
+        this.input.addEventListener('focus', () => this.loadAndShowHistory());
+        this.input.addEventListener('input', () => {
+            if (this.input.value.trim() === '') {
+                this.loadAndShowHistory();
+            }
+        });
+        
+        this.clearButton.addEventListener('click', () => this.clearHistory());
+        
+        document.addEventListener('click', (e) => {
+            if (!this.dropdown.contains(e.target) && !this.input.contains(e.target)) {
+                this.hideHistory();
+            }
+        });
+    }
+    
+    loadAndShowHistory() {
+        fetch('/search/history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.length > 0) {
+                    this.renderHistory(data.data);
+                    this.showHistory();
+                } else {
+                    this.hideHistory();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки истории поиска:', error);
+            });
+    }
+    
+    renderHistory(items) {
+        this.list.innerHTML = '';
+        
+        const emptyText = this.clearButton.getAttribute('data-empty-text');
+        
+        if (items.length === 0) {
+            this.list.innerHTML = '<div class="search-history-empty">' + emptyText + '</div>';
+            return;
+        }
+        
+        items.forEach(query => {
+            const item = document.createElement('div');
+            item.className = 'search-history-item';
+            
+            const textSpan = document.createElement('span');
+            textSpan.className = 'search-history-item-text';
+            textSpan.textContent = query;
+            textSpan.addEventListener('click', () => {
+                this.input.value = query;
+                this.input.form.submit();
+            });
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'search-history-item-delete';
+            deleteBtn.innerHTML = '<i class="icon-close"></i>';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.deleteHistoryItem(query);
+            });
+            
+            item.appendChild(textSpan);
+            item.appendChild(deleteBtn);
+            this.list.appendChild(item);
+        });
+    }
+    
+    showHistory() {
+        this.dropdown.style.display = 'block';
+    }
+    
+    hideHistory() {
+        this.dropdown.style.display = 'none';
+    }
+    
+    clearHistory() {
+        const emptyText = this.clearButton.getAttribute('data-empty-text');
+        
+        fetch('/search/history/clear', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.list.innerHTML = '<div class="search-history-empty">' + emptyText + '</div>';
+                setTimeout(() => this.hideHistory(), 1000);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка очистки истории:', error);
+        });
+    }
+    
+    deleteHistoryItem(query) {
+        fetch('/search/history/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ query: query })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.loadAndShowHistory();
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка удаления элемента:', error);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    new SearchHistory('.search-desktop', '#search-history-dropdown', '#search-history-list', '#search-history-clear-desktop');
+    new SearchHistory('.search-mobile-header', '#search-history-dropdown-mobile-header', '#search-history-list-mobile-header', '#search-history-clear-mobile-header');
+    new SearchHistory('.search-sticky', '#search-history-dropdown-sticky', '#search-history-list-sticky', '#search-history-clear-sticky');
+    new SearchHistory('.search-mobile-navbar', '#search-history-dropdown-mobile', '#search-history-list-mobile', '#search-history-clear-mobile');
+});

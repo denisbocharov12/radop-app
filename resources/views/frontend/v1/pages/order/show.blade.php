@@ -88,6 +88,12 @@
                                 </tfoot>
                             </table>
                         </div>
+                        <div class="order-actions-wrap">
+                            <a href="{{route('theme.user.orders.repeat', $order)}}" class="btn-repeat-order">
+                                <i class="icon-arrows-cw"></i>
+                                {{__('theme.order-repeat')}}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -18,4 +18,8 @@ Route::prefix('orders')->name('orders.')->group(function () {
         ->get('/{order}/download-invoice', [ThemeOrderController::class, 'downloadInvoice'])
         ->name('download.invoice')
     ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/{order}/repeat', [ThemeOrderController::class, 'repeatOrder'])
+        ->name('repeat')
+    ;
 });

@@ -20,7 +20,11 @@
     <tbody>
     @foreach($products as $i => $product)
         <tr>
-            <td></td>
+            <td>
+                @if($product->hasMedia('products'))
+                    <img src="{{ $product->getFirstMediaUrl('products', 'thumb') }}" alt="{{ $product->title }}" style="width: 75px; height: 75px; object-fit: contain;">
+                @endif
+            </td>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>
             <td>{{ $product->title }}</td>

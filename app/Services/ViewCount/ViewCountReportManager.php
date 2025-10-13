@@ -20,14 +20,15 @@ final class ViewCountReportManager
      * @param string $startDate
      * @param string $endDate
      * @param int|null $productId
+     * @param int|null $categoryId
      * @return array
      */
-    public function generateProductReport(string $startDate, string $endDate, ?int $productId = null): array
+    public function generateProductReport(string $startDate, string $endDate, ?int $productId = null, ?int $categoryId = null): array
     {
         $startDateTime = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
         $endDateTime = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
 
-        $products = $this->productViewCountRepository->getProductsForReport($startDateTime, $endDateTime, $productId);
+        $products = $this->productViewCountRepository->getProductsForReport($startDateTime, $endDateTime, $productId, $categoryId);
 
         $reportData = [];
         $totalViews = 0;
