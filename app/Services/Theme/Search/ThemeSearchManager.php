@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 final class ThemeSearchManager
 {
-    private const MAX_SUGGESTIONS = 7;
+    private const MAX_SUGGESTIONS = 10;
 
     public function __construct(
         private readonly ProductRepository $productRepository
