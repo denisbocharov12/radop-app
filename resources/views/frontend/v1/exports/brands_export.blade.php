@@ -21,8 +21,31 @@
     @foreach($products as $i => $product)
         <tr>
             <td>
-                @if($product->hasMedia('products'))
-                    <img src="{{ $product->getFirstMediaUrl('products', 'thumb') }}" alt="{{ $product->title }}" style="width: 75px; height: 75px; object-fit: contain;">
+                @php
+                    $imageUrl = null;
+                    if($product->hasMedia('products')) {
+                        try {
+                            $media = $product->getFirstMedia('products');
+                            if($media && $media->hasGeneratedConversion('thumb')) {
+                                $imagePath = $media->getPath('thumb');
+                                if(file_exists($imagePath)) {
+                                    $imageUrl = $media->getUrl('thumb');
+                                }
+                            }
+                            
+                            if(!$imageUrl && $media) {
+                                $imagePath = $media->getPath();
+                                if(file_exists($imagePath)) {
+                                    $imageUrl = $media->getUrl();
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            $imageUrl = null;
+                        }
+                    }
+                @endphp
+                @if($imageUrl)
+                    <img src="{{ $imageUrl }}" alt="{{ $product->title }}" style="width: 75px; height: 75px; object-fit: contain;">
                 @endif
             </td>
             <td>{{ $i + 1 }}</td>
