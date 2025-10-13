@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('sitemap:generate')->dailyAt('01:00');
-        $schedule->command('excel:generate-exports')->dailyAt('10:00');
+        //$schedule->command('excel:generate-exports')->dailyAt('10:00');
         //$schedule->command('view-counts:cleanup --days=90')->quarterly();
     }
 
