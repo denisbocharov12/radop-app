@@ -5,7 +5,7 @@
 <script src="{{asset('/v1/frontend/assets')}}/libs/slick/slick.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/hoverDelay/jquery.hoverDelay.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.22"></script>
+<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.23"></script>
 
 <script>
     window.getLimitedStockWarning = function(maxQty, unit){
@@ -854,7 +854,7 @@
 
     $(document).on('click', '.export-excel-link', function (e) {
         e.preventDefault();
-        
+
         var $link = $(this);
         var $span = $link.find('span');
         var originalText = $span.text();
@@ -878,11 +878,11 @@
             },
             error: function(xhr) {
                 var errorMessage = window.exportMessages.fileNotFound;
-                
+
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
                 }
-                
+
                 toastr.error(errorMessage);
             },
             complete: function() {
