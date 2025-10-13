@@ -414,5 +414,6 @@ return array (
     'search_history_empty' => 'История поиска пуста',
     'search_history_cleared' => 'История поиска очищена',
     'search_query_not_specified' => 'Запрос не указан',
-    'search_history_item_deleted' => 'Элемент удален из истории'
+    'search_history_item_deleted' => 'Элемент удален из истории',
+    'search_suggestions' => 'Похожие запросы'
 );

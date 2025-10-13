@@ -35,7 +35,7 @@
                         </form>
                         <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
                             <div class="search-history-header">
-                                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                                <span class="search-history-title" data-history-title="{{__('theme.search_history')}}" data-suggestions-title="{{__('theme.search_suggestions')}}">{{__('theme.search_history')}}</span>
                                 <button type="button" class="search-history-clear" id="search-history-clear-desktop" data-empty-text="{{__('theme.search_history_empty')}}">
                                     <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
                                 </button>
@@ -142,7 +142,7 @@
                         </form>
                         <div class="search-history-dropdown search-history-mobile" id="search-history-dropdown-mobile-header" style="display: none;">
                             <div class="search-history-header">
-                                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                                <span class="search-history-title" data-history-title="{{__('theme.search_history')}}" data-suggestions-title="{{__('theme.search_suggestions')}}">{{__('theme.search_history')}}</span>
                                 <button type="button" class="search-history-clear" id="search-history-clear-mobile-header" data-empty-text="{{__('theme.search_history_empty')}}">
                                     <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
                                 </button>

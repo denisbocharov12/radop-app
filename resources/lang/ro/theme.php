@@ -411,5 +411,6 @@ return array (
     'search_history_empty' => 'Istoricul căutărilor este gol',
     'search_history_cleared' => 'Istoricul căutărilor a fost șters',
     'search_query_not_specified' => 'Interogarea nu este specificată',
-    'search_history_item_deleted' => 'Elementul a fost șters din istoric'
+    'search_history_item_deleted' => 'Elementul a fost șters din istoric',
+    'search_suggestions' => 'Interogări similare'
 );

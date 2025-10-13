@@ -1301,6 +1301,8 @@ class SearchHistory {
         this.dropdown = document.querySelector(dropdownSelector);
         this.list = document.querySelector(listSelector);
         this.clearButton = document.querySelector(clearButtonSelector);
+        this.debounceTimer = null;
+        this.currentMode = 'history';
         
         if (!this.input || !this.dropdown || !this.list || !this.clearButton) {
             return;
@@ -1310,10 +1312,25 @@ class SearchHistory {
     }
     
     init() {
-        this.input.addEventListener('focus', () => this.loadAndShowHistory());
-        this.input.addEventListener('input', () => {
+        this.input.addEventListener('focus', () => {
             if (this.input.value.trim() === '') {
                 this.loadAndShowHistory();
+            } else {
+                this.loadAndShowSuggestions(this.input.value);
+            }
+        });
+        
+        this.input.addEventListener('input', () => {
+            clearTimeout(this.debounceTimer);
+            
+            const query = this.input.value.trim();
+            
+            if (query === '') {
+                this.loadAndShowHistory();
+            } else {
+                this.debounceTimer = setTimeout(() => {
+                    this.loadAndShowSuggestions(query);
+                }, 300);
             }
         });
         
@@ -1327,6 +1344,7 @@ class SearchHistory {
     }
     
     loadAndShowHistory() {
+        this.currentMode = 'history';
         fetch('/search/history')
             .then(response => response.json())
             .then(data => {
@@ -1339,6 +1357,26 @@ class SearchHistory {
             })
             .catch(error => {
                 console.error('Ошибка загрузки истории поиска:', error);
+            });
+    }
+    
+    loadAndShowSuggestions(query) {
+        this.currentMode = 'suggestions';
+        
+        const locale = document.documentElement.lang || 'ru';
+        
+        fetch('/search/suggestions?query=' + encodeURIComponent(query) + '&locale=' + locale)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.length > 0) {
+                    this.renderSuggestions(data.data);
+                    this.showHistory();
+                } else {
+                    this.hideHistory();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки подсказок:', error);
             });
     }
     
@@ -1378,12 +1416,62 @@ class SearchHistory {
         });
     }
     
+    renderSuggestions(items) {
+        this.list.innerHTML = '';
+        
+        if (items.length === 0) {
+            return;
+        }
+        
+        items.forEach(suggestion => {
+            const item = document.createElement('div');
+            item.className = 'search-suggestion-item';
+            
+            const icon = document.createElement('i');
+            if (suggestion.type === 'product') {
+                icon.className = 'icon-search search-suggestion-icon';
+            } else if (suggestion.type === 'category') {
+                icon.className = 'icon-radop-bars search-suggestion-icon';
+            } else if (suggestion.type === 'brand') {
+                icon.className = 'icon-star search-suggestion-icon';
+            }
+            
+            const textSpan = document.createElement('span');
+            textSpan.className = 'search-suggestion-text';
+            textSpan.textContent = suggestion.text;
+            
+            item.appendChild(icon);
+            item.appendChild(textSpan);
+            
+            item.addEventListener('click', () => {
+                this.input.value = suggestion.text;
+                this.input.form.submit();
+            });
+            
+            this.list.appendChild(item);
+        });
+    }
+    
     showHistory() {
+        this.updateHeaderTitle();
         this.dropdown.style.display = 'block';
     }
     
     hideHistory() {
         this.dropdown.style.display = 'none';
+    }
+    
+    updateHeaderTitle() {
+        const headerTitle = this.dropdown.querySelector('.search-history-title');
+        if (!headerTitle) return;
+        
+        if (this.currentMode === 'suggestions') {
+            headerTitle.textContent = headerTitle.getAttribute('data-suggestions-title') || 'Похожие запросы';
+            this.clearButton.style.display = 'none';
+        } else {
+            headerTitle.textContent = headerTitle.getAttribute('data-history-title') || 'История поиска';
+            this.clearButton.style.display = 'flex';
+        }
     }
     
     clearHistory() {

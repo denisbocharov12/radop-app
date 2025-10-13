@@ -10,6 +10,9 @@ Route::prefix('search')->name('search.')->group(function () {
     Route::get('/history', [ThemeSearchController::class, 'getHistory'])
         ->name('history.get')
     ;
+    Route::get('/suggestions', [ThemeSearchController::class, 'getSuggestions'])
+        ->name('suggestions.get')
+    ;
     Route::post('/history/clear', [ThemeSearchController::class, 'clearHistory'])
         ->name('history.clear')
     ;
