@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Frontend\v1\Category;
 
 use App\Enums\PageTypes;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
-use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
@@ -19,7 +18,7 @@ use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 final class ThemeCategoryController extends Controller
 {
@@ -84,7 +83,7 @@ final class ThemeCategoryController extends Controller
         $this->seo()->opengraph()->addProperty('type', 'category');
         $this->seo()->jsonLd()->setType('Article');
 
-        //$this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
+        $this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
         if ($existedCategory->children->isNotEmpty()) {
             return view('frontend.v1.pages.category.category', compact([
@@ -115,6 +114,8 @@ final class ThemeCategoryController extends Controller
     }
 
     /**
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
      * @throws ThemeCategoryNotFoundException
      */
     public function export(string $onecId)
@@ -125,8 +126,22 @@ final class ThemeCategoryController extends Controller
             throw new ThemeCategoryNotFoundException();
         }
 
-        $products = $this->categoryRepository->getAllByCategoryOnecId($existedCategory);
-
-        return Excel::download(new CategoryExport($products), 'radop_categories_' . $onecId . '.xlsx');
+        $locale = app()->getLocale();
+        $fileName = "radop_categories_{$onecId}_{$locale}.xlsx";
+        
+        if (Storage::disk('export')->exists($fileName)) {
+            $url = asset("export/{$fileName}");
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'message' => __('theme.export-file-ready'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => __('theme.export-file-not-found'),
+        ], 404);
     }
 }

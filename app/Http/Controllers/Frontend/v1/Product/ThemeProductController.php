@@ -84,7 +84,7 @@ final class ThemeProductController extends Controller
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
 
-        //$this->viewCountManager->incrementProductViewCount($product, $request);
+        $this->viewCountManager->incrementProductViewCount($product, $request);
 
         return view('frontend.v1.pages.product.index', compact([
             'product',
@@ -150,7 +150,7 @@ final class ThemeProductController extends Controller
             $similarProducts = $this->productRepository->getAllSimilarProducts($product);
         }
 
-        //$this->viewCountManager->incrementProductViewCount($product, $request);
+        $this->viewCountManager->incrementProductViewCount($product, $request);
 
         $renderedView = view('frontend.v1.pages.product.quick-view', compact(['product', 'similarProducts']))->render();
 

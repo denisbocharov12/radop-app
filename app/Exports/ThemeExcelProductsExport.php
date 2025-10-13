@@ -15,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithStyles
+final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles
 {
     public function __construct(
         private readonly Collection $products,
@@ -75,3 +75,4 @@ final class BrandExport implements FromView, WithTitle, WithColumnWidths, WithSt
         return [];
     }
 }
+

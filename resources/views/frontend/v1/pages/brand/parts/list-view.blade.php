@@ -27,7 +27,7 @@
                             @else
                                 <a href="javascript:void(0);" id="add_to_wishlist-list-{{$product->id}}" data-id="{{$product->id}}"
                                    data-qty="1" class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
-                                    <i class="fa fa-heart"></i>
+                                    <i class="icon-heart"></i>
                                 </a>
                             @endif
                             @include('frontend.v1.pages.product.components.label')

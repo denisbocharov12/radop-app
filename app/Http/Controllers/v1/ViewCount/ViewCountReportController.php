@@ -29,7 +29,8 @@ final class ViewCountReportController extends Controller
         $reportData = $this->viewCountReportManager->generateProductReport(
             $request->get('start_date'),
             $request->get('end_date'),
-            $request->get('product_id')
+            $request->get('product_id'),
+            $request->get('category_id')
         );
 
         return response()->json([
@@ -83,8 +84,9 @@ final class ViewCountReportController extends Controller
     public function productIndex()
     {
         $products = $this->productRepository->getAllWithViewCounts();
+        $categories = $this->categoryRepository->getAll();
 
-        return view('reports.view-count.product.index', compact('products'));
+        return view('reports.view-count.product.index', compact('products', 'categories'));
     }
 
     /**

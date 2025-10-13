@@ -100,9 +100,10 @@ final class ProductViewCountRepository
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @param int|null $productId
+     * @param int|null $categoryId
      * @return Collection
      */
-    public function getProductsForReport(Carbon $startDate, Carbon $endDate, ?int $productId = null): Collection
+    public function getProductsForReport(Carbon $startDate, Carbon $endDate, ?int $productId = null, ?int $categoryId = null): Collection
     {
         $query = Product::query()
             ->whereHas('viewCounts', function ($q) use ($startDate, $endDate) {
@@ -111,6 +112,12 @@ final class ProductViewCountRepository
 
         if ($productId !== null) {
             $query->where('id', $productId);
+        }
+
+        if ($categoryId !== null) {
+            $query->whereHas('categories', function ($q) use ($categoryId) {
+                $q->where('categories.id', $categoryId);
+            });
         }
 
         return $query->with('viewCounts')->orderBy('id')->get();

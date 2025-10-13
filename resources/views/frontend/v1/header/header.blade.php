@@ -28,11 +28,20 @@
                     </div>
                 </div>
                 <div class="header-search col col-md col-xl col-lg">
-                    <div class="wrap">
+                    <div class="wrap wrap-with-history">
                         <form action="{{route('theme.search.index')}}" method="GET">
-                            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
+                            <input type="text" class="search search-desktop" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
+                        <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
+                            <div class="search-history-header">
+                                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                                <button type="button" class="search-history-clear" id="search-history-clear-desktop" data-empty-text="{{__('theme.search_history_empty')}}">
+                                    <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
+                                </button>
+                            </div>
+                            <div class="search-history-list" id="search-history-list"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="header-account header-account-responsive col-auto col-sm-auto col-md-auto col-lg-auto">
@@ -42,14 +51,60 @@
                         </a>
                     </div>
                     <div class="login-registration-block icon-block d-none d-lg-block">
-                        <a
+                        @php
+                            $user = Auth::guard('user')->user()
+                        @endphp
+
+                        @if($user)
+                            <a
+                                class="icon-block-link"
+                                href="{{route('theme.user.orders.index')}}"
+                            >
+                                <span class="theme-text-sp-lg">
+                                    @if($user->type->key_name === "fiz")
+                                        {{$user->profile->first_name . ' ' . $user->profile->last_name}}
+                                    @else
+                                        {{$user->profile->organization_name}}
+                                    @endif
+                                </span>
+                                <i class="icon-user-radop"></i>
+                            </a>
+                            <div class="account-dropdown-menu">
+                                <ul class="account-dropdown-list">
+                                    <li class="account-dropdown-item">
+                                        <a class="account-dropdown-link" href="{{route('theme.user.orders.index')}}">
+                                            <i class="icon-your-order"></i>{{__('theme.my-orders')}}
+                                        </a>
+                                    </li>
+                                    @if($user->type->key_name === 'iur')
+                                        <li class="account-dropdown-item">
+                                            <a class="account-dropdown-link" href="{{route('theme.user.filial.index')}}">
+                                                <i class="icon-building"></i>{{__('theme.filials')}}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <li class="account-dropdown-item">
+                                        <a class="account-dropdown-link" href="{{route('theme.user.account.index')}}">
+                                            <i class="icon-account"></i>{{__('theme.account')}}
+                                        </a>
+                                    </li>
+                                    <li class="account-dropdown-item">
+                                        <a class="account-dropdown-link" href="{{route('theme.user.logout')}}">
+                                            <i class="icon-user"></i>{{__('theme.logout')}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @else
+                            <a
                                 class="user icon-block-link"
                                 data-fancybox
                                 data-src="#loginModal"
                                 href="javascript:;"
-                        >
-                            <i class="icon-user-radop"></i>
-                        </a>
+                            >
+                                <i class="icon-user-radop"></i>
+                            </a>
+                        @endif
                     </div>
                     <div class="cart-block icon-block mini-shopping-cart">
                         <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">
@@ -80,11 +135,20 @@
             </div>
             <div class="row row-main row-mobile-search">
                 <div class="header-search header-mobile-search col col-md col-xl col-lg">
-                    <div class="wrap">
+                    <div class="wrap wrap-with-history">
                         <form action="{{route('theme.search.index')}}" method="GET">
-                            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
+                            <input type="text" class="search search-mobile-header" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
+                        <div class="search-history-dropdown search-history-mobile" id="search-history-dropdown-mobile-header" style="display: none;">
+                            <div class="search-history-header">
+                                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                                <button type="button" class="search-history-clear" id="search-history-clear-mobile-header" data-empty-text="{{__('theme.search_history_empty')}}">
+                                    <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
+                                </button>
+                            </div>
+                            <div class="search-history-list" id="search-history-list-mobile-header"></div>
+                        </div>
                     </div>
                 </div>
             </div>

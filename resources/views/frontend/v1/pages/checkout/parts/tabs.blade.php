@@ -33,7 +33,7 @@
                                                 </a>
                                             @else
                                                 <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
-                                                    <i class="fa fa-heart"></i>
+                                                    <i class="icon-heart"></i>
                                                 </a>
                                             @endif
                                         <div class="product-item-title-wrap">
@@ -99,7 +99,7 @@
                                                 </a>
                                             @else
                                                 <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
-                                                    <i class="fa fa-heart"></i>
+                                                    <i class="icon-heart"></i>
                                                 </a>
                                             @endif
                                         <div class="product-item-title-wrap">
@@ -164,7 +164,7 @@
                                                 </a>
                                             @else
                                                 <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}" data-id="{{$product->id}}" data-qty="1" class="add_to_wishlist add-to-wishlist-btn">
-                                                    <i class="fa fa-heart"></i>
+                                                    <i class="icon-heart"></i>
                                                 </a>
                                             @endif
                                         <div class="product-item-title-wrap">

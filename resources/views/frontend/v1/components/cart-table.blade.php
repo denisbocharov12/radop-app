@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 @php $count = 1; @endphp
-                @foreach(\Cart::session($sessionId)->getContent()->sort() as $item)
+                @foreach(\Cart::session($sessionId)->getContent()->sortBy("attributes.added_at") as $item)
                 <tr class="theme-cart-item-row">
                     <td class="text-center col-theme-cart-count">{{ $count++ }}</td>
                     <td class="theme-cart-item-img">

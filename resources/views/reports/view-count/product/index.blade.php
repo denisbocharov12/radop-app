@@ -125,6 +125,7 @@
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();
                 const productId = $('#product_id').val();
+                const categoryId = $('#category_id').val();
 
                 if (!startDate || !endDate) {
                     alert('Пожалуйста, выберите даты начала и окончания периода');
@@ -138,6 +139,7 @@
                         start_date: startDate,
                         end_date: endDate,
                         product_id: productId,
+                        category_id: categoryId,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {

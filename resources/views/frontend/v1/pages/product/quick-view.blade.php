@@ -40,7 +40,7 @@
                                    class="add_to_wishlist add-to-wishlist-btn"
                                    data-has-text="true"
                                    data-quick="true">
-                                    <i class="fa fa-heart"></i> {{__('theme.add-to-wishlist')}}
+                                    <i class="icon-heart"></i> {{__('theme.add-to-wishlist')}}
                                 </a>
                             @endif
                         </div>

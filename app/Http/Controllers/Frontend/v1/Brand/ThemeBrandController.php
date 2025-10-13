@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Frontend\v1\Brand;
 
 use App\Enums\PageTypes;
 use App\Exceptions\Brand\BrandNotFoundValidationException;
-use App\Exports\BrandExport;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Repositories\Attribute\AttributeRepository;
@@ -19,7 +18,7 @@ use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 final class ThemeBrandController extends Controller
 {
@@ -84,7 +83,7 @@ final class ThemeBrandController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
 
-        //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
+        $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
@@ -97,10 +96,28 @@ final class ThemeBrandController extends Controller
         ]));
     }
 
+    /**
+     * @param Brand $brand
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function export(Brand $brand)
     {
-        $products = $this->productRepository->getAllByBrandOnceId((int)$brand->onec_id);
-
-        return Excel::download(new BrandExport($products), 'radop_brands_' . $brand->onec_id . '.xlsx');
+        $locale = app()->getLocale();
+        $fileName = "radop_brands_{$brand->onec_id}_{$locale}.xlsx";
+        
+        if (Storage::disk('export')->exists($fileName)) {
+            $url = asset("export/{$fileName}");
+            
+            return response()->json([
+                'success' => true,
+                'url' => $url,
+                'message' => __('theme.export-file-ready'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => __('theme.export-file-not-found'),
+        ], 404);
     }
 }

@@ -34,6 +34,39 @@ final class SearchQueryNormalizer
     }
 
     /**
+     * @param string $word
+     * @return string
+     */
+    public function stem(string $word): string
+    {
+        $word = mb_strtolower(trim($word));
+        $length = mb_strlen($word);
+        
+        if ($length <= 3) {
+            return $word;
+        }
+        
+        if ($length >= 6) {
+            return mb_substr($word, 0, -3);
+        }
+        
+        if ($length >= 4) {
+            return mb_substr($word, 0, -2);
+        }
+        
+        return $word;
+    }
+
+    /**
+     * @param array<int, string> $words
+     * @return array<int, string>
+     */
+    public function stemWords(array $words): array
+    {
+        return array_unique(array_map(fn($word) => $this->stem($word), $words));
+    }
+
+    /**
      * @param string $query
      * @return array<int, string>
      */

@@ -23,6 +23,7 @@ class UserRoleSeeder extends AbstractRoleSeeder
             'theme.user.orders.index',
             'theme.user.orders.view.invoice',
             'theme.user.orders.download.invoice',
+            'theme.user.orders.repeat',
             'theme.user.account.password.update',
             'theme.user.coupon.index',
             'theme.user.filial.index',

@@ -36,11 +36,20 @@
     </div>
 </div>
 <div class="search-navbar">
-    <div class="search-navbar-wrap">
+    <div class="search-navbar-wrap search-navbar-wrap-with-history">
         <form action="{{route('theme.search.index')}}" method="GET">
-            <input type="text" class="catalog-navbar__search" name="search" placeholder="{{__('theme.search-on-site')}}">
+            <input type="text" class="catalog-navbar__search search-mobile-navbar" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off">
             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
         </form>
+        <div class="search-history-dropdown search-history-mobile" id="search-history-dropdown-mobile" style="display: none;">
+            <div class="search-history-header">
+                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                <button type="button" class="search-history-clear" id="search-history-clear-mobile" data-empty-text="{{__('theme.search_history_empty')}}">
+                    <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
+                </button>
+            </div>
+            <div class="search-history-list" id="search-history-list-mobile"></div>
+        </div>
     </div>
 </div>
 <div class="other-navbar">

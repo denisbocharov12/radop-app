@@ -30,4 +30,21 @@
             </div>
         </div>
     </div>
+    @if(isset($categories))
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label class="form-label" for="category_id">Категория (необязательно)</label>
+            <div class="form-control-wrap">
+                <select class="form-select js-select2" id="category_id" name="category_id">
+                    <option value="">Все категории</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->getTranslation('name', app()->getLocale()) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+    @endif
 </div> 

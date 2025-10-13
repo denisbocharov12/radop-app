@@ -118,7 +118,7 @@
                 $('#add_to_wishlist-quick-'+product_id).html('<i class="fa fa-spin fa-spinner"></i>');
             },
             complete: function () {
-                var heartIcon = '<i class="fa fa-heart"></i>';
+                var heartIcon = '<i class="icon-heart"></i>';
                 if (hasText) {
                     $('#add_to_wishlist-' + product_id)
                         .removeClass('delete-from-wishlist-btn')
@@ -846,17 +846,59 @@
         $('#wishlist_count').hide();
     }
 
+    window.exportMessages = {
+        downloadStarted: @json(__('theme.export-download-started')),
+        error: @json(__('theme.export-error')),
+        fileNotFound: @json(__('theme.export-file-not-found'))
+    };
+
     $(document).on('click', '.export-excel-link', function (e) {
+        e.preventDefault();
+        
         var $link = $(this);
         var $span = $link.find('span');
         var originalText = $span.text();
         var loaderIcon = '<i class="fa fa-spin fa-spinner"></i>';
+        var url = $link.attr('href');
 
         $span.html(loaderIcon);
+        $link.css('pointer-events', 'none');
 
-        setTimeout(function() {
-            $span.text(originalText);
-        }, 2500);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.url) {
+                    window.location.href = response.url;
+                    toastr.success(response.message || window.exportMessages.downloadStarted);
+                } else {
+                    toastr.error(response.message || window.exportMessages.error);
+                }
+            },
+            error: function(xhr) {
+                var errorMessage = window.exportMessages.fileNotFound;
+                
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                
+                toastr.error(errorMessage);
+            },
+            complete: function() {
+                $span.text(originalText);
+                $link.css('pointer-events', 'auto');
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        var currentUrl = window.location.href;
+        $('.account-dropdown-link').each(function () {
+            if ($(this).attr('href') === currentUrl) {
+                $(this).addClass('active');
+            }
+        });
     });
 
     });

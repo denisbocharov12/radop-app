@@ -1,6 +1,6 @@
 <div class="header-search header-with-menu col col-md col-xl col-lg">
     @include('frontend.v1.header.components.top-bar')
-    <div class="wrap" id="header-js-sticky">
+    <div class="wrap wrap-with-history" id="header-js-sticky">
         <div class="header-logo col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto" id="sticky-header-logo" style="display: none">
             <a href="{{route('theme.home')}}" class="link-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50" color="#fff" stroke="white" fill="white">
@@ -25,10 +25,19 @@
                 </div>
             </div>
         </div>
-        <form action="{{route('theme.search.index')}}" method="GET">
-            <input type="text" class="search" name="search" placeholder="{{__('theme.search-on-site')}}" />
+        <form action="{{route('theme.search.index')}}" method="GET" class="form-with-history">
+            <input type="text" class="search search-sticky" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
         </form>
+        <div class="search-history-dropdown search-history-sticky" id="search-history-dropdown-sticky" style="display: none;">
+            <div class="search-history-header">
+                <span class="search-history-title">{{__('theme.search_history')}}</span>
+                <button type="button" class="search-history-clear" id="search-history-clear-sticky" data-empty-text="{{__('theme.search_history_empty')}}">
+                    <i class="icon-trash"></i> {{__('theme.search_history_clear_all')}}
+                </button>
+            </div>
+            <div class="search-history-list" id="search-history-list-sticky"></div>
+        </div>
         <div id="sticky-cart-block" class="header-account" style="display: none;">
             <div class="cart-block icon-block mini-shopping-cart">
                 <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">
