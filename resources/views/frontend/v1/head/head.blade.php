@@ -26,6 +26,6 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.3" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css?v1.2.3" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.31" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css?v1.2.31" />
 </head>

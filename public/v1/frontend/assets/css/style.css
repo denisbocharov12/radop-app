@@ -12800,10 +12800,6 @@ input[type="range"]::-moz-range-thumb {
     }
 }
 
-.header-search .wrap:not(.header-js-sticky) {
-    position: relative;
-}
-
 .search-navbar-wrap.search-navbar-wrap-with-history {
     position: relative;
 }
@@ -12824,16 +12820,7 @@ input[type="range"]::-moz-range-thumb {
 
 #header-js-sticky.header-js-sticky .search-history-sticky {
     position: absolute;
-    width: calc(100% - 200px);
-    left: 100px;
     top: calc(100% + 5px);
-}
-
-@media (max-width: 1400px) {
-    #header-js-sticky.header-js-sticky .search-history-sticky {
-        width: calc(100% - 150px);
-        left: 75px;
-    }
 }
 
 @media (max-width: 992px) {
