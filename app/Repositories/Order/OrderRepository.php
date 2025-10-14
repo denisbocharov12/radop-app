@@ -134,6 +134,9 @@ final class OrderRepository
                 now()->subMinutes(10),
                 now(),
             ])
+            ->whereDoesntHave('orderHistory', function ($query) {
+                $query->where('type', 'downloaded_excel');
+            })
             ->count();
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1\ViewCount;
 
+use App\Exports\ViewCountProductReportExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ViewCount\ViewCountReportRequest;
 use App\Repositories\Brand\BrandRepository;
@@ -9,6 +10,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\ViewCount\ViewCountReportManager;
 use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class ViewCountReportController extends Controller
 {
@@ -30,7 +32,10 @@ final class ViewCountReportController extends Controller
             $request->get('start_date'),
             $request->get('end_date'),
             $request->get('product_id'),
-            $request->get('category_id')
+            $request->get('product_search'),
+            $request->get('category_id'),
+            $request->get('sort_by', 'total_views'),
+            $request->get('sort_direction', 'desc')
         );
 
         return response()->json([
@@ -83,10 +88,9 @@ final class ViewCountReportController extends Controller
      */
     public function productIndex()
     {
-        $products = $this->productRepository->getAllWithViewCounts();
         $categories = $this->categoryRepository->getAll();
 
-        return view('reports.view-count.product.index', compact('products', 'categories'));
+        return view('reports.view-count.product.index', compact('categories'));
     }
 
     /**
@@ -107,5 +111,23 @@ final class ViewCountReportController extends Controller
         $categories = $this->categoryRepository->getAllWithViewCounts();
 
         return view('reports.view-count.category.index', compact('categories'));
+    }
+
+    public function exportProductReport(ViewCountReportRequest $request)
+    {
+        $reportData = $this->viewCountReportManager->generateProductReport(
+            $request->get('start_date'),
+            $request->get('end_date'),
+            $request->get('product_id'),
+            $request->get('product_search'),
+            $request->get('category_id'),
+            $request->get('sort_by', 'total_views'),
+            $request->get('sort_direction', 'desc')
+        );
+
+        return Excel::download(
+            new ViewCountProductReportExport($reportData),
+            'product_view_count_report_' . date('Y-m-d_H-i-s') . '.xlsx'
+        );
     }
 }
