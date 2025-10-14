@@ -7,14 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 final class ViewCountReportRequest extends FormRequest
 {
     /**
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
      * @return array
      */
     public function rules(): array
@@ -23,6 +15,7 @@ final class ViewCountReportRequest extends FormRequest
             'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'product_id' => 'nullable|integer|exists:products,id',
+            'product_search' => 'nullable|string|min:2|max:255',
             'brand_id' => 'nullable|integer|exists:brands,id',
             'category_id' => 'nullable|integer|exists:categories,id',
         ];
@@ -42,10 +35,13 @@ final class ViewCountReportRequest extends FormRequest
             'end_date.after_or_equal' => 'Дата окончания должна быть больше или равна дате начала',
             'product_id.integer' => 'ID товара должен быть числом',
             'product_id.exists' => 'Товар с указанным ID не найден',
+            'product_search.string' => 'Поисковый запрос должен быть текстом',
+            'product_search.min' => 'Минимальная длина поискового запроса - 2 символа',
+            'product_search.max' => 'Максимальная длина поискового запроса - 255 символов',
             'brand_id.integer' => 'ID бренда должен быть числом',
             'brand_id.exists' => 'Бренд с указанным ID не найден',
             'category_id.integer' => 'ID категории должен быть числом',
             'category_id.exists' => 'Категория с указанным ID не найдена',
         ];
     }
-} 
+}

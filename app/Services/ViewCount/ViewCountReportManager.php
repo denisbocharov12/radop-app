@@ -20,15 +20,18 @@ final class ViewCountReportManager
      * @param string $startDate
      * @param string $endDate
      * @param int|null $productId
+     * @param string|null $productSearch
      * @param int|null $categoryId
+     * @param string $sortBy
+     * @param string $sortDirection
      * @return array
      */
-    public function generateProductReport(string $startDate, string $endDate, ?int $productId = null, ?int $categoryId = null): array
+    public function generateProductReport(string $startDate, string $endDate, ?int $productId = null, ?string $productSearch = null, ?int $categoryId = null, string $sortBy = 'total_views', string $sortDirection = 'desc'): array
     {
         $startDateTime = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
         $endDateTime = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
 
-        $products = $this->productViewCountRepository->getProductsForReport($startDateTime, $endDateTime, $productId, $categoryId);
+        $products = $this->productViewCountRepository->getProductsForReport($startDateTime, $endDateTime, $productId, $productSearch, $categoryId);
 
         $reportData = [];
         $totalViews = 0;
@@ -53,6 +56,8 @@ final class ViewCountReportManager
             $totalUniqueViews += $uniqueViews;
         }
 
+        $reportData = $this->sortReportData($reportData, $sortBy, $sortDirection);
+
         return [
             'products' => $reportData,
             'total_views' => $totalViews,
@@ -63,6 +68,30 @@ final class ViewCountReportManager
                 'end_date' => $endDate,
             ]
         ];
+    }
+
+    /**
+     * @param array $data
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @return array
+     */
+    private function sortReportData(array $data, string $sortBy, string $sortDirection): array
+    {
+        usort($data, function ($a, $b) use ($sortBy, $sortDirection) {
+            $valueA = $a[$sortBy] ?? 0;
+            $valueB = $b[$sortBy] ?? 0;
+
+            if (is_string($valueA)) {
+                $result = strcasecmp($valueA, $valueB);
+            } else {
+                $result = $valueA <=> $valueB;
+            }
+
+            return $sortDirection === 'desc' ? -$result : $result;
+        });
+
+        return $data;
     }
 
     /**

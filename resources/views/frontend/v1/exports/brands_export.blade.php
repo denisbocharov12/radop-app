@@ -20,34 +20,7 @@
     <tbody>
     @foreach($products as $i => $product)
         <tr>
-            <td>
-                @php
-                    $imageUrl = null;
-                    if($product->hasMedia('products')) {
-                        try {
-                            $media = $product->getFirstMedia('products');
-                            if($media && $media->hasGeneratedConversion('thumb')) {
-                                $imagePath = $media->getPath('thumb');
-                                if(file_exists($imagePath)) {
-                                    $imageUrl = $media->getUrl('thumb');
-                                }
-                            }
-                            
-                            if(!$imageUrl && $media) {
-                                $imagePath = $media->getPath();
-                                if(file_exists($imagePath)) {
-                                    $imageUrl = $media->getUrl();
-                                }
-                            }
-                        } catch (\Exception $e) {
-                            $imageUrl = null;
-                        }
-                    }
-                @endphp
-                @if($imageUrl)
-                    <img src="{{ $imageUrl }}" alt="{{ $product->title }}" style="width: 75px; height: 75px; object-fit: contain;">
-                @endif
-            </td>
+            <td></td>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>
             <td>{{ $product->title }}</td>

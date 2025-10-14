@@ -40,38 +40,38 @@ final class GenerateExcelExportsCommand extends Command
 
         foreach ($locales as $locale) {
             app()->setLocale($locale);
-            
+
             $this->info("Generating for locale: {$locale}");
 
-            $brands = $brandRepository->getAllToFrontEnd();
-            $this->info("Found brands: {$brands->count()}");
-
-            foreach ($brands as $brand) {
-                $products = $productRepository->getAllByBrandOnceId((int)$brand->onec_id);
-                
-                if ($products->isEmpty()) {
-                    continue;
-                }
-
-                GenerateExcelExportJob::dispatch($products, 'brands', $brand->onec_id, $locale);
-                
-                $this->info("  - Brand {$brand->title} ({$brand->onec_id}): {$products->count()} products");
-            }
-
-            $categories = $categoryRepository->getAll();
-            $this->info("Found categories: {$categories->count()}");
-
-            foreach ($categories as $category) {
-                $products = $categoryRepository->getAllByCategoryOnecId($category);
-                
-                if ($products === null || $products->isEmpty()) {
-                    continue;
-                }
-
-                GenerateExcelExportJob::dispatch($products, 'categories', $category->onec_id, $locale);
-                
-                $this->info("  - Category {$category->name} ({$category->onec_id}): {$products->count()} products");
-            }
+//            $brands = $brandRepository->getAllToFrontEnd();
+//            $this->info("Found brands: {$brands->count()}");
+//
+//            foreach ($brands as $brand) {
+//                $products = $productRepository->getAllByBrandOnceId((int)$brand->onec_id);
+//
+//                if ($products->isEmpty()) {
+//                    continue;
+//                }
+//
+//                GenerateExcelExportJob::dispatch($products, 'brands', $brand->onec_id, $locale);
+//
+//                $this->info("  - Brand {$brand->title} ({$brand->onec_id}): {$products->count()} products");
+//            }
+//
+//            $categories = $categoryRepository->getAll();
+//            $this->info("Found categories: {$categories->count()}");
+//
+//            foreach ($categories as $category) {
+//                $products = $categoryRepository->getAllByCategoryOnecId($category);
+//
+//                if ($products === null || $products->isEmpty()) {
+//                    continue;
+//                }
+//
+//                GenerateExcelExportJob::dispatch($products, 'categories', $category->onec_id, $locale);
+//
+//                $this->info("  - Category {$category->name} ({$category->onec_id}): {$products->count()} products");
+//            }
 
             $newProducts = $productRepository->getAllNewProducts();
             if ($newProducts->isNotEmpty()) {

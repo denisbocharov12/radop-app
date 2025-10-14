@@ -7,15 +7,18 @@ namespace App\Exports;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles
+final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithEvents
 {
     public function __construct(
         private readonly Collection $products,
@@ -37,7 +40,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
     public function columnWidths(): array
     {
         return [
-            'A' => 0.5,
+            'A' => 12,
             'B' => 4,
             'C' => 10,
             'D' => 50,
@@ -73,6 +76,51 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
             ->setColor(new Color(Color::COLOR_BLACK));
 
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                $sheet = $event->sheet->getDelegate();
+                $startRow = 4;
+
+                foreach ($this->products as $index => $product) {
+                    $row = $startRow + $index;
+
+                    if ($product->hasMedia('products')) {
+                        try {
+                            $media = $product->getFirstMedia('products');
+                            $imagePath = null;
+
+                            if ($media && $media->hasGeneratedConversion('thumb')) {
+                                $imagePath = $media->getPath('thumb');
+                            } elseif ($media) {
+                                $imagePath = $media->getPath();
+                            }
+
+                            if ($imagePath && file_exists($imagePath)) {
+                                $drawing = new Drawing();
+                                $drawing->setName('Product Image');
+                                $drawing->setDescription('Product Image');
+                                $drawing->setPath($imagePath);
+                                $drawing->setHeight(75);
+                                $drawing->setWidth(75);
+                                $drawing->setOffsetX(5);
+                                $drawing->setOffsetY(5);
+                                $drawing->setCoordinates("A{$row}");
+                                $drawing->setWorksheet($sheet);
+                            }
+                        } catch (\Exception $e) {
+                            continue;
+                        }
+                    }
+                }
+            },
+        ];
     }
 }
 

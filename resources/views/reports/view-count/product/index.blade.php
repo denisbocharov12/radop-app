@@ -18,7 +18,8 @@
                                     <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                                     <div class="toggle-expand-content" data-content="pageMenu">
                                         <ul class="nk-block-tools g-3">
-                                            <li><button type="button" class="btn btn-primary" id="generateReport"><em class="icon ni ni-download-cloud"></em><span>Сгенерировать отчет</span></button></li>
+                                            <li><button type="button" class="btn btn-primary" id="generateReport"><em class="icon ni ni-reports"></em><span>Сгенерировать отчет</span></button></li>
+                                            <li><button type="button" class="btn btn-success" id="exportReport" style="display: none;"><em class="icon ni ni-download-cloud"></em><span>Экспорт в Excel</span></button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -121,11 +122,32 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            function toggleClearCategory() {
+                if ($('#category_id').val()) {
+                    $('#clear_category').show();
+                } else {
+                    $('#clear_category').hide();
+                }
+            }
+
+            toggleClearCategory();
+
+            $('#category_id').on('change', function() {
+                toggleClearCategory();
+            });
+
+            $('#clear_category').click(function(e) {
+                e.preventDefault();
+                $('#category_id').val('').trigger('change');
+            });
+
             $('#generateReport').click(function() {
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();
-                const productId = $('#product_id').val();
+                const productSearch = $('#product_search').val();
                 const categoryId = $('#category_id').val();
+                const sortBy = $('#sort_by').val();
+                const sortDirection = $('#sort_direction').val();
 
                 if (!startDate || !endDate) {
                     alert('Пожалуйста, выберите даты начала и окончания периода');
@@ -138,21 +160,101 @@
                     data: {
                         start_date: startDate,
                         end_date: endDate,
-                        product_id: productId,
+                        product_search: productSearch,
                         category_id: categoryId,
+                        sort_by: sortBy,
+                        sort_direction: sortDirection,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
                         if (response.success) {
                             displayReport(response.data);
+                            $('#exportReport').show();
                         } else {
                             alert('Ошибка при генерации отчета');
                         }
                     },
-                    error: function() {
-                        alert('Ошибка при генерации отчета');
+                    error: function(xhr) {
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            let errorMsg = 'Ошибки валидации:\n';
+                            Object.keys(xhr.responseJSON.errors).forEach(function(key) {
+                                errorMsg += xhr.responseJSON.errors[key].join('\n') + '\n';
+                            });
+                            alert(errorMsg);
+                        } else {
+                            alert('Ошибка при генерации отчета');
+                        }
                     }
                 });
+            });
+
+            $('#exportReport').click(function() {
+                const startDate = $('#start_date').val();
+                const endDate = $('#end_date').val();
+                const productSearch = $('#product_search').val();
+                const categoryId = $('#category_id').val();
+                const sortBy = $('#sort_by').val();
+                const sortDirection = $('#sort_direction').val();
+
+                if (!startDate || !endDate) {
+                    alert('Пожалуйста, выберите даты начала и окончания периода');
+                    return;
+                }
+
+                const form = $('<form>', {
+                    'method': 'GET',
+                    'action': '{{ route("reports.view-count.product.report.export") }}'
+                });
+
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': '_token',
+                    'value': '{{ csrf_token() }}'
+                }));
+
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'start_date',
+                    'value': startDate
+                }));
+
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'end_date',
+                    'value': endDate
+                }));
+
+                if (productSearch) {
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': 'product_search',
+                        'value': productSearch
+                    }));
+                }
+
+                if (categoryId) {
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': 'category_id',
+                        'value': categoryId
+                    }));
+                }
+
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sort_by',
+                    'value': sortBy
+                }));
+
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sort_direction',
+                    'value': sortDirection
+                }));
+
+                $('body').append(form);
+                form.submit();
+                form.remove();
             });
 
             function displayReport(data) {
