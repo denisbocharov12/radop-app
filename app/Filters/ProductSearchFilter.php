@@ -19,10 +19,12 @@ final class ProductSearchFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $searchQueryNormalizer = app(SearchQueryNormalizer::class);
+        $searchRelevanceService = app(\App\Services\Search\SearchRelevanceService::class);
         
         $words = $searchQueryNormalizer->extractWords($value);
         $variants = $searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $searchQueryNormalizer->stemWords($words);
+        $normalizedValue = $searchQueryNormalizer->normalize($value);
 
         $brandsIds = Brand::query()
             ->where(function ($brandQuery) use ($variants, $value, $stemmedWords) {
@@ -67,5 +69,8 @@ final class ProductSearchFilter implements Filter
                 ->orWhereIn('products.brand_id', $brandsIds)
             ;
         });
+
+        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue);
+        $query->orderByRaw($relevance['sql'], $relevance['bindings']);
     }
 }

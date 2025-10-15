@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
 use App\Services\Search\SearchQueryNormalizer;
+use App\Services\Search\SearchRelevanceService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -27,7 +28,8 @@ final class ProductRepository
 {
     public function __construct(
         private readonly ProductConditions $productConditions,
-        private readonly SearchQueryNormalizer $searchQueryNormalizer
+        private readonly SearchQueryNormalizer $searchQueryNormalizer,
+        private readonly SearchRelevanceService $searchRelevanceService
     )
     {
     }
@@ -496,6 +498,8 @@ final class ProductRepository
         $words = $this->searchQueryNormalizer->extractWords($value);
         $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $this->searchQueryNormalizer->stemWords($words);
+        
+        $normalizedValue = $this->searchQueryNormalizer->normalize($value);
 
         return Product::where('status', true)
             ->where('site_status', true)
@@ -530,6 +534,10 @@ final class ProductRepository
                     ->orWhere('shtrih_code', 'like', "%{$value}%");
             })
             ->where('stock', '!=', 0)
+            ->tap(function ($query) use ($normalizedValue) {
+                $relevance = $this->searchRelevanceService->getRelevanceOrderSql($normalizedValue);
+                $query->orderByRaw($relevance['sql'], $relevance['bindings']);
+            })
             ->distinct()
             ->paginate(16)
             ->appends(request()->query());
