@@ -5,6 +5,7 @@ namespace App\Filters;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Services\Search\SearchQueryNormalizer;
+use App\Services\Search\SearchRelevanceService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\Filters\Filter;
@@ -19,8 +20,8 @@ final class ProductSearchFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $searchQueryNormalizer = app(SearchQueryNormalizer::class);
-        $searchRelevanceService = app(\App\Services\Search\SearchRelevanceService::class);
-        
+        $searchRelevanceService = app(SearchRelevanceService::class);
+
         $words = $searchQueryNormalizer->extractWords($value);
         $variants = $searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $searchQueryNormalizer->stemWords($words);
@@ -56,7 +57,7 @@ final class ProductSearchFilter implements Filter
                         $subQuery->where('products.title', 'like', "%{$word}%");
                     }
                 });
-                
+
                 $query->orWhere(function ($subQuery) use ($stemmedWords) {
                     foreach ($stemmedWords as $stem) {
                         $subQuery->where('products.title', 'like', "%{$stem}%");
