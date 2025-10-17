@@ -93,7 +93,7 @@ final class ThemeProductManager
                 $response['cart'] = $cart;
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
-                $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart', ['product' => $existedProduct])->render();
+                $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart-content', ['product' => $existedProduct])->render();
             }
         }
 
@@ -260,6 +260,7 @@ final class ThemeProductManager
                 $response['cart'] = $cart;
                 $cart_page = view('frontend.v1.components.cart-table')->render();
                 $response['cart-page'] = $cart_page;
+                $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart-content', ['product' => $existedProduct])->render();
             }
         }
 
