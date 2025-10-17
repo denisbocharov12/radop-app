@@ -42,10 +42,12 @@ final class GenerateExcelExportJob implements ShouldQueue
     public function handle(): void
     {
         try {
+            app()->setLocale($this->locale);
+            
             $fileName = "radop_{$this->type}_{$this->identifier}_{$this->locale}.xlsx";
             $filePath = "{$fileName}";
 
-            $export = new ThemeExcelProductsExport($this->products);
+            $export = new ThemeExcelProductsExport($this->products, $this->locale);
             
             Excel::store($export, $filePath, 'export');
 

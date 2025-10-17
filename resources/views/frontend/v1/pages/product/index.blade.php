@@ -53,7 +53,7 @@
                                 @if($product->shtrih_code !== null)
                                     <li style="width: fit-content;">
                                         <p>
-                                            <span class="mini-heading">{{__('theme.barcode')}}:</span> <span style="padding: 3px;  border: 1px solid #34af31;">{{$product->shtrih_code}}</span>
+                                            <span class="mini-heading">{{__('theme.barcode')}}:</span> <span style="padding: 3px;  border: 1px solid #34af31; color: #000">{{$product->shtrih_code}}</span>
                                         </p>
                                     </li>
                                 @endif
