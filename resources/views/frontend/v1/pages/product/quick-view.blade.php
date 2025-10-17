@@ -49,9 +49,9 @@
                     <div class="product-additional-info">
                         <ul class="list">
                             @if($product->shtrih_code !== null)
-                                <li style="padding: 3px; width: fit-content; border: 1px solid #34af31">
+                                <li style="width: fit-content;">
                                     <p>
-                                        <span class="mini-heading">{{__('theme.barcode')}}:</span> {{$product->shtrih_code}}
+                                        <span class="mini-heading">{{__('theme.barcode')}}:</span> <span  style="padding: 3px;  border: 1px solid #34af31;">{{$product->shtrih_code}}</span>
                                     </p>
                                 </li>
                             @endif

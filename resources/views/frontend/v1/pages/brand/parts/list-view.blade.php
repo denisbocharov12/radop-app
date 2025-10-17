@@ -61,7 +61,7 @@
                             <span class="product-code">{{$product->onec_id}}</span>
                         </h3>
                         @if($product->shtrih_code)
-                            <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> {{$product->shtrih_code}}</h3>
+                            <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> <span style="padding: 3px;  border: 1px solid #34af31;">{{$product->shtrih_code}}</span></h3>
                         @endif
                     </div>
                     <div class="product-item-details">
@@ -102,6 +102,7 @@
                     </div>
                 </div>
                 @include('frontend.v1.components.packages_card_wrap')
+                @include('frontend.v1.components.in_cart_widget')
             </div>
 {{--            @include('frontend.v1.components.in_cart_widget')--}}
         </div>

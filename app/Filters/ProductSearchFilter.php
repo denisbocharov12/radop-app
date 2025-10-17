@@ -5,6 +5,7 @@ namespace App\Filters;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Services\Search\SearchQueryNormalizer;
+use App\Services\Search\SearchRelevanceService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\Filters\Filter;
@@ -19,11 +20,12 @@ final class ProductSearchFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $searchQueryNormalizer = app(SearchQueryNormalizer::class);
-        $searchRelevanceService = app(\App\Services\Search\SearchRelevanceService::class);
+        $searchRelevanceService = app(SearchRelevanceService::class);
         
         $words = $searchQueryNormalizer->extractWords($value);
         $variants = $searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $searchQueryNormalizer->stemWords($words);
+        $articles = $searchQueryNormalizer->extractArticles($value);
         $normalizedValue = $searchQueryNormalizer->normalize($value);
 
         $brandsIds = Brand::query()
@@ -40,7 +42,14 @@ final class ProductSearchFilter implements Filter
             ->pluck('id')
         ;
 
-        $query->where(function ($query) use ($value, $brandsIds, $words, $variants, $stemmedWords) {
+        $query->where(function ($query) use ($value, $brandsIds, $words, $variants, $stemmedWords, $articles) {
+            if (!empty($articles)) {
+                foreach ($articles as $article) {
+                    $query->orWhere('products.title', 'like', "%{$article}%");
+                    $query->orWhere('products.onec_id', 'like', "%{$article}%");
+                }
+            }
+
             foreach ($variants as $variant) {
                 $query->orWhere('products.title', 'like', "%{$variant}%");
                 $query->orWhere('products.onec_id', 'like', "%{$variant}%");
@@ -56,7 +65,7 @@ final class ProductSearchFilter implements Filter
                         $subQuery->where('products.title', 'like', "%{$word}%");
                     }
                 });
-                
+
                 $query->orWhere(function ($subQuery) use ($stemmedWords) {
                     foreach ($stemmedWords as $stem) {
                         $subQuery->where('products.title', 'like', "%{$stem}%");
@@ -70,7 +79,7 @@ final class ProductSearchFilter implements Filter
             ;
         });
 
-        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue);
+        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue, $articles);
         $query->orderByRaw($relevance['sql'], $relevance['bindings']);
     }
 }

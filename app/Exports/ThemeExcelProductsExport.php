@@ -40,11 +40,11 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
     public function columnWidths(): array
     {
         return [
-            'A' => 12,
-            'B' => 4,
-            'C' => 10,
-            'D' => 50,
-            'E' => 15,
+            'A' => 4,
+            'B' => 10,
+            'C' => 50,
+            'D' => 15,
+            'E' => 17,
             'F' => 20,
             'G' => 10,
             'H' => 10,
@@ -60,7 +60,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
         $endRow = $startRow + $productsCount - 1;
 
         for ($row = $startRow; $row <= $endRow; $row++) {
-            $sheet->getRowDimension($row)->setRowHeight(120);
+            $sheet->getRowDimension($row)->setRowHeight(95);
         }
 
         $sheet->getStyle("A2:J{$endRow}")
@@ -107,11 +107,11 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
                                 $drawing->setName('Product Image');
                                 $drawing->setDescription('Product Image');
                                 $drawing->setPath($imagePath);
-                                $drawing->setHeight(75);
-                                $drawing->setWidth(75);
-                                $drawing->setOffsetX(5);
+                                $drawing->setWidthAndHeight(110, 110);
+                                $drawing->setResizeProportional(true);
+                                $drawing->setOffsetX(10);
                                 $drawing->setOffsetY(5);
-                                $drawing->setCoordinates("A{$row}");
+                                $drawing->setCoordinates("E{$row}");
                                 $drawing->setWorksheet($sheet);
                             }
                         } catch (\Exception $e) {

@@ -100,29 +100,80 @@ final class ThemeProductManager
         return $response;
     }
 
+    /**
+     * @param Product $existedProduct
+     * @param int $productQty
+     * @param string $price
+     * @param string|int $sessionId
+     * @return mixed
+     */
     private function addToInstance(Product $existedProduct, $productQty, $price, $sessionId)
     {
+        $cartItem = \Cart::session($sessionId)->get($existedProduct->id);
+        
+        if ($cartItem) {
+            $existingAddedAt = isset($cartItem->attributes['added_at']) 
+                ? $cartItem->attributes['added_at'] 
+                : now()->timestamp;
+            
+            $newQuantity = $cartItem->quantity + $productQty;
+            
+            \Cart::session($sessionId)->remove($existedProduct->id);
+            
+            return \Cart::session($sessionId)->add(
+                array(
+                    'id' => $existedProduct->id,
+                    'name' => $existedProduct->title,
+                    'price' => (float)$price,
+                    'quantity' => $newQuantity,
+                    'attributes' => array(
+                        'added_at' => $existingAddedAt,
+                    ),
+                    'associatedModel' => $existedProduct
+                )
+            );
+        }
+        
         return \Cart::session($sessionId)->add(
             array(
                 'id' => $existedProduct->id,
                 'name' => $existedProduct->title,
                 'price' => (float)$price,
                 'quantity' => $productQty,
-                'attributes' => array(),
+                'attributes' => array(
+                    'added_at' => now()->timestamp,
+                ),
                 'associatedModel' => $existedProduct
             )
         );
     }
 
+    /**
+     * @param Product $existedProduct
+     * @param int $productQty
+     * @param string $price
+     * @param string|int $sessionId
+     * @return mixed
+     */
     private function updateInstance(Product $existedProduct, $productQty, $price, $sessionId)
     {
-        return \Cart::session($sessionId)->update(
-            $existedProduct->id,
+        $cartItem = \Cart::session($sessionId)->get($existedProduct->id);
+        $existingAddedAt = $cartItem && isset($cartItem->attributes['added_at']) 
+            ? $cartItem->attributes['added_at'] 
+            : now()->timestamp;
+        
+        \Cart::session($sessionId)->remove($existedProduct->id);
+        
+        return \Cart::session($sessionId)->add(
             array(
-                'quantity' => array(
-                    'relative' => false,
-                    'value' => $productQty
+                'id' => $existedProduct->id,
+                'name' => $existedProduct->title,
+                'price' => (float)$price,
+                'quantity' => $productQty,
+                'attributes' => array(
+                    'added_at' => $existingAddedAt,
                 ),
+                'associatedModel' => $existedProduct
             )
         );
     }
@@ -215,6 +266,10 @@ final class ThemeProductManager
         return $response;
     }
 
+    /**
+     * @param string $available
+     * @return string
+     */
     private function buildLimitedStockMessage(string $available): string
     {
         $unit = __('theme.in_cart_unit');
@@ -256,11 +311,19 @@ final class ThemeProductManager
         return $response;
     }
 
+    /**
+     * @param string|int $sessionId
+     * @return int
+     */
     private function getProductCartCountPlural($sessionId)
     {
         return \Cart::session($sessionId)->getContent()->count();
     }
 
+    /**
+     * @param Product $product
+     * @return string
+     */
     public static function getProductTotalSum($product)
     {
         $user = Auth::guard('user')->user();
@@ -290,6 +353,10 @@ final class ThemeProductManager
         return $price;
     }
 
+    /**
+     * @param Product $product
+     * @return float|int
+     */
     public static function getProductSaleForLabel($product)
     {
         $user = Auth::guard('user')->user();
@@ -318,6 +385,10 @@ final class ThemeProductManager
         return round((((float)$price - (float)$product->sale_price) / (float)$price) * 100);
     }
 
+    /**
+     * @param Product $product
+     * @return string
+     */
     public static function getProductTotalSumWithReplace($product)
     {
         $user = Auth::guard('user')->user();
@@ -347,6 +418,10 @@ final class ThemeProductManager
         return $price;
     }
 
+    /**
+     * @param Product $product
+     * @return string
+     */
     private function getProductPriceForCart(Product $product)
     {
         $user = Auth::guard('user')->user();
