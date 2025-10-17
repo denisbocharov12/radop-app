@@ -158,6 +158,7 @@ class CategoryRepository
             ->defaultSort('price')
             ->where('status', true)
             ->where('site_status', true)
+            ->with(['brand', 'values.attribute', 'packages'])
             ->groupBy('products.onec_id')
             ->orderByRaw("
             CASE

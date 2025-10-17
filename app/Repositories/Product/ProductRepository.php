@@ -118,6 +118,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
+            ->with(['brand', 'values.attribute', 'packages'])
             ->orderBy('popular_order')
             ->get()
         ;
@@ -251,6 +252,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
+            ->with(['brand', 'values.attribute', 'packages'])
             ->orderBy('new_order')
             ->get()
         ;
@@ -347,6 +349,7 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
+            ->with(['brand', 'values.attribute', 'packages'])
             ->orderBy('sale_order')
             ->get()
          ;
@@ -643,6 +646,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
+            ->with(['brand', 'values.attribute', 'packages'])
             ->get();
     }
 
