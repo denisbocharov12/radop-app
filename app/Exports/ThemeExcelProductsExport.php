@@ -22,11 +22,16 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
 {
     public function __construct(
         private readonly Collection $products,
+        private readonly ?string $locale = null,
     ) {
     }
 
     public function view(): View
     {
+        if ($this->locale) {
+            app()->setLocale($this->locale);
+        }
+        
         return view('frontend.v1.exports.brands_export', [
             'products' => $this->products,
         ]);
