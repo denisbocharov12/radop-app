@@ -93,5 +93,20 @@ final class SearchQueryNormalizer
         
         return array_unique($variants);
     }
+
+    /**
+     * @param string $query
+     * @return array<int, string>
+     */
+    public function extractArticles(string $query): array
+    {
+        $articles = [];
+        
+        if (preg_match_all('/\b(\d{3,7})\b/', $query, $matches)) {
+            $articles = array_merge($articles, $matches[1]);
+        }
+        
+        return array_unique($articles);
+    }
 }
 

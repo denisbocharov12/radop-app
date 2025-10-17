@@ -211,6 +211,10 @@
                         $('#item-wishlist-' + product_id).addClass('product-item-category-in-cart');
                     }
 
+                    if(!$('#list-product-' + product_id).hasClass('product-item-category-in-cart')) {
+                        $('#list-product-' + product_id).addClass('product-item-category-in-cart');
+                    }
+
                     var quantity = response['product_quantity'];
                     var cartHtml = `
                     <p>

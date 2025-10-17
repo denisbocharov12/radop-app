@@ -93,8 +93,8 @@ final class Product extends Model implements HasMedia, Sitemapable
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(75)
-            ->height(75)
+            ->width(100)
+            ->height(100)
             ->sharpen(10)
             ->performOnCollections('products')
             ->queued();

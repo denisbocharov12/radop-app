@@ -21,10 +21,11 @@ final class ProductSearchFilter implements Filter
     {
         $searchQueryNormalizer = app(SearchQueryNormalizer::class);
         $searchRelevanceService = app(SearchRelevanceService::class);
-
+        
         $words = $searchQueryNormalizer->extractWords($value);
         $variants = $searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $searchQueryNormalizer->stemWords($words);
+        $articles = $searchQueryNormalizer->extractArticles($value);
         $normalizedValue = $searchQueryNormalizer->normalize($value);
 
         $brandsIds = Brand::query()
@@ -41,7 +42,14 @@ final class ProductSearchFilter implements Filter
             ->pluck('id')
         ;
 
-        $query->where(function ($query) use ($value, $brandsIds, $words, $variants, $stemmedWords) {
+        $query->where(function ($query) use ($value, $brandsIds, $words, $variants, $stemmedWords, $articles) {
+            if (!empty($articles)) {
+                foreach ($articles as $article) {
+                    $query->orWhere('products.title', 'like', "%{$article}%");
+                    $query->orWhere('products.onec_id', 'like', "%{$article}%");
+                }
+            }
+
             foreach ($variants as $variant) {
                 $query->orWhere('products.title', 'like', "%{$variant}%");
                 $query->orWhere('products.onec_id', 'like', "%{$variant}%");
@@ -71,7 +79,7 @@ final class ProductSearchFilter implements Filter
             ;
         });
 
-        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue);
+        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue, $articles);
         $query->orderByRaw($relevance['sql'], $relevance['bindings']);
     }
 }
