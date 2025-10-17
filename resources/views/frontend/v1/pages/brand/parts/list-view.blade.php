@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 @include('frontend.v1.components.packages_card_wrap')
-                @include('frontend.v1.components.in_cart_widget')
+                @include('frontend.v1.components.in_cart_widget_list')
             </div>
 {{--            @include('frontend.v1.components.in_cart_widget')--}}
         </div>
