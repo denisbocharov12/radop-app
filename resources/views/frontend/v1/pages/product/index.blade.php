@@ -194,6 +194,8 @@
             </div>
         </div>
     </section>
+    @include('frontend.v1.pages.product.components.reviews')
+    
     @if($similarProducts !== null)
         <section class="section-standart section-catalog mb-5 section-similar-product">
             <div class="container">
