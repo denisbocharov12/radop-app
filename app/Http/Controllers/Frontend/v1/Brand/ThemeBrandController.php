@@ -37,6 +37,12 @@ final class ThemeBrandController extends Controller
     ) {
     }
 
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Contracts\View\View
+     * @throws BrandNotFoundValidationException
+     */
     public function index(Request $request, string $onecId)
     {
         $query = $request->query('filter');
@@ -94,6 +100,39 @@ final class ThemeBrandController extends Controller
             'attributes',
             'defaultSort',
         ]));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function catalog()
+    {
+        $brands = $this->brandRepository->getAllForCatalog();
+
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandsCatalogType(), null, app()->getLocale());
+
+        $this->seo()->setTitle($seo?->title ?? __('theme.brands-catalog-title'));
+        $this->seo()->setDescription($seo?->description ?? __('theme.brands-catalog-description'));
+
+        $imageUrl = config('seotools.meta.defaults.default_image');
+
+        if ($seo !== null) {
+            if ($seo->hasMedia('files')) {
+                $imageUrl = $seo->getFirstMediaUrl('files');
+            }
+        }
+
+        $this->seo()->addImages($imageUrl);
+
+        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+
+        SEOMeta::setKeywords($seoKeywords);
+
+        $this->seo()->opengraph()->setUrl(route('theme.brand.catalog'));
+        $this->seo()->opengraph()->addProperty('type', 'website');
+        $this->seo()->jsonLd()->setType('CollectionPage');
+
+        return view('frontend.v1.pages.brand.catalog', compact('brands'));
     }
 
     /**

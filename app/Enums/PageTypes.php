@@ -24,6 +24,11 @@ final class PageTypes
         return 'brand';
     }
 
+    public function getBrandsCatalogType(): string
+    {
+        return 'brands_catalog';
+    }
+
     public function getAboutType(): string
     {
         return 'about';
@@ -146,6 +151,7 @@ final class PageTypes
             'product' => 'Страница товара',
             'category' => 'Страница категории',
             'brand' => 'Страница бренда',
+            'brands_catalog' => 'Каталог брендов',
             'about' => 'О нас',
             'contact' => 'Контакты',
             'delivery' => 'Доставка',
@@ -176,6 +182,7 @@ final class PageTypes
     {
         return [
             'home' => 'Главная страница',
+            'brands_catalog' => 'Каталог брендов',
             'about' => 'О нас',
             'contact' => 'Контакты',
             'delivery' => 'Доставка',
