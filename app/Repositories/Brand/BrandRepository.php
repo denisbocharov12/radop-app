@@ -161,4 +161,20 @@ final class BrandRepository
             ->orderBy('id')
             ->get();
     }
+
+    /**
+     * @return Collection
+     */
+    public function getAllForCatalog(): Collection
+    {
+        return Brand::query()
+            ->where('status', true)
+            ->withCount(['products' => function ($query) {
+                $query->where('status', true)
+                    ->where('site_status', true)
+                    ->where('stock', '>', 0);
+            }])
+            ->orderBy('order')
+            ->get();
+    }
 }

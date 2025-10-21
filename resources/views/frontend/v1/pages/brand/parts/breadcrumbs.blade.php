@@ -10,20 +10,6 @@
                             @include('frontend.v1.pages.brand.parts.breadcrumb-item', $item)
                         @endforeach
                     </ol>
-{{--                    <ol class="breadcrumb text-white d-flex d-md-none">--}}
-{{--                        @php--}}
-{{--                            $all = collect([['url' => route('theme.home'), 'name' => __('theme.home')], ['url' => route('theme.shop.catalog'), 'name' => __('theme.shop')]])--}}
-{{--                                ->merge($breadcrumbs ?? []);--}}
-{{--                            $last = $all->last();--}}
-{{--                        @endphp--}}
-{{--                        <li class="breadcrumb-item active fw-bold" style="color: #000000" aria-current="page">--}}
-{{--                            @if(isset($last['url']))--}}
-{{--                                <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['title']}}</a>--}}
-{{--                            @else--}}
-{{--                                {{$last['title'] ?? $last->title ?? ''}}--}}
-{{--                            @endif--}}
-{{--                        </li>--}}
-{{--                    </ol>--}}
                 </nav>
             </div>
             <div class="col-6 col-sm-7 col-md-9">

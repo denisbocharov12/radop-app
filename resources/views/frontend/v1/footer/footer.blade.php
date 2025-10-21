@@ -24,7 +24,7 @@
                             <li class="item"><a href="{{ route('theme.home') }}#popular-products-home-anchor" class="scroll-element" data-anchor="popular-products-home-anchor">{{__('theme.popular-products')}}</a></li>
                             <li class="item"><a href="{{ route('theme.home') }}#new-products-home-anchor" class="scroll-element" data-anchor="new-products-home-anchor">{{__('theme.new-products')}}</a></li>
                             <li class="item"><a href="{{ route('theme.home') }}#discount-products-home-anchor" class="scroll-element" data-anchor="discount-products-home-anchor">{{__('theme.promotion')}}</a></li>
-                            <li class="item"><a href="{{ route('theme.home') }}#brands-home-anchor" class="scroll-element" data-anchor="brands-home-anchor">{{__('theme.home-brands')}}</a></li>
+                            <li class="item"><a href="{{ route('theme.brand.catalog')}}">{{__('theme.brands-catalog')}}</a></li>
                         </ul>
                     </div>
                 </div>

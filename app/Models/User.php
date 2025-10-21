@@ -96,4 +96,12 @@ final class User extends Authenticatable
     {
         return $this->hasMany(Filial::class);
     }
+
+    /**
+     * @return HasMany<Review, User>
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
 }
