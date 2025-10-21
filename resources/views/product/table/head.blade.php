@@ -17,15 +17,32 @@
             <button id="bulk-condition-update-btn" class="btn btn-primary">Изменить состояние</button>
         </div>
     </div>
-    <form action="{{route('product.index')}}" method="GET" class="card-title-group">
+    <form action="{{route('product.index')}}" method="GET" class="card-title-group" style="gap: 10px; align-items: center;">
         @csrf
+        <div class="card-tools" style="flex: 1; min-width: 200px;">
+            <input type="text" name="filter[search]" style="padding: 8px" value="{{isset($query['search']) ? $query['search'] : ''}}" class="form-control {{isset($query['search']) && $query['search'] !== '' ? 'border-primary' : 'border-transparent'}} form-focus-none" placeholder="Поиск по названию, ID, бренду">
+        </div><!-- .card-tools -->
         <div class="card-tools">
-            <input type="text" name="filter[search]" style="padding: 0" value="{{isset($query['search']) ? $query['search'] : ''}}" class="form-control border-transparent form-focus-none" placeholder="Поиск по ...">
+            <select name="filter[status]" class="form-select {{isset($query['status']) && $query['status'] !== '' ? 'border-primary' : ''}}" style="min-width: 180px; padding: 8px;">
+                <option value="">Все статусы выгрузки</option>
+                <option value="1" {{isset($query['status']) && $query['status'] == '1' ? 'selected' : ''}}>Активный</option>
+                <option value="0" {{isset($query['status']) && $query['status'] == '0' ? 'selected' : ''}}>Неактивный</option>
+            </select>
+        </div><!-- .card-tools -->
+        <div class="card-tools">
+            <select name="filter[site_status]" class="form-select {{isset($query['site_status']) && $query['site_status'] !== '' ? 'border-primary' : ''}}" style="min-width: 180px; padding: 8px;">
+                <option value="">Все статусы сайта</option>
+                <option value="1" {{isset($query['site_status']) && $query['site_status'] == '1' ? 'selected' : ''}}>Активный</option>
+                <option value="0" {{isset($query['site_status']) && $query['site_status'] == '0' ? 'selected' : ''}}>Неактивный</option>
+            </select>
         </div><!-- .card-tools -->
         <div class="card-tools me-n1">
             <ul class="btn-toolbar gx-1">
                 <li>
-                    <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
+                    <button type="submit" class="btn btn-icon btn-primary" title="Применить фильтры"><em class="icon ni ni-search"></em></button>
+                </li><!-- li -->
+                <li>
+                    <a href="{{route('product.index')}}" class="btn btn-icon btn-outline-light" title="Сбросить фильтры"><em class="icon ni ni-cross"></em></a>
                 </li><!-- li -->
                 <li class="btn-toolbar-sep"></li><!-- li -->
                 <li>
