@@ -56,23 +56,6 @@
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
                    @include('v1.errors.errors')
-                    @if(isset($query['search']) || isset($query['status']) || isset($query['site_status']))
-                        <div class="nk-block">
-                            <div class="alert alert-fill alert-info alert-icon">
-                                <em class="icon ni ni-filter"></em>
-                                <strong>Активные фильтры:</strong>
-                                @if(isset($query['search']) && $query['search'] !== '')
-                                    <span class="badge badge-sm bg-white text-dark ms-1">Поиск: "{{ $query['search'] }}"</span>
-                                @endif
-                                @if(isset($query['status']) && $query['status'] !== '')
-                                    <span class="badge badge-sm bg-white text-dark ms-1">Статус выгрузки: {{ $query['status'] == '1' ? 'Активный' : 'Неактивный' }}</span>
-                                @endif
-                                @if(isset($query['site_status']) && $query['site_status'] !== '')
-                                    <span class="badge badge-sm bg-white text-dark ms-1">Статус сайта: {{ $query['site_status'] == '1' ? 'Активный' : 'Неактивный' }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
                     <div class="nk-block">
                         <div class="card card-bordered card-stretch">
                             <div class="card-inner-group">
