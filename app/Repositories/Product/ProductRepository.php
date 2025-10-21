@@ -4,6 +4,8 @@ namespace App\Repositories\Product;
 
 use App\Enums\ProductConditions;
 use App\Filters\ProductSearchFilter;
+use App\Filters\ProductSiteStatusFilter;
+use App\Filters\ProductStatusFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
@@ -42,12 +44,17 @@ final class ProductRepository
     {
         $query = Product::query();
 
+        if (!request()->has('filter.status')) {
+            $query->where('status', true);
+        }
+
         return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('search', new ProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('status', new ProductStatusFilter()),
+                AllowedFilter::custom('site_status', new ProductSiteStatusFilter()),
             ])
-            ->where('status', true)
             ->defaultSort('id')
             ->allowedSorts([
                 'id',

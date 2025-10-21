@@ -28,6 +28,9 @@
                                 <h3 class="nk-block-title page-title">Товары</h3>
                                 <div class="nk-block-des text-soft">
                                     <p>Количество: {{ $products->total() }} @choice('единица|едц.', $products->total())</p>
+                                    @if(!isset($query['status']))
+                                        <p class="text-primary" style="font-size: 12px;">По умолчанию показаны товары со статусом выгрузки "Активный"</p>
+                                    @endif
                                 </div>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
@@ -53,6 +56,23 @@
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
                    @include('v1.errors.errors')
+                    @if(isset($query['search']) || isset($query['status']) || isset($query['site_status']))
+                        <div class="nk-block">
+                            <div class="alert alert-fill alert-info alert-icon">
+                                <em class="icon ni ni-filter"></em>
+                                <strong>Активные фильтры:</strong>
+                                @if(isset($query['search']) && $query['search'] !== '')
+                                    <span class="badge badge-sm bg-white text-dark ms-1">Поиск: "{{ $query['search'] }}"</span>
+                                @endif
+                                @if(isset($query['status']) && $query['status'] !== '')
+                                    <span class="badge badge-sm bg-white text-dark ms-1">Статус выгрузки: {{ $query['status'] == '1' ? 'Активный' : 'Неактивный' }}</span>
+                                @endif
+                                @if(isset($query['site_status']) && $query['site_status'] !== '')
+                                    <span class="badge badge-sm bg-white text-dark ms-1">Статус сайта: {{ $query['site_status'] == '1' ? 'Активный' : 'Неактивный' }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                     <div class="nk-block">
                         <div class="card card-bordered card-stretch">
                             <div class="card-inner-group">
@@ -75,6 +95,10 @@
         $(document).ready(function() {
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
+            });
+
+            $('select[name="filter[status]"], select[name="filter[site_status]"]').on('change', function() {
+                $(this).closest('form').submit();
             });
 
             $('#select-all-products, #select-all-products-head').on('change', function() {
