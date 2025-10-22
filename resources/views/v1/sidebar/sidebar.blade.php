@@ -328,6 +328,38 @@
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-chat-fill"></em></span>
+                            <span class="nk-menu-text">Отзывы</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('review.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все отзывы</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('review.create')}}" class="nk-menu-link"><span class="nk-menu-text">Создать отзыв</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-menu-circled"></em></span>
+                            <span class="nk-menu-text">Меню</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.menus.index')}}" class="nk-menu-link"><span class="nk-menu-text">Все меню</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.menus.create')}}" class="nk-menu-link"><span class="nk-menu-text">Создать меню</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-setting"></em></span>
                             <span class="nk-menu-text">Настройки сайта</span>
                         </a>

@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Mappers;
+
+use App\Data\Menu\MenuItemData;
+use App\Http\Requests\Menu\MenuItemRequest;
+
+final class MenuItemDataMapper
+{
+    public function mapFromRequestToNormalized(MenuItemRequest $request, int $menuId, int $order = 0): MenuItemData
+    {
+        return new MenuItemData(
+            $menuId,
+            $request->parent_id ? (int) $request->parent_id : null,
+            (int) ($request->order ?? $order),
+            $request->type,
+            $request->title,
+            $request->link,
+            $request->target ?? '_self',
+            $request->icon_class,
+            $request->content_data,
+            (bool) ($request->is_active ?? true)
+        );
+    }
+
+    public function mapToArray(MenuItemData $data): array
+    {
+        return [
+            'menu_id' => $data->menu_id,
+            'parent_id' => $data->parent_id,
+            'order' => $data->order,
+            'type' => $data->type,
+            'title' => $data->title,
+            'link' => $data->link,
+            'target' => $data->target,
+            'icon_class' => $data->icon_class,
+            'content_data' => $data->content_data,
+            'is_active' => $data->is_active,
+        ];
+    }
+}
+

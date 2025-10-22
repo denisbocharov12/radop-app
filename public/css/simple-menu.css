@@ -1,0 +1,125 @@
+/* ============================================
+   Simple Menu Styles
+   ============================================ */
+
+.simple-menu {
+    position: relative;
+}
+
+.simple-menu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.simple-menu__item {
+    position: relative;
+}
+
+.simple-menu__link,
+.simple-menu__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.simple-menu__link:hover {
+    color: #ff6b00;
+}
+
+.simple-menu__link i,
+.simple-menu__label i {
+    font-size: 16px;
+}
+
+.simple-menu__label {
+    font-weight: 600;
+    cursor: default;
+}
+
+/* Submenu */
+.simple-menu__submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    margin: 0;
+    padding: 8px 0;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.simple-menu__item:hover > .simple-menu__submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.simple-menu__submenu .simple-menu__item {
+    display: block;
+}
+
+.simple-menu__submenu .simple-menu__link {
+    display: block;
+    padding: 10px 16px;
+    white-space: nowrap;
+}
+
+.simple-menu__submenu .simple-menu__link:hover {
+    background: #f5f5f5;
+}
+
+/* Nested Submenus */
+.simple-menu__submenu .simple-menu__submenu {
+    top: 0;
+    left: 100%;
+    margin-left: 4px;
+}
+
+/* Promo in Simple Menu */
+.simple-menu__promo {
+    padding: 8px 16px;
+}
+
+.simple-menu__promo-title {
+    font-weight: 600;
+    color: #ff6b00;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .simple-menu__list {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .simple-menu__submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        padding-left: 20px;
+        display: none;
+    }
+
+    .simple-menu__item:hover > .simple-menu__submenu {
+        display: block;
+    }
+}
+
