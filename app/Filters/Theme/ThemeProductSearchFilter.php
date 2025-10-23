@@ -18,22 +18,12 @@ final class ThemeProductSearchFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $searchQueryNormalizer = app(SearchQueryNormalizer::class);
-        $searchRelevanceService = app(SearchRelevanceService::class);
-        
+
         $words = $searchQueryNormalizer->extractWords($value);
         $variants = $searchQueryNormalizer->generateSearchVariants($value);
         $stemmedWords = $searchQueryNormalizer->stemWords($words);
-        $articles = $searchQueryNormalizer->extractArticles($value);
-        $normalizedValue = $searchQueryNormalizer->normalize($value);
 
-        $query->where(function ($query) use ($value, $words, $variants, $stemmedWords, $articles) {
-            if (!empty($articles)) {
-                foreach ($articles as $article) {
-                    $query->orWhere('products.title', 'like', "%{$article}%");
-                    $query->orWhere('products.onec_id', 'like', "%{$article}%");
-                }
-            }
-
+        $query->where(function ($query) use ($value, $words, $variants, $stemmedWords) {
             foreach ($variants as $variant) {
                 $query->orWhere('products.title', 'like', "%{$variant}%");
                 $query->orWhere('products.onec_id', 'like', "%{$variant}%");
@@ -61,8 +51,5 @@ final class ThemeProductSearchFilter implements Filter
                 ->orWhere('products.onec_id', 'like', "%{$value}%")
             ;
         });
-
-        $relevance = $searchRelevanceService->getRelevanceOrderSql($normalizedValue, $articles);
-        $query->orderByRaw($relevance['sql'], $relevance['bindings']);
     }
 }
