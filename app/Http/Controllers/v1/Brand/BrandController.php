@@ -127,6 +127,6 @@ final class BrandController extends Controller
             }
         }
 
-        return response()->json(['status' => true, 'text' => 'Брэнды успешно отсортированы']);
+        return response()->json(['status' => true, 'text' => 'Бренды успешно отсортированы']);
     }
 }

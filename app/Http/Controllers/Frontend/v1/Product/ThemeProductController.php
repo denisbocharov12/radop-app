@@ -86,7 +86,7 @@ final class ThemeProductController extends Controller
 
         $this->viewCountManager->incrementProductViewCount($product, $request);
 
-        return view('frontend.v1.pages.product.index', compact([
+        return view('frontend.v1.pages.product.index-v2', compact([
             'product',
             'similarProducts',
             'breadcrumbs',
@@ -152,7 +152,7 @@ final class ThemeProductController extends Controller
 
         $this->viewCountManager->incrementProductViewCount($product, $request);
 
-        $renderedView = view('frontend.v1.pages.product.quick-view', compact(['product', 'similarProducts']))->render();
+        $renderedView = view('frontend.v1.pages.product.quick-view-v2', compact(['product', 'similarProducts']))->render();
 
         return response()->json($renderedView);
     }

@@ -216,6 +216,10 @@
                         $('#list-product-' + product_id).addClass('product-item-category-in-cart');
                     }
 
+                    if(!$('.product-cart-widget-wrap-v2').hasClass('product-cart-widget-in-cart')) {
+                        $('.product-cart-widget-wrap-v2').addClass('product-cart-widget-in-cart');
+                    }
+
                     var quantity = response['product_quantity'];
                     var cartHtml = `
                     <p>
@@ -294,6 +298,10 @@
                     $('#mobile-cart-info').html(response['total'] + ' ' + '{{__("theme.MDL")}}');
                     $('.cart-page').html(response['cart-page']);
                     $('#product-card-summary-in-cart-quick-' + product_id).html(response['in-cart']);
+
+                    if(!$('.product-cart-widget-wrap-v2').hasClass('product-cart-widget-in-cart')) {
+                        $('.product-cart-widget-wrap-v2').addClass('product-cart-widget-in-cart');
+                    }
 
                     var quantity = response['product_quantity'];
                     var cartHtml = `

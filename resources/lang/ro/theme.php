@@ -405,7 +405,7 @@ return array (
     'limited_stock_only_qty' => '❗️ Produsul este în cantitate limitată! În acest moment sunt disponibile doar :qty :unit',
     'limited_stock_contact' => '📞 Pentru a comanda sau a verifica stocul, contactați managerul nostru: +373 79 782 112',
     'account_text' => 'Cabinetul meu',
-    'order_repeated_successfully' => 'Comanda a fost repetată cu succes',
+    'order_repeated_successfully' => 'Puteți repeta comanda sau plăsa comandă fără modificări.',
     'search_history' => 'Istoricul căutărilor',
     'search_history_clear_all' => 'Șterge tot',
     'search_history_empty' => 'Istoricul căutărilor este gol',

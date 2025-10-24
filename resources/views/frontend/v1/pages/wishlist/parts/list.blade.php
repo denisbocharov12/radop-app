@@ -46,7 +46,7 @@
                         <a href="{{route('theme.product.index', $product->conditions->slug)}}">{{\Illuminate\Support\Str::limit($product->conditions->title, 80, '...')}}</a>
                     </h3>
                 </div>
-                @include('frontend.v1.components.product-item-article')
+                @include('frontend.v1.components.product-item-article', ['product' => $product->conditions])
                 <div class="product-list-mini-brand-wrap">
                     @if($product->conditions->brand !== null && $product->conditions->brand->onec_id !== null)
                         <a href="{{route('theme.brand.index', $product->conditions->brand?->onec_id)}}"
