@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="brand_id">Брэнд</label>
+                                        <label class="form-label" for="brand_id">Бренд</label>
                                         <div class="form-control-wrap">
                                             <select class="form-select js-select2" data-search="on" required name="brand_id" id="brand_id" data-placeholder="Выберите брэнд">
                                                 <option value="">Брэнд</option>

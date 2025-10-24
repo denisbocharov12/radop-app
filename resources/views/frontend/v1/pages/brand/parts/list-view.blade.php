@@ -80,10 +80,11 @@
                     </div>
                     @if($product->brand !== null)
                         <div class="product-mini-brand-wrap">
+                            <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
                             <a href="{{route('theme.brand.index', $product->brand->onec_id)}}"
                                class="product-mini-brand">
-                                    <span class="brand-text"><span
-                                        class="mini-heading">{{__('theme.all-brand-products')}}</span> {{$product->brand->title}} <i
+                                    <span class="brand-text">
+                                        {{$product->brand->title}} <i
                                         class="icon-arrow-radop-right"></i>
                                     </span>
                             </a>

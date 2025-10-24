@@ -118,7 +118,7 @@ class OneCController extends Controller
         $result = $this->ONECManager->importBrands($json);
 
         if ($result) {
-            toastr()->success('Успешный импорт брэндов');
+            toastr()->success('Успешный импорт брендов');
             return redirect()->route('import-export-data.index');
         } else {
             return redirect()->back()->withErrors('This file is invalid for structure');
