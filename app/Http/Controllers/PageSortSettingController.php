@@ -8,16 +8,26 @@ use Illuminate\Http\JsonResponse;
 
 class PageSortSettingController extends Controller
 {
+    /**
+     * @param PageSortSettingRepository $pageSortSettingRepository
+     */
     public function __construct(
         private readonly PageSortSettingRepository $pageSortSettingRepository
     ) {
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         return response()->json($this->pageSortSettingRepository->getAll());
     }
 
+    /**
+     * @param string $page
+     * @return JsonResponse
+     */
     public function show(string $page): JsonResponse
     {
         $setting = $this->pageSortSettingRepository->getByPage($page);
@@ -27,6 +37,11 @@ class PageSortSettingController extends Controller
         return response()->json($setting);
     }
 
+    /**
+     * @param Request $request
+     * @param string $page
+     * @return JsonResponse
+     */
     public function update(Request $request, string $page): JsonResponse
     {
         $request->validate([
@@ -36,6 +51,9 @@ class PageSortSettingController extends Controller
         return response()->json($setting);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
     public function webIndex()
     {
         $settings = $this->pageSortSettingRepository->getAll()->keyBy('page');
@@ -50,14 +68,21 @@ class PageSortSettingController extends Controller
         $pages = [
             'brand' => 'Бренды',
             'category' => 'Категории',
-            'shop' => 'Новинки/Популярные товары/На акции',
+            'shop' => 'Магазин',
+            'new' => 'Новинки',
+            'popular' => 'Популярные товары',
+            'sale' => 'На акции',
         ];
         return view('admin.page_sort_settings', compact('settings', 'sortOptions', 'pages'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function webUpdate(Request $request)
     {
-        $pages = ['brand', 'category', 'shop'];
+        $pages = ['brand', 'category', 'shop', 'new', 'popular', 'sale'];
         foreach ($pages as $page) {
             if ($request->has($page)) {
                 $this->pageSortSettingRepository->setDefaultSort($page, $request->input($page));

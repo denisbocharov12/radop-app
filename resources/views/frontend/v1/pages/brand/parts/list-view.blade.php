@@ -84,8 +84,7 @@
                             <a href="{{route('theme.brand.index', $product->brand->onec_id)}}"
                                class="product-mini-brand">
                                     <span class="brand-text">
-                                        {{$product->brand->title}} <i
-                                        class="icon-arrow-radop-right"></i>
+                                        {{$product->brand->title}}
                                     </span>
                             </a>
                         </div>

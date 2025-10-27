@@ -25,19 +25,8 @@
                         <a href="{{route('theme.brand.index', $product->brand->onec_id)}}" class="product-mini-brand">
                             <span class="brand-text">
                                 {{$product->brand->title}}
-                                <i class="icon-arrow-radop-right"></i>
                             </span>
                         </a>
-                    </div>
-                @endif
-                @if(!$product->packages->isEmpty())
-                    <div class="product-package-v2">
-                        <h3 class="product_item_package">
-                            <span class="mini-heading">{{__('theme.package')}}:</span>
-                            @foreach($product->packages->sortBy('value') as $package)
-                                {{$package->value}}{{$loop->last ? '' : '/'}}
-                            @endforeach {{__('theme.package_unit')}}
-                        </h3>
                     </div>
                 @endif
             </div>

@@ -20,6 +20,14 @@ final class ThemeShopController extends Controller
 {
     use SEOTools;
 
+    /**
+     * @param ProductRepository $productRepository
+     * @param BrandRepository $brandRepository
+     * @param AttributeRepository $attributeRepository
+     * @param PageSortSettingRepository $pageSortSettingRepository
+     * @param SeoMetaRepository $seoMetaRepository
+     * @param PageTypes $pageTypes
+     */
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
@@ -30,6 +38,10 @@ final class ThemeShopController extends Controller
     ) {
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request)
     {
         $query = $request->query('filter');
@@ -65,11 +77,16 @@ final class ThemeShopController extends Controller
             'defaultSort',
         ]));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function newProducts(Request $request)
     {
         $query = $request->query('filter');
 
-        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
         $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
         $allNewProducts = $this->productRepository->getAllNewProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
@@ -96,11 +113,16 @@ final class ThemeShopController extends Controller
             'defaultSort',
         ]));
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function popularProducts(Request $request)
     {
         $query = $request->query('filter');
 
-        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
         $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
         $allPopularProducts = $this->productRepository->getAllPopularProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
@@ -128,11 +150,15 @@ final class ThemeShopController extends Controller
         ]));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function saleProducts(Request $request)
     {
         $query = $request->query('filter');
 
-        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
         $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
         $allSaleProducts = $this->productRepository->getAllDiscountProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
@@ -160,6 +186,10 @@ final class ThemeShopController extends Controller
         ]));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function catalog(Request $request)
     {
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
@@ -189,17 +219,17 @@ final class ThemeShopController extends Controller
     {
         $locale = app()->getLocale();
         $fileName = "radop_new_products_new_{$locale}.xlsx";
-        
+
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
-            
+
             return response()->json([
                 'success' => true,
                 'url' => $url,
                 'message' => __('theme.export-file-ready'),
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => __('theme.export-file-not-found'),
@@ -213,17 +243,17 @@ final class ThemeShopController extends Controller
     {
         $locale = app()->getLocale();
         $fileName = "radop_popular_products_popular_{$locale}.xlsx";
-        
+
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
-            
+
             return response()->json([
                 'success' => true,
                 'url' => $url,
                 'message' => __('theme.export-file-ready'),
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => __('theme.export-file-not-found'),
@@ -237,17 +267,17 @@ final class ThemeShopController extends Controller
     {
         $locale = app()->getLocale();
         $fileName = "radop_sale_products_sale_{$locale}.xlsx";
-        
+
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
-            
+
             return response()->json([
                 'success' => true,
                 'url' => $url,
                 'message' => __('theme.export-file-ready'),
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => __('theme.export-file-not-found'),
