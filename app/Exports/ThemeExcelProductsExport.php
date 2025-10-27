@@ -31,7 +31,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
-        
+
         return view('frontend.v1.exports.brands_export', [
             'products' => $this->products,
         ]);
@@ -49,7 +49,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
             'B' => 10,
             'C' => 50,
             'D' => 15,
-            'E' => 17,
+            'E' => 20,
             'F' => 20,
             'G' => 10,
             'H' => 10,
@@ -65,7 +65,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
         $endRow = $startRow + $productsCount - 1;
 
         for ($row = $startRow; $row <= $endRow; $row++) {
-            $sheet->getRowDimension($row)->setRowHeight(95);
+            $sheet->getRowDimension($row)->setRowHeight(110);
         }
 
         $sheet->getStyle("A2:J{$endRow}")
