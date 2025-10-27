@@ -160,7 +160,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home" style="margin-top: -50px;" id="discount-products-home-anchor" >
+    <section class="section-standart section-catalog section-home" style="margin-top: 5px;" id="discount-products-home-anchor" >
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
