@@ -5943,6 +5943,9 @@ header .section-header .row-main .header-menu .col-lg{
 .section-home .slick-track{
     margin-bottom: 0;
 }
+.section-home .section-brand-slider .slick-track {
+    margin-bottom: 36px;
+}
 .col-product-images .slick-track{
     margin-top: 0;
     margin-bottom: 0;
