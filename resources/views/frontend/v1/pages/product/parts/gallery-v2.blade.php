@@ -21,7 +21,7 @@
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2">
                 @foreach($product->getMedia('products')->take(5) as $key => $file)
-                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}" data-fancybox-product>
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
                         <img src="{{$file->getUrl()}}" alt="{{$product->title}}">
                     </a>
                 @endforeach
@@ -61,7 +61,7 @@
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2">
                 @foreach(array_slice($imagesArray, 0, 5) as $key => $file)
-                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}" data-fancybox-product>
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
                         <img src="/{{$file}}" alt="{{$product->title}}">
                     </a>
                 @endforeach

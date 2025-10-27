@@ -683,6 +683,40 @@
                                     $(".product-slider-thumb").css('opacity', '0');
                                 },
                                 "done": () => {
+                                    const $rootSingleV2 = $(".product-slider-main-v2");
+                                    const $rootNavV2 = $(".product-slider-thumb-v2");
+                                    
+                                    if ($rootSingleV2.length > 0 && $rootNavV2.length > 0) {
+                                        const thumbs = document.querySelectorAll('.section-quick-view .product-slider-thumb-v2 .product-image-thumb');
+                                        const slides = document.querySelectorAll('.section-quick-view .product-slider-main-v2 .product-image');
+                                        
+                                        thumbs.forEach((thumb, index) => {
+                                            const newThumb = thumb.cloneNode(true);
+                                            thumb.parentNode.replaceChild(newThumb, thumb);
+                                        });
+                                        
+                                        const newThumbs = document.querySelectorAll('.section-quick-view .product-slider-thumb-v2 .product-image-thumb');
+                                        
+                                        newThumbs.forEach((thumb, index) => {
+                                            thumb.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                
+                                                newThumbs.forEach(t => t.classList.remove('active'));
+                                                slides.forEach(s => s.classList.remove('active'));
+                                                
+                                                this.classList.add('active');
+                                                if (slides[index]) {
+                                                    slides[index].classList.add('active');
+                                                }
+                                            });
+                                        });
+                                        
+                                        Fancybox.bind('[data-fancybox="product-gallery-quick-' + productId + '"]', {});
+                                        
+                                        return;
+                                    }
+                                    
                                     const $rootSingle = $(".product-slider-main");
                                     const $rootNav = $(".product-slider-thumb");
 
