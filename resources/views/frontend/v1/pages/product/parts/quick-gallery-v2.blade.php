@@ -27,7 +27,7 @@
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2">
                 @foreach($product->getMedia('products')->take(5) as $key => $file)
-                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}" data-fancybox-product>
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
                         <img src="{{$file->getUrl()}}" alt="{{$product->title}}">
                     </a>
                 @endforeach
@@ -71,7 +71,7 @@
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2">
                 @foreach(array_slice($imagesArray, 0, 5) as $key => $file)
-                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}" data-fancybox-product>
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
                         <img src="/{{$file}}" alt="{{$product->title}}">
                     </a>
                 @endforeach
@@ -86,22 +86,3 @@
         </div>
     </div>
 @endif
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const thumbs = document.querySelectorAll('.product-slider-thumb-v2 .product-image-thumb');
-        const slides = document.querySelectorAll('.product-slider-main-v2 .product-image');
-        
-        thumbs.forEach((thumb, index) => {
-            thumb.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                thumbs.forEach(t => t.classList.remove('active'));
-                slides.forEach(s => s.classList.remove('active'));
-                
-                this.classList.add('active');
-                slides[index].classList.add('active');
-            });
-        });
-    });
-</script>

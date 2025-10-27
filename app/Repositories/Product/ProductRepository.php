@@ -18,7 +18,6 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
 use App\Services\Search\SearchQueryNormalizer;
-use App\Services\Search\SearchRelevanceService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -30,8 +29,7 @@ final class ProductRepository
 {
     public function __construct(
         private readonly ProductConditions $productConditions,
-        private readonly SearchQueryNormalizer $searchQueryNormalizer,
-        private readonly SearchRelevanceService $searchRelevanceService
+        private readonly SearchQueryNormalizer $searchQueryNormalizer
     )
     {
     }
@@ -506,32 +504,14 @@ final class ProductRepository
     public function getAllBySearch(string $value): LengthAwarePaginator
     {
         $words = $this->searchQueryNormalizer->extractWords($value);
-        $variants = $this->searchQueryNormalizer->generateSearchVariants($value);
-        $stemmedWords = $this->searchQueryNormalizer->stemWords($words);
-//        $articles = $this->searchQueryNormalizer->extractArticles($value);
-        //
-//        $normalizedValue = $this->searchQueryNormalizer->normalize($value);
-//
+
         return Product::where('status', true)
             ->where('site_status', true)
             ->whereNotNull('price_koef')
-            ->where(function ($query) use ($words, $variants, $value, $stemmedWords) {
-//                if (!empty($articles)) {
-//                    foreach ($articles as $article) {
-//                        $query->orWhere('products.title', 'like', "%{$article}%");
-//                        $query->orWhere('products.onec_id', 'like', "%{$article}%");
-//                        $query->orWhere('shtrih_code', 'like', "%{$article}%");
-//                    }
-//                }
-                foreach ($variants as $variant) {
-                    $query->orWhere('products.title', 'like', "%{$variant}%");
-                    $query->orWhere('products.onec_id', 'like', "%{$variant}%");
-                    $query->orWhere('shtrih_code', 'like', "%{$variant}%");
-                }
-
-                foreach ($stemmedWords as $stem) {
-                    $query->orWhere('products.title', 'like', "%{$stem}%");
-                }
+            ->where(function ($query) use ($value, $words) {
+                $query->where('products.title', 'like', "%{$value}%")
+                    ->orWhere('products.onec_id', 'like', "%{$value}%")
+                    ->orWhere('shtrih_code', 'like', "%{$value}%");
 
                 if (count($words) > 1) {
                     $query->orWhere(function ($subQuery) use ($words) {
@@ -539,24 +519,9 @@ final class ProductRepository
                             $subQuery->where('products.title', 'like', "%{$word}%");
                         }
                     });
-
-                    $query->orWhere(function ($subQuery) use ($stemmedWords) {
-                        foreach ($stemmedWords as $stem) {
-                            $subQuery->where('products.title', 'like', "%{$stem}%");
-                        }
-                    });
                 }
-
-                $query->orWhere('products.title', 'like', "%{$value}%")
-                    ->orWhere('products.onec_id', 'like', "%{$value}%")
-                    ->orWhere('shtrih_code', 'like', "%{$value}%");
             })
             ->where('stock', '!=', 0)
-//            ->tap(function ($query) use ($normalizedValue) {
-////                $relevance = $this->searchRelevanceService->getRelevanceOrderSql($normalizedValue);
-////                $query->orderByRaw($relevance['sql'], $relevance['bindings']);
-//            })
-            ->distinct()
             ->paginate(15)
             ->appends(request()->query());
     }
