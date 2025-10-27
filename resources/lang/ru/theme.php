@@ -143,7 +143,7 @@ return array (
     'phone-number' => 'Номер телефона',
     'physical-person' => 'Физическое лицо',
     'place-order' => 'Оформить заказ',
-    'popular-products' => 'Популярные товары',
+    'popular-products' => 'Топ продаж',
     'price' => 'Цена',
     'privacy-policy' => 'Политике конфиденциальности',
     'processing' => 'В обработке',
