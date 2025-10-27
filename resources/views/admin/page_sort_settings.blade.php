@@ -21,7 +21,7 @@
                             @csrf
                             <div class="row g-4">
                                 @foreach($pages as $key => $label)
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label class="form-label" for="{{ $key }}">{{ $label }}</label>
                                             <div class="form-control-wrap">

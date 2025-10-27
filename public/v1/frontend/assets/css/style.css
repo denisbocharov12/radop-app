@@ -8967,7 +8967,6 @@ hr.product-card-item{
     gap: 0;
     padding: 10px 0;
     justify-content: space-between;
-    /*border-block: 1px solid #eee;*/
 }
 .sort-label {
     color: #000;
@@ -8995,7 +8994,6 @@ hr.product-card-item{
     /*color: #f1f1f1;*/
 }
 .sort-option.active {
-    border-bottom: .1em dotted;
     text-decoration: none;
     color: #0990d9;
 }
@@ -9225,7 +9223,6 @@ hr.product-card-item{
     color: #00aff0;
 }
 .product-list-mini-brand-wrap a span.brand-text{
-    border-bottom: 0.1em dotted;
     display: flex;
     align-items: center;
     font-size: 12px;
@@ -9902,9 +9899,6 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
 }
 .export-excel .export-excel-link:hover{
     color: #00aff0;
-}
-.export-excel .export-excel-link span{
-    border-bottom: .1em dotted;
 }
 .section-search .grid-products-list-wrap{
     grid-template-columns: repeat(5, 1fr);
@@ -13430,7 +13424,6 @@ input[type="range"]::-moz-range-thumb {
     margin-right: 4px;
 }
 .product-info-wrap-v2 .product-meta-info .product-brand-v2 a{
-    border-bottom: .1em dotted;
     text-decoration: none;
     color: #0990d9;
 }
@@ -13645,10 +13638,8 @@ input[type="range"]::-moz-range-thumb {
 .col-product-characteristics .product-details-wrap-v2 .details-heading {
     font-size: 20px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #252525;
-    border-bottom: 2px solid #e2e7ec;
-    padding-bottom: 10px;
 }
 
 .col-product-characteristics .product-details-wrap-v2 .details-list-wrap .ul-details {
