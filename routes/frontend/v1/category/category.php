@@ -11,4 +11,8 @@ Route::prefix('category')->name('category.')->group(function () {
     Route::get('/{onecId}/export', [ThemeCategoryController::class, 'export'])
         ->name('export')
     ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/{onecId}/export/personalized', [ThemeCategoryController::class, 'exportPersonalized'])
+        ->name('export.personalized')
+    ;
 });

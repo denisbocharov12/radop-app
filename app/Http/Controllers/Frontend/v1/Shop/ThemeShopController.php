@@ -15,6 +15,8 @@ use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PageSortSetting;
+use App\Jobs\GeneratePersonalizedExcelExportJob;
+use App\Exceptions\User\UserNoDiscountException;
 
 final class ThemeShopController extends Controller
 {
@@ -282,5 +284,134 @@ final class ThemeShopController extends Controller
             'success' => false,
             'message' => __('theme.export-file-not-found'),
         ], 404);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exportNewProductsPersonalized()
+    {
+        if (!auth()->guard('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-auth-required'),
+            ], 401);
+        }
+
+        $user = auth()->guard('user')->user();
+
+        if (!$user->sale) {
+            throw new UserNoDiscountException();
+        }
+
+        $products = $this->productRepository->getAllNewProducts();
+        
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-no-products'),
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GeneratePersonalizedExcelExportJob::dispatch(
+            $products,
+            'new_products',
+            'new',
+            $locale,
+            $user
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.personalized-export-started'),
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exportPopularProductsPersonalized()
+    {
+        if (!auth()->guard('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-auth-required'),
+            ], 401);
+        }
+
+        $user = auth()->guard('user')->user();
+
+        if (!$user->sale) {
+            throw new UserNoDiscountException();
+        }
+
+        $products = $this->productRepository->getAllPopularProducts();
+        
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-no-products'),
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GeneratePersonalizedExcelExportJob::dispatch(
+            $products,
+            'popular_products',
+            'popular',
+            $locale,
+            $user
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.personalized-export-started'),
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exportSaleProductsPersonalized()
+    {
+        if (!auth()->guard('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-auth-required'),
+            ], 401);
+        }
+
+        $user = auth()->guard('user')->user();
+
+        if (!$user->sale) {
+            throw new UserNoDiscountException();
+        }
+
+        $products = $this->productRepository->getAllDiscountProducts();
+        
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-no-products'),
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GeneratePersonalizedExcelExportJob::dispatch(
+            $products,
+            'sale_products', 
+            'sale',
+            $locale,
+            $user
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.personalized-export-started'),
+        ]);
     }
 }

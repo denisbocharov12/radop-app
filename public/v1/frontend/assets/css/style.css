@@ -2702,7 +2702,7 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 5px 0;
 }
 .section-home.section-standart .col-heading .heading {
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1.5px solid #0052a6;
 }
 .section-home.section-standart .col-heading .heading h1 {
     color: #fff;
@@ -6629,7 +6629,6 @@ hr.product-card-item{
     font-weight: 400;
 }
 .product-mini-brand-wrap a span.brand-text{
-    border-bottom: 0.1em dotted;
     display: flex;
     align-items: center;
     font-size: 12px;
@@ -6647,7 +6646,6 @@ hr.product-card-item{
     margin-right: 4px;
 }
 .product-mini-brand-wrap a{
-    border-bottom: .1em dotted;
     text-decoration: none;
     color: #0990d9;
 }
@@ -12446,7 +12444,6 @@ input[type="range"]::-moz-range-thumb {
     margin-right: 4px;
 }
 .product-list-item .product-mini-brand-wrap a{
-    border-bottom: .1em dotted;
     text-decoration: none;
     color: #0990d9;
 }

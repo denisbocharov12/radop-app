@@ -91,6 +91,11 @@ class PermissionSeeder extends Seeder
         'theme.user.filial.create',
         'theme.review.store',
         'theme.review.product.reviews',
+        'theme.category.export.personalized',
+        'theme.brand.export.personalized',
+        'theme.shop.new.export.personalized',
+        'theme.shop.popular.export.personalized',
+        'theme.shop.sale.export.personalized',
     ];
 
     public function run(): void

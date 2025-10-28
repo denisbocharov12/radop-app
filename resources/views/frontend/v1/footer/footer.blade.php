@@ -21,9 +21,9 @@
                         <h5>{{__('theme.footer_catalog_title')}}</h5>
                         <ul class="footer-menu">
                             <li class="item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.header-catalog-text')}}</a></li>
-                            <li class="item"><a href="{{route('theme.shop.popular')}}" class="scroll-element" data-anchor="popular-products-home-anchor">{{__('theme.popular-products')}}</a></li>
-                            <li class="item"><a href="{{route('theme.shop.new')}}" class="scroll-element" data-anchor="new-products-home-anchor">{{__('theme.new-products')}}</a></li>
-                            <li class="item"><a href="{{route('theme.shop.sale')}}" class="scroll-element" data-anchor="discount-products-home-anchor">{{__('theme.promotion')}}</a></li>
+                            <li class="item"><a href="{{route('theme.shop.popular')}}">{{__('theme.popular-products')}}</a></li>
+                            <li class="item"><a href="{{route('theme.shop.new')}}">{{__('theme.new-products')}}</a></li>
+                            <li class="item"><a href="{{route('theme.shop.sale')}}">{{__('theme.promotion')}}</a></li>
                             <li class="item"><a href="{{ route('theme.brand.catalog')}}">{{__('theme.brands-catalog')}}</a></li>
                         </ul>
                     </div>

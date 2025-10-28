@@ -25,6 +25,18 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/sale/export', [ThemeShopController::class, 'exportSaleProducts'])
         ->name('sale.export')
     ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/new/export/personalized', [ThemeShopController::class, 'exportNewProductsPersonalized'])
+        ->name('new.export.personalized')
+    ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/popular/export/personalized', [ThemeShopController::class, 'exportPopularProductsPersonalized'])
+        ->name('popular.export.personalized')
+    ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/sale/export/personalized', [ThemeShopController::class, 'exportSaleProductsPersonalized'])
+        ->name('sale.export.personalized')
+    ;
     Route::get('/catalog', [ThemeShopController::class, 'catalog'])
         ->name('catalog')
     ;
