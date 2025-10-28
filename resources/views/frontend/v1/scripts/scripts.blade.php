@@ -907,6 +907,7 @@
         var originalText = $span.text();
         var loaderIcon = '<i class="fa fa-spin fa-spinner"></i>';
         var url = $link.attr('href');
+        var isPersonalized = url.includes('/personalized');
 
         $span.html(loaderIcon);
         $link.css('pointer-events', 'none');
@@ -919,6 +920,8 @@
                 if (response.success && response.url) {
                     window.location.href = response.url;
                     toastr.success(response.message || window.exportMessages.downloadStarted);
+                } else if (response.success && isPersonalized) {
+                    toastr.info(response.message || @json(__('theme.personalized-export-started')));
                 } else {
                     toastr.error(response.message || window.exportMessages.error);
                 }
