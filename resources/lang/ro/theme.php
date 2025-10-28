@@ -115,7 +115,7 @@ return array (
     'not-found-product' => 'Nu ai găsit produsul potrivit? Sunați la <a href="tel:+37379782112">+373 22 78 21 12</a> și Vă vom ajuta.',
     'of' => 'din',
     'office-address' => 'Chișinău, Sarmisegetusa str. 15',
-    'on-discount' => 'Produse cu reduceri',
+    'on-discount' => 'Produse cu reducere',
     'on-homepage' => 'Acasă',
     'or' => 'sau',
     'order-download-invoice' => 'Descărcați factura',
