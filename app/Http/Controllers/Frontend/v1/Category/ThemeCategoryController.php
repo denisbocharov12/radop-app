@@ -15,6 +15,8 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\ViewCount\ViewCountManager;
+use App\Jobs\GeneratePersonalizedExcelExportJob;
+use App\Exceptions\User\UserNoDiscountException;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
@@ -143,5 +145,56 @@ final class ThemeCategoryController extends Controller
             'success' => false,
             'message' => __('theme.export-file-not-found'),
         ], 404);
+    }
+
+    /**
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ThemeCategoryNotFoundException
+     */
+    public function exportPersonalized(string $onecId)
+    {
+        if (!auth()->guard('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-auth-required'),
+            ], 401);
+        }
+
+        $user = auth()->guard('user')->user();
+
+        if (!$user->sale) {
+            throw new UserNoDiscountException();
+        }
+
+        $existedCategory = $this->categoryRepository->getByOnecId($onecId);
+
+        if ($existedCategory === null) {
+            throw new ThemeCategoryNotFoundException();
+        }
+
+        $products = $this->productRepository->getAllProductsByCategory($existedCategory);
+        
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-no-products'),
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GeneratePersonalizedExcelExportJob::dispatch(
+            $products,
+            'categories',
+            $onecId,
+            $locale,
+            $user
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.personalized-export-started'),
+        ]);
     }
 }

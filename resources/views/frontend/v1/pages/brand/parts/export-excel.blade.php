@@ -1,6 +1,16 @@
+@php
+    $user = auth()->guard('user')->user();
+    $exportRoute = route('theme.brand.export', $existedBrand->id);
+    $buttonText = __('theme.download-catalog');
+    
+    if ($user && $user->sale) {
+        $exportRoute = route('theme.brand.export.personalized', $existedBrand->id);
+        $buttonText = __('theme.download-personalized-catalog');
+    }
+@endphp
 <div class="export-excel">
-    <a href="{{route('theme.brand.export', $existedBrand->id)}}" class="export-excel-link">
-        <span>{{ __('theme.download-catalog') }}</span>
+    <a href="{{ $exportRoute }}" class="export-excel-link">
+        <span>{{ $buttonText }}</span>
         @include('frontend.v1.pages.shop.parts.excel-svg')
     </a>
 </div>

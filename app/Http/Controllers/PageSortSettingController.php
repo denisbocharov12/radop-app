@@ -68,7 +68,7 @@ class PageSortSettingController extends Controller
         $pages = [
             'brand' => 'Бренды',
             'category' => 'Категории',
-            'shop' => 'Магазин',
+            'shop' => 'Каталог',
             'new' => 'Новинки',
             'popular' => 'Популярные товары',
             'sale' => 'На акции',

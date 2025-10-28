@@ -13,4 +13,8 @@ Route::prefix('brand')->name('brand.')->group(function () {
     Route::get('/{brand}/export', [ThemeBrandController::class, 'export'])
         ->name('export')
     ;
+    Route::middleware(['app.user-permissions'])
+        ->get('/{brand}/export/personalized', [ThemeBrandController::class, 'exportPersonalized'])
+        ->name('export.personalized')
+    ;
 });

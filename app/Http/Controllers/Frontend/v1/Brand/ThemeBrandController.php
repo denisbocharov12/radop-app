@@ -15,6 +15,8 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use App\Services\ViewCount\ViewCountManager;
+use App\Jobs\GeneratePersonalizedExcelExportJob;
+use App\Exceptions\User\UserNoDiscountException;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
@@ -158,5 +160,49 @@ final class ThemeBrandController extends Controller
             'success' => false,
             'message' => __('theme.export-file-not-found'),
         ], 404);
+    }
+
+    /**
+     * @param Brand $brand
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exportPersonalized(Brand $brand)
+    {
+        if (!auth()->guard('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-auth-required'),
+            ], 401);
+        }
+
+        $user = auth()->guard('user')->user();
+
+        if (!$user->sale) {
+            throw new UserNoDiscountException();
+        }
+
+        $products = $this->productRepository->getAllByBrandOnceId((int)$brand->onec_id);
+        
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.export-no-products'),
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GeneratePersonalizedExcelExportJob::dispatch(
+            $products,
+            'brands',
+            $brand->onec_id,
+            $locale,
+            $user
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.personalized-export-started'),
+        ]);
     }
 }

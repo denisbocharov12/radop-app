@@ -8,6 +8,7 @@ use App\Data\Theme\Product\AddToCartData;
 use App\Exceptions\Product\ProductNotFoundException;
 use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Models\Product;
+use App\Models\User;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -442,6 +443,39 @@ final class ThemeProductManager
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, '.', '');
             } elseif($product->sale_price !== '' || $user && $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price * $priceKoef, 2, '.', '');
+            }
+        }
+
+        return $price;
+    }
+
+    /**
+     * @param Product $product
+     * @param User $user
+     * @return string
+     */
+    public static function getPersonalizedProductPrice(Product $product, User $user): string
+    {
+        $price = (float)$product->price;
+        $priceKoef = (float)$product->price_koef;
+
+        if ($user->with_sale) {
+            if($user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user->sale !== null && $user->sale !== 0.0) {
+                $price = number_format((float)$product->sale_price, 2, '.', '');
+            }
+            else{
+                $price = number_format($price, 2, '.', '');
+            }
+        } else {
+            if($user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
+                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, '.', '');
+            } elseif($product->sale_price !== '' || $user->sale !== null && $user->sale !== 0.0) {
                 $price = number_format((float)$product->sale_price, 2, '.', '');
             }
             else{
