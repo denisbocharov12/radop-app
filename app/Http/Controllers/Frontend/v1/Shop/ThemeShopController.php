@@ -321,7 +321,7 @@ final class ThemeShopController extends Controller
             'new',
             $locale,
             $user
-        );
+        )->onQueue('high');
 
         return response()->json([
             'success' => true,
@@ -364,7 +364,7 @@ final class ThemeShopController extends Controller
             'popular',
             $locale,
             $user
-        );
+        )->onQueue('high');
 
         return response()->json([
             'success' => true,
@@ -407,7 +407,7 @@ final class ThemeShopController extends Controller
             'sale',
             $locale,
             $user
-        );
+        )->onQueue('high');
 
         return response()->json([
             'success' => true,

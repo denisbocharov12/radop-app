@@ -190,7 +190,7 @@ final class ThemeCategoryController extends Controller
             $onecId,
             $locale,
             $user
-        );
+        )->onQueue('high');
 
         return response()->json([
             'success' => true,
