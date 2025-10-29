@@ -145,17 +145,17 @@ final class ThemeBrandController extends Controller
     {
         $locale = app()->getLocale();
         $fileName = "radop_brands_{$brand->onec_id}_{$locale}.xlsx";
-        
+
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
-            
+
             return response()->json([
                 'success' => true,
                 'url' => $url,
                 'message' => __('theme.export-file-ready'),
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => __('theme.export-file-not-found'),
@@ -182,7 +182,7 @@ final class ThemeBrandController extends Controller
         }
 
         $products = $this->productRepository->getAllByBrandOnceId((int)$brand->onec_id);
-        
+
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -198,7 +198,7 @@ final class ThemeBrandController extends Controller
             $brand->onec_id,
             $locale,
             $user
-        );
+        )->onQueue('high');
 
         return response()->json([
             'success' => true,
