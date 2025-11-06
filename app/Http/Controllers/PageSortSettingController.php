@@ -57,7 +57,8 @@ class PageSortSettingController extends Controller
     public function webIndex()
     {
         $settings = $this->pageSortSettingRepository->getAll()->keyBy('page');
-        $sortOptions = [
+        
+        $productSortOptions = [
             'price' => 'По возрастанию цены',
             '-price' => 'По убыванию цены',
             'title' => 'По названию',
@@ -65,15 +66,35 @@ class PageSortSettingController extends Controller
             'condition' => 'Сначала новые',
             'stock' => 'В наличии',
         ];
+
+        $brandCatalogSortOptions = [
+            'catalog_order' => 'Ручная сортировка',
+            'title' => 'По наименованию',
+            'created_at' => 'По дате создания',
+            'order' => 'По основной сортировке',
+        ];
+
+        $sortOptionsByPage = [
+            'brand' => $productSortOptions,
+            'brand_catalog' => $brandCatalogSortOptions,
+            'category' => $productSortOptions,
+            'shop' => $productSortOptions,
+            'new' => $productSortOptions,
+            'popular' => $productSortOptions,
+            'sale' => $productSortOptions,
+        ];
+
         $pages = [
             'brand' => 'Бренды',
+            'brand_catalog' => 'Каталог брендов',
             'category' => 'Категории',
             'shop' => 'Каталог',
             'new' => 'Новинки',
             'popular' => 'Популярные товары',
             'sale' => 'На акции',
         ];
-        return view('admin.page_sort_settings', compact('settings', 'sortOptions', 'pages'));
+        
+        return view('admin.page_sort_settings', compact('settings', 'sortOptionsByPage', 'pages'));
     }
 
     /**
@@ -82,7 +103,7 @@ class PageSortSettingController extends Controller
      */
     public function webUpdate(Request $request)
     {
-        $pages = ['brand', 'category', 'shop', 'new', 'popular', 'sale'];
+        $pages = ['brand', 'brand_catalog', 'category', 'shop', 'new', 'popular', 'sale'];
         foreach ($pages as $page) {
             if ($request->has($page)) {
                 $this->pageSortSettingRepository->setDefaultSort($page, $request->input($page));

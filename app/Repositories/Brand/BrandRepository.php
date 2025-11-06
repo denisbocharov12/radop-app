@@ -58,6 +58,17 @@ final class BrandRepository
         ;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getAllForCatalogSort(): Collection
+    {
+        return Brand::where('status', true)
+            ->orderBy('catalog_order')
+            ->get()
+        ;
+    }
+
     public function getAllToFrontEnd(): Collection
     {
         return Brand::query()->where('status', true)->get();
@@ -163,18 +174,35 @@ final class BrandRepository
     }
 
     /**
+     * @param string $sortBy
      * @return Collection
      */
-    public function getAllForCatalog(): Collection
+    public function getAllForCatalog(string $sortBy = 'catalog_order'): Collection
     {
-        return Brand::query()
+        $query = Brand::query()
             ->where('status', true)
             ->withCount(['products' => function ($query) {
                 $query->where('status', true)
                     ->where('site_status', true)
                     ->where('stock', '>', 0);
-            }])
-            ->orderBy('order')
-            ->get();
+            }]);
+
+        switch ($sortBy) {
+            case 'title':
+                $query->orderBy('title');
+                break;
+            case 'created_at':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'order':
+                $query->orderBy('order');
+                break;
+            case 'catalog_order':
+            default:
+                $query->orderBy('catalog_order');
+                break;
+        }
+
+        return $query->get();
     }
 }

@@ -27,6 +27,7 @@ final class Brand extends Model implements HasMedia
         'slug',
         'description',
         'order',
+        'catalog_order',
         'status'
     ];
 

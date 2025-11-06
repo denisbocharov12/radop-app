@@ -111,6 +111,9 @@
                                 <a href="{{route('brand.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка брэндов</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('brand.sort.catalog')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка каталога брэндов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('product.sort.index.featured')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "Featured" товаров</span></a>
                             </li>
                             <li class="nk-menu-item">

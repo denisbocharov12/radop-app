@@ -84,4 +84,12 @@ class PageSortSettingRepository
     {
         return PageSortSetting::where('page', 'sale')->value('default_sort') ?? 'price';
     }
+
+    /**
+     * @return string
+     */
+    public function getDefaultSortValueForBrandCatalogPage(): string
+    {
+        return PageSortSetting::where('page', 'brand_catalog')->value('default_sort') ?? 'catalog_order';
+    }
 }
