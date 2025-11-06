@@ -19,11 +19,9 @@
                     <span>{{$category->name}}</span>
                 </div>
                 <div class="nk-tb-col text-center">
-                    <a href="#" class="category-export-btn" 
+                    <a href="#" class="category-export-onec-btn" 
                        data-category-id="{{$category->onec_id}}" 
-                       data-bs-toggle="modal" 
-                       data-bs-target="#exportModal"
-                       title="Экспорт с персональными ценами">
+                       title="Экспорт с ценами 1C">
                         @include('frontend.v1.pages.shop.parts.excel-svg')
                     </a>
                 </div>

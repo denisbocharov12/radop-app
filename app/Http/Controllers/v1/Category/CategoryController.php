@@ -245,12 +245,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param string $onecId
      * @return \Illuminate\Http\JsonResponse
      * @throws CategoryNotFoundException
      */
-    public function exportPersonalized(Request $request, string $onecId)
+    public function exportOneCPrices(string $onecId)
     {
         $manager = auth()->user();
 
@@ -259,31 +258,6 @@ class CategoryController extends Controller
                 'success' => false,
                 'message' => 'Необходима авторизация',
             ], 401);
-        }
-
-        $userId = $request->input('user_id');
-
-        if (!$userId) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Не выбран клиент',
-            ], 400);
-        }
-
-        $client = User::find($userId);
-
-        if (!$client) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Клиент не найден',
-            ], 404);
-        }
-
-        if (!$client->with_sale) {
-            return response()->json([
-                'success' => false,
-                'message' => 'У клиента нет персональных цен',
-            ], 403);
         }
 
         $category = $this->categoryRepository->getByOnecId($onecId);
@@ -307,7 +281,6 @@ class CategoryController extends Controller
             $products,
             $onecId,
             $locale,
-            $client,
             $manager
         )->onQueue('high');
 
