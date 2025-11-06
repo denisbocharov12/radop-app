@@ -100,23 +100,18 @@ final class ProductImagesManager
             if (File::exists($file)) {
                 $fileName = basename($file);
 
-                if (in_array($fileName, $existingFileNames)) {
-                    $mediaItem = $existingMedia->where('file_name', $fileName)->first();
+                if (!in_array($fileName, $existingFileNames)) {
+                    $tempDisk = 'temp_import';
 
-                    if ($mediaItem !== null) {
-                        $tempPath = storage_path('app/temp/' . $fileName);
+                    Storage::disk($tempDisk)->put($fileName, File::get($file));
 
-                        if (!File::exists(dirname($tempPath))) {
-                            File::makeDirectory(dirname($tempPath), 0755, true);
-                        }
+                    $tempPath = Storage::disk($tempDisk)->path($fileName);
 
-                        File::copy($file, $tempPath);
+                    $product->addMediaFromDisk($fileName, $tempDisk)
+                        ->toMediaCollection('products', 'media');
 
-                        $mediaItem->addMedia($tempPath)
-                            ->toMediaCollection('products', 'media');
-
-                        File::delete($tempPath);
-                    }
+                    Storage::disk($tempDisk)->delete($fileName);
+                    File::delete($tempPath);
                 }
             }
         }

@@ -14,7 +14,10 @@ use App\Http\Mappers\CategoryDataMapper;
 use App\Http\Requests\Category\CategoryDeleteRequest;
 use App\Http\Requests\Category\CategoryRequest;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
+use App\Jobs\GenerateManagerCategoryExportJob;
 use App\Models\Category;
+use App\Models\User;
+use App\Repositories\Product\ProductRepository;
 use App\Services\Category\CategoryManager;
 use App\Repositories\Category\CategoryRepository;
 use Illuminate\Http\Request;
@@ -24,16 +27,19 @@ class CategoryController extends Controller
     private CategoryRepository $categoryRepository;
     private CategoryManager $categoryManager;
     private CategoryDataMapper $categoryDataMapper;
+    private ProductRepository $productRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
         CategoryManager    $categoryManager,
-        CategoryDataMapper $categoryDataMapper
+        CategoryDataMapper $categoryDataMapper,
+        ProductRepository $productRepository
     )
     {
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
         $this->categoryDataMapper = $categoryDataMapper;
+        $this->productRepository = $productRepository;
     }
 
     public function index(Request $request)
@@ -236,5 +242,78 @@ class CategoryController extends Controller
             'categories',
             'selectedCategory'
         ]));
+    }
+
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws CategoryNotFoundException
+     */
+    public function exportPersonalized(Request $request, string $onecId)
+    {
+        $manager = auth()->user();
+
+        if (!$manager) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Необходима авторизация',
+            ], 401);
+        }
+
+        $userId = $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Не выбран клиент',
+            ], 400);
+        }
+
+        $client = User::find($userId);
+
+        if (!$client) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Клиент не найден',
+            ], 404);
+        }
+
+        if (!$client->with_sale) {
+            return response()->json([
+                'success' => false,
+                'message' => 'У клиента нет персональных цен',
+            ], 403);
+        }
+
+        $category = $this->categoryRepository->getByOnecId($onecId);
+
+        if (!$category) {
+            throw new CategoryNotFoundException();
+        }
+
+        $products = $this->productRepository->getAllProductsByCategory($category);
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'В категории нет товаров',
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GenerateManagerCategoryExportJob::dispatch(
+            $products,
+            $onecId,
+            $locale,
+            $client,
+            $manager
+        )->onQueue('high');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Экспорт запущен. Файл будет отправлен на ваш Email.',
+        ]);
     }
 }

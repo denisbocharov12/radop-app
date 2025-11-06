@@ -3,6 +3,7 @@
         <div class="nk-tb-item nk-tb-head">
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Название</span></div>
+            <div class="nk-tb-col text-center"><span class="sub-text">Каталог (Цены 1C)</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Родительская категория</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
             <div class="nk-tb-col"><span class="sub-text">Краткое описание</span></div>
@@ -16,6 +17,15 @@
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$category->name}}</span>
+                </div>
+                <div class="nk-tb-col text-center">
+                    <a href="#" class="category-export-btn" 
+                       data-category-id="{{$category->onec_id}}" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#exportModal"
+                       title="Экспорт с персональными ценами">
+                        @include('frontend.v1.pages.shop.parts.excel-svg')
+                    </a>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$category->parent->name ?? ''}}</span>

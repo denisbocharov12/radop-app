@@ -52,6 +52,7 @@
     </div>
     <!-- content @e -->
     @include('category.modal.create')
+    @include('category.modal.export')
 @endsection
 
 @section('scripts')
@@ -60,7 +61,12 @@
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
             });
+            
+            $('.js-select2-export').select2({
+                dropdownParent: $("#exportModal")
+            });
         });
+        
         function askToDeleteCategory(category_id, token, path)
         {
             Swal.fire({
@@ -95,6 +101,76 @@
             var token = "{{csrf_token()}}";
             var path = "{{route('category.delete')}}";
             askToDeleteCategory(category_id, token, path)
+        });
+        
+        $(document).on('click', '.category-export-btn', function(e) {
+            e.preventDefault();
+            var categoryId = $(this).data('category-id');
+            console.log('Category ID:', categoryId);
+            $('#export_category_id').val(categoryId);
+        });
+
+        $(document).on('submit', '#exportCategoryForm', function(e) {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            var categoryId = $('#export_category_id').val();
+            var userId = $('#export_user_id').val();
+            
+            console.log('Category ID:', categoryId, 'User ID:', userId);
+            
+            if (!userId) {
+                toastr.error('Выберите клиента');
+                return;
+            }
+
+            var submitBtn = $('#exportCategoryBtn');
+            var originalText = submitBtn.html();
+            submitBtn.prop('disabled', true).text('Загрузка...');
+
+            $.ajax({
+                url: '{{ url("/admin/categories") }}/' + categoryId + '/export/personalized',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                data: {
+                    user_id: userId
+                },
+                success: function(response) {
+                    console.log('Success:', response);
+                    if (response.success) {
+                        $('#exportModal').modal('hide');
+                        $('#exportCategoryForm')[0].reset();
+                        $('.js-select2-export').val(null).trigger('change');
+                        
+                        setTimeout(function() {
+                            toastr.success(response.message);
+                        }, 300);
+                    } else {
+                        toastr.error(response.message || 'Ошибка при экспорте');
+                    }
+                },
+                error: function(xhr) {
+                    console.log('Error:', xhr);
+                    console.log('Status:', xhr.status);
+                    console.log('Response:', xhr.responseText);
+                    var errorMessage = 'Произошла ошибка при формировании экспорта';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    } else if (xhr.status === 404) {
+                        errorMessage = 'Маршрут не найден. Проверьте настройки.';
+                    } else if (xhr.status === 403) {
+                        errorMessage = 'Нет доступа к этой операции.';
+                    }
+                    toastr.error(errorMessage);
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            });
         });
     </script>
 @endsection

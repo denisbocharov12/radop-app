@@ -52,6 +52,7 @@
     </div>
     <!-- content @e -->
     @include('brand.modal.create')
+    @include('brand.modal.export')
 @endsection
 
 @section('scripts')
@@ -60,7 +61,12 @@
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
             });
+            
+            $('.js-select2-brand-export').select2({
+                dropdownParent: $("#exportBrandModal")
+            });
         });
+        
         function askToDeleteBrand(model_id, token, path)
         {
             Swal.fire({
@@ -95,6 +101,76 @@
             var token = "{{csrf_token()}}";
             var path = "{{route('brand.delete')}}";
             askToDeleteBrand(model_id, token, path)
+        });
+        
+        $(document).on('click', '.brand-export-btn', function(e) {
+            e.preventDefault();
+            var brandId = $(this).data('brand-id');
+            console.log('Brand ID:', brandId);
+            $('#export_brand_id').val(brandId);
+        });
+
+        $(document).on('submit', '#exportBrandForm', function(e) {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            var brandId = $('#export_brand_id').val();
+            var userId = $('#export_brand_user_id').val();
+            
+            console.log('Brand ID:', brandId, 'User ID:', userId);
+            
+            if (!userId) {
+                toastr.error('Выберите клиента');
+                return;
+            }
+
+            var submitBtn = $('#exportBrandBtn');
+            var originalText = submitBtn.html();
+            submitBtn.prop('disabled', true).text('Загрузка...');
+
+            $.ajax({
+                url: '{{ url("/admin/brands") }}/' + brandId + '/export/personalized',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                data: {
+                    user_id: userId
+                },
+                success: function(response) {
+                    console.log('Success:', response);
+                    if (response.success) {
+                        $('#exportBrandModal').modal('hide');
+                        $('#exportBrandForm')[0].reset();
+                        $('.js-select2-brand-export').val(null).trigger('change');
+                        
+                        setTimeout(function() {
+                            toastr.success(response.message);
+                        }, 300);
+                    } else {
+                        toastr.error(response.message || 'Ошибка при экспорте');
+                    }
+                },
+                error: function(xhr) {
+                    console.log('Error:', xhr);
+                    console.log('Status:', xhr.status);
+                    console.log('Response:', xhr.responseText);
+                    var errorMessage = 'Произошла ошибка при формировании экспорта';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    } else if (xhr.status === 404) {
+                        errorMessage = 'Маршрут не найден. Проверьте настройки.';
+                    } else if (xhr.status === 403) {
+                        errorMessage = 'Нет доступа к этой операции.';
+                    }
+                    toastr.error(errorMessage);
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            });
         });
     </script>
 @endsection
