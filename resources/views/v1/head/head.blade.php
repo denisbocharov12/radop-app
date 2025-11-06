@@ -7,8 +7,8 @@
     <!-- Page Title  -->
     <title>Панель управления - Radop</title>
     <!-- StyleSheets  -->
-    <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/dashlite.min.css?ver=3.0.0">
-    <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/theme.css?ver=3.0.0">
+    <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/dashlite.min.css?ver=3.0.1">
+    <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/theme.css?ver=3.0.1">
     @yield('styles')
 </head>
 <style>
