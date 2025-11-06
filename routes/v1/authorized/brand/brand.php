@@ -43,4 +43,16 @@ Route::prefix('brands')->name('brand.')->group(function () {
         ->post('/sorts/brand', [BrandController::class, 'sortBrandOrder'])
         ->name('sort.order')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/catalog', [BrandController::class, 'sortCatalog'])
+        ->name('sort.catalog')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/catalog', [BrandController::class, 'sortCatalogOrder'])
+        ->name('sort.catalog.order')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/{brand}/export/personalized', [BrandController::class, 'exportPersonalized'])
+        ->name('export.personalized')
+    ;
 });

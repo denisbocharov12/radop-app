@@ -26,7 +26,7 @@
                                             <label class="form-label" for="{{ $key }}">{{ $label }}</label>
                                             <div class="form-control-wrap">
                                                 <select class="form-select" id="{{ $key }}" name="{{ $key }}">
-                                                    @foreach($sortOptions as $value => $text)
+                                                    @foreach($sortOptionsByPage[$key] as $value => $text)
                                                         <option value="{{ $value }}" @if(isset($settings[$key]) && $settings[$key]->default_sort == $value) selected @endif>{{ $text }}</option>
                                                     @endforeach
                                                 </select>

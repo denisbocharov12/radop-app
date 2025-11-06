@@ -109,7 +109,8 @@ final class ThemeBrandController extends Controller
      */
     public function catalog()
     {
-        $brands = $this->brandRepository->getAllForCatalog();
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandCatalogPage();
+        $brands = $this->brandRepository->getAllForCatalog($defaultSort);
 
         $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandsCatalogType(), null, app()->getLocale());
 

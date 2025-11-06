@@ -129,4 +129,96 @@ final class BrandController extends Controller
 
         return response()->json(['status' => true, 'text' => 'Бренды успешно отсортированы']);
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function sortCatalog()
+    {
+        $brands = $this->brandRepository->getAllForCatalogSort();
+
+        return view('brand.sort-catalog', compact([
+            'brands',
+        ]));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sortCatalogOrder(Request $request)
+    {
+        $brands = $this->brandRepository->getAllForCatalogSort();
+
+        foreach ($brands as $brand) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $brand->id) {
+                    $brand->update(['catalog_order' => $order['position']]);
+                }
+            }
+        }
+
+        return response()->json(['status' => true, 'text' => 'Бренды каталога успешно отсортированы']);
+    }
+
+    /**
+     * @param Request $request
+     * @param Brand $brand
+     * @return \Illuminate\Http\JsonResponse
+     * @throws BrandNotFoundException
+     */
+    public function exportPersonalized(Request $request, Brand $brand)
+    {
+        $userId = $request->input('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Не выбран пользователь',
+            ], 400);
+        }
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Пользователь не найден',
+            ], 404);
+        }
+
+        if (!$user->with_sale) {
+            return response()->json([
+                'success' => false,
+                'message' => 'У пользователя нет персональных цен',
+            ], 403);
+        }
+
+        if (!$brand) {
+            throw new BrandNotFoundException();
+        }
+
+        $products = $this->productRepository->getAllProductsByBrand($brand);
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'У бренда нет товаров',
+            ], 404);
+        }
+
+        $locale = app()->getLocale();
+
+        GenerateManagerBrandExportJob::dispatch(
+            $products,
+            (string)$brand->id,
+            $locale,
+            $user
+        )->onQueue('high');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Экспорт запущен. Файл будет отправлен на Email пользователя.',
+        ]);
+    }
 }
