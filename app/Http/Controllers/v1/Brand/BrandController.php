@@ -168,12 +168,11 @@ final class BrandController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param Brand $brand
      * @return \Illuminate\Http\JsonResponse
      * @throws BrandNotFoundException
      */
-    public function exportPersonalized(Request $request, Brand $brand)
+    public function exportOneCPrices(Brand $brand)
     {
         $manager = auth()->user();
 
@@ -182,31 +181,6 @@ final class BrandController extends Controller
                 'success' => false,
                 'message' => 'Необходима авторизация',
             ], 401);
-        }
-
-        $userId = $request->input('user_id');
-
-        if (!$userId) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Не выбран клиент',
-            ], 400);
-        }
-
-        $client = User::find($userId);
-
-        if (!$client) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Клиент не найден',
-            ], 404);
-        }
-
-        if (!$client->with_sale) {
-            return response()->json([
-                'success' => false,
-                'message' => 'У клиента нет персональных цен',
-            ], 403);
         }
 
         if (!$brand) {
@@ -228,7 +202,6 @@ final class BrandController extends Controller
             $products,
             (string)$brand->id,
             $locale,
-            $client,
             $manager
         )->onQueue('high');
 

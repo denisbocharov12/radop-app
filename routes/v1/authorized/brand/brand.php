@@ -52,7 +52,7 @@ Route::prefix('brands')->name('brand.')->group(function () {
         ->name('sort.catalog.order')
     ;
     Route::middleware(['app.permissions'])
-        ->post('/{brand}/export/personalized', [BrandController::class, 'exportPersonalized'])
-        ->name('export.personalized')
+        ->post('/{brand}/export/onec-prices', [BrandController::class, 'exportOneCPrices'])
+        ->name('export.onec-prices')
     ;
 });

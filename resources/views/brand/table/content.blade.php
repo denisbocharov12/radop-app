@@ -18,11 +18,9 @@
                     <span>{{$brand->title}}</span>
                 </div>
                 <div class="nk-tb-col text-center">
-                    <a href="#" class="brand-export-btn" 
+                    <a href="#" class="brand-export-onec-btn" 
                        data-brand-id="{{$brand->id}}" 
-                       data-bs-toggle="modal" 
-                       data-bs-target="#exportBrandModal"
-                       title="Экспорт с персональными ценами">
+                       title="Экспорт с ценами 1C">
                         @include('frontend.v1.pages.shop.parts.excel-svg')
                     </a>
                 </div>

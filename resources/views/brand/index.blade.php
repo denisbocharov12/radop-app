@@ -52,7 +52,6 @@
     </div>
     <!-- content @e -->
     @include('brand.modal.create')
-    @include('brand.modal.export')
 @endsection
 
 @section('scripts')
@@ -60,10 +59,6 @@
         $(document).ready(function() {
             $('.js-select2').select2({
                 dropdownParent: $(".modal")
-            });
-            
-            $('.js-select2-brand-export').select2({
-                dropdownParent: $("#exportBrandModal")
             });
         });
         
@@ -103,72 +98,55 @@
             askToDeleteBrand(model_id, token, path)
         });
         
-        $(document).on('click', '.brand-export-btn', function(e) {
+        $(document).on('click', '.brand-export-onec-btn', function(e) {
             e.preventDefault();
             var brandId = $(this).data('brand-id');
-            console.log('Brand ID:', brandId);
-            $('#export_brand_id').val(brandId);
-        });
-
-        $(document).on('submit', '#exportBrandForm', function(e) {
-            e.preventDefault();
-            console.log('Form submitted');
+            var $icon = $(this);
             
-            var brandId = $('#export_brand_id').val();
-            var userId = $('#export_brand_user_id').val();
-            
-            console.log('Brand ID:', brandId, 'User ID:', userId);
-            
-            if (!userId) {
-                toastr.error('Выберите клиента');
-                return;
-            }
-
-            var submitBtn = $('#exportBrandBtn');
-            var originalText = submitBtn.html();
-            submitBtn.prop('disabled', true).text('Загрузка...');
+            $icon.css('opacity', '0.5');
 
             $.ajax({
-                url: '{{ url("/admin/brands") }}/' + brandId + '/export/personalized',
+                url: '{{ url("/admin/brands") }}/' + brandId + '/export/onec-prices',
                 type: 'POST',
                 dataType: 'json',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
                 },
-                data: {
-                    user_id: userId
-                },
                 success: function(response) {
-                    console.log('Success:', response);
                     if (response.success) {
-                        $('#exportBrandModal').modal('hide');
-                        $('#exportBrandForm')[0].reset();
-                        $('.js-select2-brand-export').val(null).trigger('change');
-                        
-                        setTimeout(function() {
-                            toastr.success(response.message);
-                        }, 300);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Успешно!',
+                            text: response.message,
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
                     } else {
-                        toastr.error(response.message || 'Ошибка при экспорте');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ошибка',
+                            text: response.message || 'Ошибка при экспорте'
+                        });
                     }
                 },
                 error: function(xhr) {
-                    console.log('Error:', xhr);
-                    console.log('Status:', xhr.status);
-                    console.log('Response:', xhr.responseText);
                     var errorMessage = 'Произошла ошибка при формировании экспорта';
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
                     } else if (xhr.status === 404) {
-                        errorMessage = 'Маршрут не найден. Проверьте настройки.';
+                        errorMessage = 'Маршрут не найден.';
                     } else if (xhr.status === 403) {
                         errorMessage = 'Нет доступа к этой операции.';
                     }
-                    toastr.error(errorMessage);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ошибка',
+                        text: errorMessage
+                    });
                 },
                 complete: function() {
-                    submitBtn.prop('disabled', false).html(originalText);
+                    $icon.css('opacity', '1');
                 }
             });
         });
