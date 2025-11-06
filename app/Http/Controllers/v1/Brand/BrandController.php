@@ -14,8 +14,11 @@ use App\Http\Mappers\BrandDataMapper;
 use App\Http\Requests\Brand\BrandDeleteRequest;
 use App\Http\Requests\Brand\BrandRequest;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
+use App\Jobs\GenerateManagerBrandExportJob;
 use App\Models\Brand;
+use App\Models\User;
 use App\Repositories\Brand\BrandRepository;
+use App\Repositories\Product\ProductRepository;
 use App\Services\Brand\BrandManager;
 use Illuminate\Http\Request;
 
@@ -24,16 +27,19 @@ final class BrandController extends Controller
     private BrandRepository $brandRepository;
     private BrandManager $brandManager;
     private BrandDataMapper $brandDataMapper;
+    private ProductRepository $productRepository;
 
     public function __construct(
         BrandRepository $brandRepository,
         BrandManager $brandManager,
-        BrandDataMapper $brandDataMapper
+        BrandDataMapper $brandDataMapper,
+        ProductRepository $productRepository
     )
     {
         $this->brandRepository = $brandRepository;
         $this->brandManager = $brandManager;
         $this->brandDataMapper = $brandDataMapper;
+        $this->productRepository = $productRepository;
     }
 
     public function index(Request $request)
@@ -169,28 +175,37 @@ final class BrandController extends Controller
      */
     public function exportPersonalized(Request $request, Brand $brand)
     {
+        $manager = auth()->user();
+
+        if (!$manager) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Необходима авторизация',
+            ], 401);
+        }
+
         $userId = $request->input('user_id');
 
         if (!$userId) {
             return response()->json([
                 'success' => false,
-                'message' => 'Не выбран пользователь',
+                'message' => 'Не выбран клиент',
             ], 400);
         }
 
-        $user = User::find($userId);
+        $client = User::find($userId);
 
-        if (!$user) {
+        if (!$client) {
             return response()->json([
                 'success' => false,
-                'message' => 'Пользователь не найден',
+                'message' => 'Клиент не найден',
             ], 404);
         }
 
-        if (!$user->with_sale) {
+        if (!$client->with_sale) {
             return response()->json([
                 'success' => false,
-                'message' => 'У пользователя нет персональных цен',
+                'message' => 'У клиента нет персональных цен',
             ], 403);
         }
 
@@ -213,12 +228,13 @@ final class BrandController extends Controller
             $products,
             (string)$brand->id,
             $locale,
-            $user
+            $client,
+            $manager
         )->onQueue('high');
 
         return response()->json([
             'success' => true,
-            'message' => 'Экспорт запущен. Файл будет отправлен на Email пользователя.',
+            'message' => 'Экспорт запущен. Файл будет отправлен на ваш Email.',
         ]);
     }
 }

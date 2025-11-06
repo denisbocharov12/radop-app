@@ -52,6 +52,10 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->name('select.category')
     ;
     Route::middleware(['app.permissions'])
+        ->post('/{onecId}/export/personalized', [CategoryController::class, 'exportPersonalized'])
+        ->name('export.personalized')
+    ;
+    Route::middleware(['app.permissions'])
         ->get('/sort-products-order', [CategoryController::class, 'sortProducts'])
         ->name('sort.products.order.index')
     ;

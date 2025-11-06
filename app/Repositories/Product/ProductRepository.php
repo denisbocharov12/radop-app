@@ -12,6 +12,7 @@ use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Filters\Theme\ThemeProductViewCountSort;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Filters\Theme\ThemeBrandsFilter;
 use App\Models\Product;
@@ -618,6 +619,20 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->with(['brand', 'values.attribute', 'packages'])
+            ->get();
+    }
+
+    /**
+     * @param Brand $brand
+     * @return Collection
+     */
+    public function getAllProductsByBrand(Brand $brand): Collection
+    {
+        return Product::query()
+            ->where('brand_id', $brand->onec_id)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
             ->get();
     }
 

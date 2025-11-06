@@ -3,6 +3,7 @@
         <div class="nk-tb-item nk-tb-head">
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Название</span></div>
+            <div class="nk-tb-col text-center"><span class="sub-text">Каталог (Цены 1C)</span></div>
             <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
             <div class="nk-tb-col"><span class="sub-text">Описание</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
@@ -15,6 +16,15 @@
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$brand->title}}</span>
+                </div>
+                <div class="nk-tb-col text-center">
+                    <a href="#" class="brand-export-btn" 
+                       data-brand-id="{{$brand->id}}" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#exportBrandModal"
+                       title="Экспорт с персональными ценами">
+                        @include('frontend.v1.pages.shop.parts.excel-svg')
+                    </a>
                 </div>
                 <div class="nk-tb-col">
                     @if($brand->status)

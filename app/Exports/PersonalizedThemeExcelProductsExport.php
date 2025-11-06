@@ -71,7 +71,7 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
             'B' => 10,
             'C' => 50,
             'D' => 15,
-            'E' => 20,
+            'E' => 25,
             'F' => 20,
             'G' => 10,
             'H' => 10,
@@ -91,7 +91,7 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
         $endRow = $startRow + $productsCount - 1;
 
         for ($row = $startRow; $row <= $endRow; $row++) {
-            $sheet->getRowDimension($row)->setRowHeight(110);
+            $sheet->getRowDimension($row)->setRowHeight(150);
         }
 
         $sheet->getStyle("A2:J{$endRow}")
@@ -138,10 +138,10 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
                                 $drawing->setName('Product Image');
                                 $drawing->setDescription('Product Image');
                                 $drawing->setPath($imagePath);
-                                $drawing->setWidthAndHeight(110, 110);
+                                $drawing->setWidthAndHeight(140, 140);
                                 $drawing->setResizeProportional(true);
-                                $drawing->setOffsetX(10);
-                                $drawing->setOffsetY(5);
+                                $drawing->setOffsetX(20);
+                                $drawing->setOffsetY(8);
                                 $drawing->setCoordinates("E{$row}");
                                 $drawing->setWorksheet($sheet);
                             }

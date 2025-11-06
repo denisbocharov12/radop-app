@@ -107,18 +107,12 @@ final class ProductImportJsonJob implements ShouldQueue
                 }
 
             }
-            ProductImagesManager::clearProductImages($productModel);
 
-            ProductImagesManager::importProductImagesSafe($productModel);
-//            foreach ($product->getMedia('products') as $mediaItem) {
-//                $customFileRemover->removeAllFiles($mediaItem);
-//            }
-//
-//            if (!ProductImagesManager::hasProductImages($productModel)) {
-//                ProductImagesManager::importProductImagesSafe($productModel);
-//            } else {
-//                ProductImagesManager::updateProductImages($productModel);
-//            }
+            if (!ProductImagesManager::hasProductImages($productModel)) {
+                ProductImagesManager::importProductImagesSafe($productModel);
+            } else {
+                ProductImagesManager::updateProductImages($productModel);
+            }
         }
     }
 }
