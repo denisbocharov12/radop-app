@@ -86,10 +86,10 @@
         <div class="section-product-description-quick mt-4">
             <h3 class="description-block-heading">{{__('theme.description')}}</h3>
             <div class="product-description-content">
-                @if($product->data?->summary === null)
+                @if($product->data?->getTranslation('summary', app()->getLocale()) === null || empty(strip_tags($product->data?->getTranslation('summary', app()->getLocale()))))
                     <p class="description-text">{{__('theme.no-description')}}</p>
                 @else
-                    <div class="description-text">{!! nl2br(e($product->data?->summary)) !!}</div>
+                    <div class="description-text">{!! $product->data?->getTranslation('summary', app()->getLocale()) !!}</div>
                 @endif
             </div>
         </div>

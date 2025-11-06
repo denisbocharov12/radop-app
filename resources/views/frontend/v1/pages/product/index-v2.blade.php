@@ -100,10 +100,10 @@
                 <div class="col-12">
                     <h2 class="description-block-heading">{{__('theme.description')}}</h2>
                     <div class="product-description-content">
-                        @if($product->data?->summary === null)
+                        @if($product->data?->getTranslation('summary', app()->getLocale()) === null || empty(strip_tags($product->data?->getTranslation('summary', app()->getLocale()))))
                             <p class="description-text">{{__('theme.no-description')}}</p>
                         @else
-                            <div class="description-text">{!! nl2br(e($product->data?->summary)) !!}</div>
+                            <div class="description-text">{!! $product->data?->getTranslation('summary', app()->getLocale()) !!}</div>
                         @endif
                     </div>
                 </div>

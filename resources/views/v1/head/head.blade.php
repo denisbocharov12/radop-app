@@ -9,6 +9,7 @@
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/dashlite.min.css?ver=3.0.0">
     <link rel="stylesheet" href="{{asset('/v1/dashboard')}}/assets/css/theme.css?ver=3.0.0">
+    @yield('styles')
 </head>
 <style>
     @media (max-width: 575.98px) {

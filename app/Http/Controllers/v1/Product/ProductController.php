@@ -259,4 +259,33 @@ class ProductController extends Controller
 
         return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exportDescriptions()
+    {
+        $products = Product::with('data')->whereHas('data')->get();
+
+        $exportData = [];
+
+        foreach ($products as $product) {
+            if ($product->data && $product->onec_id) {
+                $exportData[] = [
+                    'id' => $product->onec_id,
+                    'descr_ru' => $product->data->getTranslation('summary', 'ru') ?? '',
+                    'descr_ro' => $product->data->getTranslation('summary', 'ro') ?? '',
+                ];
+            }
+        }
+
+        $fileName = 'product_descriptions_' . date('Y-m-d_H-i-s') . '.json';
+
+        return response()->json([
+            'Description' => $exportData
+        ], 200, [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+        ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
 }
