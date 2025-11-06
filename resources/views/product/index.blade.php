@@ -18,7 +18,7 @@
             border-right: 1px solid #dbdfea;
         }
     </style>
-    <div class="nk-content ">
+    <div class="nk-content mt-5">
         <div class="container-fluid">
             <div class="nk-content-inner">
                 <div class="nk-content-body">
