@@ -3,26 +3,27 @@
 namespace App\Data\Product;
 
 /**
- * @property string $onecId
+ * @property string|null $onecId
  * @property string $title_ro
- * @property string $title_en
- * @property int $stock
- * @property int $unit
+ * @property string $title_ru
+ * @property int|null $stock
+ * @property int|null $unit
  * @property float $price
- * @property float $salePrice
+ * @property float|null $salePrice
  * @property string $status
  * @property string $siteStatus
- * @property string $brandId
- * @property array $categoryId
- * @property array $attachments
- * @property string $sku
- * @property string $summary_ro
- * @property string $summary_ru
- * @property string $description
- * @property array $uppSale
- * @property string $iurPrice
+ * @property string|null $brandId
+ * @property array|null $categoryId
+ * @property array|null $attachments
+ * @property string|null $sku
+ * @property string|null $summary_ro
+ * @property string|null $summary_ru
+ * @property string|null $description
+ * @property array|null $uppSale
+ * @property string|null $iurPrice
  * @property string $condition
- * @property string $shtrih_code
+ * @property string|null $shtrih_code
+ * @property int|null $minOrder
  */
 final class ProductData
 {

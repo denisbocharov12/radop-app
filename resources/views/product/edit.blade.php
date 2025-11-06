@@ -210,9 +210,9 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="summary_ro">Краткое описание товара (RO)</label>
+                                                <label class="form-label" for="summary_ro">Описание товара (RO)</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="summary_ro" class="form-control no-resize" id="summary_ro">{{$product->data?->summary_ro}}</textarea>
+                                                    <textarea name="summary_ro" class="form-control" id="summary_ro">{{$product->data?->getTranslation('summary', 'ro')}}</textarea>
                                                     @error('summary_ro')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
@@ -221,20 +221,12 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label" for="summary_ru">Краткое описание товара (RU)</label>
+                                                <label class="form-label" for="summary_ru">Описание товара (RU)</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea name="summary_ru" class="form-control no-resize" id="summary_ru">{{$product->data?->summary_ru}}</textarea>
+                                                    <textarea name="summary_ru" class="form-control" id="summary_ru">{{$product->data?->getTranslation('summary', 'ru')}}</textarea>
                                                     @error('summary_ru')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="form-label" for="description">Описание товара *(Не используется)</label>
-                                                <div class="form-control-wrap">
-                                                    <textarea name="description" class="form-control no-resize" id="description">{{$product->data?->description}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -313,8 +305,151 @@
         </div>
     </div>
 @endsection
+
+@section('styles')
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css">
+@endsection
+
 @section('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.umd.js"></script>
     <script>
+        const {
+            ClassicEditor,
+            Essentials,
+            Bold,
+            Italic,
+            Font,
+            Paragraph,
+            Heading,
+            List,
+            Link,
+            Image,
+            ImageToolbar,
+            ImageCaption,
+            ImageStyle,
+            ImageResize,
+            LinkImage,
+            ImageUpload,
+            Table,
+            TableToolbar,
+            BlockQuote,
+            MediaEmbed,
+            Alignment,
+            Indent,
+            IndentBlock,
+            Underline,
+            Strikethrough,
+            Code,
+            CodeBlock,
+            HorizontalLine,
+            RemoveFormat,
+            SourceEditing
+        } = CKEDITOR;
+
+        ClassicEditor
+            .create(document.querySelector('#summary_ro'), {
+                plugins: [
+                    Essentials, Bold, Italic, Font, Paragraph, Heading, List, Link,
+                    Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, LinkImage,
+                    Table, TableToolbar, BlockQuote, MediaEmbed, Alignment,
+                    Indent, IndentBlock, Underline, Strikethrough, Code, CodeBlock,
+                    HorizontalLine, RemoveFormat, SourceEditing
+                ],
+                toolbar: {
+                    items: [
+                        'undo', 'redo',
+                        '|', 'sourceEditing',
+                        '|', 'heading',
+                        '|', 'bold', 'italic', 'underline', 'strikethrough',
+                        '|', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                        '|', 'link', 'insertTable', 'blockQuote', 'mediaEmbed', 'codeBlock',
+                        '|', 'alignment',
+                        '|', 'bulletedList', 'numberedList',
+                        '|', 'outdent', 'indent',
+                        '|', 'horizontalLine',
+                        '|', 'removeFormat'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' }
+                    ]
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                },
+                image: {
+                    toolbar: [
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side',
+                        '|',
+                        'toggleImageCaption',
+                        'imageTextAlternative'
+                    ]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#summary_ru'), {
+                plugins: [
+                    Essentials, Bold, Italic, Font, Paragraph, Heading, List, Link,
+                    Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, LinkImage,
+                    Table, TableToolbar, BlockQuote, MediaEmbed, Alignment,
+                    Indent, IndentBlock, Underline, Strikethrough, Code, CodeBlock,
+                    HorizontalLine, RemoveFormat, SourceEditing
+                ],
+                toolbar: {
+                    items: [
+                        'undo', 'redo',
+                        '|', 'sourceEditing',
+                        '|', 'heading',
+                        '|', 'bold', 'italic', 'underline', 'strikethrough',
+                        '|', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                        '|', 'link', 'insertTable', 'blockQuote', 'mediaEmbed', 'codeBlock',
+                        '|', 'alignment',
+                        '|', 'bulletedList', 'numberedList',
+                        '|', 'outdent', 'indent',
+                        '|', 'horizontalLine',
+                        '|', 'removeFormat'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' }
+                    ]
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                },
+                image: {
+                    toolbar: [
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side',
+                        '|',
+                        'toggleImageCaption',
+                        'imageTextAlternative'
+                    ]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         $(document).on('click','.model-media-delete',function (e) {
             e.preventDefault();
             var image_id = $(this).data('id');

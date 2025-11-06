@@ -74,6 +74,7 @@ class PermissionSeeder extends Seeder
         'category.sort.products.order',
         'category.export.onec-prices',
         'brand.export.onec-prices',
+        'product.export-descriptions',
     ];
 
     private array $userPermittedRoutes = [

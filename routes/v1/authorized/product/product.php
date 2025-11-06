@@ -75,4 +75,8 @@ Route::prefix('products')->name('product.')->group(function () {
         ->post('/products/update-conditions', [ProductController::class, 'updateProductConditions'])
         ->name('products.update-conditions')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/export-descriptions', [ProductController::class, 'exportDescriptions'])
+        ->name('export-descriptions')
+    ;
 });

@@ -159,9 +159,9 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="summary">Краткое описание товара</label>
+                                        <label class="form-label" for="summary_ro">Описание товара (RO)</label>
                                         <div class="form-control-wrap">
-                                            <textarea name="summary_ro" class="form-control no-resize" id="summary_ro">{{old('summary_ro')}}</textarea>
+                                            <textarea name="summary_ro" class="form-control no-resize" id="summary_ro" rows="5">{{old('summary_ro')}}</textarea>
                                             @error('summary_ro')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
@@ -170,20 +170,12 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="summary">Краткое описание товара</label>
+                                        <label class="form-label" for="summary_ru">Описание товара (RU)</label>
                                         <div class="form-control-wrap">
-                                            <textarea name="summary_ru" class="form-control no-resize" id="summary_ru">{{old('summary_ru')}}</textarea>
+                                            <textarea name="summary_ru" class="form-control no-resize" id="summary_ru" rows="5">{{old('summary_ru')}}</textarea>
                                             @error('summary_ru')
                                             <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                             @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="form-label" for="description">Описание товара</label>
-                                        <div class="form-control-wrap">
-                                            <textarea name="description" class="form-control no-resize" id="description"></textarea>
                                         </div>
                                     </div>
                                 </div>

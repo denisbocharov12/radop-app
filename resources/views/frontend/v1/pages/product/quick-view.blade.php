@@ -189,10 +189,10 @@
                         </div>
                         <div class="tab-pane" id="description">
                             <div class="product-description-wrap">
-                                @if($product->data?->summary === null)
+                                @if($product->data?->getTranslation('summary', app()->getLocale()) === null || empty(strip_tags($product->data?->getTranslation('summary', app()->getLocale()))))
                                     <h4 class="description-heading">{{__('theme.no-description')}}</h4>
                                 @else
-                                    <p class="description">{{$product->data?->summary}}</p>
+                                    <div class="description description-text">{!! $product->data?->getTranslation('summary', app()->getLocale()) !!}</div>
                                 @endif
                             </div>
                         </div>

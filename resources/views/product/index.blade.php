@@ -38,7 +38,7 @@
                                     <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                                     <div class="toggle-expand-content" data-content="pageMenu">
                                         <ul class="nk-block-tools g-3">
-                                            <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
+                                            <li><a href="{{route('product.export-descriptions')}}" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Экспорт описаний</span></a></li>
                                             <li class="nk-block-tools-opt">
                                                 <div class="drodown">
                                                     <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
