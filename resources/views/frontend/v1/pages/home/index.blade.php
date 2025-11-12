@@ -89,7 +89,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home" style="margin-top: 10px;" id="popular-products-home-anchor">
+    <section class="section-standart section-catalog section-home" style="margin-top: 15px;" id="popular-products-home-anchor">
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
@@ -160,7 +160,7 @@
             </div>
         </div>
     </section>
-    <section class="section-standart section-catalog section-home" style="margin-top: 5px;" id="discount-products-home-anchor" >
+    <section class="section-standart section-catalog section-home" id="discount-products-home-anchor" >
         <div class="container">
             <div class="row-catalog row">
                 <div class="col-heading">
@@ -239,6 +239,7 @@
                     <div class="col-heading">
                         <div class="heading heading-with-btn">
                             <h1>{{__('theme.home-brands')}}</h1>
+                            <a class="section-home-btn" href="{{route('theme.brand.catalog')}}">{{__('theme.view-all')}}</a>
                         </div>
                     </div>
                     <div class="wrap-slider theme-slider" id="partners-slider">

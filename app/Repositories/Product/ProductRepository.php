@@ -19,6 +19,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductProfile;
 use App\Services\Search\SearchQueryNormalizer;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -504,25 +505,9 @@ final class ProductRepository
      */
     public function getAllBySearch(string $value): LengthAwarePaginator
     {
-        $words = $this->searchQueryNormalizer->extractWords($value);
+        $query = $this->buildSearchQuery($value);
 
-        return Product::where('status', true)
-            ->where('site_status', true)
-            ->whereNotNull('price_koef')
-            ->where(function ($query) use ($value, $words) {
-                $query->where('products.title', 'like', "%{$value}%")
-                    ->orWhere('products.onec_id', 'like', "%{$value}%")
-                    ->orWhere('shtrih_code', 'like', "%{$value}%");
-
-                if (count($words) > 1) {
-                    $query->orWhere(function ($subQuery) use ($words) {
-                        foreach ($words as $word) {
-                            $subQuery->where('products.title', 'like', "%{$word}%");
-                        }
-                    });
-                }
-            })
-            ->where('stock', '!=', 0)
+        return $query
             ->paginate(15)
             ->appends(request()->query());
     }
@@ -546,6 +531,73 @@ final class ProductRepository
             ->distinct()
             ->get()
         ;
+    }
+
+    public function getSuggestionCandidates(string $value, int $limit = 30): Collection
+    {
+        return $this->buildSearchQuery($value)
+            ->take($limit)
+            ->get();
+    }
+
+    private function buildSearchQuery(string $value): Builder
+    {
+        $search = trim($value);
+        $words = $this->searchQueryNormalizer->extractWords($search);
+
+        $query = Product::query()
+            ->where('products.status', true)
+            ->where('products.site_status', true)
+            ->where('products.stock', '!=', 0);
+
+        $this->applySearchFilters($query, $search, $words);
+
+        return $query;
+    }
+
+    private function applySearchFilters(Builder $query, string $search, array $words): void
+    {
+        $isNumeric = $search !== '' && ctype_digit($search);
+        $length = $isNumeric ? mb_strlen($search) : 0;
+
+        if ($isNumeric) {
+            if ($length < 8) {
+                $this->applyDefaultSearchConditions($query, $search, $words);
+            } elseif ($length === 8) {
+                $query->where('products.onec_id', $search);
+            } elseif ($length === 13) {
+                $query->where('shtrih_code', $search);
+            } elseif ($length > 8 && $length < 13) {
+                $query->where(function (Builder $builder) use ($search) {
+                    $builder->where('products.onec_id', $search)
+                        ->orWhere('shtrih_code', $search);
+                })->orderByRaw('CASE WHEN products.onec_id = ? THEN 0 ELSE 1 END', [$search]);
+            } else {
+                $this->applyDefaultSearchConditions($query, $search, $words);
+            }
+        } else {
+            $this->applyDefaultSearchConditions($query, $search, $words);
+        }
+    }
+
+    private function applyDefaultSearchConditions(Builder $query, string $value, array $words): void
+    {
+        $lowerValue = mb_strtolower($value);
+
+        $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
+            $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
+
+            if (count($words) > 1) {
+                $builder->orWhere(function (Builder $subQuery) use ($words) {
+                    foreach ($words as $word) {
+                        $lowerWord = mb_strtolower($word);
+                        $subQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"]);
+                    }
+                });
+            }
+        });
     }
 
     public function getById($productId): ?Product

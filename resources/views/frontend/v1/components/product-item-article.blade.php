@@ -1,7 +1,13 @@
 <div class="product-item-article-wrap">
     <h3 class="product_item_article">
         <span>@lang('theme.code'):</span>
-        <span class="product-code">{!! $product->onec_id !!}</span>
+        <span
+            class="product-code"
+            role="button"
+            tabindex="0"
+            data-copy-value="{{ $product->onec_id }}"
+            data-copy-message="{{ __('theme.product_code_copied') }}"
+        >{!! $product->onec_id !!}</span>
     </h3>
     <div class="details-wrap">
         <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">

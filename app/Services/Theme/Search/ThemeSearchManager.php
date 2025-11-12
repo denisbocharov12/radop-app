@@ -42,27 +42,131 @@ final class ThemeSearchManager
             return collect([]);
         }
 
-        $suggestions = collect([]);
+        $isNumeric = $query !== '' && ctype_digit($query);
+        $length = $isNumeric ? mb_strlen($query) : 0;
+        $lowerQuery = mb_strtolower($query);
 
-        $products = Product::where('status', true)
-            ->where('site_status', true)
-            ->where('stock', '!=', 0)
-            ->where("title->{$locale}", 'like', "%{$query}%")
-            ->take(self::MAX_SUGGESTIONS)
-            ->get();
+        $products = $this->productRepository
+            ->getSuggestionCandidates($query, self::MAX_SUGGESTIONS * 3);
 
-        $productTitles = $products->map(function($product) use ($locale) {
-            return [
-                'text' => $product->getTranslation('title', $locale),
-                'type' => 'product'
-            ];
-        });
+        $suggestions = collect();
 
-        $suggestions = $suggestions
-            ->merge($productTitles)
+        if ($isNumeric) {
+            if ($length === 13) {
+                $suggestions = $suggestions->merge($this->buildBarcodeSuggestions($products, $query, true));
+
+                if ($suggestions->isEmpty()) {
+                    $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
+                }
+            } elseif ($length === 8) {
+                $strictOnecSuggestions = $this->buildOnecSuggestions($products, $query, true);
+                $suggestions = $suggestions->merge($strictOnecSuggestions);
+
+                if ($suggestions->isEmpty()) {
+                    $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
+                }
+            } elseif ($length > 8 && $length < 13) {
+                $onecSuggestions = $this->buildOnecSuggestions($products, $query, true);
+                $barcodeSuggestions = $this->buildBarcodeSuggestions($products, $query, true);
+
+                $suggestions = $suggestions
+                    ->merge($onecSuggestions)
+                    ->merge($barcodeSuggestions);
+
+                if ($suggestions->isEmpty()) {
+                    $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
+                }
+            } else {
+                $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
+            }
+        } else {
+            $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
+        }
+
+        return $suggestions
+            ->filter(fn(array $suggestion) => !empty($suggestion['text']))
             ->unique('text')
-            ->take(self::MAX_SUGGESTIONS);
+            ->take(self::MAX_SUGGESTIONS)
+            ->values();
+    }
 
-        return $suggestions;
+    private function buildFallbackSuggestions(Collection $products, string $locale, string $query, string $lowerQuery): Collection
+    {
+        return collect()
+            ->merge($this->buildOnecSuggestions($products, $query))
+            ->merge($this->buildBarcodeSuggestions($products, $query))
+            ->merge($this->buildTitleSuggestions($products, $locale, $lowerQuery));
+    }
+
+    private function buildOnecSuggestions(Collection $products, string $query, bool $strict = false): Collection
+    {
+        return $products
+            ->filter(function (Product $product) use ($query, $strict) {
+                if (empty($product->onec_id)) {
+                    return false;
+                }
+
+                if ($strict) {
+                    return $product->onec_id === $query;
+                }
+
+                return mb_stripos($product->onec_id, $query) !== false;
+            })
+            ->map(fn(Product $product) => [
+                'text' => $product->onec_id,
+                'type' => 'product',
+            ])
+            ->values();
+    }
+
+    private function buildBarcodeSuggestions(Collection $products, string $query, bool $strict = false): Collection
+    {
+        return $products
+            ->filter(function (Product $product) use ($query, $strict) {
+                if (empty($product->shtrih_code)) {
+                    return false;
+                }
+
+                if ($strict) {
+                    return $product->shtrih_code === $query;
+                }
+
+                return mb_stripos($product->shtrih_code, $query) !== false;
+            })
+            ->map(fn(Product $product) => [
+                'text' => $product->shtrih_code,
+                'type' => 'product',
+            ])
+            ->values();
+    }
+
+    private function buildTitleSuggestions(Collection $products, string $locale, string $lowerQuery): Collection
+    {
+        return $products
+            ->map(function (Product $product) use ($locale) {
+                $title = $product->getTranslation('title', $locale) ?? $product->title;
+
+                return [
+                    'title' => $title,
+                ];
+            })
+            ->filter(function (array $data) use ($lowerQuery) {
+                $title = $data['title'];
+
+                if ($title === null) {
+                    return false;
+                }
+
+                if ($lowerQuery === '') {
+                    return true;
+                }
+
+                return mb_stripos(mb_strtolower($title), $lowerQuery) !== false;
+            })
+            ->map(fn(array $data) => [
+                'text' => $data['title'],
+                'type' => 'product',
+            ])
+            ->values();
     }
 }
