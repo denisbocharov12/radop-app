@@ -12622,8 +12622,8 @@ input[type="range"]::-moz-range-thumb {
 }
 @media (max-width: 1400px) {
     .product-list-item .product-item-category .add_to_cart_wrap .qty-add-to-cart {
-        padding-bottom: 17px;
-        margin: 21px auto 0 auto;
+        margin: 16px auto 0 auto;
+        padding: 0px 10px 12px 10px;
     }
 }
 @media (max-width: 768px) {
