@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'product_code_copied' => 'Product code copied to clipboard',
+
     'menu' => [
         'created_successfully' => 'Menu created successfully',
         'creation_failed' => 'Failed to create menu',

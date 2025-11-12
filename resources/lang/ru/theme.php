@@ -38,6 +38,7 @@ return array (
     'closed' => 'Закрыто',
     'cod-fiscal' => 'Фискальный код',
     'code' => 'Код',
+    'product_code_copied' => 'Код скопирован',
     'comment' => 'Комментарий',
     'company-name' => 'Название компании',
     'comrat' => 'Комрат',

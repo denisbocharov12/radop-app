@@ -32,6 +32,167 @@ $('a.link-megamenu').hoverDelay({
     }
 });
 
+;(function ($, window, document) {
+    const COPIED_CLASS = 'product-code--copied';
+    const TOAST_VISIBLE_CLASS = 'product-code-toast--visible';
+    const TOAST_HIDE_CLASS = 'product-code-toast--hide';
+    const TOAST_VISIBLE_DURATION = 1500;
+    const TOAST_HIDE_DURATION = 220;
+
+    let toastHideTimeoutId = null;
+    let toastRemoveTimeoutId = null;
+
+    function copyTextToClipboard(text) {
+        if (!text) {
+            return Promise.resolve();
+        }
+
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+            return navigator.clipboard.writeText(text);
+        }
+
+        return new Promise(function (resolve, reject) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    resolve();
+                } else {
+                    reject(new Error('Copy command was unsuccessful'));
+                }
+            } catch (err) {
+                reject(err);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        });
+    }
+
+    function setCopiedState($element) {
+        const previousTimeoutId = $element.data('copyTimeoutId');
+        if (previousTimeoutId) {
+            window.clearTimeout(previousTimeoutId);
+        }
+
+        $element.addClass(COPIED_CLASS);
+
+        const timeoutId = window.setTimeout(function () {
+            $element.removeClass(COPIED_CLASS);
+            $element.removeData('copyTimeoutId');
+        }, 1500);
+
+        $element.data('copyTimeoutId', timeoutId);
+    }
+
+    function getCopyValue($element) {
+        const dataValue = $element.data('copyValue');
+        if (typeof dataValue !== 'undefined' && dataValue !== null && dataValue !== '') {
+            return dataValue.toString();
+        }
+        return ($element.text() || '').trim();
+    }
+
+    function handleCopy($element) {
+        const value = getCopyValue($element);
+        if (!value) {
+            return;
+        }
+
+        copyTextToClipboard(value)
+            .then(function () {
+                setCopiedState($element);
+                showCopyToast($element);
+            })
+            .catch(function () {
+                // Silently fail if copying is not supported
+            });
+    }
+
+    function showCopyToast($element) {
+        const message = $element.data('copyMessage');
+
+        if (typeof message === 'undefined' || message === null || message === '') {
+            return;
+        }
+
+        if (toastHideTimeoutId) {
+            window.clearTimeout(toastHideTimeoutId);
+            toastHideTimeoutId = null;
+        }
+        if (toastRemoveTimeoutId) {
+            window.clearTimeout(toastRemoveTimeoutId);
+            toastRemoveTimeoutId = null;
+        }
+
+        $('.product-code-toast').remove();
+
+        const $toast = $('<div/>', {
+            class: 'product-code-toast',
+            role: 'status',
+            text: message
+        }).appendTo('body');
+
+        const elementOffset = $element.offset();
+        const elementWidth = $element.outerWidth();
+        const elementHeight = $element.outerHeight();
+        const toastWidth = $toast.outerWidth();
+        const toastHeight = $toast.outerHeight();
+        const windowWidth = $(window).width();
+        const windowHeight = $(window).height();
+        const scrollTop = $(window).scrollTop();
+
+        let top = elementOffset.top - toastHeight - 8;
+        const bottomAlternative = elementOffset.top + elementHeight + 8;
+
+        if (top < scrollTop + 8) {
+            top = bottomAlternative;
+        } else if (top + toastHeight > scrollTop + windowHeight - 8) {
+            top = Math.max(scrollTop + 8, bottomAlternative);
+        }
+
+        let left = elementOffset.left + (elementWidth / 2) - (toastWidth / 2);
+        const minLeft = 8;
+        const maxLeft = windowWidth - toastWidth - 8;
+        left = Math.min(Math.max(left, minLeft), Math.max(minLeft, maxLeft));
+
+        $toast.css({
+            top: top,
+            left: left
+        });
+
+        window.requestAnimationFrame(function () {
+            $toast.addClass(TOAST_VISIBLE_CLASS);
+        });
+
+        toastHideTimeoutId = window.setTimeout(function () {
+            $toast.addClass(TOAST_HIDE_CLASS);
+            toastRemoveTimeoutId = window.setTimeout(function () {
+                $toast.remove();
+                toastRemoveTimeoutId = null;
+            }, TOAST_HIDE_DURATION);
+            toastHideTimeoutId = null;
+        }, TOAST_VISIBLE_DURATION);
+    }
+
+    $(document).on('click', '.product-code', function () {
+        handleCopy($(this));
+    });
+
+    $(document).on('keydown', '.product-code', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleCopy($(this));
+        }
+    });
+})(jQuery, window, document);
+
 $('main').click(function (){
     $('.megamenu-wrap').removeClass('open');
     $('a.link-megamenu').removeClass('active');

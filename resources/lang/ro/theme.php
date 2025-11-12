@@ -38,6 +38,7 @@ return array (
     'closed' => 'Închis',
     'cod-fiscal' => 'Cod fiscal',
     'code' => 'Cod',
+    'product_code_copied' => 'Codul a fost copiat',
     'comment' => 'Comentariu',
     'company-name' => 'Numele companiei',
     'comrat' => 'Comrat',

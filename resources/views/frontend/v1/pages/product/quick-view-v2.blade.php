@@ -8,14 +8,27 @@
                 <div class="product-sku-v2">
                     <h3 class="product_item_article">
                         <span>@lang('theme.code'):</span>
-                        <span class="product-code">{{$product->onec_id}}</span>
+                        <span
+                            class="product-code"
+                            role="button"
+                            tabindex="0"
+                            data-copy-value="{{ $product->onec_id }}"
+                            data-copy-message="{{ __('theme.product_code_copied') }}"
+                        >{{$product->onec_id}}</span>
                     </h3>
                 </div>
                 @if($product->shtrih_code !== null)
                     <div class="product-barcode-v2">
                         <h3 class="product_item_barcode">
                             <span>{{__('theme.barcode')}}:</span>
-                            <span style="padding: 3px; border: 1px solid #34af31; color: #000">{{$product->shtrih_code}}</span>
+                            <span
+                                class="product-code product-code--barcode"
+                                role="button"
+                                tabindex="0"
+                                data-copy-value="{{ $product->shtrih_code }}"
+                                data-copy-message="{{ __('theme.product_code_copied') }}"
+                                style="padding: 3px; border: 1px solid #34af31; color: #000"
+                            >{{$product->shtrih_code}}</span>
                         </h3>
                     </div>
                 @endif

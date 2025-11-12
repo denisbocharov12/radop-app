@@ -59,10 +59,26 @@
                         <div class="wrapped">
                             <h3 class="product_item_article">
                                 <span>@lang('theme.code'):</span>
-                                <span class="product-code">{{$product->onec_id}}</span>
+                                <span
+                                    class="product-code"
+                                    role="button"
+                                    tabindex="0"
+                                    data-copy-value="{{ $product->onec_id }}"
+                                    data-copy-message="{{ __('theme.product_code_copied') }}"
+                                >{{$product->onec_id}}</span>
                             </h3>
                             @if($product->shtrih_code)
-                                <h3 class="product_item_barcode"><span>@lang('theme.barcode'):</span> <span style="padding: 3px;  border: 1px solid #34af31; color: #000">{{$product->shtrih_code}}</span></h3>
+                                <h3 class="product_item_barcode">
+                                    <span>@lang('theme.barcode'):</span>
+                                    <span
+                                        class="product-code product-code--barcode"
+                                        role="button"
+                                        tabindex="0"
+                                        data-copy-value="{{ $product->shtrih_code }}"
+                                        data-copy-message="{{ __('theme.product_code_copied') }}"
+                                        style="padding: 3px;  border: 1px solid #34af31; color: #000"
+                                    >{{$product->shtrih_code}}</span>
+                                </h3>
                             @endif
                         </div>
                     </div>

@@ -683,6 +683,105 @@
                                     $(".product-slider-thumb").css('opacity', '0');
                                 },
                                 "done": () => {
+                                    const $modalContent = $('.fancybox__content');
+
+                                    const selectQuickViewSummaryElement = function (productId) {
+                                        var $summary = $('.product-card-summary-' + productId);
+                                        if (!$summary.length) {
+                                            $summary = $('#product-card-summary-quick-' + productId);
+                                        }
+                                        return $summary;
+                                    };
+
+                                    const initializeQuickViewQuantityHandlers = function () {
+                                        $modalContent
+                                            .off('click.quickQty', '.btn-quantity-product')
+                                            .on('click.quickQty', '.btn-quantity-product', function () {
+                                                var $input = $(this).closest('.qty-block').find('.product-qty-item');
+                                                if ($input.length === 0) {
+                                                    return;
+                                                }
+
+                                                var max = Number($input.attr('max'));
+                                                var step = Number($input.attr('step')) || 1;
+                                                var current = Number($input.val()) || 0;
+
+                                                if ($(this).hasClass('plus')) {
+                                                    if (!isNaN(max)) {
+                                                        if (current >= max || current + step > max) {
+                                                            $input.val(max);
+                                                            var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $input.attr('data-unit') || undefined) : null;
+                                                            if (typeof toastr !== 'undefined') {
+                                                                if (msgs && msgs.length) {
+                                                                    var html = msgs.join('<br/><br/>');
+                                                                    toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                                                                    toastr["warning"](html);
+                                                                } else {
+                                                                    toastr["warning"]('Доступно только ' + max);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $input[0].stepUp();
+                                                            $input.data('warnedMaxShown', false);
+                                                        }
+                                                    } else {
+                                                        $input[0].stepUp();
+                                                    }
+                                                }
+
+                                                if ($(this).hasClass('minus')) {
+                                                    $input[0].stepDown();
+                                                    $input.data('warnedMaxShown', false);
+                                                }
+
+                                                var qtyCount = $input.val();
+                                                var productId = $input.data('product-id');
+                                                var productPrice = $input.data('price');
+                                                var packageCount = $input.data('package');
+
+                                                var $changedElement = selectQuickViewSummaryElement(productId);
+                                                if ($changedElement.length) {
+                                                    var result = (qtyCount * productPrice) / packageCount;
+                                                    $changedElement.html(result.toFixed(2).replace('.', ','));
+                                                }
+                                            });
+
+                                        $modalContent
+                                            .off('input.quickQty change.quickQty', '.product-qty-item')
+                                            .on('input.quickQty change.quickQty', '.product-qty-item', function () {
+                                                var qtyCount = $(this).val();
+                                                var max = $(this).attr('max');
+                                                if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
+                                                    $(this).val(max);
+                                                    if (!$(this).data('warnedMaxShown')) {
+                                                        var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
+                                                        if (typeof toastr !== 'undefined') {
+                                                            if (msgs && msgs.length) {
+                                                                var html = msgs.join('<br/><br/>');
+                                                                toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
+                                                                toastr["warning"](html);
+                                                            } else {
+                                                                toastr["warning"]('Доступно только ' + max);
+                                                            }
+                                                        }
+                                                        $(this).data('warnedMaxShown', true);
+                                                    }
+                                                    qtyCount = max;
+                                                } else {
+                                                    $(this).data('warnedMaxShown', false);
+                                                }
+                                                var productId = $(this).data('product-id');
+                                                var productPrice = $(this).data('price');
+                                                var packageCount = $(this).data('package');
+
+                                                var $changedElement = selectQuickViewSummaryElement(productId);
+                                                if ($changedElement.length) {
+                                                    var result = (qtyCount * productPrice) / packageCount;
+                                                    $changedElement.html(result.toFixed(2).replace('.', ','));
+                                                }
+                                            });
+                                    };
+
                                     const $rootSingleV2 = $(".product-slider-main-v2");
                                     const $rootNavV2 = $(".product-slider-thumb-v2");
 
@@ -714,6 +813,7 @@
 
                                         Fancybox.bind('[data-fancybox="product-gallery-quick-' + productId + '"]', {});
 
+                                        initializeQuickViewQuantityHandlers();
                                         return;
                                     }
 
@@ -811,74 +911,7 @@
                                         });
                                     });
 
-                                    var $modalContent = $('.fancybox__content');
-                                    $modalContent.off('click.quickQty', '.btn-quantity-product').on('click.quickQty', '.btn-quantity-product', function (){
-                                        var $input = $(this).parent().parent('.qty-block').find('.product-qty-item');
-                                        var max = Number($input.attr('max'));
-                                        var step = Number($input.attr('step')) || 1;
-                                        var current = Number($input.val()) || 0;
-
-                                        if ($(this).hasClass('plus') && !isNaN(max)) {
-                                            if (current >= max || current + step > max) {
-                                                $input.val(max);
-                                                var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $input.attr('data-unit') || undefined) : null;
-                                                if (typeof toastr !== 'undefined') {
-                                                    if (msgs && msgs.length) {
-                                                        var html = msgs.join('<br/><br/>');
-                                                        toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
-                                                        toastr["warning"](html);
-                                                    } else {
-                                                        toastr["warning"]('Доступно только ' + max);
-                                                    }
-                                                }
-                                            } else {
-                                                $input[0].stepUp();
-                                                $input.data('warnedMaxShown', false);
-                                            }
-                                        }
-                                        if ($(this).hasClass('minus')) {
-                                            $input[0].stepDown();
-                                            $input.data('warnedMaxShown', false);
-                                        }
-
-                                        var qtyCount = $input.val();
-                                        var productId = $input.data('product-id');
-                                        var productPrice = $input.data('price');
-                                        var packageCount = $input.data('package');
-
-                                        var changedElement = $('#product-card-summary-quick-'+productId);
-                                        var result = (qtyCount*productPrice)/packageCount;
-                                        changedElement.html(result.toFixed(2).replace('.',','));
-                                    });
-                                    $modalContent.off('input.quickQty change.quickQty', '.product-qty-item').on('input.quickQty change.quickQty', '.product-qty-item', function () {
-                                        var qtyCount = $(this).val();
-                                        var max = $(this).attr('max');
-                                        if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
-                                            $(this).val(max);
-                                            if (!$(this).data('warnedMaxShown')) {
-                                                var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
-                                                if (typeof toastr !== 'undefined') {
-                                                    if (msgs && msgs.length) {
-                                                        var html = msgs.join('<br/><br/>');
-                                                        toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
-                                                        toastr["warning"](html);
-                                                    } else {
-                                                        toastr["warning"]('Доступно только ' + max);
-                                                    }
-                                                }
-                                                $(this).data('warnedMaxShown', true);
-                                            }
-                                            qtyCount = max;
-                                        } else {
-                                            $(this).data('warnedMaxShown', false);
-                                        }
-                                        var productId = $(this).data('product-id');
-                                        var productPrice = $(this).data('price');
-                                        var packageCount = $(this).data('package');
-                                        var changedElement = $('#product-card-summary-quick-'+productId);
-                                        var result = (qtyCount*productPrice)/packageCount;
-                                        changedElement.html(result.toFixed(2).replace('.',','));
-                                    });
+                                    initializeQuickViewQuantityHandlers();
                                 },
                             },
                         }
