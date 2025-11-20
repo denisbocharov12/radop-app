@@ -4,7 +4,7 @@
     <tr>
         <th rowspan="2" style="font-weight: 700">№</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.code') }}</th>
-        <th rowspan="2" style="font-weight: 700">{{ __('theme.product-name') }}</th>
+        <th rowspan="2" style="font-weight: 700; text-align: left">{{ __('theme.excel-product-name') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.brand') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.photo') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.barcode_excel') }}</th>

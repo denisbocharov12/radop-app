@@ -23,7 +23,7 @@
             <div class="row-catalog row">
                 <div class="col-heading">
                     <div class="heading heading-with-btn">
-                        <h1>{{__('theme.new-products')}}</h1>
+                        <a href="#new-products-home-anchor" class="section-heading-btn">{{__('theme.new-products')}}</a>
                         <a class="section-home-btn" href="{{route('theme.shop.new')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
             <div class="row-catalog row">
                 <div class="col-heading">
                     <div class="heading heading-with-btn">
-                        <h1>{{__('theme.popular-products')}}</h1>
+                        <a href="#popular-products-home-anchor" class="section-heading-btn">{{__('theme.popular-products')}}</a>
                         <a class="section-home-btn" href="{{route('theme.shop.popular')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                 <div class="col-heading">
                     <div style="position: relative; top: -110px; visibility: hidden;"></div>
                     <div class="heading heading-with-btn">
-                        <h1>{{__('theme.on-discount')}}</h1>
+                        <a href="#discount-products-home-anchor" class="section-heading-btn">{{__('theme.on-discount')}}</a>
                         <a class="section-home-btn" href="{{route('theme.shop.sale')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                 <div class="col-12 col-slider">
                     <div class="col-heading">
                         <div class="heading heading-with-btn">
-                            <h1>{{__('theme.home-brands')}}</h1>
+                            <a href="#brands-home-anchor" class="section-heading-btn">{{__('theme.home-brands')}}</a>
                             <a class="section-home-btn" href="{{route('theme.brand.catalog')}}">{{__('theme.view-all')}}</a>
                         </div>
                     </div>

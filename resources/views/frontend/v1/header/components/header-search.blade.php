@@ -40,7 +40,71 @@
                 <div class="search-history-list" id="search-history-list-sticky"></div>
             </div>
         </div>
-        <div id="sticky-cart-block" class="header-account" style="display: none;">
+        <div id="sticky-account-blocks" class="header-account" style="display: none;">
+            <div class="wishlist-block icon-block">
+                <a href="{{route('theme.wishlist.index')}}" class="wishlist icon-block-link">
+                    <i class="icon-heart-radop"><span class="wishlist_count" id="wishlist_count_sticky" @if(app('wishlist')->getContent()->count() == 0) style="display:none"@endif>{{app('wishlist')->getContent()->count()}}</span></i>
+                </a>
+            </div>
+            <div class="login-registration-block icon-block">
+                @php
+                    $user = Auth::guard('user')->user()
+                @endphp
+
+                @if($user)
+                    <a
+                        class="icon-block-link"
+                        href="{{route('theme.user.orders.index')}}"
+                    >
+                        <span class="theme-text-sp-lg">
+                            @if($user->type->key_name === "fiz")
+                                {{$user->profile->first_name . ' ' . $user->profile->last_name}}
+                            @else
+                                {{$user->profile->organization_name}}
+                            @endif
+                        </span>
+                        <i class="icon-user-radop"></i>
+                    </a>
+                    <div class="account-dropdown-menu">
+                        <ul class="account-dropdown-list">
+                            <li class="account-dropdown-item">
+                                <a class="account-dropdown-link" href="{{route('theme.user.orders.index')}}">
+                                    <i class="icon-your-order"></i>{{__('theme.my-orders')}}
+                                </a>
+                            </li>
+                            @if($user->type->key_name === 'iur')
+                                <li class="account-dropdown-item">
+                                    <a class="account-dropdown-link" href="{{route('theme.user.filial.index')}}">
+                                        <i class="icon-building"></i>{{__('theme.filials')}}
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="account-dropdown-item">
+                                <a class="account-dropdown-link" href="{{route('theme.user.account.index')}}">
+                                    <i class="icon-account"></i>{{__('theme.account')}}
+                                </a>
+                            </li>
+                            <li class="account-dropdown-item">
+                                <a class="account-dropdown-link" href="{{route('theme.user.logout')}}">
+                                    <i class="icon-user"></i>{{__('theme.logout')}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a
+                        class="user icon-block-link"
+                        data-fancybox
+                        data-src="#loginModal"
+                        href="javascript:;"
+                    >
+                        <span class="theme-text-sp">
+                           {{__('theme.login-registration')}}
+                        </span>
+                        <i class="icon-user-radop"></i>
+                    </a>
+                @endif
+            </div>
             <div class="cart-block icon-block mini-shopping-cart">
                 <a href="{{route('theme.cart.index')}}" class="cart icon-block-link">
                     @php
@@ -69,18 +133,18 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var sticky = document.getElementById('header-js-sticky');
-        var cartBlock = document.getElementById('sticky-cart-block');
+        var accountBlocks = document.getElementById('sticky-account-blocks');
         var logo = document.getElementById("sticky-header-logo");
-        function toggleCartBlock() {
+        function toggleStickyBlocks() {
             if (sticky.classList.contains('header-js-sticky')) {
-                cartBlock.style.display = 'block';
+                accountBlocks.style.display = 'flex';
                 logo.style.display = 'block';
             } else {
-                cartBlock.style.display = 'none';
+                accountBlocks.style.display = 'none';
                 logo.style.display = 'none';
             }
         }
-        window.addEventListener('scroll', toggleCartBlock);
-        toggleCartBlock();
+        window.addEventListener('scroll', toggleStickyBlocks);
+        toggleStickyBlocks();
     });
 </script>
