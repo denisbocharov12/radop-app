@@ -26,7 +26,45 @@ final class ThemeSearchManager
 
     public function getCategoriesFromQuery(ThemeSearchData $themeSearchData)
     {
-        return $this->productRepository->getProductCategoryIdsBySearch($themeSearchData->search);
+        $categoryIds = $this->productRepository->getProductCategoryIdsBySearch($themeSearchData->search);
+        
+        if ($categoryIds->isEmpty()) {
+            return collect([]);
+        }
+
+        $categoryOnecIds = $categoryIds->pluck('category_id')->unique()->toArray();
+        
+        $parentOnecIds = Category::whereIn('parent_id', $categoryOnecIds)
+            ->pluck('parent_id')
+            ->unique()
+            ->toArray();
+
+        $categories = Category::whereIn('onec_id', $categoryOnecIds)
+            ->whereNotIn('onec_id', $parentOnecIds)
+            ->get();
+
+        $locale = app()->getLocale();
+
+        $categoriesWithNames = $categories
+            ->map(function (Category $category) use ($locale) {
+                return [
+                    'category' => $category,
+                    'name' => mb_strtolower($category->getTranslation('name', $locale) ?? $category->name ?? ''),
+                    'onec_id' => $category->onec_id,
+                ];
+            })
+            ->values();
+
+        $uniqueByName = [];
+
+        foreach ($categoriesWithNames as $item) {
+            $name = $item['name'];
+            $uniqueByName[$name] = $item;
+        }
+
+        return collect($uniqueByName)
+            ->map(fn(array $item) => (object)['category_id' => $item['onec_id']])
+            ->values();
     }
 
     /**
@@ -53,21 +91,21 @@ final class ThemeSearchManager
 
         if ($isNumeric) {
             if ($length === 13) {
-                $suggestions = $suggestions->merge($this->buildBarcodeSuggestions($products, $query, true));
+                $suggestions = $suggestions->merge($this->buildBarcodeSuggestions($products, $query, true, $locale));
 
                 if ($suggestions->isEmpty()) {
                     $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
                 }
             } elseif ($length === 8) {
-                $strictOnecSuggestions = $this->buildOnecSuggestions($products, $query, true);
+                $strictOnecSuggestions = $this->buildOnecSuggestions($products, $query, true, $locale);
                 $suggestions = $suggestions->merge($strictOnecSuggestions);
 
                 if ($suggestions->isEmpty()) {
                     $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
                 }
             } elseif ($length > 8 && $length < 13) {
-                $onecSuggestions = $this->buildOnecSuggestions($products, $query, true);
-                $barcodeSuggestions = $this->buildBarcodeSuggestions($products, $query, true);
+                $onecSuggestions = $this->buildOnecSuggestions($products, $query, true, $locale);
+                $barcodeSuggestions = $this->buildBarcodeSuggestions($products, $query, true, $locale);
 
                 $suggestions = $suggestions
                     ->merge($onecSuggestions)
@@ -93,12 +131,12 @@ final class ThemeSearchManager
     private function buildFallbackSuggestions(Collection $products, string $locale, string $query, string $lowerQuery): Collection
     {
         return collect()
-            ->merge($this->buildOnecSuggestions($products, $query))
-            ->merge($this->buildBarcodeSuggestions($products, $query))
+            ->merge($this->buildOnecSuggestions($products, $query, false, $locale))
+            ->merge($this->buildBarcodeSuggestions($products, $query, false, $locale))
             ->merge($this->buildTitleSuggestions($products, $locale, $lowerQuery));
     }
 
-    private function buildOnecSuggestions(Collection $products, string $query, bool $strict = false): Collection
+    private function buildOnecSuggestions(Collection $products, string $query, bool $strict = false, string $locale = null): Collection
     {
         return $products
             ->filter(function (Product $product) use ($query, $strict) {
@@ -112,14 +150,20 @@ final class ThemeSearchManager
 
                 return mb_stripos($product->onec_id, $query) !== false;
             })
-            ->map(fn(Product $product) => [
-                'text' => $product->onec_id,
-                'type' => 'product',
-            ])
+            ->map(function (Product $product) use ($locale) {
+                $title = $locale !== null 
+                    ? ($product->getTranslation('title', $locale) ?? $product->title)
+                    : $product->title;
+
+                return [
+                    'text' => $title,
+                    'type' => 'product',
+                ];
+            })
             ->values();
     }
 
-    private function buildBarcodeSuggestions(Collection $products, string $query, bool $strict = false): Collection
+    private function buildBarcodeSuggestions(Collection $products, string $query, bool $strict = false, string $locale = null): Collection
     {
         return $products
             ->filter(function (Product $product) use ($query, $strict) {
@@ -133,10 +177,16 @@ final class ThemeSearchManager
 
                 return mb_stripos($product->shtrih_code, $query) !== false;
             })
-            ->map(fn(Product $product) => [
-                'text' => $product->shtrih_code,
-                'type' => 'product',
-            ])
+            ->map(function (Product $product) use ($locale) {
+                $title = $locale !== null 
+                    ? ($product->getTranslation('title', $locale) ?? $product->title)
+                    : $product->title;
+
+                return [
+                    'text' => $title,
+                    'type' => 'product',
+                ];
+            })
             ->values();
     }
 
