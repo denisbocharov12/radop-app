@@ -5936,6 +5936,9 @@ header .section-header .row-main .header-menu .col-lg{
     border-radius: 10px;
     height: fit-content;
 }
+.product-item-category{
+    border: 1px solid transparent;
+}
 .product-item-category.drop-shadow:hover{
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.08);
     border: 1px solid #0052a6;
