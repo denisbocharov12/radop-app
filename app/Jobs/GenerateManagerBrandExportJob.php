@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Exports\ManagerExcelProductsExport;
-use App\Mail\ManagerExportReadyMail;
 use App\Models\User;
+use App\Repositories\Brand\BrandRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,8 +14,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -57,35 +57,30 @@ final class GenerateManagerBrandExportJob implements ShouldQueue
 
             app()->setLocale($this->locale);
 
-            $fileName = "radop_manager_brand_{$this->brandId}_{$this->locale}.xlsx";
-            $filePath = "manager_exports/{$fileName}";
+            $brandRepository = app(BrandRepository::class);
+            $brand = $brandRepository->getByOnecId($this->brandId);
+
+            if (!$brand) {
+                throw new \Exception("Бренд с ID {$this->brandId} не найден");
+            }
+
+            $brandName = $brand->getTranslation('title', $this->locale);
+            $safeBrandName = Str::slug($brandName, '_');
+            $fileName = "Бренд_{$safeBrandName}_{$this->locale}.xlsx";
+            $filePath = $fileName;
 
             $export = new ManagerExcelProductsExport($this->products, $this->locale);
 
-            Excel::store($export, $filePath, 'local');
+            Excel::store($export, $filePath, 'manager_exports');
 
-            Mail::to($this->manager->email)->send(
-                new ManagerExportReadyMail($filePath, $fileName, 'brands', $this->brandId)
-            );
-
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
-            }
-
-            Log::info("Экспорт бренда для менеджера успешно отправлен", [
+            Log::info("Экспорт бренда для менеджера успешно создан", [
                 'manager_id' => $this->manager->id,
-                'manager_email' => $this->manager->email,
                 'brand_id' => $this->brandId,
                 'locale' => $this->locale,
                 'products_count' => $this->products->count(),
+                'file_name' => $fileName,
             ]);
         } catch (\Exception $e) {
-            $filePath = "manager_exports/radop_manager_brand_{$this->brandId}_{$this->locale}.xlsx";
-
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
-            }
-
             Log::error("Ошибка экспорта бренда для менеджера", [
                 'manager_id' => $this->manager->id,
                 'brand_id' => $this->brandId,

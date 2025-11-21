@@ -4,13 +4,13 @@
     <tr>
         <th rowspan="2" style="font-weight: 700">№</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.code') }}</th>
-        <th rowspan="2" style="font-weight: 700">{{ __('theme.product-name') }}</th>
+        <th rowspan="2" style="font-weight: 700; text-align: left">{{ __('theme.excel-product-name') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.brand') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.photo') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.barcode_excel') }}</th>
         <th colspan="2" style="font-weight: 700">{{ __('theme.packaging') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.characteristics') }}</th>
-        <th rowspan="2" style="font-weight: 700">{{ __('theme.price_excel') }} (1C)</th>
+        <th rowspan="2" style="font-weight: 700">{{ __('theme.personalized_price_excel') }} (1C)</th>
     </tr>
     <tr>
         <th style="font-weight: 700">{{ __('theme.box') }}</th>

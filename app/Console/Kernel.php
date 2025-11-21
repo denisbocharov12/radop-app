@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sitemap:generate')->dailyAt('01:00');
         $schedule->command('excel:generate-exports')->dailyAt('10:00');
+        $schedule->command('manager-exports:cleanup')->dailyAt('02:00');
         //$schedule->command('view-counts:cleanup --days=90')->quarterly();
     }
 

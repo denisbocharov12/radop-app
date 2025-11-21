@@ -93,6 +93,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'manager_exports' => [
+            'driver' => 'local',
+            'root' => storage_path('app/manager_exports'),
+            'url' => env('APP_URL').'/manager_exports',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -125,6 +132,7 @@ return [
         public_path('banners') => storage_path('app/banners'),
         public_path('sitemap') => storage_path('app/sitemap'),
         public_path('export') => storage_path('app/export'),
+        public_path('manager_exports') => storage_path('app/manager_exports'),
     ],
 
 ];

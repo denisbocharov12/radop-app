@@ -32,6 +32,8 @@ class ManagerRoleSeeder extends AbstractRoleSeeder
             'order.status.last-ten-minutes',
             'category.export.onec-prices',
             'brand.export.onec-prices',
+            'manager-export.index',
+            'manager-export.download',
         ];
     }
 }
