@@ -93,6 +93,24 @@
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-file-xls"></em></span>
+                            <span class="nk-menu-text">Экспорты</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
+                                <a href="{{route('manager-export.index')}}" class="nk-menu-link"><span class="nk-menu-text">Экспорты менеджеров</span></a>
+                            </li>
+                            @endhasrole
+                            @hasrole('manager')
+                            <li class="nk-menu-item">
+                                <a href="{{route('manager-export.index')}}" class="nk-menu-link"><span class="nk-menu-text">Экспорты менеджеров</span></a>
+                            </li>
+                            @endhasrole
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-sort-v"></em></span>
                             <span class="nk-menu-text">Сортировка</span>
                         </a>

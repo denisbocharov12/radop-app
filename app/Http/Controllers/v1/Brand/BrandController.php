@@ -207,7 +207,7 @@ final class BrandController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Экспорт запущен. Файл будет отправлен на ваш Email.',
+            'message' => 'Экспорт запущен. Файл будет создан и доступен в разделе "Экспорты менеджеров".',
         ]);
     }
 }
