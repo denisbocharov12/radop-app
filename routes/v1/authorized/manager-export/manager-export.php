@@ -12,7 +12,7 @@ Route::prefix('manager-exports')->name('manager-export.')->group(function () {
     ;
 
     Route::middleware(['app.permissions'])
-        ->post('/download', [ManagerExportController::class, 'download'])
+        ->get('/download', [ManagerExportController::class, 'download'])
         ->name('download')
     ;
 });

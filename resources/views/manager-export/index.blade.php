@@ -41,14 +41,11 @@
                                                 <div class="nk-tb-col nk-tb-col-tools">
                                                     <ul class="nk-tb-actions gx-2">
                                                         <li>
-                                                            <form action="{{ route('manager-export.download') }}" method="POST" style="display: inline;">
-                                                                @csrf
-                                                                <input type="hidden" name="file_name" value="{{ $file['name'] }}">
-                                                                <button type="submit" class="btn btn-sm btn-primary">
-                                                                    <em class="icon ni ni-download"></em>
-                                                                    <span>Скачать</span>
-                                                                </button>
-                                                            </form>
+                                                            <a href="{{ route('manager-export.download', ['file' => rawurlencode($file['name'])]) }}" 
+                                                               class="btn btn-sm btn-primary">
+                                                                <em class="icon ni ni-download"></em>
+                                                                <span>Скачать</span>
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </div>

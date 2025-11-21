@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 final class ManagerExportController extends Controller
@@ -54,22 +55,21 @@ final class ManagerExportController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function download(Request $request)
     {
         $request->validate([
-            'file_name' => 'required|string',
+            'file' => 'required|string',
         ]);
 
         $disk = Storage::disk('manager_exports');
-        $fileName = $request->input('file_name');
-        $filePath = $fileName;
+        $decodedFileName = urldecode($request->input('file'));
+        $filePath = $decodedFileName;
 
         if (!$disk->exists($filePath)) {
             $allFiles = $disk->files();
             foreach ($allFiles as $file) {
-                if (basename($file) === $fileName) {
+                if (basename($file) === $decodedFileName) {
                     $filePath = $file;
                     break;
                 }
@@ -81,16 +81,14 @@ final class ManagerExportController extends Controller
                 ->with('error', 'Файл не найден');
         }
 
-        $absolutePath = $disk->path($filePath);
+        $absolutePath = storage_path('/app/manager_exports/'. $filePath);
 
         if (!file_exists($absolutePath)) {
             return redirect()->route('manager-export.index')
                 ->with('error', 'Файл не найден на диске');
         }
 
-        return response()->download($absolutePath, $fileName, [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ]);
+        return response()->download($absolutePath, $decodedFileName);
     }
 }
 
