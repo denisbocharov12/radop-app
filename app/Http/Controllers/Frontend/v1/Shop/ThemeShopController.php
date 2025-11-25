@@ -7,6 +7,7 @@ use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
@@ -26,6 +27,7 @@ final class ThemeShopController extends Controller
      * @param ProductRepository $productRepository
      * @param BrandRepository $brandRepository
      * @param AttributeRepository $attributeRepository
+     * @param CategoryRepository $categoryRepository
      * @param PageSortSettingRepository $pageSortSettingRepository
      * @param SeoMetaRepository $seoMetaRepository
      * @param PageTypes $pageTypes
@@ -34,6 +36,7 @@ final class ThemeShopController extends Controller
         private readonly ProductRepository $productRepository,
         private readonly BrandRepository $brandRepository,
         private readonly AttributeRepository $attributeRepository,
+        private readonly CategoryRepository $categoryRepository,
         private readonly PageSortSettingRepository $pageSortSettingRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
@@ -93,6 +96,7 @@ final class ThemeShopController extends Controller
         $allNewProducts = $this->productRepository->getAllNewProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allNewProducts);
 
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getNewProductsType(), app()->getLocale());
 
@@ -112,6 +116,7 @@ final class ThemeShopController extends Controller
             'query',
             'attributes',
             'brands',
+            'categories',
             'defaultSort',
         ]));
     }
@@ -129,6 +134,7 @@ final class ThemeShopController extends Controller
         $allPopularProducts = $this->productRepository->getAllPopularProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allPopularProducts);
 
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getPopularProductsType(), app()->getLocale());
 
@@ -148,6 +154,7 @@ final class ThemeShopController extends Controller
             'query',
             'attributes',
             'brands',
+            'categories',
             'defaultSort',
         ]));
     }
@@ -165,6 +172,7 @@ final class ThemeShopController extends Controller
         $allSaleProducts = $this->productRepository->getAllDiscountProducts();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allSaleProducts);
 
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSaleProductsType(), app()->getLocale());
 
@@ -184,6 +192,7 @@ final class ThemeShopController extends Controller
             'query',
             'attributes',
             'brands',
+            'categories',
             'defaultSort',
         ]));
     }

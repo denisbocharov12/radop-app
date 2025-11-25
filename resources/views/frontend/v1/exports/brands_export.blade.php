@@ -22,7 +22,7 @@
         <tr>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>
-            <td>{{ $product->title }}</td>
+            <td style="text-align: left">{{ $product->title }}</td>
             <td>{{ $product->brand?->title }}</td>
             <td></td>
             <td data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->shtrih_code }}</td>
