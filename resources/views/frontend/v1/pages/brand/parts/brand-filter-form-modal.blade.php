@@ -1,8 +1,11 @@
 <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
     <div class="theme-wg-wrap">
-        @if(!empty($attributes))
+        @if(!empty($attributes) || (isset($categories) && $categories->isNotEmpty()))
             <ul class="theme-toggle-list">
-                <li class="theme-toggle-item">
+                @if(isset($categories) && $categories->isNotEmpty())
+                    @include('frontend.v1.components.categories-filter-widget')
+                @endif
+                    <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
                         <i class="icon-arrow-filter-radop-left" style="transform: rotate(90deg);"></i>
                         <p class="theme-widget-title">

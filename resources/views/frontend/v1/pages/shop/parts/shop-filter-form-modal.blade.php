@@ -2,7 +2,10 @@
     <div class="theme-wg-wrap">
         @if(!empty($attributes))
             <ul class="theme-toggle-list">
-                <li class="theme-toggle-item">
+                @if(isset($categories) && $categories->isNotEmpty())
+                    @include('frontend.v1.components.categories-filter-widget')
+                @endif
+                    <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
                         <i class="icon-arrow-filter-radop-left"></i>
                         <p class="theme-widget-title">
@@ -111,4 +114,4 @@
         @endif
     </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
-</form> 
+</form>

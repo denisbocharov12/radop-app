@@ -518,19 +518,13 @@ final class ProductRepository
      */
     public function getProductCategoryIdsBySearch(string $value): Collection
     {
-        return Product::query()
-            ->where('products.status', true)
-            ->where('products.site_status', true)
-            ->where('products.stock', '!=', 0)
-            ->where(function ($query) use ($value) {
-                $query->orWhere('products.title', 'like', "%{$value}%")
-                    ->orWhere('products.onec_id', 'like', "%{$value}%");
-            })
+        $query = $this->buildSearchQuery($value);
+
+        return $query
             ->join('product_categories', 'product_categories.product_id', '=', 'products.onec_id')
             ->select('product_categories.category_id')
             ->distinct()
-            ->get()
-        ;
+            ->get();
     }
 
     public function getSuggestionCandidates(string $value, int $limit = 30): Collection
@@ -562,7 +556,7 @@ final class ProductRepository
 
         if ($isNumeric) {
             if ($length < 8) {
-                $this->applyDefaultSearchConditions($query, $search, $words);
+                $this->applyTitleSearchConditions($query, $search, $words);
             } elseif ($length === 8) {
                 $query->where('products.onec_id', $search);
             } elseif ($length === 13) {
@@ -588,6 +582,24 @@ final class ProductRepository
             $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
+
+            if (count($words) > 1) {
+                $builder->orWhere(function (Builder $subQuery) use ($words) {
+                    foreach ($words as $word) {
+                        $lowerWord = mb_strtolower($word);
+                        $subQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"]);
+                    }
+                });
+            }
+        });
+    }
+
+    private function applyTitleSearchConditions(Builder $query, string $value, array $words): void
+    {
+        $lowerValue = mb_strtolower($value);
+
+        $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
+            $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"]);
 
             if (count($words) > 1) {
                 $builder->orWhere(function (Builder $subQuery) use ($words) {

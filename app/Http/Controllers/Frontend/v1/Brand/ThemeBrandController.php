@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
@@ -31,6 +32,7 @@ final class ThemeBrandController extends Controller
         private readonly BrandRepository $brandRepository,
         private readonly ThemeBrandManager $themeBrandManager,
         private readonly AttributeRepository $attributeRepository,
+        private readonly CategoryRepository $categoryRepository,
         private readonly ProductRepository $productRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
@@ -90,6 +92,7 @@ final class ThemeBrandController extends Controller
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($existedBrand->products);
 
         $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
@@ -100,6 +103,7 @@ final class ThemeBrandController extends Controller
             'query',
             'brands',
             'attributes',
+            'categories',
             'defaultSort',
         ]));
     }

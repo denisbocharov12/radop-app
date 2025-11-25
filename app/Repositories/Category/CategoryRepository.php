@@ -193,4 +193,70 @@ class CategoryRepository
         ;
     }
 
+    /**
+     * @param Collection $products
+     * @return Collection
+     */
+    public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
+    {
+        if ($products->isEmpty()) {
+            return collect();
+        }
+
+        $productIds = $products->pluck('onec_id')->toArray();
+
+        $categoryOnecIds = DB::table('product_categories')
+            ->whereIn('product_id', $productIds)
+            ->pluck('category_id')
+            ->unique()
+            ->toArray();
+
+        if (empty($categoryOnecIds)) {
+            return collect();
+        }
+
+        $categoryModels = Category::whereIn('onec_id', $categoryOnecIds)
+            ->whereNull('deleted_at')
+            ->get();
+
+        $categoryDbIds = $categoryModels->pluck('id')->toArray();
+
+        $categoriesWithChildrenOnecIds = DB::table('categories')
+            ->whereIn('parent_id', $categoryDbIds)
+            ->whereNull('deleted_at')
+            ->pluck('parent_id')
+            ->unique()
+            ->toArray();
+
+        $parentCategoryDbIds = Category::whereIn('id', $categoriesWithChildrenOnecIds)
+            ->pluck('onec_id')
+            ->toArray();
+
+        $lastNestedCategoryOnecIds = array_diff($categoryOnecIds, $parentCategoryDbIds);
+
+        if (empty($lastNestedCategoryOnecIds)) {
+            return collect();
+        }
+
+        $categories = Category::whereIn('onec_id', $lastNestedCategoryOnecIds)
+            ->where('status', true)
+            ->whereNull('deleted_at')
+            ->get();
+
+        $productCounts = DB::table('product_categories')
+            ->whereIn('category_id', $lastNestedCategoryOnecIds)
+            ->whereIn('product_id', $productIds)
+            ->select('category_id', DB::raw('COUNT(DISTINCT product_id) as count'))
+            ->groupBy('category_id')
+            ->pluck('count', 'category_id')
+            ->toArray();
+
+        return $categories->map(function ($category) use ($productCounts) {
+            $category->products_count = $productCounts[$category->onec_id] ?? 0;
+            return $category;
+        })->filter(function ($category) {
+            return $category->products_count > 0;
+        })->sortBy('name')->values();
+    }
+
 }

@@ -32,6 +32,13 @@
         <div class="row row-category-list">
                 <div class="col-12 col-md-3 col-theme-filters d-none d-md-block">
                     <div class="sticky-sidebar">
+                        @if(isset($categories) && $categories->isNotEmpty())
+                            <div class="theme-wg-wrap" style="margin-bottom: 20px;">
+                                <ul class="theme-toggle-list">
+                                    @include('frontend.v1.components.categories-filter-widget')
+                                </ul>
+                            </div>
+                        @endif
                         @include('frontend.v1.pages.brand.parts.brand-filter-form')
                     </div>
                 </div>
