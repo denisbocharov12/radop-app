@@ -17,4 +17,7 @@ Route::prefix('brand')->name('brand.')->group(function () {
         ->get('/{brand}/export/personalized', [ThemeBrandController::class, 'exportPersonalized'])
         ->name('export.personalized')
     ;
+    Route::post('/{onecId}/filter-by-category', [ThemeBrandController::class, 'filterByCategory'])
+        ->name('filter-by-category')
+    ;
 });

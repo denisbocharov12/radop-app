@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\v1\Shop;
 
 use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
+use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -421,6 +422,66 @@ final class ThemeShopController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('theme.personalized-export-started'),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $type
+     * @return \Illuminate\Http\JsonResponse
+     */
+    /**
+     * @param Request $request
+     * @param string $type
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function filterByCategory(Request $request, string $type)
+    {
+        $categoryId = $request->input('category_id');
+        
+        if ($categoryId === null) {
+            throw new CategoryNotFoundValidationException();
+        }
+        
+        $category = $this->categoryRepository->getByOnecId($categoryId);
+        
+        if ($category === null) {
+            throw new CategoryNotFoundValidationException();
+        }
+        
+        $existingFilters = $request->input('filter', []);
+        $existingFilters['category'] = $categoryId;
+        $request->merge(['filter' => $existingFilters]);
+        
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+        
+        if ($type === 'new') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
+            $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+        } elseif ($type === 'popular') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
+            $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+        } elseif ($type === 'sale') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
+            $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+        } else {
+            $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
+        }
+
+        $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
+        $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
+
+        $pagination = '';
+        if ($products->hasPages()) {
+            $pagination = $products->appends(request()->except('page'))->links()->render();
+        }
+
+        return response()->json([
+            'success' => true,
+            'tableView' => $tableView,
+            'listView' => $listView,
+            'pagination' => $pagination,
+            'hasPages' => $products->hasPages(),
         ]);
     }
 }

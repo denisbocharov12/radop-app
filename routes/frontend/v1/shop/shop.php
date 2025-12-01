@@ -40,4 +40,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/catalog', [ThemeShopController::class, 'catalog'])
         ->name('catalog')
     ;
+    Route::post('/filter-by-category/{type}', [ThemeShopController::class, 'filterByCategory'])
+        ->name('filter-by-category')
+    ;
 });

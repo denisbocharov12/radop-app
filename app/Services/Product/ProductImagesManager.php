@@ -99,20 +99,32 @@ final class ProductImagesManager
         foreach ($files as $file) {
             if (File::exists($file)) {
                 $fileName = basename($file);
+                $newFileHash = md5_file($file);
 
-                if (!in_array($fileName, $existingFileNames)) {
-                    $tempDisk = 'temp_import';
+                $existingMediaItem = $existingMedia->firstWhere('file_name', $fileName);
 
-                    Storage::disk($tempDisk)->put($fileName, File::get($file));
+                if ($existingMediaItem) {
+                    $existingFilePath = $existingMediaItem->getPath();
+                    $existingFileHash = File::exists($existingFilePath) ? md5_file($existingFilePath) : null;
 
-                    $tempPath = Storage::disk($tempDisk)->path($fileName);
-
-                    $product->addMediaFromDisk($fileName, $tempDisk)
-                        ->toMediaCollection('products', 'media');
-
-                    Storage::disk($tempDisk)->delete($fileName);
-                    File::delete($tempPath);
+                    if ($newFileHash !== $existingFileHash) {
+                        $existingMediaItem->delete();
+                    } else {
+                        continue;
+                    }
                 }
+
+                $tempDisk = 'temp_import';
+
+                Storage::disk($tempDisk)->put($fileName, File::get($file));
+
+                $tempPath = Storage::disk($tempDisk)->path($fileName);
+
+                $product->addMediaFromDisk($fileName, $tempDisk)
+                    ->toMediaCollection('products', 'media');
+
+                Storage::disk($tempDisk)->delete($fileName);
+                File::delete($tempPath);
             }
         }
     }

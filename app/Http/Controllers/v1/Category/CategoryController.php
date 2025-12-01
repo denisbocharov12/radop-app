@@ -245,11 +245,12 @@ class CategoryController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param string $onecId
      * @return \Illuminate\Http\JsonResponse
      * @throws CategoryNotFoundException
      */
-    public function exportOneCPrices(string $onecId)
+    public function exportOneCPrices(Request $request, string $onecId)
     {
         $manager = auth()->user();
 
@@ -275,7 +276,11 @@ class CategoryController extends Controller
             ], 404);
         }
 
-        $locale = app()->getLocale();
+        $locale = $request->input('locale', app()->getLocale());
+        
+        if (!in_array($locale, ['ru', 'ro'])) {
+            $locale = app()->getLocale();
+        }
 
         GenerateManagerCategoryExportJob::dispatch(
             $products,

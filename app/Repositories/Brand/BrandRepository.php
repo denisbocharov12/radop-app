@@ -5,6 +5,7 @@ namespace App\Repositories\Brand;
 use App\Filters\BrandSearchFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeBrandsFilter;
+use App\Filters\Theme\ThemeCategoryFilter;
 use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
@@ -128,6 +129,7 @@ final class BrandRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
             ])
             ->where('stock', '!=', 0)
             ->allowedSorts([

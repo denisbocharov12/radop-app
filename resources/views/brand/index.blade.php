@@ -52,6 +52,7 @@
     </div>
     <!-- content @e -->
     @include('brand.modal.create')
+    @include('brand.modal.export-locale')
 @endsection
 
 @section('scripts')
@@ -98,17 +99,41 @@
             askToDeleteBrand(model_id, token, path)
         });
         
+        var currentBrandId = null;
+        var currentExportIcon = null;
+
         $(document).on('click', '.brand-export-onec-btn', function(e) {
             e.preventDefault();
-            var brandId = $(this).data('brand-id');
-            var $icon = $(this);
+            currentBrandId = $(this).data('brand-id');
+            currentExportIcon = $(this);
+            $('#exportLocaleModal').modal('show');
+        });
+
+        $(document).on('click', '#confirmExportBtn', function() {
+            var selectedLocale = $('input[name="export_locale"]:checked').val();
             
-            $icon.css('opacity', '0.5');
+            if (!selectedLocale) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: 'Пожалуйста, выберите язык экспорта'
+                });
+                return;
+            }
+
+            $('#exportLocaleModal').modal('hide');
+            
+            if (currentExportIcon) {
+                currentExportIcon.css('opacity', '0.5');
+            }
 
             $.ajax({
-                url: '{{ url("/admin/brands") }}/' + brandId + '/export/onec-prices',
+                url: '{{ url("/admin/brands") }}/' + currentBrandId + '/export/onec-prices',
                 type: 'POST',
                 dataType: 'json',
+                data: {
+                    locale: selectedLocale
+                },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
@@ -146,9 +171,19 @@
                     });
                 },
                 complete: function() {
-                    $icon.css('opacity', '1');
+                    if (currentExportIcon) {
+                        currentExportIcon.css('opacity', '1');
+                    }
+                    currentBrandId = null;
+                    currentExportIcon = null;
                 }
             });
+        });
+
+        $('#exportLocaleModal').on('hidden.bs.modal', function () {
+            $('#locale_ru').prop('checked', true);
+            currentBrandId = null;
+            currentExportIcon = null;
         });
     </script>
 @endsection

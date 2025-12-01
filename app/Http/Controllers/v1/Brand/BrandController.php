@@ -168,11 +168,12 @@ final class BrandController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Brand $brand
      * @return \Illuminate\Http\JsonResponse
      * @throws BrandNotFoundException
      */
-    public function exportOneCPrices(Brand $brand)
+    public function exportOneCPrices(Request $request, Brand $brand)
     {
         $manager = auth()->user();
 
@@ -196,7 +197,11 @@ final class BrandController extends Controller
             ], 404);
         }
 
-        $locale = app()->getLocale();
+        $locale = $request->input('locale', app()->getLocale());
+        
+        if (!in_array($locale, ['ru', 'ro'])) {
+            $locale = app()->getLocale();
+        }
 
         GenerateManagerBrandExportJob::dispatch(
             $products,

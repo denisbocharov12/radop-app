@@ -35,7 +35,10 @@
                         @if(isset($categories) && $categories->isNotEmpty())
                             <div class="theme-wg-wrap" style="margin-bottom: 20px;">
                                 <ul class="theme-toggle-list">
-                                    @include('frontend.v1.components.categories-filter-widget')
+                                    @include('frontend.v1.components.categories-filter-widget', [
+                                        'pageType' => 'brand',
+                                        'brandOnecId' => $existedBrand->onec_id
+                                    ])
                                 </ul>
                             </div>
                         @endif

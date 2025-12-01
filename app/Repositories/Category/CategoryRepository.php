@@ -197,7 +197,51 @@ class CategoryRepository
      * @param Collection $products
      * @return Collection
      */
+    /**
+     * @param Collection $products
+     * @return Collection
+     */
     public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
+    {
+        if ($products->isEmpty()) {
+            return collect();
+        }
+
+        $productIds = $products->pluck('onec_id')->toArray();
+
+        $categoryData = DB::table('product_categories')
+            ->whereIn('product_id', $productIds)
+            ->select('category_id', DB::raw('COUNT(DISTINCT product_id) as count'))
+            ->groupBy('category_id')
+            ->get();
+
+        if ($categoryData->isEmpty()) {
+            return collect();
+        }
+
+        $categoryOnecIds = $categoryData->pluck('category_id')->unique()->toArray();
+        $productCounts = $categoryData->pluck('count', 'category_id')->toArray();
+
+        $categories = Category::whereIn('onec_id', $categoryOnecIds)
+            ->where('status', true)
+            ->whereNull('deleted_at')
+            ->get();
+
+        return $categories->map(function ($category) use ($productCounts) {
+            $category->products_count = $productCounts[$category->onec_id] ?? 0;
+            return $category;
+        })->filter(function ($category) {
+            return $category->products_count > 0;
+        })->unique('name')
+        ->sortBy('name')
+        ->values();
+    }
+
+    /**
+     * @param Collection $products
+     * @return Collection
+     */
+    public function getCategoriesHierarchyWithProductCount(Collection $products): Collection
     {
         if ($products->isEmpty()) {
             return collect();
@@ -215,48 +259,76 @@ class CategoryRepository
             return collect();
         }
 
-        $categoryModels = Category::whereIn('onec_id', $categoryOnecIds)
-            ->whereNull('deleted_at')
-            ->get();
-
-        $categoryDbIds = $categoryModels->pluck('id')->toArray();
-
-        $categoriesWithChildrenOnecIds = DB::table('categories')
-            ->whereIn('parent_id', $categoryDbIds)
-            ->whereNull('deleted_at')
-            ->pluck('parent_id')
-            ->unique()
-            ->toArray();
-
-        $parentCategoryDbIds = Category::whereIn('id', $categoriesWithChildrenOnecIds)
-            ->pluck('onec_id')
-            ->toArray();
-
-        $lastNestedCategoryOnecIds = array_diff($categoryOnecIds, $parentCategoryDbIds);
-
-        if (empty($lastNestedCategoryOnecIds)) {
-            return collect();
-        }
-
-        $categories = Category::whereIn('onec_id', $lastNestedCategoryOnecIds)
+        $allCategories = Category::whereIn('onec_id', $categoryOnecIds)
             ->where('status', true)
             ->whereNull('deleted_at')
             ->get();
 
         $productCounts = DB::table('product_categories')
-            ->whereIn('category_id', $lastNestedCategoryOnecIds)
+            ->whereIn('category_id', $categoryOnecIds)
             ->whereIn('product_id', $productIds)
             ->select('category_id', DB::raw('COUNT(DISTINCT product_id) as count'))
             ->groupBy('category_id')
             ->pluck('count', 'category_id')
             ->toArray();
 
-        return $categories->map(function ($category) use ($productCounts) {
+        $categoriesMap = $allCategories->keyBy('onec_id');
+
+        $filterCategory = function ($category) use ($productCounts, $categoriesMap, &$filterCategory) {
             $category->products_count = $productCounts[$category->onec_id] ?? 0;
-            return $category;
-        })->filter(function ($category) {
-            return $category->products_count > 0;
-        })->sortBy('name')->values();
+            
+            $children = $categoriesMap->filter(function ($cat) use ($category) {
+                return $cat->parent_id !== null && $cat->parent_id === $category->id;
+            });
+            
+            $hasChildrenWithProducts = false;
+            
+            if ($children->isNotEmpty()) {
+                $filteredChildren = collect();
+                
+                foreach ($children as $child) {
+                    $filteredChild = $filterCategory($child);
+                    if ($filteredChild !== null) {
+                        $filteredChildren->push($filteredChild);
+                        $hasChildrenWithProducts = true;
+                    }
+                }
+                
+                if ($filteredChildren->isNotEmpty()) {
+                    $category->children = $filteredChildren->sortBy('name')->values();
+                }
+            }
+            
+            if ($category->products_count > 0 || $hasChildrenWithProducts) {
+                return $category;
+            }
+            
+            return null;
+        };
+
+        $rootCategories = $allCategories->filter(function ($category) use ($categoriesMap) {
+            if ($category->parent_id === null) {
+                return true;
+            }
+            
+            $parentCategory = Category::find($category->parent_id);
+            if ($parentCategory === null) {
+                return true;
+            }
+            
+            return !$categoriesMap->has($parentCategory->onec_id);
+        });
+
+        $result = collect();
+        
+        foreach ($rootCategories as $rootCategory) {
+            $filtered = $filterCategory($rootCategory);
+            if ($filtered !== null) {
+                $result->push($filtered);
+            }
+        }
+
+        return $result->sortBy('name')->values();
     }
 
 }

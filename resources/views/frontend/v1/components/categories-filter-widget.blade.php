@@ -8,7 +8,13 @@
             <div class="categories-filter-list" style="height: 300px; overflow-y: auto; width: 100%;">
                 @foreach($categories as $category)
                     <div class="col-12" style="margin-bottom: 8px;">
-                        <a href="{{ route('theme.category.index', $category->onec_id) }}" class="category-link" style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 4px 0;">
+                        <a href="javascript:void(0);" 
+                           class="category-filter-link" 
+                           data-category-id="{{ $category->onec_id }}"
+                           data-page-type="{{ $pageType ?? 'shop' }}"
+                           data-page-sub-type="{{ $pageSubType ?? '' }}"
+                           data-brand-onec-id="{{ $brandOnecId ?? '' }}"
+                           style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 4px 0; transition: text-decoration 0.2s;">
                             <span>{{ $category->name }}</span>
                             <span style="color: #999; font-size: 14px;">({{ $category->products_count ?? 0 }})</span>
                         </a>
@@ -21,6 +27,12 @@
         </div>
     </li>
 @endif
+
+<style>
+    .category-filter-link:hover {
+        text-decoration: underline !important;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -46,6 +58,264 @@
                 }
             });
         }
+
+        function buildFormData(categoryId, page) {
+            const formData = new FormData();
+            formData.append('category_id', categoryId);
+            formData.append('_token', '{{ csrf_token() }}');
+            if (page) {
+                formData.append('page', page);
+            }
+            
+            const currentUrl = new URL(window.location.href);
+            const urlParams = currentUrl.searchParams;
+            
+            urlParams.forEach(function(value, key) {
+                if (key.startsWith('filter[')) {
+                    formData.append(key, value);
+                } else if (key === 'filter' && typeof value === 'string') {
+                    try {
+                        const filterObj = JSON.parse(decodeURIComponent(value));
+                        Object.keys(filterObj).forEach(function(filterKey) {
+                            if (Array.isArray(filterObj[filterKey])) {
+                                filterObj[filterKey].forEach(function(val) {
+                                    formData.append('filter[' + filterKey + '][]', val);
+                                });
+                            } else if (typeof filterObj[filterKey] === 'object' && filterObj[filterKey] !== null) {
+                                Object.keys(filterObj[filterKey]).forEach(function(subKey) {
+                                    formData.append('filter[' + filterKey + '][' + subKey + ']', filterObj[filterKey][subKey]);
+                                });
+                            } else {
+                                formData.append('filter[' + filterKey + ']', filterObj[filterKey]);
+                            }
+                        });
+                    } catch (e) {
+                        formData.append('filter', value);
+                    }
+                } else if (key !== 'category_id' && key !== 'page') {
+                    formData.append(key, value);
+                }
+            });
+            
+            return formData;
+        }
+        
+        function getAjaxUrl(pageType, pageSubType, brandOnecId) {
+            if (pageType === 'brand' && brandOnecId) {
+                return '{{ route("theme.brand.filter-by-category", ":onecId") }}'.replace(':onecId', brandOnecId);
+            } else if (pageType === 'shop' && pageSubType) {
+                return '{{ route("theme.shop.filter-by-category", ":type") }}'.replace(':type', pageSubType);
+            } else {
+                return '{{ route("theme.shop.filter-by-category", "all") }}';
+            }
+        }
+        
+        function updateUI(data) {
+            const tableView = document.getElementById('productsTableView');
+            const listView = document.getElementById('productsListView');
+            
+            if (tableView) {
+                tableView.innerHTML = data.tableView || '';
+                tableView.style.opacity = '1';
+            }
+            if (listView) {
+                listView.innerHTML = data.listView || '';
+                listView.style.opacity = '1';
+            }
+            
+            const hasPages = (data.hasPages === true) || (data.pagination && data.pagination.trim() !== '');
+            
+            if (hasPages && data.pagination) {
+                const paginationContainers = document.querySelectorAll('.theme-pagination');
+                paginationContainers.forEach(function(container) {
+                    if (container) {
+                        container.innerHTML = data.pagination;
+                    }
+                });
+                
+                const topPaginationContainer = document.querySelector('.sort-block');
+                if (topPaginationContainer) {
+                    let topPagination = topPaginationContainer.querySelector('.theme-pagination');
+                    if (!topPagination) {
+                        topPagination = document.createElement('div');
+                        topPagination.className = 'theme-pagination d-none d-lg-block';
+                        topPaginationContainer.appendChild(topPagination);
+                    }
+                    topPagination.innerHTML = data.pagination;
+                }
+            } else {
+                const paginationContainers = document.querySelectorAll('.theme-pagination');
+                paginationContainers.forEach(function(container) {
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+                });
+                
+                const topPaginationContainer = document.querySelector('.sort-block');
+                if (topPaginationContainer) {
+                    const topPagination = topPaginationContainer.querySelector('.theme-pagination');
+                    if (topPagination) {
+                        topPagination.remove();
+                    }
+                }
+            }
+        }
+        
+        function showLoading() {
+            const tableView = document.getElementById('productsTableView');
+            const listView = document.getElementById('productsListView');
+            
+            if (tableView) {
+                tableView.style.opacity = '0.5';
+            }
+            if (listView) {
+                listView.style.opacity = '0.5';
+            }
+        }
+        
+        function hideLoading() {
+            const tableView = document.getElementById('productsTableView');
+            const listView = document.getElementById('productsListView');
+            
+            if (tableView) {
+                tableView.style.opacity = '1';
+            }
+            if (listView) {
+                listView.style.opacity = '1';
+            }
+        }
+        
+        function performAjaxRequest(url, formData, updateUrl) {
+            showLoading();
+            
+            return fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    updateUI(data);
+                    if (updateUrl) {
+                        const newUrl = new URL(window.location.href);
+                        if (updateUrl.page) {
+                            newUrl.searchParams.set('page', updateUrl.page);
+                        } else {
+                            newUrl.searchParams.delete('page');
+                        }
+                        if (updateUrl.categoryId) {
+                            newUrl.searchParams.set('filter[category]', updateUrl.categoryId);
+                        }
+                        window.history.pushState({}, '', newUrl.toString());
+                    }
+                    hideLoading();
+                } else {
+                    console.error('Server error:', data.message || 'Unknown error');
+                    hideLoading();
+                }
+                return data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                hideLoading();
+                alert('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.');
+                throw error;
+            });
+        }
+        
+        function initCategoryFilters() {
+            document.querySelectorAll('.category-filter-link').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const categoryId = this.getAttribute('data-category-id');
+                    const pageType = this.getAttribute('data-page-type');
+                    const pageSubType = this.getAttribute('data-page-sub-type');
+                    const brandOnecId = this.getAttribute('data-brand-onec-id');
+                    
+                    if (!categoryId) {
+                        return;
+                    }
+                    
+                    document.querySelectorAll('.category-filter-link').forEach(function(l) {
+                        l.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    const url = getAjaxUrl(pageType, pageSubType, brandOnecId);
+                    const formData = buildFormData(categoryId, '1');
+                    
+                    performAjaxRequest(url, formData, { page: '1', categoryId: categoryId });
+                });
+            });
+        }
+        
+        initCategoryFilters();
+        
+        function handlePaginationClick(e) {
+            const link = e.target.closest('a');
+            if (!link || !link.href) {
+                return;
+            }
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            let page = null;
+            try {
+                let href = link.href;
+                if (href.startsWith('/')) {
+                    href = window.location.origin + href;
+                }
+                const url = new URL(href);
+                page = url.searchParams.get('page');
+            } catch (err) {
+                const hrefMatch = link.href.match(/[?&]page=(\d+)/);
+                if (hrefMatch) {
+                    page = hrefMatch[1];
+                }
+            }
+            
+            if (!page) {
+                return;
+            }
+            
+            const activeCategoryLink = document.querySelector('.category-filter-link.active');
+            if (!activeCategoryLink) {
+                window.location.href = link.href;
+                return;
+            }
+            
+            const categoryId = activeCategoryLink.getAttribute('data-category-id');
+            const pageType = activeCategoryLink.getAttribute('data-page-type');
+            const pageSubType = activeCategoryLink.getAttribute('data-page-sub-type');
+            const brandOnecId = activeCategoryLink.getAttribute('data-brand-onec-id');
+            
+            if (!categoryId) {
+                window.location.href = link.href;
+                return;
+            }
+            
+            const ajaxUrl = getAjaxUrl(pageType, pageSubType, brandOnecId);
+            const formData = buildFormData(categoryId, page);
+            
+            performAjaxRequest(ajaxUrl, formData, { page: page, categoryId: categoryId });
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.theme-pagination a')) {
+                handlePaginationClick(e);
+            }
+        });
     });
 </script>
-
