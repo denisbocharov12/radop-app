@@ -12471,6 +12471,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .product-list-item.card:hover{
     transform: translateY(-5px);
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.08);
 }
 /*.product-list-item .row{*/
 /*    min-height: 250px;*/

@@ -52,6 +52,7 @@
     </div>
     <!-- content @e -->
     @include('category.modal.create')
+    @include('category.modal.export-locale')
 @endsection
 
 @section('scripts')
@@ -98,17 +99,41 @@
             askToDeleteCategory(category_id, token, path)
         });
         
+        var currentCategoryId = null;
+        var currentExportIcon = null;
+
         $(document).on('click', '.category-export-onec-btn', function(e) {
             e.preventDefault();
-            var categoryId = $(this).data('category-id');
-            var $icon = $(this);
+            currentCategoryId = $(this).data('category-id');
+            currentExportIcon = $(this);
+            $('#exportLocaleModal').modal('show');
+        });
+
+        $(document).on('click', '#confirmExportBtn', function() {
+            var selectedLocale = $('input[name="export_locale"]:checked').val();
             
-            $icon.css('opacity', '0.5');
+            if (!selectedLocale) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: 'Пожалуйста, выберите язык экспорта'
+                });
+                return;
+            }
+
+            $('#exportLocaleModal').modal('hide');
+            
+            if (currentExportIcon) {
+                currentExportIcon.css('opacity', '0.5');
+            }
 
             $.ajax({
-                url: '{{ url("/admin/categories") }}/' + categoryId + '/export/onec-prices',
+                url: '{{ url("/admin/categories") }}/' + currentCategoryId + '/export/onec-prices',
                 type: 'POST',
                 dataType: 'json',
+                data: {
+                    locale: selectedLocale
+                },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
@@ -146,9 +171,19 @@
                     });
                 },
                 complete: function() {
-                    $icon.css('opacity', '1');
+                    if (currentExportIcon) {
+                        currentExportIcon.css('opacity', '1');
+                    }
+                    currentCategoryId = null;
+                    currentExportIcon = null;
                 }
             });
+        });
+
+        $('#exportLocaleModal').on('hidden.bs.modal', function () {
+            $('#locale_ru').prop('checked', true);
+            currentCategoryId = null;
+            currentExportIcon = null;
         });
     </script>
 @endsection

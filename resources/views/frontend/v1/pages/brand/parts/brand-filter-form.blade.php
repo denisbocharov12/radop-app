@@ -1,8 +1,7 @@
 <form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
     <div class="theme-wg-wrap">
-        @if(!empty($attributes))
-            <ul class="theme-toggle-list">
-                <li class="theme-toggle-item">
+        <ul class="theme-toggle-list">
+            <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
                         <i class="icon-arrow-filter-radop-left" style="transform: rotate(90deg);"></i>
                         <p class="theme-widget-title">
@@ -51,6 +50,12 @@
                 </li>
                 @foreach($attributes as $key => $attributeValues)
                     @php
+                        $brandNames = ['Бренд', 'Brand', 'Бренд'];
+                    @endphp
+                    @if(!in_array($key, $brandNames))
+                        @continue
+                    @endif
+                    @php
                         $attributeValues = collect($attributeValues)->map(function($attribute) {
                             return \App\Models\AttributeValue::find($attribute->id);
                         })->sortBy('value');
@@ -91,8 +96,23 @@
                         </div>
                     </li>
                 @endforeach
-            </ul>
-        @endif
+                @if(isset($brands) && $brands->isNotEmpty())
+                    <li class="theme-toggle-item">
+                        <div class="theme-toggle-item-title">
+                            <i class="icon-arrow-filter-radop-left"></i>
+                            <p class="theme-widget-title">{{__('theme.brand')}}</p>
+                        </div>
+                        <div class="theme-toggle-item-content">
+                            @foreach($brands as $brand)
+                                <div class="col-6">
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
+                                    <label for="brand-{{$brand->onec_id}}">{{$brand->title}}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </li>
+                @endif
+        </ul>
     </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
 </form>

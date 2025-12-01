@@ -7,11 +7,13 @@ use App\Filters\ProductSearchFilter;
 use App\Filters\ProductSiteStatusFilter;
 use App\Filters\ProductStatusFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
+use App\Filters\Theme\ThemeCategoryFilter;
 use App\Filters\Theme\ThemeConditionSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Filters\Theme\ThemeProductViewCountSort;
+use App\Filters\Theme\ThemeTitleSort;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Filters\Theme\ThemeBrandsFilter;
@@ -74,6 +76,7 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
             ])
             ->where('stock', '!=', 0)
             ->allowedSorts([
@@ -177,12 +180,13 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
             ])
             ->allowedSorts([
                 'id',
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
-                'title',
+                AllowedSort::custom('title', new ThemeTitleSort(), 'title'),
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
@@ -311,12 +315,13 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
             ])
             ->allowedSorts([
                 'id',
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
-                'title',
+                AllowedSort::custom('title', new ThemeTitleSort(), 'title'),
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
@@ -402,12 +407,13 @@ final class ProductRepository
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
             ])
             ->allowedSorts([
                 'id',
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
-                'title',
+                AllowedSort::custom('title', new ThemeTitleSort(), 'title'),
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',

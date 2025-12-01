@@ -1,9 +1,8 @@
 <form action="{{ url()->current() }}" method="GET" id="filterForm">
     <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
     <div class="theme-wg-wrap">
-        @if(!empty($attributes))
-            <ul class="theme-toggle-list">
-                <li class="theme-toggle-item">
+        <ul class="theme-toggle-list">
+            <li class="theme-toggle-item">
                         <div class="theme-toggle-item-title">
                             <i class="icon-arrow-filter-radop-left"></i>
                             <p class="theme-widget-title">
@@ -51,6 +50,12 @@
                         </div>
                     </li>
                     @foreach($attributes as $key => $attributeValues)
+                        @php
+                            $brandNames = ['Бренд', 'Brand', 'Бренд'];
+                        @endphp
+                        @if(!in_array($key, $brandNames))
+                            @continue
+                        @endif
                         @php
                             $attributeValues = collect($attributeValues)->map(function($attribute) {
                                 return \App\Models\AttributeValue::find($attribute->id);
@@ -106,8 +111,7 @@
                             @endforeach
                         </div>
                     </li>
-            </ul>
-        @endif
+        </ul>
     </div>
     <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
 </form>

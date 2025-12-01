@@ -38,7 +38,16 @@
                         @if(isset($categories) && $categories->isNotEmpty())
                             <div class="theme-wg-wrap" style="margin-bottom: 20px;">
                                 <ul class="theme-toggle-list">
-                                    @include('frontend.v1.components.categories-filter-widget')
+                                    @php
+                                        $pageType = 'shop';
+                                        $pageSubType = request()->route()->getName() === 'theme.shop.new' ? 'new' : 
+                                                       (request()->route()->getName() === 'theme.shop.popular' ? 'popular' : 
+                                                       (request()->route()->getName() === 'theme.shop.sale' ? 'sale' : 'all'));
+                                    @endphp
+                                    @include('frontend.v1.components.categories-filter-widget', [
+                                        'pageType' => $pageType,
+                                        'pageSubType' => $pageSubType
+                                    ])
                                 </ul>
                             </div>
                         @endif
