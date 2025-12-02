@@ -100,6 +100,12 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
 
+        $sheet->getStyle("C{$startRow}:C{$endRow}")
+            ->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_LEFT)
+            ->setVertical(Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
+
         $sheet->getStyle("A2:J{$endRow}")
             ->getBorders()
             ->getAllBorders()
@@ -121,6 +127,8 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
 
                 foreach ($this->products as $index => $product) {
                     $row = $startRow + $index;
+
+                    $sheet->getStyle("B{$row}")->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
                     if ($product->hasMedia('products')) {
                         try {

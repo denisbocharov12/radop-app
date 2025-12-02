@@ -172,6 +172,25 @@ class CategoryRepository
     }
 
     /**
+     * @param Category $category
+     * @return Collection|null
+     */
+    public function getAllByCategoryOnecIdForExport(Category $category): ?Collection
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->groupBy('products.onec_id')
+            ->orderBy('products.title')
+            ->get()
+            ;
+    }
+
+    /**
      * @return Collection
      */
     public function getAllWithViewCounts(): Collection

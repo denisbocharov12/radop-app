@@ -32,6 +32,9 @@ Route::middleware(['auth'])->prefix('admin/menus')->name('admin.menus.')->group(
     // Drag & Drop Hierarchy Update (AJAX)
     Route::post('/{menuCode}/hierarchy', [AdminMenuController::class, 'updateHierarchy'])->name('hierarchy.update');
 
+    // Menu Preview (AJAX)
+    Route::get('/{id}/preview', [AdminMenuController::class, 'preview'])->name('preview');
+
     // Cache Management
     Route::post('/cache/clear', [AdminMenuController::class, 'clearCache'])->name('cache.clear');
 });

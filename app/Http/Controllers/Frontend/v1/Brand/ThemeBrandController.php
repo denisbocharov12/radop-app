@@ -187,7 +187,7 @@ final class ThemeBrandController extends Controller
             throw new UserNoDiscountException();
         }
 
-        $products = $this->productRepository->getAllByBrandOnceId((int)$brand->onec_id);
+        $products = $this->productRepository->getAllByBrandOnceIdForExport((int)$brand->onec_id);
 
         if ($products->isEmpty()) {
             return response()->json([
