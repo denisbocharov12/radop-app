@@ -53,8 +53,8 @@
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" name="parent_id" id="parent_id">
                                                         <option value="">Нет (корневой элемент)</option>
-                                                        @foreach($menu->items as $item)
-                                                            <option value="{{$item->id}}">{{$item->title}}</option>
+                                                        @foreach($parentOptions as $option)
+                                                            <option value="{{$option['value']}}" {{old('parent_id') == $option['value'] ? 'selected' : ''}}>{{$option['label']}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -85,7 +85,17 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="icon_class">CSS класс иконки</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" id="icon_class" name="icon_class" value="{{old('icon_class')}}" placeholder="fas fa-home">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="icon_class" name="icon_class" value="{{old('icon_class')}}" placeholder="fas fa-home">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#iconPickerModal">
+                                                            <em class="icon ni ni-grid"></em> Выбрать
+                                                        </button>
+                                                    </div>
+                                                    <div id="icon-preview" class="mt-2" style="min-height: 24px;">
+                                                        @if(old('icon_class'))
+                                                            <i class="{{ old('icon_class') }}"></i> <span>{{ old('icon_class') }}</span>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,5 +141,131 @@
             </div>
         </div>
     </div>
+    @include('menu.partials.icon-picker-modal')
 @endsection
+
+@section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .icon-picker-modal .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            gap: 6px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .icon-picker-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            border: 1px solid #e5e9f2;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            background: #fff;
+            min-height: 60px;
+        }
+        .icon-picker-item:hover {
+            background: #f8f9fa;
+            border-color: #526484;
+            transform: translateY(-1px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .icon-picker-item.selected {
+            background: #526484;
+            border-color: #526484;
+            color: #fff;
+        }
+        .icon-picker-item.selected i {
+            color: #fff;
+        }
+        .icon-picker-item i {
+            font-size: 18px;
+            margin-bottom: 4px;
+            color: #526484;
+        }
+        .icon-picker-item.selected i {
+            color: #fff;
+        }
+        .icon-picker-item span {
+            font-size: 9px;
+            color: #8b95a7;
+            word-break: break-word;
+            line-height: 1.2;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .icon-picker-item.selected span {
+            color: #fff;
+        }
+        .icon-picker-search {
+            margin-bottom: 15px;
+        }
+        #icon-preview i {
+            font-size: 18px;
+            margin-right: 8px;
+            color: #526484;
+        }
+    </style>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const iconClassInput = document.getElementById('icon_class');
+            const iconPreview = document.getElementById('icon-preview');
+            
+            if (iconClassInput) {
+                iconClassInput.addEventListener('input', function() {
+                    updateIconPreview(this.value);
+                });
+            }
+
+            function updateIconPreview(iconClass) {
+                if (iconClass && iconClass.trim()) {
+                    iconPreview.innerHTML = `<i class="${iconClass}"></i> <span>${iconClass}</span>`;
+                } else {
+                    iconPreview.innerHTML = '';
+                }
+            }
+
+            document.querySelectorAll('.icon-picker-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const iconClass = this.dataset.iconClass;
+                    iconClassInput.value = iconClass;
+                    updateIconPreview(iconClass);
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('iconPickerModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
+            });
+
+            const iconSearch = document.getElementById('icon-search');
+            if (iconSearch) {
+                iconSearch.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    document.querySelectorAll('.icon-picker-item').forEach(item => {
+                        const iconName = item.dataset.iconName || '';
+                        const iconClass = item.dataset.iconClass || '';
+                        if (iconName.includes(searchTerm) || iconClass.includes(searchTerm)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+@endsection
+
 

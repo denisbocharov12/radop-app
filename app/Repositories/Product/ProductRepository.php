@@ -134,6 +134,26 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getAllPopularProductsForExport(): Collection
+    {
+        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
+        $productIds = $popularProductProfiles->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->orderBy('popular_order')
+            ->orderBy('title')
+            ->get()
+        ;
+    }
+
     public function getPopularProductsForHomePage()
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
@@ -269,6 +289,26 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getAllNewProductsForExport(): Collection
+    {
+        $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
+        $productIds = $newProductProfile->pluck('product_id');
+
+        return Product::whereIn('onec_id', $productIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->orderBy('new_order')
+            ->orderBy('title')
+            ->get()
+        ;
+    }
+
     public function getNewProductsForHomePage()
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
@@ -363,6 +403,23 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->with(['brand', 'values.attribute', 'packages'])
             ->orderBy('sale_order')
+            ->get()
+         ;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAllDiscountProductsForExport(): Collection
+    {
+        return Product::where('sale_price', '!=', 0)
+            ->whereNotNull('price_koef')
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->orderBy('sale_order')
+            ->orderBy('title')
             ->get()
          ;
     }
@@ -689,6 +746,21 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->with(['brand', 'values.attribute', 'packages'])
+            ->get();
+    }
+
+    /**
+     * @param int $brandId
+     * @return Collection|null
+     */
+    public function getAllByBrandOnceIdForExport(int $brandId): ?Collection
+    {
+        return Product::query()->where('brand_id', $brandId)
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->orderBy('title')
             ->get();
     }
 

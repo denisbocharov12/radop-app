@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\MenuHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\MenuDataMapper;
 use App\Http\Mappers\MenuItemDataMapper;
@@ -120,6 +121,10 @@ final class AdminMenuController extends Controller
             abort(404, __('theme.menu.not_found'));
         }
 
+        $menu->load(['rootItems' => function ($query) {
+            $query->with('allChildren')->orderBy('order');
+        }]);
+
         $flatMenuItems = $this->menuHierarchyService->getMenuAsFlatArray($menu->code);
 
         return view('menu.edit', compact('menu', 'flatMenuItems'));
@@ -190,7 +195,13 @@ final class AdminMenuController extends Controller
             abort(404, __('theme.menu.not_found'));
         }
 
-        return view('menu.items.create', compact('menu'));
+        $menu->load(['rootItems' => function ($query) {
+            $query->with('allChildren')->orderBy('order');
+        }]);
+
+        $parentOptions = MenuHelper::buildSelectOptions($menu->rootItems);
+
+        return view('menu.items.create', compact('menu', 'parentOptions'));
     }
 
     /**
@@ -243,7 +254,13 @@ final class AdminMenuController extends Controller
             abort(404, __('theme.menu_item.not_found'));
         }
 
-        return view('menu.items.edit', compact('menu', 'menuItem'));
+        $menu->load(['rootItems' => function ($query) {
+            $query->with('allChildren')->orderBy('order');
+        }]);
+
+        $parentOptions = MenuHelper::buildSelectOptions($menu->rootItems, $itemId);
+
+        return view('menu.items.edit', compact('menu', 'menuItem', 'parentOptions'));
     }
 
     /**
@@ -343,6 +360,27 @@ final class AdminMenuController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', __('theme.menu.cache_clear_failed'));
         }
+    }
+
+    /**
+     * Get menu preview HTML
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function preview(int $id)
+    {
+        $menu = $this->menuHierarchyService->findMenuById($id);
+
+        if (!$menu) {
+            abort(404, __('theme.menu.not_found'));
+        }
+
+        $menu->load(['rootItems' => function ($query) {
+            $query->with('children')->where('is_active', true)->orderBy('order');
+        }]);
+
+        return view('menu.partials.preview', compact('menu'));
     }
 }
 

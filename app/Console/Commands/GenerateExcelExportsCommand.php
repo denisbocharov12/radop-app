@@ -47,7 +47,7 @@ final class GenerateExcelExportsCommand extends Command
             $this->info("Found brands: {$brands->count()}");
 
             foreach ($brands as $brand) {
-                $products = $productRepository->getAllByBrandOnceId((int)$brand->onec_id);
+                $products = $productRepository->getAllByBrandOnceIdForExport((int)$brand->onec_id);
 
                 if ($products->isEmpty()) {
                     continue;
@@ -62,7 +62,7 @@ final class GenerateExcelExportsCommand extends Command
             $this->info("Found categories: {$categories->count()}");
 
             foreach ($categories as $category) {
-                $products = $categoryRepository->getAllByCategoryOnecId($category);
+                $products = $categoryRepository->getAllByCategoryOnecIdForExport($category);
 
                 if ($products === null || $products->isEmpty()) {
                     continue;
@@ -73,19 +73,19 @@ final class GenerateExcelExportsCommand extends Command
                 $this->info("  - Category {$category->name} ({$category->onec_id}): {$products->count()} products");
             }
 
-            $newProducts = $productRepository->getAllNewProducts();
+            $newProducts = $productRepository->getAllNewProductsForExport();
             if ($newProducts->isNotEmpty()) {
                 GenerateExcelExportJob::dispatch($newProducts, 'new_products', 'new', $locale);
                 $this->info("  - New products: {$newProducts->count()} products");
             }
 
-            $popularProducts = $productRepository->getAllPopularProducts();
+            $popularProducts = $productRepository->getAllPopularProductsForExport();
             if ($popularProducts->isNotEmpty()) {
                 GenerateExcelExportJob::dispatch($popularProducts, 'popular_products', 'popular', $locale);
                 $this->info("  - Popular products: {$popularProducts->count()} products");
             }
 
-            $saleProducts = $productRepository->getAllDiscountProducts();
+            $saleProducts = $productRepository->getAllDiscountProductsForExport();
             if ($saleProducts->isNotEmpty()) {
                 GenerateExcelExportJob::dispatch($saleProducts, 'sale_products', 'sale', $locale);
                 $this->info("  - Sale products: {$saleProducts->count()} products");
