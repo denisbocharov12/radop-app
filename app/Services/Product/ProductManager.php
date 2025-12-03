@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\Data\Product\ProductData;
+use App\Data\Product\UpdateProductConditionsData;
 use App\Exceptions\Attachments\AttachmentNotFoundException;
 use App\Exceptions\Brand\BrandNotFoundException;
 use App\Exceptions\Category\CategoryNotFoundException;
@@ -173,7 +174,7 @@ class ProductManager
         $this->attachmentsManager->deleteAttachmentsFromModel($product, (int)$request->id);
     }
 
-    public function updateProductConditions(\App\Data\Product\UpdateProductConditionsData $data): void
+    public function updateProductConditions(UpdateProductConditionsData $data): void
     {
         $products = Product::query()->whereIn('id', $data->product_ids)->get();
 
@@ -192,7 +193,7 @@ class ProductManager
         {
             ProductCategory::create([
                 'product_id' => $product->onec_id,
-                'category_id' => $category
+                'category_id' => $category,
             ]);
         }
     }

@@ -85,13 +85,16 @@ class CategoryRepository
             ->with(['brand', 'values', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id');
 
-        $hasCustomSort = DB::table('product_categories')
+        $hasCustomSort = DB::table('product_category_sorts')
             ->where('category_id', $category->onec_id)
-            ->whereNotNull('sort')
             ->exists();
 
         if ($hasCustomSort) {
-            $queryBuilder = $queryBuilder->orderBy('product_categories.sort');
+            $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
+                $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
+                     ->where('product_category_sorts.category_id', '=', $category->onec_id);
+            })
+            ->orderBy('product_category_sorts.sort');
         } else {
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
         }
@@ -207,7 +210,14 @@ class CategoryRepository
      */
     public function getAllProductsByCategoryWithSort(Category $category): Collection
     {
-        return $category->products()->orderBy('product_categories.sort')
+        return $category->products()
+            ->leftJoin('product_category_sorts', function($join) use ($category) {
+                $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
+                     ->where('product_category_sorts.category_id', '=', $category->onec_id);
+            })
+            ->orderBy('product_category_sorts.sort')
+            ->orderBy('products.onec_id')
+            ->select('products.*')
             ->get()
         ;
     }

@@ -10,7 +10,7 @@
         <th rowspan="2" style="font-weight: 700">{{ __('theme.barcode_excel') }}</th>
         <th colspan="2" style="font-weight: 700">{{ __('theme.packaging') }}</th>
         <th rowspan="2" style="font-weight: 700">{{ __('theme.characteristics') }}</th>
-        <th rowspan="2" style="font-weight: 700">{{ __('theme.personalized_price_excel') }} (1C)</th>
+        <th rowspan="2" style="font-weight: 700">{{ __('theme.personalized_price_excel') }}</th>
     </tr>
     <tr>
         <th style="font-weight: 700">{{ __('theme.box') }}</th>
@@ -18,7 +18,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($products as $i => $product)
+    @foreach($products->sortBy('title') as $i => $product)
         <tr>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>
