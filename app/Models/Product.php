@@ -196,4 +196,12 @@ final class Product extends Model implements HasMedia, Sitemapable
         return $this->hasMany(Review::class, 'product_onec_id', 'onec_id')
             ->where('status', true);
     }
+
+    /**
+     * @return HasMany<ProductCategorySort, Product>
+     */
+    public function categorySorts(): HasMany
+    {
+        return $this->hasMany(ProductCategorySort::class, 'product_id', 'onec_id');
+    }
 }

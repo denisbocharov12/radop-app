@@ -110,6 +110,14 @@ final class Category extends Model implements HasMedia, Sitemapable
             'product_id',
             'onec_id',
             'onec_id'
-        )->withPivot('sort');
+        );
+    }
+
+    /**
+     * @return HasMany<ProductCategorySort, Category>
+     */
+    public function productCategorySorts(): HasMany
+    {
+        return $this->hasMany(ProductCategorySort::class, 'category_id', 'onec_id');
     }
 }

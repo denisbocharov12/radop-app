@@ -128,9 +128,16 @@ final class CategoryManager
      */
     public function updateProductSortInCategory(string $categoryOnecId, string $productOnecId, int $sort): void
     {
-        DB::table('product_categories')
-            ->where('category_id', $categoryOnecId)
-            ->where('product_id', $productOnecId)
-            ->update(['sort' => $sort]);
+        DB::table('product_category_sorts')
+            ->updateOrInsert(
+                [
+                    'category_id' => $categoryOnecId,
+                    'product_id' => $productOnecId,
+                ],
+                [
+                    'sort' => $sort,
+                    'updated_at' => now(),
+                ]
+            );
     }
 }
