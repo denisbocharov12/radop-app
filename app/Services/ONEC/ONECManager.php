@@ -30,7 +30,7 @@ final class ONECManager
         if (isset($json->Categories)) {
             $categoriesData = $json->Categories;
             $header = [];
-            $batch  = Bus::batch([]);
+            $batch  = Bus::batch([])->onQueue('high');
 
             $categoryChunks = array_chunk($categoriesData, 200);
 
@@ -95,7 +95,7 @@ final class ONECManager
 
                 $packagesData = $json->Distributions;
                 $header = [];
-                $batch  = Bus::batch([]);
+                $batch  = Bus::batch([])->onQueue('high');
 
                 $packagesChunks = array_chunk($packagesData, 100);
 
@@ -122,7 +122,7 @@ final class ONECManager
 
             $brandsData = $json->Brands;
             $header = [];
-            $batch  = Bus::batch([]);
+            $batch  = Bus::batch([])->onQueue('high');
 
             $brandChunks = array_chunk($brandsData, 200);
 
@@ -144,7 +144,7 @@ final class ONECManager
 
             $attributesData = $json->Characteristics;
             $header = [];
-            $batch  = Bus::batch([]);
+            $batch  = Bus::batch([])->onQueue('high');
 
             $attributeChunks = array_chunk($attributesData, 200);
 
@@ -170,7 +170,7 @@ final class ONECManager
 
             $attributeValuesData = $json->ProductCharacteristics;
             $header = [];
-            $batch  = Bus::batch([]);
+            $batch  = Bus::batch([])->onQueue('high');
 
             $attributeValueChunks = array_chunk($attributeValuesData, 400);
 

@@ -23,6 +23,7 @@ use App\Http\Requests\Product\ProductRequest;
 use App\Models\Product;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
+use App\Jobs\RegenerateProductImagesJob;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Product\ProductManager;
 use Illuminate\Http\Request;
@@ -129,6 +130,20 @@ class ProductController extends Controller
         } catch (AttachmentNotFoundException $e) {
             throw new AttachmentNotFoundValidationException();
         }
+    }
+
+    /**
+     * @param Product $product
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function regenerateImages(Product $product)
+    {
+        RegenerateProductImagesJob::dispatch($product->id)->onQueue('high');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Задача регенерации фотографий поставлена в очередь'
+        ]);
     }
 
     public function updateProductConditions(UpdateProductConditionsRequest $request)

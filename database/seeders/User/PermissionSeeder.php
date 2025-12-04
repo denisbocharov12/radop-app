@@ -75,6 +75,7 @@ class PermissionSeeder extends Seeder
         'category.export.onec-prices',
         'brand.export.onec-prices',
         'product.export-descriptions',
+        'product.regenerate.images',
         'manager-export.index',
         'manager-export.download',
     ];

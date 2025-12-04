@@ -30,6 +30,10 @@ Route::prefix('products')->name('product.')->group(function () {
         ->post('{product}/media/delete', [ProductController::class, 'deleteProductMedia'])
         ->name('media.delete')
     ;
+    Route::middleware(['app.permissions'])
+        ->post('{product}/regenerate-images', [ProductController::class, 'regenerateImages'])
+        ->name('regenerate.images')
+    ;
 
     Route::middleware(['app.permissions'])
         ->get('/sorts/featured', [ProductController::class, 'sortFeatured'])
