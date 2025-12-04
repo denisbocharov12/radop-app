@@ -257,6 +257,11 @@
                                 <div class="nk-block-head-content">
                                     <h3 class="nk-block-title page-title">Изображения товара</h3>
                                 </div>
+                                <div class="nk-block-head-content">
+                                    <button type="button" id="regenerate-images-btn" class="btn btn-primary" data-product-id="{{$product->id}}">
+                                        Регенерировать фотографии
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-gs">
@@ -468,6 +473,42 @@
                         $('#model-media-'+image_id).fadeOut();
                     } else {
                     }
+                }
+            });
+        });
+
+        $(document).on('click', '#regenerate-images-btn', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var productId = btn.data('product-id');
+            var token = "{{csrf_token()}}";
+            var path = "{{route('product.regenerate.images', $product)}}";
+
+            if (!confirm('Вы уверены, что хотите регенерировать фотографии? Существующие фотографии будут удалены и загружены заново.')) {
+                return;
+            }
+
+            btn.prop('disabled', true).text('Обработка...');
+
+            $.ajax({
+                url: path,
+                type: "POST",
+                dataType:"JSON",
+                data:{
+                    _token: token
+                },
+                success:function (response) {
+                    if(response.status) {
+                        alert('Задача регенерации фотографий поставлена в очередь. Фотографии будут обновлены в ближайшее время.');
+                        btn.prop('disabled', false).text('Регенерировать фотографии');
+                    } else {
+                        alert('Произошла ошибка при постановке задачи в очередь.');
+                        btn.prop('disabled', false).text('Регенерировать фотографии');
+                    }
+                },
+                error: function(xhr) {
+                    alert('Произошла ошибка: ' + (xhr.responseJSON?.message || 'Неизвестная ошибка'));
+                    btn.prop('disabled', false).text('Регенерировать фотографии');
                 }
             });
         });
