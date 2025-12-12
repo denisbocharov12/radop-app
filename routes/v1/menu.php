@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth'])->prefix('admin/menus')->name('admin.menus.')->group(function () {
+Route::middleware(['auth'])->prefix('menus')->name('admin.menus.')->group(function () {
     // Menu CRUD
     Route::get('/', [AdminMenuController::class, 'index'])->name('index');
     Route::get('/create', [AdminMenuController::class, 'create'])->name('create');
@@ -34,6 +34,9 @@ Route::middleware(['auth'])->prefix('admin/menus')->name('admin.menus.')->group(
 
     // Menu Preview (AJAX)
     Route::get('/{id}/preview', [AdminMenuController::class, 'preview'])->name('preview');
+
+    // Get Categories for autocomplete (AJAX)
+    Route::get('/categories/list', [AdminMenuController::class, 'getCategories'])->name('categories.list');
 
     // Cache Management
     Route::post('/cache/clear', [AdminMenuController::class, 'clearCache'])->name('cache.clear');

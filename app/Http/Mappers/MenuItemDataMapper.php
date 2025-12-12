@@ -24,6 +24,23 @@ final class MenuItemDataMapper
             (bool) ($request->is_active ?? true)
         );
     }
+    
+    public function mapFromRequestToArray(MenuItemRequest $request, int $menuId, int $order = 0): array
+    {
+        return [
+            'menu_id' => $menuId,
+            'parent_id' => $request->parent_id ? (int) $request->parent_id : null,
+            'order' => (int) ($request->order ?? $order),
+            'type' => $request->type,
+            'title' => $request->title,
+            'link' => $request->link,
+            'target' => $request->target ?? '_self',
+            'icon_class' => $request->icon_class,
+            'category_id' => $request->category_id,
+            'content_data' => $request->content_data,
+            'is_active' => (bool) ($request->is_active ?? true),
+        ];
+    }
 
     public function mapToArray(MenuItemData $data): array
     {

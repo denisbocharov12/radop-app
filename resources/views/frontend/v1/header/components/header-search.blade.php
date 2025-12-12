@@ -9,21 +9,28 @@
             </a>
         </div>
         <div class="btn-header-catalog-wrap">
-            <button id="btn-header-catalog" class="btn-header-catalog">
-                <span class="animated-burger-icon"></span>
-                <span class="btn-header-catalog-text">{{__('theme.header-catalog-text')}}</span>
-            </button>
-            <div class="row row-menu row-header-catalog row-header-catalog-wrap">
-                <div class="header-catalog" id="header-catalog-action">
-                    <div class="row row-header-catalog">
-                        @if(!empty($themeParentCategories))
-                            @foreach($themeParentCategories->sortBy('catalog_order') as $parentCategory)
-                                @include('frontend.v1.header.components.header-catalog-item', $parentCategory)
-                            @endforeach
-                        @endif
+            @php
+                $mainMenu = app('App\Services\MenuRenderService')->getMenuData('main_menu');
+            @endphp
+            @if($mainMenu && $mainMenu->is_active && $mainMenu->rootItems->isNotEmpty())
+                @renderMenu('main_menu')
+            @else
+                <button id="btn-header-catalog" class="btn-header-catalog">
+                    <span class="animated-burger-icon"></span>
+                    <span class="btn-header-catalog-text">{{__('theme.header-catalog-text')}}</span>
+                </button>
+                <div class="row row-menu row-header-catalog row-header-catalog-wrap">
+                    <div class="header-catalog" id="header-catalog-action">
+                        <div class="row row-header-catalog">
+                            @if(!empty($themeParentCategories))
+                                @foreach($themeParentCategories->sortBy('catalog_order') as $parentCategory)
+                                    @include('frontend.v1.header.components.header-catalog-item', $parentCategory)
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="sticky-search-wrapper">
             <form action="{{route('theme.search.index')}}" method="GET" class="form-with-history">

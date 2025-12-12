@@ -34,6 +34,7 @@ return array (
     'categories' => 'Категории',
     'show-all-categories' => 'Показать все категории',
     'hide-categories' => 'Скрыть категории',
+    'no-subcategories' => 'Нет подкатегорий',
     'check-email' => '',
     'chisinau' => 'Кишинёв',
     'client' => 'Клиент',

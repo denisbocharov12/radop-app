@@ -311,13 +311,24 @@ class MenuHierarchyService
     protected function flattenMenuItems($items, array &$result, int $depth = 0): void
     {
         foreach ($items as $item) {
+            $titleRaw = $item->getRawOriginal('title');
+            $linkRaw = $item->getRawOriginal('link');
+            
+            $title = is_array(json_decode($titleRaw, true)) 
+                ? $item->getTranslation('title', 'ru') 
+                : ($titleRaw ?? '');
+            
+            $link = is_array(json_decode($linkRaw, true)) 
+                ? $item->getTranslation('link', 'ru') 
+                : ($linkRaw ?? '');
+
             $result[] = [
                 'id' => $item->id,
                 'parent_id' => $item->parent_id,
                 'order' => $item->order,
-                'title' => $item->title,
+                'title' => $title,
                 'type' => $item->type,
-                'link' => $item->link,
+                'link' => $link,
                 'is_active' => $item->is_active,
                 'depth' => $depth,
             ];
@@ -340,9 +351,15 @@ class MenuHierarchyService
     {
         $rules = [
             'code' => $isUpdate ? 'sometimes|string|max:255|unique:menus,code,' . ($data['id'] ?? 0) : 'required|string|max:255|unique:menus,code',
-            'name' => 'required|string|max:255',
-            'link' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'name' => 'required|array',
+            'name.ro' => 'required|string|max:255',
+            'name.ru' => 'required|string|max:255',
+            'link' => 'nullable|array',
+            'link.ro' => 'nullable|string|max:255',
+            'link.ru' => 'nullable|string|max:255',
+            'description' => 'nullable|array',
+            'description.ro' => 'nullable|string',
+            'description.ru' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
         ];
 
@@ -367,11 +384,16 @@ class MenuHierarchyService
             'menu_id' => $isUpdate ? 'sometimes|exists:menus,id' : 'required|exists:menus,id',
             'parent_id' => 'nullable|exists:menu_items,id',
             'order' => 'sometimes|integer|min:0',
-            'type' => 'required|in:category,custom_link,promo_block',
-            'title' => 'required|string|max:255',
-            'link' => 'nullable|string|max:255',
+            'type' => 'required|in:category,custom_link,promo_block,widget_link',
+            'title' => 'required|array',
+            'title.ro' => 'required|string|max:255',
+            'title.ru' => 'required|string|max:255',
+            'link' => 'nullable|array',
+            'link.ro' => 'nullable|string|max:255',
+            'link.ru' => 'nullable|string|max:255',
             'target' => 'sometimes|string|in:_self,_blank,_parent,_top',
             'icon_class' => 'nullable|string|max:255',
+            'category_id' => 'nullable|string|max:255',
             'content_data' => 'nullable|array',
             'is_active' => 'sometimes|boolean',
         ];

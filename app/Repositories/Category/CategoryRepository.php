@@ -152,6 +152,33 @@ class CategoryRepository
         return Category::query()->where('name', $name)->first();
     }
 
+    /**
+     * Получить активные категории для меню (с ссылками)
+     *
+     * @return Collection
+     */
+    public function getActiveCategoriesForMenu(): Collection
+    {
+        return Category::select('onec_id', 'name', 'parent_id')
+            ->where('status', true)
+            ->orderBy('catalog_order')
+            ->get()
+            ->map(function ($category) {
+                $nameRaw = $category->getRawOriginal('name');
+                $nameIsArray = is_array(json_decode($nameRaw, true));
+                
+                return [
+                    'id' => $category->onec_id,
+                    'name' => $category->name,
+                    'name_ro' => $nameIsArray ? $category->getTranslation('name', 'ro') : ($nameRaw ?? ''),
+                    'name_ru' => $nameIsArray ? $category->getTranslation('name', 'ru') : ($nameRaw ?? ''),
+                    'link' => route('theme.category.index', $category->onec_id),
+                    'link_ro' => route('theme.category.index', $category->onec_id),
+                    'link_ru' => route('theme.category.index', $category->onec_id),
+                ];
+            });
+    }
+
     public function getAllByCategoryOnecId(Category $category): ?Collection
     {
         $query = $category->products();

@@ -986,4 +986,5 @@
 
     });
 </script>
+<script src="{{asset('/v1/frontend/assets')}}/js/mega-menu.js"></script>
 @yield('scripts')

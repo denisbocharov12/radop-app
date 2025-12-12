@@ -28,4 +28,5 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.css" />
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.51" />
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css?v1.2.51" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css" />
 </head>

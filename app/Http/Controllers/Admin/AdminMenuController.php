@@ -13,6 +13,8 @@ use App\Http\Requests\Menu\MenuHierarchyUpdateRequest;
 use App\Http\Requests\Menu\MenuItemDeleteRequest;
 use App\Http\Requests\Menu\MenuItemRequest;
 use App\Http\Requests\Menu\MenuRequest;
+use App\Repositories\Category\CategoryRepository;
+use App\Services\Menu\MenuManager;
 use App\Services\MenuHierarchyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -25,6 +27,11 @@ final class AdminMenuController extends Controller
     protected MenuHierarchyService $menuHierarchyService;
 
     /**
+     * @var MenuManager
+     */
+    protected MenuManager $menuManager;
+
+    /**
      * @var MenuDataMapper
      */
     protected MenuDataMapper $menuDataMapper;
@@ -35,21 +42,32 @@ final class AdminMenuController extends Controller
     protected MenuItemDataMapper $menuItemDataMapper;
 
     /**
+     * @var CategoryRepository
+     */
+    protected CategoryRepository $categoryRepository;
+
+    /**
      * AdminMenuController constructor.
      *
      * @param MenuHierarchyService $menuHierarchyService
+     * @param MenuManager $menuManager
      * @param MenuDataMapper $menuDataMapper
      * @param MenuItemDataMapper $menuItemDataMapper
+     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         MenuHierarchyService $menuHierarchyService,
+        MenuManager $menuManager,
         MenuDataMapper $menuDataMapper,
-        MenuItemDataMapper $menuItemDataMapper
+        MenuItemDataMapper $menuItemDataMapper,
+        CategoryRepository $categoryRepository
     )
     {
         $this->menuHierarchyService = $menuHierarchyService;
+        $this->menuManager = $menuManager;
         $this->menuDataMapper = $menuDataMapper;
         $this->menuItemDataMapper = $menuItemDataMapper;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -83,15 +101,7 @@ final class AdminMenuController extends Controller
     public function store(MenuRequest $request)
     {
         try {
-            $menuData = $this->menuDataMapper->mapFromRequestToNormalized($request);
-
-            $menu = $this->menuHierarchyService->createMenu([
-                'code' => $menuData->code,
-                'name' => $menuData->name,
-                'link' => $menuData->link,
-                'description' => $menuData->description,
-                'is_active' => $menuData->is_active,
-            ]);
+            $menu = $this->menuManager->store($request);
 
             return redirect()
                 ->route('admin.menus.edit', $menu->id)
@@ -125,6 +135,21 @@ final class AdminMenuController extends Controller
             $query->with('allChildren')->orderBy('order');
         }]);
 
+        // Загружаем медиа для всех элементов меню
+        if ($menu->rootItems) {
+            $menu->rootItems->load('media');
+            foreach ($menu->rootItems as $item) {
+                if ($item->allChildren) {
+                    $item->allChildren->load('media');
+                    foreach ($item->allChildren as $child) {
+                        if ($child->allChildren) {
+                            $child->allChildren->load('media');
+                        }
+                    }
+                }
+            }
+        }
+
         $flatMenuItems = $this->menuHierarchyService->getMenuAsFlatArray($menu->code);
 
         return view('menu.edit', compact('menu', 'flatMenuItems'));
@@ -140,15 +165,7 @@ final class AdminMenuController extends Controller
     public function update(MenuRequest $request, int $id)
     {
         try {
-            $menuData = $this->menuDataMapper->mapFromRequestToNormalized($request);
-
-            $this->menuHierarchyService->updateMenu($id, [
-                'code' => $menuData->code,
-                'name' => $menuData->name,
-                'link' => $menuData->link,
-                'description' => $menuData->description,
-                'is_active' => $menuData->is_active,
-            ]);
+            $this->menuManager->update($request, $id);
 
             return back()->with('success', __('theme.menu.updated_successfully'));
         } catch (ValidationException $e) {
@@ -200,8 +217,9 @@ final class AdminMenuController extends Controller
         }]);
 
         $parentOptions = MenuHelper::buildSelectOptions($menu->rootItems);
+        $categories = $this->categoryRepository->getActiveCategoriesForMenu();
 
-        return view('menu.items.create', compact('menu', 'parentOptions'));
+        return view('menu.items.create', compact('menu', 'parentOptions', 'categories'));
     }
 
     /**
@@ -214,10 +232,7 @@ final class AdminMenuController extends Controller
     public function storeItem(MenuItemRequest $request, int $menuId)
     {
         try {
-            $menuItemData = $this->menuItemDataMapper->mapFromRequestToNormalized($request, $menuId);
-            $data = $this->menuItemDataMapper->mapToArray($menuItemData);
-
-            $this->menuHierarchyService->createMenuItem($data);
+            $this->menuManager->storeItem($request, $menuId);
 
             return redirect()
                 ->route('admin.menus.edit', $menuId)
@@ -254,13 +269,16 @@ final class AdminMenuController extends Controller
             abort(404, __('theme.menu_item.not_found'));
         }
 
+        $menuItem->loadMedia('menu_item_image');
+
         $menu->load(['rootItems' => function ($query) {
             $query->with('allChildren')->orderBy('order');
         }]);
 
         $parentOptions = MenuHelper::buildSelectOptions($menu->rootItems, $itemId);
+        $categories = $this->categoryRepository->getActiveCategoriesForMenu();
 
-        return view('menu.items.edit', compact('menu', 'menuItem', 'parentOptions'));
+        return view('menu.items.edit', compact('menu', 'menuItem', 'parentOptions', 'categories'));
     }
 
     /**
@@ -274,10 +292,7 @@ final class AdminMenuController extends Controller
     public function updateItem(MenuItemRequest $request, int $menuId, int $itemId)
     {
         try {
-            $menuItemData = $this->menuItemDataMapper->mapFromRequestToNormalized($request, $menuId);
-            $data = $this->menuItemDataMapper->mapToArray($menuItemData);
-
-            $this->menuHierarchyService->updateMenuItem($itemId, $data);
+            $this->menuManager->updateItem($request, $menuId, $itemId);
 
             return redirect()
                 ->route('admin.menus.edit', $menuId)
@@ -303,7 +318,7 @@ final class AdminMenuController extends Controller
     {
         try {
             $menuId = $request->route('menuId');
-            $itemId = $request->route('itemId');
+            $itemId = (int) $request->route('itemId');
 
             $this->menuHierarchyService->deleteMenuItem($itemId);
 
@@ -360,6 +375,18 @@ final class AdminMenuController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', __('theme.menu.cache_clear_failed'));
         }
+    }
+
+    /**
+     * Get categories for autocomplete (AJAX)
+     *
+     * @return JsonResponse
+     */
+    public function getCategories(): JsonResponse
+    {
+        $categories = $this->categoryRepository->getActiveCategoriesForMenu();
+
+        return response()->json($categories);
     }
 
     /**
