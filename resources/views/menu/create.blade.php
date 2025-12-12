@@ -17,7 +17,7 @@
                         </div>
                         <div class="card">
                             <div class="card-inner">
-                                <form action="{{route('admin.menus.store')}}" method="POST" class="form-validate is-alter">
+                                <form action="{{route('admin.menus.store')}}" method="POST" class="form-validate is-alter" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row g-gs">
                                         <div class="col-md-6">
@@ -34,10 +34,10 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="name">Название меню<span class="text-danger">*</span></label>
+                                                <label class="form-label" for="name_ro">Название меню (RO)<span class="text-danger">*</span></label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('name') error @enderror" id="name" name="name" value="{{old('name')}}" placeholder="Главное меню">
-                                                    @error('name')
+                                                    <input type="text" required class="form-control @error('name_ro') error @enderror" id="name_ro" name="name_ro" value="{{old('name_ro')}}" placeholder="Meniu principal">
+                                                    @error('name_ro')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                 </div>
@@ -45,10 +45,32 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="link">Ссылка</label>
+                                                <label class="form-label" for="name_ru">Название меню (RU)<span class="text-danger">*</span></label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('link') error @enderror" id="link" name="link" value="{{old('link')}}" placeholder="/catalog">
-                                                    @error('link')
+                                                    <input type="text" required class="form-control @error('name_ru') error @enderror" id="name_ru" name="name_ru" value="{{old('name_ru')}}" placeholder="Главное меню">
+                                                    @error('name_ru')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="link_ro">Ссылка (RO)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('link_ro') error @enderror" id="link_ro" name="link_ro" value="{{old('link_ro')}}" placeholder="/catalog">
+                                                    @error('link_ro')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="link_ru">Ссылка (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control @error('link_ru') error @enderror" id="link_ru" name="link_ru" value="{{old('link_ru')}}" placeholder="/catalog">
+                                                    @error('link_ru')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
                                                     <span class="form-note">Основная ссылка меню (необязательно)</span>
@@ -66,14 +88,37 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="description">Описание</label>
+                                                <label class="form-label" for="description_ro">Описание (RO)</label>
                                                 <div class="form-control-wrap">
-                                                    <textarea class="form-control no-resize @error('description') error @enderror" id="description" name="description" placeholder="Описание меню">{{old('description')}}</textarea>
-                                                    @error('description')
+                                                    <textarea class="form-control no-resize @error('description_ro') error @enderror" id="description_ro" name="description_ro" placeholder="Descrierea meniului">{{old('description_ro')}}</textarea>
+                                                    @error('description_ro')
                                                     <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
                                                     @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="description_ru">Описание (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea class="form-control no-resize @error('description_ru') error @enderror" id="description_ru" name="description_ru" placeholder="Описание меню">{{old('description_ru')}}</textarea>
+                                                    @error('description_ru')
+                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="menu_image">Изображение меню (PNG, SVG)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="file" class="form-control" id="menu_image" name="image" accept="image/png,image/svg+xml">
+                                                    <small class="form-text text-muted">Максимальный размер: 2MB. Форматы: PNG, SVG</small>
+                                                    <div id="menu-image-preview" style="min-height: 60px;">
+                                                        <img id="menu-image-preview-img" src="" alt="Preview" style="max-width: 100px; max-height: 100px; display: none; border: 1px solid #e5e9f2; border-radius: 4px; padding: 4px; margin-top: 8px;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,5 +137,31 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Превью изображения меню
+            const menuImageInput = document.getElementById('menu_image');
+            const menuImagePreview = document.getElementById('menu-image-preview-img');
+
+            if (menuImageInput && menuImagePreview) {
+                menuImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            menuImagePreview.src = e.target.result;
+                            menuImagePreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        menuImagePreview.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
 

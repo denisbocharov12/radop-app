@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
-final class Menu extends Model
+final class Menu extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia, HasTranslations;
 
     /**
      * The attributes that are mass assignable.
@@ -34,6 +38,8 @@ final class Menu extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public $translatable = ['name', 'description', 'link'];
 
     /**
      * Получить все элементы меню
@@ -81,5 +87,14 @@ final class Menu extends Model
     {
         return $query->where('code', $code);
     }
-}
 
+    /**
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('menu_image')
+            ->acceptsMimeTypes(['image/png', 'image/svg+xml'])
+            ->singleFile();
+    }
+}

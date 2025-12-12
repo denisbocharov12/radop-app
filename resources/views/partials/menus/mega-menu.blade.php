@@ -1,50 +1,80 @@
 @if($menu && $menu->is_active && $menu->rootItems->isNotEmpty())
+@php
+    $locale = app()->getLocale();
+    $nameRaw = $menu->getRawOriginal('name');
+    $menuName = is_array(json_decode($nameRaw, true))
+        ? $menu->getTranslation('name', $locale)
+        : ($nameRaw ?? '');
+    $linkRaw = $menu->getRawOriginal('link');
+    $menuLink = is_array(json_decode($linkRaw, true))
+        ? $menu->getTranslation('link', $locale)
+        : ($linkRaw ?? '');
+@endphp
 <div class="mega-menu {{ $cssClass ?? '' }}" data-menu-code="{{ $code ?? '' }}">
-    @if($menu->link)
-        <a href="{{ $menu->link }}" class="mega-menu__trigger" data-mega-menu-toggle>
-            {{ $menu->name }}
-            <span class="mega-menu__trigger-icon"></span>
+    @if($menuLink)
+        <a href="{{ $menuLink }}" id="btn-header-catalog" class="btn-header-catalog" data-mega-menu-toggle>
+{{--            <span class="animated-burger-icon"></span>--}}
+            <span class="btn-header-catalog-text">{{ $menuName }}</span>
         </a>
     @else
-        <button type="button" class="mega-menu__trigger" data-mega-menu-toggle>
-            {{ $menu->name }}
-            <span class="mega-menu__trigger-icon"></span>
+        <button id="btn-header-catalog" class="btn-header-catalog" data-mega-menu-toggle>
+{{--            <span class="animated-burger-icon"></span>--}}
+            <span class="btn-header-catalog-text">{{ $menuName }}</span>
         </button>
     @endif
 
     <div class="mega-menu__overlay" data-mega-menu-overlay></div>
-    
+
     <div class="mega-menu__dropdown" data-mega-menu-dropdown>
         <div class="mega-menu__container">
             <div class="mega-menu__sidebar">
-                <div class="mega-menu__sidebar-header">
-                    <h3 class="mega-menu__sidebar-title">{{ $menu->name }}</h3>
-                    <button type="button" class="mega-menu__close" data-mega-menu-close>
-                        <i class="fa fa-times"></i>
+                <div class="mega-menu__sidebar-header" data-mega-menu-close>
+                    <h3 class="mega-menu__sidebar-title">{{ $menuName }}</h3>
+                    <button type="button" class="mega-menu__close">
+                        <span class="mega-menu__close-icon"></span>
                     </button>
                 </div>
                 <ul class="mega-menu__sidebar-list">
-                    @foreach($menu->rootItems as $index => $item)
-                        <li class="mega-menu__sidebar-item @if($index === 0) mega-menu__sidebar-item--active @endif" 
+                    @foreach($menu->rootItems->where('type', '!=', 'widget_link') as $index => $item)
+                        @php
+                            $itemTitle = $item->getTranslation('title', $locale);
+                            $itemLink = $item->getTranslation('link', $locale);
+                        @endphp
+                        <li class="mega-menu__sidebar-item @if($index === 0) mega-menu__sidebar-item--active @endif"
                             data-category-id="{{ $item->id }}">
-                            <a href="{{ $item->link ?? '#' }}" class="mega-menu__sidebar-link">
-                                @if($item->icon_class)
-                                    <i class="{{ $item->icon_class }} mega-menu__sidebar-icon"></i>
+                            <a href="{{ $itemLink ?? '#' }}" class="mega-menu__sidebar-link">
+                                @php
+                                    $itemImage = $item->getFirstMedia('menu_item_image');
+                                @endphp
+                                @if($itemImage)
+                                    <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__sidebar-icon">
                                 @endif
-                                <span class="mega-menu__sidebar-text">{{ $item->title }}</span>
+                                <span class="mega-menu__sidebar-text">{{ $itemTitle }}</span>
                             </a>
                         </li>
                     @endforeach
                 </ul>
             </div>
             <div class="mega-menu__content">
-                @foreach($menu->rootItems as $index => $item)
-                    <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif" 
+                @php
+                    $widgetItems = $menu->rootItems->where('type', 'widget_link');
+                    $categoryItems = $menu->rootItems->where('type', '!=', 'widget_link');
+                @endphp
+                @if($widgetItems->isNotEmpty())
+                    <div class="mega-menu__widgets">
+                        @foreach($widgetItems as $widget)
+                            @include('partials.menus.mega-menu-widget', ['widget' => $widget])
+                        @endforeach
+                    </div>
+                @endif
+                @foreach($categoryItems as $index => $item)
+                    <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
                          data-category-panel="{{ $item->id }}">
-                        @if($item->children && $item->children->isNotEmpty())
+                        @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
                             <div class="mega-menu__columns">
                                 @php
-                                    $columns = $item->children->chunk(ceil($item->children->count() / 3));
+                                    $regularChildren = $item->children->where('type', '!=', 'widget_link');
+                                    $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
                                 @endphp
                                 @foreach($columns as $column)
                                     <div class="mega-menu__column">
@@ -56,7 +86,7 @@
                             </div>
                         @else
                             <div class="mega-menu__empty">
-                                <p>Нет подкатегорий</p>
+                                <p>{{ __('theme.no-subcategories') }}</p>
                             </div>
                         @endif
                     </div>

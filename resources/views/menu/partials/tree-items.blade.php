@@ -6,10 +6,17 @@
                     <em class="icon ni ni-menu"></em>
                 </div>
                 <div class="menu-item-info">
-                    @if($item->icon_class)
-                        <i class="{{ $item->icon_class }} menu-item-icon"></i>
+                    @php
+                        $itemImage = $item->getFirstMedia('menu_item_image');
+                    @endphp
+                    @php
+                        $locale = app()->getLocale();
+                        $itemTitle = $item->getTranslation('title', $locale);
+                    @endphp
+                    @if($itemImage)
+                        <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="menu-item-icon" style="width: 20px; height: 20px; object-fit: contain; margin-right: 8px;">
                     @endif
-                    <span class="menu-item-title">{{ $item->title }}</span>
+                    <span class="menu-item-title">{{ $itemTitle }}</span>
                     <span class="badge bg-info ms-2">{{ $item->type }}</span>
                     @if(!$item->is_active)
                         <span class="badge bg-secondary ms-1">Неактивен</span>

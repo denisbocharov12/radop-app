@@ -2,6 +2,7 @@
 
 return [
     'product_code_copied' => 'Product code copied to clipboard',
+    'no-subcategories' => 'No subcategories',
 
     'menu' => [
         'created_successfully' => 'Menu created successfully',

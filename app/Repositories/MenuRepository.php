@@ -40,7 +40,14 @@ final class MenuRepository implements MenuRepositoryInterface
      */
     public function findMenuById(int $id): ?Menu
     {
-        return Menu::find($id);
+        $menu = Menu::find($id);
+        
+        if ($menu) {
+            // Загружаем медиа для меню
+            $menu->loadMedia('menu_image');
+        }
+        
+        return $menu;
     }
 
     /**
@@ -70,13 +77,25 @@ final class MenuRepository implements MenuRepositoryInterface
             $query->active();
         }
 
-        return $query->with(['rootItems' => function ($query) use ($onlyActive) {
+        $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
             if ($onlyActive) {
                 $query->active();
             }
-            // Рекурсивная загрузка дочерних элементов через отношение children
-            $query->with('children');
+            
+            $query->with('children')->orderBy('order');
         }])->first();
+        
+        if ($menu && $menu->rootItems) {
+            // Загружаем медиа для всех элементов меню
+            $menu->rootItems->load('media');
+            foreach ($menu->rootItems as $item) {
+                if ($item->children) {
+                    $item->children->load('media');
+                }
+            }
+        }
+        
+        return $menu;
     }
 
     /**
@@ -133,7 +152,14 @@ final class MenuRepository implements MenuRepositoryInterface
      */
     public function findMenuItemById(int $id): ?MenuItem
     {
-        return MenuItem::with(['menu', 'parent', 'children'])->find($id);
+        $menuItem = MenuItem::with(['menu', 'parent', 'children'])->find($id);
+        
+        if ($menuItem) {
+            // Загружаем медиа для элемента меню
+            $menuItem->loadMedia('menu_item_image');
+        }
+        
+        return $menuItem;
     }
 
     /**

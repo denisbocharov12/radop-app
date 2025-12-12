@@ -34,6 +34,7 @@ return array (
     'categories' => 'Categorii',
     'show-all-categories' => 'Arată toate categoriile',
     'hide-categories' => 'Ascunde categoriile',
+    'no-subcategories' => 'Nu există subcategorii',
     'check-email' => 'Verificați email-ul cu detaliile comenzii. În scurt timp veti fi contactat de un operator.',
     'chisinau' => 'Chișinău',
     'client' => 'Client',

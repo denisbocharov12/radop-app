@@ -19,10 +19,22 @@
                     </div>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{ $menu->name }}</span>
+                    @php
+                        $nameRaw = $menu->getRawOriginal('name');
+                        $menuName = is_array(json_decode($nameRaw, true)) 
+                            ? $menu->getTranslation('name', app()->getLocale()) 
+                            : ($nameRaw ?? '');
+                    @endphp
+                    <span>{{ $menuName }}</span>
                 </div>
                 <div class="nk-tb-col tb-col-md">
-                    <span class="tb-sub text-primary">{{ $menu->link ?? '—' }}</span>
+                    @php
+                        $linkRaw = $menu->getRawOriginal('link');
+                        $menuLink = is_array(json_decode($linkRaw, true)) 
+                            ? $menu->getTranslation('link', app()->getLocale()) 
+                            : ($linkRaw ?? '—');
+                    @endphp
+                    <span class="tb-sub text-primary">{{ $menuLink }}</span>
                 </div>
                 <div class="nk-tb-col tb-col-md">
                     <span class="badge badge-dim bg-outline-info">{{ $menu->items->count() }}</span>
