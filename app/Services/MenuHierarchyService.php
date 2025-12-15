@@ -125,8 +125,6 @@ class MenuHierarchyService
      */
     public function updateMenu(int $menuId, array $data): bool
     {
-        $this->validateMenuData($data, true);
-
         $menu = $this->menuRepository->findMenuById($menuId);
 
         if (!$menu) {
@@ -313,13 +311,13 @@ class MenuHierarchyService
         foreach ($items as $item) {
             $titleRaw = $item->getRawOriginal('title');
             $linkRaw = $item->getRawOriginal('link');
-            
-            $title = is_array(json_decode($titleRaw, true)) 
-                ? $item->getTranslation('title', 'ru') 
+
+            $title = is_array(json_decode($titleRaw, true))
+                ? $item->getTranslation('title', 'ru')
                 : ($titleRaw ?? '');
-            
-            $link = is_array(json_decode($linkRaw, true)) 
-                ? $item->getTranslation('link', 'ru') 
+
+            $link = is_array(json_decode($linkRaw, true))
+                ? $item->getTranslation('link', 'ru')
                 : ($linkRaw ?? '');
 
             $result[] = [

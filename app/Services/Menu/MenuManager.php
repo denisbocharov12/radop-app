@@ -72,22 +72,40 @@ final class MenuManager
             $menu->clearMediaCollection('menu_image');
         }
 
-        $this->menuHierarchyService->updateMenu($id, [
-            'code' => $request->code,
-            'name' => [
-                'ro' => $request->name_ro,
-                'ru' => $request->name_ru,
-            ],
-            'link' => [
-                'ro' => $request->link_ro,
-                'ru' => $request->link_ru,
-            ],
-            'description' => [
-                'ro' => $request->description_ro,
-                'ru' => $request->description_ru,
-            ],
-            'is_active' => $request->is_active ?? true,
-        ]);
+        if ($request->code !== $menu->code) {
+            $this->menuHierarchyService->updateMenu($id, [
+                'code' => $request->code,
+                'name' => [
+                    'ro' => $request->name_ro,
+                    'ru' => $request->name_ru,
+                ],
+                'link' => [
+                    'ro' => $request->link_ro,
+                    'ru' => $request->link_ru,
+                ],
+                'description' => [
+                    'ro' => $request->description_ro,
+                    'ru' => $request->description_ru,
+                ],
+                'is_active' => $request->is_active ?? true,
+            ]);
+        } else {
+            $this->menuHierarchyService->updateMenu($id, [
+                'name' => [
+                    'ro' => $request->name_ro,
+                    'ru' => $request->name_ru,
+                ],
+                'link' => [
+                    'ro' => $request->link_ro,
+                    'ru' => $request->link_ru,
+                ],
+                'description' => [
+                    'ro' => $request->description_ro,
+                    'ru' => $request->description_ru,
+                ],
+                'is_active' => $request->is_active ?? true,
+            ]);
+        }
 
         $menu = $this->menuHierarchyService->findMenuById($id);
 

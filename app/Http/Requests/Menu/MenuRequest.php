@@ -28,7 +28,6 @@ final class MenuRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('menus', 'code')->ignore($menuId)
             ],
             'name_ro' => ['required', 'string', 'max:255'],
             'name_ru' => ['required', 'string', 'max:255'],
