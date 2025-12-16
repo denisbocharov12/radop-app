@@ -132,7 +132,7 @@ final class UserRepository
 
     public function getManagers(): ?Collection
     {
-        return User::role('manager')->get();
+        return User::role('manager')->with('profile')->get();
     }
 
     public function getAllTypes(): ?Collection

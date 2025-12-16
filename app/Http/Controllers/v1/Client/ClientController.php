@@ -107,13 +107,15 @@ class ClientController extends Controller
         $roles = $this->userRepository->getAllRoles();
         $userTypes = $this->userRepository->getAllUserTypes();
         $cities = $this->cityRepository->getAllSorted();
+        $managers = $this->userRepository->getManagers();
 
         return view('client.edit', compact([
             'roles',
             'userTypes',
             'user',
             'users',
-            'cities'
+            'cities',
+            'managers'
         ]));
     }
 

@@ -3,35 +3,25 @@
     $widgetImage = $widget->getFirstMedia('menu_item_image');
     $widgetTitle = $widget->getTranslation('title', $locale);
     $widgetLink = $widget->getTranslation('link', $locale);
+    $colorClasses = ['mega-menu__widget--yellow', 'mega-menu__widget--red', 'mega-menu__widget--green', 'mega-menu__widget--blue'];
+    $widgetIndex = $widgetIndex ?? 0;
+    $colorIndex = $widgetIndex % 4;
+    $colorClass = $colorClasses[$colorIndex];
 @endphp
-<div class="mega-menu__widget">
+<div class="mega-menu__widget {{ $colorClass }}">
     @if($widgetLink)
         <a href="{{ $widgetLink }}" class="mega-menu__widget-link" target="{{ $widget->target ?? '_self' }}">
             @if($widgetImage)
-                <div class="mega-menu__widget-image">
-                    <img src="{{ $widgetImage->getUrl() }}" alt="{{ $widgetTitle }}">
-                </div>
+                <img src="{{ $widgetImage->getUrl() }}" alt="{{ $widgetTitle }}" class="mega-menu__widget-icon">
             @endif
-            <div class="mega-menu__widget-content">
-                <h4 class="mega-menu__widget-title">{{ $widgetTitle }}</h4>
-                @if($widget->content_data && isset($widget->content_data['description']))
-                    <p class="mega-menu__widget-description">{{ $widget->content_data['description'] }}</p>
-                @endif
-            </div>
+            <span class="mega-menu__widget-text">{{ $widgetTitle }}</span>
         </a>
     @else
         <div class="mega-menu__widget-link">
             @if($widgetImage)
-                <div class="mega-menu__widget-image">
-                    <img src="{{ $widgetImage->getUrl() }}" alt="{{ $widgetTitle }}">
-                </div>
+                <img src="{{ $widgetImage->getUrl() }}" alt="{{ $widgetTitle }}" class="mega-menu__widget-icon">
             @endif
-            <div class="mega-menu__widget-content">
-                <h4 class="mega-menu__widget-title">{{ $widgetTitle }}</h4>
-                @if($widget->content_data && isset($widget->content_data['description']))
-                    <p class="mega-menu__widget-description">{{ $widget->content_data['description'] }}</p>
-                @endif
-            </div>
+            <span class="mega-menu__widget-text">{{ $widgetTitle }}</span>
         </div>
     @endif
 </div>

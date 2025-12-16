@@ -17,6 +17,7 @@ use App\Services\Theme\Order\ThemeOrderManager;
 use App\Services\Theme\Product\ThemeProductManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 final class ThemeOrderController extends Controller
@@ -102,7 +103,11 @@ final class ThemeOrderController extends Controller
         }
     }
 
-    public function repeatOrder(Order $order)
+    /**
+     * @param Order $order
+     * @return RedirectResponse
+     */
+    public function repeatOrder(Order $order): RedirectResponse
     {
         $user = Auth::guard('user')->user();
 
@@ -116,11 +121,9 @@ final class ThemeOrderController extends Controller
             return redirect()->back()->withErrors(['order_not_found' => __('theme.order_not_found')]);
         }
 
-        $sessionId = config('shopping_cart.default_session_id');
+        $sessionId = $user->id ?? config('shopping_cart.default_session_id');
 
-        if ($user) {
-            $sessionId = $user->id;
-        }
+        \Cart::session($sessionId)->clear();
 
         foreach ($existedOrder->products as $orderItem) {
             $product = $orderItem->product;
