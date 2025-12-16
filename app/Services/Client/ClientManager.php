@@ -115,6 +115,7 @@ class ClientManager
             'sale' => (float)$clientData->sale,
             'city_id' => $clientData->cityId,
             'with_sale' => $withSale,
+            'manager_id' => $clientData->managerId,
         ]);
 
         $user->roles()->detach();

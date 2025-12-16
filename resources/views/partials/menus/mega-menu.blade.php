@@ -13,12 +13,12 @@
 <div class="mega-menu {{ $cssClass ?? '' }}" data-menu-code="{{ $code ?? '' }}">
     @if($menuLink)
         <a href="{{ $menuLink }}" id="btn-header-catalog" class="btn-header-catalog" data-mega-menu-toggle>
-{{--            <span class="animated-burger-icon"></span>--}}
+            <span class="animated-burger-icon"></span>
             <span class="btn-header-catalog-text">{{ $menuName }}</span>
         </a>
     @else
         <button id="btn-header-catalog" class="btn-header-catalog" data-mega-menu-toggle>
-{{--            <span class="animated-burger-icon"></span>--}}
+            <span class="animated-burger-icon"></span>
             <span class="btn-header-catalog-text">{{ $menuName }}</span>
         </button>
     @endif
@@ -62,8 +62,8 @@
                 @endphp
                 @if($widgetItems->isNotEmpty())
                     <div class="mega-menu__widgets">
-                        @foreach($widgetItems as $widget)
-                            @include('partials.menus.mega-menu-widget', ['widget' => $widget])
+                        @foreach($widgetItems->values() as $widget)
+                            @include('partials.menus.mega-menu-widget', ['widget' => $widget, 'widgetIndex' => $loop->index])
                         @endforeach
                     </div>
                 @endif

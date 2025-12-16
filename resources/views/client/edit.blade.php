@@ -160,6 +160,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Менеджер</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select js-select2" data-search="on" name="manager_id" id="manager_id" data-placeholder="Выберите менеджера">
+                                                        <option value="">Без менеджера</option>
+                                                        @foreach($managers as $manager)
+                                                            <option value="{{$manager->id}}" {{$user->manager_id == $manager->id ? 'selected' : ''}}>
+                                                                    {{$manager->profile->first_name}} {{$manager->profile->last_name}}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                 <li>

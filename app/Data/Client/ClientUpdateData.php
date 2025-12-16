@@ -16,6 +16,7 @@ namespace App\Data\Client;
  * @property int $typeId
  * @property int $cityId
  * @property string $withSale
+ * @property int|null $managerId
  */
 class ClientUpdateData
 {
@@ -35,6 +36,7 @@ class ClientUpdateData
         public readonly ?string $sale,
         public readonly int $cityId,
         public readonly ?string $withSale,
+        public readonly ?int $managerId,
     ) {
     }
 }
