@@ -33,6 +33,3 @@ final class CleanupManagerExportsCommand extends Command
         $this->info("Успешно удалено файлов: {$deletedCount} из " . count($files));
     }
 }
-
-
-

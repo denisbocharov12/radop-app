@@ -161,22 +161,58 @@ class CategoryRepository
     {
         return Category::select('onec_id', 'name', 'parent_id')
             ->where('status', true)
-            ->orderBy('catalog_order')
             ->get()
             ->map(function ($category) {
                 $nameRaw = $category->getRawOriginal('name');
-                $nameIsArray = is_array(json_decode($nameRaw, true));
+                
+                $nameRo = '';
+                $nameRu = '';
+                
+                if (is_string($nameRaw) && !empty($nameRaw)) {
+                    $decodedName = json_decode($nameRaw, true);
+                    if (is_array($decodedName) && array_key_exists('ro', $decodedName) && array_key_exists('ru', $decodedName)) {
+                        $nameRo = $decodedName['ro'] ?? '';
+                        $nameRu = $decodedName['ru'] ?? '';
+                    } elseif (is_array($decodedName)) {
+                        $nameRo = $decodedName['ro'] ?? '';
+                        $nameRu = $decodedName['ru'] ?? '';
+                    } else {
+                        try {
+                            $nameRo = $category->getTranslation('name', 'ro', false);
+                            $nameRu = $category->getTranslation('name', 'ru', false);
+                        } catch (\Exception $e) {
+                            $nameRo = '';
+                            $nameRu = '';
+                        }
+                        
+                        if (empty($nameRo) && !empty($nameRu)) {
+                            $nameRo = $nameRu;
+                        }
+                        if (empty($nameRu) && !empty($nameRo)) {
+                            $nameRu = $nameRo;
+                        }
+                        if (empty($nameRo) && empty($nameRu)) {
+                            $nameRo = $nameRaw;
+                            $nameRu = $nameRaw;
+                        }
+                    }
+                }
                 
                 return [
                     'id' => $category->onec_id,
                     'name' => $category->name,
-                    'name_ro' => $nameIsArray ? $category->getTranslation('name', 'ro') : ($nameRaw ?? ''),
-                    'name_ru' => $nameIsArray ? $category->getTranslation('name', 'ru') : ($nameRaw ?? ''),
+                    'name_ro' => $nameRo,
+                    'name_ru' => $nameRu,
                     'link' => route('theme.category.index', $category->onec_id),
                     'link_ro' => route('theme.category.index', $category->onec_id),
                     'link_ru' => route('theme.category.index', $category->onec_id),
                 ];
-            });
+            })
+            ->sortBy(function ($item) {
+                $locale = app()->getLocale();
+                return $item['name_' . $locale] ?? $item['name'] ?? '';
+            })
+            ->values();
     }
 
     public function getAllByCategoryOnecId(Category $category): ?Collection

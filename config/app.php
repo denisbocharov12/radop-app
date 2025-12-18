@@ -199,6 +199,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MenuServiceProvider::class,
         App\Providers\MenuViewServiceProvider::class,
+        App\Providers\HeaderMenuServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
