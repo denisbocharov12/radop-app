@@ -376,6 +376,12 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('admin.menus.create')}}" class="nk-menu-link"><span class="nk-menu-text">Создать меню</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.header-menus.index')}}" class="nk-menu-link"><span class="nk-menu-text">Шапка Меню</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('admin.header-menus.create')}}" class="nk-menu-link"><span class="nk-menu-text">Создать шапку меню</span></a>
+                            </li>
                             @endhasrole
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->

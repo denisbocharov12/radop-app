@@ -16,17 +16,24 @@
                         </a>
                     </div>
                 </div>
-                <div class="header-menu">
-                    <div class="header-main-menu">
-                        <ul class="menu w-100 justify-content-center">
-                            @if(!empty($themeParentCategories))
-                                @foreach($themeParentCategories as $parentCategory)
-                                    @include('frontend.v1.header.components.header-menu-item', $parentCategory)
-                                @endforeach
-                            @endif
-                        </ul>
+                @php
+                    $headerMenu = app('App\Services\HeaderMenuRenderService')->getHeaderMenuData('header_menu');
+                @endphp
+                @if($headerMenu && $headerMenu->is_active && $headerMenu->rootItems->isNotEmpty())
+                    @renderHeaderMenu('header_menu')
+                @else
+                    <div class="header-menu">
+                        <div class="header-main-menu">
+                            <ul class="menu w-100 justify-content-center">
+                                @if(!empty($themeParentCategories))
+                                    @foreach($themeParentCategories as $parentCategory)
+                                        @include('frontend.v1.header.components.header-menu-item', $parentCategory)
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <div class="header-search col col-md col-xl col-lg">
                     <div class="wrap wrap-with-history">
                         <form action="{{route('theme.search.index')}}" method="GET">

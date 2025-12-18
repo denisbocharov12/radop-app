@@ -77,8 +77,11 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="category_id">Категория (для автозаполнения)</label>
                                                 <div class="form-control-wrap">
-                                                    <select class="form-select" name="category_id" id="category_id" data-placeholder="Выберите категорию">
+                                                    <select class="form-select js-select2" name="category_id" id="category_id" data-placeholder="Выберите категорию" data-search="true">
                                                         <option value="">Выберите категорию</option>
+                                                        @if($menuItem->category_id)
+                                                            <option value="{{ $menuItem->category_id }}" selected>{{ $menuItem->category_id }}</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>
@@ -325,6 +328,60 @@
 
                         console.log('Категории добавлены в селект. Всего опций:', categorySelect.options.length);
 
+                        // Инициализируем select2 с поиском
+                        if (typeof $ !== 'undefined' && $.fn.select2) {
+                            $(categorySelect).select2({
+                                placeholder: 'Выберите категорию',
+                                allowClear: true,
+                                language: {
+                                    noResults: function() {
+                                        return 'Категории не найдены';
+                                    },
+                                    searching: function() {
+                                        return 'Поиск...';
+                                    }
+                                }
+                            }).on('select2:select', function(e) {
+                                const selectedValue = $(this).val();
+                                console.log('Select2 выбрано значение:', selectedValue);
+                                
+                                const category = categories.find(cat => String(cat.id) === String(selectedValue));
+                                console.log('Найденная категория для автозаполнения:', category);
+                                
+                                if (category) {
+                                    titleRoInput.value = category.name_ro || '';
+                                    titleRuInput.value = category.name_ru || category.name || '';
+                                    linkRoInput.value = category.link_ro || category.link || '';
+                                    linkRuInput.value = category.link_ru || category.link || '';
+                                    console.log('Автозаполнение из массива:', {
+                                        name_ro: category.name_ro,
+                                        name_ru: category.name_ru,
+                                        link_ro: category.link_ro,
+                                        link_ru: category.link_ru
+                                    });
+                                } else {
+                                    const selectedOption = $(this).find('option:selected')[0];
+                                    if (selectedOption && selectedOption.dataset) {
+                                        titleRoInput.value = selectedOption.dataset.nameRo || '';
+                                        titleRuInput.value = selectedOption.dataset.nameRu || selectedOption.textContent.trim() || '';
+                                        linkRoInput.value = selectedOption.dataset.linkRo || '';
+                                        linkRuInput.value = selectedOption.dataset.linkRu || '';
+                                        console.log('Автозаполнение из option:', {
+                                            name_ro: selectedOption.dataset.nameRo,
+                                            name_ru: selectedOption.dataset.nameRu,
+                                            link_ro: selectedOption.dataset.linkRo,
+                                            link_ru: selectedOption.dataset.linkRu
+                                        });
+                                    }
+                                }
+                            }).on('select2:clear', function(e) {
+                                titleRoInput.value = '';
+                                titleRuInput.value = '';
+                                linkRoInput.value = '';
+                                linkRuInput.value = '';
+                            });
+                        }
+
                         categoriesLoading = false;
                     })
                     .catch(error => {
@@ -336,7 +393,7 @@
 
             // Функция автозаполнения при выборе категории
             function handleCategoryChange() {
-                const selectedValue = categorySelect.value;
+                const selectedValue = $(categorySelect).val() || categorySelect.value;
                 console.log('Выбрана категория:', selectedValue);
 
                 if (!selectedValue) {
@@ -363,7 +420,14 @@
                     });
                 } else {
                     // Fallback: берем данные из выбранного option
-                    const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                    let selectedOption = null;
+                    if (typeof $ !== 'undefined' && $(categorySelect).data('select2')) {
+                        // Если select2 инициализирован
+                        selectedOption = $(categorySelect).find('option:selected')[0];
+                    } else {
+                        // Обычный select
+                        selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                    }
                     if (selectedOption) {
                         titleRoInput.value = selectedOption.dataset.nameRo || '';
                         titleRuInput.value = selectedOption.dataset.nameRu || selectedOption.textContent.trim() || '';
@@ -412,6 +476,7 @@
 
             // Обработчики событий
             typeSelect.addEventListener('change', toggleCategorySelect);
+            // Обработчик для обычного select (если select2 не инициализирован)
             categorySelect.addEventListener('change', handleCategoryChange);
 
             // Превью изображения

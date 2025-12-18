@@ -17,7 +17,7 @@
                         </div>
                         <div class="card">
                             <div class="card-inner">
-                                <form action="{{route('admin.menus.items.store', $menu->id)}}" method="POST" class="form-validate is-alter" enctype="multipart/form-data">
+                                <form action="{{route('admin.header-menus.items.store', $menu->id)}}" method="POST" class="form-validate is-alter" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row g-gs">
                                         <div class="col-md-6">
@@ -152,7 +152,7 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <a href="{{ route('admin.menus.edit', $menu->id) }}" class="btn btn-secondary">Отмена</a>
+                                                <a href="{{ route('admin.header-menus.edit', $menu->id) }}" class="btn btn-secondary">Отмена</a>
                                                 <button type="submit" class="btn btn-primary">Создать элемент</button>
                                             </div>
                                         </div>
@@ -269,7 +269,7 @@
                 categoriesLoading = true;
                 console.log('Начинаем загрузку категорий...');
                 
-                fetch('{{ route("admin.menus.categories.list") }}')
+                fetch('{{ route("admin.header-menus.categories.list") }}')
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok: ' + response.status);

@@ -29,9 +29,12 @@ final class MenuViewServiceProvider extends ServiceProvider
             // Например, для header меню
         });
 
-        // Blade Directive для рендеринга меню по коду
         \Illuminate\Support\Facades\Blade::directive('renderMenu', function ($expression) {
             return "<?php echo app('App\Services\MenuRenderService')->render({$expression}); ?>";
+        });
+
+        \Illuminate\Support\Facades\Blade::directive('renderHeaderMenu', function ($expression) {
+            return "<?php echo app('App\Services\HeaderMenuRenderService')->render({$expression}); ?>";
         });
     }
 }

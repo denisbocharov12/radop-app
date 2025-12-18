@@ -79,7 +79,16 @@
     {{-- Recursive Children Rendering --}}
     @if($hasChildren)
         <ul class="mega-menu__list mega-menu__list--depth-{{ $depth + 1 }}">
-            @foreach($item->children as $child)
+            @php
+                $locale = app()->getLocale();
+            @endphp
+            @foreach($item->children->sortBy(function($child) use ($locale) {
+                $titleRaw = $child->getRawOriginal('title');
+                $title = is_array(json_decode($titleRaw, true))
+                    ? $child->getTranslation('title', $locale)
+                    : ($titleRaw ?? '');
+                return mb_strtolower($title);
+            }) as $child)
                 @include('partials.menus.mega-menu-item', ['item' => $child, 'depth' => $depth + 1])
             @endforeach
         </ul>
