@@ -782,40 +782,131 @@
                                             });
                                     };
 
-                                    const $rootSingleV2 = $(".product-slider-main-v2");
-                                    const $rootNavV2 = $(".product-slider-thumb-v2");
+                                    // Инициализация только для слайдеров внутри quick view модального окна
+                                    $modalContent.find(".product-slider-thumb-v2-wrapper").each(function() {
+                                        var $thumbWrapper = $(this);
+                                        var $galleryContainer = $thumbWrapper.closest('.gallery-v2-container');
+                                        var $wrapGallery = $galleryContainer.closest('.wrap-image-with-gallery');
+                                        var $rootNavV2 = $thumbWrapper.find('.product-slider-thumb-v2');
+                                        var $rootSingleV2 = $galleryContainer.find('.product-slider-main-v2');
+                                        
+                                        if ($rootNavV2.length === 0 || $rootSingleV2.length === 0) {
+                                            return;
+                                        }
 
-                                    if ($rootSingleV2.length > 0 && $rootNavV2.length > 0) {
-                                        const thumbs = document.querySelectorAll('.section-quick-view .product-slider-thumb-v2 .product-image-thumb');
-                                        const slides = document.querySelectorAll('.section-quick-view .product-slider-main-v2 .product-image');
+                                        // Проверяем, не инициализирован ли уже слайдер
+                                        if ($rootNavV2.hasClass('slick-initialized') || $rootSingleV2.hasClass('slick-initialized')) {
+                                            return;
+                                        }
 
-                                        thumbs.forEach((thumb, index) => {
-                                            const newThumb = thumb.cloneNode(true);
-                                            thumb.parentNode.replaceChild(newThumb, thumb);
-                                        });
+                                        var $arrowsContainer = $wrapGallery.find('.product-slider-thumb-v2-arrows');
 
-                                        const newThumbs = document.querySelectorAll('.section-quick-view .product-slider-thumb-v2 .product-image-thumb');
+                                        // Сначала инициализируем навигационный слайдер
+                                        var navSliderOptions = {
+                                            slidesToShow: 5,
+                                            slidesToScroll: 1,
+                                            arrows: true,
+                                            dots: false,
+                                            focusOnSelect: false,
+                                            infinite: false,
+                                            vertical: true,
+                                            verticalSwiping: true,
+                                            prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb-v2'></i>",
+                                            nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb-v2'></i>",
+                                            responsive: [
+                                                {
+                                                    breakpoint: 991,
+                                                    settings: {
+                                                        vertical: false,
+                                                        verticalSwiping: false,
+                                                        slidesToShow: 5,
+                                                        slidesToScroll: 1,
+                                                        arrows: true,
+                                                        dots: false
+                                                    }
+                                                },
+                                                {
+                                                    breakpoint: 575,
+                                                    settings: {
+                                                        vertical: false,
+                                                        verticalSwiping: false,
+                                                        slidesToShow: 4,
+                                                        slidesToScroll: 1,
+                                                        arrows: true,
+                                                        dots: false
+                                                    }
+                                                }
+                                            ]
+                                        };
 
-                                        newThumbs.forEach((thumb, index) => {
-                                            thumb.addEventListener('click', function(e) {
-                                                e.preventDefault();
-                                                e.stopPropagation();
+                                        if ($arrowsContainer.length > 0) {
+                                            navSliderOptions.appendArrows = $arrowsContainer;
+                                        }
 
-                                                newThumbs.forEach(t => t.classList.remove('active'));
-                                                slides.forEach(s => s.classList.remove('active'));
-
-                                                this.classList.add('active');
-                                                if (slides[index]) {
-                                                    slides[index].classList.add('active');
+                                        // Сначала инициализируем основной слайдер
+                                        $rootSingleV2
+                                            .off("afterChange.sliderV2")
+                                            .slick({
+                                                slidesToShow: 1,
+                                                slidesToScroll: 1,
+                                                arrows: false,
+                                                fade: false,
+                                                adaptiveHeight: true,
+                                                infinite: false,
+                                                useTransform: true,
+                                                speed: 400,
+                                                cssEase: "cubic-bezier(0.77, 0, 0.18, 1)"
+                                            })
+                                            .on("afterChange.sliderV2", function (event, slick, currentSlide) {
+                                                $rootNavV2.slick("slickGoTo", currentSlide);
+                                                $rootNavV2.find(".slick-slide").removeClass("is-active");
+                                                $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
+                                                var $activeNavSlide = $rootNavV2.find('.slick-slide[data-slick-index="' + currentSlide + '"]');
+                                                if ($activeNavSlide.length) {
+                                                    $activeNavSlide.addClass("is-active");
+                                                    $activeNavSlide.find(".product-image-thumb").addClass("active");
                                                 }
                                             });
+
+                                        // Затем инициализируем навигационный слайдер
+                                        $rootNavV2
+                                            .off("init.sliderV2 afterChange.sliderV2")
+                                            .on("init.sliderV2", function (event, slick) {
+                                                $(this).find(".slick-slide").removeClass("is-active");
+                                                $(this).find(".slick-slide .product-image-thumb").removeClass("active");
+                                                $(this).find(".slick-slide.slick-current").addClass("is-active");
+                                                $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
+                                            })
+                                            .on("afterChange.sliderV2", function (event, slick, currentSlide) {
+                                                $(this).find(".slick-slide").removeClass("is-active");
+                                                $(this).find(".slick-slide .product-image-thumb").removeClass("active");
+                                                var $activeNavSlide = $(this).find('.slick-slide[data-slick-index="' + currentSlide + '"]');
+                                                if ($activeNavSlide.length) {
+                                                    $activeNavSlide.addClass("is-active");
+                                                    $activeNavSlide.find(".product-image-thumb").addClass("active");
+                                                }
+                                            })
+                                            .slick(navSliderOptions);
+
+                                        // Обработчик клика на миниатюры
+                                        $rootNavV2.on("click", ".slick-slide", function (event) {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                            var goToSingleSlide = $(this).data("slick-index");
+                                            if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                                                $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
+                                            }
                                         });
 
+                                        // Инициализируем Fancybox
+                                        var isQuickView = $rootSingleV2.closest('.section-quick-view').length > 0;
+                                        if (isQuickView) {
                                         Fancybox.bind('[data-fancybox="product-gallery-quick-' + productId + '"]', {});
-
                                         initializeQuickViewQuantityHandlers();
-                                        return;
+                                        } else {
+                                            Fancybox.bind('[data-fancybox="gallery"]', {});
                                     }
+                                    });
 
                                     const $rootSingle = $(".product-slider-main");
                                     const $rootNav = $(".product-slider-thumb");
@@ -982,6 +1073,138 @@
                 $(this).addClass('active');
             }
         });
+
+        // Инициализация слайдера для обычной страницы продукта (не в quick view)
+        function initProductSliderV2() {
+            $(".product-slider-thumb-v2-wrapper").each(function() {
+                var $thumbWrapper = $(this);
+                
+                // Пропускаем слайдеры внутри quick view модального окна
+                if ($thumbWrapper.closest('.section-quick-view').length > 0 || 
+                    $thumbWrapper.closest('.fancybox__content').length > 0) {
+                    return;
+                }
+                
+                var $galleryContainer = $thumbWrapper.closest('.gallery-v2-container');
+                var $wrapGallery = $galleryContainer.closest('.wrap-image-with-gallery');
+                var $rootNavV2 = $thumbWrapper.find('.product-slider-thumb-v2');
+                var $rootSingleV2 = $galleryContainer.find('.product-slider-main-v2');
+                
+                if ($rootNavV2.length === 0 || $rootSingleV2.length === 0) {
+                    return;
+                }
+                
+                // Проверяем, не инициализирован ли уже слайдер
+                if ($rootNavV2.hasClass('slick-initialized') || 
+                    $rootSingleV2.hasClass('slick-initialized')) {
+                    return;
+                }
+
+                var $arrowsContainer = $wrapGallery.find('.product-slider-thumb-v2-arrows');
+
+                // Сначала инициализируем основной слайдер
+                $rootSingleV2
+                    .off("afterChange.sliderV2")
+                    .slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false,
+                        fade: false,
+                        adaptiveHeight: true,
+                        infinite: false,
+                        useTransform: true,
+                        speed: 400,
+                        cssEase: "cubic-bezier(0.77, 0, 0.18, 1)"
+                    })
+                    .on("afterChange.sliderV2", function (event, slick, currentSlide) {
+                        $rootNavV2.slick("slickGoTo", currentSlide);
+                        $rootNavV2.find(".slick-slide").removeClass("is-active");
+                        $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
+                        var $activeNavSlide = $rootNavV2.find('.slick-slide[data-slick-index="' + currentSlide + '"]');
+                        if ($activeNavSlide.length) {
+                            $activeNavSlide.addClass("is-active");
+                            $activeNavSlide.find(".product-image-thumb").addClass("active");
+                        }
+                    });
+
+                // Затем инициализируем навигационный слайдер
+                var navSliderOptions = {
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    dots: false,
+                    focusOnSelect: false,
+                    infinite: false,
+                    vertical: true,
+                    verticalSwiping: true,
+                    prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb-v2'></i>",
+                    nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb-v2'></i>",
+                    responsive: [
+                        {
+                            breakpoint: 991,
+                            settings: {
+                                vertical: false,
+                                verticalSwiping: false,
+                                slidesToShow: 5,
+                                slidesToScroll: 1,
+                                arrows: true,
+                                dots: false
+                            }
+                        },
+                        {
+                            breakpoint: 575,
+                            settings: {
+                                vertical: false,
+                                verticalSwiping: false,
+                                slidesToShow: 4,
+                                slidesToScroll: 1,
+                                arrows: true,
+                                dots: false
+                            }
+                        }
+                    ]
+                };
+
+                if ($arrowsContainer.length > 0) {
+                    navSliderOptions.appendArrows = $arrowsContainer;
+                }
+
+                // Инициализируем навигационный слайдер
+                $rootNavV2
+                    .off("init.sliderV2 afterChange.sliderV2")
+                    .on("init.sliderV2", function (event, slick) {
+                        $(this).find(".slick-slide").removeClass("is-active");
+                        $(this).find(".slick-slide .product-image-thumb").removeClass("active");
+                        $(this).find(".slick-slide.slick-current").addClass("is-active");
+                        $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
+                    })
+                    .on("afterChange.sliderV2", function (event, slick, currentSlide) {
+                        $(this).find(".slick-slide").removeClass("is-active");
+                        $(this).find(".slick-slide .product-image-thumb").removeClass("active");
+                        var $activeNavSlide = $(this).find('.slick-slide[data-slick-index="' + currentSlide + '"]');
+                        if ($activeNavSlide.length) {
+                            $activeNavSlide.addClass("is-active");
+                            $activeNavSlide.find(".product-image-thumb").addClass("active");
+                        }
+                    })
+                    .slick(navSliderOptions);
+
+                // Обработчик клика на миниатюры
+                $rootNavV2.on("click", ".slick-slide", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var goToSingleSlide = $(this).data("slick-index");
+                    if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                        $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
+                    }
+                });
+
+                // Инициализируем Fancybox
+                Fancybox.bind('[data-fancybox="gallery"]', {});
+            });
+        }
+
+        initProductSliderV2();
     });
 
     });
