@@ -793,46 +793,10 @@
                                             $rootSingleV2.slick('unslick');
                                         }
 
-                                        $rootNavV2
-                                            .on("init", function (event, slick) {
-                                                $(this).find(".slick-slide.slick-current").addClass("is-active");
-                                                $(this).find(".slick-slide .product-image-thumb").removeClass("active");
-                                                $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
-                                            })
-                                            .slick({
-                                                slide: ".product-image-thumb",
-                                                slidesToShow: 5,
-                                                slidesToScroll: 1,
-                                                arrows: true,
-                                                dots: false,
-                                                focusOnSelect: true,
-                                                infinite: false,
-                                                vertical: true,
-                                                verticalSwiping: true,
-                                                prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb'></i>",
-                                                nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb'></i>",
-                                                asNavFor: $rootSingleV2,
-                                                responsive: [
-                                                    {
-                                                        breakpoint: 991,
-                                                        settings: {
-                                                            vertical: false,
-                                                            verticalSwiping: false,
-                                                            slidesToShow: 5,
-                                                            slidesToScroll: 1
-                                                        }
-                                                    },
-                                                    {
-                                                        breakpoint: 575,
-                                                        settings: {
-                                                            vertical: false,
-                                                            verticalSwiping: false,
-                                                            slidesToShow: 4,
-                                                            slidesToScroll: 1
-                                                        }
-                                                    }
-                                                ]
-                                            });
+                                        var totalThumbs = $rootNavV2.find('.product-image-thumb').length;
+                                        var showArrows = totalThumbs > 5;
+                                        var showDots = totalThumbs > 5;
+                                        var $thumbWrap = $rootNavV2.closest('.product-slider-thumb-v2-wrap');
 
                                         $rootSingleV2.slick({
                                             slide: ".product-image",
@@ -848,6 +812,53 @@
                                             asNavFor: $rootNavV2
                                         });
 
+                                        $rootNavV2
+                                            .on("init", function (event, slick) {
+                                                $(this).find(".slick-slide.slick-current").addClass("is-active");
+                                                $(this).find(".slick-slide .product-image-thumb").removeClass("active");
+                                                $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
+                                            })
+                                            .slick({
+                                                slide: ".product-image-thumb",
+                                                slidesToShow: 5,
+                                                slidesToScroll: 1,
+                                                arrows: showArrows,
+                                                dots: showDots,
+                                                focusOnSelect: true,
+                                                infinite: false,
+                                                vertical: true,
+                                                verticalSwiping: true,
+                                                prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb'></i>",
+                                                nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb'></i>",
+                                                asNavFor: $rootSingleV2,
+                                                appendArrows: $thumbWrap.find('.thumb-slider-arrows'),
+                                                appendDots: $thumbWrap.find('.thumb-slider-dots'),
+                                                responsive: [
+                                                    {
+                                                        breakpoint: 991,
+                                                        settings: {
+                                                            vertical: false,
+                                                            verticalSwiping: false,
+                                                            slidesToShow: 5,
+                                                            slidesToScroll: 1,
+                                                            arrows: showArrows,
+                                                            dots: showDots
+                                                        }
+                                                    },
+                                                    {
+                                                        breakpoint: 575,
+                                                        settings: {
+                                                            vertical: false,
+                                                            verticalSwiping: false,
+                                                            slidesToShow: 4,
+                                                            slidesToScroll: 1,
+                                                            arrows: showArrows,
+                                                            dots: showDots
+                                                        }
+                                                    }
+                                                ]
+                                            });
+
                                         $rootSingleV2.on("afterChange", function (event, slick, currentSlide) {
                                             $rootNavV2.find(".slick-slide.is-active").removeClass("is-active");
                                             $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
@@ -858,8 +869,21 @@
 
                                         $rootNavV2.on("click", ".slick-slide", function (event) {
                                             event.preventDefault();
+                                            event.stopPropagation();
                                             var goToSingleSlide = $(this).data("slick-index");
-                                            $rootSingleV2.slick("slickGoTo", goToSingleSlide);
+                                            if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                                                $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
+                                            }
+                                        });
+
+                                        $rootNavV2.on("click", ".product-image-thumb", function (event) {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                            var $slide = $(this).closest('.slick-slide');
+                                            var goToSingleSlide = $slide.data("slick-index");
+                                            if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                                                $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
+                                            }
                                         });
 
                                         const isQuickView = $rootSingleV2.closest('.section-quick-view').length > 0;
