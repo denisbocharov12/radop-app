@@ -130,17 +130,17 @@ final class ThemeCategoryController extends Controller
 
         $locale = app()->getLocale();
         $fileName = "radop_categories_{$onecId}_{$locale}.xlsx";
-        
+
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
-            
+
             return response()->json([
                 'success' => true,
                 'url' => $url,
                 'message' => __('theme.export-file-ready'),
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => __('theme.export-file-not-found'),
@@ -173,8 +173,8 @@ final class ThemeCategoryController extends Controller
             throw new ThemeCategoryNotFoundException();
         }
 
-        $products = $this->productRepository->getAllProductsByCategory($existedCategory);
-        
+        $products = $this->productRepository->getAllProductsByCategorySortedByTitle($existedCategory);
+
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,

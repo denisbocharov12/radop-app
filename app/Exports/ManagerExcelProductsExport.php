@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -120,10 +121,12 @@ final class ManagerExcelProductsExport implements FromView, WithTitle, WithColum
                 $sheet = $event->sheet->getDelegate();
                 $startRow = 4;
 
+                $sheet->getStyle('B:B')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+
+                $sheet->freezePane('A4');
+
                 foreach ($this->products as $index => $product) {
                     $row = $startRow + $index;
-
-                    $sheet->getStyle("B{$row}")->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
                     if ($product->hasMedia('products')) {
                         try {

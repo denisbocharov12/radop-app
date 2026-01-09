@@ -34,10 +34,8 @@
                     <img src="{{ $childImage->getUrl() }}" alt="{{ $childTitle }}" style="width: 16px; height: 16px; margin-right: 5px">
                 @endif
                 {{ $childTitle }}
-                @if($childProductsCount > 0)
+                @if($child->category_id && $childProductsCount > 0)
                     <span style="color: #999; font-size: 14px;">({{ $childProductsCount }})</span>
-                @elseif($hasChildChildren)
-                    <span style="color: #999; font-size: 14px;">({{ $child->children->count() }})</span>
                 @endif
             </a>
         </li>

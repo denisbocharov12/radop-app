@@ -18,7 +18,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($products->sortBy('title') as $i => $product)
+    @foreach($products as $i => $product)
         <tr>
             <td>{{ $i + 1 }}</td>
             <td>{{ $product->onec_id }}</td>

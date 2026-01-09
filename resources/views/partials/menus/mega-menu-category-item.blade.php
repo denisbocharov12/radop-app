@@ -25,10 +25,8 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($productsCount > 0)
+            @if($item->category_id && $productsCount > 0)
                 <span class="mega-menu__category-count">({{ $productsCount }})</span>
-            @elseif($hasChildren)
-                <span class="mega-menu__category-count">({{ $item->children->count() }})</span>
             @endif
         </a>
     @else
@@ -37,10 +35,8 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($productsCount > 0)
+            @if($item->category_id && $productsCount > 0)
                 <span class="mega-menu__category-count">({{ $productsCount }})</span>
-            @elseif($hasChildren)
-                <span class="mega-menu__category-count">({{ $item->children->count() }})</span>
             @endif
         </div>
     @endif
@@ -73,7 +69,7 @@
                 <li class="mega-menu__category-subitem">
                     <a href="{{ $childLink ?? '#' }}" class="mega-menu__category-sublink" target="{{ $child->target ?? '_self' }}">
                         {{ $childTitle }}
-                        @if($childProductsCount > 0)
+                        @if($child->category_id && $childProductsCount > 0)
                             <span class="mega-menu__category-count">({{ $childProductsCount }})</span>
                         @endif
                     </a>

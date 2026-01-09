@@ -125,15 +125,17 @@ final class OrderRepository
     }
 
     /**
+     * @param string $newStatus
      * @return int
      */
-    public function getLastTenMinutesOrders(): int
+    public function getLastTenMinutesOrders(string $newStatus): int
     {
         return Order::query()
             ->whereBetween('created_at', [
                 now()->subMinutes(10),
                 now(),
             ])
+            ->where('status', $newStatus)
             ->whereDoesntHave('orderHistory', function ($query) {
                 $query->where('type', 'downloaded_excel');
             })
