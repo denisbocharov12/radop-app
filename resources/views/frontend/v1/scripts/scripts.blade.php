@@ -859,41 +859,37 @@
                                             })
                                             .on("afterChange.sliderV2", function (event, slick, currentSlide) {
                                                 $rootNavV2.slick("slickGoTo", currentSlide);
-                                                $rootNavV2.find(".slick-slide").removeClass("is-active");
+                                                $rootNavV2.find(".slick-slide").removeClass("is-active slick-active");
                                                 $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
                                                 var $activeNavSlide = $rootNavV2.find('.slick-slide[data-slick-index="' + currentSlide + '"]');
                                                 if ($activeNavSlide.length) {
-                                                    $activeNavSlide.addClass("is-active");
+                                                    $activeNavSlide.addClass("is-active slick-active");
                                                     $activeNavSlide.find(".product-image-thumb").addClass("active");
                                                 }
                                             });
 
                                         // Затем инициализируем навигационный слайдер
                                         $rootNavV2
-                                            .off("init.sliderV2 afterChange.sliderV2")
+                                            .off("init.sliderV2")
                                             .on("init.sliderV2", function (event, slick) {
                                                 $(this).find(".slick-slide").removeClass("is-active");
                                                 $(this).find(".slick-slide .product-image-thumb").removeClass("active");
                                                 $(this).find(".slick-slide.slick-current").addClass("is-active");
                                                 $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
                                             })
-                                            .on("afterChange.sliderV2", function (event, slick, currentSlide) {
-                                                $(this).find(".slick-slide").removeClass("is-active");
-                                                $(this).find(".slick-slide .product-image-thumb").removeClass("active");
-                                                var $activeNavSlide = $(this).find('.slick-slide[data-slick-index="' + currentSlide + '"]');
-                                                if ($activeNavSlide.length) {
-                                                    $activeNavSlide.addClass("is-active");
-                                                    $activeNavSlide.find(".product-image-thumb").addClass("active");
-                                                }
-                                            })
                                             .slick(navSliderOptions);
 
                                         // Обработчик клика на миниатюры
-                                        $rootNavV2.on("click", ".slick-slide", function (event) {
+                                        $rootNavV2.on("click", ".product-image-thumb", function (event) {
                                             event.preventDefault();
                                             event.stopPropagation();
-                                            var goToSingleSlide = $(this).data("slick-index");
+                                            var $slide = $(this).closest('.slick-slide');
+                                            var goToSingleSlide = $slide.data("slick-index");
                                             if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                                                $rootNavV2.find(".slick-slide").removeClass("is-active slick-active");
+                                                $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
+                                                $slide.addClass("is-active slick-active");
+                                                $(this).addClass("active");
                                                 $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
                                             }
                                         });
@@ -1118,11 +1114,11 @@
                     })
                     .on("afterChange.sliderV2", function (event, slick, currentSlide) {
                         $rootNavV2.slick("slickGoTo", currentSlide);
-                        $rootNavV2.find(".slick-slide").removeClass("is-active");
+                        $rootNavV2.find(".slick-slide").removeClass("is-active slick-active");
                         $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
                         var $activeNavSlide = $rootNavV2.find('.slick-slide[data-slick-index="' + currentSlide + '"]');
                         if ($activeNavSlide.length) {
-                            $activeNavSlide.addClass("is-active");
+                            $activeNavSlide.addClass("is-active slick-active");
                             $activeNavSlide.find(".product-image-thumb").addClass("active");
                         }
                     });
@@ -1171,30 +1167,26 @@
 
                 // Инициализируем навигационный слайдер
                 $rootNavV2
-                    .off("init.sliderV2 afterChange.sliderV2")
+                    .off("init.sliderV2")
                     .on("init.sliderV2", function (event, slick) {
                         $(this).find(".slick-slide").removeClass("is-active");
                         $(this).find(".slick-slide .product-image-thumb").removeClass("active");
                         $(this).find(".slick-slide.slick-current").addClass("is-active");
                         $(this).find(".slick-slide.slick-current .product-image-thumb").addClass("active");
                     })
-                    .on("afterChange.sliderV2", function (event, slick, currentSlide) {
-                        $(this).find(".slick-slide").removeClass("is-active");
-                        $(this).find(".slick-slide .product-image-thumb").removeClass("active");
-                        var $activeNavSlide = $(this).find('.slick-slide[data-slick-index="' + currentSlide + '"]');
-                        if ($activeNavSlide.length) {
-                            $activeNavSlide.addClass("is-active");
-                            $activeNavSlide.find(".product-image-thumb").addClass("active");
-                        }
-                    })
                     .slick(navSliderOptions);
 
                 // Обработчик клика на миниатюры
-                $rootNavV2.on("click", ".slick-slide", function (event) {
+                $rootNavV2.on("click", ".product-image-thumb", function (event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    var goToSingleSlide = $(this).data("slick-index");
+                    var $slide = $(this).closest('.slick-slide');
+                    var goToSingleSlide = $slide.data("slick-index");
                     if (typeof goToSingleSlide !== 'undefined' && goToSingleSlide !== null) {
+                        $rootNavV2.find(".slick-slide").removeClass("is-active slick-active");
+                        $rootNavV2.find(".slick-slide .product-image-thumb").removeClass("active");
+                        $slide.addClass("is-active slick-active");
+                        $(this).addClass("active");
                         $rootSingleV2.slick("slickGoTo", parseInt(goToSingleSlide));
                     }
                 });
