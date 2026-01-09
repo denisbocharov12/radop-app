@@ -25,16 +25,12 @@
             </a>
         @endif
         <div class="gallery-v2-container">
-            <div class="product-slider-thumb-v2-wrap">
-                <div class="product-slider-thumb-v2">
-                    @foreach($product->getMedia('products') as $key => $file)
-                        <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
-                            <img src="{{$file->getUrl()}}" alt="{{$product->title}}">
-                        </a>
-                    @endforeach
-                </div>
-                <div class="thumb-slider-arrows"></div>
-                <div class="thumb-slider-dots"></div>
+            <div class="product-slider-thumb-v2">
+                @foreach($product->getMedia('products')->take(5) as $key => $file)
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
+                        <img src="{{$file->getUrl()}}" alt="{{$product->title}}">
+                    </a>
+                @endforeach
             </div>
             <div class="product-slider-main-v2">
                 @foreach($product->getMedia('products') as $key => $file)
@@ -73,16 +69,12 @@
             </a>
         @endif
         <div class="gallery-v2-container">
-            <div class="product-slider-thumb-v2-wrap">
-                <div class="product-slider-thumb-v2">
-                    @foreach($imagesArray as $key => $file)
-                        <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
-                            <img src="/{{$file}}" alt="{{$product->title}}">
-                        </a>
-                    @endforeach
-                </div>
-                <div class="thumb-slider-arrows"></div>
-                <div class="thumb-slider-dots"></div>
+            <div class="product-slider-thumb-v2">
+                @foreach(array_slice($imagesArray, 0, 5) as $key => $file)
+                    <a href="javascript:void(0);" class="product-image-thumb @if($key == 0) active @endif" data-slide-index="{{$key}}">
+                        <img src="/{{$file}}" alt="{{$product->title}}">
+                    </a>
+                @endforeach
             </div>
             <div class="product-slider-main-v2">
                 @foreach($imagesArray as $key => $file)
