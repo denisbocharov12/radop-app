@@ -24,6 +24,9 @@
             <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" style="width: 22px; height: 22px; margin-right: 5px">
         @endif
         {{ $itemTitle }}
+        @if($item->category_id && $productsCount > 0)
+            <span style="color: #999; font-size: 14px;">({{ $productsCount }})</span>
+        @endif
     </a>
     @if($hasChildren)
         <div class="megamenu-wrap">
@@ -62,10 +65,8 @@
                                             <img src="{{ $childImage->getUrl() }}" alt="{{ $childTitle }}" style="width: 22px; height: 22px; margin-right: 5px">
                                         @endif
                                         {{ $childTitle }}
-                                        @if($childProductsCount > 0)
+                                        @if($child->category_id && $childProductsCount > 0)
                                             <span style="color: #999; font-size: 14px;">({{ $childProductsCount }})</span>
-                                        @elseif($hasGrandChildren)
-                                            <span style="color: #999; font-size: 14px;">({{ $child->children->count() }})</span>
                                         @endif
                                     </a>
                                     @if($hasGrandChildren)

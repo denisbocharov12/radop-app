@@ -188,7 +188,7 @@ final class BrandController extends Controller
             throw new BrandNotFoundException();
         }
 
-        $products = $this->productRepository->getAllProductsByBrand($brand);
+        $products = $this->productRepository->getAllProductsByBrandSortedByTitle($brand);
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -198,7 +198,7 @@ final class BrandController extends Controller
         }
 
         $locale = $request->input('locale', app()->getLocale());
-        
+
         if (!in_array($locale, ['ru', 'ro'])) {
             $locale = app()->getLocale();
         }

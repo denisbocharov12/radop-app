@@ -118,6 +118,18 @@ final class ProductRepository
             ->get();
     }
 
+    public function getAllProductsByCategorySortedByTitle(Category $category)
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
+            ->orderBy('title')
+            ->get();
+    }
+
     public function getAllPopularProducts()
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
@@ -775,6 +787,21 @@ final class ProductRepository
             ->where('status', true)
             ->where('site_status', true)
             ->whereNotNull('price_koef')
+            ->get();
+    }
+
+    /**
+     * @param Brand $brand
+     * @return Collection
+     */
+    public function getAllProductsByBrandSortedByTitle(Brand $brand): Collection
+    {
+        return Product::query()
+            ->where('brand_id', $brand->onec_id)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
+            ->orderBy('title')
             ->get();
     }
 

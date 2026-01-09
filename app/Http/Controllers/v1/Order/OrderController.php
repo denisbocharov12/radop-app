@@ -184,7 +184,8 @@ class OrderController extends Controller
 
     public function getStatusByLastTenMinutes()
     {
-        $ordersCount = $this->orderRepository->getLastTenMinutesOrders();
+        $newStatus = $this->orderStatus->getNewStatus();
+        $ordersCount = $this->orderRepository->getLastTenMinutesOrders($newStatus);
 
         return response()->json(['count' => $ordersCount]);
     }
