@@ -1,4 +1,5 @@
-<form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET">
+<form action="{{route('theme.brand.index', $existedBrand->onec_id)}}" method="GET" id="filterForm">
+    <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
     <div class="theme-wg-wrap">
         <ul class="theme-toggle-list">
             <li class="theme-toggle-item">
@@ -57,8 +58,9 @@
                     @endif
                     @php
                         $attributeValues = collect($attributeValues)->map(function($attribute) {
-                            return \App\Models\AttributeValue::find($attribute->id);
-                        })->sortBy('value');
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -75,7 +77,7 @@
                             $activeStyle = 'display: none';
 
                             foreach ($attributeValues as $attribute) {
-                                if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
+                                if ($attribute && isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
                                     $activeStyle = 'display:flex';
                                 }
                             }
@@ -83,15 +85,17 @@
 
                         <div class="theme-toggle-item-content" style="{{ $activeStyle }}">
                             @foreach($attributeValues as $attribute)
-                                <div class="col-6">
-                                    <input type="checkbox" class="theme-checkbox" id="attribute-{{ $attribute->id }}"
-                                           name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
-                                           value="{{ str_replace(',', '.', $attribute->value) }}"
-                                            {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
-                                                in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
-                                                ? 'checked' : '' }}>
-                                    <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
-                                </div>
+                                @if($attribute)
+                                    <div class="col-6">
+                                        <input type="checkbox" class="theme-checkbox" id="attribute-{{ $attribute->id }}"
+                                               name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
+                                               value="{{ str_replace(',', '.', $attribute->value) }}"
+                                                {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
+                                                    in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
+                                                    ? 'checked' : '' }}>
+                                        <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </li>
@@ -114,5 +118,6 @@
                 @endif
         </ul>
     </div>
-    <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
+    <button type="button" id="filterResetBtn" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
 </form>
+@include('frontend.v1.components.brand-filter-ajax', ['existedBrand' => $existedBrand])

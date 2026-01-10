@@ -652,8 +652,9 @@
             Fancybox.show([{ src: "#forgetPasswordModal", type: "inline" }]);
         });
 
-        $('.quick-view-btn').click(function(e) {
+        $(document).on('click', '.quick-view-btn', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             var path = "{{route('theme.product.quick-view')}}";
             var productId = $(this).data('id');
             var token = '{{csrf_token()}}';

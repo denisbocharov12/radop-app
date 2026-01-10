@@ -8633,7 +8633,7 @@ hr.product-card-item{
 
 .col-theme-filters{
     margin-bottom: 40px;
-    top: 55px;
+    top: 80px;
     position: sticky;
     height: fit-content;
 }
@@ -14589,4 +14589,106 @@ input[type="range"]::-moz-range-thumb {
     .description-text table td {
         padding: 8px 10px;
     }
+}
+
+.categories-filter-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.categories-filter-list {
+    height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.category-filter-item {
+    margin-bottom: 8px;
+}
+
+.category-filter-item:last-child {
+    margin-bottom: 0;
+}
+
+.category-filter-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 4px 0;
+    transition: text-decoration 0.2s;
+}
+
+.category-filter-link:hover {
+    text-decoration: underline !important;
+}
+
+.category-filter-link.active {
+    color: #0052a6;
+    font-weight: 600;
+}
+
+.category-filter-count {
+    color: #999;
+    font-size: 14px;
+}
+
+.categories-toggle-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.categories-toggle-btn:hover {
+    background-color: #f5f6fa;
+    border-color: #0052a6;
+    color: #0052a6;
+}
+
+.infinite-scroll-trigger {
+    height: 20px;
+    width: 100%;
+    clear: both;
+}
+
+.infinite-scroll-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.filter-reset-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    background-color: #eff3f6;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #252525;
+    transition: all 0.3s;
+}
+
+.filter-reset-btn:hover {
+    background-color: #ddd;
+}
+
+.filter-ajax-loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.attribute-filter-count,
+.brand-filter-count {
+    color: #999;
+    font-size: 12px;
+    margin-left: 5px;
 }

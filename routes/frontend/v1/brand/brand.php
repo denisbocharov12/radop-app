@@ -20,4 +20,7 @@ Route::prefix('brand')->name('brand.')->group(function () {
     Route::post('/{onecId}/filter-by-category', [ThemeBrandController::class, 'filterByCategory'])
         ->name('filter-by-category')
     ;
+    Route::post('/{onecId}/filter', [ThemeBrandController::class, 'filter'])
+        ->name('filter')
+    ;
 });

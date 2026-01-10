@@ -17,6 +17,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -123,7 +124,7 @@ final class BrandRepository
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeBrandViewCountSort(), 'popular_order');
         }
 
-        return QueryBuilder::for($query)
+        $queryBuilder = QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -141,11 +142,20 @@ final class BrandRepository
                 AllowedSort::custom('popular_order', new ThemeBrandViewCountSort(), 'popular_order'),
                 'stock',
             ])
-            ->defaultSort($defaultSortObj)
             ->where('status', true)
             ->where('site_status', true)
             ->with(['brand', 'values', 'media', 'packages', 'data'])
-            ->groupBy('products.onec_id')
+            ->groupBy('products.onec_id');
+
+        $queryBuilder = $queryBuilder->orderByRaw("
+            CASE 
+                WHEN product_profiles.condition = 'hot' THEN 0 
+                ELSE 1 
+            END ASC
+        ");
+        $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+
+        return $queryBuilder
             ->orderBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
@@ -162,6 +172,39 @@ final class BrandRepository
             ->get()
             ->pluck('brand')
             ->unique('id');
+    }
+
+    /**
+     * @param Collection $brands
+     * @param array $productOnecIds
+     * @return array
+     */
+    public function getBrandProductCounts(Collection $brands, array $productOnecIds): array
+    {
+        if ($brands->isEmpty() || empty($productOnecIds)) {
+            return [];
+        }
+
+        $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
+
+        $brandProductCounts = Product::whereIn('onec_id', $productOnecIds)
+            ->whereIn('brand_id', $brandIds)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->where('stock', '!=', 0)
+            ->select('brand_id', DB::raw('COUNT(DISTINCT onec_id) as count'))
+            ->groupBy('brand_id')
+            ->pluck('count', 'brand_id')
+            ->toArray();
+
+        $result = [];
+        foreach ($brands as $brand) {
+            if ($brand && isset($brandProductCounts[$brand->id])) {
+                $result[$brand->onec_id] = $brandProductCounts[$brand->id];
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -4,35 +4,28 @@
             <i class="icon-arrow-filter-radop-left"></i>
             <p class="theme-widget-title">{{ __('theme.categories') }}</p>
         </div>
-        <div class="theme-toggle-item-content" style="display: flex; flex-direction: column;">
-            <div class="categories-filter-list" style="height: 300px; overflow-y: auto; width: 100%;">
+        <div class="theme-toggle-item-content categories-filter-content">
+            <div class="categories-filter-list">
                 @foreach($categories as $category)
-                    <div class="col-12" style="margin-bottom: 8px;">
+                    <div class="category-filter-item">
                         <a href="javascript:void(0);" 
                            class="category-filter-link" 
                            data-category-id="{{ $category->onec_id }}"
                            data-page-type="{{ $pageType ?? 'shop' }}"
                            data-page-sub-type="{{ $pageSubType ?? '' }}"
-                           data-brand-onec-id="{{ $brandOnecId ?? '' }}"
-                           style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 4px 0; transition: text-decoration 0.2s;">
+                           data-brand-onec-id="{{ $brandOnecId ?? '' }}">
                             <span>{{ $category->name }}</span>
-                            <span style="color: #999; font-size: 14px;">({{ $category->products_count ?? 0 }})</span>
+                            <span class="category-filter-count">({{ $category->products_count ?? 0 }})</span>
                         </a>
                     </div>
                 @endforeach
             </div>
-            <button type="button" class="categories-toggle-btn" style="margin-top: 10px; width: 100%; padding: 8px; background: transparent; border: 1px solid #ddd; cursor: pointer; border-radius: 4px; color: #333;">
+            <button type="button" class="categories-toggle-btn">
                 <span class="toggle-text">{{ __('theme.show-all-categories') }}</span>
             </button>
         </div>
     </li>
 @endif
-
-<style>
-    .category-filter-link:hover {
-        text-decoration: underline !important;
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

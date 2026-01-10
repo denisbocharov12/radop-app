@@ -16,11 +16,12 @@
                             </select>
                         </form>
                     </div>
-                    @if($products->hasPages())
+                    {{-- Infinite scroll pagination instead of links --}}
+                    {{-- @if($products->hasPages())
                         <div class="theme-pagination d-none d-lg-block">
                             {{$products->links()}}
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>
@@ -51,13 +52,17 @@
                                 </ul>
                             </div>
                         @endif
-                        @include('frontend.v1.pages.shop.parts.shop-filter-form')
+                        @include('frontend.v1.pages.shop.parts.shop-filter-form', ['pageSubType' => $pageSubType])
                     </div>
                 </div>
             <div class="col-md-9 col-12 col-theme-content">
                     @include('frontend.v1.components.mobile-sort-products', ['defaultSort' => $defaultSort])
                     <div class="d-none d-md-block">
-                        <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
+                        <div id="productsTableView" 
+                             class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}"
+                             data-has-pages="{{$products->hasPages() ? 'true' : 'false'}}"
+                             data-current-page="{{$products->currentPage()}}"
+                             data-last-page="{{$products->lastPage()}}">
                             @include('frontend.v1.pages.brand.parts.list')
                         </div>
                         <div id="productsListView" style="display:none;">
@@ -78,9 +83,10 @@
                             <div class="mobile-per-page-option" data-value="96">96 {{ __('theme.sort-products') }}</div>
                         </div>
                     </div>
-                    <div class="theme-pagination">
+                    {{-- Infinite scroll pagination instead of links --}}
+                    {{-- <div class="theme-pagination">
                         {{$products->appends(request()->except('page'))->links()}}
-                    </div>
+                    </div> --}}
                 </div>
             @endif
         </div>

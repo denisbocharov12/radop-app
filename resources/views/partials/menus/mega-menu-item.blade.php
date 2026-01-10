@@ -88,7 +88,7 @@
                     ? $child->getTranslation('title', $locale)
                     : ($titleRaw ?? '');
                 return mb_strtolower($title);
-            }) as $child)
+            })->values() as $child)
                 @include('partials.menus.mega-menu-item', ['item' => $child, 'depth' => $depth + 1])
             @endforeach
         </ul>

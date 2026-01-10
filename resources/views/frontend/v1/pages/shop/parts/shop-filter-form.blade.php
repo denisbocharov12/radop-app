@@ -58,8 +58,9 @@
                         @endif
                         @php
                             $attributeValues = collect($attributeValues)->map(function($attribute) {
-                                return \App\Models\AttributeValue::find($attribute->id);
-                            })->sortBy('value');
+                                $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                                return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                            })->filter()->sortBy('value');
                         @endphp
 
                         @if($attributeValues->count() <= 1)
@@ -84,15 +85,17 @@
 
                             <div class="theme-toggle-item-content" style="{{ $activeStyle }}">
                                 @foreach($attributeValues as $attribute)
-                                    <div class="col-6">
-                                        <input type="checkbox" class="theme-checkbox" id="attribute-{{ $attribute->id }}"
-                                               name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
-                                               value="{{ str_replace(',', '.', $attribute->value) }}"
-                                                {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
-                                                    in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
-                                                    ? 'checked' : '' }}>
-                                        <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
-                                    </div>
+                                    @if($attribute)
+                                        <div class="col-6">
+                                            <input type="checkbox" class="theme-checkbox" id="attribute-{{ $attribute->id }}"
+                                                   name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
+                                                   value="{{ str_replace(',', '.', $attribute->value) }}"
+                                                    {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
+                                                        in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
+                                                        ? 'checked' : '' }}>
+                                            <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
+                                        </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </li>
@@ -113,5 +116,13 @@
                     </li>
         </ul>
     </div>
-    <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
+    <button type="button" id="filterResetBtn" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
 </form>
+@php
+    if (!isset($pageSubType)) {
+        $pageSubType = request()->route()->getName() === 'theme.shop.new' ? 'new' : 
+                       (request()->route()->getName() === 'theme.shop.popular' ? 'popular' : 
+                       (request()->route()->getName() === 'theme.shop.sale' ? 'sale' : 'all'));
+    }
+@endphp
+@include('frontend.v1.components.shop-filter-ajax', ['pageSubType' => $pageSubType])

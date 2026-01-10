@@ -43,4 +43,7 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::post('/filter-by-category/{type}', [ThemeShopController::class, 'filterByCategory'])
         ->name('filter-by-category')
     ;
+    Route::post('/filter/{type}', [ThemeShopController::class, 'filter'])
+        ->name('filter')
+    ;
 });

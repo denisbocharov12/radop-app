@@ -389,6 +389,7 @@ return array (
     'other' => 'Altele',
     'show-all-filters' => 'Arată toate filtrele',
     'filters' => 'Filtre',
+    'reset-filters' => 'Resetează filtrele',
     'cancel' => 'Anulează',
     'sort-product' => 'produse',
     'sort-products' => 'produse',

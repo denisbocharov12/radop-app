@@ -11,7 +11,7 @@
                     ? $item->getTranslation('title', $locale)
                     : ($titleRaw ?? '');
                 return mb_strtolower($title);
-            }) as $item)
+            })->values() as $item)
                 @include('partials.header-menus.header-menu-item', ['item' => $item])
             @endforeach
         </ul>

@@ -53,8 +53,9 @@
                 @foreach($attributes as $key => $attributeValues)
                     @php
                         $attributeValues = collect($attributeValues)->map(function($attribute) {
-                            return \App\Models\AttributeValue::find($attribute->id);
-                        })->sortBy('value');
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -93,12 +94,7 @@
                     </li>
                 @endforeach
                 @php
-                    $allProductIds = $productsByCategory->pluck('id')->toArray();
-                    $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
-                        ->with('brand')
-                        ->get()
-                        ->pluck('brand')
-                        ->unique('id');
+                    $displayedBrands = app(\App\Repositories\Brand\BrandRepository::class)->getAllBrandsByProductsIdsToFrontEnd($productsByCategory);
                 @endphp
                 @if($displayedBrands)
                     <li class="theme-toggle-item">
@@ -119,5 +115,6 @@
             </ul>
         @endif
     </div>
-    <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
+    <button type="button" id="filterResetBtn" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
 </form>
+@include('frontend.v1.components.category-filter-ajax', ['existedCategory' => $existedCategory])
