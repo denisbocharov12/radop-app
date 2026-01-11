@@ -97,7 +97,7 @@
                                         <input
                                                 type="checkbox"
                                                 class="theme-checkbox"
-                                                {{ isset($query['attribute'][$attribute->attribute_onec_id]) && in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : '' }}
+                                                {{ isset($query['attribute'][$attribute->attribute_onec_id]) && is_array($query['attribute'][$attribute->attribute_onec_id]) && in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : '' }}
                                                 id="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}"
                                                 name="filter[attribute][{{$attribute->attribute_onec_id}}][]"
                                                 value="{{ str_replace(',', '.', $attribute->value) }}"

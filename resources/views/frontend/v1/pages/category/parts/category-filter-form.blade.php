@@ -85,6 +85,7 @@
                                            name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
                                            value="{{ str_replace(',', '.', $attribute->value) }}"
                                             {{ isset($query['attribute'][$attribute->attribute_onec_id]) &&
+                                                is_array($query['attribute'][$attribute->attribute_onec_id]) &&
                                                 in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id])
                                                 ? 'checked' : '' }}>
                                     <label for="attribute-{{ $attribute->id }}">{{ $attribute->value }}</label>
