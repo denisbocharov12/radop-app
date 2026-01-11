@@ -220,6 +220,10 @@ final class ThemeBrandController extends Controller
      */
     public function filterByCategory(Request $request, string $onecId)
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         $categoryId = $request->input('category_id');
         
         if ($categoryId === null) {
@@ -291,6 +295,10 @@ final class ThemeBrandController extends Controller
      */
     public function filter(Request $request, string $onecId): \Illuminate\Http\JsonResponse
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         $existedBrand = $this->brandRepository->getByOnecId($onecId);
 
         if ($existedBrand === null) {

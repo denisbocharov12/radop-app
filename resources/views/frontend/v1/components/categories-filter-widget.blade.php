@@ -220,7 +220,7 @@
             .catch(error => {
                 console.error('Error:', error);
                 hideLoading();
-                alert('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.');
+                alert('An error occurred while loading data. Please try again.');
                 throw error;
             });
         }

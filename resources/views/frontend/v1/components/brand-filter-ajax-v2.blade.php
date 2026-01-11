@@ -2,42 +2,44 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const brandOnecId = '{{ $existedBrand->onec_id }}';
+        const isModal = {{ isset($isModal) && $isModal ? 'true' : 'false' }};
         const ajaxUrl = '{{ route("theme.brand.filter", $existedBrand->onec_id) }}';
         let debounceTimer = null;
-        let currentPage = 1;
-        let hasMorePages = true;
         let isLoading = false;
-        let infiniteScrollObserver = null;
         const debounceDelay = 500;
+        const namespace = 'brandFilterV2';
 
         function buildFilterFormData() {
             const formData = new FormData();
             formData.append('_token', '{{ csrf_token() }}');
             
-            const form = document.getElementById('filterForm');
-            if (!form) {
-                return formData;
-            }
+            // Check both desktop and modal forms for checkboxes
+            const desktopForm = document.getElementById('filterForm');
+            const modalForm = document.getElementById('filterFormModal');
+            const activeForm = isModal && modalForm ? modalForm : (desktopForm || modalForm);
             
-            const checkboxes = form.querySelectorAll('.theme-checkbox:checked');
-            checkboxes.forEach(function(checkbox) {
-                const name = checkbox.getAttribute('name');
-                if (name && name.startsWith('filter[')) {
-                    formData.append(name, checkbox.value);
+            if (activeForm) {
+                const checkboxes = activeForm.querySelectorAll('.theme-checkbox:checked');
+                checkboxes.forEach(function(checkbox) {
+                    const name = checkbox.getAttribute('name');
+                    if (name && name.startsWith('filter[')) {
+                        formData.append(name, checkbox.value);
+                    }
+                });
+                
+                const priceFrom = activeForm.querySelector('.input-min');
+                const priceTo = activeForm.querySelector('.input-max');
+                
+                if (priceFrom && priceFrom.value) {
+                    formData.append('filter[price][from]', priceFrom.value);
                 }
-            });
-            
-            const priceFrom = form.querySelector('.input-min');
-            const priceTo = form.querySelector('.input-max');
-            
-            if (priceFrom && priceFrom.value) {
-                formData.append('filter[price][from]', priceFrom.value);
-            }
-            if (priceTo && priceTo.value) {
-                formData.append('filter[price][to]', priceTo.value);
+                if (priceTo && priceTo.value) {
+                    formData.append('filter[price][to]', priceTo.value);
+                }
             }
             
-            const sortInput = form.querySelector('#sortInput');
+            const sortInputId = isModal ? 'sortInputModal' : 'sortInput';
+            const sortInput = document.querySelector('#' + sortInputId) || document.querySelector('#sortInput');
             if (sortInput && sortInput.value) {
                 formData.append('sort', sortInput.value);
             }
@@ -53,6 +55,7 @@
         function showLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
             
             if (tableView) {
                 tableView.style.opacity = '0.5';
@@ -62,11 +65,16 @@
                 listView.style.opacity = '0.5';
                 listView.classList.add('filter-ajax-loading');
             }
+            if (listViewMobile) {
+                listViewMobile.style.opacity = '0.5';
+                listViewMobile.classList.add('filter-ajax-loading');
+            }
         }
         
         function hideLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
             
             if (tableView) {
                 tableView.style.opacity = '1';
@@ -76,65 +84,57 @@
                 listView.style.opacity = '1';
                 listView.classList.remove('filter-ajax-loading');
             }
+            if (listViewMobile) {
+                listViewMobile.style.opacity = '1';
+                listViewMobile.classList.remove('filter-ajax-loading');
+            }
         }
         
-        function updateUI(data, append = false) {
+        function updateUI(data) {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
             
             if (tableView) {
-                if (append) {
-                    tableView.insertAdjacentHTML('beforeend', data.tableView || '');
-                } else {
-                    tableView.innerHTML = data.tableView || '';
-                }
+                tableView.innerHTML = data.tableView || '';
                 tableView.style.opacity = '1';
             }
             
             if (listView) {
-                if (append) {
-                    listView.insertAdjacentHTML('beforeend', data.listView || '');
-                } else {
-                    listView.innerHTML = data.listView || '';
-                }
+                listView.innerHTML = data.listView || '';
                 listView.style.opacity = '1';
             }
             
-            const hasPages = (data.hasPages === true) || (data.currentPage && data.lastPage && data.currentPage < data.lastPage);
-            
-            // Update pagination data attributes and current page
-            if (tableView) {
-                if (data.currentPage !== undefined) {
-                    currentPage = parseInt(data.currentPage) || 1;
-                    tableView.setAttribute('data-current-page', currentPage);
-                }
-                if (data.lastPage !== undefined) {
-                    tableView.setAttribute('data-last-page', data.lastPage);
-                }
-                tableView.setAttribute('data-has-pages', hasPages ? 'true' : 'false');
+            if (listViewMobile) {
+                listViewMobile.innerHTML = data.listView || '';
+                listViewMobile.style.opacity = '1';
+                listViewMobile.style.display = 'block';
             }
             
-            // Update hasMorePages based on current page and last page
-            if (data.currentPage !== undefined && data.lastPage !== undefined) {
-                hasMorePages = parseInt(data.currentPage) < parseInt(data.lastPage);
-            } else {
-                hasMorePages = hasPages;
+            const paginationContainers = document.querySelectorAll('.theme-pagination-container');
+            if (paginationContainers.length > 0) {
+                paginationContainers.forEach(function(container) {
+                    container.innerHTML = data.pagination || '';
+                });
+                if (data.pagination) {
+                    initPaginationHandlers();
+                }
+            } else if (data.pagination) {
+                const tableViewParent = tableView ? tableView.parentElement : null;
+                if (tableViewParent) {
+                    let existingPagination = tableViewParent.querySelector('.theme-pagination-container');
+                    if (!existingPagination) {
+                        existingPagination = document.createElement('div');
+                        existingPagination.className = 'theme-pagination theme-pagination-container';
+                        tableViewParent.appendChild(existingPagination);
+                    }
+                    existingPagination.innerHTML = data.pagination;
+                    initPaginationHandlers();
+                }
             }
-            
-            // Pagination is now handled by infinite scroll, so we don't update DOM
             
             if (data.filtersCounts) {
                 updateFiltersCounts(data.filtersCounts);
-            }
-            
-            if (!append && infiniteScrollObserver) {
-                destroyInfiniteScroll();
-                if (hasMorePages) {
-                    initInfiniteScroll();
-                }
-            } else if (append && hasMorePages && !infiniteScrollObserver) {
-                // Re-initialize infinite scroll if we appended content and there are more pages
-                initInfiniteScroll();
             }
         }
         
@@ -205,17 +205,13 @@
             }
         }
         
-        function performAjaxRequest(page = 1, append = false) {
+        function performAjaxRequest(page = 1) {
             if (isLoading) {
                 return Promise.resolve();
             }
             
             isLoading = true;
-            currentPage = page;
-            
-            if (!append) {
-                showLoading();
-            }
+            showLoading();
             
             const formData = buildFilterFormData();
             formData.append('page', page);
@@ -236,34 +232,31 @@
             })
             .then(data => {
                 if (data.success) {
-                    updateUI(data, append);
-                    updateURL(data);
+                    updateUI(data);
+                    if (!isModal) {
+                        updateURL(data);
+                    }
                 } else {
                     console.error('Server error:', data.message || 'Unknown error');
-                    if (!append) {
-                        hideLoading();
-                    }
+                    hideLoading();
                 }
                 return data;
             })
             .catch(error => {
                 console.error('Error:', error);
-                if (!append) {
-                    hideLoading();
-                }
-                alert('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.');
+                hideLoading();
+                alert('An error occurred while loading data. Please try again.');
                 throw error;
             })
             .finally(() => {
                 isLoading = false;
-                if (!append) {
-                    hideLoading();
-                }
+                hideLoading();
             });
         }
         
         function updateURL(data) {
-            const form = document.getElementById('filterForm');
+            const formId = isModal ? 'filterFormModal' : 'filterForm';
+            const form = document.getElementById(formId);
             if (!form) {
                 return;
             }
@@ -310,21 +303,71 @@
         }
         
         function initCheckboxHandlers() {
-            const form = document.getElementById('filterForm');
-            if (!form) {
+            // For desktop: automatic filtering on change
+            // For mobile: no automatic filtering, user clicks "Apply" button
+            if (!isModal) {
+                $(document).off('change.' + namespace, '.theme-checkbox').on('change.' + namespace, '.theme-checkbox', function(e) {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(function() {
+                        performAjaxRequest(1);
+                    }, debounceDelay);
+                });
+            }
+        }
+        
+        function initApplyButton() {
+            if (!isModal) {
                 return;
             }
             
-            $(document).off('change.brandFilter', '.theme-checkbox').on('change.brandFilter', '.theme-checkbox', function(e) {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(function() {
-                    performAjaxRequest(1, false);
-                }, debounceDelay);
+            const applyBtn = document.getElementById('filterApplyBtnModal');
+            if (!applyBtn) {
+                return;
+            }
+            
+            applyBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                performAjaxRequest(1).then(function() {
+                    setTimeout(function() {
+                        const modalElement = document.getElementById('filtersModal');
+                        if (modalElement) {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                } else {
+                                    const bsModal = new bootstrap.Modal(modalElement);
+                                    bsModal.hide();
+                                }
+                            } else if (window.$ && $.fancybox) {
+                                $.fancybox.close();
+                            } else {
+                                modalElement.style.display = 'none';
+                                modalElement.classList.remove('show');
+                                document.body.classList.remove('modal-open');
+                                const backdrop = document.querySelector('.modal-backdrop');
+                                if (backdrop) {
+                                    backdrop.remove();
+                                }
+                            }
+                        }
+                        
+                        setTimeout(function() {
+                            const listViewMobile = document.getElementById('productsListViewMobile');
+                            if (listViewMobile) {
+                                listViewMobile.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 300);
+                    }, 100);
+                });
             });
         }
         
         function initPriceRangeHandlers() {
-            const form = document.getElementById('filterForm');
+            const formId = isModal ? 'filterFormModal' : 'filterForm';
+            const form = document.getElementById(formId);
             if (!form) {
                 return;
             }
@@ -334,20 +377,20 @@
             const rangeMin = form.querySelector('.range-min');
             const rangeMax = form.querySelector('.range-max');
             
-            if (priceFrom && priceTo) {
+            if (!isModal && priceFrom && priceTo) {
                 let priceDebounceTimer = null;
                 
                 [priceFrom, priceTo].forEach(function(input) {
                     input.addEventListener('input', function() {
                         clearTimeout(priceDebounceTimer);
                         priceDebounceTimer = setTimeout(function() {
-                            performAjaxRequest(1, false);
+                            performAjaxRequest(1);
                         }, debounceDelay * 2);
                     });
                 });
             }
             
-            if (rangeMin && rangeMax) {
+            if (!isModal && rangeMin && rangeMax) {
                 let rangeDebounceTimer = null;
                 
                 [rangeMin, rangeMax].forEach(function(range) {
@@ -359,7 +402,7 @@
                         
                         clearTimeout(rangeDebounceTimer);
                         rangeDebounceTimer = setTimeout(function() {
-                            performAjaxRequest(1, false);
+                            performAjaxRequest(1);
                         }, debounceDelay * 2);
                     });
                 });
@@ -367,7 +410,8 @@
         }
         
         function initResetButton() {
-            const resetBtn = document.getElementById('filterResetBtn');
+            const resetBtnId = isModal ? 'filterResetBtnModal' : 'filterResetBtn';
+            const resetBtn = document.getElementById(resetBtnId);
             if (!resetBtn) {
                 return;
             }
@@ -376,7 +420,8 @@
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const form = document.getElementById('filterForm');
+                const formId = isModal ? 'filterFormModal' : 'filterForm';
+                const form = document.getElementById(formId);
                 if (!form) {
                     return;
                 }
@@ -401,42 +446,8 @@
                 newUrl.searchParams.delete('page');
                 window.history.pushState({}, '', newUrl.toString());
                 
-                performAjaxRequest(1, false);
+                performAjaxRequest(1);
             });
-        }
-        
-        function initInfiniteScroll() {
-            const tableView = document.getElementById('productsTableView');
-            if (!tableView || infiniteScrollObserver) {
-                return;
-            }
-            
-            const trigger = document.createElement('div');
-            trigger.className = 'infinite-scroll-trigger';
-            trigger.style.height = '20px';
-            tableView.appendChild(trigger);
-            
-            infiniteScrollObserver = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting && hasMorePages && !isLoading && currentPage < 100) {
-                        performAjaxRequest(currentPage + 1, true);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            infiniteScrollObserver.observe(trigger);
-        }
-        
-        function destroyInfiniteScroll() {
-            if (infiniteScrollObserver) {
-                infiniteScrollObserver.disconnect();
-                infiniteScrollObserver = null;
-            }
-            
-            const trigger = document.querySelector('.infinite-scroll-trigger');
-            if (trigger) {
-                trigger.remove();
-            }
         }
         
         function handlePaginationClick(e) {
@@ -467,36 +478,26 @@
                 return;
             }
             
-            performAjaxRequest(parseInt(page), false);
+            performAjaxRequest(parseInt(page));
+        }
+        
+        function initPaginationHandlers() {
+            const paginationContainers = document.querySelectorAll('.theme-pagination-container');
+            paginationContainers.forEach(function(paginationContainer) {
+                const links = paginationContainer.querySelectorAll('a[href*="page="]');
+                links.forEach(function(link) {
+                    link.removeEventListener('click', handlePaginationClick);
+                    link.addEventListener('click', handlePaginationClick);
+                });
+            });
         }
         
         function init() {
             initCheckboxHandlers();
             initPriceRangeHandlers();
             initResetButton();
-            
-            // Initialize infinite scroll on page load if there are products
-            const tableView = document.getElementById('productsTableView');
-            if (tableView && tableView.children.length > 0) {
-                // Check pagination info from data attributes
-                const hasPagesAttr = tableView.getAttribute('data-has-pages');
-                const currentPageAttr = tableView.getAttribute('data-current-page');
-                const lastPageAttr = tableView.getAttribute('data-last-page');
-                
-                if (hasPagesAttr === 'true') {
-                    hasMorePages = true;
-                    if (currentPageAttr && lastPageAttr) {
-                        currentPage = parseInt(currentPageAttr) || 1;
-                        hasMorePages = parseInt(currentPageAttr) < parseInt(lastPageAttr);
-                    }
-                } else {
-                    hasMorePages = false;
-                }
-                
-                if (hasMorePages) {
-                    initInfiniteScroll();
-                }
-            }
+            initApplyButton();
+            initPaginationHandlers();
         }
         
         init();

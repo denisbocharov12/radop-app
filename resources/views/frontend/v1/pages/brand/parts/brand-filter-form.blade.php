@@ -49,6 +49,12 @@
                         </div>
                     </div>
                 </li>
+                @if(isset($categories) && $categories->isNotEmpty())
+                    @include('frontend.v1.components.categories-filter-widget', [
+                        'pageType' => 'brand',
+                        'brandOnecId' => $existedBrand->onec_id ?? null
+                    ])
+                @endif
                 @foreach($attributes as $key => $attributeValues)
                     @php
                         $brandNames = ['Бренд', 'Brand', 'Бренд'];
@@ -120,4 +126,71 @@
     </div>
     <button type="button" id="filterResetBtn" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
 </form>
-@include('frontend.v1.components.brand-filter-ajax', ['existedBrand' => $existedBrand])
+@php
+    $filterVersion = config('filter_ajax.version', 'v1');
+    if ($filterVersion === 'v2') {
+        @endphp
+        @include('frontend.v1.components.brand-filter-ajax-v2', ['existedBrand' => $existedBrand])
+        @php
+    } else {
+        @endphp
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterForm = document.getElementById('filterForm');
+                const filterResetBtn = document.getElementById('filterResetBtn');
+                
+                if (filterResetBtn) {
+                    filterResetBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const form = filterForm || this.closest('form');
+                        if (form) {
+                            const url = new URL(form.action || window.location.href);
+                            url.searchParams.delete('filter');
+                            url.searchParams.delete('page');
+                            url.searchParams.delete('sort');
+                            window.location.href = url.toString();
+                        }
+                    });
+                }
+                
+                if (filterForm) {
+                    const checkboxes = filterForm.querySelectorAll('.theme-checkbox');
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.addEventListener('change', function() {
+                            filterForm.submit();
+                        });
+                    });
+                    
+                    const priceInputs = filterForm.querySelectorAll('.input-min, .input-max');
+                    let priceDebounceTimer = null;
+                    priceInputs.forEach(function(input) {
+                        input.addEventListener('input', function() {
+                            clearTimeout(priceDebounceTimer);
+                            priceDebounceTimer = setTimeout(function() {
+                                filterForm.submit();
+                            }, 1000);
+                        });
+                    });
+                    
+                    const rangeInputs = filterForm.querySelectorAll('.range-min, .range-max');
+                    let rangeDebounceTimer = null;
+                    rangeInputs.forEach(function(range) {
+                        range.addEventListener('input', function() {
+                            const priceFrom = filterForm.querySelector('.input-min');
+                            const priceTo = filterForm.querySelector('.input-max');
+                            if (priceFrom && priceTo) {
+                                priceFrom.value = filterForm.querySelector('.range-min').value;
+                                priceTo.value = filterForm.querySelector('.range-max').value;
+                            }
+                            clearTimeout(rangeDebounceTimer);
+                            rangeDebounceTimer = setTimeout(function() {
+                                filterForm.submit();
+                            }, 1000);
+                        });
+                    });
+                }
+            });
+        </script>
+        @php
+    }
+@endphp

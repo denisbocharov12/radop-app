@@ -15,12 +15,20 @@ final class ThemeBrandsFilter implements Filter
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
+        if ($value === null) {
+            return;
+        }
 
-        if ($value !== null) 
-            $query->where(function ($query) use ($value) {
-            $query
-                ->whereIn('products.brand_id',  $value)
-            ;
+        if (!is_array($value)) {
+            $value = [$value];
+        }
+
+        if (empty($value)) {
+            return;
+        }
+
+        $query->where(function ($query) use ($value) {
+            $query->whereIn('products.brand_id', $value);
         });
     }
 }

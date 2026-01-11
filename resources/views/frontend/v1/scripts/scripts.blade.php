@@ -611,7 +611,7 @@
                     toastr["warning"](response['msg'])
                 }
                 if (!response['status']){
-                    alert('Нельзя уменьшить меньше 1')
+                    alert('Cannot decrease below 1')
                 }
             }
         })

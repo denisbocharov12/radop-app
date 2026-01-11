@@ -207,6 +207,10 @@ final class ThemeCategoryController extends Controller
      */
     public function filterByCategory(Request $request, string $onecId): \Illuminate\Http\JsonResponse
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         $categoryId = $request->input('category_id');
         
         if ($categoryId !== null) {
@@ -232,6 +236,10 @@ final class ThemeCategoryController extends Controller
      */
     public function filter(Request $request, string $onecId): \Illuminate\Http\JsonResponse
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         return $this->processFilter($request, $onecId);
     }
 

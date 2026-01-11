@@ -8663,7 +8663,7 @@ hr.product-card-item{
     font-weight: 500;
     border: 0;
     outline: none;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .col-theme-filters-modal .theme-wg-btn:hover {
@@ -14323,6 +14323,9 @@ input[type="range"]::-moz-range-thumb {
     .product-list-item .product-item-article-wrap{
         min-width: 33.33%;
     }
+    .col-theme-filters-modal .theme-wg-btn{
+        width: 100%;
+    }
 }
 @media (max-width: 575.98px) {
     .product-list-item .product-item-code-wrap{
@@ -14671,7 +14674,7 @@ input[type="range"]::-moz-range-thumb {
     background-color: #eff3f6;
     border: 1px solid #ddd;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 8px;
     color: #252525;
     transition: all 0.3s;
 }
