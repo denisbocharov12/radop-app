@@ -76,7 +76,7 @@ final class BrandRepository
     {
         $cacheKey = 'brands_all_frontend_' . app()->getLocale();
         
-        return Cache::tags(['brands', 'frontend'])->remember($cacheKey, 3600, function () {
+        return Cache::remember($cacheKey, 3600, function () {
             return Brand::query()->where('status', true)->get();
         });
     }
@@ -192,7 +192,7 @@ final class BrandRepository
 
         $cacheKey = 'brand_product_counts_' . md5(implode(',', $productOnecIds));
         
-        return Cache::tags(['brands', 'product_counts'])->remember($cacheKey, 300, function () use ($brands, $productOnecIds) {
+        return Cache::remember($cacheKey, 300, function () use ($brands, $productOnecIds) {
             $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
 
             $brandProductCounts = Product::whereIn('onec_id', $productOnecIds)

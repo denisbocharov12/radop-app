@@ -309,7 +309,7 @@ class CategoryRepository
         $productIds = $products->pluck('onec_id')->toArray();
         $cacheKey = 'categories_product_counts_' . md5(implode(',', $productIds));
         
-        return Cache::tags(['categories', 'product_counts'])->remember($cacheKey, 300, function () use ($productIds) {
+        return Cache::remember($cacheKey, 300, function () use ($productIds) {
             $categoryData = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
                 ->whereIn('product_categories.product_id', $productIds)
