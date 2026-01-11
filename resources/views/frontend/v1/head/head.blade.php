@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.55" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css?v1.2.55" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.55" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.56" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/coupon/style.css?v1.2.56" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.56" />
 </head>
