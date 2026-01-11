@@ -204,7 +204,7 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
-        return QueryBuilder::for(Product::query()
+        $queryBuilder = QueryBuilder::for(Product::query()
             ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
@@ -223,13 +223,22 @@ final class ProductRepository
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
-            ->defaultSort($defaultSortObj)
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->with(['brand', 'values', 'media', 'packages', 'data'])
+            ->with(['brand', 'values', 'media', 'packages', 'data']);
+
+        $queryBuilder = $queryBuilder->orderByRaw("
+            CASE 
+                WHEN product_profiles.condition = 'hot' THEN 0 
+                ELSE 1 
+            END ASC
+        ");
+        $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+
+        return $queryBuilder
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -359,7 +368,7 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
-        return QueryBuilder::for(Product::query()
+        $queryBuilder = QueryBuilder::for(Product::query()
             ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
@@ -378,13 +387,22 @@ final class ProductRepository
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
-            ->defaultSort($defaultSortObj)
             ->whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->with(['brand', 'values', 'media', 'packages', 'data'])
+            ->with(['brand', 'values', 'media', 'packages', 'data']);
+
+        $queryBuilder = $queryBuilder->orderByRaw("
+            CASE 
+                WHEN product_profiles.condition = 'hot' THEN 0 
+                ELSE 1 
+            END ASC
+        ");
+        $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+
+        return $queryBuilder
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
@@ -468,7 +486,7 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         }
 
-        return QueryBuilder::for(Product::query()
+        $queryBuilder = QueryBuilder::for(Product::query()
             ->select('products.*')
             ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id'))
             ->allowedFilters([
@@ -487,13 +505,22 @@ final class ProductRepository
                 AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order'),
                 'stock',
             ])
-            ->defaultSort($defaultSortObj)
             ->where('sale_price', '!=', 0)
             ->where('status', true)
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->with(['brand', 'values', 'media', 'packages', 'data'])
+            ->with(['brand', 'values', 'media', 'packages', 'data']);
+
+        $queryBuilder = $queryBuilder->orderByRaw("
+            CASE 
+                WHEN product_profiles.condition = 'hot' THEN 0 
+                ELSE 1 
+            END ASC
+        ");
+        $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+
+        return $queryBuilder
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());

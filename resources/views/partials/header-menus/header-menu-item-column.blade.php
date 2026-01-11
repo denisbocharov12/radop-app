@@ -9,7 +9,7 @@
             ? $child->getTranslation('title', $locale)
             : ($titleRaw ?? '');
         return mb_strtolower($title);
-    }) as $child)
+    })->values() as $child)
         @php
             $childTitle = $child->getTranslation('title', $locale);
             $childLink = $child->getTranslation('link', $locale);
@@ -34,7 +34,7 @@
                     <img src="{{ $childImage->getUrl() }}" alt="{{ $childTitle }}" style="width: 16px; height: 16px; margin-right: 5px">
                 @endif
                 {{ $childTitle }}
-                @if($child->category_id && $childProductsCount > 0)
+                @if($childProductsCount > 0)
                     <span style="color: #999; font-size: 14px;">({{ $childProductsCount }})</span>
                 @endif
             </a>

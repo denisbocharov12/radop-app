@@ -92,8 +92,9 @@ final class ThemeBrandController extends Controller
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($existedBrand->products);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($existedBrand->products);
+        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
 
         $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
@@ -219,6 +220,10 @@ final class ThemeBrandController extends Controller
      */
     public function filterByCategory(Request $request, string $onecId)
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         $categoryId = $request->input('category_id');
         
         if ($categoryId === null) {
@@ -248,12 +253,23 @@ final class ThemeBrandController extends Controller
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
 
+        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
+        $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+        
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
+        $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
+        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+        
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
+        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+
         $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
         $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
 
         $pagination = '';
         if ($products->hasPages()) {
-            $pagination = $products->appends(request()->except('page'))->links()->render();
+            $pagination = $products->appends($request->except('page'))->links()->render();
         }
 
         return response()->json([
@@ -262,6 +278,71 @@ final class ThemeBrandController extends Controller
             'listView' => $listView,
             'pagination' => $pagination,
             'hasPages' => $products->hasPages(),
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+            'filtersCounts' => [
+                'categories' => $categoryCounts,
+                'attributes' => $attributeCounts,
+                'brands' => $brandCounts,
+            ],
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function filter(Request $request, string $onecId): \Illuminate\Http\JsonResponse
+    {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
+        $existedBrand = $this->brandRepository->getByOnecId($onecId);
+
+        if ($existedBrand === null) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.brand-not-found'),
+            ], 404);
+        }
+
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
+        $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
+
+        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
+        $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+        
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
+        $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
+        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+        
+        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
+        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+
+        $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
+        $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
+
+        $pagination = '';
+        if ($products->hasPages()) {
+            $pagination = $products->appends($request->except('page'))->links()->render();
+        }
+
+        return response()->json([
+            'success' => true,
+            'tableView' => $tableView,
+            'listView' => $listView,
+            'pagination' => $pagination,
+            'hasPages' => $products->hasPages(),
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+            'filtersCounts' => [
+                'categories' => $categoryCounts,
+                'attributes' => $attributeCounts,
+                'brands' => $brandCounts,
+            ],
         ]);
     }
 }

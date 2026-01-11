@@ -388,6 +388,7 @@ return array (
     'other' => 'Прочее',
     'show-all-filters' => 'Показать все фильтры',
     'filters' => 'Фильтры',
+    'reset-filters' => 'Сбросить фильтры',
     'cancel' => 'Отмена',
     'sort-product' => 'товара',
     'sort-products' => 'товаров',

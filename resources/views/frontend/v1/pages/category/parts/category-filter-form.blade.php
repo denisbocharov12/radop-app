@@ -1,7 +1,7 @@
 <form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET" id="filterForm">
     <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
     <div class="theme-wg-wrap">
-        @if(!empty($attributes))
+        @if(!empty($attributes) || (isset($brands) && $brands->isNotEmpty()))
             <ul class="theme-toggle-list">
                 <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
@@ -53,8 +53,9 @@
                 @foreach($attributes as $key => $attributeValues)
                     @php
                         $attributeValues = collect($attributeValues)->map(function($attribute) {
-                            return \App\Models\AttributeValue::find($attribute->id);
-                        })->sortBy('value');
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -93,12 +94,7 @@
                     </li>
                 @endforeach
                 @php
-                    $allProductIds = $productsByCategory->pluck('id')->toArray();
-                    $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
-                        ->with('brand')
-                        ->get()
-                        ->pluck('brand')
-                        ->unique('id');
+                    $displayedBrands = app(\App\Repositories\Brand\BrandRepository::class)->getAllBrandsByProductsIdsToFrontEnd($productsByCategory);
                 @endphp
                 @if($displayedBrands)
                     <li class="theme-toggle-item">
@@ -119,5 +115,73 @@
             </ul>
         @endif
     </div>
-    <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
+    <button type="button" id="filterResetBtn" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
 </form>
+@php
+    $filterVersion = config('filter_ajax.version', 'v1');
+    if ($filterVersion === 'v2') {
+        @endphp
+        @include('frontend.v1.components.category-filter-ajax-v2', ['existedCategory' => $existedCategory])
+        @php
+    } else {
+        @endphp
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterForm = document.getElementById('filterForm');
+                const filterResetBtn = document.getElementById('filterResetBtn');
+                
+                if (filterResetBtn) {
+                    filterResetBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const form = filterForm || this.closest('form');
+                        if (form) {
+                            const url = new URL(form.action || window.location.href);
+                            url.searchParams.delete('filter');
+                            url.searchParams.delete('page');
+                            url.searchParams.delete('sort');
+                            window.location.href = url.toString();
+                        }
+                    });
+                }
+                
+                if (filterForm) {
+                    const checkboxes = filterForm.querySelectorAll('.theme-checkbox');
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.addEventListener('change', function() {
+                            filterForm.submit();
+                        });
+                    });
+                    
+                    const priceInputs = filterForm.querySelectorAll('.input-min, .input-max');
+                    let priceDebounceTimer = null;
+                    priceInputs.forEach(function(input) {
+                        input.addEventListener('input', function() {
+                            clearTimeout(priceDebounceTimer);
+                            priceDebounceTimer = setTimeout(function() {
+                                filterForm.submit();
+                            }, 1000);
+                        });
+                    });
+                    
+                    const rangeInputs = filterForm.querySelectorAll('.range-min, .range-max');
+                    let rangeDebounceTimer = null;
+                    rangeInputs.forEach(function(range) {
+                        range.addEventListener('input', function() {
+                            const priceFrom = filterForm.querySelector('.input-min');
+                            const priceTo = filterForm.querySelector('.input-max');
+                            if (priceFrom && priceTo) {
+                                priceFrom.value = filterForm.querySelector('.range-min').value;
+                                priceTo.value = filterForm.querySelector('.range-max').value;
+                            }
+                            clearTimeout(rangeDebounceTimer);
+                            rangeDebounceTimer = setTimeout(function() {
+                                filterForm.submit();
+                            }, 1000);
+                        });
+                    });
+                }
+            });
+        </script>
+        @php
+    }
+@endphp

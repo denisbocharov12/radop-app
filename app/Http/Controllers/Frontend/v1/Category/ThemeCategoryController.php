@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Category;
 
 use App\Enums\PageTypes;
+use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
@@ -195,6 +196,102 @@ final class ThemeCategoryController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('theme.personalized-export-started'),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ThemeCategoryNotFoundException
+     */
+    public function filterByCategory(Request $request, string $onecId): \Illuminate\Http\JsonResponse
+    {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
+        $categoryId = $request->input('category_id');
+        
+        if ($categoryId !== null) {
+            $filterCategory = $this->categoryRepository->getByOnecId($categoryId);
+            
+            if ($filterCategory === null) {
+                throw new CategoryNotFoundValidationException();
+            }
+            
+            $existingFilters = $request->input('filter', []);
+            $existingFilters['category'] = $categoryId;
+            $request->merge(['filter' => $existingFilters]);
+        }
+        
+        return $this->processFilter($request, $onecId);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ThemeCategoryNotFoundException
+     */
+    public function filter(Request $request, string $onecId): \Illuminate\Http\JsonResponse
+    {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
+        return $this->processFilter($request, $onecId);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $onecId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ThemeCategoryNotFoundException
+     */
+    private function processFilter(Request $request, string $onecId): \Illuminate\Http\JsonResponse
+    {
+        $existedCategory = $this->categoryRepository->getByOnecId($onecId);
+        
+        if ($existedCategory === null) {
+            throw new ThemeCategoryNotFoundException();
+        }
+        
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForCategoryPage();
+        $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory, $request, $defaultSort);
+        
+        $allCategoryProducts = $this->productRepository->getAllProductsByCategory($existedCategory);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allCategoryProducts);
+        $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+        
+        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allCategoryProducts);
+        $productOnecIds = $allCategoryProducts->pluck('onec_id')->toArray();
+        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+        
+        $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
+        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+        
+        $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
+        $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
+        
+        $pagination = '';
+        if ($products->hasPages()) {
+            $pagination = $products->appends($request->except('page'))->links()->render();
+        }
+        
+        return response()->json([
+            'success' => true,
+            'tableView' => $tableView,
+            'listView' => $listView,
+            'pagination' => $pagination,
+            'hasPages' => $products->hasPages(),
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+            'filtersCounts' => [
+                'categories' => $categoryCounts,
+                'attributes' => $attributeCounts,
+                'brands' => $brandCounts,
+            ],
         ]);
     }
 }

@@ -8,6 +8,12 @@ Route::prefix('category')->name('category.')->group(function () {
     Route::get('/{onecId}', [ThemeCategoryController::class, 'index'])
         ->name('index')
     ;
+    Route::post('/{onecId}/filter-by-category', [ThemeCategoryController::class, 'filterByCategory'])
+        ->name('filter-by-category')
+    ;
+    Route::post('/{onecId}/filter', [ThemeCategoryController::class, 'filter'])
+        ->name('filter')
+    ;
     Route::get('/{onecId}/export', [ThemeCategoryController::class, 'export'])
         ->name('export')
     ;

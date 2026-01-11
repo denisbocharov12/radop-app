@@ -70,7 +70,7 @@
                             ? $item->getTranslation('title', $locale)
                             : ($titleRaw ?? '');
                         return mb_strtolower($title);
-                    });
+                    })->values();
                 @endphp
                 @if($widgetItems->isNotEmpty())
                     <div class="mega-menu__widgets">
@@ -79,13 +79,7 @@
                         @endforeach
                     </div>
                 @endif
-                    @foreach($categoryItems->sortBy(function($item) use ($locale) {
-                        $titleRaw = $item->getRawOriginal('title');
-                        $title = is_array(json_decode($titleRaw, true))
-                            ? $item->getTranslation('title', $locale)
-                            : ($titleRaw ?? '');
-                        return mb_strtolower($title);
-                    })->values() as $index => $item)
+                    @foreach($categoryItems as $index => $item)
                     <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
                          data-category-panel="{{ $item->id }}">
                         @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
@@ -97,7 +91,7 @@
                                             ? $child->getTranslation('title', $locale)
                                             : ($titleRaw ?? '');
                                         return mb_strtolower($title);
-                                    });
+                                    })->values();
                                     $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
                                 @endphp
                                 @foreach($columns as $column)

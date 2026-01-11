@@ -96,6 +96,12 @@ class CategoryRepository
             })
             ->orderBy('product_category_sorts.sort');
         } else {
+            $queryBuilder = $queryBuilder->orderByRaw("
+                CASE 
+                    WHEN product_profiles.condition = 'hot' THEN 0 
+                    ELSE 1 
+                END ASC
+            ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
         }
 
@@ -302,9 +308,12 @@ class CategoryRepository
         $productIds = $products->pluck('onec_id')->toArray();
 
         $categoryData = DB::table('product_categories')
-            ->whereIn('product_id', $productIds)
-            ->select('category_id', DB::raw('COUNT(DISTINCT product_id) as count'))
-            ->groupBy('category_id')
+            ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
+            ->whereIn('product_categories.product_id', $productIds)
+            ->where('categories.status', true)
+            ->whereNull('categories.deleted_at')
+            ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT product_categories.product_id) as count'))
+            ->groupBy('product_categories.category_id')
             ->get();
 
         if ($categoryData->isEmpty()) {

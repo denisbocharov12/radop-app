@@ -437,6 +437,10 @@ final class ThemeShopController extends Controller
      */
     public function filterByCategory(Request $request, string $type)
     {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
         $categoryId = $request->input('category_id');
         
         if ($categoryId === null) {
@@ -482,6 +486,78 @@ final class ThemeShopController extends Controller
             'listView' => $listView,
             'pagination' => $pagination,
             'hasPages' => $products->hasPages(),
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $type
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function filter(Request $request, string $type): \Illuminate\Http\JsonResponse
+    {
+        if (config('filter_ajax.version', 'v1') !== 'v2') {
+            abort(404);
+        }
+        
+        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+        
+        if ($type === 'new') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
+            $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+            $allProducts = $this->productRepository->getAllNewProducts();
+        } elseif ($type === 'popular') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
+            $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+            $allProducts = $this->productRepository->getAllPopularProducts();
+        } elseif ($type === 'sale') {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
+            $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+            $allProducts = $this->productRepository->getAllDiscountProducts();
+        } else {
+            $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
+            $allProducts = collect();
+        }
+
+        $categoryCounts = [];
+        $brandCounts = [];
+        $attributeCounts = [];
+        
+        if ($allProducts->isNotEmpty()) {
+            $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allProducts);
+            $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+            
+            $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allProducts);
+            $productOnecIds = $allProducts->pluck('onec_id')->toArray();
+            $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+            
+            $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allProducts);
+            $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+        }
+
+        $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
+        $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
+
+        $pagination = '';
+        if ($products->hasPages()) {
+            $pagination = $products->appends($request->except('page'))->links()->render();
+        }
+
+        return response()->json([
+            'success' => true,
+            'tableView' => $tableView,
+            'listView' => $listView,
+            'pagination' => $pagination,
+            'hasPages' => $products->hasPages(),
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+            'filtersCounts' => [
+                'categories' => $categoryCounts,
+                'attributes' => $attributeCounts,
+                'brands' => $brandCounts,
+            ],
         ]);
     }
 }

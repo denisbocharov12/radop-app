@@ -147,4 +147,79 @@ final class AttributeRepository
 
         return $collect;
     }
+
+    /**
+     * @param int $attributeValueId
+     * @return AttributeValue|null
+     */
+    public function getAttributeValueById(int $attributeValueId): ?AttributeValue
+    {
+        return AttributeValue::find($attributeValueId);
+    }
+
+    /**
+     * @param array $productOnecIds
+     * @param array $attributes
+     * @return array
+     */
+    public function getAttributeProductCounts(array $productOnecIds, array $attributes): array
+    {
+        if (empty($productOnecIds) || empty($attributes)) {
+            return [];
+        }
+
+        $attributeCounts = [];
+
+        foreach ($attributes as $key => $attributeValues) {
+            foreach ($attributeValues as $attribute) {
+                $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                
+                if ($attributeId) {
+                    $attributeModel = $this->getAttributeValueById((int)$attributeId);
+                    if ($attributeModel) {
+                        $attributeOnecId = $attributeModel->attribute_onec_id;
+                        $attributeValue = str_replace(',', '.', $attributeModel->value);
+                        
+                        $valueProductCount = DB::table('attribute_values')
+                            ->whereIn('product_onec_id', $productOnecIds)
+                            ->where('attribute_onec_id', $attributeOnecId)
+                            ->whereRaw("REPLACE(value, ',', '.') = ?", [$attributeValue])
+                            ->count(DB::raw('DISTINCT product_onec_id'));
+
+                        if ($valueProductCount > 0) {
+                            if (!isset($attributeCounts[$attributeOnecId])) {
+                                $attributeCounts[$attributeOnecId] = [];
+                            }
+                            $attributeCounts[$attributeOnecId][$attributeValue] = $valueProductCount;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $attributeCounts;
+    }
+
+    /**
+     * @param array $attributeData
+     * @return Collection
+     */
+    public function getAttributeValueModels(array $attributeData): Collection
+    {
+        $attributeIds = [];
+        foreach ($attributeData as $attributeValues) {
+            foreach ($attributeValues as $attribute) {
+                $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                if ($attributeId) {
+                    $attributeIds[] = (int)$attributeId;
+                }
+            }
+        }
+
+        if (empty($attributeIds)) {
+            return collect();
+        }
+
+        return AttributeValue::whereIn('id', array_unique($attributeIds))->get();
+    }
 }

@@ -1,7 +1,7 @@
-<form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET" id="filterForm">
-    <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
+<form action="{{route('theme.category.index', $existedCategory->onec_id)}}" method="GET" id="filterFormModal">
+    <input type="hidden" name="sort" id="sortInputModal" value="{{ request('sort') }}">
     <div class="theme-wg-wrap">
-        @if(!empty($attributes))
+        @if(!empty($attributes) || (isset($brands) && $brands->isNotEmpty()))
             <ul class="theme-toggle-list">
                 <li class="theme-toggle-item">
                     <div class="theme-toggle-item-title">
@@ -53,8 +53,9 @@
                 @foreach($attributes as $key => $attributeValues)
                     @php
                         $attributeValues = collect($attributeValues)->map(function($attribute) {
-                            return \App\Models\AttributeValue::find($attribute->id);
-                        })->sortBy('value');
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -71,7 +72,7 @@
                             $activeStyle = 'display: none';
 
                             foreach ($attributeValues as $attribute) {
-                                if (isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
+                                if ($attribute && isset($query) && isset($query['attribute']) && is_array($query['attribute']) && array_key_exists($attribute->attribute_onec_id, $query['attribute'])){
                                     $activeStyle = 'display:flex';
                                 }
                             }
@@ -79,40 +80,34 @@
 
                         <div class="theme-toggle-item-content" style="{{ $activeStyle }}">
                             @foreach($attributeValues as $attribute)
-                                <div class="col-6">
-                                    <input
-                                            type="checkbox"
-                                            class="theme-checkbox"
-                                            {{ isset($query['attribute'][$attribute->attribute_onec_id]) && in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : '' }}
-                                            id="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}"
-                                            name="filter[attribute][{{$attribute->attribute_onec_id}}][]"
-                                            value="{{ str_replace(',', '.', $attribute->value) }}"
-                                    >
-                                    <label for="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}">{{$attribute->value}}</label>
-                                </div>
+                                @if($attribute)
+                                    <div class="col-6">
+                                        <input
+                                                type="checkbox"
+                                                class="theme-checkbox"
+                                                {{ isset($query['attribute'][$attribute->attribute_onec_id]) && in_array(str_replace(',', '.', $attribute->value), $query['attribute'][$attribute->attribute_onec_id]) ? 'checked' : '' }}
+                                                id="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}"
+                                                name="filter[attribute][{{$attribute->attribute_onec_id}}][]"
+                                                value="{{ str_replace(',', '.', $attribute->value) }}"
+                                        >
+                                        <label for="mobile-attribute-{{$attribute->id}}-{{str_replace(['.', ','], '_', $attribute->value)}}">{{$attribute->value}}</label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </li>
                 @endforeach
-                @php
-                    $allProductIds = $productsByCategory->pluck('id')->toArray();
-                    $displayedBrands = \App\Models\Product::whereIn('id', $allProductIds)
-                        ->with('brand')
-                        ->get()
-                        ->pluck('brand')
-                        ->unique('id');
-                @endphp
-                @if($displayedBrands)
+                @if(isset($brands) && $brands->isNotEmpty())
                     <li class="theme-toggle-item">
                         <div class="theme-toggle-item-title">
                             <i class="icon-arrow-filter-radop-left"></i>
                             <p class="theme-widget-title">{{__('theme.brand')}}</p>
                         </div>
                         <div class="theme-toggle-item-content">
-                            @foreach($displayedBrands as $brand)
+                            @foreach($brands as $brand)
                                 <div class="col-6">
-                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand?->onec_id, $query['brand']) ? 'checked' : ''}} id="mobile-brand-{{$brand?->onec_id}}" name="filter[brand][]" value="{{$brand?->onec_id}}">
-                                    <label for="mobile-brand-{{$brand?->onec_id}}">{{$brand?->title}}</label>
+                                    <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="mobile-brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
+                                    <label for="mobile-brand-{{$brand->onec_id}}">{{$brand->title}}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -121,5 +116,47 @@
             </ul>
         @endif
     </div>
-    <button type="submit" class="theme-wg-btn">{{__('theme.filter')}}</button>
+    <div style="gap: 10px; margin-top: 20px;">
+        <button type="button" id="filterApplyBtnModal" class="theme-wg-btn">{{__('theme.filter')}}</button>
+        <button type="button" id="filterResetBtnModal" class="filter-reset-btn">{{__('theme.reset-filters')}}</button>
+    </div>
 </form>
+@php
+    $filterVersion = config('filter_ajax.version', 'v1');
+    if ($filterVersion === 'v2') {
+        @endphp
+        @include('frontend.v1.components.category-filter-ajax-v2', ['existedCategory' => $existedCategory, 'isModal' => true])
+        @php
+    } else {
+        @endphp
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterFormModal = document.getElementById('filterFormModal');
+                const filterApplyBtnModal = document.getElementById('filterApplyBtnModal');
+                const filterResetBtnModal = document.getElementById('filterResetBtnModal');
+                
+                if (filterApplyBtnModal && filterFormModal) {
+                    filterApplyBtnModal.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        filterFormModal.submit();
+                    });
+                }
+                
+                if (filterResetBtnModal) {
+                    filterResetBtnModal.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const form = filterFormModal || this.closest('form');
+                        if (form) {
+                            const url = new URL(form.action || window.location.href);
+                            url.searchParams.delete('filter');
+                            url.searchParams.delete('page');
+                            url.searchParams.delete('sort');
+                            window.location.href = url.toString();
+                        }
+                    });
+                }
+            });
+        </script>
+        @php
+    }
+@endphp

@@ -25,7 +25,7 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($item->category_id && $productsCount > 0)
+            @if($productsCount > 0)
                 <span class="mega-menu__category-count">({{ $productsCount }})</span>
             @endif
         </a>
@@ -35,7 +35,7 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($item->category_id && $productsCount > 0)
+            @if($productsCount > 0)
                 <span class="mega-menu__category-count">({{ $productsCount }})</span>
             @endif
         </div>
@@ -49,7 +49,7 @@
                     ? $child->getTranslation('title', $locale)
                     : ($titleRaw ?? '');
                 return mb_strtolower($title);
-            }) as $child)
+            })->values() as $child)
                 @php
                     $childTitle = $child->getTranslation('title', $locale);
                     $childLink = $child->getTranslation('link', $locale);
@@ -69,7 +69,7 @@
                 <li class="mega-menu__category-subitem">
                     <a href="{{ $childLink ?? '#' }}" class="mega-menu__category-sublink" target="{{ $child->target ?? '_self' }}">
                         {{ $childTitle }}
-                        @if($child->category_id && $childProductsCount > 0)
+                        @if($childProductsCount > 0)
                             <span class="mega-menu__category-count">({{ $childProductsCount }})</span>
                         @endif
                     </a>

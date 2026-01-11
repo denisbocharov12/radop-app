@@ -17,7 +17,7 @@
                         </form>
                     </div>
                     @if($products->hasPages())
-                        <div class="theme-pagination d-none d-lg-block">
+                        <div class="theme-pagination d-none d-lg-block theme-pagination-container">
                             {{$products->links()}}
                         </div>
                     @endif
@@ -32,23 +32,14 @@
         <div class="row row-category-list">
                 <div class="col-12 col-md-3 col-theme-filters d-none d-md-block">
                     <div class="sticky-sidebar">
-                        @if(isset($categories) && $categories->isNotEmpty())
-                            <div class="theme-wg-wrap" style="margin-bottom: 20px;">
-                                <ul class="theme-toggle-list">
-                                    @include('frontend.v1.components.categories-filter-widget', [
-                                        'pageType' => 'brand',
-                                        'brandOnecId' => $existedBrand->onec_id
-                                    ])
-                                </ul>
-                            </div>
-                        @endif
                         @include('frontend.v1.pages.brand.parts.brand-filter-form')
                     </div>
                 </div>
                 <div class="col-md-9 col-12 col-theme-content">
                     @include('frontend.v1.components.mobile-sort-products', ['defaultSort' => $defaultSort])
                     <div class="d-none d-md-block">
-                        <div id="productsTableView" class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
+                        <div id="productsTableView"
+                             class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
                             @include('frontend.v1.pages.brand.parts.list')
                         </div>
                         <div id="productsListView" style="display:none;">
@@ -56,7 +47,9 @@
                         </div>
                     </div>
                     <div class="d-block d-md-none">
-                        @include('frontend.v1.pages.brand.parts.list-view')
+                        <div id="productsListViewMobile">
+                            @include('frontend.v1.pages.brand.parts.list-view')
+                        </div>
                     </div>
                     <div id="mobile-per-page-block" class="mobile-per-page-block">
                         <div class="mobile-per-page-selected" id="mobilePerPageSelected">{{$products->perPage()}} товаров <span class="arrow">&#9660;</span></div>
@@ -69,9 +62,11 @@
                             <div class="mobile-per-page-option" data-value="96">96 {{ __('theme.sort-products') }}</div>
                         </div>
                     </div>
-                    <div class="theme-pagination">
-                        {{$products->links()}}
-                    </div>
+                    @if($products->hasPages())
+                        <div class="theme-pagination theme-pagination-container">
+                            {{$products->appends(request()->except('page'))->links()}}
+                        </div>
+                    @endif
                 </div>
         </div>
     </div>
