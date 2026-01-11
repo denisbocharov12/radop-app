@@ -14,6 +14,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -82,7 +83,7 @@ class CategoryRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand', 'values', 'media', 'packages', 'data'])
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id');
 
         $hasCustomSort = DB::table('product_category_sorts')
@@ -306,36 +307,39 @@ class CategoryRepository
         }
 
         $productIds = $products->pluck('onec_id')->toArray();
+        $cacheKey = 'categories_product_counts_' . md5(implode(',', $productIds));
+        
+        return Cache::tags(['categories', 'product_counts'])->remember($cacheKey, 300, function () use ($productIds) {
+            $categoryData = DB::table('product_categories')
+                ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
+                ->whereIn('product_categories.product_id', $productIds)
+                ->where('categories.status', true)
+                ->whereNull('categories.deleted_at')
+                ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT product_categories.product_id) as count'))
+                ->groupBy('product_categories.category_id')
+                ->get();
 
-        $categoryData = DB::table('product_categories')
-            ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
-            ->whereIn('product_categories.product_id', $productIds)
-            ->where('categories.status', true)
-            ->whereNull('categories.deleted_at')
-            ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT product_categories.product_id) as count'))
-            ->groupBy('product_categories.category_id')
-            ->get();
+            if ($categoryData->isEmpty()) {
+                return collect();
+            }
 
-        if ($categoryData->isEmpty()) {
-            return collect();
-        }
+            $categoryOnecIds = $categoryData->pluck('category_id')->unique()->toArray();
+            $productCounts = $categoryData->pluck('count', 'category_id')->toArray();
 
-        $categoryOnecIds = $categoryData->pluck('category_id')->unique()->toArray();
-        $productCounts = $categoryData->pluck('count', 'category_id')->toArray();
+            $categories = Category::whereIn('onec_id', $categoryOnecIds)
+                ->where('status', true)
+                ->whereNull('deleted_at')
+                ->get();
 
-        $categories = Category::whereIn('onec_id', $categoryOnecIds)
-            ->where('status', true)
-            ->whereNull('deleted_at')
-            ->get();
-
-        return $categories->map(function ($category) use ($productCounts) {
-            $category->products_count = $productCounts[$category->onec_id] ?? 0;
-            return $category;
-        })->filter(function ($category) {
-            return $category->products_count > 0;
-        })->unique('name')
-        ->sortBy('name')
-        ->values();
+            return $categories->map(function ($category) use ($productCounts) {
+                $category->products_count = $productCounts[$category->onec_id] ?? 0;
+                return $category;
+            })->filter(function ($category) {
+                return $category->products_count > 0;
+            })->unique('name')
+            ->sortBy('name')
+            ->values();
+        });
     }
 
     /**

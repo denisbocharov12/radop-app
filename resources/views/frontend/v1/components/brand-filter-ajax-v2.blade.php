@@ -441,9 +441,22 @@
                 if (rangeMin) rangeMin.value = 0;
                 if (rangeMax) rangeMax.value = 1000;
                 
+                const sortInputId = isModal ? 'sortInputModal' : 'sortInput';
+                const sortInput = document.getElementById(sortInputId);
+                if (sortInput) {
+                    sortInput.value = '';
+                }
+                
+                const perPageSelect = document.querySelector('.select-sort-per-page');
+                if (perPageSelect) {
+                    perPageSelect.value = '24';
+                }
+                
                 const newUrl = new URL(window.location.href);
                 newUrl.searchParams.delete('filter');
                 newUrl.searchParams.delete('page');
+                newUrl.searchParams.delete('sort');
+                newUrl.searchParams.delete('perPage');
                 window.history.pushState({}, '', newUrl.toString());
                 
                 performAjaxRequest(1);

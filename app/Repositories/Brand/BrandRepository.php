@@ -17,6 +17,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -73,7 +74,11 @@ final class BrandRepository
 
     public function getAllToFrontEnd(): Collection
     {
-        return Brand::query()->where('status', true)->get();
+        $cacheKey = 'brands_all_frontend_' . app()->getLocale();
+        
+        return Cache::tags(['brands', 'frontend'])->remember($cacheKey, 3600, function () {
+            return Brand::query()->where('status', true)->get();
+        });
     }
 
     public function getLimited()
@@ -144,7 +149,7 @@ final class BrandRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand', 'values', 'media', 'packages', 'data'])
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id');
 
         $queryBuilder = $queryBuilder->orderByRaw("
@@ -185,26 +190,30 @@ final class BrandRepository
             return [];
         }
 
-        $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
+        $cacheKey = 'brand_product_counts_' . md5(implode(',', $productOnecIds));
+        
+        return Cache::tags(['brands', 'product_counts'])->remember($cacheKey, 300, function () use ($brands, $productOnecIds) {
+            $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
 
-        $brandProductCounts = Product::whereIn('onec_id', $productOnecIds)
-            ->whereIn('brand_id', $brandIds)
-            ->where('status', true)
-            ->where('site_status', true)
-            ->where('stock', '!=', 0)
-            ->select('brand_id', DB::raw('COUNT(DISTINCT onec_id) as count'))
-            ->groupBy('brand_id')
-            ->pluck('count', 'brand_id')
-            ->toArray();
+            $brandProductCounts = Product::whereIn('onec_id', $productOnecIds)
+                ->whereIn('brand_id', $brandIds)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->select('brand_id', DB::raw('COUNT(DISTINCT onec_id) as count'))
+                ->groupBy('brand_id')
+                ->pluck('count', 'brand_id')
+                ->toArray();
 
-        $result = [];
-        foreach ($brands as $brand) {
-            if ($brand && isset($brandProductCounts[$brand->id])) {
-                $result[$brand->onec_id] = $brandProductCounts[$brand->id];
+            $result = [];
+            foreach ($brands as $brand) {
+                if ($brand && isset($brandProductCounts[$brand->id])) {
+                    $result[$brand->onec_id] = $brandProductCounts[$brand->id];
+                }
             }
-        }
 
-        return $result;
+            return $result;
+        });
     }
 
     /**

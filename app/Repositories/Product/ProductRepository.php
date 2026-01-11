@@ -68,9 +68,11 @@ final class ProductRepository
 
     public function getAllPaginatedWithFiltersToFrontEnd(Request $request): LengthAwarePaginator
     {
-        $query = Product::query()->distinct();
+        $query = Product::query()
+            ->select('products.*')
+            ->distinct();
 
-        return QueryBuilder::for($query)
+        $result = QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
                 AllowedFilter::custom('search', new ThemeProductSearchFilter()),
@@ -91,7 +93,8 @@ final class ProductRepository
             ->defaultSort('price')
             ->where('status', true)
             ->where('site_status', true)
-            ->join('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
+            ->leftJoin('product_profiles', 'product_profiles.product_id', '=', 'products.onec_id')
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
             ->groupBy('products.onec_id')
             ->orderBy('products.onec_id')
             ->orderByRaw("
@@ -105,6 +108,8 @@ final class ProductRepository
             ->withQueryString()
             ->appends(request()->query())
         ;
+        
+        return $result;
     }
 
     public function getAllProductsByCategory(Category $category)

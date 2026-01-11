@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -46,22 +47,26 @@ final class AttributeRepository
 
     public function getAllToShop(): ?array
     {
-        $collect = array();
+        $cacheKey = 'attributes_all_shop_' . app()->getLocale();
+        
+        return Cache::tags(['attributes', 'frontend'])->remember($cacheKey, 3600, function () {
+            $collect = array();
 
-        $join = DB::table('attribute_values')
-            ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
-            ->get()
-            ->groupBy('attribute_onec_id')
-        ;
+            $join = DB::table('attribute_values')
+                ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+                ->get()
+                ->groupBy('attribute_onec_id')
+            ;
 
-        foreach ($join as $key => $value)
-        {
-            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+            foreach ($join as $key => $value)
+            {
+                $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
 
-            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
-        }
+                $collect[$keyName] = $value->keyBy('value')->values()->toArray();
+            }
 
-        return $collect;
+            return $collect;
+        });
     }
 
     public function getAllByCategoryId(string $id): ?array
@@ -168,36 +173,40 @@ final class AttributeRepository
             return [];
         }
 
-        $attributeCounts = [];
+        $cacheKey = 'attribute_product_counts_' . md5(implode(',', $productOnecIds));
+        
+        return Cache::tags(['attributes', 'product_counts'])->remember($cacheKey, 300, function () use ($productOnecIds, $attributes) {
+            $attributeCounts = [];
 
-        foreach ($attributes as $key => $attributeValues) {
-            foreach ($attributeValues as $attribute) {
-                $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
-                
-                if ($attributeId) {
-                    $attributeModel = $this->getAttributeValueById((int)$attributeId);
-                    if ($attributeModel) {
-                        $attributeOnecId = $attributeModel->attribute_onec_id;
-                        $attributeValue = str_replace(',', '.', $attributeModel->value);
-                        
-                        $valueProductCount = DB::table('attribute_values')
-                            ->whereIn('product_onec_id', $productOnecIds)
-                            ->where('attribute_onec_id', $attributeOnecId)
-                            ->whereRaw("REPLACE(value, ',', '.') = ?", [$attributeValue])
-                            ->count(DB::raw('DISTINCT product_onec_id'));
+            foreach ($attributes as $key => $attributeValues) {
+                foreach ($attributeValues as $attribute) {
+                    $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                    
+                    if ($attributeId) {
+                        $attributeModel = $this->getAttributeValueById((int)$attributeId);
+                        if ($attributeModel) {
+                            $attributeOnecId = $attributeModel->attribute_onec_id;
+                            $attributeValue = str_replace(',', '.', $attributeModel->value);
+                            
+                            $valueProductCount = DB::table('attribute_values')
+                                ->whereIn('product_onec_id', $productOnecIds)
+                                ->where('attribute_onec_id', $attributeOnecId)
+                                ->whereRaw("REPLACE(value, ',', '.') = ?", [$attributeValue])
+                                ->count(DB::raw('DISTINCT product_onec_id'));
 
-                        if ($valueProductCount > 0) {
-                            if (!isset($attributeCounts[$attributeOnecId])) {
-                                $attributeCounts[$attributeOnecId] = [];
+                            if ($valueProductCount > 0) {
+                                if (!isset($attributeCounts[$attributeOnecId])) {
+                                    $attributeCounts[$attributeOnecId] = [];
+                                }
+                                $attributeCounts[$attributeOnecId][$attributeValue] = $valueProductCount;
                             }
-                            $attributeCounts[$attributeOnecId][$attributeValue] = $valueProductCount;
                         }
                     }
                 }
             }
-        }
-
-        return $attributeCounts;
+            
+            return $attributeCounts;
+        });
     }
 
     /**
