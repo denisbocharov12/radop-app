@@ -49,7 +49,7 @@ final class AttributeRepository
     {
         $cacheKey = 'attributes_all_shop_' . app()->getLocale();
         
-        return Cache::tags(['attributes', 'frontend'])->remember($cacheKey, 3600, function () {
+        return Cache::remember($cacheKey, 3600, function () {
             $collect = array();
 
             $join = DB::table('attribute_values')
@@ -175,7 +175,7 @@ final class AttributeRepository
 
         $cacheKey = 'attribute_product_counts_' . md5(implode(',', $productOnecIds));
         
-        return Cache::tags(['attributes', 'product_counts'])->remember($cacheKey, 300, function () use ($productOnecIds, $attributes) {
+        return Cache::remember($cacheKey, 300, function () use ($productOnecIds, $attributes) {
             $attributeCounts = [];
 
             foreach ($attributes as $key => $attributeValues) {
