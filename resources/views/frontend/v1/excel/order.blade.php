@@ -66,15 +66,15 @@
             <td style="border: 1px solid black; text-align: center" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{{ $product->title }}</td>
             <td style="border: 1px solid black; text-align: center">{{ $item->quantity }}</td>
-            <td style="border: 1px solid black; text-align: right">{{ number_format((float)str_replace(',', '.', $item->price), 2, ',', ' ') }}</td>
-            <td style="border: 1px solid black; text-align: right">{{ number_format((float)str_replace(',', '.', $item->price) * $item->quantity, 2, ',', ' ') }}</td>
+            <td style="border: 1px solid black; text-align: right" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00}}">{{ (float)str_replace(',', '.', $item->price) }}</td>
+            <td style="border: 1px solid black; text-align: right" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00}}">{{ (float)str_replace(',', '.', $item->price) * $item->quantity }}</td>
         </tr>
     @endforeach
     </tbody>
     <tfoot>
     <tr>
         <td colspan="4" style="border: 1px solid black; text-align: right;" ><strong>Итого</strong></td>
-        <td style="border: 1px solid black; text-align: right"><strong>{{ number_format((float)str_replace(',', '.', $order->total), 2, ',', ' ') }}</strong></td>
+        <td style="border: 1px solid black; text-align: right" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00}}"><strong>{{ (float)str_replace(',', '.', $order->total) }}</strong></td>
     </tr>
     </tfoot>
 </table>
