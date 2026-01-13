@@ -15,16 +15,16 @@ return array(
 
     'activities' => 'Principalele direcții ale activității noastre:',
 
-    'wholesale_distribution' => '1. Distribuție en-gros de produse pentru birou, școală și creativitate',
+    'wholesale_distribution' => 'Distribuție en-gros de produse pentru birou, școală și creativitate',
     'wholesale_distribution_desc' => 'Efectuăm aprovizionări en-gros cu articole de papetărie, hârtie și produse din hârtie, articole pentru birou și școală, produse pentru creativitate, jocuri și jucării.',
 
-    'retail_supplies' => '2. Aprovizionarea magazinelor cu amănuntul, supermarketurilor și rețelelor comerciale',
+    'retail_supplies' => 'Aprovizionarea magazinelor cu amănuntul, supermarketurilor și rețelelor comerciale',
     'retail_supplies_desc' => 'Oferim aprovizionări complexe de produse pentru rafturile magazinului sau rețelei dumneavoastră comerciale. Vă propunem doar produsele care vă aduc profit. Pentru comoditatea afacerii dumneavoastră, oferim condiții de creditare optimale și plasarea comenziilor cu posibilitatea de returnare.',
 
-    'online_supplies' => '3. Aprovizionarea magazinelor online',
+    'online_supplies' => 'Aprovizionarea magazinelor online',
     'online_supplies_desc' => 'Oferim un sortiment echilibrat pentru magazinele online de orice specializare. Avantajele colaborării cu noi: garanția stocului, procesarea rapidă a comenzilor de către operatorii dedicați, posibilitatea livrării în ziua următoare, condiții de creditare optime.',
 
-    'own_production' => '4. Producție proprie și vânzări en-gros',
+    'own_production' => 'Producție proprie și vânzări en-gros',
     'own_production_desc' => 'Producem și vindem en-gros caiete școlare și alte articole din hârtie pentru școală și birou. Realizăm branduirea produselor fabricate sub mărcile noastre proprii sau sub mărcile partenerilor noștri.',
 
     'categories' => 'Ne specializăm pe următoarele categorii de produse:',

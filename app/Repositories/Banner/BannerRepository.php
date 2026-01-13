@@ -5,6 +5,7 @@ namespace App\Repositories\Banner;
 use App\Models\Banner;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 final class BannerRepository
 {
@@ -17,9 +18,18 @@ final class BannerRepository
             ->appends(request()->query());
     }
 
+    /**
+     * @return Collection
+     */
     public function getAllActiveForFront(): Collection
     {
-        return Banner::where('active', true)->orderBy('order')->get();
+        $cacheKey = 'banners_active_front_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () {
+            return Banner::where('active', true)
+                ->orderBy('order')
+                ->get();
+        });
     }
 
     public function checkIfBannedWithSameOrderExists(string $order, Banner $banner): bool

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SeoMeta;
+use Illuminate\Support\Facades\Cache;
 
 class SeoMetaRepository
 {
@@ -34,9 +35,12 @@ class SeoMetaRepository
     public function getStatic(string $slug, ?string $locale = null): ?SeoMeta
     {
         $locale = $locale ?? app()->getLocale();
+        $cacheKey = 'seo_meta_static_' . $slug . '_' . $locale;
 
-        return SeoMeta::where('page_type', $slug)
-            ->where('locale', $locale)
-            ->first();
+        return Cache::remember($cacheKey, 3600, function () use ($slug, $locale) {
+            return SeoMeta::where('page_type', $slug)
+                ->where('locale', $locale)
+                ->first();
+        });
     }
 }

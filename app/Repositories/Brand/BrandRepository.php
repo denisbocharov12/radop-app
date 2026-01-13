@@ -81,13 +81,19 @@ final class BrandRepository
         });
     }
 
+    /**
+     * @return Collection
+     */
     public function getLimited()
     {
-        return Brand::where('status', true)
-            ->orderBy('order')
-            ->take(30)
-            ->get()
-        ;
+        $cacheKey = 'brands_limited_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () {
+            return Brand::where('status', true)
+                ->orderBy('order')
+                ->take(30)
+                ->get();
+        });
     }
 
     public function getById($brandId): ?Brand

@@ -29,10 +29,10 @@
         <div class="mega-menu__container">
             <div class="mega-menu__sidebar">
                 <div class="mega-menu__sidebar-header" data-mega-menu-close>
-                    <h3 class="mega-menu__sidebar-title">{{ $menuName }}</h3>
                     <button type="button" class="mega-menu__close">
                         <span class="mega-menu__close-icon"></span>
                     </button>
+                    <h3 class="mega-menu__sidebar-title">{{ $menuName }}</h3>
                 </div>
                 <ul class="mega-menu__sidebar-list">
                     @foreach($menu->rootItems->where('type', '!=', 'widget_link')->sortBy(function($item) use ($locale) {
