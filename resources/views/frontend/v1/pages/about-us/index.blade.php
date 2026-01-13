@@ -13,19 +13,26 @@
                 <p>{{ __('about-us.offers-1') }}</p>
 
                 <p>{{ __('about-us.brands') }}</p>
-                <p>{{ __('about-us.activities') }}</p>
+                <h2>{{ __('about-us.activities') }}</h2>
 
-                <h3>{{ __('about-us.wholesale_distribution') }}</h3>
-                <p>{{ __('about-us.wholesale_distribution_desc') }}</p>
-
-                <h3>{{ __('about-us.retail_supplies') }}</h3>
-                <p>{{ __('about-us.retail_supplies_desc') }}</p>
-
-                <h3>{{ __('about-us.online_supplies') }}</h3>
-                <p>{{ __('about-us.online_supplies_desc') }}</p>
-
-                <h3>{{ __('about-us.own_production') }}</h3>
-                <p>{{ __('about-us.own_production_desc') }}</p>
+                <ul style="list-style-type: disc;">
+                    <li>
+                        <h3>{{ __('about-us.wholesale_distribution') }}</h3>
+                        <p>{{ __('about-us.wholesale_distribution_desc') }}</p>
+                    </li>
+                    <li>
+                        <h3>{{ __('about-us.retail_supplies') }}</h3>
+                        <p>{{ __('about-us.retail_supplies_desc') }}</p>
+                    </li>
+                    <li>
+                        <h3>{{ __('about-us.online_supplies') }}</h3>
+                        <p>{{ __('about-us.online_supplies_desc') }}</p>
+                    </li>
+                    <li>
+                        <h3>{{ __('about-us.own_production') }}</h3>
+                        <p>{{ __('about-us.own_production_desc') }}</p>
+                    </li>
+                </ul>
 
                 <h2>{{ __('about-us.categories') }}</h2>
                 @foreach(__('about-us.categories_list') as $category)

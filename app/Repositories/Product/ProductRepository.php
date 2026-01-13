@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -171,20 +172,31 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @return Collection
+     */
     public function getPopularProductsForHomePage()
     {
-        $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
-        $productIds = $popularProductProfiles->pluck('product_id');
+        $cacheKey = 'home_popular_products_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () {
+            $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())
+                ->pluck('product_id');
+            
+            if ($popularProductProfiles->isEmpty()) {
+                return collect();
+            }
 
-        return Product::whereIn('onec_id', $productIds)
-            ->where('status', true)
-            ->where('site_status', true)
-            ->where('stock', '!=', 0)
-            ->whereNotNull('price_koef')
-            ->orderBy('popular_order')
-            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
-            ->get()
-        ;
+            return Product::whereIn('onec_id', $popularProductProfiles)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'])
+                ->orderBy('popular_order')
+                ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
+                ->get();
+        });
     }
 
     /**
@@ -335,20 +347,31 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @return Collection
+     */
     public function getNewProductsForHomePage()
     {
-        $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
-        $productIds = $newProductProfile->pluck('product_id');
+        $cacheKey = 'home_new_products_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () {
+            $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())
+                ->pluck('product_id');
+            
+            if ($newProductProfile->isEmpty()) {
+                return collect();
+            }
 
-        return Product::whereIn('onec_id', $productIds)
-            ->where('status', true)
-            ->where('site_status', true)
-            ->where('stock', '!=', 0)
-            ->whereNotNull('price_koef')
-            ->orderBy('new_order')
-            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
-            ->get()
-            ;
+            return Product::whereIn('onec_id', $newProductProfile)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'])
+                ->orderBy('new_order')
+                ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
+                ->get();
+        });
     }
 
     /**
@@ -459,17 +482,24 @@ final class ProductRepository
          ;
     }
 
+    /**
+     * @return Collection
+     */
     public function getDiscountProductsForHomePage()
     {
-        return Product::where('sale_price', '!=', 0)
-            ->whereNotNull('price_koef')
-            ->where('status', true)
-            ->where('site_status', true)
-            ->where('stock', '!=', 0)
-            ->orderBy('sale_order')
-            ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
-            ->get()
-         ;
+        $cacheKey = 'home_discount_products_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () {
+            return Product::where('sale_price', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'])
+                ->orderBy('sale_order')
+                ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
+                ->get();
+        });
     }
 
     /**

@@ -14,6 +14,7 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
+use Illuminate\Support\Facades\Cache;
 
 final class ThemeHomeController extends Controller
 {
@@ -30,23 +31,27 @@ final class ThemeHomeController extends Controller
 
     public function index()
     {
+        $locale = app()->getLocale();
+        $cacheKey = 'home_page_autoplay_speed_' . $locale;
+        
+        $autoplaySpeed = Cache::remember($cacheKey, 3600, function () {
+            return BannerSetting::first()?->rotation_speed ?? 3000;
+        });
+
         $popularProducts = $this->productRepository->getPopularProductsForHomePage();
         $newProducts = $this->productRepository->getNewProductsForHomePage();
         $discountProducts = $this->productRepository->getDiscountProductsForHomePage();
         $banners = $this->bannerRepository->getAllActiveForFront();
-        $locale = app()->getLocale();
-        $autoplaySpeed = BannerSetting::first()?->rotation_speed ?? 3000;
-
         $themeBrands = $this->brandRepository->getLimited();
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getHomeType(), app()->getLocale());
+        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getHomeType(), $locale);
 
         if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
+            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], $locale));
+            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], $locale));
             $this->seo()->addImages($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image'));
 
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
+            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], $locale);
 
             SEOMeta::setKeywords($seoKeywords);
 

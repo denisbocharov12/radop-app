@@ -4,7 +4,7 @@
     $itemTitle = $item->getTranslation('title', $locale);
     $itemLink = $item->getTranslation('link', $locale);
     $itemImage = $item->getFirstMedia('menu_item_image');
-    
+
     $productsCount = 0;
     if ($item->category_id) {
         $category = \App\Models\Category::where('onec_id', $item->category_id)->first();
@@ -25,9 +25,6 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($productsCount > 0)
-                <span class="mega-menu__category-count">({{ $productsCount }})</span>
-            @endif
         </a>
     @else
         <div class="mega-menu__category-link">
@@ -35,12 +32,9 @@
                 <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__category-icon">
             @endif
             <span class="mega-menu__category-title">{{ $itemTitle }}</span>
-            @if($productsCount > 0)
-                <span class="mega-menu__category-count">({{ $productsCount }})</span>
-            @endif
         </div>
     @endif
-    
+
     @if($hasChildren)
         <ul class="mega-menu__category-sublist">
             @foreach($item->children->sortBy(function($child) use ($locale) {
@@ -53,7 +47,7 @@
                 @php
                     $childTitle = $child->getTranslation('title', $locale);
                     $childLink = $child->getTranslation('link', $locale);
-                    
+
                     $childProductsCount = 0;
                     if ($child->category_id) {
                         $childCategory = \App\Models\Category::where('onec_id', $child->category_id)->first();
@@ -70,7 +64,7 @@
                     <a href="{{ $childLink ?? '#' }}" class="mega-menu__category-sublink" target="{{ $child->target ?? '_self' }}">
                         {{ $childTitle }}
                         @if($childProductsCount > 0)
-                            <span class="mega-menu__category-count">({{ $childProductsCount }})</span>
+                            <span class="mega-menu__category-count">{{ $childProductsCount }}</span>
                         @endif
                     </a>
                 </li>

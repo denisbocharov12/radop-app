@@ -24,9 +24,6 @@
             <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" style="width: 22px; height: 22px; margin-right: 5px">
         @endif
         {{ $itemTitle }}
-        @if($productsCount > 0)
-            <span style="color: #999; font-size: 14px;">({{ $productsCount }})</span>
-        @endif
     </a>
     @if($hasChildren)
         <div class="megamenu-wrap">
