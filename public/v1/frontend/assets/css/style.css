@@ -13705,24 +13705,15 @@ input[type="range"]::-moz-range-thumb {
     margin: 0;
 }
 
-.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top {
-    margin-bottom: 8px;
-}
-
-.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom {
-    margin-top: 8px;
-}
-
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-arrow,
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-arrow,
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .prev-arrow-thumb-v2,
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .next-arrow-thumb-v2 {
     position: static;
-    width: 30px;
     height: 30px;
     background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid #e2e7ec;
-    border-radius: 50%;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -13732,8 +13723,16 @@ input[type="range"]::-moz-range-thumb {
     color: #0052a6;
     margin: 0;
     transform: none;
+    width: 100%;
+    display: flex;
 }
 
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-arrow{
+    margin-bottom: 8px;
+}
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-arrow {
+    margin-top: 8px;
+}
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-arrow:hover,
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-arrow:hover,
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .prev-arrow-thumb-v2:hover,
@@ -13775,7 +13774,7 @@ input[type="range"]::-moz-range-thumb {
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2 .product-image-thumb {
     position: relative;
     width: 100%;
-    height: 75px;
+    height: 88px;
     border: 2px solid #e2e7ec;
     border-radius: 8px;
     overflow: hidden;
@@ -13809,7 +13808,7 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 10px;
     overflow: hidden;
     background-color: #fff;
-    height: 500px;
+    height: 450px;
 }
 
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-main-v2 .product-image {
