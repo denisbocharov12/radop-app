@@ -37,13 +37,7 @@
 
     @if($hasChildren)
         <ul class="mega-menu__category-sublist">
-            @foreach($item->children->sortBy(function($child) use ($locale) {
-                $titleRaw = $child->getRawOriginal('title');
-                $title = is_array(json_decode($titleRaw, true))
-                    ? $child->getTranslation('title', $locale)
-                    : ($titleRaw ?? '');
-                return mb_strtolower($title);
-            })->values() as $child)
+            @foreach($item->children->values() as $child)
                 @php
                     $childTitle = $child->getTranslation('title', $locale);
                     $childLink = $child->getTranslation('link', $locale);

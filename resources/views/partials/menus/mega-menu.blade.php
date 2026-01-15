@@ -32,16 +32,10 @@
                     <button type="button" class="mega-menu__close">
                         <span class="mega-menu__close-icon"></span>
                     </button>
-                    <h3 class="mega-menu__sidebar-title">{{ $menuName }}</h3>
+                    <h3 class="mega-menu__sidebar-title">{{ __('theme.mega-menu-title-btn') }}</h3>
                 </div>
                 <ul class="mega-menu__sidebar-list">
-                    @foreach($menu->rootItems->where('type', '!=', 'widget_link')->sortBy(function($item) use ($locale) {
-                        $titleRaw = $item->getRawOriginal('title');
-                        $title = is_array(json_decode($titleRaw, true))
-                            ? $item->getTranslation('title', $locale)
-                            : ($titleRaw ?? '');
-                        return mb_strtolower($title);
-                    })->values() as $index => $item)
+                    @foreach($menu->rootItems->where('type', '!=', 'widget_link')->values() as $index => $item)
                         @php
                             $itemTitle = $item->getTranslation('title', $locale);
                             $itemLink = $item->getTranslation('link', $locale);
@@ -64,13 +58,7 @@
             <div class="mega-menu__content">
                 @php
                     $widgetItems = $menu->rootItems->where('type', 'widget_link');
-                    $categoryItems = $menu->rootItems->where('type', '!=', 'widget_link')->sortBy(function($item) use ($locale) {
-                        $titleRaw = $item->getRawOriginal('title');
-                        $title = is_array(json_decode($titleRaw, true))
-                            ? $item->getTranslation('title', $locale)
-                            : ($titleRaw ?? '');
-                        return mb_strtolower($title);
-                    })->values();
+                    $categoryItems = $menu->rootItems->where('type', '!=', 'widget_link')->values();
                 @endphp
                 @if($widgetItems->isNotEmpty())
                     <div class="mega-menu__widgets">
@@ -85,13 +73,7 @@
                         @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
                             <div class="mega-menu__columns">
                                 @php
-                                    $regularChildren = $item->children->where('type', '!=', 'widget_link')->sortBy(function($child) use ($locale) {
-                                        $titleRaw = $child->getRawOriginal('title');
-                                        $title = is_array(json_decode($titleRaw, true))
-                                            ? $child->getTranslation('title', $locale)
-                                            : ($titleRaw ?? '');
-                                        return mb_strtolower($title);
-                                    })->values();
+                                    $regularChildren = $item->children->where('type', '!=', 'widget_link')->values();
                                     $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
                                 @endphp
                                 @foreach($columns as $column)

@@ -800,29 +800,43 @@
                                             return;
                                         }
 
-                                        var $arrowsContainer = $wrapGallery.find('.product-slider-thumb-v2-arrows');
+                                        var totalThumbs = $rootNavV2.find('.product-image-thumb').length;
+                                        var $arrowsTop = $thumbWrapper.find('.product-slider-thumb-v2-arrows-top');
+                                        var $arrowsBottom = $thumbWrapper.find('.product-slider-thumb-v2-arrows-bottom');
+                                        
+                                        var showArrows = totalThumbs > 5;
+                                        var slidesToShowValue = showArrows ? 4 : 5;
 
-                                        // Сначала инициализируем навигационный слайдер
+                                        var $prevArrowEl = null;
+                                        var $nextArrowEl = null;
+                                        
+                                        if (showArrows) {
+                                            $prevArrowEl = $('<i class="icon-arrow-radop-left prev-arrow-thumb-v2"></i>');
+                                            $nextArrowEl = $('<i class="icon-arrow-radop-right next-arrow-thumb-v2"></i>');
+                                            $arrowsTop.append($prevArrowEl);
+                                            $arrowsBottom.append($nextArrowEl);
+                                        }
+
                                         var navSliderOptions = {
-                                            slidesToShow: 5,
+                                            slidesToShow: slidesToShowValue,
                                             slidesToScroll: 1,
-                                            arrows: true,
+                                            arrows: showArrows,
                                             dots: false,
                                             focusOnSelect: false,
                                             infinite: false,
                                             vertical: true,
                                             verticalSwiping: true,
-                                            prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb-v2'></i>",
-                                            nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb-v2'></i>",
+                                            prevArrow: showArrows ? $prevArrowEl : "",
+                                            nextArrow: showArrows ? $nextArrowEl : "",
                                             responsive: [
                                                 {
                                                     breakpoint: 991,
                                                     settings: {
                                                         vertical: false,
                                                         verticalSwiping: false,
-                                                        slidesToShow: 5,
+                                                        slidesToShow: slidesToShowValue,
                                                         slidesToScroll: 1,
-                                                        arrows: true,
+                                                        arrows: showArrows,
                                                         dots: false
                                                     }
                                                 },
@@ -833,16 +847,12 @@
                                                         verticalSwiping: false,
                                                         slidesToShow: 4,
                                                         slidesToScroll: 1,
-                                                        arrows: true,
+                                                        arrows: showArrows,
                                                         dots: false
                                                     }
                                                 }
                                             ]
                                         };
-
-                                        if ($arrowsContainer.length > 0) {
-                                            navSliderOptions.appendArrows = $arrowsContainer;
-                                        }
 
                                         // Сначала инициализируем основной слайдер
                                         $rootSingleV2
@@ -1097,7 +1107,22 @@
                     return;
                 }
 
-                var $arrowsContainer = $wrapGallery.find('.product-slider-thumb-v2-arrows');
+                var totalThumbs = $rootNavV2.find('.product-image-thumb').length;
+                var $arrowsTop = $thumbWrapper.find('.product-slider-thumb-v2-arrows-top');
+                var $arrowsBottom = $thumbWrapper.find('.product-slider-thumb-v2-arrows-bottom');
+                
+                var showArrows = totalThumbs > 5;
+                var slidesToShowValue = showArrows ? 4 : 5;
+
+                var $prevArrowEl = null;
+                var $nextArrowEl = null;
+                
+                if (showArrows) {
+                    $prevArrowEl = $('<i class="icon-arrow-radop-left prev-arrow-thumb-v2"></i>');
+                    $nextArrowEl = $('<i class="icon-arrow-radop-right next-arrow-thumb-v2"></i>');
+                    $arrowsTop.append($prevArrowEl);
+                    $arrowsBottom.append($nextArrowEl);
+                }
 
                 // Сначала инициализируем основной слайдер
                 $rootSingleV2
@@ -1126,25 +1151,25 @@
 
                 // Затем инициализируем навигационный слайдер
                 var navSliderOptions = {
-                    slidesToShow: 5,
+                    slidesToShow: slidesToShowValue,
                     slidesToScroll: 1,
-                    arrows: true,
+                    arrows: showArrows,
                     dots: false,
                     focusOnSelect: false,
                     infinite: false,
                     vertical: true,
                     verticalSwiping: true,
-                    prevArrow: "<i class='icon-arrow-radop-left prev-arrow-thumb-v2'></i>",
-                    nextArrow: "<i class='icon-arrow-radop-right next-arrow-thumb-v2'></i>",
+                    prevArrow: showArrows ? $prevArrowEl : "",
+                    nextArrow: showArrows ? $nextArrowEl : "",
                     responsive: [
                         {
                             breakpoint: 991,
                             settings: {
                                 vertical: false,
                                 verticalSwiping: false,
-                                slidesToShow: 5,
+                                slidesToShow: slidesToShowValue,
                                 slidesToScroll: 1,
-                                arrows: true,
+                                arrows: showArrows,
                                 dots: false
                             }
                         },
@@ -1155,16 +1180,12 @@
                                 verticalSwiping: false,
                                 slidesToShow: 4,
                                 slidesToScroll: 1,
-                                arrows: true,
+                                arrows: showArrows,
                                 dots: false
                             }
                         }
                     ]
                 };
-
-                if ($arrowsContainer.length > 0) {
-                    navSliderOptions.appendArrows = $arrowsContainer;
-                }
 
                 // Инициализируем навигационный слайдер
                 $rootNavV2

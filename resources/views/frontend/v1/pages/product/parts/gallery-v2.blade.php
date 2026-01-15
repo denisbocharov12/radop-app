@@ -20,6 +20,7 @@
         @endif
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2-wrapper">
+                <div class="product-slider-thumb-v2-arrows-top"></div>
                 <div class="product-slider-thumb-v2">
                     @foreach($product->getMedia('products') as $key => $file)
                         <div>
@@ -29,6 +30,7 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="product-slider-thumb-v2-arrows-bottom"></div>
             </div>
             <div class="product-slider-main-v2">
                 @foreach($product->getMedia('products') as $key => $file)
@@ -40,7 +42,6 @@
                 @endforeach
             </div>
         </div>
-        <div class="product-slider-thumb-v2-arrows"></div>
     </div>
 @else
     @php
@@ -67,6 +68,7 @@
         @endif
         <div class="gallery-v2-container">
             <div class="product-slider-thumb-v2-wrapper">
+                <div class="product-slider-thumb-v2-arrows-top"></div>
                 <div class="product-slider-thumb-v2">
                     @foreach($imagesArray as $key => $file)
                         <div>
@@ -76,6 +78,7 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="product-slider-thumb-v2-arrows-bottom"></div>
             </div>
             <div class="product-slider-main-v2">
                 @foreach($imagesArray as $key => $file)
@@ -87,6 +90,5 @@
                 @endforeach
             </div>
         </div>
-        <div class="product-slider-thumb-v2-arrows"></div>
     </div>
 @endif
