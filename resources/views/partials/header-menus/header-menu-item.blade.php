@@ -31,13 +31,7 @@
                 <div class="row row-megamenu">
                     <div class="col-12 col-content-megamenu" id="js-content-megamenu">
                         <div class="row row-list-content">
-                            @foreach($item->children->sortBy(function($child) use ($locale) {
-                                $titleRaw = $child->getRawOriginal('title');
-                                $title = is_array(json_decode($titleRaw, true))
-                                    ? $child->getTranslation('title', $locale)
-                                    : ($titleRaw ?? '');
-                                return mb_strtolower($title);
-                            })->values() as $child)
+                            @foreach($item->children->values() as $child)
                                 @php
                                     $childTitle = $child->getTranslation('title', $locale);
                                     $childLink = $child->getTranslation('link', $locale);

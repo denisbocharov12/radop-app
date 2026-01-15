@@ -149,7 +149,7 @@
                                 </h3>
                                 <ul class="column-catalog__list drop-menu-list">
                                     <li>
-                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 18px;">{{ __('theme.all-brand-products') }}</a>
+                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 18px;">{{ __('theme.all-mobile-catalog') }}</a>
                                     </li>
                                     @foreach($parentCategory->children as $secondLevelCategory)
                                         <li class="drop-menu-list__item" style="margin-bottom: 10px;">

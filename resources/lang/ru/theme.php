@@ -225,6 +225,7 @@ return array (
     'barcode' => 'Штрихкод',
     'package' => 'В упаковке',
     'all-brand-products' => 'Бренд:',
+    'all-mobile-catalog' => 'Каталог',
     'remove-from-wishlist' => 'Удалить из избранное',
     'already-in-cart' => 'Уже в корзине',
     'label_on_sale' => 'Sale',
@@ -491,4 +492,5 @@ return array (
     'review_already_exists' => 'Вы уже оставили отзыв на этот товар',
     'review_success_message' => 'Спасибо за ваш отзыв! Он будет опубликован после проверки модератором.',
     'review_error_message' => 'Произошла ошибка при сохранении отзыва',
+    'mega-menu-title-btn' => 'Каталог товаров',
 );

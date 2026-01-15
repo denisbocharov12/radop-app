@@ -227,6 +227,7 @@ return array (
     'barcode' => 'Cod de bare',
     'package' => 'În ambalaj',
     'all-brand-products' => 'Brand:',
+    'all-mobile-catalog' => 'Catalog',
     'remove-from-wishlist' => 'Scoate din Favorite',
     'already-in-cart' => 'În coș',
     'label_on_sale' => 'Sale',
@@ -464,4 +465,5 @@ return array (
     'review_already_exists' => 'Ați lăsat deja o recenzie pentru acest produs',
     'review_success_message' => 'Vă mulțumim pentru recenzia dumneavoastră! Aceasta va fi publicată după verificarea de către moderator.',
     'review_error_message' => 'A apărut o eroare la salvarea recenziei',
+    'mega-menu-title-btn' => 'Catalog produse',
 );

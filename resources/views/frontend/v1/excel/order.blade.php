@@ -50,7 +50,6 @@
 <table style="border-collapse: collapse; width: 100%;">
     <thead>
     <tr>
-        <th style="border: 1px solid black; font-weight: 700; text-align: center;">№</th>
         <th style="border: 1px solid black; width: 120px; font-weight: 700; text-align: center;">{{ __('theme.order-cod') }}</th>
         <th style="border: 1px solid black;font-weight: 700; text-align: center;">{{ __('theme.product-name') }}</th>
         <th style="border: 1px solid black;font-weight: 700; text-align: center;">{{ __('theme.order-quantity') }}</th>
@@ -64,7 +63,6 @@
             $product = \App\Models\Product::find($item->product_id);
         @endphp
         <tr>
-            <td style="border: 1px solid black; text-align: center" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $index + 1 }}</td>
             <td style="border: 1px solid black; text-align: center" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->onec_id }}</td>
             <td style="border: 1px solid black;">{{ $product->title }}</td>
             <td style="border: 1px solid black; text-align: center">{{ $item->quantity }}</td>
@@ -75,7 +73,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="5" style="border: 1px solid black; text-align: right;" ><strong>Итого</strong></td>
+        <td colspan="4" style="border: 1px solid black; text-align: right;" ><strong>Итого</strong></td>
         <td style="border: 1px solid black; text-align: right" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00}}"><strong>{{ (float)str_replace(',', '.', $order->total) }}</strong></td>
     </tr>
     </tfoot>
