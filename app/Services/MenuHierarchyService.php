@@ -446,6 +446,11 @@ class MenuHierarchyService
      */
     protected function clearMenuCache(string $menuCode): void
     {
+        $locales = ['ro', 'ru'];
+        foreach ($locales as $locale) {
+            Cache::forget("menu_hierarchy_{$menuCode}_active_{$locale}");
+            Cache::forget("menu_hierarchy_{$menuCode}_all_{$locale}");
+        }
         Cache::forget($this->getCacheKey($menuCode, true));
         Cache::forget($this->getCacheKey($menuCode, false));
     }

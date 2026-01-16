@@ -76,27 +76,9 @@
                 <a href="{{ route('theme.home') }}#brands-home-anchor" class="other-navbar__link">{{ __('theme.home-brands') }}</a>
             </div>
         </div>
-        <div class="other-navbar__category">
-            <button type="button" class="other-navbar__category-btn">
-                {{ __('theme.about-company') }}
-                <span class="other-navbar__arrow">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 9L12 15L18 9"
-                            stroke="white"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                    </svg>
-                </span>
-            </button>
-            <div class="other-navbar__submenu">
-                <a href="{{route('theme.contacts.index')}}" class="other-navbar__link">{{ __('theme.contact') }}</a>
-                <a href="{{route('theme.delivery.index')}}" class="other-navbar__link">{{ __('theme.delivery') }}</a>
-                <a href="#" class="other-navbar__link">{{ __('theme.news') }}</a>
-                <a href="#" class="other-navbar__link">{{ __('theme.updates') }}</a>
-            </div>
-        </div>
+        <a href="{{route('theme.about-us')}}" class="other-navbar__category-btn">{{ __('theme.about-us') }}</a>
+        <a href="{{route('theme.delivery.index')}}" class="other-navbar__category-btn">{{ __('theme.delivery') }}</a>
+        <a href="{{route('theme.contacts.index')}}" class="other-navbar__category-btn">{{ __('theme.contact') }}</a>
         <div class="other-navbar__category">
             <button type="button" class="other-navbar__category-btn">
                 {{ __('theme.information') }}
@@ -121,6 +103,12 @@
         </div>
     </div>
 </div>
+@php
+    $mainMenu = app('App\Services\MenuRenderService')->getMenuData('main_menu');
+@endphp
+@if($mainMenu && $mainMenu->is_active && $mainMenu->rootItems->isNotEmpty())
+    @include('partials.menus.mobile-mega-menu', ['menu' => $mainMenu])
+@else
 <div class="theme-catalog-navbar catalog-navbar">
     <div class="catalog-navbar__catalog">
         <div class="catalog theme-catalog-body">
@@ -179,6 +167,7 @@
         </div>
     </div>
 </div>
+@endif
 <div class="mobile-sticky-header d-md-none">
     <div class="mobile-sticky-header__inner">
         <a href="{{route('theme.home')}}" class="link-logo">
@@ -200,14 +189,15 @@
     </div>
 </div>
 <script>
-    document.querySelectorAll('.other-navbar__category-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    document.querySelectorAll('.other-navbar__category button.other-navbar__category-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
             setTimeout(function() {
                 var submenu = btn.parentElement.querySelector('.other-navbar__submenu');
                 var arrow = btn.querySelector('.other-navbar__arrow');
                 var isOpen = submenu.classList.contains('open');
                 document.querySelectorAll('.other-navbar__submenu').forEach(function(el) { el.classList.remove('open'); });
-                document.querySelectorAll('.other-navbar__category-btn').forEach(function(b) { b.classList.remove('open'); });
+                document.querySelectorAll('.other-navbar__category button.other-navbar__category-btn').forEach(function(b) { b.classList.remove('open'); });
                 if (!isOpen) {
                     submenu.classList.add('open');
                     btn.classList.add('open');
