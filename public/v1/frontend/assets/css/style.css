@@ -12037,6 +12037,13 @@ body.modal-open {
     align-items: center;
     font-size: 1.08rem;
     cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.other-navbar__category-btn:hover {
+    background: #003d7a;
+    color: #fff;
 }
 .other-navbar__arrow {
     color: #ffffff;
@@ -13722,9 +13729,20 @@ input[type="range"]::-moz-range-thumb {
     font-size: 14px;
     color: #0052a6;
     margin: 0;
-    transform: none;
     width: 100%;
     display: flex;
+}
+
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .prev-arrow-thumb-v2::before,
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-prev::before {
+    transform: rotate(90deg);
+    display: inline-block;
+}
+
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .next-arrow-thumb-v2::before,
+.wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-next::before {
+    transform: rotate(90deg);
+    display: inline-block;
 }
 
 .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-arrow{
@@ -14192,8 +14210,10 @@ input[type="range"]::-moz-range-thumb {
         height: auto;
     }
 
-    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-arrow,
-    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-arrow {
+    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .prev-arrow-thumb-v2::before,
+    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-top .slick-prev::before,
+    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .next-arrow-thumb-v2::before,
+    .wrap-product-card-gallery-v2 .gallery-v2-container .product-slider-thumb-v2-wrapper .product-slider-thumb-v2-arrows-bottom .slick-next::before {
         transform: rotate(0deg);
     }
 

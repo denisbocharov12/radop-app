@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -71,31 +72,34 @@ final class MenuRepository implements MenuRepositoryInterface
      */
     public function getMenuHierarchyByCode(string $code, bool $onlyActive = true): ?Menu
     {
-        $query = Menu::byCode($code);
+        $cacheKey = "menu_hierarchy_{$code}_" . ($onlyActive ? 'active' : 'all') . '_' . app()->getLocale();
+        
+        return Cache::remember($cacheKey, 3600, function () use ($code, $onlyActive) {
+            $query = Menu::byCode($code);
 
-        if ($onlyActive) {
-            $query->active();
-        }
-
-        $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
             if ($onlyActive) {
                 $query->active();
             }
+
+            $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
+                if ($onlyActive) {
+                    $query->active();
+                }
+                
+                $query->with('children')->orderBy('order');
+            }])->first();
             
-            $query->with('children')->orderBy('order');
-        }])->first();
-        
-        if ($menu && $menu->rootItems) {
-            // Загружаем медиа для всех элементов меню
-            $menu->rootItems->load('media');
-            foreach ($menu->rootItems as $item) {
-                if ($item->children) {
-                    $item->children->load('media');
+            if ($menu && $menu->rootItems) {
+                $menu->rootItems->load('media');
+                foreach ($menu->rootItems as $item) {
+                    if ($item->children) {
+                        $item->children->load('media');
+                    }
                 }
             }
-        }
-        
-        return $menu;
+            
+            return $menu;
+        });
     }
 
     /**
