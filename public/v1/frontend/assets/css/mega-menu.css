@@ -337,10 +337,6 @@
     color: #fff;
 }
 
-.mega-menu__widget--purple:hover .mega-menu__widget-icon {
-    filter: brightness(0) invert(1);
-}
-
 .mega-menu__widget--red {
     background: transparent;
     border: 2px solid #c70303;
@@ -358,10 +354,6 @@
 
 .mega-menu__widget--red:hover .mega-menu__widget-text {
     color: #fff;
-}
-
-.mega-menu__widget--red:hover .mega-menu__widget-icon {
-    filter: brightness(0) invert(1);
 }
 
 .mega-menu__widget--green {
@@ -383,9 +375,6 @@
     color: #fff;
 }
 
-.mega-menu__widget--green:hover .mega-menu__widget-icon {
-    filter: brightness(0) invert(1);
-}
 
 .mega-menu__widget--blue {
     background: transparent;
@@ -406,9 +395,6 @@
     color: #fff;
 }
 
-.mega-menu__widget--blue:hover .mega-menu__widget-icon {
-    filter: brightness(0) invert(1);
-}
 
 .mega-menu__widget-link {
     display: flex;
