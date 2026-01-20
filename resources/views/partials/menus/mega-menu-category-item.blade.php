@@ -4,18 +4,7 @@
     $itemTitle = $item->getTranslation('title', $locale);
     $itemLink = $item->getTranslation('link', $locale);
     $itemImage = $item->getFirstMedia('menu_item_image');
-
-    $productsCount = 0;
-    if ($item->category_id) {
-        $category = \App\Models\Category::where('onec_id', $item->category_id)->first();
-        if ($category) {
-            $productsCount = $category->products()
-                ->where('status', true)
-                ->where('site_status', true)
-                ->where('stock', '!=', 0)
-                ->count();
-        }
-    }
+    $productsCount = $item->products_count ?? 0;
 @endphp
 
 <div class="mega-menu__category-item">
@@ -41,18 +30,7 @@
                 @php
                     $childTitle = $child->getTranslation('title', $locale);
                     $childLink = $child->getTranslation('link', $locale);
-
-                    $childProductsCount = 0;
-                    if ($child->category_id) {
-                        $childCategory = \App\Models\Category::where('onec_id', $child->category_id)->first();
-                        if ($childCategory) {
-                            $childProductsCount = $childCategory->products()
-                                ->where('status', true)
-                                ->where('site_status', true)
-                                ->where('stock', '!=', 0)
-                                ->count();
-                        }
-                    }
+                    $childProductsCount = $child->products_count ?? 0;
                 @endphp
                 <li class="mega-menu__category-subitem">
                     <a href="{{ $childLink ?? '#' }}" class="mega-menu__category-sublink" target="{{ $child->target ?? '_self' }}">
