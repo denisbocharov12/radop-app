@@ -5,17 +5,7 @@
     $itemImage = $item->getFirstMedia('header_menu_item_image');
     $hasChildren = $item->children && $item->children->isNotEmpty();
 
-    $productsCount = 0;
-    if ($item->category_id) {
-        $category = \App\Models\Category::where('onec_id', $item->category_id)->first();
-        if ($category) {
-            $productsCount = $category->products()
-                ->where('status', true)
-                ->where('site_status', true)
-                ->where('stock', '!=', 0)
-                ->count();
-        }
-    }
+    $productsCount = $item->products_count ?? 0;
 @endphp
 
 <li class="item megamenu">
@@ -38,17 +28,7 @@
                                     $childImage = $child->getFirstMedia('header_menu_item_image');
                                     $hasGrandChildren = $child->children && $child->children->isNotEmpty();
 
-                                    $childProductsCount = 0;
-                                    if ($child->category_id) {
-                                        $childCategory = \App\Models\Category::where('onec_id', $child->category_id)->first();
-                                        if ($childCategory) {
-                                            $childProductsCount = $childCategory->products()
-                                                ->where('status', true)
-                                                ->where('site_status', true)
-                                                ->where('stock', '!=', 0)
-                                                ->count();
-                                        }
-                                    }
+                                    $childProductsCount = $child->products_count ?? 0;
                                 @endphp
                                 <div class="col-4 col-list-content">
                                     <a href="{{ $childLink ?? '#' }}" class="heading" target="{{ $child->target ?? '_self' }}">

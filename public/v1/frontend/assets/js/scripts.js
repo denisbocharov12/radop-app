@@ -1170,11 +1170,88 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (btnCatalog && catalogNavBarMenu) {
+        const mobileMenuCache = new Map();
+        const mobileMenuCode = catalogNavBarMenu.dataset.mobileMenuCode || 'main_menu';
+        const mobileContainer = catalogNavBarMenu.querySelector('[data-mobile-menu-container]');
+        const mobileLoading = catalogNavBarMenu.querySelector('[data-mobile-menu-loading]');
+        let isMobileMenuLoaded = false;
+        let isMobileMenuLoading = false;
+
+        function loadMobileMenuContent() {
+            if (mobileMenuCache.has(mobileMenuCode)) {
+                const cachedHtml = mobileMenuCache.get(mobileMenuCode);
+                if (mobileContainer) {
+                    mobileContainer.innerHTML = cachedHtml;
+                    mobileContainer.style.display = 'block';
+                    if (mobileLoading) mobileLoading.style.display = 'none';
+                }
+                isMobileMenuLoaded = true;
+                return;
+            }
+
+            isMobileMenuLoading = true;
+            if (mobileLoading) mobileLoading.style.display = 'flex';
+            if (mobileContainer) mobileContainer.style.display = 'none';
+
+            fetch(`/api/v1/mega-menu/${mobileMenuCode}/mobile-html`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Ошибка загрузки меню');
+                    }).catch(() => {
+                        throw new Error('Ошибка загрузки меню');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && typeof data === 'object' && data.success === true && data.html) {
+                    mobileMenuCache.set(mobileMenuCode, data.html);
+                    if (mobileContainer) {
+                        mobileContainer.innerHTML = data.html;
+                        mobileContainer.style.display = 'block';
+                    }
+                    if (mobileLoading) mobileLoading.style.display = 'none';
+                    isMobileMenuLoaded = true;
+                } else {
+                    throw new Error(data?.message || 'Неверный формат ответа');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки мобильного мега-меню:', error);
+                if (mobileLoading) mobileLoading.style.display = 'none';
+                if (mobileContainer) {
+                    const closeBtnHtml = '<button class="catalog__close-btn _icon-close" type="button"></button>';
+                    mobileContainer.innerHTML = '<div class="catalog__error"><div class="catalog__error-content">' + closeBtnHtml + '<p>Ошибка загрузки меню. Пожалуйста, обновите страницу.</p></div></div>';
+                    mobileContainer.style.display = 'block';
+                    
+                    const errorCloseBtn = mobileContainer.querySelector('.catalog__close-btn');
+                    if (errorCloseBtn) {
+                        errorCloseBtn.addEventListener('click', function() {
+                            catalogNavBarMenu.classList.remove("_active");
+                        });
+                    }
+                }
+            })
+            .finally(() => {
+                isMobileMenuLoading = false;
+            });
+        }
+
         btnCatalog.addEventListener("click", () => {
             const isActive = catalogNavBarMenu.classList.contains("_active");
             closeAllMenus();
             if (!isActive) {
                 catalogNavBarMenu.classList.add("_active");
+                if (!isMobileMenuLoaded && !isMobileMenuLoading) {
+                    loadMobileMenuContent();
+                }
             }
         });
     }
