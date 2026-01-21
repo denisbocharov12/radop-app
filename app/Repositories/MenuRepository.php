@@ -81,32 +81,29 @@ final class MenuRepository implements MenuRepositoryInterface
                 $query->active();
             }
 
-            $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
-                if ($onlyActive) {
-                    $query->active();
-                }
-                
-                $query->with(['children' => function ($childrenQuery) use ($onlyActive) {
+            $menu = $query->with([
+                'rootItems' => function ($query) use ($onlyActive) {
                     if ($onlyActive) {
-                        $childrenQuery->active();
+                        $query->active();
                     }
-                    $childrenQuery->orderBy('order');
-                }])->orderBy('order');
-            }])->first();
-            
-            if ($menu && $menu->rootItems) {
-                $menu->rootItems->load('media');
-                foreach ($menu->rootItems as $item) {
-                    if ($item->children) {
-                        $item->children->load('media');
-                        foreach ($item->children as $child) {
-                            if ($child->children) {
-                                $child->children->load('media');
-                            }
-                        }
+                    $query->orderBy('order');
+                },
+                'rootItems.children' => function ($query) use ($onlyActive) {
+                    if ($onlyActive) {
+                        $query->active();
                     }
-                }
-            }
+                    $query->orderBy('order');
+                },
+                'rootItems.children.children' => function ($query) use ($onlyActive) {
+                    if ($onlyActive) {
+                        $query->active();
+                    }
+                    $query->orderBy('order');
+                },
+                'rootItems.media',
+                'rootItems.children.media',
+                'rootItems.children.children.media',
+            ])->first();
             
             return $menu;
         });

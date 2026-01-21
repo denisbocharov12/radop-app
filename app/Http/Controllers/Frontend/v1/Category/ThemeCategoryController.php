@@ -88,7 +88,12 @@ final class ThemeCategoryController extends Controller
 
         $this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
-        if ($existedCategory->children->isNotEmpty()) {
+        if ($existedCategory->descendants()->exists()) {
+            $existedCategory->load([
+                'media',
+                'children.media',
+                'children.children.media',
+            ]);
             return view('frontend.v1.pages.category.category', compact([
                 'existedCategory',
                 'breadcrumbs',

@@ -83,7 +83,14 @@ class CategoryRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
+            ->with([
+                'brand:id,onec_id,title',
+                'values:id,product_onec_id,attribute_onec_id,value',
+                'values.attribute:id,onec_id,name',
+                'media',
+                'packages',
+                'data',
+            ])
             ->groupBy('products.onec_id');
 
         $hasCustomSort = DB::table('product_category_sorts')
@@ -124,14 +131,29 @@ class CategoryRepository
         return Category::query()->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getAllSortedByOrder(): Collection
     {
-        return Category::query()->orderBy('order')->get();
+        return Category::query()
+            ->with(['children'])
+            ->withCount('children')
+            ->orderBy('order')
+            ->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getAllParentsSortedByCatalogOrder(): Collection
     {
-        return Category::query()->where('parent_id', null)->orderBy('catalog_order')->get();
+        return Category::query()
+            ->whereNull('parent_id')
+            ->with(['children'])
+            ->withCount('children')
+            ->orderBy('catalog_order')
+            ->get();
     }
 
     public function getAllWithTrashed(): Collection
