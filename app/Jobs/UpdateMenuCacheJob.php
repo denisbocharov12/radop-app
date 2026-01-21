@@ -17,8 +17,6 @@ final class UpdateMenuCacheJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $queue = 'high';
-
     /**
      * @param string $menuCode
      * @param bool $onlyActive
