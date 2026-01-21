@@ -1,6 +1,4 @@
 (function() {
-    const menuCache = new Map();
-
     document.addEventListener('DOMContentLoaded', function() {
         const megaMenus = document.querySelectorAll('.mega-menu');
 
@@ -41,18 +39,6 @@
             }
 
             function loadMenuContent() {
-                if (menuCache.has(menuCode)) {
-                    const cachedHtml = menuCache.get(menuCode);
-                    if (container) {
-                        container.innerHTML = cachedHtml;
-                        container.style.display = 'block';
-                        if (loading) loading.style.display = 'none';
-                    }
-                    isLoaded = true;
-                    initializeMenuInteractions();
-                    return;
-                }
-
                 isLoading = true;
                 if (loading) loading.style.display = 'block';
                 if (container) container.style.display = 'none';
@@ -76,7 +62,6 @@
                 })
                 .then(data => {
                     if (data && typeof data === 'object' && data.success === true && data.html) {
-                        menuCache.set(menuCode, data.html);
                         if (container) {
                             container.innerHTML = data.html;
                             container.style.display = 'block';

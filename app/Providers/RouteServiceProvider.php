@@ -110,6 +110,15 @@ class RouteServiceProvider extends ServiceProvider
             })
         ;
 
+        Route::prefix('api/v1')
+            ->middleware('api')
+            ->group(static function () {
+                foreach (File::allFiles(base_path('routes/api/v1')) as $file) {
+                    require $file->getPathname();
+                }
+            })
+        ;
+
         Route::middleware('web')->group(base_path('routes/web.php'));
     }
 

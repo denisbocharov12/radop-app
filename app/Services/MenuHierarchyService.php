@@ -46,11 +46,7 @@ class MenuHierarchyService
      */
     public function getMenuHierarchy(string $menuCode, bool $onlyActive = true): ?Menu
     {
-        $cacheKey = $this->getCacheKey($menuCode, $onlyActive);
-
-        return Cache::remember($cacheKey, $this->cacheTime, function () use ($menuCode, $onlyActive) {
-            return $this->menuRepository->getMenuHierarchyByCode($menuCode, $onlyActive);
-        });
+        return $this->menuRepository->getMenuHierarchyByCode($menuCode, $onlyActive);
     }
 
     /**
@@ -85,8 +81,6 @@ class MenuHierarchyService
 
             DB::commit();
 
-            // Очистка кэша
-            $this->clearMenuCache($menuCode);
 
             return true;
         } catch (\Exception $e) {
@@ -133,10 +127,6 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->updateMenu($menuId, $data);
 
-        if ($result) {
-            $this->clearMenuCache($menu->code);
-        }
-
         return $result;
     }
 
@@ -156,10 +146,6 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->deleteMenu($menuId);
 
-        if ($result) {
-            $this->clearMenuCache($menu->code);
-        }
-
         return $result;
     }
 
@@ -175,12 +161,6 @@ class MenuHierarchyService
         $this->validateMenuItemData($data);
 
         $menuItem = $this->menuRepository->createMenuItem($data);
-
-        // Очистка кэша меню
-        $menu = $this->menuRepository->findMenuById($data['menu_id']);
-        if ($menu) {
-            $this->clearMenuCache($menu->code);
-        }
 
         return $menuItem;
     }
@@ -205,10 +185,6 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->updateMenuItem($itemId, $data);
 
-        if ($result) {
-            $this->clearMenuCache($menuItem->menu->code);
-        }
-
         return $result;
     }
 
@@ -227,10 +203,6 @@ class MenuHierarchyService
         }
 
         $result = $this->menuRepository->deleteMenuItem($itemId);
-
-        if ($result) {
-            $this->clearMenuCache($menuItem->menu->code);
-        }
 
         return $result;
     }
@@ -382,7 +354,7 @@ class MenuHierarchyService
             'menu_id' => $isUpdate ? 'sometimes|exists:menus,id' : 'required|exists:menus,id',
             'parent_id' => 'nullable|exists:menu_items,id',
             'order' => 'sometimes|integer|min:0',
-            'type' => 'required|in:category,custom_link,promo_block,widget_link',
+            'type' => 'required|in:category,custom_link,promo_block,widget_link,row',
             'title' => 'required|array',
             'title.ro' => 'required|string|max:255',
             'title.ru' => 'required|string|max:255',
@@ -444,16 +416,6 @@ class MenuHierarchyService
      */
     protected function clearMenuCache(string $menuCode): void
     {
-        $locales = ['ro', 'ru'];
-        foreach ($locales as $locale) {
-            Cache::forget("menu_hierarchy_{$menuCode}_active_{$locale}");
-            Cache::forget("menu_hierarchy_{$menuCode}_all_{$locale}");
-        }
-        Cache::forget($this->getCacheKey($menuCode, true));
-        Cache::forget($this->getCacheKey($menuCode, false));
-        
-        $productCountService = app(\App\Services\MegaMenuProductCountService::class);
-        $productCountService->clearCache();
     }
 
     /**
@@ -463,11 +425,6 @@ class MenuHierarchyService
      */
     public function clearAllMenuCache(): void
     {
-        $menus = $this->menuRepository->getAllMenus();
-
-        foreach ($menus as $menu) {
-            $this->clearMenuCache($menu->code);
-        }
     }
 }
 
