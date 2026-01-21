@@ -35,7 +35,6 @@ final class MenuItem extends Model implements HasMedia
         'content_data',
         'is_active',
         'category_id',
-        'menu_row_title',
     ];
 
     /**
@@ -47,10 +46,9 @@ final class MenuItem extends Model implements HasMedia
         'content_data' => 'array',
         'is_active' => 'boolean',
         'order' => 'integer',
-        'menu_row_title' => 'array',
     ];
 
-    public $translatable = ['title', 'link', 'menu_row_title'];
+    public $translatable = ['title', 'link'];
 
     /**
      * Типы элементов меню
@@ -83,7 +81,7 @@ final class MenuItem extends Model implements HasMedia
 
     /**
      * Получить дочерние элементы (Adjacency List Pattern)
-     * Рекурсивная загрузка с активными элементами
+     * Загрузка с активными элементами
      *
      * @return HasMany
      */
@@ -91,8 +89,7 @@ final class MenuItem extends Model implements HasMedia
     {
         return $this->hasMany(MenuItem::class, 'parent_id')
             ->where('is_active', true)
-            ->orderBy('order')
-            ->with('children'); // Рекурсивная загрузка
+            ->orderBy('order');
     }
 
     /**
