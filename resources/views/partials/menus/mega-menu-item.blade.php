@@ -1,5 +1,5 @@
 @php
-    $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty();
+    $hasChildren = $item->children && $item->children->isNotEmpty();
     $depthClass = 'mega-menu__item--depth-' . $depth;
     $typeClass = 'mega-menu__item--' . $item->type;
 @endphp
@@ -82,7 +82,7 @@
             @php
                 $locale = app()->getLocale();
             @endphp
-            @foreach($item->children->where('type', '!=', 'widget_link')->sortBy(function($child) use ($locale) {
+            @foreach($item->children->sortBy(function($child) use ($locale) {
                 $titleRaw = $child->getRawOriginal('title');
                 $title = is_array(json_decode($titleRaw, true))
                     ? $child->getTranslation('title', $locale)
