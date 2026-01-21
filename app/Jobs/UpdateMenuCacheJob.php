@@ -40,45 +40,12 @@ final class UpdateMenuCacheJob implements ShouldQueue
         
         Cache::forget($cacheKey);
 
-        $menu = Cache::remember($cacheKey, 86400, function () use ($menuRepository, $productCountService) {
-            $query = \App\Models\Menu::byCode($this->menuCode);
+        $menu = $menuRepository->getMenuHierarchyByCode($this->menuCode, $this->onlyActive);
 
-            if ($this->onlyActive) {
-                $query->active();
-            }
+        if ($menu && $menu->rootItems) {
+            $menu->rootItems = $productCountService->attachProductCountsToMenuItems($menu->rootItems);
+        }
 
-            $menu = $query->with(['rootItems' => function ($query) {
-                if ($this->onlyActive) {
-                    $query->active();
-                }
-                
-                $query->with(['children' => function ($childrenQuery) {
-                    if ($this->onlyActive) {
-                        $childrenQuery->active();
-                    }
-                    $childrenQuery->orderBy('order');
-                }])->orderBy('order');
-            }])->first();
-            
-            if ($menu && $menu->rootItems) {
-                $menu->rootItems->load('media');
-                foreach ($menu->rootItems as $item) {
-                    if ($item->children) {
-                        $item->children->load('media');
-                        foreach ($item->children as $child) {
-                            if ($child->children) {
-                                $child->children->load('media');
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ($menu && $menu->rootItems) {
-                $menu->rootItems = $productCountService->attachProductCountsToMenuItems($menu->rootItems);
-            }
-
-            return $menu;
-        });
+        Cache::put($cacheKey, $menu, 86400);
     }
 }

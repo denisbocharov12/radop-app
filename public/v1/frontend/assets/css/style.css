@@ -11081,6 +11081,14 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
     #main-banner .item a img{
         object-fit: cover;
     }
+    .catalog__widgets .mega-menu__widget-link{
+        flex-direction: column;
+        padding-top: 32px;
+        position: relative;
+    }
+    .catalog__widgets .mega-menu__widget-icon{
+        top: 1px;
+    }
     .theme-cart-table .theme-cart-table-thead th:first-child{
         width: 30px;
     }

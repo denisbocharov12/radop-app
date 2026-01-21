@@ -3,10 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Services\ViewCount;
-
-use App\Jobs\IncrementBrandViewCountJob;
-use App\Jobs\IncrementCategoryViewCountJob;
-use App\Jobs\IncrementProductViewCountJob;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -14,48 +10,36 @@ use Illuminate\Http\Request;
 
 final class ViewCountManager
 {
+    /**
+     * @param Product $product
+     * @param Request $request
+     */
     public function incrementProductViewCount(Product $product, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
-
-        IncrementProductViewCountJob::dispatch(
-            $product->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
-        );
+        return;
     }
 
+    /**
+     * @param Brand $brand
+     * @param Request $request
+     */
     public function incrementBrandViewCount(Brand $brand, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
-
-        IncrementBrandViewCountJob::dispatch(
-            $brand->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
-        );
+        return;
     }
 
+    /**
+     * @param Category $category
+     * @param Request $request
+     */
     public function incrementCategoryViewCount(Category $category, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
-
-        IncrementCategoryViewCountJob::dispatch(
-            $category->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
-        );
+        return;
     }
 
+    /**
+     * @return string
+     */
     public function getClientIp(): string
     {
         foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){

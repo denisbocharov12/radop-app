@@ -95,7 +95,17 @@ final class Category extends Model implements HasMedia, Sitemapable
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id', 'onec_id')->with('children')->orderBy('order');
+        return $this->hasMany(Category::class, 'parent_id', 'onec_id')->orderBy('order');
+    }
+
+    /**
+     * @return HasMany<Category>
+     */
+    public function childrenRecursive(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'onec_id')
+            ->with('childrenRecursive')
+            ->orderBy('order');
     }
 
     /**
