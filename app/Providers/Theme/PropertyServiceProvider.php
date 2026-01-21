@@ -9,25 +9,13 @@ use Illuminate\Support\ServiceProvider;
 
 final class PropertyServiceProvider extends ServiceProvider
 {
-    /**
-     * @return void
-     */
     public function boot()
     {
         Paginator::useBootstrapFive();
 
         View::composer('*', function($view)
         {
-            $themeParentCategories = Category::where(['parent_id' => null, 'status' => true])
-                ->with([
-                    'media',
-                    'children.media',
-                    'children.children.media',
-                    'children.children',
-                    'children',
-                ])
-                ->orderBy('order')
-                ->get();
+            $themeParentCategories = Category::where(['parent_id'=> null,'status'=> true])->orderBy('order')->lazy();
             $view->with(['themeParentCategories' => $themeParentCategories]);
         });
     }
