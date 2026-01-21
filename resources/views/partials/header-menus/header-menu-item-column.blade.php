@@ -10,7 +10,17 @@
             $childImage = $child->getFirstMedia('header_menu_item_image');
             $hasChildChildren = $child->children && $child->children->isNotEmpty();
             
-            $childProductsCount = $child->products_count ?? 0;
+            $childProductsCount = 0;
+            if ($child->category_id) {
+                $childCategory = \App\Models\Category::where('onec_id', $child->category_id)->first();
+                if ($childCategory) {
+                    $childProductsCount = $childCategory->products()
+                        ->where('status', true)
+                        ->where('site_status', true)
+                        ->where('stock', '!=', 0)
+                        ->count();
+                }
+            }
         @endphp
         <li class="item">
             <a class="link" href="{{ $childLink ?? '#' }}" target="{{ $child->target ?? '_self' }}">

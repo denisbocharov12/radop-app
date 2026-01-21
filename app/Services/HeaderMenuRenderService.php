@@ -10,26 +10,12 @@ use Illuminate\Support\Facades\View;
 final class HeaderMenuRenderService
 {
     protected HeaderMenuRepositoryInterface $headerMenuRepository;
-    protected MegaMenuProductCountService $productCountService;
 
-    /**
-     * @param HeaderMenuRepositoryInterface $headerMenuRepository
-     * @param MegaMenuProductCountService $productCountService
-     */
-    public function __construct(
-        HeaderMenuRepositoryInterface $headerMenuRepository,
-        MegaMenuProductCountService $productCountService
-    ) {
+    public function __construct(HeaderMenuRepositoryInterface $headerMenuRepository)
+    {
         $this->headerMenuRepository = $headerMenuRepository;
-        $this->productCountService = $productCountService;
     }
 
-    /**
-     * @param string $code
-     * @param string $cssClass
-     * @param string $view
-     * @return string
-     */
     public function render(string $code, string $cssClass = '', string $view = 'partials.header-menus.header-menu'): string
     {
         $menu = $this->headerMenuRepository->getHeaderMenuHierarchyByCode($code);
@@ -38,8 +24,6 @@ final class HeaderMenuRenderService
             return '';
         }
 
-        $menu->rootItems = $this->productCountService->attachProductCountsToMenuItems($menu->rootItems);
-
         return View::make($view, [
             'menu' => $menu,
             'cssClass' => $cssClass,
@@ -47,19 +31,9 @@ final class HeaderMenuRenderService
         ])->render();
     }
 
-    /**
-     * @param string $code
-     * @return \App\Models\HeaderMenu|null
-     */
     public function getHeaderMenuData(string $code)
     {
-        $menu = $this->headerMenuRepository->getHeaderMenuHierarchyByCode($code);
-
-        if ($menu && $menu->rootItems) {
-            $menu->rootItems = $this->productCountService->attachProductCountsToMenuItems($menu->rootItems);
-        }
-
-        return $menu;
+        return $this->headerMenuRepository->getHeaderMenuHierarchyByCode($code);
     }
 }
 
