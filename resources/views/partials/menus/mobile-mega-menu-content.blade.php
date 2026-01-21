@@ -45,7 +45,7 @@
                 @php
                     $itemTitle = $item->getTranslation('title', $locale);
                     $itemLink = $item->getTranslation('link', $locale);
-                    $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty();
+                    $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty();
                 @endphp
                 <li class="main-column-catalog__item">
                     <a class="main-column-catalog__link catalog-category-link"
@@ -67,9 +67,10 @@
             @php
                 $itemTitle = $item->getTranslation('title', $locale);
                 $itemLink = $item->getTranslation('link', $locale);
-                $regularChildren = $item->children ? $item->children->where('type', '!=', 'widget_link')->values() : collect();
+                $regularChildren = $item->children ? $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() : collect();
+                $rowChildren = $item->children ? $item->children->where('type', 'row')->values() : collect();
             @endphp
-            @if($regularChildren->isNotEmpty())
+            @if($regularChildren->isNotEmpty() || $rowChildren->isNotEmpty())
                 <div class="column-catalog__item column-style" id="{{ $item->id }}">
                     <h3 class="column-catalog__title">
                         <span class="column-catalog__back catalog-back-arrow" title="Назад"></span>
@@ -83,7 +84,7 @@
                             @php
                                 $childTitle = $child->getTranslation('title', $locale);
                                 $childLink = $child->getTranslation('link', $locale);
-                                $childHasChildren = $child->children && $child->children->where('type', '!=', 'widget_link')->isNotEmpty();
+                                $childHasChildren = $child->children && $child->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty();
                                 $childProductsCount = $child->products_count ?? 0;
                             @endphp
                             <li class="drop-menu-list__item">
@@ -92,7 +93,7 @@
                                 </a>
                                 @if($childHasChildren)
                                     <ul class="column-catalog__list drop-menu-list">
-                                        @foreach($child->children->where('type', '!=', 'widget_link')->values() as $grandChild)
+                                        @foreach($child->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() as $grandChild)
                                             @php
                                                 $grandChildTitle = $grandChild->getTranslation('title', $locale);
                                                 $grandChildLink = $grandChild->getTranslation('link', $locale);
@@ -110,6 +111,9 @@
                                     </ul>
                                 @endif
                             </li>
+                        @endforeach
+                        @foreach($rowChildren as $row)
+                            @include('partials.menus.mobile-mega-menu-row', ['row' => $row])
                         @endforeach
                     </ul>
                 </div>
