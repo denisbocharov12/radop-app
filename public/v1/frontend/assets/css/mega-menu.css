@@ -160,20 +160,18 @@
     min-width: 300px;
     display: flex;
     flex-direction: column;
-    margin-right: 15px;
 }
 
 .mega-menu__sidebar-header {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 10px 30px 10px 13.5px;
+    padding: 10px 20px;
     background: #0052a6;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.2s ease;
     position: relative;
-    border-radius: 8px;
 }
 
 .mega-menu__sidebar-header:hover {
@@ -258,15 +256,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 18px 20px;
+    padding: 16px 20px;
     color: #252525;
     text-decoration: none;
     transition: all 0.2s ease;
     background: transparent;
 }
-.mega-menu__sidebar-link:first-child{
-    margin-top: 15px;
-}
+
 .mega-menu__sidebar-item--active .mega-menu__sidebar-link,
 .mega-menu__sidebar-link:hover {
     background: #f7f7f7;
@@ -282,7 +278,7 @@
 }
 .mega-menu__sidebar-text {
     flex: 1;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
 }
 
@@ -319,7 +315,7 @@
     border-radius: 8px;
     transition: all 0.3s ease;
     border: 2px solid #e5e9f2;
-    padding: 12px 16px;
+    padding: 8px 16px;
     display: flex;
     position: relative;
 }
@@ -336,7 +332,6 @@
 
 .mega-menu__widget--purple .mega-menu__widget-text {
     color: #1a1a1a;
-    text-align: center;
 }
 
 .mega-menu__widget--purple:hover {
@@ -356,7 +351,6 @@
 
 .mega-menu__widget--red .mega-menu__widget-text {
     color: #1a1a1a;
-    text-align: center;
 }
 
 .mega-menu__widget--red:hover {
@@ -377,7 +371,6 @@
 
 .mega-menu__widget--green .mega-menu__widget-text {
     color: #1a1a1a;
-    text-align: center;
 }
 
 .mega-menu__widget--green:hover {
@@ -398,7 +391,6 @@
 
 .mega-menu__widget--blue .mega-menu__widget-text {
     color: #1a1a1a;
-    text-align: center;
 }
 
 .mega-menu__widget--blue:hover {
@@ -427,7 +419,6 @@
     object-fit: contain;
     flex-shrink: 0;
     transition: all 0.2s ease;
-    position: absolute;
 }
 
 .mega-menu__widget-text {
@@ -778,46 +769,4 @@
 .catalog__error-content p {
     margin: 0;
     font-size: 16px;
-}
-
-/* Row styles */
-.mega-menu__row {
-    margin-top: 30px;
-    padding-top: 30px;
-    border-top: 1px solid #e5e9f2;
-}
-
-.mega-menu__row-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #252525;
-    margin-bottom: 24px;
-    line-height: 1.2;
-}
-
-.mega-menu__row-title--mobile {
-    font-size: 24px;
-    font-weight: 700;
-    color: #252525;
-    margin-bottom: 16px;
-    line-height: 1.2;
-}
-
-@media (max-width: 991px) {
-    .mega-menu__row {
-        margin-top: 20px;
-        padding-top: 20px;
-    }
-
-    .mega-menu__row-title {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 767px) {
-    .mega-menu__row-title {
-        font-size: 22px;
-        margin-bottom: 16px;
-    }
 }

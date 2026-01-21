@@ -31,7 +31,6 @@
                                                         <option value="custom_link" {{$menuItem->type == 'custom_link' ? 'selected' : ''}}>Пользовательская ссылка</option>
                                                         <option value="promo_block" {{$menuItem->type == 'promo_block' ? 'selected' : ''}}>Промо-блок</option>
                                                         <option value="widget_link" {{$menuItem->type == 'widget_link' ? 'selected' : ''}}>Виджет ссылки</option>
-                                                        <option value="row" {{$menuItem->type == 'row' ? 'selected' : ''}}>Строка</option>
                                                     </select>
                                                     @error('type')
                                                     <span class="invalid">{{ $message }}</span>
@@ -63,10 +62,10 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" for="parent_id">Родительский элемент<span id="parent_id_required" class="text-danger" style="display: {{$menuItem->type == 'row' ? 'inline' : 'none'}};">*</span></label>
+                                                <label class="form-label" for="parent_id">Родительский элемент</label>
                                                 <div class="form-control-wrap">
                                                     <select class="form-select" name="parent_id" id="parent_id">
-                                                        <option value="" id="parent_id_empty_option" style="display: {{$menuItem->type == 'row' ? 'none' : 'block'}};">Нет (корневой элемент)</option>
+                                                        <option value="">Нет (корневой элемент)</option>
                                                         @foreach($parentOptions as $option)
                                                             <option value="{{$option['value']}}" {{$menuItem->parent_id == $option['value'] ? 'selected' : ''}}>{{$option['label']}}</option>
                                                         @endforeach
@@ -363,23 +362,10 @@
                                 } else {
                                     const selectedOption = $(this).find('option:selected')[0];
                                     if (selectedOption && selectedOption.dataset) {
-                                        const titleRoInput = document.getElementById('title_ro');
-                                        const titleRuInput = document.getElementById('title_ru');
-                                        const linkRoInput = document.getElementById('link_ro');
-                                        const linkRuInput = document.getElementById('link_ru');
-                                        const typeSelect = document.getElementById('type');
-                                        
-                                        if (titleRoInput) titleRoInput.value = selectedOption.dataset.nameRo || '';
-                                        if (titleRuInput) titleRuInput.value = selectedOption.dataset.nameRu || selectedOption.textContent.trim() || '';
-                                        // Автозаполняем ссылки только если они пустые или если это тип category
-                                        if (linkRoInput && (!linkRoInput.value || (typeSelect && typeSelect.value === 'category'))) {
-                                            linkRoInput.value = selectedOption.dataset.linkRo || '';
-                                            if (linkRoInput.value) linkRoInput.dataset.autoFilled = 'true';
-                                        }
-                                        if (linkRuInput && (!linkRuInput.value || (typeSelect && typeSelect.value === 'category'))) {
-                                            linkRuInput.value = selectedOption.dataset.linkRu || '';
-                                            if (linkRuInput.value) linkRuInput.dataset.autoFilled = 'true';
-                                        }
+                                        titleRoInput.value = selectedOption.dataset.nameRo || '';
+                                        titleRuInput.value = selectedOption.dataset.nameRu || selectedOption.textContent.trim() || '';
+                                        linkRoInput.value = selectedOption.dataset.linkRo || '';
+                                        linkRuInput.value = selectedOption.dataset.linkRu || '';
                                         console.log('Автозаполнение из option:', {
                                             name_ro: selectedOption.dataset.nameRo,
                                             name_ru: selectedOption.dataset.nameRu,
@@ -389,21 +375,10 @@
                                     }
                                 }
                             }).on('select2:clear', function(e) {
-                                const titleRoInput = document.getElementById('title_ro');
-                                const titleRuInput = document.getElementById('title_ru');
-                                const linkRoInput = document.getElementById('link_ro');
-                                const linkRuInput = document.getElementById('link_ru');
-                                
-                                if (titleRoInput) titleRoInput.value = '';
-                                if (titleRuInput) titleRuInput.value = '';
-                                if (linkRoInput) {
-                                    linkRoInput.value = '';
-                                    linkRoInput.dataset.autoFilled = 'false';
-                                }
-                                if (linkRuInput) {
-                                    linkRuInput.value = '';
-                                    linkRuInput.dataset.autoFilled = 'false';
-                                }
+                                titleRoInput.value = '';
+                                titleRuInput.value = '';
+                                linkRoInput.value = '';
+                                linkRuInput.value = '';
                             });
                         }
 
@@ -433,19 +408,12 @@
                 console.log('Найденная категория:', category);
 
                 if (category) {
-                    if (titleRoInput) titleRoInput.value = category.name_ro || '';
-                    if (titleRuInput) titleRuInput.value = category.name_ru || category.name || '';
-                    // Автозаполняем ссылки только если они пустые или если это тип category
-                    if (linkRoInput && (!linkRoInput.value || typeSelect.value === 'category')) {
-                        linkRoInput.value = category.link_ro || category.link || '';
-                        if (linkRoInput.value) linkRoInput.dataset.autoFilled = 'true';
-                    }
-                    if (linkRuInput && (!linkRuInput.value || typeSelect.value === 'category')) {
-                        linkRuInput.value = category.link_ru || category.link || '';
-                        if (linkRuInput.value) linkRuInput.dataset.autoFilled = 'true';
-                    }
-                    console.log('Автозаполнение выполнено:', { 
-                        name_ro: category.name_ro, 
+                    titleRoInput.value = category.name_ro || '';
+                    titleRuInput.value = category.name_ru || category.name || '';
+                    linkRoInput.value = category.link_ro || category.link || '';
+                    linkRuInput.value = category.link_ru || category.link || '';
+                    console.log('Автозаполнение выполнено:', {
+                        name_ro: category.name_ro,
                         name_ru: category.name_ru,
                         link_ro: category.link_ro,
                         link_ru: category.link_ru
@@ -481,117 +449,21 @@
             function toggleCategorySelect() {
                 const selectedOption = typeSelect.options[typeSelect.selectedIndex];
                 const needsCategory = selectedOption && selectedOption.dataset.autofill === 'true';
-                const isRowType = typeSelect.value === 'row';
-                const parentIdSelect = document.getElementById('parent_id');
-                const parentIdRequired = document.getElementById('parent_id_required');
-                const parentIdEmptyOption = document.getElementById('parent_id_empty_option');
-                
-                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory, 'Тип строка:', isRowType);
-                
+
+                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory);
+
                 categorySelectWrapper.style.display = needsCategory ? 'block' : 'none';
-                
-                // Для типа row parent_id обязателен
-                if (parentIdSelect) {
-                    parentIdSelect.required = isRowType;
-                    if (isRowType) {
-                        // Скрываем опцию "Нет (корневой элемент)" для строк
-                        if (parentIdEmptyOption) {
-                            parentIdEmptyOption.style.display = 'none';
-                        }
-                        // Если выбрана пустая опция, сбрасываем выбор
-                        if (parentIdSelect.value === '') {
-                            parentIdSelect.value = '';
-                        }
-                    } else {
-                        // Показываем опцию "Нет (корневой элемент)" для других типов
-                        if (parentIdEmptyOption) {
-                            parentIdEmptyOption.style.display = 'block';
-                        }
-                    }
-                }
-                if (parentIdRequired) {
-                    parentIdRequired.style.display = isRowType ? 'inline' : 'none';
-                }
-                
+
                 if (needsCategory) {
+                    // Загружаем категории, если они еще не загружены
                     if (categories.length === 0 && !categoriesLoading) {
                         console.log('Запускаем загрузку категорий...');
                         loadCategories();
                     }
                 } else {
-                    if (categorySelect) {
-                        categorySelect.value = '';
-                        if (typeof $ !== 'undefined' && $(categorySelect).data('select2')) {
-                            $(categorySelect).val(null).trigger('change');
-                        }
-                    }
+                    // Сбрасываем выбор категории, если тип изменился
+                    categorySelect.value = '';
                 }
-            }
-
-            // Автозаполнение ссылок на основе названий
-            function generateSlug(text) {
-                if (!text) return '';
-                return text
-                    .toLowerCase()
-                    .trim()
-                    .replace(/[^\w\s-]/g, '')
-                    .replace(/[\s_-]+/g, '-')
-                    .replace(/^-+|-+$/g, '');
-            }
-
-            function autoFillLinks() {
-                const titleRoInput = document.getElementById('title_ro');
-                const titleRuInput = document.getElementById('title_ru');
-                const linkRoInput = document.getElementById('link_ro');
-                const linkRuInput = document.getElementById('link_ru');
-                
-                if (titleRoInput && titleRoInput.value && linkRoInput && (!linkRoInput.value || linkRoInput.dataset.autoFilled === 'true')) {
-                    const slug = generateSlug(titleRoInput.value);
-                    if (slug) {
-                        linkRoInput.value = '/category/' + slug;
-                        linkRoInput.dataset.autoFilled = 'true';
-                    }
-                }
-                
-                if (titleRuInput && titleRuInput.value && linkRuInput && (!linkRuInput.value || linkRuInput.dataset.autoFilled === 'true')) {
-                    const slug = generateSlug(titleRuInput.value);
-                    if (slug) {
-                        linkRuInput.value = '/category/' + slug;
-                        linkRuInput.dataset.autoFilled = 'true';
-                    }
-                }
-            }
-
-            // Автозаполнение ссылок при изменении названий (с задержкой)
-            let titleChangeTimeout;
-            const titleRoInputEdit = document.getElementById('title_ro');
-            const titleRuInputEdit = document.getElementById('title_ru');
-            const linkRoInputEdit = document.getElementById('link_ro');
-            const linkRuInputEdit = document.getElementById('link_ru');
-            
-            if (titleRoInputEdit) {
-                titleRoInputEdit.addEventListener('input', function() {
-                    clearTimeout(titleChangeTimeout);
-                    titleChangeTimeout = setTimeout(autoFillLinks, 500);
-                });
-            }
-            if (titleRuInputEdit) {
-                titleRuInputEdit.addEventListener('input', function() {
-                    clearTimeout(titleChangeTimeout);
-                    titleChangeTimeout = setTimeout(autoFillLinks, 500);
-                });
-            }
-
-            // Если пользователь вручную изменяет ссылку, убираем флаг автозаполнения
-            if (linkRoInputEdit) {
-                linkRoInputEdit.addEventListener('input', function() {
-                    this.dataset.autoFilled = 'false';
-                });
-            }
-            if (linkRuInputEdit) {
-                linkRuInputEdit.addEventListener('input', function() {
-                    this.dataset.autoFilled = 'false';
-                });
             }
 
             // Загружаем категории сразу, если тип уже "category"
