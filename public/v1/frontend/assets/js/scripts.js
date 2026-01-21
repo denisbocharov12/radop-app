@@ -1170,7 +1170,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (btnCatalog && catalogNavBarMenu) {
-        const mobileMenuCache = new Map();
         const mobileMenuCode = catalogNavBarMenu.dataset.mobileMenuCode || 'main_menu';
         const mobileContainer = catalogNavBarMenu.querySelector('[data-mobile-menu-container]');
         const mobileLoading = catalogNavBarMenu.querySelector('[data-mobile-menu-loading]');
@@ -1178,17 +1177,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let isMobileMenuLoading = false;
 
         function loadMobileMenuContent() {
-            if (mobileMenuCache.has(mobileMenuCode)) {
-                const cachedHtml = mobileMenuCache.get(mobileMenuCode);
-                if (mobileContainer) {
-                    mobileContainer.innerHTML = cachedHtml;
-                    mobileContainer.style.display = 'block';
-                    if (mobileLoading) mobileLoading.style.display = 'none';
-                }
-                isMobileMenuLoaded = true;
-                return;
-            }
-
             isMobileMenuLoading = true;
             if (mobileLoading) mobileLoading.style.display = 'flex';
             if (mobileContainer) mobileContainer.style.display = 'none';
@@ -1212,7 +1200,6 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(data => {
                 if (data && typeof data === 'object' && data.success === true && data.html) {
-                    mobileMenuCache.set(mobileMenuCode, data.html);
                     if (mobileContainer) {
                         mobileContainer.innerHTML = data.html;
                         mobileContainer.style.display = 'block';

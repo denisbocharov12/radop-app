@@ -25,9 +25,9 @@ final class MenuItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'parent_id' => ['nullable', 'exists:menu_items,id'],
+            'parent_id' => ['required_if:type,row', 'nullable', 'exists:menu_items,id'],
             'order' => ['sometimes', 'integer', 'min:0'],
-            'type' => ['required', 'in:category,custom_link,promo_block,widget_link'],
+            'type' => ['required', 'in:category,custom_link,promo_block,widget_link,row'],
             'title_ro' => ['required', 'string', 'max:255'],
             'title_ru' => ['required', 'string', 'max:255'],
             'link_ro' => ['nullable', 'string', 'max:255'],
