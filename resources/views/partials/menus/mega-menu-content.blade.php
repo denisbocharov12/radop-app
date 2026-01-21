@@ -11,7 +11,7 @@
             <h3 class="mega-menu__sidebar-title">{{ __('theme.mega-menu-title-btn') }}</h3>
         </div>
         <ul class="mega-menu__sidebar-list">
-            @foreach($menu->rootItems->where('type', '!=', 'widget_link')->values() as $index => $item)
+            @foreach($menu->rootItems->where('type', '!=', 'widget_link')->where('type', '!=', 'widget_link')->values() as $index => $item)
                 @php
                     $itemTitle = $item->getTranslation('title', $locale);
                     $itemLink = $item->getTranslation('link', $locale);
