@@ -46,7 +46,11 @@ class MenuHierarchyService
      */
     public function getMenuHierarchy(string $menuCode, bool $onlyActive = true): ?Menu
     {
-        return $this->menuRepository->getMenuHierarchyByCode($menuCode, $onlyActive);
+        $cacheKey = $this->getCacheKey($menuCode, $onlyActive);
+        
+        return Cache::remember($cacheKey, $this->cacheTime, function () use ($menuCode, $onlyActive) {
+            return $this->menuRepository->getMenuHierarchyByCode($menuCode, $onlyActive);
+        });
     }
 
     /**
@@ -81,6 +85,7 @@ class MenuHierarchyService
 
             DB::commit();
 
+            $this->clearMenuCache($menuCode);
 
             return true;
         } catch (\Exception $e) {
@@ -127,6 +132,10 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->updateMenu($menuId, $data);
 
+        if ($result && $menu) {
+            $this->clearMenuCache($menu->code);
+        }
+
         return $result;
     }
 
@@ -146,6 +155,10 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->deleteMenu($menuId);
 
+        if ($result && $menu) {
+            $this->clearMenuCache($menu->code);
+        }
+
         return $result;
     }
 
@@ -161,6 +174,10 @@ class MenuHierarchyService
         $this->validateMenuItemData($data);
 
         $menuItem = $this->menuRepository->createMenuItem($data);
+
+        if ($menuItem && $menuItem->menu) {
+            $this->clearMenuCache($menuItem->menu->code);
+        }
 
         return $menuItem;
     }
@@ -185,6 +202,10 @@ class MenuHierarchyService
 
         $result = $this->menuRepository->updateMenuItem($itemId, $data);
 
+        if ($result && $menuItem && $menuItem->menu) {
+            $this->clearMenuCache($menuItem->menu->code);
+        }
+
         return $result;
     }
 
@@ -203,6 +224,10 @@ class MenuHierarchyService
         }
 
         $result = $this->menuRepository->deleteMenuItem($itemId);
+
+        if ($result && $menuItem && $menuItem->menu) {
+            $this->clearMenuCache($menuItem->menu->code);
+        }
 
         return $result;
     }
@@ -416,6 +441,8 @@ class MenuHierarchyService
      */
     protected function clearMenuCache(string $menuCode): void
     {
+        Cache::forget($this->getCacheKey($menuCode, true));
+        Cache::forget($this->getCacheKey($menuCode, false));
     }
 
     /**
@@ -425,6 +452,7 @@ class MenuHierarchyService
      */
     public function clearAllMenuCache(): void
     {
+        Cache::flush();
     }
 }
 
