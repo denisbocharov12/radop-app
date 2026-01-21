@@ -34,8 +34,7 @@ final class MenuItem extends Model implements HasMedia
         'icon_class',
         'content_data',
         'is_active',
-        'category_id',
-        'menu_row_title',
+        'category_id'
     ];
 
     /**
@@ -47,10 +46,9 @@ final class MenuItem extends Model implements HasMedia
         'content_data' => 'array',
         'is_active' => 'boolean',
         'order' => 'integer',
-        'menu_row_title' => 'array',
     ];
 
-    public $translatable = ['title', 'link', 'menu_row_title'];
+    public $translatable = ['title', 'link'];
 
     /**
      * Типы элементов меню
@@ -59,7 +57,6 @@ final class MenuItem extends Model implements HasMedia
     public const TYPE_CUSTOM_LINK = 'custom_link';
     public const TYPE_PROMO_BLOCK = 'promo_block';
     public const TYPE_WIDGET_LINK = 'widget_link';
-    public const TYPE_ROW = 'row';
 
     /**
      * Получить меню, к которому принадлежит элемент
@@ -179,16 +176,6 @@ final class MenuItem extends Model implements HasMedia
     public function isWidgetLink(): bool
     {
         return $this->type === self::TYPE_WIDGET_LINK;
-    }
-
-    /**
-     * Проверить, является ли элемент строкой
-     *
-     * @return bool
-     */
-    public function isRow(): bool
-    {
-        return $this->type === self::TYPE_ROW;
     }
 
     /**

@@ -46,52 +46,20 @@
         @foreach($categoryItems as $index => $item)
             <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
                  data-category-panel="{{ $item->id }}">
-                @php
-                    $regularChildren = $item->children ? $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() : collect();
-                    $rowChildren = $item->children ? $item->children->where('type', 'row')->values() : collect();
-                @endphp
-                @if($regularChildren->isNotEmpty() || $rowChildren->isNotEmpty())
-                    @if($regularChildren->isNotEmpty())
-                        <div class="mega-menu__columns">
-                            @php
-                                $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
-                            @endphp
-                            @foreach($columns as $column)
-                                <div class="mega-menu__column">
-                                    @foreach($column as $child)
-                                        @include('partials.menus.mega-menu-category-item', ['item' => $child])
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                    @if($rowChildren->isNotEmpty())
-                        @foreach($rowChildren as $row)
-                            @php
-                                $rowTitle = $row->getTranslation('title', $locale);
-                            @endphp
-                            <div class="mega-menu__row">
-                                @if($rowTitle)
-                                    <h3 class="mega-menu__row-title">{{ $rowTitle }}</h3>
-                                @endif
-                                @if($row->children && $row->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty())
-                                    <div class="mega-menu__columns">
-                                        @php
-                                            $rowItemsChildren = $row->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values();
-                                            $rowColumns = $rowItemsChildren->chunk(ceil($rowItemsChildren->count() / 3));
-                                        @endphp
-                                        @foreach($rowColumns as $column)
-                                            <div class="mega-menu__column">
-                                                @foreach($column as $child)
-                                                    @include('partials.menus.mega-menu-category-item', ['item' => $child])
-                                                @endforeach
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
+                @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
+                    <div class="mega-menu__columns">
+                        @php
+                            $regularChildren = $item->children->where('type', '!=', 'widget_link')->values();
+                            $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
+                        @endphp
+                        @foreach($columns as $column)
+                            <div class="mega-menu__column">
+                                @foreach($column as $child)
+                                    @include('partials.menus.mega-menu-category-item', ['item' => $child])
+                                @endforeach
                             </div>
                         @endforeach
-                    @endif
+                    </div>
                 @else
                     <div class="mega-menu__empty">
                         <p>{{ __('theme.no-subcategories') }}</p>

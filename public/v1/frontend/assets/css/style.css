@@ -1650,7 +1650,9 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: #fff;
     padding: 25px 0 0;
     border-radius: 0 0 15px 15px;
-    overflow-y: scroll;
+    left: 11px!important;
+    width: calc(100% - 22px) !important;
+    overflow-y: hidden;
     min-height: 675px;
 }
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover a.link-megamenu{
@@ -1815,11 +1817,11 @@ header .section-header .row-main .header-menu .col-lg{
     background-color: #0052a6;
     font-size: 0.825rem;
     border-radius: 10px;
-    padding: 12px 30px;
+    padding: 12px 16px;
     line-height: inherit;
     display: flex;
     align-items: center;
-    height: 48px;
+    height: 44px;
     justify-content: center;
     transition: all .4s;
 }
@@ -2089,7 +2091,6 @@ header .section-header .row-main .header-menu .col-lg{
     padding: 12px 32px 12px 16px;
     width: 100%;
     line-height: initial;
-    height: 48px;
 }
 
 .section-header .row-main .header-search .wrap form .btn-search {
@@ -2253,6 +2254,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: flex;
     align-items: center;
     color: #0052a6;
+    padding: 8px 15px;
     border-radius: 10px;
 }
 .section-header .row-main .header-account .icon-block.login-registration-block a.icon-block-link{
@@ -11563,10 +11565,10 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
 }
 .section-header .row-main .header-account .icon-block a.icon-block-link {
     background-color: #eff3f6;
-    padding: 13px 15px;
+    padding: 10px 15px;
 }
 .section-header .row-main .header-account .icon-block a.icon-block-link.cart {
-    padding: 13px 15px;
+    padding: 10px 15px;
 }
 .section-header .row-main .header-logo {
     padding: 0 5px 0 0;
