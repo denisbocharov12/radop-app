@@ -72,44 +72,40 @@ final class MenuRepository implements MenuRepositoryInterface
      */
     public function getMenuHierarchyByCode(string $code, bool $onlyActive = true): ?Menu
     {
-        $cacheKey = "menu_hierarchy_{$code}_" . ($onlyActive ? 'active' : 'all');
-        
-        return Cache::remember($cacheKey, 86400, function () use ($code, $onlyActive) {
-            $query = Menu::byCode($code);
+        $query = Menu::byCode($code);
 
+        if ($onlyActive) {
+            $query->active();
+        }
+
+        $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
             if ($onlyActive) {
                 $query->active();
             }
-
-            $menu = $query->with(['rootItems' => function ($query) use ($onlyActive) {
-                if ($onlyActive) {
-                    $query->active();
-                }
-                
-                $query->with(['children' => function ($childrenQuery) use ($onlyActive) {
-                    if ($onlyActive) {
-                        $childrenQuery->active();
-                    }
-                    $childrenQuery->orderBy('order');
-                }])->orderBy('order');
-            }])->first();
             
-            if ($menu && $menu->rootItems) {
-                $menu->rootItems->load('media');
-                foreach ($menu->rootItems as $item) {
-                    if ($item->children) {
-                        $item->children->load('media');
-                        foreach ($item->children as $child) {
-                            if ($child->children) {
-                                $child->children->load('media');
-                            }
+            $query->with(['children' => function ($childrenQuery) use ($onlyActive) {
+                if ($onlyActive) {
+                    $childrenQuery->active();
+                }
+                $childrenQuery->orderBy('order');
+            }])->orderBy('order');
+        }])->first();
+        
+        if ($menu && $menu->rootItems) {
+            $menu->rootItems->load('media');
+            foreach ($menu->rootItems as $item) {
+                if ($item->children) {
+                    $item->children->load('media');
+                    foreach ($item->children as $child) {
+                        if ($child->children) {
+                            $child->children->load('media');
                         }
                     }
                 }
             }
-            
-            return $menu;
-        });
+        }
+        
+        return $menu;
     }
 
     /**
