@@ -1,5 +1,5 @@
 @php
-    $hasChildren = $item->children && $item->children->isNotEmpty();
+    $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty();
 @endphp
 
 <li class="simple-menu__item simple-menu__item--depth-{{ $depth }}">
@@ -28,7 +28,7 @@
 
     @if($hasChildren)
         <ul class="simple-menu__submenu">
-            @foreach($item->children as $child)
+            @foreach($item->children->where('type', '!=', 'widget_link')->values() as $child)
                 @include('partials.menus.simple-menu-item', ['item' => $child, 'depth' => $depth + 1])
             @endforeach
         </ul>
