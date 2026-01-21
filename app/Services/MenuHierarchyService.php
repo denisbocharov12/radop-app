@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Jobs\UpdateMenuCacheJob;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Repositories\MenuRepositoryInterface;
@@ -86,8 +85,7 @@ class MenuHierarchyService
 
             DB::commit();
 
-            UpdateMenuCacheJob::dispatch($menuCode, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuCode, false)->onQueue('high');
+            $this->clearMenuCache($menuCode);
 
             return true;
         } catch (\Exception $e) {
@@ -135,8 +133,7 @@ class MenuHierarchyService
         $result = $this->menuRepository->updateMenu($menuId, $data);
 
         if ($result && $menu) {
-            UpdateMenuCacheJob::dispatch($menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menu->code, false)->onQueue('high');
+            $this->clearMenuCache($menu->code);
         }
 
         return $result;
@@ -159,8 +156,7 @@ class MenuHierarchyService
         $result = $this->menuRepository->deleteMenu($menuId);
 
         if ($result && $menu) {
-            UpdateMenuCacheJob::dispatch($menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menu->code, false)->onQueue('high');
+            $this->clearMenuCache($menu->code);
         }
 
         return $result;
@@ -180,8 +176,7 @@ class MenuHierarchyService
         $menuItem = $this->menuRepository->createMenuItem($data);
 
         if ($menuItem && $menuItem->menu) {
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
+            $this->clearMenuCache($menuItem->menu->code);
         }
 
         return $menuItem;
@@ -208,8 +203,7 @@ class MenuHierarchyService
         $result = $this->menuRepository->updateMenuItem($itemId, $data);
 
         if ($result && $menuItem && $menuItem->menu) {
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
+            $this->clearMenuCache($menuItem->menu->code);
         }
 
         return $result;
@@ -232,8 +226,7 @@ class MenuHierarchyService
         $result = $this->menuRepository->deleteMenuItem($itemId);
 
         if ($result && $menuItem && $menuItem->menu) {
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
+            $this->clearMenuCache($menuItem->menu->code);
         }
 
         return $result;

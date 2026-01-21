@@ -11,7 +11,7 @@
             <h3 class="mega-menu__sidebar-title">{{ __('theme.mega-menu-title-btn') }}</h3>
         </div>
         <ul class="mega-menu__sidebar-list">
-            @foreach($menu->rootItems->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() as $index => $item)
+            @foreach($menu->rootItems->where('type', '!=', 'widget_link')->where('type', '!=', 'widget_link')->values() as $index => $item)
                 @php
                     $itemTitle = $item->getTranslation('title', $locale);
                     $itemLink = $item->getTranslation('link', $locale);
@@ -46,30 +46,20 @@
         @foreach($categoryItems as $index => $item)
             <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
                  data-category-panel="{{ $item->id }}">
-                @php
-                    $regularChildren = $item->children ? $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() : collect();
-                    $rowChildren = $item->children ? $item->children->where('type', 'row')->values() : collect();
-                @endphp
-                @if($regularChildren->isNotEmpty() || $rowChildren->isNotEmpty())
-                    @if($regularChildren->isNotEmpty())
-                        <div class="mega-menu__columns">
-                            @php
-                                $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
-                            @endphp
-                            @foreach($columns as $column)
-                                <div class="mega-menu__column">
-                                    @foreach($column as $child)
-                                        @include('partials.menus.mega-menu-category-item', ['item' => $child])
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                    @if($rowChildren->isNotEmpty())
-                        @foreach($rowChildren as $row)
-                            @include('partials.menus.mega-menu-row', ['row' => $row])
+                @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
+                    <div class="mega-menu__columns">
+                        @php
+                            $regularChildren = $item->children->where('type', '!=', 'widget_link')->values();
+                            $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
+                        @endphp
+                        @foreach($columns as $column)
+                            <div class="mega-menu__column">
+                                @foreach($column as $child)
+                                    @include('partials.menus.mega-menu-category-item', ['item' => $child])
+                                @endforeach
+                            </div>
                         @endforeach
-                    @endif
+                    </div>
                 @else
                     <div class="mega-menu__empty">
                         <p>{{ __('theme.no-subcategories') }}</p>
