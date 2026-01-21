@@ -87,7 +87,6 @@ class MenuHierarchyService
             DB::commit();
 
             UpdateMenuCacheJob::dispatch($menuCode, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuCode, false)->onQueue('high');
 
             return true;
         } catch (\Exception $e) {
@@ -136,7 +135,6 @@ class MenuHierarchyService
 
         if ($result && $menu) {
             UpdateMenuCacheJob::dispatch($menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menu->code, false)->onQueue('high');
         }
 
         return $result;
@@ -160,7 +158,6 @@ class MenuHierarchyService
 
         if ($result && $menu) {
             UpdateMenuCacheJob::dispatch($menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menu->code, false)->onQueue('high');
         }
 
         return $result;
@@ -181,7 +178,6 @@ class MenuHierarchyService
 
         if ($menuItem && $menuItem->menu) {
             UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
         }
 
         return $menuItem;
@@ -209,7 +205,6 @@ class MenuHierarchyService
 
         if ($result && $menuItem && $menuItem->menu) {
             UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
         }
 
         return $result;
@@ -233,7 +228,6 @@ class MenuHierarchyService
 
         if ($result && $menuItem && $menuItem->menu) {
             UpdateMenuCacheJob::dispatch($menuItem->menu->code, true)->onQueue('high');
-            UpdateMenuCacheJob::dispatch($menuItem->menu->code, false)->onQueue('high');
         }
 
         return $result;
@@ -449,7 +443,6 @@ class MenuHierarchyService
     protected function clearMenuCache(string $menuCode): void
     {
         Cache::forget($this->getCacheKey($menuCode, true));
-        Cache::forget($this->getCacheKey($menuCode, false));
     }
 
     /**
