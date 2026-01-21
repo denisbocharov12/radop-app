@@ -21,28 +21,31 @@ final class MegaMenuProductCountService
         }
 
         $sortedIds = $categoryOnecIds->sort()->values();
+        $cacheKey = 'mega_menu_product_counts_' . md5($sortedIds->implode(','));
         
-        $counts = DB::table('product_categories')
-            ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
-            ->join('products', 'product_categories.product_id', '=', 'products.onec_id')
-            ->whereIn('product_categories.category_id', $sortedIds->toArray())
-            ->where('categories.status', true)
-            ->whereNull('categories.deleted_at')
-            ->where('products.status', true)
-            ->where('products.site_status', true)
-            ->where('products.stock', '!=', 0)
-            ->whereNull('products.deleted_at')
-            ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT products.onec_id) as count'))
-            ->groupBy('product_categories.category_id')
-            ->pluck('count', 'category_id')
-            ->toArray();
+        return Cache::remember($cacheKey, 3600, function () use ($sortedIds) {
+            $counts = DB::table('product_categories')
+                ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
+                ->join('products', 'product_categories.product_id', '=', 'products.onec_id')
+                ->whereIn('product_categories.category_id', $sortedIds->toArray())
+                ->where('categories.status', true)
+                ->whereNull('categories.deleted_at')
+                ->where('products.status', true)
+                ->where('products.site_status', true)
+                ->where('products.stock', '!=', 0)
+                ->whereNull('products.deleted_at')
+                ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT products.onec_id) as count'))
+                ->groupBy('product_categories.category_id')
+                ->pluck('count', 'category_id')
+                ->toArray();
 
-        $result = [];
-        foreach ($sortedIds as $onecId) {
-            $result[$onecId] = $counts[$onecId] ?? 0;
-        }
+            $result = [];
+            foreach ($sortedIds as $onecId) {
+                $result[$onecId] = $counts[$onecId] ?? 0;
+            }
 
-        return $result;
+            return $result;
+        });
     }
 
     /**
