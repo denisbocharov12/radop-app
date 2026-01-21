@@ -51,12 +51,7 @@ final class HeaderMenuRepository implements HeaderMenuRepositoryInterface
                 $query->active();
             }
             
-            $query->with(['children' => function ($childrenQuery) use ($onlyActive) {
-                if ($onlyActive) {
-                    $childrenQuery->active();
-                }
-                $childrenQuery->orderBy('order');
-            }])->orderBy('order');
+            $query->with('children')->orderBy('order');
         }])->first();
         
         if ($menu && $menu->rootItems) {
@@ -64,11 +59,6 @@ final class HeaderMenuRepository implements HeaderMenuRepositoryInterface
             foreach ($menu->rootItems as $item) {
                 if ($item->children) {
                     $item->children->load('media');
-                    foreach ($item->children as $child) {
-                        if ($child->children) {
-                            $child->children->load('media');
-                        }
-                    }
                 }
             }
         }

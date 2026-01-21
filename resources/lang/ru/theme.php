@@ -493,8 +493,4 @@ return array (
     'review_success_message' => 'Спасибо за ваш отзыв! Он будет опубликован после проверки модератором.',
     'review_error_message' => 'Произошла ошибка при сохранении отзыва',
     'mega-menu-title-btn' => 'Каталог товаров',
-    'mega-menu-not-found' => 'Меню не найдено или неактивно',
-    'mega-menu-load-error' => 'Ошибка загрузки меню',
-    'mega-menu-invalid-response' => 'Неверный формат ответа',
-    'mega-menu-load-error-message' => 'Ошибка загрузки меню. Пожалуйста, обновите страницу.',
 );

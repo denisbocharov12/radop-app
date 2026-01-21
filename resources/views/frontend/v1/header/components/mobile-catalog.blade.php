@@ -107,7 +107,7 @@
     $mainMenu = app('App\Services\MenuRenderService')->getMenuData('main_menu');
 @endphp
 @if($mainMenu && $mainMenu->is_active && $mainMenu->rootItems->isNotEmpty())
-    @include('partials.menus.mobile-mega-menu', ['menu' => $mainMenu, 'code' => 'main_menu'])
+    @include('partials.menus.mobile-mega-menu', ['menu' => $mainMenu])
 @else
 <div class="theme-catalog-navbar catalog-navbar">
     <div class="catalog-navbar__catalog">

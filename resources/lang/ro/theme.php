@@ -466,8 +466,4 @@ return array (
     'review_success_message' => 'Vă mulțumim pentru recenzia dumneavoastră! Aceasta va fi publicată după verificarea de către moderator.',
     'review_error_message' => 'A apărut o eroare la salvarea recenziei',
     'mega-menu-title-btn' => 'Catalog produse',
-    'mega-menu-not-found' => 'Meniul nu a fost găsit sau este inactiv',
-    'mega-menu-load-error' => 'Eroare la încărcarea meniului',
-    'mega-menu-invalid-response' => 'Format de răspuns invalid',
-    'mega-menu-load-error-message' => 'Eroare la încărcarea meniului. Vă rugăm să reîmprospătați pagina.',
 );

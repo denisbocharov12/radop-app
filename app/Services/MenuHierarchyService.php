@@ -439,6 +439,8 @@ class MenuHierarchyService
     }
 
     /**
+     * Очистить кэш меню
+     *
      * @param string $menuCode
      * @return void
      */
@@ -451,9 +453,6 @@ class MenuHierarchyService
         }
         Cache::forget($this->getCacheKey($menuCode, true));
         Cache::forget($this->getCacheKey($menuCode, false));
-        
-        $productCountService = app(\App\Services\MegaMenuProductCountService::class);
-        $productCountService->clearCache();
     }
 
     /**
