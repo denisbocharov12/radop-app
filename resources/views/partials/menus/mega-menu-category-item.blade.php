@@ -1,6 +1,6 @@
 @php
     $locale = app()->getLocale();
-    $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty();
+    $hasChildren = $item->children && $item->children->isNotEmpty();
     $itemTitle = $item->getTranslation('title', $locale);
     $itemLink = $item->getTranslation('link', $locale);
     $itemImage = $item->getFirstMedia('menu_item_image');
@@ -26,7 +26,7 @@
 
     @if($hasChildren)
         <ul class="mega-menu__category-sublist">
-            @foreach($item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() as $child)
+            @foreach($item->children->values() as $child)
                 @php
                     $childTitle = $child->getTranslation('title', $locale);
                     $childLink = $child->getTranslation('link', $locale);
