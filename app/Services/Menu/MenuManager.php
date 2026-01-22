@@ -137,6 +137,13 @@ final class MenuManager
                 'ro' => $request->title_ro,
                 'ru' => $request->title_ru,
             ],
+            'label_name' => ($request->label_name_ro || $request->label_name_ru) ? [
+                'ro' => $request->label_name_ro,
+                'ru' => $request->label_name_ru,
+            ] : null,
+            'label_color' => $request->label_color,
+            'display_title' => (bool) ($request->display_title ?? false),
+            'display_as_link' => (bool) ($request->display_as_link ?? true),
             'link' => [
                 'ro' => $request->link_ro,
                 'ru' => $request->link_ru,
@@ -188,6 +195,13 @@ final class MenuManager
                 'ro' => $request->title_ro,
                 'ru' => $request->title_ru,
             ],
+            'label_name' => ($request->label_name_ro || $request->label_name_ru) ? [
+                'ro' => $request->label_name_ro,
+                'ru' => $request->label_name_ru,
+            ] : null,
+            'label_color' => $request->label_color,
+            'display_title' => (bool) ($request->display_title ?? false),
+            'display_as_link' => (bool) ($request->display_as_link ?? true),
             'link' => [
                 'ro' => $request->link_ro,
                 'ru' => $request->link_ru,

@@ -33,6 +33,13 @@ final class MenuItemDataMapper
             'order' => (int) ($request->order ?? $order),
             'type' => $request->type,
             'title' => $request->title,
+            'label_name' => $request->label_name_ro || $request->label_name_ru ? [
+                'ro' => $request->label_name_ro,
+                'ru' => $request->label_name_ru,
+            ] : null,
+            'label_color' => $request->label_color,
+            'display_title' => (bool) ($request->display_title ?? false),
+            'display_as_link' => (bool) ($request->display_as_link ?? true),
             'link' => $request->link,
             'target' => $request->target ?? '_self',
             'icon_class' => $request->icon_class,

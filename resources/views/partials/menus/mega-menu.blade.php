@@ -35,10 +35,15 @@
                     <h3 class="mega-menu__sidebar-title">{{ __('theme.mega-menu-title-btn') }}</h3>
                 </div>
                 <ul class="mega-menu__sidebar-list">
-                    @foreach($menu->rootItems->where('type', '!=', 'widget_link')->values() as $index => $item)
+                    @foreach($menu->rootItems->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() as $index => $item)
                         @php
                             $itemTitle = $item->getTranslation('title', $locale);
                             $itemLink = $item->getTranslation('link', $locale);
+                            $itemLabelNameRaw = $item->getRawOriginal('label_name');
+                            $itemLabelName = is_array(json_decode($itemLabelNameRaw, true))
+                                ? $item->getTranslation('label_name', $locale)
+                                : ($itemLabelNameRaw ?? null);
+                            $itemLabelColor = $item->label_color;
                         @endphp
                         <li class="mega-menu__sidebar-item @if($index === 0) mega-menu__sidebar-item--active @endif"
                             data-category-id="{{ $item->id }}">
@@ -50,6 +55,11 @@
                                     <img src="{{ $itemImage->getUrl() }}" alt="{{ $itemTitle }}" class="mega-menu__sidebar-icon">
                                 @endif
                                 <span class="mega-menu__sidebar-text">{{ $itemTitle }}</span>
+                                @if($itemLabelName && $itemLabelColor)
+                                    <span class="mega-menu__label-badge" style="color: {{ $itemLabelColor }};">
+                                        {{ $itemLabelName }}
+                                    </span>
+                                @endif
                             </a>
                         </li>
                     @endforeach
@@ -68,29 +78,68 @@
                     </div>
                 @endif
                     @foreach($categoryItems as $index => $item)
-                    <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
-                         data-category-panel="{{ $item->id }}">
-                        @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
-                            <div class="mega-menu__columns">
+                        <div class="mega-menu__category-panel @if($index === 0) mega-menu__category-panel--active @endif"
+                             data-category-panel="{{ $item->id }}">
+                            @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
                                 @php
-                                    $regularChildren = $item->children->where('type', '!=', 'widget_link')->values();
-                                    $columns = $regularChildren->chunk(ceil($regularChildren->count() / 3));
+                                    $allChildren = $item->children->where('type', '!=', 'widget_link')->values();
+                                    $groups = collect();
+                                    $currentGroup = collect();
+                                    $currentGroupType = null;
+                                    
+                                    foreach ($allChildren as $child) {
+                                        if ($child->type === 'row') {
+                                            if ($currentGroup->isNotEmpty() && $currentGroupType !== 'row') {
+                                                $groups->push(['type' => 'regular', 'items' => $currentGroup]);
+                                                $currentGroup = collect();
+                                            }
+                                            $currentGroup->push($child);
+                                            $currentGroupType = 'row';
+                                        } else {
+                                            if ($currentGroupType === 'row') {
+                                                $groups->push(['type' => 'row', 'items' => $currentGroup]);
+                                                $currentGroup = collect();
+                                            }
+                                            $currentGroup->push($child);
+                                            $currentGroupType = 'regular';
+                                        }
+                                    }
+                                    
+                                    if ($currentGroup->isNotEmpty()) {
+                                        $groups->push(['type' => $currentGroupType, 'items' => $currentGroup]);
+                                    }
                                 @endphp
-                                @foreach($columns as $column)
-                                    <div class="mega-menu__column">
-                                        @foreach($column as $child)
-                                            @include('partials.menus.mega-menu-category-item', ['item' => $child])
-                                        @endforeach
-                                    </div>
+                                @foreach($groups as $group)
+                                    @if($group['type'] === 'row')
+                                        <div class="mega-menu__columns_with_row">
+                                            @foreach($group['items'] as $rowChild)
+                                                @include('partials.menus.mega-menu-category-item', ['item' => $rowChild])
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        @php
+                                            $regularItems = $group['items'];
+                                            $columnCount = 3;
+                                            $columns = $regularItems->chunk(ceil($regularItems->count() / $columnCount));
+                                        @endphp
+                                        <div class="mega-menu__columns" style="display: grid; grid-template-columns: repeat({{ $columnCount }}, 1fr); gap: 20px;">
+                                            @foreach($columns as $column)
+                                                <div class="mega-menu__column">
+                                                    @foreach($column as $child)
+                                                        @include('partials.menus.mega-menu-category-item', ['item' => $child])
+                                                    @endforeach
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 @endforeach
-                            </div>
-                        @else
-                            <div class="mega-menu__empty">
-                                <p>{{ __('theme.no-subcategories') }}</p>
-                            </div>
-                        @endif
-                    </div>
-                @endforeach
+                            @else
+                                <div class="mega-menu__empty">
+                                    <p>{{ __('theme.no-subcategories') }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
             </div>
         </div>
     </div>

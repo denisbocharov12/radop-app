@@ -13,6 +13,11 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $type
  * @property string $title_ro
  * @property string $title_ru
+ * @property string|null $label_name_ro
+ * @property string|null $label_name_ru
+ * @property string|null $label_color
+ * @property bool $display_title
+ * @property bool $display_as_link
  * @property string|null $link_ro
  * @property string|null $link_ru
  * @property string $target
@@ -27,9 +32,14 @@ final class MenuItemRequest extends FormRequest
         return [
             'parent_id' => ['nullable', 'exists:menu_items,id'],
             'order' => ['sometimes', 'integer', 'min:0'],
-            'type' => ['required', 'in:category,custom_link,promo_block,widget_link'],
+            'type' => ['required', 'in:category,custom_link,promo_block,widget_link,row'],
             'title_ro' => ['required', 'string', 'max:255'],
             'title_ru' => ['required', 'string', 'max:255'],
+            'label_name_ro' => ['nullable', 'string', 'max:255'],
+            'label_name_ru' => ['nullable', 'string', 'max:255'],
+            'label_color' => ['nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'display_title' => ['sometimes', 'boolean'],
+            'display_as_link' => ['sometimes', 'boolean'],
             'link_ro' => ['nullable', 'string', 'max:255'],
             'link_ru' => ['nullable', 'string', 'max:255'],
             'target' => ['sometimes', 'string', 'in:_self,_blank,_parent,_top'],

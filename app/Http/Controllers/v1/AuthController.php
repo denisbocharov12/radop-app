@@ -51,7 +51,7 @@ class AuthController extends Controller
             /** @var User $user */
             $user = Auth::guard('web')->user();
 
-            return redirect()->route('dashboard.index');
+            return redirect()->route('order.index');
         }
 
         return redirect()->route('login')->withErrors(['auth' => 'Неверный логин или пароль']);

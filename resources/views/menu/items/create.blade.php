@@ -30,6 +30,7 @@
                                                         <option value="custom_link">Пользовательская ссылка</option>
                                                         <option value="promo_block">Промо-блок</option>
                                                         <option value="widget_link">Виджет ссылки</option>
+                                                        <option value="row">Строка</option>
                                                     </select>
                                                     @error('type')
                                                     <span class="invalid">{{ $message }}</span>
@@ -78,6 +79,53 @@
                                                 <div class="form-control-wrap">
                                                     <select class="form-select js-select2" name="category_id" id="category_id" data-placeholder="Выберите категорию" data-search="true">
                                                         <option value="">Выберите категорию</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_name_ro">Метка (RO)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="label_name_ro" name="label_name_ro" value="{{old('label_name_ro')}}" placeholder="NEW">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_name_ru">Метка (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="label_name_ru" name="label_name_ru" value="{{old('label_name_ru')}}" placeholder="NEW">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_color">Цвет метки</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="color" class="form-control" id="label_color" name="label_color" value="{{old('label_color', '#FF0000')}}">
+                                                    <small class="form-text text-muted">Формат: #FFFFFF</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="display-title-wrapper" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="form-label">Отображать название как заголовок</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select" name="display_title" id="display_title">
+                                                        <option value="0" {{old('display_title') == '0' ? 'selected' : ''}}>Нет</option>
+                                                        <option value="1" {{old('display_title') == '1' ? 'selected' : ''}}>Да</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="display-as-link-wrapper" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="form-label">Отображать как ссылку</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select" name="display_as_link" id="display_as_link">
+                                                        <option value="1" {{old('display_as_link', '1') == '1' ? 'selected' : ''}}>Да</option>
+                                                        <option value="0" {{old('display_as_link') == '0' ? 'selected' : ''}}>Нет (подзаголовок)</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -420,14 +468,24 @@
                 }
             }
 
+            const displayTitleWrapper = document.getElementById('display-title-wrapper');
+            const displayAsLinkWrapper = document.getElementById('display-as-link-wrapper');
+            
             // Показ/скрытие выбора категории при изменении типа
             function toggleCategorySelect() {
                 const selectedOption = typeSelect.options[typeSelect.selectedIndex];
                 const needsCategory = selectedOption && selectedOption.dataset.autofill === 'true';
+                const isRowType = typeSelect.value === 'row';
                 
-                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory);
+                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory, 'Тип строка:', isRowType);
                 
                 categorySelectWrapper.style.display = needsCategory ? 'block' : 'none';
+                if (displayTitleWrapper) {
+                    displayTitleWrapper.style.display = isRowType ? 'block' : 'none';
+                }
+                if (displayAsLinkWrapper) {
+                    displayAsLinkWrapper.style.display = isRowType ? 'block' : 'none';
+                }
                 
                 if (needsCategory) {
                     // Загружаем категории, если они еще не загружены
