@@ -4,12 +4,12 @@
             <i class="icon-arrow-filter-radop-left"></i>
             <p class="theme-widget-title">{{ __('theme.categories') }}</p>
         </div>
-        <div class="theme-toggle-item-content categories-filter-content">
+        <div class="theme-toggle-item-content categories-filter-content" style="display: flex">
             <div class="categories-filter-list">
                 @foreach($categories as $category)
                     <div class="category-filter-item">
-                        <a href="javascript:void(0);" 
-                           class="category-filter-link" 
+                        <a href="javascript:void(0);"
+                           class="category-filter-link"
                            data-category-id="{{ $category->onec_id }}"
                            data-page-type="{{ $pageType ?? 'shop' }}"
                            data-page-sub-type="{{ $pageSubType ?? '' }}"
@@ -31,15 +31,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         const toggleBtn = document.querySelector('.categories-toggle-btn');
         const categoriesList = document.querySelector('.categories-filter-list');
-        
+
         if (toggleBtn && categoriesList) {
             let isExpanded = false;
-            
+
             toggleBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 isExpanded = !isExpanded;
-                
+
                 if (isExpanded) {
                     categoriesList.style.height = 'auto';
                     categoriesList.style.maxHeight = 'none';
@@ -59,10 +59,10 @@
             if (page) {
                 formData.append('page', page);
             }
-            
+
             const currentUrl = new URL(window.location.href);
             const urlParams = currentUrl.searchParams;
-            
+
             urlParams.forEach(function(value, key) {
                 if (key.startsWith('filter[')) {
                     formData.append(key, value);
@@ -89,10 +89,10 @@
                     formData.append(key, value);
                 }
             });
-            
+
             return formData;
         }
-        
+
         function getAjaxUrl(pageType, pageSubType, brandOnecId) {
             if (pageType === 'brand' && brandOnecId) {
                 return '{{ route("theme.brand.filter-by-category", ":onecId") }}'.replace(':onecId', brandOnecId);
@@ -102,11 +102,11 @@
                 return '{{ route("theme.shop.filter-by-category", "all") }}';
             }
         }
-        
+
         function updateUI(data) {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
-            
+
             if (tableView) {
                 tableView.innerHTML = data.tableView || '';
                 tableView.style.opacity = '1';
@@ -115,9 +115,9 @@
                 listView.innerHTML = data.listView || '';
                 listView.style.opacity = '1';
             }
-            
+
             const hasPages = (data.hasPages === true) || (data.pagination && data.pagination.trim() !== '');
-            
+
             if (hasPages && data.pagination) {
                 const paginationContainers = document.querySelectorAll('.theme-pagination');
                 paginationContainers.forEach(function(container) {
@@ -125,7 +125,7 @@
                         container.innerHTML = data.pagination;
                     }
                 });
-                
+
                 const topPaginationContainer = document.querySelector('.sort-block');
                 if (topPaginationContainer) {
                     let topPagination = topPaginationContainer.querySelector('.theme-pagination');
@@ -143,7 +143,7 @@
                         container.innerHTML = '';
                     }
                 });
-                
+
                 const topPaginationContainer = document.querySelector('.sort-block');
                 if (topPaginationContainer) {
                     const topPagination = topPaginationContainer.querySelector('.theme-pagination');
@@ -153,11 +153,11 @@
                 }
             }
         }
-        
+
         function showLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
-            
+
             if (tableView) {
                 tableView.style.opacity = '0.5';
             }
@@ -165,11 +165,11 @@
                 listView.style.opacity = '0.5';
             }
         }
-        
+
         function hideLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
-            
+
             if (tableView) {
                 tableView.style.opacity = '1';
             }
@@ -177,10 +177,10 @@
                 listView.style.opacity = '1';
             }
         }
-        
+
         function performAjaxRequest(url, formData, updateUrl) {
             showLoading();
-            
+
             return fetch(url, {
                 method: 'POST',
                 body: formData,
@@ -224,46 +224,46 @@
                 throw error;
             });
         }
-        
+
         function initCategoryFilters() {
             document.querySelectorAll('.category-filter-link').forEach(function(link) {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const categoryId = this.getAttribute('data-category-id');
                     const pageType = this.getAttribute('data-page-type');
                     const pageSubType = this.getAttribute('data-page-sub-type');
                     const brandOnecId = this.getAttribute('data-brand-onec-id');
-                    
+
                     if (!categoryId) {
                         return;
                     }
-                    
+
                     document.querySelectorAll('.category-filter-link').forEach(function(l) {
                         l.classList.remove('active');
                     });
                     this.classList.add('active');
-                    
+
                     const url = getAjaxUrl(pageType, pageSubType, brandOnecId);
                     const formData = buildFormData(categoryId, '1');
-                    
+
                     performAjaxRequest(url, formData, { page: '1', categoryId: categoryId });
                 });
             });
         }
-        
+
         initCategoryFilters();
-        
+
         function handlePaginationClick(e) {
             const link = e.target.closest('a');
             if (!link || !link.href) {
                 return;
             }
-            
+
             e.preventDefault();
             e.stopPropagation();
-            
+
             let page = null;
             try {
                 let href = link.href;
@@ -278,33 +278,33 @@
                     page = hrefMatch[1];
                 }
             }
-            
+
             if (!page) {
                 return;
             }
-            
+
             const activeCategoryLink = document.querySelector('.category-filter-link.active');
             if (!activeCategoryLink) {
                 window.location.href = link.href;
                 return;
             }
-            
+
             const categoryId = activeCategoryLink.getAttribute('data-category-id');
             const pageType = activeCategoryLink.getAttribute('data-page-type');
             const pageSubType = activeCategoryLink.getAttribute('data-page-sub-type');
             const brandOnecId = activeCategoryLink.getAttribute('data-brand-onec-id');
-            
+
             if (!categoryId) {
                 window.location.href = link.href;
                 return;
             }
-            
+
             const ajaxUrl = getAjaxUrl(pageType, pageSubType, brandOnecId);
             const formData = buildFormData(categoryId, page);
-            
+
             performAjaxRequest(ajaxUrl, formData, { page: page, categoryId: categoryId });
         }
-        
+
         document.addEventListener('click', function(e) {
             if (e.target.closest('.theme-pagination a')) {
                 handlePaginationClick(e);

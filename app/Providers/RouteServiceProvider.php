@@ -24,21 +24,15 @@ class RouteServiceProvider extends ServiceProvider
 
     public function map(): void
     {
-//        Route::prefix('api')
-//            ->as('api.')
-//            ->middleware(['api', 'auth:sanctum', 'verified', 'app.user-status'])
-//            ->group(static function () {
-//                foreach (File::allFiles(base_path('routes/api')) as $file) {
-//                    require $file->getPathname();
-//                }
-//            })
-//        ;
-//
-//        Route::prefix('api')
-//            ->as('api.')
-//            ->middleware('api')
-//            ->group(base_path('routes/api.php'))
-//        ;
+        Route::prefix('api/v1')
+            ->as('api.')
+            ->middleware('api')
+            ->group(static function () {
+                foreach (File::allFiles(base_path('routes/api/v1')) as $file) {
+                    require $file->getPathname();
+                }
+            })
+        ;
 
         Route::middleware([
             'user',
