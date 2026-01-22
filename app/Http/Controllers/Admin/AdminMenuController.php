@@ -231,6 +231,7 @@ final class AdminMenuController extends Controller
      */
     public function storeItem(MenuItemRequest $request, int $menuId)
     {
+
         try {
             $this->menuManager->storeItem($request, $menuId);
 

@@ -31,6 +31,7 @@
                                                         <option value="custom_link" {{$menuItem->type == 'custom_link' ? 'selected' : ''}}>Пользовательская ссылка</option>
                                                         <option value="promo_block" {{$menuItem->type == 'promo_block' ? 'selected' : ''}}>Промо-блок</option>
                                                         <option value="widget_link" {{$menuItem->type == 'widget_link' ? 'selected' : ''}}>Виджет ссылки</option>
+                                                        <option value="row" {{$menuItem->type == 'row' ? 'selected' : ''}}>Строка</option>
                                                     </select>
                                                     @error('type')
                                                     <span class="invalid">{{ $message }}</span>
@@ -82,6 +83,53 @@
                                                         @if($menuItem->category_id)
                                                             <option value="{{ $menuItem->category_id }}" selected>{{ $menuItem->category_id }}</option>
                                                         @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_name_ro">Метка (RO)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="label_name_ro" name="label_name_ro" value="{{$menuItem->label_name && is_array(json_decode($menuItem->getRawOriginal('label_name'), true)) ? $menuItem->getTranslation('label_name', 'ro') : ''}}" placeholder="NEW">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_name_ru">Метка (RU)</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="label_name_ru" name="label_name_ru" value="{{$menuItem->label_name && is_array(json_decode($menuItem->getRawOriginal('label_name'), true)) ? $menuItem->getTranslation('label_name', 'ru') : ''}}" placeholder="NEW">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label" for="label_color">Цвет метки</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="color" class="form-control" id="label_color" name="label_color" value="{{$menuItem->label_color ?? '#FF0000'}}">
+                                                    <small class="form-text text-muted">Формат: #FFFFFF</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="display-title-wrapper" style="display: {{$menuItem->type == 'row' ? 'block' : 'none'}};">
+                                            <div class="form-group">
+                                                <label class="form-label">Отображать название как заголовок</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select" name="display_title" id="display_title">
+                                                        <option value="0" {{!$menuItem->display_title ? 'selected' : ''}}>Нет</option>
+                                                        <option value="1" {{$menuItem->display_title ? 'selected' : ''}}>Да</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="display-as-link-wrapper" style="display: {{$menuItem->type == 'row' ? 'block' : 'none'}};">
+                                            <div class="form-group">
+                                                <label class="form-label">Отображать как ссылку</label>
+                                                <div class="form-control-wrap">
+                                                    <select class="form-select" name="display_as_link" id="display_as_link">
+                                                        <option value="1" {{($menuItem->display_as_link ?? true) ? 'selected' : ''}}>Да</option>
+                                                        <option value="0" {{!($menuItem->display_as_link ?? true) ? 'selected' : ''}}>Нет (подзаголовок)</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -445,14 +493,24 @@
                 }
             }
 
+            const displayTitleWrapper = document.getElementById('display-title-wrapper');
+            const displayAsLinkWrapper = document.getElementById('display-as-link-wrapper');
+            
             // Показ/скрытие выбора категории при изменении типа
             function toggleCategorySelect() {
                 const selectedOption = typeSelect.options[typeSelect.selectedIndex];
                 const needsCategory = selectedOption && selectedOption.dataset.autofill === 'true';
+                const isRowType = typeSelect.value === 'row';
 
-                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory);
+                console.log('Изменение типа:', typeSelect.value, 'Нужна категория:', needsCategory, 'Тип строка:', isRowType);
 
                 categorySelectWrapper.style.display = needsCategory ? 'block' : 'none';
+                if (displayTitleWrapper) {
+                    displayTitleWrapper.style.display = isRowType ? 'block' : 'none';
+                }
+                if (displayAsLinkWrapper) {
+                    displayAsLinkWrapper.style.display = isRowType ? 'block' : 'none';
+                }
 
                 if (needsCategory) {
                     // Загружаем категории, если они еще не загружены
