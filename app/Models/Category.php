@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sitemap\Contracts\Sitemapable;
@@ -25,6 +26,36 @@ final class Category extends Model implements HasMedia, Sitemapable
     use SoftDeletes;
     use HasTranslations;
     use HasRecursiveRelationships;
+
+    private const CACHE_KEY = 'theme_parent_categories';
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function (Category $category) {
+            self::clearThemeParentCategoriesCache();
+        });
+
+        static::updated(function (Category $category) {
+            if ($category->wasChanged(['parent_id', 'status', 'order'])) {
+                self::clearThemeParentCategoriesCache();
+            }
+        });
+
+        static::deleted(function (Category $category) {
+            self::clearThemeParentCategoriesCache();
+        });
+
+        static::restored(function (Category $category) {
+            self::clearThemeParentCategoriesCache();
+        });
+    }
+
+    private static function clearThemeParentCategoriesCache(): void
+    {
+        Cache::forget(self::CACHE_KEY);
+    }
 
     public function toSitemapTag(): Url | string | array
     {

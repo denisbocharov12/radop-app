@@ -103,12 +103,12 @@
         </div>
     </div>
 </div>
-@php
-    $mainMenu = app('App\Services\MenuRenderService')->getMenuData('main_menu');
-@endphp
-@if($mainMenu && $mainMenu->is_active && $mainMenu->rootItems->isNotEmpty())
-    @include('partials.menus.mobile-mega-menu', ['menu' => $mainMenu])
-@else
+{{--@php--}}
+{{--    $mainMenu = app('App\Services\MenuRenderService')->getMenuData('main_menu');--}}
+{{--@endphp--}}
+{{--@if($mainMenu && $mainMenu->is_active && $mainMenu->rootItems->isNotEmpty())--}}
+{{--    @include('partials.menus.mobile-mega-menu', ['menu' => $mainMenu])--}}
+{{--@else--}}
 <div class="theme-catalog-navbar catalog-navbar">
     <div class="catalog-navbar__catalog">
         <div class="catalog theme-catalog-body">
@@ -167,7 +167,7 @@
         </div>
     </div>
 </div>
-@endif
+{{--@endif--}}
 <div class="mobile-sticky-header d-md-none">
     <div class="mobile-sticky-header__inner">
         <a href="{{route('theme.home')}}" class="link-logo">
