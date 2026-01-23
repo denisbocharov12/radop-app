@@ -1652,7 +1652,7 @@ header .section-header .row-main .header-menu .col-lg{
     border-radius: 0 0 15px 15px;
     left: 11px!important;
     width: calc(100% - 22px) !important;
-    overflow-y: hidden;
+    overflow-y: scroll;
     min-height: 675px;
 }
 .section-header .row-main .header-menu .header-main-menu ul.menu .item.megamenu:hover a.link-megamenu{
