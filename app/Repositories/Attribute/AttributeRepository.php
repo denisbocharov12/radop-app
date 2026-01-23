@@ -71,16 +71,6 @@ final class AttributeRepository
 
     public function getAllByCategoryId(string $id): ?array
     {
-//        $join = DB::table('attributes')
-//            ->select('attribute_values.attribute_onec_id', 'attribute_values.value')
-//            ->join('attribute_values', 'attribute_values.attribute_onec_id', '=', 'attributes.onec_id')
-//            ->join('products', 'attribute_values.product_onec_id', '=', 'products.onec_id')
-//            ->join('product_categories', 'products.onec_id', '=', 'product_categories.product_id')
-//            ->where('product_categories.category_id', $id)
-//            ->get()
-//            ->groupBy('value')
-//        ;
-
         $collect = array();
 
         $join = DB::table('categories')
@@ -231,4 +221,5 @@ final class AttributeRepository
 
         return AttributeValue::whereIn('id', array_unique($attributeIds))->get();
     }
+
 }

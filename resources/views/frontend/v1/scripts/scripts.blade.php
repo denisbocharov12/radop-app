@@ -5,7 +5,7 @@
 <script src="{{asset('/v1/frontend/assets')}}/libs/slick/slick.min.js"></script>
 <script src="{{asset('/v1/frontend/assets')}}/libs/hoverDelay/jquery.hoverDelay.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{asset('/v1/frontend/assets')}}/js/scripts.min.js?v1.2.25"></script>
+<script src="{{asset('/v1/frontend/assets')}}/js/scripts.js?v1.2.26"></script>
 
 <script>
     window.getLimitedStockWarning = function(maxQty, unit){
@@ -790,7 +790,7 @@
                                         var $wrapGallery = $galleryContainer.closest('.wrap-image-with-gallery');
                                         var $rootNavV2 = $thumbWrapper.find('.product-slider-thumb-v2');
                                         var $rootSingleV2 = $galleryContainer.find('.product-slider-main-v2');
-                                        
+
                                         if ($rootNavV2.length === 0 || $rootSingleV2.length === 0) {
                                             return;
                                         }
@@ -803,13 +803,13 @@
                                         var totalThumbs = $rootNavV2.find('.product-image-thumb').length;
                                         var $arrowsTop = $thumbWrapper.find('.product-slider-thumb-v2-arrows-top');
                                         var $arrowsBottom = $thumbWrapper.find('.product-slider-thumb-v2-arrows-bottom');
-                                        
+
                                         var showArrows = totalThumbs > 5;
                                         var slidesToShowValue = showArrows ? 4 : 5;
 
                                         var $prevArrowEl = null;
                                         var $nextArrowEl = null;
-                                        
+
                                         if (showArrows) {
                                             $prevArrowEl = $('<i class="icon-arrow-radop-left prev-arrow-thumb-v2"></i>');
                                             $nextArrowEl = $('<i class="icon-arrow-radop-right next-arrow-thumb-v2"></i>');
@@ -1085,24 +1085,24 @@
         function initProductSliderV2() {
             $(".product-slider-thumb-v2-wrapper").each(function() {
                 var $thumbWrapper = $(this);
-                
+
                 // Пропускаем слайдеры внутри quick view модального окна
-                if ($thumbWrapper.closest('.section-quick-view').length > 0 || 
+                if ($thumbWrapper.closest('.section-quick-view').length > 0 ||
                     $thumbWrapper.closest('.fancybox__content').length > 0) {
                     return;
                 }
-                
+
                 var $galleryContainer = $thumbWrapper.closest('.gallery-v2-container');
                 var $wrapGallery = $galleryContainer.closest('.wrap-image-with-gallery');
                 var $rootNavV2 = $thumbWrapper.find('.product-slider-thumb-v2');
                 var $rootSingleV2 = $galleryContainer.find('.product-slider-main-v2');
-                
+
                 if ($rootNavV2.length === 0 || $rootSingleV2.length === 0) {
                     return;
                 }
-                
+
                 // Проверяем, не инициализирован ли уже слайдер
-                if ($rootNavV2.hasClass('slick-initialized') || 
+                if ($rootNavV2.hasClass('slick-initialized') ||
                     $rootSingleV2.hasClass('slick-initialized')) {
                     return;
                 }
@@ -1110,13 +1110,13 @@
                 var totalThumbs = $rootNavV2.find('.product-image-thumb').length;
                 var $arrowsTop = $thumbWrapper.find('.product-slider-thumb-v2-arrows-top');
                 var $arrowsBottom = $thumbWrapper.find('.product-slider-thumb-v2-arrows-bottom');
-                
+
                 var showArrows = totalThumbs > 5;
                 var slidesToShowValue = showArrows ? 4 : 5;
 
                 var $prevArrowEl = null;
                 var $nextArrowEl = null;
-                
+
                 if (showArrows) {
                     $prevArrowEl = $('<i class="icon-arrow-radop-left prev-arrow-thumb-v2"></i>');
                     $nextArrowEl = $('<i class="icon-arrow-radop-right next-arrow-thumb-v2"></i>');
