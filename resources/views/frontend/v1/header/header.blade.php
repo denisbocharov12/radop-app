@@ -26,7 +26,7 @@
                         <div class="header-main-menu">
                             <ul class="menu w-100 justify-content-center">
                                 @if(!empty($themeParentCategories))
-                                    @foreach($themeParentCategories as $parentCategory)
+                                    @foreach($themeParentCategories->sortBy('catalog_order') as $parentCategory)
                                         @include('frontend.v1.header.components.header-menu-item', $parentCategory)
                                     @endforeach
                                 @endif
