@@ -52,9 +52,10 @@
                 </li>
                 @foreach($attributes as $key => $attributeValues)
                     @php
-                        $attributeValues = collect($attributeValues)->filter(function($attribute) {
-                            return $attribute instanceof \App\Models\AttributeValue;
-                        })->sortBy('value');
+                        $attributeValues = collect($attributeValues)->map(function($attribute) {
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -129,7 +130,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const filterForm = document.getElementById('filterForm');
                 const filterResetBtn = document.getElementById('filterResetBtn');
-                
+
                 if (filterResetBtn) {
                     filterResetBtn.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -143,7 +144,7 @@
                         }
                     });
                 }
-                
+
                 if (filterForm) {
                     const checkboxes = filterForm.querySelectorAll('.theme-checkbox');
                     checkboxes.forEach(function(checkbox) {
@@ -151,7 +152,7 @@
                             filterForm.submit();
                         });
                     });
-                    
+
                     const priceInputs = filterForm.querySelectorAll('.input-min, .input-max');
                     let priceDebounceTimer = null;
                     priceInputs.forEach(function(input) {
@@ -162,7 +163,7 @@
                             }, 1000);
                         });
                     });
-                    
+
                     const rangeInputs = filterForm.querySelectorAll('.range-min, .range-max');
                     let rangeDebounceTimer = null;
                     rangeInputs.forEach(function(range) {
