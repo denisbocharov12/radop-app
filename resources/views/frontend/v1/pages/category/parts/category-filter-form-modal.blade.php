@@ -52,9 +52,10 @@
                 </li>
                 @foreach($attributes as $key => $attributeValues)
                     @php
-                        $attributeValues = collect($attributeValues)->filter(function($attribute) {
-                            return $attribute instanceof \App\Models\AttributeValue;
-                        })->sortBy('value');
+                        $attributeValues = collect($attributeValues)->map(function($attribute) {
+                            $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
+                            return $attributeId ? app(\App\Repositories\Attribute\AttributeRepository::class)->getAttributeValueById((int)$attributeId) : null;
+                        })->filter()->sortBy('value');
                     @endphp
 
                     @if($attributeValues->count() <= 1)
@@ -133,14 +134,14 @@
                 const filterFormModal = document.getElementById('filterFormModal');
                 const filterApplyBtnModal = document.getElementById('filterApplyBtnModal');
                 const filterResetBtnModal = document.getElementById('filterResetBtnModal');
-                
+
                 if (filterApplyBtnModal && filterFormModal) {
                     filterApplyBtnModal.addEventListener('click', function(e) {
                         e.preventDefault();
                         filterFormModal.submit();
                     });
                 }
-                
+
                 if (filterResetBtnModal) {
                     filterResetBtnModal.addEventListener('click', function(e) {
                         e.preventDefault();
