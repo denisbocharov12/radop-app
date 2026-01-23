@@ -1197,8 +1197,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileMenuCode = catalogNavBarMenu.dataset.mobileMenuCode || 'main_menu';
         const mobileContainer = catalogNavBarMenu.querySelector('[data-mobile-menu-container]');
         const mobileLoading = catalogNavBarMenu.querySelector('[data-mobile-menu-loading]');
+        const translateLoadError = catalogNavBarMenu.dataset.translateLoadError || 'Ошибка загрузки меню';
+        const translateInvalidResponse = catalogNavBarMenu.dataset.translateInvalidResponse || 'Неверный формат ответа';
+        const translateLoadErrorMessage = catalogNavBarMenu.dataset.translateLoadErrorMessage || 'Ошибка загрузки меню. Пожалуйста, обновите страницу.';
+
+        if (!mobileContainer || !mobileMenuCode) return;
+
         let isMobileMenuLoaded = false;
         let isMobileMenuLoading = false;
+        const mobileCategoryContentCache = {};
 
         function loadMobileMenuContent() {
             isMobileMenuLoading = true;
@@ -1214,10 +1221,25 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(response => {
                 if (!response.ok) {
+                    if (response.status === 404) {
+                        return response.json().then(err => {
+                            return {
+                                success: false,
+                                message: err.message || translateLoadError,
+                                html: ''
+                            };
+                        }).catch(() => {
+                            return {
+                                success: false,
+                                message: translateLoadError,
+                                html: ''
+                            };
+                        });
+                    }
                     return response.json().then(err => {
-                        throw new Error(err.message || 'Ошибка загрузки меню');
+                        throw new Error(err.message || translateLoadError);
                     }).catch(() => {
-                        throw new Error('Ошибка загрузки меню');
+                        throw new Error(translateLoadError);
                     });
                 }
                 return response.json();
@@ -1232,21 +1254,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     isMobileMenuLoaded = true;
                     initializeMobileMenuInteractions();
                 } else {
-                    throw new Error(data?.message || 'Неверный формат ответа');
+                    if (mobileLoading) mobileLoading.style.display = 'none';
+                    closeMobileMenu();
                 }
             })
             .catch(error => {
                 console.error('Ошибка загрузки мобильного мега-меню:', error);
                 if (mobileLoading) mobileLoading.style.display = 'none';
+                closeMobileMenu();
+                
                 if (mobileContainer) {
                     const closeBtnHtml = '<button class="catalog__close-btn _icon-close" type="button"></button>';
-                    mobileContainer.innerHTML = '<div class="catalog__error"><div class="catalog__error-content">' + closeBtnHtml + '<p>Ошибка загрузки меню. Пожалуйста, обновите страницу.</p></div></div>';
+                    mobileContainer.innerHTML = '<div class="catalog__error"><div class="catalog__error-content">' + closeBtnHtml + '<p>' + translateLoadErrorMessage + '</p></div></div>';
                     mobileContainer.style.display = 'block';
                     
                     const errorCloseBtn = mobileContainer.querySelector('.catalog__close-btn');
                     if (errorCloseBtn) {
-                        errorCloseBtn.addEventListener('click', function() {
-                            catalogNavBarMenu.classList.remove("_active");
+                        errorCloseBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            closeMobileMenu();
                         });
                     }
                 }
@@ -1256,61 +1283,160 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        let mobileMenuMainCurrentLink = null;
-        let mobileMenuSecondCurrentLink = null;
+        function loadCategoryContent(itemId, link) {
+            if (mobileCategoryContentCache[itemId]) {
+                showCategoryContent(itemId, link);
+                return;
+            }
+
+            const catalog = catalogNavBarMenu.querySelector('.catalog');
+            if (!catalog) return;
+
+            const secondColumn = catalog.querySelector('.catalog__second-column');
+            if (!secondColumn) return;
+
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'catalog__loading';
+            loadingIndicator.innerHTML = '<div class="mega-menu__spinner"></div>';
+            loadingIndicator.style.display = 'flex';
+            
+            secondColumn.innerHTML = '';
+            secondColumn.appendChild(loadingIndicator);
+            secondColumn.classList.add('_active');
+
+            fetch(`/api/v1/mega-menu/${mobileMenuCode}/mobile-category/${itemId}/content`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Ошибка загрузки контента');
+                    }).catch(() => {
+                        throw new Error('Ошибка загрузки контента');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && typeof data === 'object' && data.success === true && data.html) {
+                    mobileCategoryContentCache[itemId] = data.html;
+                    showCategoryContent(itemId, link);
+                } else {
+                    throw new Error(data?.message || 'Неверный формат ответа');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки контента категории:', error);
+                if (secondColumn) {
+                    secondColumn.innerHTML = '<div class="catalog__error"><div class="catalog__error-content"><p>Ошибка загрузки контента. Пожалуйста, обновите страницу.</p></div></div>';
+                }
+            });
+        }
+
+        function showCategoryContent(itemId, link) {
+            if (!mobileCategoryContentCache[itemId]) return;
+
+            const catalog = catalogNavBarMenu.querySelector('.catalog');
+            if (!catalog) return;
+
+            const secondColumn = catalog.querySelector('.catalog__second-column');
+            if (secondColumn) {
+                secondColumn.innerHTML = mobileCategoryContentCache[itemId];
+                secondColumn.classList.add('_active');
+                
+                const categoryItem = secondColumn.querySelector(`[data-category-id="${itemId}"]`);
+                if (categoryItem) {
+                    categoryItem.classList.add('column-catalog__item--active');
+                }
+
+                const closeBtn = secondColumn.querySelector('.column-catalog__close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeCategoryContent();
+                    });
+                }
+
+                const backBtn = secondColumn.querySelector('.column-catalog__back');
+                if (backBtn) {
+                    backBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeCategoryContent();
+                    });
+                }
+            }
+
+            const mainColumnLinks = catalog.querySelectorAll('.main-column-catalog__link.catalog-category-link');
+            mainColumnLinks.forEach(function(l) {
+                l.classList.remove('_active');
+            });
+            if (link) {
+                link.classList.add('_active');
+            }
+        }
+
+        function closeCategoryContent() {
+            const catalog = catalogNavBarMenu.querySelector('.catalog');
+            if (!catalog) return;
+
+            const secondColumn = catalog.querySelector('.catalog__second-column');
+            if (secondColumn) {
+                secondColumn.classList.remove('_active');
+                const activeItem = secondColumn.querySelector('.column-catalog__item--active');
+                if (activeItem) {
+                    activeItem.classList.remove('column-catalog__item--active');
+                }
+            }
+            const mainColumnLinks = catalog.querySelectorAll('.main-column-catalog__link.catalog-category-link');
+            mainColumnLinks.forEach(function(link) {
+                link.classList.remove('_active');
+            });
+        }
+
+        function closeMobileMenu() {
+            const catalog = catalogNavBarMenu.querySelector('.catalog');
+            if (catalog) {
+                const secondColumn = catalog.querySelector('.catalog__second-column');
+                if (secondColumn) secondColumn.classList.remove('_active');
+            }
+            document.body.classList.remove('body-lock');
+            catalogNavBarMenu.classList.remove('_active');
+        }
 
         function initializeMobileMenuInteractions() {
             const catalog = catalogNavBarMenu.querySelector('.catalog');
             if (!catalog) return;
 
-            const body = document.body;
             const catalogCloseBtn = catalog.querySelector('.catalog__close-btn');
+            const mainColumn = catalog.querySelector('.catalog__main-column');
             const secondColumn = catalog.querySelector('.catalog__second-column');
-            const secondColumnList = catalog.querySelectorAll('.catalog__second-column .column-catalog__item');
-            const mainColumnLinks = catalog.querySelectorAll('.main-column-catalog__link');
 
             function handleCatalogClick(event) {
                 const target = event.target;
                 
-                if (target.classList.contains('column-catalog__back')) {
+                if (target.classList.contains('column-catalog__back') || 
+                    target.classList.contains('column-catalog__close') ||
+                    target.closest('.column-catalog__back') ||
+                    target.closest('.column-catalog__close')) {
                     event.preventDefault();
                     event.stopPropagation();
-                    const currentColumn = target.closest('.column-catalog');
-                    if (currentColumn) {
-                        currentColumn.classList.remove('_active');
-                        const activeItem = currentColumn.querySelector('.column-catalog__item--active');
-                        if (activeItem) activeItem.classList.remove('column-catalog__item--active');
-                        const activeLink = currentColumn.querySelector('.drop-menu-list__link._active');
-                        if (activeLink) activeLink.classList.remove('_active');
-                    }
+                    closeCategoryContent();
                     return;
                 }
 
-                const link = target.closest('.main-column-catalog__link');
+                const link = target.closest('.main-column-catalog__link.catalog-category-link');
                 if (link && link.hasAttribute('data-main-category')) {
                     event.preventDefault();
-                    event.stopPropagation();
+                    event.stopImmediatePropagation();
                     
-                    if (mobileMenuMainCurrentLink) {
-                        mobileMenuMainCurrentLink.classList.remove('_active');
-                    }
-                    if (mobileMenuSecondCurrentLink) {
-                        mobileMenuSecondCurrentLink.classList.remove('_active');
-                    }
-                    
-                    link.classList.add('_active');
-                    mobileMenuMainCurrentLink = link;
-                    
-                    if (secondColumn) {
-                        secondColumn.classList.add('_active');
-                        const elemId = link.getAttribute('data-main-category');
-                        [...secondColumnList].forEach((elem => {
-                            elem.classList.remove('column-catalog__item--active');
-                            if (elem.id === elemId) {
-                                elem.classList.add('column-catalog__item--active');
-                            }
-                        }));
-                    }
+                    const itemId = link.getAttribute('data-main-category');
+                    loadCategoryContent(itemId, link);
                 }
             }
 
@@ -1322,43 +1448,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            function closeMobileMenu() {
-                if (secondColumn) secondColumn.classList.remove('_active');
-                if (mobileMenuMainCurrentLink) {
-                    mobileMenuMainCurrentLink.classList.remove('_active');
-                    mobileMenuMainCurrentLink = null;
-                }
-                if (mobileMenuSecondCurrentLink) {
-                    mobileMenuSecondCurrentLink.classList.remove('_active');
-                    mobileMenuSecondCurrentLink = null;
-                }
-                [...secondColumnList].forEach((elem => {
-                    elem.classList.remove('column-catalog__item--active');
-                }));
-                body.classList.remove('body-lock');
-                catalogNavBarMenu.classList.remove('_active');
+            if (mainColumn) {
+                mainColumn.removeEventListener('click', handleCatalogClick);
+                mainColumn.addEventListener('click', handleCatalogClick);
             }
 
-            catalog.removeEventListener('click', handleCatalogClick);
-            catalog.addEventListener('click', handleCatalogClick);
+            if (secondColumn) {
+                secondColumn.removeEventListener('click', handleCatalogClick);
+                secondColumn.addEventListener('click', handleCatalogClick);
+            }
 
             if (catalogCloseBtn) {
                 catalogCloseBtn.removeEventListener('click', handleCloseClick);
                 catalogCloseBtn.addEventListener('click', handleCloseClick);
-            }
-
-            const firstMainLink = mainColumnLinks[0];
-            if (firstMainLink && firstMainLink.hasAttribute('data-main-category')) {
-                const firstCategoryId = firstMainLink.getAttribute('data-main-category');
-                const firstCategoryPanel = catalog.querySelector(`#${firstCategoryId}`);
-                if (firstCategoryPanel) {
-                    firstMainLink.classList.add('_active');
-                    mobileMenuMainCurrentLink = firstMainLink;
-                    if (secondColumn) {
-                        secondColumn.classList.add('_active');
-                        firstCategoryPanel.classList.add('column-catalog__item--active');
-                    }
-                }
             }
         }
 

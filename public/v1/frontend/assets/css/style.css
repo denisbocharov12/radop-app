@@ -9442,7 +9442,6 @@ hr.product-card-item{
     -ms-flex-line-pack: start;
     align-content: flex-start;
     height: 100%;
-    border-right: 1px solid #bdbdbd;
     scrollbar-color: #acacac transparent;
     scrollbar-width: thin;
     width: 100%;
@@ -9661,7 +9660,7 @@ hr.product-card-item{
 .catalog-navbar {
     display: none;
     position: fixed;
-    padding: 0.9375rem;
+    padding: 10px;
     height: calc(100% - 3.4375rem);
     inset: 0;
     background-color: rgba(0, 0, 0, 0.8);
@@ -9688,6 +9687,19 @@ hr.product-card-item{
 .catalog-navbar__catalog {
     position: relative;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.catalog-navbar__catalog .catalog__loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catalog-navbar__catalog .catalog__widgets{
+    border-bottom: 0;
 }
 
 .search-menu-navbar {
