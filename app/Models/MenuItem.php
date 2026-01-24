@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Jobs\ClearMenuCacheJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,36 @@ use Spatie\Translatable\HasTranslations;
 final class MenuItem extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia, HasTranslations;
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saved(function (MenuItem $menuItem) {
+            $menuItem->load('menu');
+            if ($menuItem->menu) {
+                ClearMenuCacheJob::dispatch($menuItem->menu->code)->onQueue('high');
+            }
+        });
+
+        static::deleted(function (MenuItem $menuItem) {
+            // При удалении нужно загрузить menu_id до удаления
+            $menuId = $menuItem->menu_id;
+            if ($menuId) {
+                $menu = \App\Models\Menu::find($menuId);
+                if ($menu) {
+                    ClearMenuCacheJob::dispatch($menu->code)->onQueue('high');
+                }
+            }
+        });
+
+        static::restored(function (MenuItem $menuItem) {
+            $menuItem->load('menu');
+            if ($menuItem->menu) {
+                ClearMenuCacheJob::dispatch($menuItem->menu->code)->onQueue('high');
+            }
+        });
+    }
 
     /**
      * The attributes that are mass assignable.

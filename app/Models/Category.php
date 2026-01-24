@@ -55,6 +55,9 @@ final class Category extends Model implements HasMedia, Sitemapable
     private static function clearThemeParentCategoriesCache(): void
     {
         Cache::forget(self::CACHE_KEY);
+        
+        // Диспатчим Job для очистки кэша категорий и меню
+        \App\Jobs\ClearCategoryCacheJob::dispatch(null)->onQueue('high');
     }
 
     public function toSitemapTag(): Url | string | array

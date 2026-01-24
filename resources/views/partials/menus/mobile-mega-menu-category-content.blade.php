@@ -9,7 +9,7 @@
     <h3 class="column-catalog__title">
         <span class="column-catalog__back catalog-back-arrow" title="Назад"></span>
         <span class="catalog-category-title">{{ $itemTitle }}</span>
-        <button class="column-catalog__close catalog-close-icon" type="button" title="Закрыть">
+        <button class="column-catalog__close catalog-close-icon" style="display: none" type="button" title="Закрыть">
             <i class="_icon-close"></i>
         </button>
     </h3>

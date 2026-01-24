@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Jobs\ClearCategoryCacheJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class ProductCategorySort extends Model
 {
     use HasFactory;
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saved(function (ProductCategorySort $sort) {
+            ClearCategoryCacheJob::dispatch($sort->category_id)->onQueue('high');
+        });
+
+        static::deleted(function (ProductCategorySort $sort) {
+            ClearCategoryCacheJob::dispatch($sort->category_id)->onQueue('high');
+        });
+    }
 
     protected $table = 'product_category_sorts';
 
