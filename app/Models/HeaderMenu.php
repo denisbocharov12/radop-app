@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Jobs\ClearMenuCacheJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,24 @@ use Spatie\Translatable\HasTranslations;
 final class HeaderMenu extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia, HasTranslations;
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saved(function (HeaderMenu $menu) {
+            // HeaderMenu использует другой код, но для безопасности очищаем все меню
+            ClearMenuCacheJob::dispatch(null)->onQueue('high');
+        });
+
+        static::deleted(function (HeaderMenu $menu) {
+            ClearMenuCacheJob::dispatch(null)->onQueue('high');
+        });
+
+        static::restored(function (HeaderMenu $menu) {
+            ClearMenuCacheJob::dispatch(null)->onQueue('high');
+        });
+    }
 
     protected $fillable = [
         'code',
