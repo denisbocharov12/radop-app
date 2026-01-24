@@ -489,6 +489,7 @@
     font-weight: 700;
     color: #404040;
     position: relative;
+    width: 100%;
 }
 
 .mega-menu__category-title--row-item {
