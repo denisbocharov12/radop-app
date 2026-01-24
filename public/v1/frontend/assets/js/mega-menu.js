@@ -44,11 +44,13 @@
                 if (loading) loading.style.display = 'flex';
                 if (container) container.style.display = 'none';
 
+                const locale = document.documentElement.lang || 'ru';
                 fetch(`/api/v1/mega-menu/${menuCode}/html`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-Localization': locale
                     }
                 })
                 .then(response => {
@@ -162,11 +164,13 @@
                     panel.innerHTML = '';
                     panel.appendChild(loadingIndicator);
 
+                    const locale = document.documentElement.lang || 'ru';
                     fetch(`/api/v1/mega-menu/${menuCode}/category/${categoryId}/content`, {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Localization': locale
                         }
                     })
                     .then(response => {

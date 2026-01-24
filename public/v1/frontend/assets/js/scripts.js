@@ -1224,11 +1224,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (mobileLoading) mobileLoading.style.display = 'flex';
             if (mobileContainer) mobileContainer.style.display = 'none';
 
+            const locale = document.documentElement.lang || 'ru';
             fetch(`/api/v1/mega-menu/${mobileMenuCode}/mobile-html`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-Localization': locale
                 }
             })
             .then(response => {
@@ -1316,11 +1318,13 @@ document.addEventListener("DOMContentLoaded", () => {
             secondColumn.appendChild(loadingIndicator);
             secondColumn.classList.add('_active');
 
+            const locale = document.documentElement.lang || 'ru';
             fetch(`/api/v1/mega-menu/${mobileMenuCode}/mobile-category/${itemId}/content`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-Localization': locale
                 }
             })
             .then(response => {
