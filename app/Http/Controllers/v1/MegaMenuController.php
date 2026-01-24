@@ -29,9 +29,10 @@ final class MegaMenuController extends Controller
      */
     private function resolveLocale(Request $request): string
     {
+        $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
+
         if ($request->hasHeader('X-Localization')) {
             $locale = $request->header('X-Localization');
-            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
             if (in_array($locale, $supportedLocales)) {
                 return $locale;
             }
@@ -39,7 +40,6 @@ final class MegaMenuController extends Controller
 
         if ($request->hasHeader('x-localization')) {
             $locale = $request->header('x-localization');
-            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
             if (in_array($locale, $supportedLocales)) {
                 return $locale;
             }
@@ -47,24 +47,31 @@ final class MegaMenuController extends Controller
 
         try {
             $currentLocale = LaravelLocalization::getCurrentLocale();
-            if ($currentLocale) {
+            if ($currentLocale && in_array($currentLocale, $supportedLocales)) {
                 return $currentLocale;
             }
         } catch (\Exception $e) {
         }
 
         $sessionLocale = session('locale');
-        if ($sessionLocale) {
-            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
-            if (in_array($sessionLocale, $supportedLocales)) {
-                return $sessionLocale;
-            }
+        if ($sessionLocale && in_array($sessionLocale, $supportedLocales)) {
+            return $sessionLocale;
         }
 
         $urlLocale = $request->segment(1);
-        $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
-        if (in_array($urlLocale, $supportedLocales)) {
+        if ($urlLocale && in_array($urlLocale, $supportedLocales)) {
             return $urlLocale;
+        }
+
+        $referer = $request->header('Referer');
+        if ($referer) {
+            $parsedUrl = parse_url($referer);
+            if (isset($parsedUrl['path'])) {
+                $pathSegments = explode('/', trim($parsedUrl['path'], '/'));
+                if (!empty($pathSegments) && in_array($pathSegments[0], $supportedLocales)) {
+                    return $pathSegments[0];
+                }
+            }
         }
 
         return config('app.fallback_locale', 'ro');
