@@ -46,6 +46,11 @@
                     $itemTitle = $item->getTranslation('title', $locale);
                     $itemLink = $item->getTranslation('link', $locale);
                     $hasChildren = $item->children && $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty();
+                    $labelNameRaw = $item->getRawOriginal('label_name');
+                    $labelName = is_array(json_decode($labelNameRaw, true))
+                        ? $item->getTranslation('label_name', $locale)
+                        : ($labelNameRaw ?? null);
+                    $labelColor = $item->label_color;
                 @endphp
                 <li class="main-column-catalog__item">
                     <a class="main-column-catalog__link catalog-category-link"
@@ -56,6 +61,11 @@
                            href="{{ $itemLink ?? '#' }}"
                        @endif>
                         {{ $itemTitle }}
+                        @if($labelName && $labelColor)
+                            <span class="mega-menu__label-badge" style="color: {{ $labelColor }};">
+                                {{ $labelName }}
+                            </span>
+                        @endif
                     </a>
                 </li>
             @endforeach

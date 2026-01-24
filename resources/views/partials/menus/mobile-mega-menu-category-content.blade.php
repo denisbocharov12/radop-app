@@ -23,10 +23,20 @@
                 $childLink = $child->getTranslation('link', $locale);
                 $childHasChildren = $child->children && $child->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->isNotEmpty();
                 $childProductsCount = $child->products_count ?? 0;
+                $childLabelNameRaw = $child->getRawOriginal('label_name');
+                $childLabelName = is_array(json_decode($childLabelNameRaw, true))
+                    ? $child->getTranslation('label_name', $locale)
+                    : ($childLabelNameRaw ?? null);
+                $childLabelColor = $child->label_color;
             @endphp
             <li class="drop-menu-list__item">
                 <a href="{{ $childLink ?? '#' }}" class="drop-menu-list__link">
                     {{ $childTitle }}
+                    @if($childLabelName && $childLabelColor)
+                        <span class="mega-menu__label-badge" style="color: {{ $childLabelColor }};">
+                            {{ $childLabelName }}
+                        </span>
+                    @endif
                 </a>
                 @if($childHasChildren)
                     <ul class="column-catalog__list drop-menu-list">
@@ -35,10 +45,20 @@
                                 $grandChildTitle = $grandChild->getTranslation('title', $locale);
                                 $grandChildLink = $grandChild->getTranslation('link', $locale);
                                 $grandChildProductsCount = $grandChild->products_count ?? 0;
+                                $grandChildLabelNameRaw = $grandChild->getRawOriginal('label_name');
+                                $grandChildLabelName = is_array(json_decode($grandChildLabelNameRaw, true))
+                                    ? $grandChild->getTranslation('label_name', $locale)
+                                    : ($grandChildLabelNameRaw ?? null);
+                                $grandChildLabelColor = $grandChild->label_color;
                             @endphp
                             <li class="drop-menu-list__item">
                                 <a href="{{ $grandChildLink ?? '#' }}" class="drop-menu-list__link drop-menu-list__link--third-level">
                                     {{ $grandChildTitle }}
+                                    @if($grandChildLabelName && $grandChildLabelColor)
+                                        <span class="mega-menu__label-badge" style="color: {{ $grandChildLabelColor }};">
+                                            {{ $grandChildLabelName }}
+                                        </span>
+                                    @endif
                                     @if($grandChildProductsCount > 0)
                                         <span class="mega-menu__category-count--mobile">{{ $grandChildProductsCount }}</span>
                                     @endif
@@ -67,10 +87,20 @@
                             @php
                                 $rowChildTitle = $rowChild->getTranslation('title', $locale);
                                 $rowChildLink = $rowChild->getTranslation('link', $locale);
+                                $rowChildLabelNameRaw = $rowChild->getRawOriginal('label_name');
+                                $rowChildLabelName = is_array(json_decode($rowChildLabelNameRaw, true))
+                                    ? $rowChild->getTranslation('label_name', $locale)
+                                    : ($rowChildLabelNameRaw ?? null);
+                                $rowChildLabelColor = $rowChild->label_color;
                             @endphp
                             <li class="drop-menu-list__item">
                                 <a href="{{ $rowChildLink ?? '#' }}" class="drop-menu-list__link">
                                     {{ $rowChildTitle }}
+                                    @if($rowChildLabelName && $rowChildLabelColor)
+                                        <span class="mega-menu__label-badge" style="color: {{ $rowChildLabelColor }};">
+                                            {{ $rowChildLabelName }}
+                                        </span>
+                                    @endif
                                 </a>
                             </li>
                         @endforeach

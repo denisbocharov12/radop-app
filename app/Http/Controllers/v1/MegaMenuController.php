@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Services\MenuRenderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 final class MegaMenuController extends Controller
 {
@@ -20,12 +22,64 @@ final class MegaMenuController extends Controller
     }
 
     /**
+     * Определить локаль из запроса
+     *
+     * @param Request $request
+     * @return string
+     */
+    private function resolveLocale(Request $request): string
+    {
+        if ($request->hasHeader('X-Localization')) {
+            $locale = $request->header('X-Localization');
+            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
+            if (in_array($locale, $supportedLocales)) {
+                return $locale;
+            }
+        }
+
+        if ($request->hasHeader('x-localization')) {
+            $locale = $request->header('x-localization');
+            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
+            if (in_array($locale, $supportedLocales)) {
+                return $locale;
+            }
+        }
+
+        try {
+            $currentLocale = LaravelLocalization::getCurrentLocale();
+            if ($currentLocale) {
+                return $currentLocale;
+            }
+        } catch (\Exception $e) {
+        }
+
+        $sessionLocale = session('locale');
+        if ($sessionLocale) {
+            $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
+            if (in_array($sessionLocale, $supportedLocales)) {
+                return $sessionLocale;
+            }
+        }
+
+        $urlLocale = $request->segment(1);
+        $supportedLocales = array_keys(config('laravellocalization.supportedLocales', []));
+        if (in_array($urlLocale, $supportedLocales)) {
+            return $urlLocale;
+        }
+
+        return config('app.fallback_locale', 'ro');
+    }
+
+    /**
      * @param Request $request
      * @param string $code
      * @return JsonResponse
      */
     public function getData(Request $request, string $code): JsonResponse
     {
+        $locale = $this->resolveLocale($request);
+        App::setLocale($locale);
+
         $menu = $this->menuRenderService->getMenuData($code);
 
         if (!$menu || !$menu->is_active || $menu->rootItems->isEmpty()) {
@@ -35,8 +89,6 @@ final class MegaMenuController extends Controller
                 'data' => null
             ], 404);
         }
-
-        $locale = app()->getLocale();
         $nameRaw = $menu->getRawOriginal('name');
         $menuName = is_array(json_decode($nameRaw, true))
             ? $menu->getTranslation('name', $locale)
@@ -68,6 +120,9 @@ final class MegaMenuController extends Controller
      */
     public function getHtml(Request $request, string $code): JsonResponse
     {
+        $locale = $this->resolveLocale($request);
+        App::setLocale($locale);
+
         $cssClass = $request->query('css_class', '');
         $html = $this->menuRenderService->renderContent($code, $cssClass);
 
@@ -92,6 +147,9 @@ final class MegaMenuController extends Controller
      */
     public function getMobileHtml(Request $request, string $code): JsonResponse
     {
+        $locale = $this->resolveLocale($request);
+        App::setLocale($locale);
+
         $cssClass = $request->query('css_class', '');
         $html = $this->menuRenderService->renderMobileContent($code, $cssClass);
 
@@ -117,6 +175,9 @@ final class MegaMenuController extends Controller
      */
     public function getCategoryContent(Request $request, string $code, int $itemId): JsonResponse
     {
+        $locale = $this->resolveLocale($request);
+        App::setLocale($locale);
+
         $html = $this->menuRenderService->renderCategoryContent($itemId, $code);
 
         if (empty($html)) {
@@ -141,6 +202,9 @@ final class MegaMenuController extends Controller
      */
     public function getMobileCategoryContent(Request $request, string $code, int $itemId): JsonResponse
     {
+        $locale = $this->resolveLocale($request);
+        App::setLocale($locale);
+
         $html = $this->menuRenderService->renderMobileCategoryContent($itemId, $code);
 
         if (empty($html)) {
