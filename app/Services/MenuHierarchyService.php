@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Jobs\ClearMenuCacheJob;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Repositories\MenuRepositoryInterface;
@@ -268,6 +269,17 @@ class MenuHierarchyService
     }
 
     /**
+     * Найти меню по коду
+     *
+     * @param string $code
+     * @return Menu|null
+     */
+    public function findMenuByCode(string $code): ?Menu
+    {
+        return $this->menuRepository->findMenuByCode($code);
+    }
+
+    /**
      * Найти элемент меню по ID
      *
      * @param int $id
@@ -441,7 +453,8 @@ class MenuHierarchyService
     protected function getCacheKey(string $menuCode, bool $onlyActive): string
     {
         $suffix = $onlyActive ? 'active' : 'all';
-        return "menu_hierarchy_{$menuCode}_{$suffix}";
+        $locale = app()->getLocale();
+        return "menu_hierarchy_{$menuCode}_{$suffix}_{$locale}";
     }
 
     /**
@@ -457,8 +470,6 @@ class MenuHierarchyService
             Cache::forget("menu_hierarchy_{$menuCode}_active_{$locale}");
             Cache::forget("menu_hierarchy_{$menuCode}_all_{$locale}");
         }
-        Cache::forget($this->getCacheKey($menuCode, true));
-        Cache::forget($this->getCacheKey($menuCode, false));
     }
 
     /**
@@ -472,6 +483,60 @@ class MenuHierarchyService
 
         foreach ($menus as $menu) {
             $this->clearMenuCache($menu->code);
+        }
+    }
+
+    /**
+     * Обновить сортировку элементов меню по колонкам
+     *
+     * @param string $menuCode
+     * @param int $parentId
+     * @param array $items Массив вида [['id' => 1, 'column' => 1, 'column_order' => 0], ...]
+     * @return bool
+     * @throws ValidationException
+     */
+    public function updateColumnSort(string $menuCode, int $parentId, array $items): bool
+    {
+        $menu = $this->menuRepository->findMenuByCode($menuCode);
+
+        if (!$menu) {
+            throw new \InvalidArgumentException("Menu with code '{$menuCode}' not found");
+        }
+
+        $parentItem = $this->menuRepository->findMenuItemById($parentId);
+
+        if (!$parentItem || $parentItem->menu_id !== $menu->id) {
+            throw new \InvalidArgumentException("Parent menu item not found or does not belong to this menu");
+        }
+
+        try {
+            DB::beginTransaction();
+
+            foreach ($items as $itemData) {
+                $item = $this->menuRepository->findMenuItemById($itemData['id']);
+
+                if (!$item || $item->parent_id !== $parentId) {
+                    throw new \InvalidArgumentException("Menu item with ID {$itemData['id']} not found or does not belong to parent {$parentId}");
+                }
+
+                $item->column = $itemData['column'];
+                $item->column_order = $itemData['column_order'];
+                $item->save();
+            }
+
+            DB::commit();
+
+            ClearMenuCacheJob::dispatch($menuCode)->onQueue('high');
+
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to update column sort: ' . $e->getMessage(), [
+                'menu_code' => $menuCode,
+                'parent_id' => $parentId,
+                'items' => $items,
+            ]);
+            throw $e;
         }
     }
 }

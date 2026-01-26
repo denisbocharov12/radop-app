@@ -41,12 +41,19 @@
             @php
                 $regularItems = $group['items'];
                 $columnCount = 3;
-                $columns = $regularItems->chunk(ceil($regularItems->count() / $columnCount));
+                $columns = collect();
+                for ($i = 1; $i <= $columnCount; $i++) {
+                    $columns[$i] = $regularItems->filter(function($item) use ($i) {
+                        return ($item->column ?? 1) == $i;
+                    })->sortBy(function($item) {
+                        return $item->column_order ?? $item->order ?? 0;
+                    })->values();
+                }
             @endphp
             <div class="mega-menu__columns" style="display: grid; grid-template-columns: repeat({{ $columnCount }}, 1fr); gap: 20px;">
-                @foreach($columns as $column)
+                @foreach($columns as $columnNum => $columnItems)
                     <div class="mega-menu__column">
-                        @foreach($column as $child)
+                        @foreach($columnItems as $child)
                             @include('partials.menus.mega-menu-category-item', ['item' => $child])
                         @endforeach
                     </div>

@@ -2,7 +2,15 @@
     $locale = app()->getLocale();
     $itemTitle = $item->getTranslation('title', $locale);
     $itemLink = $item->getTranslation('link', $locale);
-    $regularChildren = $item->children ? $item->children->where('type', '!=', 'widget_link')->where('type', '!=', 'row')->values() : collect();
+    $regularChildren = $item->children 
+        ? $item->children
+            ->where('type', '!=', 'widget_link')
+            ->where('type', '!=', 'row')
+            ->sortBy(function($child) {
+                return ($child->column ?? 1) * 1000 + ($child->column_order ?? $child->order ?? 0);
+            })
+            ->values() 
+        : collect();
     $rowChildren = $item->children ? $item->children->where('type', 'row')->values() : collect();
 @endphp
 <div class="column-catalog__item column-style" data-category-id="{{ $item->id }}">

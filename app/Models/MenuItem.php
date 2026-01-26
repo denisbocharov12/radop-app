@@ -58,6 +58,8 @@ final class MenuItem extends Model implements HasMedia
         'menu_id',
         'parent_id',
         'order',
+        'column',
+        'column_order',
         'type',
         'title',
         'label_name',
@@ -83,6 +85,8 @@ final class MenuItem extends Model implements HasMedia
         'display_title' => 'boolean',
         'display_as_link' => 'boolean',
         'order' => 'integer',
+        'column' => 'integer',
+        'column_order' => 'integer',
     ];
 
     public $translatable = ['title', 'link', 'label_name'];

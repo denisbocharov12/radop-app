@@ -363,6 +363,114 @@ final class AdminMenuController extends Controller
     }
 
     /**
+     * Get column sort data for menu items (AJAX handler)
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $menuCode
+     * @return JsonResponse
+     */
+    public function getColumnSortData(\Illuminate\Http\Request $request, string $menuCode): JsonResponse
+    {
+        try {
+            $parentId = $request->query('parent_id');
+            
+            if (!$parentId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Parent ID is required',
+                ], 400);
+            }
+
+            $menu = $this->menuHierarchyService->findMenuByCode($menuCode);
+
+            if (!$menu) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Menu not found',
+                ], 404);
+            }
+
+            $parentItem = $this->menuHierarchyService->findMenuItemById((int)$parentId);
+
+            if (!$parentItem || $parentItem->menu_id !== $menu->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Parent item not found',
+                ], 404);
+            }
+
+            $children = \App\Models\MenuItem::where('parent_id', (int)$parentId)
+                ->where('type', '!=', 'widget_link')
+                ->where('type', '!=', 'row')
+                ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(`column_order`, `order`, 0) ASC')
+                ->get();
+
+            \Illuminate\Support\Facades\Log::info('Column sort data request', [
+                'menu_code' => $menuCode,
+                'parent_id' => $parentId,
+                'parent_item' => $parentItem ? $parentItem->id : null,
+                'children_count' => $children->count(),
+                'children_ids' => $children->pluck('id')->toArray(),
+            ]);
+
+            $locale = app()->getLocale();
+            $items = $children->map(function ($item) use ($locale) {
+                return [
+                    'id' => $item->id,
+                    'title' => $item->getTranslation('title', $locale),
+                    'column' => $item->column ?? 1,
+                    'column_order' => $item->column_order ?? 0,
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'items' => $items,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Update column sort for menu items (AJAX handler)
+     *
+     * @param \App\Http\Requests\Menu\MenuColumnSortRequest $request
+     * @param string $menuCode
+     * @return JsonResponse
+     */
+    public function updateColumnSort(\App\Http\Requests\Menu\MenuColumnSortRequest $request, string $menuCode): JsonResponse
+    {
+        try {
+            $this->menuHierarchyService->updateColumnSort(
+                $menuCode,
+                $request->parent_id,
+                $request->items
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => __('theme.menu.column_sort_updated_successfully'),
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.menu.validation_failed'),
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('theme.menu.column_sort_update_failed'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Clear menu cache
      *
      * @return \Illuminate\Http\RedirectResponse

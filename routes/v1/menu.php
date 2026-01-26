@@ -32,6 +32,10 @@ Route::middleware(['auth'])->prefix('menus')->name('admin.menus.')->group(functi
     // Drag & Drop Hierarchy Update (AJAX)
     Route::post('/{menuCode}/hierarchy', [AdminMenuController::class, 'updateHierarchy'])->name('hierarchy.update');
 
+    // Column Sort (AJAX)
+    Route::get('/{menuCode}/column-sort-data', [AdminMenuController::class, 'getColumnSortData'])->name('column-sort.data');
+    Route::post('/{menuCode}/column-sort', [AdminMenuController::class, 'updateColumnSort'])->name('column-sort.update');
+
     // Menu Preview (AJAX)
     Route::get('/{id}/preview', [AdminMenuController::class, 'preview'])->name('preview');
 
