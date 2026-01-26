@@ -141,7 +141,10 @@ final class MenuRenderService
             }
 
             $item = MenuItem::with(['children' => function ($query) {
-                $query->active()->orderBy('order');
+                $query->active()
+                    ->where('type', '!=', 'widget_link')
+                    ->where('type', '!=', 'row')
+                    ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(`column_order`, `order`) ASC');
             }])
             ->where('id', $itemId)
             ->where('menu_id', $menu->id)
@@ -170,11 +173,6 @@ final class MenuRenderService
         });
     }
 
-    /**
-     * @param int $itemId
-     * @param string $code
-     * @return string
-     */
     public function renderMobileCategoryContent(int $itemId, string $code): string
     {
         $cacheKey = "menu_mobile_category_content_{$code}_{$itemId}_" . app()->getLocale();
@@ -187,7 +185,10 @@ final class MenuRenderService
             }
 
             $item = MenuItem::with(['children' => function ($query) {
-                $query->active()->orderBy('order');
+                $query->active()
+                    ->where('type', '!=', 'widget_link')
+                    ->where('type', '!=', 'row')
+                    ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(`column_order`, `order`) ASC');
             }])
             ->where('id', $itemId)
             ->where('menu_id', $menu->id)

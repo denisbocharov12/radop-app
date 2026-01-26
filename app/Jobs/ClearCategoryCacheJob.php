@@ -39,10 +39,6 @@ final class ClearCategoryCacheJob implements ShouldQueue
             // Пересоздание кэша родительских категорий
             $this->rebuildCategoryCache();
 
-            // Очистка и пересоздание кэша меню (так как категории используются в меню)
-            // Очищаем все меню, так как изменение категории может повлиять на любое меню
-            ClearMenuCacheJob::dispatch(null)->onQueue('high');
-
             Log::info('Кэш категорий успешно очищен и пересоздан', [
                 'category_onec_id' => $this->categoryOnecId ?? 'all',
             ]);

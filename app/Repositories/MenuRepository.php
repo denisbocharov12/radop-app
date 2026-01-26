@@ -86,7 +86,11 @@ final class MenuRepository implements MenuRepositoryInterface
                     $query->active();
                 }
                 
-                $query->with('children')->orderBy('order');
+                $query->with(['children' => function ($q) {
+                    $q->where('type', '!=', 'widget_link')
+                      ->where('type', '!=', 'row')
+                      ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(`column_order`, `order`) ASC');
+                }])->orderBy('order');
             }])->first();
             
             if ($menu && $menu->rootItems) {

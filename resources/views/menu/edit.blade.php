@@ -24,6 +24,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#tabItem2">Элементы меню ({{$menu->items->count()}})</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tabItem3">Сортировка по колонкам</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tabItem1">
@@ -227,6 +230,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="tab-pane" id="tabItem3">
+                                        @include('menu.partials.column-sort', ['menu' => $menu])
                                     </div>
                                 </div>
                             </div>
@@ -620,6 +626,356 @@
                     }
                 });
             });
+
+            let currentParentId = null;
+            let columnSortables = [];
+            let columnSortInitialized = false;
+
+            function initColumnSortTab() {
+                if (columnSortInitialized) {
+                    console.log('TAB сортировки по колонкам уже инициализирован');
+                    return;
+                }
+
+                const parentCategorySelect = document.getElementById('parent-category-select');
+                const columnSortContainer = document.getElementById('column-sort-container');
+                const loadBtn = document.getElementById('load-column-sort-btn');
+                
+                console.log('Инициализация TAB сортировки по колонкам');
+                console.log('parentCategorySelect:', parentCategorySelect);
+                console.log('columnSortContainer:', columnSortContainer);
+                console.log('loadBtn:', loadBtn);
+
+                if (!parentCategorySelect) {
+                    console.error('Элемент parent-category-select не найден');
+                    return;
+                }
+
+                if (!columnSortContainer) {
+                    console.error('Элемент column-sort-container не найден');
+                    return;
+                }
+
+                if (!loadBtn) {
+                    console.error('Элемент load-column-sort-btn не найден');
+                    return;
+                }
+
+                parentCategorySelect.addEventListener('change', function() {
+                    const parentId = this.value;
+                    console.log('Выбрана категория:', parentId);
+                    if (parentId) {
+                        currentParentId = parseInt(parentId);
+                        loadBtn.disabled = false;
+                        if (columnSortContainer) {
+                            columnSortContainer.style.display = 'none';
+                        }
+                    } else {
+                        loadBtn.disabled = true;
+                        if (columnSortContainer) {
+                            columnSortContainer.style.display = 'none';
+                        }
+                        currentParentId = null;
+                    }
+                });
+
+                loadBtn.addEventListener('click', function() {
+                    if (!currentParentId) {
+                        alert('Выберите родительскую категорию');
+                        return;
+                    }
+                    console.log('Нажата кнопка загрузки для категории:', currentParentId);
+                    
+                    loadBtn.disabled = true;
+                    const originalText = loadBtn.innerHTML;
+                    loadBtn.innerHTML = '<em class="icon ni ni-spinner"></em> Загрузка...';
+                    
+                    if (columnSortContainer) {
+                        columnSortContainer.style.display = 'block';
+                    }
+                    
+                    loadColumnSortData(currentParentId).finally(function() {
+                        loadBtn.disabled = false;
+                        loadBtn.innerHTML = originalText;
+                    });
+                });
+
+                columnSortInitialized = true;
+                console.log('TAB сортировки по колонкам инициализирован');
+            }
+
+            const tabLinks = document.querySelectorAll('a[data-bs-toggle="tab"]');
+            tabLinks.forEach(function(tabLink) {
+                tabLink.addEventListener('shown.bs.tab', function(e) {
+                    const targetHref = e.target.getAttribute('href');
+                    console.log('Активирован TAB:', targetHref);
+                    if (targetHref === '#tabItem3') {
+                        console.log('TAB сортировки по колонкам активирован');
+                        setTimeout(function() {
+                            initColumnSortTab();
+                        }, 100);
+                    }
+                });
+            });
+
+            const activeTab = document.querySelector('.nav-link.active[href="#tabItem3"]');
+            if (activeTab) {
+                console.log('TAB сортировки по колонкам уже активен при загрузке');
+                setTimeout(function() {
+                    initColumnSortTab();
+                }, 200);
+            } else {
+                setTimeout(function() {
+                    initColumnSortTab();
+                }, 500);
+            }
+
+            function loadColumnSortData(parentId) {
+                return new Promise(function(resolve, reject) {
+                    const container = document.getElementById('column-sort-container');
+                    if (!container) {
+                        console.error('Элемент column-sort-container не найден');
+                        reject(new Error('Контейнер не найден'));
+                        return;
+                    }
+                    
+                    const columnsContainer = container.querySelector('.card .card-inner');
+                    if (!columnsContainer) {
+                        console.error('Элемент .card .card-inner не найден');
+                        reject(new Error('Контейнер колонок не найден'));
+                        return;
+                    }
+                    
+                    columnsContainer.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Загрузка...</span></div></div>';
+                    
+                    const url = `{{ route('admin.menus.column-sort.data', $menu->code) }}?parent_id=${parentId}`;
+                    console.log('Загрузка данных из:', url);
+                    
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        console.log('Ответ получен:', response.status, response.statusText);
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                console.error('Ошибка ответа:', err);
+                                throw new Error(err.message || 'Ошибка загрузки данных');
+                            }).catch(e => {
+                                console.error('Ошибка парсинга JSON:', e);
+                                throw new Error('Ошибка загрузки данных: ' + response.statusText);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Данные получены:', data);
+                        console.log('Количество элементов:', data.items ? data.items.length : 0);
+                        if (data.success && data.items && data.items.length > 0) {
+                        columnsContainer.innerHTML = `
+                            <h6 class="title mb-3">Распределение по колонкам</h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-inner">
+                                            <h6 class="title">Колонка 1</h6>
+                                            <div id="column-1" class="column-sort-list" data-column="1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-inner">
+                                            <h6 class="title">Колонка 2</h6>
+                                            <div id="column-2" class="column-sort-list" data-column="2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-inner">
+                                            <h6 class="title">Колонка 3</h6>
+                                            <div id="column-3" class="column-sort-list" data-column="3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" id="save-column-sort">Сохранить сортировку</button>
+                            </div>
+                        `;
+                            renderColumnSortItems(data.items);
+                            initColumnSortables();
+                            attachSaveButtonListener();
+                            resolve(data);
+                        } else {
+                            const message = data.items && data.items.length === 0 
+                                ? 'У выбранной категории нет дочерних элементов для сортировки' 
+                                : (data.message || 'Нет элементов для отображения');
+                            columnsContainer.innerHTML = `<div class="alert alert-warning">${message}</div>`;
+                            resolve(data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка загрузки данных:', error);
+                        const errorMsg = error.message || 'Неизвестная ошибка';
+                        columnsContainer.innerHTML = `<div class="alert alert-danger">Ошибка загрузки данных: ${errorMsg}</div>`;
+                        reject(error);
+                    });
+                });
+            }
+
+            function renderColumnSortItems(items) {
+                const columns = {
+                    1: document.getElementById('column-1'),
+                    2: document.getElementById('column-2'),
+                    3: document.getElementById('column-3')
+                };
+
+                Object.values(columns).forEach(col => {
+                    col.innerHTML = '';
+                });
+
+                items.forEach(item => {
+                    const column = item.column || 1;
+                    const columnEl = columns[column];
+                    if (columnEl) {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'column-sort-item';
+                        itemEl.dataset.itemId = item.id;
+                        itemEl.dataset.column = column;
+                        itemEl.dataset.columnOrder = item.column_order || 0;
+                        itemEl.innerHTML = `
+                            <div class="d-flex align-items-center">
+                                <em class="icon ni ni-menu me-2"></em>
+                                <span>${item.title}</span>
+                            </div>
+                        `;
+                        columnEl.appendChild(itemEl);
+                    }
+                });
+            }
+
+            function initColumnSortables() {
+                columnSortables.forEach(sortable => {
+                    if (sortable) {
+                        sortable.destroy();
+                    }
+                });
+                columnSortables = [];
+
+                [1, 2, 3].forEach(columnNum => {
+                    const columnEl = document.getElementById(`column-${columnNum}`);
+                    if (columnEl) {
+                        const sortable = Sortable.create(columnEl, {
+                            group: 'column-sort',
+                            animation: 150,
+                            onEnd: function(evt) {
+                                updateColumnOrders();
+                            }
+                        });
+                        columnSortables.push(sortable);
+                    }
+                });
+            }
+
+            function updateColumnOrders() {
+                [1, 2, 3].forEach(columnNum => {
+                    const columnEl = document.getElementById(`column-${columnNum}`);
+                    if (columnEl) {
+                        const items = columnEl.querySelectorAll('.column-sort-item');
+                        items.forEach((item, index) => {
+                            item.dataset.column = columnNum;
+                            item.dataset.columnOrder = index;
+                        });
+                    }
+                });
+            }
+
+            function attachSaveButtonListener() {
+                const saveColumnSortBtn = document.getElementById('save-column-sort');
+                if (saveColumnSortBtn) {
+                    saveColumnSortBtn.addEventListener('click', function() {
+                        saveColumnSort();
+                    });
+                }
+            }
+
+            function saveColumnSort() {
+                if (!currentParentId) {
+                    alert('Выберите родительскую категорию');
+                    return;
+                }
+
+                const items = [];
+                [1, 2, 3].forEach(columnNum => {
+                    const columnEl = document.getElementById(`column-${columnNum}`);
+                    if (columnEl) {
+                        const columnItems = columnEl.querySelectorAll('.column-sort-item');
+                        columnItems.forEach((item, index) => {
+                            items.push({
+                                id: parseInt(item.dataset.itemId),
+                                column: columnNum,
+                                column_order: index
+                            });
+                        });
+                    }
+                });
+
+                if (items.length === 0) {
+                    alert('Нет элементов для сохранения');
+                    return;
+                }
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]');
+                if (!csrfToken) {
+                    alert('Ошибка: CSRF токен не найден');
+                    return;
+                }
+
+                const saveBtn = document.getElementById('save-column-sort');
+                if (saveBtn) {
+                    saveBtn.disabled = true;
+                    saveBtn.textContent = 'Сохранение...';
+                }
+
+                fetch(`{{ route('admin.menus.column-sort.update', $menu->code) }}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken.content,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        parent_id: currentParentId,
+                        items: items
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = 'Сохранить сортировку';
+                    }
+                    if (data.success) {
+                        alert('Сортировка сохранена успешно');
+                    } else {
+                        alert('Ошибка: ' + (data.message || 'Не удалось сохранить сортировку'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.textContent = 'Сохранить сортировку';
+                    }
+                    alert('Ошибка при сохранении сортировки');
+                });
+            }
         });
     </script>
 @endsection

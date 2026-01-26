@@ -32,6 +32,8 @@ final class MenuItemRequest extends FormRequest
         return [
             'parent_id' => ['nullable', 'exists:menu_items,id'],
             'order' => ['sometimes', 'integer', 'min:0'],
+            'column' => ['nullable', 'integer', 'min:1', 'max:3'],
+            'column_order' => ['nullable', 'integer', 'min:0'],
             'type' => ['required', 'in:category,custom_link,promo_block,widget_link,row'],
             'title_ro' => ['required', 'string', 'max:255'],
             'title_ru' => ['required', 'string', 'max:255'],

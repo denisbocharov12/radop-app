@@ -80,15 +80,11 @@ final class ClearMenuCacheJob implements ShouldQueue
      */
     private function clearMenuCache(string $menuCode, array $locales): void
     {
-        // Очистка кэша из MenuRepository
+        // Очистка кэша из MenuRepository и MenuHierarchyService
         foreach ($locales as $locale) {
             Cache::forget("menu_hierarchy_{$menuCode}_active_{$locale}");
             Cache::forget("menu_hierarchy_{$menuCode}_all_{$locale}");
         }
-
-        // Очистка кэша из MenuHierarchyService
-        Cache::forget("menu_hierarchy_{$menuCode}_active");
-        Cache::forget("menu_hierarchy_{$menuCode}_all");
 
         // Очистка кэша из MenuRenderService
         foreach ($locales as $locale) {
@@ -133,29 +129,40 @@ final class ClearMenuCacheJob implements ShouldQueue
     {
         $driver = config('cache.default');
         
-        // Для Redis можно использовать SCAN, но это требует прямого доступа к Redis
-        // Для простоты просто логируем, что нужно очистить
-        // В реальном проекте лучше использовать Cache tags или хранить список ключей
-        
-        // Если используется Redis, можно попробовать очистить через Redis напрямую
         if ($driver === 'redis') {
             try {
                 $redis = Redis::connection();
                 $cachePrefix = config('cache.prefix', '');
-                $fullPattern = $cachePrefix ? "{$cachePrefix}:{$prefix}*_{$locale}" : "{$prefix}*_{$locale}";
-                $keys = $redis->keys($fullPattern);
                 
-                if (!empty($keys)) {
-                    $redis->del($keys);
+                $patterns = [
+                    $cachePrefix ? "{$cachePrefix}:{$prefix}*_{$locale}" : "{$prefix}*_{$locale}",
+                    $cachePrefix ? "{$cachePrefix}:{$prefix}*_{$locale}*" : "{$prefix}*_{$locale}*",
+                ];
+                
+                foreach ($patterns as $pattern) {
+                    $keys = $redis->keys($pattern);
+                    
+                    if (!empty($keys)) {
+                        if (is_array($keys)) {
+                            $redis->del($keys);
+                        } else {
+                            $redis->del([$keys]);
+                        }
+                    }
                 }
             } catch (\Exception $e) {
-                // Если не удалось очистить через Redis, просто логируем
                 Log::warning('Не удалось очистить кэш по префиксу через Redis', [
                     'prefix' => $prefix,
                     'locale' => $locale,
                     'error' => $e->getMessage(),
                 ]);
             }
+        } else {
+            Log::debug('Очистка кэша по префиксу поддерживается только для Redis', [
+                'driver' => $driver,
+                'prefix' => $prefix,
+                'locale' => $locale,
+            ]);
         }
     }
 
@@ -173,24 +180,25 @@ final class ClearMenuCacheJob implements ShouldQueue
         $menuRenderService = app(MenuRenderService::class);
 
         foreach ($locales as $locale) {
-            // Устанавливаем локаль для корректного создания кэша
             App::setLocale($locale);
 
             try {
-                // Пересоздание кэша из MenuRepository (active и all)
                 $menuRepository->getMenuHierarchyByCode($menuCode, true);
                 $menuRepository->getMenuHierarchyByCode($menuCode, false);
 
-                // Пересоздание кэша из MenuHierarchyService (active и all)
                 $menuHierarchyService->getMenuHierarchy($menuCode, true);
                 $menuHierarchyService->getMenuHierarchy($menuCode, false);
 
-                // Пересоздание кэша из MenuRenderService
                 $menuRenderService->getMenuData($menuCode);
                 $menuRenderService->renderContent($menuCode);
                 $menuRenderService->renderMobileContent($menuCode);
                 $menuRenderService->render($menuCode, '', 'partials.menus.mega-menu');
                 $menuRenderService->render($menuCode, '', 'partials.menus.mobile-mega-menu');
+
+                $menu = $menuRepository->getMenuHierarchyByCode($menuCode, true);
+                if ($menu && $menu->rootItems) {
+                    $this->rebuildCategoryCache($menu->rootItems, $menuCode, $menuRenderService);
+                }
             } catch (\Exception $e) {
                 Log::warning('Ошибка при пересоздании кэша меню', [
                     'menu_code' => $menuCode,
@@ -200,7 +208,34 @@ final class ClearMenuCacheJob implements ShouldQueue
             }
         }
 
-        // Возвращаем локаль обратно
         App::setLocale(config('app.locale', 'ru'));
+    }
+
+    /**
+     * Пересоздать кэш категорий рекурсивно
+     *
+     * @param \Illuminate\Support\Collection $items
+     * @param string $menuCode
+     * @param MenuRenderService $menuRenderService
+     * @return void
+     */
+    private function rebuildCategoryCache($items, string $menuCode, MenuRenderService $menuRenderService): void
+    {
+        foreach ($items as $item) {
+            if ($item->children && $item->children->isNotEmpty()) {
+                try {
+                    $menuRenderService->renderCategoryContent($item->id, $menuCode);
+                    $menuRenderService->renderMobileCategoryContent($item->id, $menuCode);
+                } catch (\Exception $e) {
+                    Log::warning('Ошибка при пересоздании кэша категории', [
+                        'menu_code' => $menuCode,
+                        'item_id' => $item->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+
+                $this->rebuildCategoryCache($item->children, $menuCode, $menuRenderService);
+            }
+        }
     }
 }
