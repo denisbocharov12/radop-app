@@ -305,7 +305,8 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     padding: 0;
-    margin-bottom: 15px;
+    margin-top: 3px;
+    margin-bottom: 12px;
 }
 
 .mega-menu__widget {
