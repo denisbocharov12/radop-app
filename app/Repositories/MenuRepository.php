@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -72,9 +73,11 @@ final class MenuRepository implements MenuRepositoryInterface
      */
     public function getMenuHierarchyByCode(string $code, bool $onlyActive = true): ?Menu
     {
-        $cacheKey = "menu_hierarchy_{$code}_" . ($onlyActive ? 'active' : 'all') . '_' . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_hierarchy_{$code}_" . ($onlyActive ? 'active' : 'all') . '_' . $locale;
         
-        return Cache::remember($cacheKey, 3600, function () use ($code, $onlyActive) {
+        return Cache::remember($cacheKey, 3600, function () use ($code, $onlyActive, $locale) {
+            App::setLocale($locale);
             $query = Menu::byCode($code);
 
             if ($onlyActive) {

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\MenuItem;
 use App\Repositories\MenuRepositoryInterface;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 
@@ -34,9 +35,11 @@ final class MenuRenderService
      */
     public function render(string $code, string $cssClass = '', string $view = 'partials.menus.mega-menu'): string
     {
-        $cacheKey = "menu_render_{$code}_{$view}_" . md5($cssClass) . '_' . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_render_{$code}_{$view}_" . md5($cssClass) . '_' . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass, $view) {
+        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass, $view, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if (!$menu || !$menu->is_active || $menu->rootItems->isEmpty()) {
@@ -60,9 +63,11 @@ final class MenuRenderService
      */
     public function renderContent(string $code, string $cssClass = ''): string
     {
-        $cacheKey = "menu_content_{$code}_" . md5($cssClass) . '_' . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_content_{$code}_" . md5($cssClass) . '_' . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass) {
+        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if (!$menu || !$menu->is_active || $menu->rootItems->isEmpty()) {
@@ -86,9 +91,11 @@ final class MenuRenderService
      */
     public function renderMobileContent(string $code, string $cssClass = ''): string
     {
-        $cacheKey = "menu_mobile_content_{$code}_" . md5($cssClass) . '_' . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_mobile_content_{$code}_" . md5($cssClass) . '_' . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass) {
+        return Cache::remember($cacheKey, 3600, function () use ($code, $cssClass, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if (!$menu || !$menu->is_active || $menu->rootItems->isEmpty()) {
@@ -111,9 +118,11 @@ final class MenuRenderService
      */
     public function getMenuData(string $code)
     {
-        $cacheKey = "menu_data_{$code}_" . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_data_{$code}_" . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($code) {
+        return Cache::remember($cacheKey, 3600, function () use ($code, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if ($menu && $menu->rootItems) {
@@ -131,9 +140,11 @@ final class MenuRenderService
      */
     public function renderCategoryContent(int $itemId, string $code): string
     {
-        $cacheKey = "menu_category_content_{$code}_{$itemId}_" . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_category_content_{$code}_{$itemId}_" . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($itemId, $code) {
+        return Cache::remember($cacheKey, 3600, function () use ($itemId, $code, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if (!$menu || !$menu->is_active) {
@@ -175,9 +186,11 @@ final class MenuRenderService
 
     public function renderMobileCategoryContent(int $itemId, string $code): string
     {
-        $cacheKey = "menu_mobile_category_content_{$code}_{$itemId}_" . app()->getLocale();
+        $locale = app()->getLocale();
+        $cacheKey = "menu_mobile_category_content_{$code}_{$itemId}_" . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($itemId, $code) {
+        return Cache::remember($cacheKey, 3600, function () use ($itemId, $code, $locale) {
+            App::setLocale($locale);
             $menu = $this->menuRepository->getMenuHierarchyByCode($code);
 
             if (!$menu || !$menu->is_active) {

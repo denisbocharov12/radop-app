@@ -7,7 +7,7 @@
         $groups = collect();
         $currentGroup = collect();
         $currentGroupType = null;
-        
+
         foreach ($allChildren as $child) {
             if ($child->type === 'row') {
                 if ($currentGroup->isNotEmpty() && $currentGroupType !== 'row') {
@@ -25,7 +25,7 @@
                 $currentGroupType = 'regular';
             }
         }
-        
+
         if ($currentGroup->isNotEmpty()) {
             $groups->push(['type' => $currentGroupType, 'items' => $currentGroup]);
         }
@@ -50,7 +50,7 @@
                     })->values();
                 }
             @endphp
-            <div class="mega-menu__columns" style="display: grid; grid-template-columns: repeat({{ $columnCount }}, 1fr); gap: 20px;">
+            <div class="mega-menu__columns" style="display: grid; grid-template-columns: repeat({{ $columnCount }}, 1fr); gap: 40px;">
                 @foreach($columns as $columnNum => $columnItems)
                     <div class="mega-menu__column">
                         @foreach($columnItems as $child)
