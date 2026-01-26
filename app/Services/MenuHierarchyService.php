@@ -8,6 +8,7 @@ use App\Jobs\ClearMenuCacheJob;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Repositories\MenuRepositoryInterface;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -47,9 +48,11 @@ class MenuHierarchyService
      */
     public function getMenuHierarchy(string $menuCode, bool $onlyActive = true): ?Menu
     {
+        $locale = app()->getLocale();
         $cacheKey = $this->getCacheKey($menuCode, $onlyActive);
 
-        return Cache::remember($cacheKey, $this->cacheTime, function () use ($menuCode, $onlyActive) {
+        return Cache::remember($cacheKey, $this->cacheTime, function () use ($menuCode, $onlyActive, $locale) {
+            App::setLocale($locale);
             return $this->menuRepository->getMenuHierarchyByCode($menuCode, $onlyActive);
         });
     }

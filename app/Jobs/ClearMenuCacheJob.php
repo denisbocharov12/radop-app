@@ -197,7 +197,7 @@ final class ClearMenuCacheJob implements ShouldQueue
 
                 $menu = $menuRepository->getMenuHierarchyByCode($menuCode, true);
                 if ($menu && $menu->rootItems) {
-                    $this->rebuildCategoryCache($menu->rootItems, $menuCode, $menuRenderService);
+                    $this->rebuildCategoryCache($menu->rootItems, $menuCode, $menuRenderService, $locale);
                 }
             } catch (\Exception $e) {
                 Log::warning('Ошибка при пересоздании кэша меню', [
@@ -219,8 +219,10 @@ final class ClearMenuCacheJob implements ShouldQueue
      * @param MenuRenderService $menuRenderService
      * @return void
      */
-    private function rebuildCategoryCache($items, string $menuCode, MenuRenderService $menuRenderService): void
+    private function rebuildCategoryCache($items, string $menuCode, MenuRenderService $menuRenderService, string $locale): void
     {
+        App::setLocale($locale);
+        
         foreach ($items as $item) {
             if ($item->children && $item->children->isNotEmpty()) {
                 try {
@@ -230,11 +232,12 @@ final class ClearMenuCacheJob implements ShouldQueue
                     Log::warning('Ошибка при пересоздании кэша категории', [
                         'menu_code' => $menuCode,
                         'item_id' => $item->id,
+                        'locale' => $locale,
                         'error' => $e->getMessage(),
                     ]);
                 }
 
-                $this->rebuildCategoryCache($item->children, $menuCode, $menuRenderService);
+                $this->rebuildCategoryCache($item->children, $menuCode, $menuRenderService, $locale);
             }
         }
     }
