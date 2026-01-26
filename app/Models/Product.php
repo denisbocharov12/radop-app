@@ -100,8 +100,8 @@ final class Product extends Model implements HasMedia, Sitemapable
             ->queued();
 
         $this->addMediaConversion('medium')
-            ->width(300)
-            ->height(300)
+            ->width(264)
+            ->height(264)
             ->sharpen(10)
             ->performOnCollections('products')
             ->queued();

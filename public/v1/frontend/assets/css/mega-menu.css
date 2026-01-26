@@ -305,7 +305,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     padding: 0;
-    margin-bottom: 15px;
+    margin-bottom: 19px;
 }
 
 .mega-menu__widget {
@@ -313,7 +313,7 @@
     border-radius: 8px;
     transition: all 0.3s ease;
     border: 2px solid #e5e9f2;
-    padding: 10px 16px 10px 16px;
+    padding: 6px 16px 6px 16px;
     display: flex;
     position: relative;
 }
@@ -411,8 +411,8 @@
 
 .mega-menu__widget-icon {
     position: relative;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
     flex-shrink: 0;
     transition: all 0.2s ease;
