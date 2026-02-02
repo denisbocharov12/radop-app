@@ -72,6 +72,5 @@
         </ul>
     </div>
     <div class="catalog__second-column column-catalog" data-category-content-container></div>
-    <button class="catalog__close-btn _icon-close" type="button"></button>
 </div>
 @endif

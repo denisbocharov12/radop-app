@@ -43,12 +43,12 @@ final class MenuRepository implements MenuRepositoryInterface
     public function findMenuById(int $id): ?Menu
     {
         $menu = Menu::find($id);
-        
+
         if ($menu) {
             // Загружаем медиа для меню
             $menu->loadMedia('menu_image');
         }
-        
+
         return $menu;
     }
 
@@ -75,8 +75,8 @@ final class MenuRepository implements MenuRepositoryInterface
     {
         $locale = app()->getLocale();
         $cacheKey = "menu_hierarchy_{$code}_" . ($onlyActive ? 'active' : 'all') . '_' . $locale;
-        
-        return Cache::remember($cacheKey, 3600, function () use ($code, $onlyActive, $locale) {
+
+        return Cache::remember($cacheKey, 7200, function () use ($code, $onlyActive, $locale) {
             App::setLocale($locale);
             $query = Menu::byCode($code);
 
@@ -88,14 +88,14 @@ final class MenuRepository implements MenuRepositoryInterface
                 if ($onlyActive) {
                     $query->active();
                 }
-                
+
                 $query->with(['children' => function ($q) {
                     $q->where('type', '!=', 'widget_link')
                       ->where('type', '!=', 'row')
                       ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(`column_order`, `order`) ASC');
                 }])->orderBy('order');
             }])->first();
-            
+
             if ($menu && $menu->rootItems) {
                 $menu->rootItems->load('media');
                 foreach ($menu->rootItems as $item) {
@@ -104,7 +104,7 @@ final class MenuRepository implements MenuRepositoryInterface
                     }
                 }
             }
-            
+
             return $menu;
         });
     }
@@ -164,12 +164,12 @@ final class MenuRepository implements MenuRepositoryInterface
     public function findMenuItemById(int $id): ?MenuItem
     {
         $menuItem = MenuItem::with(['menu', 'parent', 'children'])->find($id);
-        
+
         if ($menuItem) {
             // Загружаем медиа для элемента меню
             $menuItem->loadMedia('menu_item_image');
         }
-        
+
         return $menuItem;
     }
 

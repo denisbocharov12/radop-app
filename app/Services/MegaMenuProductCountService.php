@@ -23,7 +23,7 @@ final class MegaMenuProductCountService
         $sortedIds = $categoryOnecIds->sort()->values();
         $cacheKey = 'mega_menu_product_counts_' . md5($sortedIds->implode(','));
 
-        return Cache::remember($cacheKey, 600, function () use ($sortedIds) {
+        return Cache::remember($cacheKey, 7200, function () use ($sortedIds) {
             $counts = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
                 ->join('products', 'product_categories.product_id', '=', 'products.onec_id')

@@ -24,8 +24,8 @@ final class BannerRepository
     public function getAllActiveForFront(): Collection
     {
         $cacheKey = 'banners_active_front_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             return Banner::where('active', true)
                 ->orderBy('order')
                 ->get();

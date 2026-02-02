@@ -33,8 +33,8 @@ final class ThemeHomeController extends Controller
     {
         $locale = app()->getLocale();
         $cacheKey = 'home_page_autoplay_speed_' . $locale;
-        
-        $autoplaySpeed = Cache::remember($cacheKey, 3600, function () {
+
+        $autoplaySpeed = Cache::remember($cacheKey, now()->addDay(), function () {
             return BannerSetting::first()?->rotation_speed ?? 3000;
         });
 

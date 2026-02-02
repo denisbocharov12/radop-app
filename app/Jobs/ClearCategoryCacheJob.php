@@ -60,9 +60,8 @@ final class ClearCategoryCacheJob implements ShouldQueue
     private function rebuildCategoryCache(): void
     {
         $cacheKey = 'theme_parent_categories';
-        $cacheTtl = 3600;
+        $cacheTtl = 7200;
 
-        // Пересоздаем кэш родительских категорий (как в PropertyServiceProvider)
         Cache::remember($cacheKey, $cacheTtl, function () {
             return Category::where(['parent_id' => null, 'status' => true])
                 ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'status')

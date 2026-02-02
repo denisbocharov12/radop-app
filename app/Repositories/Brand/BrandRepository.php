@@ -75,8 +75,8 @@ final class BrandRepository
     public function getAllToFrontEnd(): Collection
     {
         $cacheKey = 'brands_all_frontend_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             return Brand::query()->where('status', true)->get();
         });
     }
@@ -87,8 +87,8 @@ final class BrandRepository
     public function getLimited()
     {
         $cacheKey = 'brands_limited_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             return Brand::where('status', true)
                 ->orderBy('order')
                 ->take(30)
@@ -159,9 +159,9 @@ final class BrandRepository
             ->groupBy('products.onec_id');
 
         $queryBuilder = $queryBuilder->orderByRaw("
-            CASE 
-                WHEN product_profiles.condition = 'hot' THEN 0 
-                ELSE 1 
+            CASE
+                WHEN product_profiles.condition = 'hot' THEN 0
+                ELSE 1
             END ASC
         ");
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
@@ -197,7 +197,7 @@ final class BrandRepository
         }
 
         $cacheKey = 'brand_product_counts_' . md5(implode(',', $productOnecIds));
-        
+
         return Cache::remember($cacheKey, 300, function () use ($brands, $productOnecIds) {
             $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
 

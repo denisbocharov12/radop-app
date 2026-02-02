@@ -9434,7 +9434,7 @@ hr.product-card-item{
 }
 
 .main-column-catalog {
-    height: 100%;
+    height: auto;
 }
 
 .main-column-catalog__list {
@@ -9646,6 +9646,7 @@ hr.product-card-item{
 .catalog-navbar._active {
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 }
 
 .catalog-navbar__search {

@@ -109,7 +109,7 @@ final class ProductRepository
             ->withQueryString()
             ->appends(request()->query())
         ;
-        
+
         return $result;
     }
 
@@ -178,11 +178,11 @@ final class ProductRepository
     public function getPopularProductsForHomePage()
     {
         $cacheKey = 'home_popular_products_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())
                 ->pluck('product_id');
-            
+
             if ($popularProductProfiles->isEmpty()) {
                 return collect();
             }
@@ -248,9 +248,9 @@ final class ProductRepository
             ->with(['brand', 'values', 'media', 'packages', 'data']);
 
         $queryBuilder = $queryBuilder->orderByRaw("
-            CASE 
-                WHEN product_profiles.condition = 'hot' THEN 0 
-                ELSE 1 
+            CASE
+                WHEN product_profiles.condition = 'hot' THEN 0
+                ELSE 1
             END ASC
         ");
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
@@ -353,11 +353,11 @@ final class ProductRepository
     public function getNewProductsForHomePage()
     {
         $cacheKey = 'home_new_products_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())
                 ->pluck('product_id');
-            
+
             if ($newProductProfile->isEmpty()) {
                 return collect();
             }
@@ -423,9 +423,9 @@ final class ProductRepository
             ->with(['brand', 'values', 'media', 'packages', 'data']);
 
         $queryBuilder = $queryBuilder->orderByRaw("
-            CASE 
-                WHEN product_profiles.condition = 'hot' THEN 0 
-                ELSE 1 
+            CASE
+                WHEN product_profiles.condition = 'hot' THEN 0
+                ELSE 1
             END ASC
         ");
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
@@ -488,8 +488,8 @@ final class ProductRepository
     public function getDiscountProductsForHomePage()
     {
         $cacheKey = 'home_discount_products_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             return Product::where('sale_price', '!=', 0)
                 ->whereNotNull('price_koef')
                 ->where('status', true)
@@ -548,9 +548,9 @@ final class ProductRepository
             ->with(['brand', 'values', 'media', 'packages', 'data']);
 
         $queryBuilder = $queryBuilder->orderByRaw("
-            CASE 
-                WHEN product_profiles.condition = 'hot' THEN 0 
-                ELSE 1 
+            CASE
+                WHEN product_profiles.condition = 'hot' THEN 0
+                ELSE 1
             END ASC
         ");
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);

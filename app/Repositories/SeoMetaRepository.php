@@ -37,7 +37,7 @@ class SeoMetaRepository
         $locale = $locale ?? app()->getLocale();
         $cacheKey = 'seo_meta_static_' . $slug . '_' . $locale;
 
-        return Cache::remember($cacheKey, 3600, function () use ($slug, $locale) {
+        return Cache::remember($cacheKey, 7200, function () use ($slug, $locale) {
             return SeoMeta::where('page_type', $slug)
                 ->where('locale', $locale)
                 ->first();
