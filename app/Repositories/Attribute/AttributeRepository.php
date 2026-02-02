@@ -48,8 +48,8 @@ final class AttributeRepository
     public function getAllToShop(): ?array
     {
         $cacheKey = 'attributes_all_shop_' . app()->getLocale();
-        
-        return Cache::remember($cacheKey, 3600, function () {
+
+        return Cache::remember($cacheKey, 7200, function () {
             $collect = array();
 
             $join = DB::table('attribute_values')
@@ -164,20 +164,20 @@ final class AttributeRepository
         }
 
         $cacheKey = 'attribute_product_counts_' . md5(implode(',', $productOnecIds));
-        
-        return Cache::remember($cacheKey, 300, function () use ($productOnecIds, $attributes) {
+
+        return Cache::remember($cacheKey, 600, function () use ($productOnecIds, $attributes) {
             $attributeCounts = [];
 
             foreach ($attributes as $key => $attributeValues) {
                 foreach ($attributeValues as $attribute) {
                     $attributeId = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
-                    
+
                     if ($attributeId) {
                         $attributeModel = $this->getAttributeValueById((int)$attributeId);
                         if ($attributeModel) {
                             $attributeOnecId = $attributeModel->attribute_onec_id;
                             $attributeValue = str_replace(',', '.', $attributeModel->value);
-                            
+
                             $valueProductCount = DB::table('attribute_values')
                                 ->whereIn('product_onec_id', $productOnecIds)
                                 ->where('attribute_onec_id', $attributeOnecId)
@@ -194,7 +194,7 @@ final class AttributeRepository
                     }
                 }
             }
-            
+
             return $attributeCounts;
         });
     }

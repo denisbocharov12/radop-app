@@ -96,7 +96,7 @@ final class ThemeBrandController extends Controller
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
         $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
 
-        $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
+        //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
@@ -223,19 +223,19 @@ final class ThemeBrandController extends Controller
         if (config('filter_ajax.version', 'v1') !== 'v2') {
             abort(404);
         }
-        
+
         $categoryId = $request->input('category_id');
-        
+
         if ($categoryId === null) {
             throw new CategoryNotFoundValidationException();
         }
-        
+
         $category = $this->categoryRepository->getByOnecId($categoryId);
-        
+
         if ($category === null) {
             throw new CategoryNotFoundValidationException();
         }
-        
+
         $existedBrand = $this->brandRepository->getByOnecId($onecId);
 
         if ($existedBrand === null) {
@@ -247,7 +247,7 @@ final class ThemeBrandController extends Controller
 
         $existingFilters = $request->input('filter', []);
         $existingFilters['category'] = $categoryId;
-        
+
         $request->merge(['filter' => $existingFilters]);
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
@@ -256,11 +256,11 @@ final class ThemeBrandController extends Controller
         $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
         $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
         $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-        
+
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
         $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
         $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-        
+
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
         $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
 
@@ -298,7 +298,7 @@ final class ThemeBrandController extends Controller
         if (config('filter_ajax.version', 'v1') !== 'v2') {
             abort(404);
         }
-        
+
         $existedBrand = $this->brandRepository->getByOnecId($onecId);
 
         if ($existedBrand === null) {
@@ -314,11 +314,11 @@ final class ThemeBrandController extends Controller
         $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
         $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
         $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-        
+
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
         $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
         $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-        
+
         $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
         $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
 

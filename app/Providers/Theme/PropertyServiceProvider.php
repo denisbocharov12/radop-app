@@ -11,7 +11,7 @@ use Illuminate\Support\ServiceProvider;
 final class PropertyServiceProvider extends ServiceProvider
 {
     private const CACHE_KEY = 'theme_parent_categories';
-    private const CACHE_TTL = 3600;
+    private const CACHE_TTL = 7200;
 
     /**
      * @return void

@@ -163,7 +163,6 @@
                     @endforeach
                 @endif
             </div>
-            <button class="catalog__close-btn _icon-close" type="button"></button>
         </div>
     </div>
 </div>
