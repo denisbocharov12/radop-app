@@ -106,6 +106,7 @@
         function updateUI(data) {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
 
             if (tableView) {
                 tableView.innerHTML = data.tableView || '';
@@ -114,6 +115,9 @@
             if (listView) {
                 listView.innerHTML = data.listView || '';
                 listView.style.opacity = '1';
+            }
+            if (listViewMobile) {
+                listViewMobile.innerHTML = data.listView || '';
             }
 
             const hasPages = (data.hasPages === true) || (data.pagination && data.pagination.trim() !== '');
@@ -157,6 +161,7 @@
         function showLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
 
             if (tableView) {
                 tableView.style.opacity = '0.5';
@@ -164,11 +169,15 @@
             if (listView) {
                 listView.style.opacity = '0.5';
             }
+            if (listViewMobile) {
+                listViewMobile.style.opacity = '0.5';
+            }
         }
 
         function hideLoading() {
             const tableView = document.getElementById('productsTableView');
             const listView = document.getElementById('productsListView');
+            const listViewMobile = document.getElementById('productsListViewMobile');
 
             if (tableView) {
                 tableView.style.opacity = '1';
@@ -176,26 +185,68 @@
             if (listView) {
                 listView.style.opacity = '1';
             }
+            if (listViewMobile) {
+                listViewMobile.style.opacity = '1';
+            }
         }
 
-        function performAjaxRequest(url, formData, updateUrl) {
+        function closeFilterModal() {
+            const modalElement = document.getElementById('filtersModal');
+            if (!modalElement) {
+                return;
+            }
+
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                if (modal) {
+                    modal.hide();
+                } else {
+                    const bsModal = new bootstrap.Modal(modalElement);
+                    bsModal.hide();
+                }
+            } else if (window.$ && $.fancybox) {
+                $.fancybox.close();
+            } else {
+                modalElement.style.display = 'none';
+                modalElement.classList.remove('show');
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            }
+        }
+
+        function performAjaxRequest(url, formData, updateUrl, signal) {
             showLoading();
 
-            return fetch(url, {
+            const fetchOptions = {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json',
                 }
-            })
+            };
+
+            if (signal) {
+                fetchOptions.signal = signal;
+            }
+
+            return fetch(url, fetchOptions)
             .then(response => {
+                if (signal && signal.aborted) {
+                    throw new Error('Request aborted');
+                }
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
+                if (signal && signal.aborted) {
+                    return;
+                }
                 if (data.success) {
                     updateUI(data);
                     if (updateUrl) {
@@ -211,6 +262,10 @@
                         window.history.pushState({}, '', newUrl.toString());
                     }
                     hideLoading();
+                    
+                    setTimeout(function() {
+                        closeFilterModal();
+                    }, 100);
                 } else {
                     console.error('Server error:', data.message || 'Unknown error');
                     hideLoading();
@@ -218,39 +273,72 @@
                 return data;
             })
             .catch(error => {
+                if (signal && signal.aborted) {
+                    hideLoading();
+                    return;
+                }
                 console.error('Error:', error);
                 hideLoading();
-                alert('An error occurred while loading data. Please try again.');
+                if (error.name !== 'AbortError') {
+                    alert('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.');
+                }
                 throw error;
             });
         }
 
+        let isRequestInProgress = false;
+        let currentRequestAbortController = null;
+
         function initCategoryFilters() {
-            document.querySelectorAll('.category-filter-link').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const categoryId = this.getAttribute('data-category-id');
-                    const pageType = this.getAttribute('data-page-type');
-                    const pageSubType = this.getAttribute('data-page-sub-type');
-                    const brandOnecId = this.getAttribute('data-brand-onec-id');
-
-                    if (!categoryId) {
-                        return;
-                    }
-
-                    document.querySelectorAll('.category-filter-link').forEach(function(l) {
-                        l.classList.remove('active');
-                    });
-                    this.classList.add('active');
-
-                    const url = getAjaxUrl(pageType, pageSubType, brandOnecId);
-                    const formData = buildFormData(categoryId, '1');
-
-                    performAjaxRequest(url, formData, { page: '1', categoryId: categoryId });
-                });
+            const links = document.querySelectorAll('.category-filter-link');
+            
+            links.forEach(function(link) {
+                link.removeEventListener('click', handleCategoryClick);
+                link.addEventListener('click', handleCategoryClick);
             });
+        }
+
+        function handleCategoryClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (isRequestInProgress) {
+                return;
+            }
+
+            const categoryId = this.getAttribute('data-category-id');
+            const pageType = this.getAttribute('data-page-type');
+            const pageSubType = this.getAttribute('data-page-sub-type');
+            const brandOnecId = this.getAttribute('data-brand-onec-id');
+
+            if (!categoryId) {
+                return;
+            }
+
+            if (this.classList.contains('active')) {
+                return;
+            }
+
+            document.querySelectorAll('.category-filter-link').forEach(function(l) {
+                l.classList.remove('active');
+            });
+            this.classList.add('active');
+
+            if (currentRequestAbortController) {
+                currentRequestAbortController.abort();
+            }
+
+            isRequestInProgress = true;
+            currentRequestAbortController = new AbortController();
+
+            const url = getAjaxUrl(pageType, pageSubType, brandOnecId);
+            const formData = buildFormData(categoryId, '1');
+
+            performAjaxRequest(url, formData, { page: '1', categoryId: categoryId }, currentRequestAbortController.signal)
+                .finally(function() {
+                    isRequestInProgress = false;
+                    currentRequestAbortController = null;
+                });
         }
 
         initCategoryFilters();
@@ -299,10 +387,25 @@
                 return;
             }
 
+            if (isRequestInProgress) {
+                return;
+            }
+
+            if (currentRequestAbortController) {
+                currentRequestAbortController.abort();
+            }
+
+            isRequestInProgress = true;
+            currentRequestAbortController = new AbortController();
+
             const ajaxUrl = getAjaxUrl(pageType, pageSubType, brandOnecId);
             const formData = buildFormData(categoryId, page);
 
-            performAjaxRequest(ajaxUrl, formData, { page: page, categoryId: categoryId });
+            performAjaxRequest(ajaxUrl, formData, { page: page, categoryId: categoryId }, currentRequestAbortController.signal)
+                .finally(function() {
+                    isRequestInProgress = false;
+                    currentRequestAbortController = null;
+                });
         }
 
         document.addEventListener('click', function(e) {
