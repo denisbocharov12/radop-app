@@ -253,17 +253,6 @@ final class ThemeBrandController extends Controller
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
 
-        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
-        $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
-        $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
-        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
-        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
-
         $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
         $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
 
@@ -280,11 +269,6 @@ final class ThemeBrandController extends Controller
             'hasPages' => $products->hasPages(),
             'currentPage' => $products->currentPage(),
             'lastPage' => $products->lastPage(),
-            'filtersCounts' => [
-                'categories' => $categoryCounts,
-                'attributes' => $attributeCounts,
-                'brands' => $brandCounts,
-            ],
         ]);
     }
 
