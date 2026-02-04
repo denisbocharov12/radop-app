@@ -98,9 +98,9 @@ class CategoryRepository
             ->orderBy('product_category_sorts.sort');
         } else {
             $queryBuilder = $queryBuilder->orderByRaw("
-                CASE 
-                    WHEN product_profiles.condition = 'hot' THEN 0 
-                    ELSE 1 
+                CASE
+                    WHEN product_profiles.condition = 'popular' THEN 0
+                    ELSE 1
                 END ASC
             ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
@@ -171,10 +171,10 @@ class CategoryRepository
             ->get()
             ->map(function ($category) {
                 $nameRaw = $category->getRawOriginal('name');
-                
+
                 $nameRo = '';
                 $nameRu = '';
-                
+
                 if (is_string($nameRaw) && !empty($nameRaw)) {
                     $decodedName = json_decode($nameRaw, true);
                     if (is_array($decodedName) && array_key_exists('ro', $decodedName) && array_key_exists('ru', $decodedName)) {
@@ -191,7 +191,7 @@ class CategoryRepository
                             $nameRo = '';
                             $nameRu = '';
                         }
-                        
+
                         if (empty($nameRo) && !empty($nameRu)) {
                             $nameRo = $nameRu;
                         }
@@ -204,7 +204,7 @@ class CategoryRepository
                         }
                     }
                 }
-                
+
                 return [
                     'id' => $category->onec_id,
                     'name' => $category->name,
@@ -308,7 +308,7 @@ class CategoryRepository
 
         $productIds = $products->pluck('onec_id')->toArray();
         $cacheKey = 'categories_product_counts_' . md5(implode(',', $productIds));
-        
+
         return Cache::remember($cacheKey, 3600, function () use ($productIds) {
             $categoryData = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
@@ -381,16 +381,16 @@ class CategoryRepository
 
         $filterCategory = function ($category) use ($productCounts, $categoriesMap, &$filterCategory) {
             $category->products_count = $productCounts[$category->onec_id] ?? 0;
-            
+
             $children = $categoriesMap->filter(function ($cat) use ($category) {
                 return $cat->parent_id !== null && $cat->parent_id === $category->id;
             });
-            
+
             $hasChildrenWithProducts = false;
-            
+
             if ($children->isNotEmpty()) {
                 $filteredChildren = collect();
-                
+
                 foreach ($children as $child) {
                     $filteredChild = $filterCategory($child);
                     if ($filteredChild !== null) {
@@ -398,16 +398,16 @@ class CategoryRepository
                         $hasChildrenWithProducts = true;
                     }
                 }
-                
+
                 if ($filteredChildren->isNotEmpty()) {
                     $category->children = $filteredChildren->sortBy('name')->values();
                 }
             }
-            
+
             if ($category->products_count > 0 || $hasChildrenWithProducts) {
                 return $category;
             }
-            
+
             return null;
         };
 
@@ -415,17 +415,17 @@ class CategoryRepository
             if ($category->parent_id === null) {
                 return true;
             }
-            
+
             $parentCategory = Category::find($category->parent_id);
             if ($parentCategory === null) {
                 return true;
             }
-            
+
             return !$categoriesMap->has($parentCategory->onec_id);
         });
 
         $result = collect();
-        
+
         foreach ($rootCategories as $rootCategory) {
             $filtered = $filterCategory($rootCategory);
             if ($filtered !== null) {

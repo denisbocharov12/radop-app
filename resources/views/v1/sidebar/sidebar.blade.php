@@ -99,6 +99,16 @@
                         <ul class="nk-menu-sub">
                             @hasrole('admin')
                             <li class="nk-menu-item">
+                                <a href="{{route('active-pages-export.index')}}" class="nk-menu-link"><span class="nk-menu-text">Экспорт активных страниц</span></a>
+                            </li>
+                            @endhasrole
+                            @hasrole('manager')
+                            <li class="nk-menu-item">
+                                <a href="{{route('active-pages-export.index')}}" class="nk-menu-link"><span class="nk-menu-text">Экспорт активных страниц</span></a>
+                            </li>
+                            @endhasrole
+                            @hasrole('admin')
+                            <li class="nk-menu-item">
                                 <a href="{{route('manager-export.index')}}" class="nk-menu-link"><span class="nk-menu-text">Экспорты менеджеров</span></a>
                             </li>
                             @endhasrole
