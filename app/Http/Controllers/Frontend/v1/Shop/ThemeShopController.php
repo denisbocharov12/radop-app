@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\PageSortSetting;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
 use App\Exceptions\User\UserNoDiscountException;
+use App\Jobs\WarmShopFilterCountsJob;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -305,7 +306,7 @@ final class ThemeShopController extends Controller
         }
 
         $products = $this->productRepository->getAllNewProducts();
-        
+
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -348,7 +349,7 @@ final class ThemeShopController extends Controller
         }
 
         $products = $this->productRepository->getAllPopularProducts();
-        
+
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -391,7 +392,7 @@ final class ThemeShopController extends Controller
         }
 
         $products = $this->productRepository->getAllDiscountProducts();
-        
+
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -403,7 +404,7 @@ final class ThemeShopController extends Controller
 
         GeneratePersonalizedExcelExportJob::dispatch(
             $products,
-            'sale_products', 
+            'sale_products',
             'sale',
             $locale,
             $user
@@ -430,25 +431,25 @@ final class ThemeShopController extends Controller
         if (config('filter_ajax.version', 'v1') !== 'v2') {
             abort(404);
         }
-        
+
         $categoryId = $request->input('category_id');
-        
+
         if ($categoryId === null) {
             throw new CategoryNotFoundValidationException();
         }
-        
+
         $category = $this->categoryRepository->getByOnecId($categoryId);
-        
+
         if ($category === null) {
             throw new CategoryNotFoundValidationException();
         }
-        
+
         $existingFilters = $request->input('filter', []);
         $existingFilters['category'] = $categoryId;
         $request->merge(['filter' => $existingFilters]);
-        
+
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
-        
+
         if ($type === 'new') {
             $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
             $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
@@ -533,19 +534,7 @@ final class ThemeShopController extends Controller
                     $attributeCounts = $cachedCounts['attributeCounts'] ?? [];
                     $countsCacheHit = true;
                 } else {
-                    $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
-                    $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-
-                    $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
-                    $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-
-                    $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
-                    $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
-                    Cache::put($countsCacheKey, [
-                        'categoryCounts' => $categoryCounts,
-                        'brandCounts' => $brandCounts,
-                        'attributeCounts' => $attributeCounts,
-                    ], 7200);
+                    WarmShopFilterCountsJob::dispatch($type, app()->getLocale())->onQueue('default');
                 }
                 $countsMs = round((microtime(true) - $t0) * 1000);
             }
@@ -626,26 +615,11 @@ final class ThemeShopController extends Controller
             $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
             $filtersMs = round((microtime(true) - $t0) * 1000);
 
-            $countsMs = 0;
-            if ($productOnecIds !== []) {
-                $t0 = microtime(true);
-                $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-                $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-                $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
-                Cache::put("theme_shop_filter_counts_{$type}_{$locale}", [
-                    'categoryCounts' => $categoryCounts,
-                    'brandCounts' => $brandCounts,
-                    'attributeCounts' => $attributeCounts,
-                ], 7200);
-                $countsMs = round((microtime(true) - $t0) * 1000);
-            }
-
             $totalMs = round((microtime(true) - $closureStart) * 1000);
             Log::info('[Shop] getCachedShopFilters built', [
                 'type' => $type,
                 'locale' => $locale,
                 'filters_ms' => $filtersMs,
-                'counts_ms' => $countsMs,
                 'total_ms' => $totalMs,
             ]);
 
