@@ -78,6 +78,9 @@ class PermissionSeeder extends Seeder
         'product.regenerate.images',
         'manager-export.index',
         'manager-export.download',
+        'active-pages-export.index',
+        'active-pages-export.generate',
+        'active-pages-export.download',
     ];
 
     private array $userPermittedRoutes = [
