@@ -20,6 +20,7 @@ use App\Models\PageSortSetting;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
 use App\Exceptions\User\UserNoDiscountException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 final class ThemeShopController extends Controller
 {
@@ -91,17 +92,32 @@ final class ThemeShopController extends Controller
      */
     public function newProducts(Request $request)
     {
+        $requestStart = microtime(true);
         $query = $request->query('filter');
         $locale = app()->getLocale();
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
+
+        $t0 = microtime(true);
         $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+        $productsMs = round((microtime(true) - $t0) * 1000);
+
+        $t0 = microtime(true);
         $filters = $this->getCachedShopFilters('new', $locale);
+        $filtersMs = round((microtime(true) - $t0) * 1000);
 
         $this->applySeoForShopPage(
             $this->pageTypes->getNewProductsType(),
             $locale,
             route('theme.shop.new')
         );
+
+        $totalMs = round((microtime(true) - $requestStart) * 1000);
+        Log::info('[Shop] newProducts', [
+            'page' => $request->input('page', 1),
+            'products_ms' => $productsMs,
+            'filters_ms' => $filtersMs,
+            'total_ms' => $totalMs,
+        ]);
 
         return view('frontend.v1.pages.shop.index', array_merge(
             compact('products', 'query', 'defaultSort'),
@@ -139,17 +155,32 @@ final class ThemeShopController extends Controller
      */
     public function saleProducts(Request $request)
     {
+        $requestStart = microtime(true);
         $query = $request->query('filter');
         $locale = app()->getLocale();
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
+
+        $t0 = microtime(true);
         $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+        $productsMs = round((microtime(true) - $t0) * 1000);
+
+        $t0 = microtime(true);
         $filters = $this->getCachedShopFilters('sale', $locale);
+        $filtersMs = round((microtime(true) - $t0) * 1000);
 
         $this->applySeoForShopPage(
             $this->pageTypes->getSaleProductsType(),
             $locale,
             route('theme.shop.sale')
         );
+
+        $totalMs = round((microtime(true) - $requestStart) * 1000);
+        Log::info('[Shop] saleProducts', [
+            'page' => $request->input('page', 1),
+            'products_ms' => $productsMs,
+            'filters_ms' => $filtersMs,
+            'total_ms' => $totalMs,
+        ]);
 
         return view('frontend.v1.pages.shop.index', array_merge(
             compact('products', 'query', 'defaultSort'),
@@ -457,66 +488,116 @@ final class ThemeShopController extends Controller
      */
     public function filter(Request $request, string $type): \Illuminate\Http\JsonResponse
     {
+        $requestStart = microtime(true);
+
         if (config('filter_ajax.version', 'v1') !== 'v2') {
             abort(404);
         }
-        
-        $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
 
-        if ($type === 'new') {
-            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
-            $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $productOnecIds = $this->productRepository->getNewProductOnecIds();
-        } elseif ($type === 'popular') {
-            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
-            $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $productOnecIds = $this->productRepository->getPopularProductOnecIds();
-        } elseif ($type === 'sale') {
-            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
-            $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $productOnecIds = $this->productRepository->getDiscountProductOnecIds();
-        } else {
-            $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
-            $productOnecIds = [];
+        try {
+            $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
+
+            $t0 = microtime(true);
+            if ($type === 'new') {
+                $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
+                $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+                $productOnecIds = $this->productRepository->getNewProductOnecIds();
+            } elseif ($type === 'popular') {
+                $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
+                $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+                $productOnecIds = $this->productRepository->getPopularProductOnecIds();
+            } elseif ($type === 'sale') {
+                $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
+                $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
+                $productOnecIds = $this->productRepository->getDiscountProductOnecIds();
+            } else {
+                $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
+                $productOnecIds = [];
+            }
+            $productsMs = round((microtime(true) - $t0) * 1000);
+
+            $categoryCounts = [];
+            $brandCounts = [];
+            $attributeCounts = [];
+            $countsCacheHit = false;
+            $countsMs = 0;
+
+            if ($productOnecIds !== []) {
+                $t0 = microtime(true);
+                $countsCacheKey = 'theme_shop_filter_counts_' . $type . '_' . app()->getLocale();
+                $cachedCounts = Cache::get($countsCacheKey);
+
+                if ($cachedCounts !== null) {
+                    $categoryCounts = $cachedCounts['categoryCounts'] ?? [];
+                    $brandCounts = $cachedCounts['brandCounts'] ?? [];
+                    $attributeCounts = $cachedCounts['attributeCounts'] ?? [];
+                    $countsCacheHit = true;
+                } else {
+                    $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
+                    $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+
+                    $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
+                    $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+
+                    $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
+                    $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
+                    Cache::put($countsCacheKey, [
+                        'categoryCounts' => $categoryCounts,
+                        'brandCounts' => $brandCounts,
+                        'attributeCounts' => $attributeCounts,
+                    ], 7200);
+                }
+                $countsMs = round((microtime(true) - $t0) * 1000);
+            }
+
+            $t0 = microtime(true);
+            $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
+            $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
+
+            $pagination = '';
+            if ($products->hasPages()) {
+                $pagination = $products->appends($request->except('page'))->links()->render();
+            }
+            $viewsMs = round((microtime(true) - $t0) * 1000);
+
+            $totalMs = round((microtime(true) - $requestStart) * 1000);
+            Log::info('[Shop] filter', [
+                'type' => $type,
+                'page' => $request->input('page', 1),
+                'products_ms' => $productsMs,
+                'counts_cache_hit' => $countsCacheHit,
+                'counts_ms' => $countsMs,
+                'views_ms' => $viewsMs,
+                'total_ms' => $totalMs,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'tableView' => $tableView,
+                'listView' => $listView,
+                'pagination' => $pagination,
+                'hasPages' => $products->hasPages(),
+                'currentPage' => $products->currentPage(),
+                'lastPage' => $products->lastPage(),
+                'filtersCounts' => [
+                    'categories' => $categoryCounts,
+                    'attributes' => $attributeCounts,
+                    'brands' => $brandCounts,
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            $totalMs = round((microtime(true) - $requestStart) * 1000);
+            Log::error('[Shop] filter error', [
+                'type' => $type,
+                'page' => $request->input('page', 1),
+                'total_ms' => $totalMs,
+                'message' => $e->getMessage(),
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+            throw $e;
         }
-
-        $categoryCounts = [];
-        $brandCounts = [];
-        $attributeCounts = [];
-
-        if ($productOnecIds !== []) {
-            $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
-            $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-
-            $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
-            $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-
-            $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
-            $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
-        }
-
-        $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
-        $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
-
-        $pagination = '';
-        if ($products->hasPages()) {
-            $pagination = $products->appends($request->except('page'))->links()->render();
-        }
-
-        return response()->json([
-            'success' => true,
-            'tableView' => $tableView,
-            'listView' => $listView,
-            'pagination' => $pagination,
-            'hasPages' => $products->hasPages(),
-            'currentPage' => $products->currentPage(),
-            'lastPage' => $products->lastPage(),
-            'filtersCounts' => [
-                'categories' => $categoryCounts,
-                'attributes' => $attributeCounts,
-                'brands' => $brandCounts,
-            ],
-        ]);
     }
 
     /**
@@ -528,7 +609,10 @@ final class ThemeShopController extends Controller
     {
         $cacheKey = "theme_shop_filters_{$type}_{$locale}";
 
-        return Cache::remember($cacheKey, 7200, function () use ($type) {
+        return Cache::remember($cacheKey, 7200, function () use ($type, $locale) {
+            $closureStart = microtime(true);
+            Log::info('[Shop] getCachedShopFilters cache miss', ['type' => $type, 'locale' => $locale]);
+
             $productOnecIds = match ($type) {
                 'new' => $this->productRepository->getNewProductOnecIds(),
                 'popular' => $this->productRepository->getPopularProductOnecIds(),
@@ -536,10 +620,39 @@ final class ThemeShopController extends Controller
                 default => [],
             };
 
+            $t0 = microtime(true);
+            $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
+            $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
+            $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
+            $filtersMs = round((microtime(true) - $t0) * 1000);
+
+            $countsMs = 0;
+            if ($productOnecIds !== []) {
+                $t0 = microtime(true);
+                $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+                $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
+                $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
+                Cache::put("theme_shop_filter_counts_{$type}_{$locale}", [
+                    'categoryCounts' => $categoryCounts,
+                    'brandCounts' => $brandCounts,
+                    'attributeCounts' => $attributeCounts,
+                ], 7200);
+                $countsMs = round((microtime(true) - $t0) * 1000);
+            }
+
+            $totalMs = round((microtime(true) - $closureStart) * 1000);
+            Log::info('[Shop] getCachedShopFilters built', [
+                'type' => $type,
+                'locale' => $locale,
+                'filters_ms' => $filtersMs,
+                'counts_ms' => $countsMs,
+                'total_ms' => $totalMs,
+            ]);
+
             return [
-                'attributes' => $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds),
-                'brands' => $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds),
-                'categories' => $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds),
+                'attributes' => $attributes,
+                'brands' => $brands,
+                'categories' => $categories,
             ];
         });
     }

@@ -481,7 +481,7 @@ final class ProductRepository
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
 
         return $queryBuilder
-            ->paginate($request->query('perPage') ?? 5)
+            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
