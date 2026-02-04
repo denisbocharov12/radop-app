@@ -174,15 +174,34 @@ final class BrandRepository
         ;
     }
 
+    /**
+     * @param array<int, string> $productOnecIds
+     * @return Collection<int, Brand>
+     */
+    public function getAllBrandsByProductOnecIdsToFrontEnd(array $productOnecIds): Collection
+    {
+        if ($productOnecIds === []) {
+            return collect();
+        }
+
+        $cacheKey = 'shop_brands_by_onec_ids_' . md5(implode(',', $productOnecIds));
+
+        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
+            return Product::whereIn('onec_id', $productOnecIds)
+                ->with('brand')
+                ->get()
+                ->pluck('brand')
+                ->filter()
+                ->unique('id')
+                ->values();
+        });
+    }
+
     public function getAllBrandsByProductsIdsToFrontEnd(Collection $products): Collection
     {
-        $productIds = $products->pluck('id')->toArray();
+        $productOnecIds = $products->pluck('onec_id')->toArray();
 
-        return Product::whereIn('id', $productIds)
-            ->with('brand')
-            ->get()
-            ->pluck('brand')
-            ->unique('id');
+        return $this->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
     }
 
     /**

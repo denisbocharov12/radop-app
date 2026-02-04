@@ -300,19 +300,22 @@ class CategoryRepository
      * @param Collection $products
      * @return Collection
      */
-    public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
+    /**
+     * @param array<int, string> $productOnecIds
+     * @return Collection<int, \App\Models\Category>
+     */
+    public function getLastNestedCategoriesWithProductCountByOnecIds(array $productOnecIds): Collection
     {
-        if ($products->isEmpty()) {
+        if ($productOnecIds === []) {
             return collect();
         }
 
-        $productIds = $products->pluck('onec_id')->toArray();
-        $cacheKey = 'categories_product_counts_' . md5(implode(',', $productIds));
+        $cacheKey = 'categories_product_counts_' . md5(implode(',', $productOnecIds));
 
-        return Cache::remember($cacheKey, 3600, function () use ($productIds) {
+        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
             $categoryData = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
-                ->whereIn('product_categories.product_id', $productIds)
+                ->whereIn('product_categories.product_id', $productOnecIds)
                 ->where('categories.status', true)
                 ->whereNull('categories.deleted_at')
                 ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT product_categories.product_id) as count'))
@@ -340,6 +343,17 @@ class CategoryRepository
             ->sortBy('name')
             ->values();
         });
+    }
+
+    public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
+    {
+        if ($products->isEmpty()) {
+            return collect();
+        }
+
+        $productIds = $products->pluck('onec_id')->toArray();
+
+        return $this->getLastNestedCategoriesWithProductCountByOnecIds($productIds);
     }
 
     /**

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\PageSortSetting;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
 use App\Exceptions\User\UserNoDiscountException;
+use Illuminate\Support\Facades\Cache;
 
 final class ThemeShopController extends Controller
 {
@@ -91,35 +92,21 @@ final class ThemeShopController extends Controller
     public function newProducts(Request $request)
     {
         $query = $request->query('filter');
-
+        $locale = app()->getLocale();
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
         $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-        $allNewProducts = $this->productRepository->getAllNewProducts();
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allNewProducts);
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allNewProducts);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allNewProducts);
+        $filters = $this->getCachedShopFilters('new', $locale);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getNewProductsType(), app()->getLocale());
+        $this->applySeoForShopPage(
+            $this->pageTypes->getNewProductsType(),
+            $locale,
+            route('theme.shop.new')
+        );
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
-            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-            SEOMeta::setKeywords($seoKeywords);
-            $this->seo()->opengraph()->setUrl(route('theme.shop.new'));
-            $this->seo()->opengraph()->addProperty('type', 'page');
-            $this->seo()->jsonLd()->setType('WebPage');
-        }
-
-        return view('frontend.v1.pages.shop.index', compact([
-            'products',
-            'query',
-            'attributes',
-            'brands',
-            'categories',
-            'defaultSort',
-        ]));
+        return view('frontend.v1.pages.shop.index', array_merge(
+            compact('products', 'query', 'defaultSort'),
+            $filters
+        ));
     }
 
     /**
@@ -129,35 +116,21 @@ final class ThemeShopController extends Controller
     public function popularProducts(Request $request)
     {
         $query = $request->query('filter');
-
+        $locale = app()->getLocale();
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
         $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-        $allPopularProducts = $this->productRepository->getAllPopularProducts();
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allPopularProducts);
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allPopularProducts);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allPopularProducts);
+        $filters = $this->getCachedShopFilters('popular', $locale);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getPopularProductsType(), app()->getLocale());
+        $this->applySeoForShopPage(
+            $this->pageTypes->getPopularProductsType(),
+            $locale,
+            route('theme.shop.popular')
+        );
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
-            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-            SEOMeta::setKeywords($seoKeywords);
-            $this->seo()->opengraph()->setUrl(route('theme.shop.popular'));
-            $this->seo()->opengraph()->addProperty('type', 'page');
-            $this->seo()->jsonLd()->setType('WebPage');
-        }
-
-        return view('frontend.v1.pages.shop.index', compact([
-            'products',
-            'query',
-            'attributes',
-            'brands',
-            'categories',
-            'defaultSort',
-        ]));
+        return view('frontend.v1.pages.shop.index', array_merge(
+            compact('products', 'query', 'defaultSort'),
+            $filters
+        ));
     }
 
     /**
@@ -167,35 +140,21 @@ final class ThemeShopController extends Controller
     public function saleProducts(Request $request)
     {
         $query = $request->query('filter');
-
+        $locale = app()->getLocale();
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
         $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-        $allSaleProducts = $this->productRepository->getAllDiscountProducts();
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allSaleProducts);
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allSaleProducts);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allSaleProducts);
+        $filters = $this->getCachedShopFilters('sale', $locale);
 
-        $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSaleProductsType(), app()->getLocale());
+        $this->applySeoForShopPage(
+            $this->pageTypes->getSaleProductsType(),
+            $locale,
+            route('theme.shop.sale')
+        );
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], app()->getLocale()));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], app()->getLocale()));
-            $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-            SEOMeta::setKeywords($seoKeywords);
-            $this->seo()->opengraph()->setUrl(route('theme.shop.sale'));
-            $this->seo()->opengraph()->addProperty('type', 'page');
-            $this->seo()->jsonLd()->setType('WebPage');
-        }
-
-        return view('frontend.v1.pages.shop.index', compact([
-            'products',
-            'query',
-            'attributes',
-            'brands',
-            'categories',
-            'defaultSort',
-        ]));
+        return view('frontend.v1.pages.shop.index', array_merge(
+            compact('products', 'query', 'defaultSort'),
+            $filters
+        ));
     }
 
     /**
@@ -503,38 +462,37 @@ final class ThemeShopController extends Controller
         }
         
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
-        
+
         if ($type === 'new') {
             $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForNewProductsPage();
             $products = $this->productRepository->getAllNewProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $allProducts = $this->productRepository->getAllNewProducts();
+            $productOnecIds = $this->productRepository->getNewProductOnecIds();
         } elseif ($type === 'popular') {
             $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForPopularProductsPage();
             $products = $this->productRepository->getAllPopularProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $allProducts = $this->productRepository->getAllPopularProducts();
+            $productOnecIds = $this->productRepository->getPopularProductOnecIds();
         } elseif ($type === 'sale') {
             $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForSaleProductsPage();
             $products = $this->productRepository->getAllDiscountProductsPaginatedWithFiltersAndSort($request, $defaultSort);
-            $allProducts = $this->productRepository->getAllDiscountProducts();
+            $productOnecIds = $this->productRepository->getDiscountProductOnecIds();
         } else {
             $products = $this->productRepository->getAllPaginatedWithFiltersToFrontEnd($request);
-            $allProducts = collect();
+            $productOnecIds = [];
         }
 
         $categoryCounts = [];
         $brandCounts = [];
         $attributeCounts = [];
-        
-        if ($allProducts->isNotEmpty()) {
-            $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allProducts);
+
+        if ($productOnecIds !== []) {
+            $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
             $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
-            
-            $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allProducts);
-            $productOnecIds = $allProducts->pluck('onec_id')->toArray();
+
+            $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
             $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
-            
-            $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allProducts);
-            $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+
+            $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
+            $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
         }
 
         $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
@@ -559,5 +517,53 @@ final class ThemeShopController extends Controller
                 'brands' => $brandCounts,
             ],
         ]);
+    }
+
+    /**
+     * @param string $type
+     * @param string $locale
+     * @return array{attributes: array|null, brands: \Illuminate\Support\Collection, categories: \Illuminate\Support\Collection}
+     */
+    private function getCachedShopFilters(string $type, string $locale): array
+    {
+        $cacheKey = "theme_shop_filters_{$type}_{$locale}";
+
+        return Cache::remember($cacheKey, 7200, function () use ($type) {
+            $productOnecIds = match ($type) {
+                'new' => $this->productRepository->getNewProductOnecIds(),
+                'popular' => $this->productRepository->getPopularProductOnecIds(),
+                'sale' => $this->productRepository->getDiscountProductOnecIds(),
+                default => [],
+            };
+
+            return [
+                'attributes' => $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds),
+                'brands' => $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds),
+                'categories' => $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds),
+            ];
+        });
+    }
+
+    /**
+     * @param string $pageType
+     * @param string $locale
+     * @param string $url
+     */
+    private function applySeoForShopPage(string $pageType, string $locale, string $url): void
+    {
+        $seo = $this->seoMetaRepository->getStatic($pageType, $locale);
+
+        if ($seo === null) {
+            return;
+        }
+
+        $this->seo()->setTitle($seo->title ?? trans('seo.title', [], $locale));
+        $this->seo()->setDescription($seo->description ?? trans('seo.description', [], $locale));
+        $this->seo()->addImages($seo?->getFirstMediaUrl() ?? config('seotools.meta.defaults.default_image'));
+        $seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], $locale);
+        SEOMeta::setKeywords((array) $seoKeywords);
+        $this->seo()->opengraph()->setUrl($url);
+        $this->seo()->opengraph()->addProperty('type', 'page');
+        $this->seo()->jsonLd()->setType('WebPage');
     }
 }
