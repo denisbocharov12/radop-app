@@ -136,6 +136,31 @@ final class ProductRepository
             ->get();
     }
 
+    /**
+     * @return array<int, string>
+     */
+    public function getPopularProductOnecIds(): array
+    {
+        $cacheKey = 'shop_popular_product_onec_ids';
+
+        return Cache::remember($cacheKey, 7200, function () {
+            $productIds = ProductProfile::where('condition', $this->productConditions->getPopularCondition())
+                ->pluck('product_id');
+
+            if ($productIds->isEmpty()) {
+                return [];
+            }
+
+            return Product::whereIn('onec_id', $productIds)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->pluck('onec_id')
+                ->all();
+        });
+    }
+
     public function getAllPopularProducts()
     {
         $popularProductProfiles = ProductProfile::where('condition', $this->productConditions->getPopularCondition())->get();
@@ -311,6 +336,31 @@ final class ProductRepository
         ;
     }
 
+    /**
+     * @return array<int, string>
+     */
+    public function getNewProductOnecIds(): array
+    {
+        $cacheKey = 'shop_new_product_onec_ids';
+
+        return Cache::remember($cacheKey, 600, function () {
+            $productIds = ProductProfile::where('condition', $this->productConditions->getNewCondition())
+                ->pluck('product_id');
+
+            if ($productIds->isEmpty()) {
+                return [];
+            }
+
+            return Product::whereIn('onec_id', $productIds)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->pluck('onec_id')
+                ->all();
+        });
+    }
+
     public function getAllNewProducts()
     {
         $newProductProfile = ProductProfile::where('condition', $this->productConditions->getNewCondition())->get();
@@ -450,6 +500,24 @@ final class ProductRepository
             ->whereNotNull('price_koef')
             ->orderBy('new_order')
             ->get();
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getDiscountProductOnecIds(): array
+    {
+        $cacheKey = 'shop_discount_product_onec_ids';
+
+        return Cache::remember($cacheKey, 7200, function () {
+            return Product::where('sale_price', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->pluck('onec_id')
+                ->all();
+        });
     }
 
     public function getAllDiscountProducts()

@@ -123,24 +123,42 @@ final class AttributeRepository
         return $collect;
     }
 
+    /**
+     * @param array<int, string> $productOnecIds
+     * @return array<string, mixed>|null
+     */
+    public function getAllAttributesByProductOnecIdsToFrontEnd(array $productOnecIds): ?array
+    {
+        if ($productOnecIds === []) {
+            return [];
+        }
+
+        $cacheKey = 'shop_attributes_by_onec_ids_' . app()->getLocale() . '_' . md5(implode(',', $productOnecIds));
+
+        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
+            $collect = [];
+
+            $attributeValues = DB::table('attribute_values')
+                ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+                ->whereIn('attribute_values.product_onec_id', $productOnecIds)
+                ->get()
+                ->groupBy('attribute_onec_id');
+
+            foreach ($attributeValues as $key => $value) {
+                $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+
+                $collect[$keyName] = $value->keyBy('value')->values()->toArray();
+            }
+
+            return $collect;
+        });
+    }
+
     public function getAllAttributesByProductsIdsToFrontEnd(Collection $products): ?array
     {
         $productIds = $products->pluck('onec_id')->toArray();
-        $collect = [];
 
-        $attributeValues = DB::table('attribute_values')
-            ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
-            ->whereIn('attribute_values.product_onec_id', $productIds)
-            ->get()
-            ->groupBy('attribute_onec_id');
-
-        foreach ($attributeValues as $key => $value) {
-            $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
-
-            $collect[$keyName] = $value->keyBy('value')->values()->toArray();
-        }
-
-        return $collect;
+        return $this->getAllAttributesByProductOnecIdsToFrontEnd($productIds);
     }
 
     /**
