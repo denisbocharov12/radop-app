@@ -249,7 +249,7 @@ final class ProductRepository
 
         $queryBuilder = $queryBuilder->orderByRaw("
             CASE
-                WHEN product_profiles.condition = 'hot' THEN 0
+                WHEN product_profiles.condition = 'popular' THEN 0
                 ELSE 1
             END ASC
         ");
@@ -424,14 +424,14 @@ final class ProductRepository
 
         $queryBuilder = $queryBuilder->orderByRaw("
             CASE
-                WHEN product_profiles.condition = 'hot' THEN 0
+                WHEN product_profiles.condition = 'popular' THEN 0
                 ELSE 1
             END ASC
         ");
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
 
         return $queryBuilder
-            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
+            ->paginate($request->query('perPage') ?? 5)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -549,7 +549,7 @@ final class ProductRepository
 
         $queryBuilder = $queryBuilder->orderByRaw("
             CASE
-                WHEN product_profiles.condition = 'hot' THEN 0
+                WHEN product_profiles.condition = 'popular' THEN 0
                 ELSE 1
             END ASC
         ");

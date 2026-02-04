@@ -121,6 +121,8 @@
                 const closeBtn = dropdown.querySelector('[data-mega-menu-close]');
                 const sidebarItems = dropdown.querySelectorAll('.mega-menu__sidebar-item');
                 const categoryPanels = dropdown.querySelectorAll('.mega-menu__category-panel');
+                const sidebarHoverDelayMs = parseInt(megaMenu.dataset.sidebarHoverDelay, 10) || 250;
+                let sidebarHoverTimeout = null;
 
                 function showCategoryPanel(categoryId) {
                     sidebarItems.forEach(function(si) {
@@ -209,7 +211,20 @@
                     const categoryId = item.dataset.categoryId;
                     if (categoryId) {
                         item.addEventListener('mouseenter', function() {
-                            showCategoryPanel(categoryId);
+                            if (sidebarHoverTimeout) {
+                                clearTimeout(sidebarHoverTimeout);
+                                sidebarHoverTimeout = null;
+                            }
+                            sidebarHoverTimeout = setTimeout(function() {
+                                sidebarHoverTimeout = null;
+                                showCategoryPanel(categoryId);
+                            }, sidebarHoverDelayMs);
+                        });
+                        item.addEventListener('mouseleave', function() {
+                            if (sidebarHoverTimeout) {
+                                clearTimeout(sidebarHoverTimeout);
+                                sidebarHoverTimeout = null;
+                            }
                         });
                     }
                 });

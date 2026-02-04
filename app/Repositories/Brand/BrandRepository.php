@@ -160,7 +160,7 @@ final class BrandRepository
 
         $queryBuilder = $queryBuilder->orderByRaw("
             CASE
-                WHEN product_profiles.condition = 'hot' THEN 0
+                WHEN product_profiles.condition = 'popular' THEN 0
                 ELSE 1
             END ASC
         ");
