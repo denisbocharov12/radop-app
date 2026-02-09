@@ -244,6 +244,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
         } elseif ($defaultSort === 'popular_order') {
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
+        } elseif ($defaultSort === 'title' || $defaultSort === '-title') {
+            $defaultSortObj = AllowedSort::custom($defaultSort, new ThemeTitleSort(), 'title');
         }
 
         $queryBuilder = QueryBuilder::for(Product::query()
@@ -444,6 +446,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
         } elseif ($defaultSort === 'popular_order') {
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
+        } elseif ($defaultSort === 'title' || $defaultSort === '-title') {
+            $defaultSortObj = AllowedSort::custom($defaultSort, new ThemeTitleSort(), 'title');
         }
 
         $queryBuilder = QueryBuilder::for(Product::query()
@@ -587,6 +591,8 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
         } elseif ($defaultSort === 'popular_order') {
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
+        } elseif ($defaultSort === 'title' || $defaultSort === '-title') {
+            $defaultSortObj = AllowedSort::custom($defaultSort, new ThemeTitleSort(), 'title');
         }
 
         $queryBuilder = QueryBuilder::for(Product::query()

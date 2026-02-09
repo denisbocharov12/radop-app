@@ -25,14 +25,21 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  */
 final class ManagerExcelProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithEvents
 {
+    private readonly Collection $products;
+
     /**
      * @param Collection $products
      * @param string|null $locale
      */
     public function __construct(
-        private readonly Collection $products,
+        Collection $products,
         private readonly ?string $locale = null,
     ) {
+        $this->products = $products->filter(function ($product): bool {
+            return (bool) $product->status === true
+                && (bool) $product->site_status === true
+                && (int) $product->stock !== 0;
+        })->values();
     }
 
     /**
