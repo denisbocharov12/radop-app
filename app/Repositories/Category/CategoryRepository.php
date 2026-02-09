@@ -108,6 +108,12 @@ class CategoryRepository
             })
             ->orderBy('product_category_sorts.sort');
         } else {
+            $queryBuilder = $queryBuilder->orderByRaw("
+                CASE
+                    WHEN product_profiles.condition = 'popular' THEN 0
+                    ELSE 1
+                END ASC
+            ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
         }
 
