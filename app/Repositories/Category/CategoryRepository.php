@@ -51,7 +51,13 @@ class CategoryRepository
     {
         $query = $category->products()
             ->select('products.*')
-            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id')
+            ->orderByRaw("
+                CASE
+                    WHEN product_profiles.condition = 'popular' THEN 0
+                    ELSE 1
+                END ASC
+            ");
 
         $defaultSortObj = $defaultSort;
 
@@ -102,12 +108,6 @@ class CategoryRepository
             })
             ->orderBy('product_category_sorts.sort');
         } else {
-            $queryBuilder = $queryBuilder->orderByRaw("
-                CASE
-                    WHEN product_profiles.condition = 'popular' THEN 0
-                    ELSE 1
-                END ASC
-            ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
         }
 
