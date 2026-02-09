@@ -10,6 +10,7 @@ use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
 use App\Filters\Theme\ThemeCategoryViewCountSort;
+use App\Filters\Theme\ThemeTitleSort;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -62,6 +63,8 @@ class CategoryRepository
             $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
         } elseif ($defaultSort === 'popular_order') {
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order');
+        } elseif ($defaultSort === 'title' || $defaultSort === '-title') {
+            $defaultSortObj = AllowedSort::custom($defaultSort, new ThemeTitleSort(), 'title');
         }
 
         $queryBuilder = QueryBuilder::for($query)
@@ -76,7 +79,7 @@ class CategoryRepository
                 'id',
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
-                'title',
+                AllowedSort::custom('title', new ThemeTitleSort(), 'title'),
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order'),
                 'stock',
@@ -90,7 +93,9 @@ class CategoryRepository
             ->where('category_id', $category->onec_id)
             ->exists();
 
-        if ($hasCustomSort) {
+        $requestHasSort = $request->filled('sort');
+
+        if ($hasCustomSort && !$requestHasSort) {
             $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
                 $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
                      ->where('product_category_sorts.category_id', '=', $category->onec_id);

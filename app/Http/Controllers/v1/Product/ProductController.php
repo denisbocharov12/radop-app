@@ -25,6 +25,7 @@ use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Jobs\RegenerateProductImagesJob;
 use App\Repositories\Product\ProductRepository;
+use App\Services\Product\ActivePagesCacheService;
 use App\Services\Product\ProductManager;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,7 @@ class ProductController extends Controller
         private readonly BrandRepository $brandRepository,
         private readonly ProductConditions $productConditions,
         private readonly UpdateProductConditionDataMapper $updateProductConditionDataMapper,
+        private readonly ActivePagesCacheService $activePagesCacheService,
     ) {
     }
 
@@ -200,6 +202,8 @@ class ProductController extends Controller
             }
         }
 
+        $this->activePagesCacheService->clearForType('sale');
+
         return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
     }
 
@@ -224,6 +228,8 @@ class ProductController extends Controller
             }
         }
 
+        $this->activePagesCacheService->clearForType('popular');
+
         return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
     }
 
@@ -247,6 +253,8 @@ class ProductController extends Controller
                 }
             }
         }
+
+        $this->activePagesCacheService->clearForType('new');
 
         return response()->json(['status' => true, 'text' => 'Товары успешно отсортированы']);
     }
