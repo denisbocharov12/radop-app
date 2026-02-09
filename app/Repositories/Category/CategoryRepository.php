@@ -93,7 +93,9 @@ class CategoryRepository
             ->where('category_id', $category->onec_id)
             ->exists();
 
-        if ($hasCustomSort) {
+        $requestHasSort = $request->filled('sort');
+
+        if ($hasCustomSort && !$requestHasSort) {
             $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
                 $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
                      ->where('product_category_sorts.category_id', '=', $category->onec_id);
@@ -107,6 +109,10 @@ class CategoryRepository
                 END ASC
             ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
+            if ($request->filled('sort') && in_array($request->query('sort'), ['title', '-title'], true)) {
+                $descending = $request->query('sort') === '-title';
+                (new ThemeTitleSort())($queryBuilder->getEloquentBuilder(), $descending, 'title');
+            }
         }
 
         return $queryBuilder
