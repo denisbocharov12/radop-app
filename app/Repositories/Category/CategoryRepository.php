@@ -99,9 +99,7 @@ class CategoryRepository
             ->where('category_id', $category->onec_id)
             ->exists();
 
-        $requestHasSort = $request->filled('sort');
-
-        if ($hasCustomSort && !$requestHasSort) {
+        if ($hasCustomSort) {
             $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
                 $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
                      ->where('product_category_sorts.category_id', '=', $category->onec_id);
