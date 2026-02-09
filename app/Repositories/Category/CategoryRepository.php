@@ -51,13 +51,7 @@ class CategoryRepository
     {
         $query = $category->products()
             ->select('products.*')
-            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id')
-            ->orderByRaw("
-                CASE
-                    WHEN product_profiles.condition = 'popular' THEN 0
-                    ELSE 1
-                END ASC
-            ");
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
 
         $defaultSortObj = $defaultSort;
 
@@ -116,7 +110,6 @@ class CategoryRepository
         }
 
         return $queryBuilder
-            ->orderBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
