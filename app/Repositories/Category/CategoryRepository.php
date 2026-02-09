@@ -86,16 +86,13 @@ class CategoryRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
-            ->groupBy('products.onec_id');
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data']);
 
         $hasCustomSort = DB::table('product_category_sorts')
             ->where('category_id', $category->onec_id)
             ->exists();
 
-        $requestHasSort = $request->filled('sort');
-
-        if ($hasCustomSort && !$requestHasSort) {
+        if ($hasCustomSort) {
             $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
                 $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
                      ->where('product_category_sorts.category_id', '=', $category->onec_id);
@@ -109,10 +106,6 @@ class CategoryRepository
                 END ASC
             ");
             $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
-            if ($request->filled('sort') && in_array($request->query('sort'), ['title', '-title'], true)) {
-                $descending = $request->query('sort') === '-title';
-                (new ThemeTitleSort())($queryBuilder->getEloquentBuilder(), $descending, 'title');
-            }
         }
 
         return $queryBuilder
