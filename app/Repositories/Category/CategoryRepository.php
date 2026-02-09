@@ -110,6 +110,7 @@ class CategoryRepository
         }
 
         return $queryBuilder
+            ->orderBy('products.onec_id')
             ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
