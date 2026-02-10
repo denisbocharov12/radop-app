@@ -88,16 +88,19 @@ class CategoryRepository
             ->where('site_status', true)
             ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data']);
 
-        $hasCustomSort = DB::table('product_category_sorts')
-            ->where('category_id', $category->onec_id)
-            ->exists();
+        $effectiveSort = $request->filled('sort') ? $request->query('sort') : $defaultSort;
+        $isTitleSort = $effectiveSort === 'title' || $effectiveSort === '-title';
 
-        if ($hasCustomSort) {
-            $queryBuilder = $queryBuilder->leftJoin('product_category_sorts', function($join) use ($category) {
-                $join->on('products.onec_id', '=', 'product_category_sorts.product_id')
-                     ->where('product_category_sorts.category_id', '=', $category->onec_id);
-            })
-            ->orderBy('product_category_sorts.sort');
+        if ($isTitleSort) {
+            $queryBuilder = $queryBuilder->orderByRaw("
+                CASE
+                    WHEN product_profiles.condition = 'new' THEN 0
+                    WHEN product_profiles.condition = 'popular' THEN 1
+                    ELSE 2
+                END ASC
+            ");
+            $descending = $effectiveSort === '-title';
+            (new ThemeTitleSort())($queryBuilder->getEloquentBuilder(), $descending, 'title');
         } else {
             $queryBuilder = $queryBuilder->orderByRaw("
                 CASE
