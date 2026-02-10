@@ -68,6 +68,9 @@ class CategoryRepository
             $defaultSortObj = AllowedSort::custom($defaultSort, new ThemeTitleSort(), 'title');
         }
 
+        $defaultSortIsTitle = $defaultSort === 'title' || $defaultSort === '-title';
+        $titleSortInAllowed = $defaultSortIsTitle ? new NoOpSort() : new ThemeTitleSort();
+
         $queryBuilder = QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('price', new ThemePriceFilter()),
@@ -80,7 +83,7 @@ class CategoryRepository
                 'id',
                 'onec_id',
                 AllowedSort::custom('price', new ThemePriceSort(), 'price'),
-                AllowedSort::custom('title', new ThemeTitleSort(), 'title'),
+                AllowedSort::custom('title', $titleSortInAllowed, 'title'),
                 AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition'),
                 AllowedSort::custom('popular_order', new ThemeCategoryViewCountSort(), 'popular_order'),
                 'stock',
@@ -90,7 +93,7 @@ class CategoryRepository
             ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data']);
 
         $effectiveSort = $request->filled('sort') ? $request->query('sort') : $defaultSort;
-        $isTitleSort = $effectiveSort === 'title' || $effectiveSort === '-title';
+        $isTitleSort = $defaultSortIsTitle && ($effectiveSort === 'title' || $effectiveSort === '-title');
 
         if ($isTitleSort) {
             $queryBuilder = $queryBuilder->orderByRaw("
