@@ -10,7 +10,7 @@
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
                                 <h4 class="title nk-block-title">Сортировка категорий по колонкам</h4>
-                                <p class="text-muted">Каталог — сортировка корневых категорий на главной. Либо выберите родительскую категорию для сортировки подкатегорий по колонкам (1–3).</p>
+                                <p class="text-muted">«Каталог» — корневые категории на странице shop/catalog. Для подкатегорий выберите родительскую категорию из списка, нажмите «Загрузить», распределите по колонкам и сохраните.</p>
                             </div>
                         </div>
                         <div class="row g-gs mt-3">
@@ -24,6 +24,11 @@
                                                 @foreach($rootCategories as $root)
                                                     @if($root->children_count > 0)
                                                         <option value="{{ $root->id }}">{{ $root->name }} — подкатегории ({{ $root->children_count }})</option>
+                                                        @foreach($root->children as $child)
+                                                            @if(isset($child->children_count) && $child->children_count > 0)
+                                                                <option value="{{ $child->id }}">{{ $root->name }} » {{ $child->name }} — подкатегории ({{ $child->children_count }})</option>
+                                                            @endif
+                                                        @endforeach
                                                     @endif
                                                 @endforeach
                                             </select>
@@ -78,12 +83,33 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
+        window.columnSortMessages = {
+            success: @json(__('theme.menu.column_sort_updated_successfully')),
+            error: @json(__('theme.menu.column_sort_update_failed')),
+            saveError: @json(__('theme.menu.column_sort_update_failed'))
+        };
         document.addEventListener('DOMContentLoaded', function() {
             let currentParentId = null;
             let columnSortables = [];
             const dataUrl = '{{ route('category.sort.columns.data') }}';
             const updateUrl = '{{ route('category.sort.columns.update') }}';
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+            const msg = window.columnSortMessages || {};
+            function setColumnSortToastrOptions() {
+                if (typeof toastr === 'undefined') return;
+                toastr.options = Object.assign({}, toastr.options || {}, {
+                    closeButton: false,
+                    progressBar: true,
+                    positionClass: 'toast-top-right',
+                    timeOut: 5000,
+                    extendedTimeOut: 1000,
+                    toastClass: 'toastr',
+                    showEasing: 'swing',
+                    hideEasing: 'linear',
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut'
+                });
+            }
 
             const parentSelect = document.getElementById('parent-category-select');
             const loadBtn = document.getElementById('load-column-sort-btn');
@@ -226,13 +252,18 @@
                     }
                 });
                 if (items.length === 0) {
-                    alert('Нет элементов для сохранения');
+                    if (typeof toastr !== 'undefined') {
+                        setColumnSortToastrOptions();
+                        toastr.warning('Нет элементов для сохранения');
+                    } else alert('Нет элементов для сохранения');
                     return;
                 }
                 var saveBtn = document.getElementById('save-column-sort');
                 if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Сохранение...'; }
                 var body = { items: items };
-                if (currentParentId !== null) body.parent_id = currentParentId;
+                if (currentParentId !== null && currentParentId > 0) {
+                    body.parent_id = currentParentId;
+                }
                 fetch(updateUrl, {
                     method: 'POST',
                     headers: {
@@ -247,17 +278,23 @@
                 .then(function(data) {
                     if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Сохранить сортировку'; }
                     if (data.success) {
-                        if (typeof toastr !== 'undefined') toastr.success(data.message || 'Сохранено');
-                        else alert(data.message || 'Сохранено');
+                        if (typeof toastr !== 'undefined') {
+                            setColumnSortToastrOptions();
+                            toastr.success(data.message || msg.success);
+                        } else alert(data.message || msg.success);
                     } else {
-                        if (typeof toastr !== 'undefined') toastr.error(data.message || 'Ошибка');
-                        else alert(data.message || 'Ошибка');
+                        if (typeof toastr !== 'undefined') {
+                            setColumnSortToastrOptions();
+                            toastr.error(data.message || msg.error);
+                        } else alert(data.message || msg.error);
                     }
                 })
                 .catch(function() {
                     if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Сохранить сортировку'; }
-                    if (typeof toastr !== 'undefined') toastr.error('Ошибка сохранения');
-                    else alert('Ошибка сохранения');
+                    if (typeof toastr !== 'undefined') {
+                        setColumnSortToastrOptions();
+                        toastr.error(msg.saveError);
+                    } else alert(msg.saveError);
                 });
             }
         });

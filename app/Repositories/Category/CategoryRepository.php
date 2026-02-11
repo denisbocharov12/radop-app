@@ -210,6 +210,14 @@ class CategoryRepository
      */
     public function updateColumnSort(?int $parentId, array $items): bool
     {
+        $parent = null;
+        if ($parentId !== null) {
+            $parent = Category::query()->find($parentId);
+            if (!$parent) {
+                return false;
+            }
+        }
+
         foreach ($items as $itemData) {
             $category = Category::query()->where('id', $itemData['id'])->first();
             if (!$category) {
@@ -220,13 +228,12 @@ class CategoryRepository
                     continue;
                 }
             } else {
-                $parent = Category::query()->find($parentId);
-                if (!$parent || $category->parent_id !== $parent->onec_id) {
+                if ((string) $category->parent_id !== (string) $parent->onec_id) {
                     continue;
                 }
             }
-            $category->column = $itemData['column'];
-            $category->column_order = $itemData['column_order'];
+            $category->column = (int) $itemData['column'];
+            $category->column_order = (int) $itemData['column_order'];
             $category->save();
         }
 
