@@ -24,6 +24,11 @@
                                                 @foreach($rootCategories as $root)
                                                     @if($root->children_count > 0)
                                                         <option value="{{ $root->id }}">{{ $root->name }} — подкатегории ({{ $root->children_count }})</option>
+                                                        @foreach($root->children as $child)
+                                                            @if(isset($child->children_count) && $child->children_count > 0)
+                                                                <option value="{{ $child->id }}">{{ $root->name }} » {{ $child->name }} — подкатегории ({{ $child->children_count }})</option>
+                                                            @endif
+                                                        @endforeach
                                                     @endif
                                                 @endforeach
                                             </select>

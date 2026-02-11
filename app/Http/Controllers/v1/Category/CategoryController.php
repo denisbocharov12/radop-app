@@ -230,6 +230,9 @@ class CategoryController extends Controller
     {
         $rootCategories = $this->categoryRepository->getAllParentsSortedByCatalogOrder();
         $rootCategories->loadCount('children');
+        $rootCategories->load(['children' => function ($query) {
+            $query->withCount('children')->where('status', true);
+        }]);
 
         return view('category.column_sort', compact('rootCategories'));
     }
