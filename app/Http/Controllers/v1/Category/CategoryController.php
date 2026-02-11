@@ -257,8 +257,13 @@ class CategoryController extends Controller
     public function updateColumnSort(CategoryColumnSortRequest $request)
     {
         $parentId = $request->input('parent_id');
-        $parentId = $parentId !== null && $parentId !== '' ? (int) $parentId : null;
-        $this->categoryRepository->updateColumnSort($parentId, $request->input('items', []));
+        if ($parentId === '' || $parentId === false) {
+            $parentId = null;
+        } else {
+            $parentId = $parentId !== null ? (int) $parentId : null;
+        }
+        $items = $request->input('items', []);
+        $this->categoryRepository->updateColumnSort($parentId, $items);
 
         return response()->json([
             'success' => true,

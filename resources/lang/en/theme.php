@@ -19,6 +19,8 @@ return [
         'cache_cleared_successfully' => 'Menu cache cleared successfully',
         'cache_clear_failed' => 'Failed to clear menu cache',
         'view_more' => 'View more',
+        'column_sort_updated_successfully' => 'Column sort saved successfully',
+        'column_sort_update_failed' => 'Failed to save column sort',
     ],
 
     'menu_item' => [

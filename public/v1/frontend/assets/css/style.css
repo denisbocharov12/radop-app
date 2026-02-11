@@ -1982,6 +1982,29 @@ header .section-header .row-main .header-menu .col-lg{
     display: inline-block;
     width: 100%;
 }
+
+.section-page-catalog .row-header-catalog-strict{
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+.section-page-catalog .row-header-catalog-strict .col-list-content-strict{
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    box-sizing: border-box;
+}
+.section-page-catalog .row-header-catalog-strict .col-list-content-strict > a.link.link-megamenu,
+.section-page-catalog .row-header-catalog-strict .col-list-content-strict > .wrap-content{
+    margin-bottom: 5px;
+}
+.section-page-catalog .row-header-catalog-strict .col-list-content-strict > a.link.link-megamenu:last-child,
+.section-page-catalog .row-header-catalog-strict .col-list-content-strict > .wrap-content:last-child{
+    margin-bottom: 0;
+}
+
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content,
 .section-page-catalog .row-header-catalog .col-list-content{
     height: fit-content;
@@ -1994,7 +2017,7 @@ header .section-header .row-main .header-menu .col-lg{
     color: #252525;
     font-weight: 500!important;
     padding: 7.5px 5px;
-    display: inline-block;
+    display: flex;
 }
 .row-header-catalog .header-catalog .row-header-catalog .col-list-content a.link.link-megamenu:hover,
 .section-page-catalog .row-header-catalog .col-list-content a.link.link-megamenu:hover{
@@ -3018,6 +3041,35 @@ header .section-header .row-main .header-menu .col-lg{
 
 .col-category-childs .wrap-category-childs .list.category-list .item:last-child{
     margin-bottom: 0;
+}
+
+.section-category-columns .row-category-childs-by-column{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.section-category-columns .row-category-childs-by-column .col-category-childs{
+    float: none;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 20px;
+}
+.section-category-columns .col-category-childs-inner{
+    height: 100%;
+}
+.section-category-columns .wrap-category-childs{
+    margin-bottom: 20px;
+}
+.section-category-columns .wrap-category-childs:last-child{
+    margin-bottom: 0;
+}
+.section-category-columns .category-child-icon{
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    vertical-align: middle;
+    object-fit: contain;
 }
 
 #main-banner {

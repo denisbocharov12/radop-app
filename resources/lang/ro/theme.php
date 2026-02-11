@@ -466,4 +466,8 @@ return array (
     'review_success_message' => 'Vă mulțumim pentru recenzia dumneavoastră! Aceasta va fi publicată după verificarea de către moderator.',
     'review_error_message' => 'A apărut o eroare la salvarea recenziei',
     'mega-menu-title-btn' => 'Catalog produse',
+    'menu' => [
+        'column_sort_updated_successfully' => 'Sortarea pe coloane a fost salvată',
+        'column_sort_update_failed' => 'Nu s-a putut salva sortarea pe coloane',
+    ],
 );

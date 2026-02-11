@@ -464,6 +464,8 @@ return array (
         'cache_cleared_successfully' => 'Кэш меню успешно очищен',
         'cache_clear_failed' => 'Не удалось очистить кэш меню',
         'view_more' => 'Подробнее',
+        'column_sort_updated_successfully' => 'Сортировка по колонкам сохранена',
+        'column_sort_update_failed' => 'Не удалось сохранить сортировку по колонкам',
     ],
     'menu_item' => [
         'created_successfully' => 'Элемент меню успешно создан',
