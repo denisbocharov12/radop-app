@@ -11,6 +11,7 @@ use App\Exceptions\Category\CategoryUniqueNameValidationException;
 use App\Exceptions\NotAjaxRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\CategoryDataMapper;
+use App\Http\Requests\Category\CategoryColumnSortRequest;
 use App\Http\Requests\Category\CategoryDeleteRequest;
 use App\Http\Requests\Category\CategoryRequest;
 use App\Http\Requests\Media\ModelMediaDeleteRequest;
@@ -220,6 +221,49 @@ class CategoryController extends Controller
         }
 
         return response()->json(['status' => true, 'text' => 'Товары в категории успешно отсортированы']);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function columnSortIndex()
+    {
+        $rootCategories = $this->categoryRepository->getAllParentsSortedByCatalogOrder();
+        $rootCategories->loadCount('children');
+
+        return view('category.column_sort', compact('rootCategories'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getColumnSortData(Request $request)
+    {
+        $parentId = $request->query('parent_id');
+        $parentId = $parentId !== null && $parentId !== '' ? (int) $parentId : null;
+        $items = $this->categoryRepository->getColumnSortItems($parentId);
+
+        return response()->json([
+            'success' => true,
+            'items' => $items,
+        ]);
+    }
+
+    /**
+     * @param CategoryColumnSortRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateColumnSort(CategoryColumnSortRequest $request)
+    {
+        $parentId = $request->input('parent_id');
+        $parentId = $parentId !== null && $parentId !== '' ? (int) $parentId : null;
+        $this->categoryRepository->updateColumnSort($parentId, $request->input('items', []));
+
+        return response()->json([
+            'success' => true,
+            'message' => __('theme.menu.column_sort_updated_successfully'),
+        ]);
     }
 
     /**

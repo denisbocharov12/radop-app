@@ -48,6 +48,18 @@ Route::prefix('categories')->name('category.')->group(function () {
         ->name('sort.order.catalog')
     ;
     Route::middleware(['app.permissions'])
+        ->get('/sorts/columns', [CategoryController::class, 'columnSortIndex'])
+        ->name('sort.columns.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->get('/sorts/columns/data', [CategoryController::class, 'getColumnSortData'])
+        ->name('sort.columns.data')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/sorts/columns', [CategoryController::class, 'updateColumnSort'])
+        ->name('sort.columns.update')
+    ;
+    Route::middleware(['app.permissions'])
         ->get('/select-category', [CategoryController::class, 'selectCategoryForSort'])
         ->name('select.category')
     ;

@@ -4,13 +4,13 @@ namespace App\Repositories\Order;
 
 use App\Data\Order\UpdateOrderStatusesData;
 use App\Models\Order;
+use App\Models\OrderItem;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
-use Carbon\Carbon;
-
 
 final class OrderRepository
 {
@@ -231,5 +231,38 @@ final class OrderRepository
         }
 
         return $query->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param string|null $onecId
+     * @return Collection<int, object{product_id: int, onec_id: string|null, total_quantity: int, total_sum: float}>
+     */
+    public function getProductSalesForReport(string $startDate, string $endDate, ?string $onecId = null): Collection
+    {
+        $start = Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay();
+        $end = Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay();
+
+        $query = OrderItem::query()
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->whereBetween('orders.created_at', [$start, $end])
+            ->whereNull('orders.deleted_at')
+            ->whereNull('products.deleted_at')
+            ->select(
+                'order_items.product_id',
+                'products.onec_id',
+                \DB::raw('SUM(order_items.quantity) as total_quantity'),
+                \DB::raw('SUM(order_items.price * order_items.quantity) as total_sum')
+            )
+            ->groupBy('order_items.product_id', 'products.onec_id')
+            ->orderByDesc('total_quantity');
+
+        if ($onecId !== null && $onecId !== '') {
+            $query->where('products.onec_id', $onecId);
+        }
+
+        return $query->get();
     }
 }

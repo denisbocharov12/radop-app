@@ -35,18 +35,18 @@ final class PropertyServiceProvider extends ServiceProvider
             if ($needsCategories && !$loaded) {
                 $categories = Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
                     return Category::where(['parent_id' => null, 'status' => true])
-                        ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'status')
+                        ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'column', 'column_order', 'status')
                         ->with(['children' => function ($query) {
                             $query->where('status', true)
-                                ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'status')
-                                ->orderBy('order')
+                                ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'column', 'column_order', 'status')
+                                ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, `order`, 0) ASC')
                                 ->with(['children' => function ($query) {
                                     $query->where('status', true)
-                                        ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'status')
-                                        ->orderBy('order');
+                                        ->select('id', 'onec_id', 'parent_id', 'name', 'order', 'catalog_order', 'column', 'column_order', 'status')
+                                        ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, `order`, 0) ASC');
                                 }]);
                         }])
-                        ->orderBy('order')
+                        ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, catalog_order, `order`, 0) ASC')
                         ->get();
                 });
                 $loaded = true;

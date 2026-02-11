@@ -143,6 +143,96 @@ class CategoryRepository
         return Category::query()->where('parent_id', null)->orderBy('catalog_order')->get();
     }
 
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getRootCategoriesOrderedByColumn(): Collection
+    {
+        return Category::query()
+            ->where('parent_id', null)
+            ->where('status', true)
+            ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, catalog_order, `order`, 0) ASC')
+            ->get();
+    }
+
+    /**
+     * @param Category $parent
+     * @return Collection<int, Category>
+     */
+    public function getChildrenOrderedByColumn(Category $parent): Collection
+    {
+        return Category::query()
+            ->where('parent_id', $parent->onec_id)
+            ->where('status', true)
+            ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, `order`, 0) ASC')
+            ->get();
+    }
+
+    /**
+     * @param int|null $parentId null для корневых категорий каталога
+     * @return array<int, array{id: int, onec_id: string, name: string, column: int, column_order: int}>
+     */
+    public function getColumnSortItems(?int $parentId): array
+    {
+        $query = Category::query()->where('status', true);
+
+        if ($parentId === null) {
+            $query->whereNull('parent_id');
+        } else {
+            $parent = Category::query()->where('id', $parentId)->first();
+            if (!$parent) {
+                return [];
+            }
+            $query->where('parent_id', $parent->onec_id);
+        }
+
+        $categories = $query
+            ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, catalog_order, `order`, 0) ASC')
+            ->get();
+
+        $locale = app()->getLocale();
+
+        return $categories->map(function (Category $category) use ($locale) {
+            return [
+                'id' => $category->id,
+                'onec_id' => $category->onec_id,
+                'name' => $category->getTranslation('name', $locale),
+                'column' => $category->column ?? 1,
+                'column_order' => $category->column_order ?? 0,
+            ];
+        })->values()->all();
+    }
+
+    /**
+     * @param int|null $parentId
+     * @param array<int, array{id: int, column: int, column_order: int}> $items
+     * @return bool
+     */
+    public function updateColumnSort(?int $parentId, array $items): bool
+    {
+        foreach ($items as $itemData) {
+            $category = Category::query()->where('id', $itemData['id'])->first();
+            if (!$category) {
+                continue;
+            }
+            if ($parentId === null) {
+                if ($category->parent_id !== null) {
+                    continue;
+                }
+            } else {
+                $parent = Category::query()->find($parentId);
+                if (!$parent || $category->parent_id !== $parent->onec_id) {
+                    continue;
+                }
+            }
+            $category->column = $itemData['column'];
+            $category->column_order = $itemData['column_order'];
+            $category->save();
+        }
+
+        return true;
+    }
+
     public function getAllWithTrashed(): Collection
     {
         return Category::withTrashed()->get();

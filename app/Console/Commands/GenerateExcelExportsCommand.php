@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Jobs\GenerateActivePagesExcelExportJob;
 use App\Jobs\GenerateExcelExportJob;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;

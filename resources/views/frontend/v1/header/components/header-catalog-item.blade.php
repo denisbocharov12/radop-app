@@ -1,4 +1,6 @@
+@if(!isset($noColumnWrap) || !$noColumnWrap)
 <div class="col-4 col-list-content">
+@endif
     <a href="{{route('theme.category.index', $parentCategory->onec_id)}}" class="link link-megamenu"
     >
         {{$parentCategory->name}}
@@ -14,4 +16,6 @@
             @endif
         </div>
     @endif
+@if(!isset($noColumnWrap) || !$noColumnWrap)
 </div>
+@endif
