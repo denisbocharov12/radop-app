@@ -133,6 +133,9 @@
                                 <a href="{{route('category.sort.index.catalog')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий каталога</span></a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{route('category.sort.columns.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка категорий по колонкам</span></a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{route('category.select.category')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка товаров по категориям</span></a>
                             </li>
                             <li class="nk-menu-item">
@@ -328,6 +331,9 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('reports.orders-user-type.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по типам пользователей</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('reports.products.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёт по товарам</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('reports.view-count.product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Отчёты по просмотрам товаров</span></a>

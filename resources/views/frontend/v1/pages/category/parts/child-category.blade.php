@@ -1,19 +1,24 @@
 <section class="section-standart section-category pt-0">
     <div class="container">
         <div class="row row-category-childs">
-            @foreach($existedCategory->children as $category)
+            @php
+                $childrenByColumn = ($existedCategory->childrenOrderedByColumn ?? $existedCategory->children)->groupBy(fn($c) => $c->column ?? 1);
+            @endphp
+            @for($col = 1; $col <= 3; $col++)
                 <div class="col-md-4 col-12 col-lg-4 col-category-childs">
-                    <div class="wrap-category-childs">
-                        <a class="link parent-link" href="{{route('theme.category.index', $category->onec_id)}}">
-                            @if($category->getFirstMediaUrl('media') !== '')
-                                <img src="{{$category->getFirstMediaUrl('media')}}" alt="{{$category->name}}" style="width: 32px; height: 32px; margin-right: 5px">
-                            @endif
-                            {{$category->name}}
-                        </a>
-                        @include('frontend.v1.pages.category.parts.child-category-list', ['categories' => $category->children])
-                    </div>
+                    @foreach($childrenByColumn->get($col, collect()) as $category)
+                        <div class="wrap-category-childs">
+                            <a class="link parent-link" href="{{route('theme.category.index', $category->onec_id)}}">
+                                @if($category->getFirstMediaUrl('media') !== '')
+                                    <img src="{{$category->getFirstMediaUrl('media')}}" alt="{{$category->name}}" style="width: 32px; height: 32px; margin-right: 5px">
+                                @endif
+                                {{$category->name}}
+                            </a>
+                            @include('frontend.v1.pages.category.parts.child-category-list', ['categories' => $category->childrenOrderedByColumn ?? $category->children])
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            @endfor
         </div>
     </div>
 </section>

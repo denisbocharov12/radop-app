@@ -38,7 +38,7 @@ final class Category extends Model implements HasMedia, Sitemapable
         });
 
         static::updated(function (Category $category) {
-            if ($category->wasChanged(['parent_id', 'status', 'order'])) {
+            if ($category->wasChanged(['parent_id', 'status', 'order', 'column', 'column_order', 'catalog_order'])) {
                 self::clearThemeParentCategoriesCache();
             }
         });
@@ -84,7 +84,17 @@ final class Category extends Model implements HasMedia, Sitemapable
         'status',
         'order',
         'catalog_order',
+        'column',
+        'column_order',
         'deleted_at',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'column' => 'integer',
+        'column_order' => 'integer',
     ];
 
     public $translatable = [
@@ -124,12 +134,21 @@ final class Category extends Model implements HasMedia, Sitemapable
     }
 
     /**
-     *
      * @return HasMany<Category>
      */
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id', 'onec_id')->with('children')->orderBy('order');
+    }
+
+    /**
+     * @return HasMany<Category>
+     */
+    public function childrenOrderedByColumn(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'onec_id')
+            ->with(['childrenOrderedByColumn'])
+            ->orderByRaw('COALESCE(`column`, 1) ASC, COALESCE(column_order, `order`, 0) ASC');
     }
 
     /**
