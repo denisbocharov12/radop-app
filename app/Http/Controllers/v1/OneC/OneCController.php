@@ -85,6 +85,25 @@ class OneCController extends Controller
         }
     }
 
+    public function importAndSyncCategoriesFromNomenclatureOptional(OneCRequest $request)
+    {
+        $importFile = $request->file('attachment');
+
+        if (!$importFile->isValid()) {
+            return redirect()->back()->withErrors('This file is invalid for structure');
+        }
+
+        $json = json_decode($this->remove_utf8_bom(file_get_contents($importFile)));
+        $result = $this->ONECManager->importAndSyncCategoriesFromNomenclatureOptional($json);
+
+        if ($result) {
+            toastr()->success('Синхронизация категорий из номенклатуры добавлена в очередь.');
+            return redirect()->route('import-export-data.index');
+        }
+
+        return redirect()->back()->withErrors('Ошибка при синхронизации категорий');
+    }
+
     public function importPackages(OneCRequest $request)
     {
         $importFile = $request->file('attachment');

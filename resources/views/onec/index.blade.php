@@ -104,6 +104,23 @@
                                     </div>
                                 @endif
                             </div>
+                            <div class="card">
+                                <div class="card-inner">
+                                    <h5 class="card-title">Синхронизация категорий из номенклатуры</h5>
+                                    <p class="text-muted">Очистка таблицы связей товар–категория и поочередная синхронизация по загруженному файлу номенклатуры</p>
+                                    <form action="{{route('import-export-data.nomenclature-sync-categories')}}" enctype="multipart/form-data" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <div class="form-control-wrap">
+                                                <div class="form-file">
+                                                    <input type="file" class="form-control" name="attachment">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"><span>Синхронизировать категории</span><em class="icon ni ni-setting"></em></button>
+                                    </form>
+                                </div>
+                            </div>
                             @if(!\App\Models\Product::query()->count() < 1)
                                 <div class="card">
                                     <div class="card-inner">
