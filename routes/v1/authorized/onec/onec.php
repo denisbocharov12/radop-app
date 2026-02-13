@@ -18,10 +18,12 @@ Route::prefix('data-import-export')->name('import-export-data.')->group(function
         ->post('/nomenclature', [OneCController::class, 'importNomenclature'])
         ->name('nomenclature')
     ;
+
     Route::middleware(['app.permissions'])
         ->post('/nomenclature-sync-categories', [OneCController::class, 'importAndSyncCategoriesFromNomenclatureOptional'])
         ->name('nomenclature-sync-categories')
     ;
+
     Route::middleware(['app.permissions'])
         ->post('/brands', [OneCController::class, 'importBrands'])
         ->name('brands')
