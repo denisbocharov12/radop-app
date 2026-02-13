@@ -8,6 +8,7 @@ use App\Jobs\BrandImportJsonJob;
 use App\Jobs\CategoryImportJsonJob;
 use App\Jobs\DescriptionImportJsonJob;
 use App\Jobs\PackageImportJsonJob;
+use App\Jobs\ProductCategorySyncFromNomenclatureJob;
 use App\Jobs\ProductImportJsonJob;
 use App\Models\Category;
 use App\Models\Package;
@@ -73,6 +74,36 @@ final class ONECManager
                 }
 
                 $batch->name('Import Products')->dispatch();
+
+                return true;
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public function importAndSyncCategoriesFromNomenclatureOptional($json): bool
+    {
+        if (isset($json->Product)) {
+            try {
+                DB::beginTransaction();
+
+                ProductCategory::query()->truncate();
+
+                $productsData = $json->Product;
+                $header = [];
+                $batch = Bus::batch([])->onQueue('high');
+                $productChunks = array_chunk($productsData, 50);
+
+                foreach ($productChunks as $productChunk) {
+                    $batch->add(new ProductCategorySyncFromNomenclatureJob($productChunk, $header));
+                }
+
+                $batch->name('Sync Categories From Nomenclature')->dispatch();
 
                 return true;
             } catch (\Exception $e) {
