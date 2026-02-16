@@ -63,4 +63,4 @@ jobs:
         shell: bash
         env:
           COMPOSE_FILE_PATH: ${{ vars.docker_compose_file_path }}
-        run: ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no root@185.181.229.183 "docker pull docker.pkg.github.com/denisbocharov12/radop-app/api:prod && docker-compose -f ${COMPOSE_FILE_PATH} up -d"
+        run: ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no root@185.181.229.183 "docker pull ghcr.io/denisbocharov12/radop-app/api:prod && docker-compose -f ${COMPOSE_FILE_PATH} up -d"
