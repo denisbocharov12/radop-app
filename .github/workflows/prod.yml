@@ -4,7 +4,11 @@ on:
       - master
 
   workflow_dispatch:
-        
+permissions:
+  packages: write
+  contents: read
+
+    
 
 name: "[PROD] radop.md CD action"
 
