@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -20,6 +21,32 @@ final class Brand extends Model implements HasMedia
     use InteractsWithMedia;
     use Sluggable;
     use HasTranslations;
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function () {
+            self::clearBrandCache();
+        });
+
+        static::updated(function () {
+            self::clearBrandCache();
+        });
+
+        static::deleted(function () {
+            self::clearBrandCache();
+        });
+    }
+
+    private static function clearBrandCache(): void
+    {
+        Cache::forget('admin_brands_all');
+        Cache::forget('brands_all_frontend_ro');
+        Cache::forget('brands_all_frontend_ru');
+        Cache::forget('brands_limited_ro');
+        Cache::forget('brands_limited_ru');
+    }
 
     protected $fillable = [
         'onec_id',

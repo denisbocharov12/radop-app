@@ -96,17 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    @if($product->brand !== null)
-                        <div class="product-mini-brand-wrap">
-                            <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
-                            <a href="{{route('theme.brand.index', $product->brand->onec_id)}}"
-                               class="product-mini-brand">
-                                    <span class="brand-text">
-                                        {{$product->brand->title}}
-                                    </span>
-                            </a>
-                        </div>
-                    @endif
+                    @include('frontend.v1.components.product-mini-brand-wrap')
                 </div>
             </div>
             <div class="col-lg-3 col-12 product-price-wrap">

@@ -6667,6 +6667,10 @@ hr.product-card-item{
     background-color: #004791;
     color: #fff;
 }
+.product-mini-brand-wrap,
+.product-list-mini-brand-wrap{
+    height: 25px;
+}
 .product-mini-brand-wrap a{
     color: #0990d9;
     display: flex;
@@ -12581,6 +12585,7 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     align-items: center;
     font-size: 12px;
+    height: 25px;
 }
 .product-list-item .product-mini-brand-wrap .mini-heading{
     color: #555;

@@ -38,9 +38,7 @@
                     </h3>
                 </div>
                 @include('frontend.v1.components.product-item-article')
-            @if($product->brand !== null)
-                    @include('frontend.v1.components.product-list-mini-brand-wrap')
-                @endif
+                @include('frontend.v1.components.product-list-mini-brand-wrap')
             </div>
             <div class="product-card-bottom">
                 <div class="add_to_cart_wrap">

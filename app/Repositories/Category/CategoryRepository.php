@@ -133,6 +133,19 @@ class CategoryRepository
         return Category::query()->get();
     }
 
+    /**
+     * @return Collection
+     */
+    public function getAllCached(): Collection
+    {
+        return Cache::remember('admin_categories_all', 3600, function () {
+            return Category::query()
+                ->select('id', 'onec_id', 'name', 'parent_id', 'status')
+                ->orderBy('name')
+                ->get();
+        });
+    }
+
     public function getAllSortedByOrder(): Collection
     {
         return Category::query()->orderBy('order')->get();

@@ -92,8 +92,6 @@ final class ONECManager
             try {
                 DB::beginTransaction();
 
-                ProductCategory::query()->truncate();
-
                 $productsData = $json->Product;
                 $header = [];
                 $batch = Bus::batch([])->onQueue('high');

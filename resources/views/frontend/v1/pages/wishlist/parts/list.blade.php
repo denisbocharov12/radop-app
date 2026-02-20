@@ -47,15 +47,7 @@
                     </h3>
                 </div>
                 @include('frontend.v1.components.product-item-article', ['product' => $product->conditions])
-                <div class="product-list-mini-brand-wrap">
-                    @if($product->conditions->brand !== null && $product->conditions->brand->onec_id !== null)
-                        <a href="{{route('theme.brand.index', $product->conditions->brand?->onec_id)}}"
-                           class="product-mini-brand" data-id="{{$product->conditions->brand?->onec_id}}">
-                        <span class="brand-text"><span class="mini-heading">{{__('theme.all-brand-products')}}</span> {{$product->conditions->brand->title}} <i
-                                class="icon-arrow-radop-right"></i></span>
-                        </a>
-                    @endif
-                </div>
+                @include('frontend.v1.components.product-list-mini-brand-wrap', ['product' => $product->conditions])
             </div>
             <div class="product-card-bottom">
                 <div class="add_to_cart_wrap">

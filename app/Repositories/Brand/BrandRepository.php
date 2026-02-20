@@ -53,6 +53,19 @@ final class BrandRepository
         return Brand::query()->get();
     }
 
+    /**
+     * @return Collection
+     */
+    public function getAllCached(): Collection
+    {
+        return Cache::remember('admin_brands_all', 3600, function () {
+            return Brand::query()
+                ->select('id', 'onec_id', 'title', 'status')
+                ->orderBy('title')
+                ->get();
+        });
+    }
+
     public function getAllForSort(): Collection
     {
         return Brand::where('status', true)

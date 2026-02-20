@@ -58,6 +58,7 @@ final class ProductRepository
                 AllowedFilter::custom('status', new ProductStatusFilter()),
                 AllowedFilter::custom('site_status', new ProductSiteStatusFilter()),
             ])
+            ->with(['brand:id,onec_id,title', 'categories:id,onec_id,name', 'data:id,product_id,condition', 'viewCounts'])
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
