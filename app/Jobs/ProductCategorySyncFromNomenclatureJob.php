@@ -48,7 +48,7 @@ final class ProductCategorySyncFromNomenclatureJob implements ShouldQueue
 
                 $ancestorsAndSelf = $category->ancestorsAndSelf->pluck('onec_id')->toArray();
                 foreach ($ancestorsAndSelf as $categoryId) {
-                    ProductCategory::create([
+                    ProductCategory::firstOrCreate([
                         'category_id' => $categoryId,
                         'product_id' => $product->id,
                     ]);

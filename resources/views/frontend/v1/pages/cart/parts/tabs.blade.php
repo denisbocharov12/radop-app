@@ -63,9 +63,7 @@
                                         </div>
                                         @include('frontend.v1.components.product-item-article')
                                         @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @if($product->brand !== null)
-                                            @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                        @endif
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
                                     </div>
                                     <div class="product-card-bottom">
                                         <div class="add_to_cart_wrap">
@@ -134,9 +132,7 @@
                                         </div>
                                         @include('frontend.v1.components.product-item-article')
                                         @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @if($product->brand !== null)
-                                            @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                        @endif
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
                                     </div>
                                     <div class="product-card-bottom">
                                         <div class="add_to_cart_wrap">
@@ -204,9 +200,7 @@
                                         </div>
                                         @include('frontend.v1.components.product-item-article')
                                         @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @if($product->brand !== null)
-                                            @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                        @endif
+                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
                                     </div>
                                     <div class="product-card-bottom">
                                         <div class="add_to_cart_wrap">

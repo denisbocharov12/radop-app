@@ -48,8 +48,8 @@ class ProductController extends Controller
         $query = $request->query('filter');
 
         $products = $this->productRepository->getAllPaginatedWithFilters();
-        $categories = $this->categoryRepository->getAll();
-        $brands = $this->brandRepository->getAll();
+        $categories = $this->categoryRepository->getAllCached();
+        $brands = $this->brandRepository->getAllCached();
 
         $productConditions = $this->productConditions->getAll();
 
