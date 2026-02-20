@@ -10,7 +10,6 @@
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Цена на скидке</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Остатки</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Cостояние товара</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Кол-во просмотров</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус выгрузки</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус сайта</span></div>
             <div class="nk-tb-col nk-tb-col-tools text-end">
@@ -29,11 +28,7 @@
                     <span>{{$product->brand?->title}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <ul>
-                        @foreach ($product->categories as $category)
-                            <li>{{ $category->name }}</li>
-                        @endforeach
-                    </ul>
+                    <span>{{ $product->categories->pluck('name')->implode(', ') }}</span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$product->price}}</span>
@@ -46,9 +41,6 @@
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$product?->data?->condition}}</span>
-                </div>
-                <div class="nk-tb-col tb-col-lg">
-                    <span>{{$product?->viewCounts?->sum('view_count')}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     @if($product->status)
