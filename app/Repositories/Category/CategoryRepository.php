@@ -413,14 +413,6 @@ class CategoryRepository
     }
 
     /**
-     * @param Collection $products
-     * @return Collection
-     */
-    /**
-     * @param Collection $products
-     * @return Collection
-     */
-    /**
      * @param array<int, string> $productOnecIds
      * @return Collection<int, \App\Models\Category>
      */
@@ -430,41 +422,81 @@ class CategoryRepository
             return collect();
         }
 
-        $cacheKey = 'categories_product_counts_' . md5(implode(',', $productOnecIds));
+        $sortedIds = $productOnecIds;
+        sort($sortedIds);
+        $cacheKey = 'categories_leaf_product_counts_' . md5(implode(',', $sortedIds));
 
         return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
-            $categoryData = DB::table('product_categories')
+            $pairs = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
                 ->whereIn('product_categories.product_id', $productOnecIds)
                 ->where('categories.status', true)
                 ->whereNull('categories.deleted_at')
-                ->select('product_categories.category_id', DB::raw('COUNT(DISTINCT product_categories.product_id) as count'))
-                ->groupBy('product_categories.category_id')
+                ->select('product_categories.product_id', 'product_categories.category_id')
                 ->get();
 
-            if ($categoryData->isEmpty()) {
+            if ($pairs->isEmpty()) {
                 return collect();
             }
 
-            $categoryOnecIds = $categoryData->pluck('category_id')->unique()->toArray();
-            $productCounts = $categoryData->pluck('count', 'category_id')->toArray();
+            $allCategoryOnecIds = $pairs->pluck('category_id')->unique()->values()->toArray();
+            $categoriesMap = Category::whereIn('onec_id', $allCategoryOnecIds)
+                ->where('status', true)
+                ->whereNull('deleted_at')
+                ->get()
+                ->keyBy('onec_id');
 
-            $categories = Category::whereIn('onec_id', $categoryOnecIds)
+            $productToCategoryIds = $pairs->groupBy('product_id')->map(fn ($rows) => $rows->pluck('category_id')->unique()->values()->toArray());
+
+            $leafCounts = [];
+            foreach ($productToCategoryIds as $productId => $categoryOnecIds) {
+                $set = $categoryOnecIds;
+                $parentOnecIds = [];
+                foreach ($set as $cid) {
+                    $cat = $categoriesMap->get($cid);
+                    if ($cat && $cat->parent_id !== null && in_array($cat->parent_id, $set, true)) {
+                        $parentOnecIds[] = $cat->parent_id;
+                    }
+                }
+                $leafOnecIds = array_values(array_diff($set, array_unique($parentOnecIds)));
+                if ($leafOnecIds === []) {
+                    $leafOnecIds = $set;
+                }
+                foreach ($leafOnecIds as $leafId) {
+                    if (!isset($leafCounts[$leafId])) {
+                        $leafCounts[$leafId] = [];
+                    }
+                    $leafCounts[$leafId][$productId] = true;
+                }
+            }
+
+            $leafOnecIds = array_keys($leafCounts);
+            $productCounts = array_map('count', $leafCounts);
+
+            $categories = Category::whereIn('onec_id', $leafOnecIds)
                 ->where('status', true)
                 ->whereNull('deleted_at')
                 ->get();
 
-            return $categories->map(function ($category) use ($productCounts) {
-                $category->products_count = $productCounts[$category->onec_id] ?? 0;
+            $withCounts = $categories->map(function ($category) use ($productCounts) {
+                $category->products_count = (int) ($productCounts[$category->onec_id] ?? 0);
                 return $category;
-            })->filter(function ($category) {
-                return $category->products_count > 0;
-            })->unique('name')
-            ->sortBy('name')
-            ->values();
+            })->filter(fn ($category) => $category->products_count > 0);
+
+            $mergedByName = $withCounts->groupBy('name')->map(function ($group) {
+                $first = $group->first();
+                $first->products_count = $group->sum('products_count');
+                return $first;
+            });
+
+            return $mergedByName->sortBy('name')->values();
         });
     }
 
+    /**
+     * @param Collection<int, \Illuminate\Database\Eloquent\Model> $products
+     * @return Collection<int, \App\Models\Category>
+     */
     public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
     {
         if ($products->isEmpty()) {

@@ -59,7 +59,7 @@ final class ONECManager
                 $header = [];
                 $batch  = Bus::batch([])->onQueue('high');
 
-                $productChunks = array_chunk($productsData, 50);
+                $productChunks = array_chunk($productsData, 40);
 
 //                $updatedProducts = Product::all();
 //
@@ -95,7 +95,7 @@ final class ONECManager
                 $productsData = $json->Product;
                 $header = [];
                 $batch = Bus::batch([])->onQueue('high');
-                $productChunks = array_chunk($productsData, 50);
+                $productChunks = array_chunk($productsData, 40);
 
                 foreach ($productChunks as $productChunk) {
                     $batch->add(new ProductCategorySyncFromNomenclatureJob($productChunk, $header));
