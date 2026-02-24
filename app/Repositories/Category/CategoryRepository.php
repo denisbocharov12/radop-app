@@ -52,7 +52,8 @@ class CategoryRepository
     {
         $query = $category->products()
             ->select('products.*')
-            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id');
+            ->leftJoin('product_profiles', 'products.onec_id', '=', 'product_profiles.product_id')
+            ->groupBy('products.id');
 
         $defaultSortObj = $defaultSort;
 
