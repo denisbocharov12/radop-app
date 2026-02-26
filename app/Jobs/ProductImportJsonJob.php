@@ -105,7 +105,6 @@ final class ProductImportJsonJob implements ShouldQueue
                         ]);
                     }
                 }
-
             }
 
             if (!ProductImagesManager::hasProductImages($productModel)) {
