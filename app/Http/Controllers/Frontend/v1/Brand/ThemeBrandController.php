@@ -86,6 +86,9 @@ final class ThemeBrandController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
         $this->seo()->opengraph()->addProperty('type', 'articles');
         $this->seo()->jsonLd()->setType('Article');
+        $this->seo()->jsonLd()->setTitle($seo->title ?? $existedBrand->title);
+        $this->seo()->jsonLd()->setDescription($seo?->description ? $seo?->description : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->jsonLd()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
