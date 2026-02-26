@@ -13,6 +13,7 @@ use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
+use App\Services\Seo\ProductSchemaOrgBuilder;
 use App\Services\Theme\Product\ThemeProductManager;
 use App\Services\ViewCount\ViewCountManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -31,6 +32,7 @@ final class ThemeProductController extends Controller
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
         private readonly ViewCountManager $viewCountManager,
+        private readonly ProductSchemaOrgBuilder $productSchemaOrgBuilder,
     ) {
     }
 
@@ -83,6 +85,8 @@ final class ThemeProductController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
+        $this->seo()->jsonLd()->setUrl(route('theme.product.index', $product->slug));
+        $this->seo()->jsonLd()->addValues($this->productSchemaOrgBuilder->build($product));
 
         //$this->viewCountManager->incrementProductViewCount($product, $request);
 
