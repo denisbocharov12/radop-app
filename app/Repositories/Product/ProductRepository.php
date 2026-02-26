@@ -61,8 +61,7 @@ final class ProductRepository
             ->with([
                 'brand:id,onec_id,title',
                 'categories' => function ($query) {
-                    $query->selectRaw('MIN(categories.id) as id, MIN(categories.onec_id) as onec_id, categories.name')
-                        ->groupBy('categories.name');
+                    $query->select('categories.id', 'categories.onec_id', 'categories.name')->groupBy('categories.name');
                 },
                 'data:id,product_id,condition',
             ])
