@@ -85,6 +85,9 @@ final class ThemeCategoryController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
         $this->seo()->opengraph()->addProperty('type', 'category');
         $this->seo()->jsonLd()->setType('Article');
+        $this->seo()->jsonLd()->setTitle($seo->title ?? $existedCategory->name);
+        $this->seo()->jsonLd()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
+        $this->seo()->jsonLd()->setUrl(route('theme.category.index', $existedCategory->onec_id));
 
         //$this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
