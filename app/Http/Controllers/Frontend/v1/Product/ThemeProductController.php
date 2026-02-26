@@ -85,6 +85,8 @@ final class ThemeProductController extends Controller
         $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
+        $this->seo()->jsonLd()->setTitle($product->title);
+        $this->seo()->jsonLd()->setDescription(strip_tags((string)$product?->data?->summary) ? strip_tags((string)$product?->data?->summary) : trans('seo.description', [], app()->getLocale()));
         $this->seo()->jsonLd()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->jsonLd()->addValues($this->productSchemaOrgBuilder->build($product));
 

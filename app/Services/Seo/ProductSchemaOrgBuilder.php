@@ -6,6 +6,7 @@ namespace App\Services\Seo;
 
 use App\Models\Product;
 use App\Models\Review;
+use App\Services\Theme\Product\ThemeProductManager;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Route;
  */
 final class ProductSchemaOrgBuilder
 {
+
+    public function __construct(
+        private readonly ThemeProductManager $themeProductManager,
+    )
+    {
+    }
+
     private const SCHEMA_AVAILABILITY_IN_STOCK = 'https://schema.org/InStock';
     private const SCHEMA_AVAILABILITY_OUT_OF_STOCK = 'https://schema.org/OutOfStock';
     private const PRICE_CURRENCY = 'MDL';
@@ -80,8 +88,8 @@ final class ProductSchemaOrgBuilder
 
     private function resolvePrice(Product $product): float
     {
-        $raw = $product->sale_price ?? $product->price;
-        return (float) $raw;
+        $price = $this->themeProductManager->getProductTotalSum($product);
+        return (float) $price;
     }
 
     private function resolveAvailability(Product $product): string
