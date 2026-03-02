@@ -887,34 +887,45 @@ $(document).ready(function () {
         }
     });
 
-    // Обработчик для ПК версии
     $('.col-theme-filters .theme-toggle-list li .theme-toggle-item-title').click(function () {
-
-        var content = $(this).next('.theme-toggle-item-content');
+        var $title = $(this);
+        var $item = $title.closest('.theme-toggle-item');
+        var content = $title.next('.theme-toggle-item-content');
 
         if (content.is(':hidden')) {
-            content.slideDown('0').css('display', 'flex');
-            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
+            content.slideDown(200).css('display', 'flex');
+            $item.addClass('open');
         } else {
-            content.slideUp('0');
-            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(0deg)');
+            content.slideUp(200);
+            $item.removeClass('open');
         }
-
     });
 
-    // Обработчик для модального окна (работает для всех модальных окон: brand, category, shop)
     $('#filtersModal .col-theme-filters-modal .theme-toggle-list li .theme-toggle-item-title').click(function () {
-
-        var content = $(this).next('.theme-toggle-item-content');
+        var $title = $(this);
+        var $item = $title.closest('.theme-toggle-item');
+        var content = $title.next('.theme-toggle-item-content');
 
         if (content.is(':hidden')) {
-            content.slideDown('0').css('display', 'flex');
-            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(90deg)');
+            content.slideDown(200).css('display', 'flex');
+            $item.addClass('open');
         } else {
-            content.slideUp('0');
-            $(this).children('.theme-toggle-item-title i').css('transform', 'rotate(0deg)');
+            content.slideUp(200);
+            $item.removeClass('open');
         }
+    });
 
+    $('.col-theme-filters .theme-toggle-list .theme-toggle-item').each(function () {
+        var content = $(this).find('.theme-toggle-item-content');
+        if (content.length && content.css('display') !== 'none' && content.css('visibility') !== 'hidden') {
+            $(this).addClass('open');
+        }
+    });
+    $('#filtersModal .col-theme-filters-modal .theme-toggle-list .theme-toggle-item').each(function () {
+        var content = $(this).find('.theme-toggle-item-content');
+        if (content.length && content.css('display') !== 'none' && content.css('visibility') !== 'hidden') {
+            $(this).addClass('open');
+        }
     });
 
     // Для модального окна (работает для всех модальных окон: brand, category, shop)

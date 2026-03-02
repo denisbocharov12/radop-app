@@ -1,7 +1,7 @@
 @if(isset($categories) && $categories->isNotEmpty())
     <li class="theme-toggle-item">
         <div class="theme-toggle-item-title">
-            <i class="icon-arrow-filter-radop-left"></i>
+            <i class="icon-arrow-radop-left theme-filter-arrow"></i>
             <p class="theme-widget-title">{{ __('theme.categories') }}</p>
         </div>
         <div class="theme-toggle-item-content categories-filter-content" style="display: flex">
