@@ -3,9 +3,9 @@
     <div class="theme-wg-wrap">
         @if(!empty($attributes) || (isset($categories) && $categories->isNotEmpty()))
             <ul class="theme-toggle-list">
-                    <li class="theme-toggle-item">
+                    <li class="theme-toggle-item open">
                     <div class="theme-toggle-item-title">
-                        <i class="icon-arrow-filter-radop-left" style="transform: rotate(90deg);"></i>
+                        <i class="icon-arrow-radop-left theme-filter-arrow"></i>
                         <p class="theme-widget-title">
                             {{ __('theme.by-price') }}
                         </p>
@@ -70,7 +70,7 @@
 
                     <li class="theme-toggle-item">
                         <div class="theme-toggle-item-title">
-                            <i class="icon-arrow-filter-radop-left"></i>
+                            <i class="icon-arrow-radop-left theme-filter-arrow"></i>
                             <p class="theme-widget-title">{{ $key }}</p>
                         </div>
 
@@ -106,7 +106,7 @@
                 @if(isset($brands) && $brands->isNotEmpty())
                     <li class="theme-toggle-item">
                         <div class="theme-toggle-item-title">
-                            <i class="icon-arrow-filter-radop-left"></i>
+                            <i class="icon-arrow-radop-left theme-filter-arrow"></i>
                             <p class="theme-widget-title">{{__('theme.brand')}}</p>
                         </div>
                         <div class="theme-toggle-item-content">
