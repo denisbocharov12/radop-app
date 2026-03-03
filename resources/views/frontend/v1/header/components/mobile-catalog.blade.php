@@ -116,9 +116,15 @@
                 <ul class="main-column-catalog__list column-style">
                     @if(!empty($themeParentCategories))
                         @foreach($themeParentCategories as $parentCategory)
+                            @php
+                                $categoryImage = $parentCategory->getFirstMedia('media');
+                            @endphp
                             <li class="main-column-catalog__item">
-                                <a class="main-column-catalog__link catalog-category-link" @if(count($parentCategory->children) > 0) href="#" data-main-category="{{$parentCategory->id}}" @else href="{{route('theme.category.index', $parentCategory->onec_id)}}"  @endif>
-                                    {{$parentCategory->name}}
+                                <a class="main-column-catalog__link catalog-category-link @if($categoryImage) main-column-catalog__link--with-icon @endif" @if(count($parentCategory->children) > 0) href="#" data-main-category="{{$parentCategory->id}}" @else href="{{route('theme.category.index', $parentCategory->onec_id)}}"  @endif>
+                                    @if($categoryImage)
+                                        <img src="{{ $categoryImage->getUrl() }}" alt="{{ $parentCategory->name }}" class="mega-menu__sidebar-icon main-column-catalog__icon">
+                                    @endif
+                                    <span class="main-column-catalog__link-text">{{ $parentCategory->name }}</span>
                                 </a>
                             </li>
                         @endforeach

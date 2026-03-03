@@ -603,7 +603,7 @@
 .catalog__widgets .mega-menu__widget-link {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 5px;
     text-decoration: none;
     color: inherit;
     width: 100%;
