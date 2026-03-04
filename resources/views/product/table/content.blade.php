@@ -28,7 +28,7 @@
                     <span>{{$product->brand?->title}}</span>
                 </div>
                 <div class="nk-tb-col">
-                    <span>{{ $product->categories->pluck('name')->implode(', ') }}</span>
+                    <span>{{ $product->categories->pluck('name')->unique()->values()->implode(', ') }}</span>
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$product->price}}</span>

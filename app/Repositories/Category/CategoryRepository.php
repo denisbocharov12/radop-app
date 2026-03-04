@@ -446,34 +446,38 @@ class CategoryRepository
                 ->get()
                 ->keyBy('onec_id');
 
-            $productToCategoryIds = $pairs->groupBy('product_id')->map(fn ($rows) => $rows->pluck('category_id')->unique()->values()->toArray());
+            $hasChildOnecIds = DB::table('categories')
+                ->whereIn('parent_id', $allCategoryOnecIds)
+                ->where('status', true)
+                ->whereNull('deleted_at')
+                ->pluck('parent_id')
+                ->unique()
+                ->flip()
+                ->toArray();
 
-            $leafCounts = [];
-            foreach ($productToCategoryIds as $productId => $categoryOnecIds) {
-                $set = $categoryOnecIds;
-                $parentOnecIds = [];
-                foreach ($set as $cid) {
-                    $cat = $categoriesMap->get($cid);
-                    if ($cat && $cat->parent_id !== null && in_array($cat->parent_id, $set, true)) {
-                        $parentOnecIds[] = $cat->parent_id;
-                    }
-                }
-                $leafOnecIds = array_values(array_diff($set, array_unique($parentOnecIds)));
-                if ($leafOnecIds === []) {
-                    $leafOnecIds = $set;
-                }
-                foreach ($leafOnecIds as $leafId) {
-                    if (!isset($leafCounts[$leafId])) {
-                        $leafCounts[$leafId] = [];
-                    }
-                    $leafCounts[$leafId][$productId] = true;
-                }
+            $leafCategoryOnecIds = array_values(array_diff(
+                $allCategoryOnecIds,
+                array_keys($hasChildOnecIds)
+            ));
+
+            if ($leafCategoryOnecIds === []) {
+                return collect();
             }
 
-            $leafOnecIds = array_keys($leafCounts);
+            $leafCounts = [];
+            foreach ($pairs as $row) {
+                if (!in_array($row->category_id, $leafCategoryOnecIds, true)) {
+                    continue;
+                }
+                if (!isset($leafCounts[$row->category_id])) {
+                    $leafCounts[$row->category_id] = [];
+                }
+                $leafCounts[$row->category_id][$row->product_id] = true;
+            }
+
             $productCounts = array_map('count', $leafCounts);
 
-            $categories = Category::whereIn('onec_id', $leafOnecIds)
+            $categories = Category::whereIn('onec_id', $leafCategoryOnecIds)
                 ->where('status', true)
                 ->whereNull('deleted_at')
                 ->get();
@@ -483,13 +487,7 @@ class CategoryRepository
                 return $category;
             })->filter(fn ($category) => $category->products_count > 0);
 
-            $mergedByName = $withCounts->groupBy('name')->map(function ($group) {
-                $first = $group->first();
-                $first->products_count = $group->sum('products_count');
-                return $first;
-            });
-
-            return $mergedByName->sortBy('name')->values();
+            return $withCounts->sortBy('name')->values();
         });
     }
 
