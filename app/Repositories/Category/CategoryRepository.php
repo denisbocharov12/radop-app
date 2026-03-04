@@ -488,29 +488,17 @@ class CategoryRepository
             })->filter(fn ($category) => $category->products_count > 0);
 
             $nameGroups = $withCounts->groupBy('name');
-            $result = $nameGroups->map(function ($group) use ($leafCounts) {
+            $result = $nameGroups->map(function ($group) {
                 $onecIds = $group->pluck('onec_id')->toArray();
-                $uniqueProductIds = [];
-                foreach ($onecIds as $oid) {
-                    if (isset($leafCounts[$oid])) {
-                        foreach (array_keys($leafCounts[$oid]) as $pid) {
-                            $uniqueProductIds[$pid] = true;
-                        }
-                    }
-                }
                 $first = $group->first();
-                $count = count($uniqueProductIds);
-                if ($count === 0) {
-                    return null;
-                }
                 $item = (object) [
                     'name' => $first->name,
                     'onec_id' => $first->onec_id,
-                    'products_count' => $count,
+                    'products_count' => (int) ($first->products_count ?? 0),
                     'onec_ids_for_filter' => $onecIds,
                 ];
                 return $item;
-            })->filter()->values();
+            })->filter(fn ($item) => $item->products_count > 0)->values();
 
             return $result->sortBy('name')->values();
         });
