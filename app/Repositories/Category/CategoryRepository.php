@@ -487,7 +487,32 @@ class CategoryRepository
                 return $category;
             })->filter(fn ($category) => $category->products_count > 0);
 
-            return $withCounts->sortBy('name')->values();
+            $nameGroups = $withCounts->groupBy('name');
+            $result = $nameGroups->map(function ($group) use ($leafCounts) {
+                $onecIds = $group->pluck('onec_id')->toArray();
+                $uniqueProductIds = [];
+                foreach ($onecIds as $oid) {
+                    if (isset($leafCounts[$oid])) {
+                        foreach (array_keys($leafCounts[$oid]) as $pid) {
+                            $uniqueProductIds[$pid] = true;
+                        }
+                    }
+                }
+                $first = $group->first();
+                $count = count($uniqueProductIds);
+                if ($count === 0) {
+                    return null;
+                }
+                $item = (object) [
+                    'name' => $first->name,
+                    'onec_id' => $first->onec_id,
+                    'products_count' => $count,
+                    'onec_ids_for_filter' => $onecIds,
+                ];
+                return $item;
+            })->filter()->values();
+
+            return $result->sortBy('name')->values();
         });
     }
 

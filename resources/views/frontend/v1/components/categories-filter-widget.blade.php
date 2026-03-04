@@ -6,19 +6,16 @@
         </div>
         <div class="theme-toggle-item-content categories-filter-content" style="display: flex">
             <div class="categories-filter-list">
-                @php
-                    $categoriesByName = $categories->groupBy('name');
-                @endphp
-                @foreach($categoriesByName as $name => $group)
+                @foreach($categories as $category)
                     <div class="category-filter-item">
                         <a href="javascript:void(0);"
                            class="category-filter-link"
-                           data-category-id="{{ $group->pluck('onec_id')->implode(',') }}"
+                           data-category-id="{{ isset($category->onec_ids_for_filter) ? implode(',', $category->onec_ids_for_filter) : $category->onec_id }}"
                            data-page-type="{{ $pageType ?? 'shop' }}"
                            data-page-sub-type="{{ $pageSubType ?? '' }}"
                            data-brand-onec-id="{{ $brandOnecId ?? '' }}">
-                            <span>{{ $name }}</span>
-                            <span class="category-filter-count">({{ $group->sum('products_count') }})</span>
+                            <span>{{ $category->name }}</span>
+                            <span class="category-filter-count">({{ $category->products_count ?? 0 }})</span>
                         </a>
                     </div>
                 @endforeach
