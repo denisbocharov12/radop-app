@@ -16,9 +16,14 @@ final class ThemeCategoryFilter implements Filter
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
         if ($value !== null) {
-            $query->whereHas('categories', function ($q) use ($value) {
-                $q->whereIn('categories.onec_id', is_array($value) ? $value : [$value]);
-            });
+            $ids = is_array($value)
+                ? $value
+                : (str_contains((string) $value, ',') ? array_values(array_filter(explode(',', (string) $value))) : [$value]);
+            if ($ids !== []) {
+                $query->whereHas('categories', function ($q) use ($ids) {
+                    $q->whereIn('categories.onec_id', $ids);
+                });
+            }
         }
     }
 }

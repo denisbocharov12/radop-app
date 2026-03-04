@@ -216,18 +216,23 @@ final class ThemeCategoryController extends Controller
             abort(404);
         }
 
-        $categoryId = $request->input('category_id');
+        $categoryIdInput = $request->input('category_id');
 
-        if ($categoryId !== null) {
-            $filterCategory = $this->categoryRepository->getByOnecId($categoryId);
+        if ($categoryIdInput !== null && $categoryIdInput !== '') {
+            $categoryIds = is_array($categoryIdInput)
+                ? array_values(array_filter($categoryIdInput))
+                : array_values(array_filter(explode(',', (string) $categoryIdInput)));
 
-            if ($filterCategory === null) {
-                throw new CategoryNotFoundValidationException();
+            if ($categoryIds !== []) {
+                foreach ($categoryIds as $cid) {
+                    if ($this->categoryRepository->getByOnecId($cid) === null) {
+                        throw new CategoryNotFoundValidationException();
+                    }
+                }
+                $existingFilters = $request->input('filter', []);
+                $existingFilters['category'] = count($categoryIds) === 1 ? $categoryIds[0] : $categoryIds;
+                $request->merge(['filter' => $existingFilters]);
             }
-
-            $existingFilters = $request->input('filter', []);
-            $existingFilters['category'] = $categoryId;
-            $request->merge(['filter' => $existingFilters]);
         }
 
         return $this->processFilter($request, $onecId);
