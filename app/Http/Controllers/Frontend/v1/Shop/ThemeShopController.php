@@ -401,20 +401,28 @@ final class ThemeShopController extends Controller
             abort(404);
         }
 
-        $categoryId = $request->input('category_id');
+        $categoryIdInput = $request->input('category_id');
 
-        if ($categoryId === null) {
+        if ($categoryIdInput === null || $categoryIdInput === '') {
             throw new CategoryNotFoundValidationException();
         }
 
-        $category = $this->categoryRepository->getByOnecId($categoryId);
+        $categoryIds = is_array($categoryIdInput)
+            ? array_values(array_filter($categoryIdInput))
+            : array_values(array_filter(explode(',', (string) $categoryIdInput)));
 
-        if ($category === null) {
+        if ($categoryIds === []) {
             throw new CategoryNotFoundValidationException();
+        }
+
+        foreach ($categoryIds as $cid) {
+            if ($this->categoryRepository->getByOnecId($cid) === null) {
+                throw new CategoryNotFoundValidationException();
+            }
         }
 
         $existingFilters = $request->input('filter', []);
-        $existingFilters['category'] = $categoryId;
+        $existingFilters['category'] = count($categoryIds) === 1 ? $categoryIds[0] : $categoryIds;
         $request->merge(['filter' => $existingFilters]);
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForShopPage();
