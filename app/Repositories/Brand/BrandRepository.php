@@ -200,13 +200,20 @@ final class BrandRepository
         $cacheKey = 'shop_brands_by_onec_ids_' . md5(implode(',', $productOnecIds));
 
         return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
-            return Product::whereIn('onec_id', $productOnecIds)
-                ->with('brand')
-                ->get()
-                ->pluck('brand')
+            $brandIds = Product::query()
+                ->whereIn('onec_id', $productOnecIds)
+                ->whereNotNull('brand_id')
+                ->distinct()
+                ->pluck('brand_id')
                 ->filter()
-                ->unique('id')
-                ->values();
+                ->values()
+                ->toArray();
+
+            if ($brandIds === []) {
+                return collect();
+            }
+
+            return Brand::whereIn('id', $brandIds)->get();
         });
     }
 
@@ -230,7 +237,7 @@ final class BrandRepository
 
         $cacheKey = 'brand_product_counts_' . md5(implode(',', $productOnecIds));
 
-        return Cache::remember($cacheKey, 3600, function () use ($brands, $productOnecIds) {
+        return Cache::remember($cacheKey, 7200, function () use ($brands, $productOnecIds) {
             $brandIds = $brands->pluck('id')->filter()->unique()->toArray();
 
             $brandProductCounts = Product::whereIn('onec_id', $productOnecIds)

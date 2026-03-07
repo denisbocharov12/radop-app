@@ -921,7 +921,7 @@ final class ProductRepository
 
     /**
      * @param Brand $brand
-     * @return Collection
+     * @return Collection<int, Product>
      */
     public function getAllProductsByBrand(Brand $brand): Collection
     {
@@ -931,6 +931,25 @@ final class ProductRepository
             ->where('site_status', true)
             ->whereNotNull('price_koef')
             ->get();
+    }
+
+    /**
+     * @param Brand $brand
+     * @return array<int, string>
+     */
+    public function getProductOnecIdsByBrand(Brand $brand): array
+    {
+        $cacheKey = 'brand_product_onec_ids_' . $brand->onec_id;
+
+        return Cache::remember($cacheKey, 3600, function () use ($brand) {
+            return Product::query()
+                ->where('brand_id', $brand->onec_id)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->whereNotNull('price_koef')
+                ->pluck('onec_id')
+                ->toArray();
+        });
     }
 
     /**

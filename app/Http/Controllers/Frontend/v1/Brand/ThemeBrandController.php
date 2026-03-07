@@ -22,6 +22,7 @@ use App\Exceptions\User\UserNoDiscountException;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 final class ThemeBrandController extends Controller
@@ -95,9 +96,9 @@ final class ThemeBrandController extends Controller
 
         $breadcrumbs = $this->themeBrandManager->getBreadcrumbsForBrand($existedBrand);
         $brands = $this->brandRepository->getAllToFrontEnd();
-        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
+        $filters = $this->getCachedBrandFilters($existedBrand->onec_id, app()->getLocale());
+        $attributes = $filters['attributes'];
+        $categories = $filters['categories'];
 
         //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
@@ -306,16 +307,26 @@ final class ThemeBrandController extends Controller
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
         $products = $this->brandRepository->getAllPaginatedWithFiltersToFrontEnd($existedBrand, $request, $defaultSort);
 
-        $allBrandProducts = $this->productRepository->getAllProductsByBrand($existedBrand);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allBrandProducts);
-        $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
+        $productOnecIds = $this->productRepository->getProductOnecIdsByBrand($existedBrand);
+        $filters = $this->getCachedBrandFilters($existedBrand->onec_id, app()->getLocale());
+        $categories = $filters['categories'];
+        $categoryCounts = [];
+        foreach ($categories as $cat) {
+            $c = (int) ($cat->products_count ?? 0);
+            if (!empty($cat->onec_ids_for_filter)) {
+                foreach ($cat->onec_ids_for_filter as $id) {
+                    $categoryCounts[$id] = $c;
+                }
+            } else {
+                $categoryCounts[$cat->onec_id] = $c;
+            }
+        }
 
-        $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allBrandProducts);
-        $productOnecIds = $allBrandProducts->pluck('onec_id')->toArray();
+        $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
         $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
 
-        $attributes = $this->attributeRepository->getAllAttributesByProductsIdsToFrontEnd($allBrandProducts);
-        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
+        $attributes = $filters['attributes'];
+        $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes ?? []);
 
         $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();
         $listView = view('frontend.v1.pages.brand.parts.list-view', compact('products'))->render();
@@ -339,5 +350,27 @@ final class ThemeBrandController extends Controller
                 'brands' => $brandCounts,
             ],
         ]);
+    }
+
+    /**
+     * @param string $brandOnecId
+     * @param string $locale
+     * @return array{attributes: array|null, categories: \Illuminate\Support\Collection}
+     */
+    private function getCachedBrandFilters(string $brandOnecId, string $locale): array
+    {
+        $cacheKey = "theme_brand_filters_{$brandOnecId}_{$locale}";
+
+        return Cache::remember($cacheKey, 3600, function () use ($brandOnecId) {
+            $brand = $this->brandRepository->getByOnecId($brandOnecId);
+            if ($brand === null) {
+                return ['attributes' => [], 'categories' => collect()];
+            }
+            $productOnecIds = $this->productRepository->getProductOnecIdsByBrand($brand);
+            return [
+                'attributes' => $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds),
+                'categories' => $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds),
+            ];
+        });
     }
 }
