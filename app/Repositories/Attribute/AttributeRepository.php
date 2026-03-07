@@ -136,17 +136,22 @@ final class AttributeRepository
         $cacheKey = 'shop_attributes_by_onec_ids_' . app()->getLocale() . '_' . md5(implode(',', $productOnecIds));
 
         return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
-            $collect = [];
-
             $attributeValues = DB::table('attribute_values')
                 ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
                 ->whereIn('attribute_values.product_onec_id', $productOnecIds)
                 ->get()
                 ->groupBy('attribute_onec_id');
 
-            foreach ($attributeValues as $key => $value) {
-                $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+            $attributeOnecIds = $attributeValues->keys()->toArray();
+            $attributesMap = Attribute::whereIn('onec_id', $attributeOnecIds)
+                ->get()
+                ->keyBy('onec_id');
 
+            $locale = str_replace('_', '-', app()->getLocale());
+            $collect = [];
+            foreach ($attributeValues as $attrOnecId => $value) {
+                $attr = $attributesMap->get($attrOnecId);
+                $keyName = $attr?->getTranslation('name', $locale);
                 $collect[$keyName] = $value->keyBy('value')->values()->toArray();
             }
 
