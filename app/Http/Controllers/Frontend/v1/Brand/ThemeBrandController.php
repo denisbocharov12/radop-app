@@ -369,7 +369,7 @@ final class ThemeBrandController extends Controller
             $productOnecIds = $this->productRepository->getProductOnecIdsByBrand($brand);
             return [
                 'attributes' => $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds),
-                'categories' => $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds),
+                'categories' => $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds, $locale),
             ];
         });
     }
