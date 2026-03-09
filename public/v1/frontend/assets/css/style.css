@@ -9512,7 +9512,7 @@ hr.product-card-item{
 }
 
 .main-column-catalog__list {
-    row-gap: 5px;
+    row-gap: 3px;
 }
 
 .main-column-catalog__link {
@@ -12257,7 +12257,7 @@ body.modal-open {
         font-weight: bold;
         font-size: 16px;
         padding: 11px 15px;
-        margin-bottom: 0px;
+        margin-bottom: 3px;
         text-decoration: none;
         color: #333;
     }
