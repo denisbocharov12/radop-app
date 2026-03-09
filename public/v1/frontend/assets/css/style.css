@@ -9512,7 +9512,7 @@ hr.product-card-item{
 }
 
 .main-column-catalog__list {
-    row-gap: 5px;
+    row-gap: 3px;
 }
 
 .main-column-catalog__link {
@@ -11173,6 +11173,9 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
     .catalog__widgets .mega-menu__widget-text{
         text-align: left;
     }
+    .catalog__widgets .mega-menu__widget{
+        padding: 6px 16px;
+    }
     .catalog__widgets .mega-menu__widget-link .mega-menu__widget-icon{
         position: relative;
         left: 0;
@@ -12247,11 +12250,14 @@ body.modal-open {
     .catalog-category-link, .catalog-category-title {
         font-size: 18px;
     }
+    .catalog__widgets{
+        padding: 10px 15px;
+    }
     .catalog-category-link {
         font-weight: bold;
         font-size: 16px;
-        padding: 10px 15px;
-        margin-bottom: 0px;
+        padding: 11px 15px;
+        margin-bottom: 3px;
         text-decoration: none;
         color: #333;
     }
