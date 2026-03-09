@@ -142,9 +142,9 @@
                                     <span class="catalog-category-title">{{$parentCategory->name}}</span>
                                 </h3>
                                 <ul class="column-catalog__list drop-menu-list">
-                                    <li>
-                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 18px;">{{ __('theme.all-mobile-catalog') }}</a>
-                                    </li>
+{{--                                    <li>--}}
+{{--                                        <a href="{{ route('theme.shop.catalog') }}" class="catalog-all-link" style="font-weight: bold; font-size: 18px;">{{ __('theme.all-mobile-catalog') }}</a>--}}
+{{--                                    </li>--}}
                                     @foreach($parentCategory->children as $secondLevelCategory)
                                         <li class="drop-menu-list__item" style="margin-bottom: 10px;">
                                             <a href="{{ route('theme.category.index', $secondLevelCategory->onec_id) }}" class="drop-menu-list__link" style="font-weight: bold; font-size: 18px;">
