@@ -414,20 +414,39 @@ class CategoryRepository
 
     /**
      * @param array<int, string> $productOnecIds
+     * @param string|null $locale
      * @return Collection<int, \App\Models\Category>
      */
-    public function getLastNestedCategoriesWithProductCountByOnecIds(array $productOnecIds): Collection
+    public function getLastNestedCategoriesWithProductCountByOnecIds(array $productOnecIds, ?string $locale = null): Collection
     {
         if ($productOnecIds === []) {
             return collect();
         }
 
+        $locale = $locale ?? app()->getLocale();
         $sortedIds = $productOnecIds;
         sort($sortedIds);
-        $cacheKey = 'categories_leaf_product_counts_' . md5(implode(',', $sortedIds));
+        $cacheKey = 'categories_leaf_product_counts_v2_' . $locale . '_' . md5(implode(',', $sortedIds));
 
-        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds) {
-            $pairs = DB::table('product_categories')
+        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds, $locale) {
+            $previousLocale = app()->getLocale();
+            app()->setLocale($locale);
+
+            try {
+                return $this->buildLastNestedCategoriesWithProductCount($productOnecIds);
+            } finally {
+                app()->setLocale($previousLocale);
+            }
+        });
+    }
+
+    /**
+     * @param array<int, string> $productOnecIds
+     * @return Collection<int, object>
+     */
+    private function buildLastNestedCategoriesWithProductCount(array $productOnecIds): Collection
+    {
+        $pairs = DB::table('product_categories')
                 ->join('categories', 'product_categories.category_id', '=', 'categories.onec_id')
                 ->whereIn('product_categories.product_id', $productOnecIds)
                 ->where('categories.status', true)
@@ -501,14 +520,14 @@ class CategoryRepository
             })->filter(fn ($item) => $item->products_count > 0)->values();
 
             return $result->sortBy('name')->values();
-        });
     }
 
     /**
      * @param Collection<int, \Illuminate\Database\Eloquent\Model> $products
+     * @param string|null $locale
      * @return Collection<int, \App\Models\Category>
      */
-    public function getLastNestedCategoriesWithProductCount(Collection $products): Collection
+    public function getLastNestedCategoriesWithProductCount(Collection $products, ?string $locale = null): Collection
     {
         if ($products->isEmpty()) {
             return collect();
@@ -516,7 +535,7 @@ class CategoryRepository
 
         $productIds = $products->pluck('onec_id')->toArray();
 
-        return $this->getLastNestedCategoriesWithProductCountByOnecIds($productIds);
+        return $this->getLastNestedCategoriesWithProductCountByOnecIds($productIds, $locale);
     }
 
     /**

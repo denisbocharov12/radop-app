@@ -55,7 +55,7 @@ final class WarmShopFilterCountsJob implements ShouldQueue
             return;
         }
 
-        $categories = $categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds);
+        $categories = $categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds, $this->locale);
         $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
 
         $brands = $brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);

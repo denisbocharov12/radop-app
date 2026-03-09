@@ -271,7 +271,7 @@ final class ThemeCategoryController extends Controller
         $products = $this->categoryRepository->getAllPaginatedWithFiltersToFrontEnd($existedCategory, $request, $defaultSort);
 
         $allCategoryProducts = $this->productRepository->getAllProductsByCategory($existedCategory);
-        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allCategoryProducts);
+        $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCount($allCategoryProducts, app()->getLocale());
         $categoryCounts = $categories->pluck('products_count', 'onec_id')->toArray();
 
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allCategoryProducts);
