@@ -12250,13 +12250,13 @@ body.modal-open {
     .catalog-category-link, .catalog-category-title {
         font-size: 18px;
     }
-    .catalog__widgets{
+    .theme-catalog-body .catalog__widgets{
         padding: 10px 15px;
     }
     .catalog-category-link {
         font-weight: bold;
         font-size: 16px;
-        padding: 11px 15px;
+        padding: 10px 15px;
         margin-bottom: 3px;
         text-decoration: none;
         color: #333;
