@@ -2,14 +2,14 @@
     $locale = app()->getLocale();
     $itemTitle = $item->getTranslation('title', $locale);
     $itemLink = $item->getTranslation('link', $locale);
-    $regularChildren = $item->children 
+    $regularChildren = $item->children
         ? $item->children
             ->where('type', '!=', 'widget_link')
             ->where('type', '!=', 'row')
             ->sortBy(function($child) {
                 return ($child->column ?? 1) * 1000 + ($child->column_order ?? $child->order ?? 0);
             })
-            ->values() 
+            ->values()
         : collect();
     $rowChildren = $item->children ? $item->children->where('type', 'row')->values() : collect();
 @endphp
@@ -22,9 +22,9 @@
         </button>
     </h3>
     <ul class="column-catalog__list drop-menu-list">
-        <li>
-            <a href="{{ $itemLink ?? route('theme.shop.catalog') }}" class="catalog-all-link">{{ __('theme.all-mobile-catalog') }}</a>
-        </li>
+{{--        <li>--}}
+{{--            <a href="{{ $itemLink ?? route('theme.shop.catalog') }}" class="catalog-all-link">{{ __('theme.all-mobile-catalog') }}</a>--}}
+{{--        </li>--}}
         @foreach($regularChildren as $child)
             @php
                 $childTitle = $child->getTranslation('title', $locale);
