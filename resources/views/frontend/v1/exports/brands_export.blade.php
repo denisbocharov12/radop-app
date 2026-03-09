@@ -21,7 +21,7 @@
     @foreach($products as $i => $product)
         <tr>
             <td>{{ $i + 1 }}</td>
-            <td>{{ $product->onec_id }}</td>
+            <td>{{ ''.$product->onec_id.'' }}</td>
             <td style="text-align: left">{{ $product->title }}</td>
             <td>{{ $product->brand?->title }}</td>
             <td></td>
