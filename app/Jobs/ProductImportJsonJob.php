@@ -95,15 +95,20 @@ final class ProductImportJsonJob implements ShouldQueue
 
                 if (Category::where('onec_id', $item)->first() !== null) {
 
-                    $ancestorsAndSelf = Category::where('onec_id', $item)->first()->ancestorsAndSelf->pluck('onec_id')->toArray();
+//                    $ancestorsAndSelf = Category::where('onec_id', $item)->first()->ancestorsAndSelf->pluck('onec_id')->toArray();
+//
+//                    foreach ($ancestorsAndSelf as $categoryId)
+//                    {
+//                        ProductCategory::create([
+//                            'category_id' => $categoryId,
+//                            'product_id' => $product->id,
+//                        ]);
+//                    }
 
-                    foreach ($ancestorsAndSelf as $categoryId)
-                    {
-                        ProductCategory::create([
-                            'category_id' => $categoryId,
-                            'product_id' => $product->id,
-                        ]);
-                    }
+                    ProductCategory::create([
+                        'category_id' => $item,
+                        'product_id' => $product->id,
+                    ]);
                 }
             }
 
