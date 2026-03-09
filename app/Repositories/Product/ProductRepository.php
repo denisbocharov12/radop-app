@@ -131,6 +131,19 @@ final class ProductRepository
             ->get();
     }
 
+    public function getAllProductsByCategoryForAdminExport(Category $category)
+    {
+        $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
+            ->orderBy('products.title')
+            ->get();
+    }
+
     public function getAllProductsByCategorySortedByTitle(Category $category)
     {
         $query = $category->products();

@@ -171,14 +171,14 @@ class CategoryController extends Controller
     public function sortProducts(Request $request)
     {
         $categoryId = $request->query('category_id');
-        
+
         if (!$categoryId) {
             return redirect()->route('category.select.category')
                 ->with('error', 'Не выбрана категория');
         }
 
         $category = $this->categoryRepository->getByOnecId($categoryId);
-        
+
         if (!$category) {
             return redirect()->route('category.select.category')
                 ->with('error', 'Категория не найдена');
@@ -199,13 +199,13 @@ class CategoryController extends Controller
     public function sortProductsOrder(Request $request)
     {
         $categoryId = $request->input('category_id');
-        
+
         if (!$categoryId) {
             return response()->json(['status' => false, 'text' => 'Не выбрана категория'], 400);
         }
 
         $category = $this->categoryRepository->getByOnecId($categoryId);
-        
+
         if (!$category) {
             return response()->json(['status' => false, 'text' => 'Категория не найдена'], 404);
         }
@@ -319,7 +319,7 @@ class CategoryController extends Controller
             throw new CategoryNotFoundException();
         }
 
-        $products = $this->productRepository->getAllProductsByCategory($category);
+        $products = $this->productRepository->getAllProductsByCategoryForAdminExport($category);
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -329,7 +329,7 @@ class CategoryController extends Controller
         }
 
         $locale = $request->input('locale', app()->getLocale());
-        
+
         if (!in_array($locale, ['ru', 'ro'])) {
             $locale = app()->getLocale();
         }

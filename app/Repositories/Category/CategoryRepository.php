@@ -380,7 +380,7 @@ class CategoryRepository
             ->groupBy('products.onec_id')
             ->orderBy('products.title')
             ->get()
-            ;
+        ;
     }
 
     /**
