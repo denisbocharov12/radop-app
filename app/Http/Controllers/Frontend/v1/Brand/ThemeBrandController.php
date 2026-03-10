@@ -361,7 +361,7 @@ final class ThemeBrandController extends Controller
     {
         $cacheKey = "theme_brand_filters_{$brandOnecId}_{$locale}";
 
-        return Cache::remember($cacheKey, 3600, function () use ($brandOnecId) {
+        return Cache::remember($cacheKey, 3600, function () use ($brandOnecId, $locale) {
             $brand = $this->brandRepository->getByOnecId($brandOnecId);
             if ($brand === null) {
                 return ['attributes' => [], 'categories' => collect()];
