@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 final class OrderCreatedMail extends Mailable
@@ -23,7 +24,10 @@ final class OrderCreatedMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $from = config('mail.orders.from');
+
         return new Envelope(
+            from: new Address($from['address'], $from['name']),
             subject: 'Confirmarea comenzii dvs. nr. №'.$this->order->order_number,
         );
     }

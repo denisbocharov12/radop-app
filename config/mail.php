@@ -102,6 +102,13 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'orders' => [
+        'from' => [
+            'address' => env('MAIL_ORDERS_FROM_ADDRESS', env('MAIL_FROM_ADDRESS', 'orders@radop.md')),
+            'name' => env('MAIL_ORDERS_FROM_NAME', 'Radop - Magazin Online'),
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings

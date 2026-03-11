@@ -7,6 +7,7 @@ use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Order\OrderRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +23,10 @@ final class OrderUpdatedMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $from = config('mail.orders.from');
+
         return new Envelope(
+            from: new Address($from['address'], $from['name']),
             subject: 'Comanda dvs. nr. №'.$this->order->order_number.' a fost anulată',
         );
     }

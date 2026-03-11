@@ -102,6 +102,39 @@
                                             <div class="progress-bar progress-bar-striped progress-bar-animated" data-progress="{{$batch->progress()}}">{{$batch->progress()}}%</div>
                                         </div>
                                     </div>
+                                    @if($productImportFailedAnalyses->isNotEmpty())
+                                        <div class="card-inner border-top">
+                                            <h6 class="card-title">Последние ошибки импорта (failed jobs)</h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Дата</th>
+                                                            <th>Причина (EN)</th>
+                                                            <th>Товар (onec_id / название)</th>
+                                                            <th>Исключение</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($productImportFailedAnalyses as $analysis)
+                                                            <tr>
+                                                                <td class="text-nowrap">{{ \Carbon\Carbon::parse($analysis['failed_at'])->format('d.m.Y H:i') }}</td>
+                                                                <td>{{ $analysis['reason_en'] }}</td>
+                                                                <td>
+                                                                    @forelse($analysis['products'] as $p)
+                                                                        <span class="d-block"><strong>{{ $p['onec_id'] }}</strong> {{ Str::limit($p['title'], 40) }}</span>
+                                                                    @empty
+                                                                        —
+                                                                    @endforelse
+                                                                </td>
+                                                                <td><small class="text-muted">{{ Str::limit($analysis['exception_preview'], 120) }}</small></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
                             <div class="card">

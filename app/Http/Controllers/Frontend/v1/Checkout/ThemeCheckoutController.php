@@ -30,6 +30,7 @@ use App\Services\Theme\Checkout\ThemeCheckoutManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 final class ThemeCheckoutController
 {
@@ -100,10 +101,6 @@ final class ThemeCheckoutController
 
         try {
             $order = $this->themeCheckoutManager->store($orderData, $user);
-
-            event(new OrderCreatedSendEmailEvent($order));
-
-            return redirect()->route('theme.thankyou.index');
         } catch (ManagerNotFoundException) {
             throw new ManagerNotFoundValidationException();
         } catch (OrderErrorException) {
@@ -117,6 +114,17 @@ final class ThemeCheckoutController
         } catch (MinOrderSumException) {
             throw new MinOrderSumValidationException();
         }
+
+        try {
+            event(new OrderCreatedSendEmailEvent($order));
+        } catch (\Throwable $e) {
+            Log::error('Order created but user confirmation email failed', [
+                'order_id' => $order->id,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('theme.thankyou.index');
     }
 
     public function thank()
