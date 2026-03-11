@@ -14781,7 +14781,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .category-filter-link {
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
@@ -14789,6 +14789,8 @@ input[type="range"]::-moz-range-thumb {
     padding: 4px 0;
     transition: text-decoration 0.2s;
     font-size: 15px;
+    position: relative;
+    line-height: 1.2;
 }
 
 .category-filter-link:hover {
@@ -14801,8 +14803,11 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .category-filter-count {
-    color: #999;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #797979;
+    position: relative;
+    top: -3px;
 }
 
 .categories-toggle-btn {
