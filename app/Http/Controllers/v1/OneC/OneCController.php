@@ -4,25 +4,23 @@ namespace App\Http\Controllers\v1\OneC;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OneC\OneCRequest;
-use App\Models\Product;
 use App\Models\Brand;
+use App\Models\Product;
 use App\Models\ProductProfile;
-use App\Repositories\Onec\OnecRepository;
-use App\Services\ONEC\ONECManager;
-use Illuminate\Http\Request;
 use App\Jobs\ImportProductImagesJob;
 use App\Jobs\OptimizeBrandImagesJob;
+use App\Repositories\Onec\OnecRepository;
+use App\Services\ONEC\ImportFailureAnalyzer;
+use App\Services\ONEC\ONECManager;
+use Illuminate\Http\Request;
 
 class OneCController extends Controller
 {
-    private ONECManager $ONECManager;
-
     public function __construct(
-        ONECManager $ONECManager,
+        private readonly ONECManager $ONECManager,
         private readonly OnecRepository $onecRepository,
-    )
-    {
-        $this->ONECManager = $ONECManager;
+        private readonly ImportFailureAnalyzer $importFailureAnalyzer,
+    ) {
     }
 
     public function index()
@@ -35,6 +33,12 @@ class OneCController extends Controller
         $descriptionBatch = $this->onecRepository->getDescriptionImportBatches();
         $packageBatch = $this->onecRepository->getPackageImportBatches();
 
+        $productImportFailedAnalyses = collect();
+        if ($productBatch !== null) {
+            $failedJobs = $this->onecRepository->getProductImportFailedJobs($productBatch->id);
+            $productImportFailedAnalyses = $failedJobs->map(fn ($job) => $this->importFailureAnalyzer->analyze($job));
+        }
+
         return view('onec.index', compact([
             'productBatch',
             'categoryBatch',
@@ -42,7 +46,8 @@ class OneCController extends Controller
             'attributeBatch',
             'attributeValueBatch',
             'descriptionBatch',
-            'packageBatch'
+            'packageBatch',
+            'productImportFailedAnalyses',
         ]));
     }
 

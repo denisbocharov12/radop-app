@@ -2748,6 +2748,9 @@ header .section-header .row-main .header-menu .col-lg{
 .section-home.section-standart .col-heading .heading.heading-with-btn a:hover{
     transition: .3s all;
 }
+.body-lock{
+    overflow: hidden;
+}
 .color-red {
     color: #e82d25 !important;
 }
@@ -5613,7 +5616,7 @@ header .section-header .row-main .header-menu .col-lg{
     font-weight: 500;
     margin-bottom: 20px;
     padding-bottom: 4px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title.theme-widget-title-range{
@@ -5649,8 +5652,8 @@ header .section-header .row-main .header-menu .col-lg{
 {
     content: "";
     display: inline-block;
-    width: 1em;
-    height: 1em;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
     flex-grow: 0;
     border: 1px solid #555555;
@@ -5948,6 +5951,7 @@ header .section-header .row-main .header-menu .col-lg{
     display: none;
     flex-wrap: wrap;
     align-items: center;
+    overflow: auto;
 }
 
 .product-item-category.product-item-category-in-cart{
@@ -6088,11 +6092,13 @@ header .section-header .row-main .header-menu .col-lg{
     position: fixed;
     bottom: 0;
     z-index: 998;
+    left: 20px;
 }
 
 .scroll_to_top_btn.in-footer {
     position: absolute;
     top: -95px;
+    display: none;
 }
 
 .scroll_to_top_btn:hover{
@@ -8762,8 +8768,8 @@ hr.product-card-item{
 {
     content: "";
     display: inline-block;
-    width: 1em;
-    height: 1em;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
     flex-grow: 0;
     border: 1px solid #adb5bd;
@@ -10349,7 +10355,7 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
         transform: translate(-8px, -4px) rotate(180deg);
     }
     .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-widget-title{
-        font-size: 14px;
+        font-size: 15px;
     }
     .product-item-category .product-item-title-wrap .product_item_name a{
         font-size: 13px;
@@ -12325,7 +12331,7 @@ body.modal-open {
     .mobile-sort-block {
         display: flex;
         align-items: center;
-        width: 100vw;
+        width: 100%;
         margin-left: -16px;
         margin-bottom: 10px;
         background: #fff;

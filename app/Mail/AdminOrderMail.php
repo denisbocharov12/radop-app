@@ -23,7 +23,10 @@ class AdminOrderMail extends Mailable
         Excel::store(new OrderExport($this->order), $filePath, 'local', \Maatwebsite\Excel\Excel::XLS);
         $products = $this->order->products;
 
-        return $this->subject(__('theme.order-new-order') . '' . $this->order->order_number)
+        $from = config('mail.orders.from');
+
+        return $this->from($from['address'], $from['name'])
+            ->subject(__('theme.order-new-order') . '' . $this->order->order_number)
             ->view('frontend.v1.mail.order', ['order' => $this->order, 'products' => $products])
             ->attach(storage_path("app/{$filePath}"));
     }

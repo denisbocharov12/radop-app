@@ -23,6 +23,7 @@ use App\Repositories\City\CityRepository;
 use App\Repositories\Filial\FilialRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 final class ThemeCheckoutManager
 {
@@ -168,17 +169,29 @@ final class ThemeCheckoutManager
         Session()->forget('coupon');
         \Cart::session($sessionId)->clear();
 
-        if ($managerId !== null)
-        {
+        if ($managerId !== null) {
             $existedManager = $this->userRepository->getManagerById($managerId);
-
-            if ($existedManager->email !== null)
-            {
-                event(new OrderCreatedSendManagerEmailEvent($existedManager));
+            if ($existedManager->email !== null) {
+                try {
+                    event(new OrderCreatedSendManagerEmailEvent($existedManager));
+                } catch (\Throwable $e) {
+                    Log::error('Order created but manager email failed', [
+                        'order_id' => $order->id,
+                        'manager_id' => $existedManager->id,
+                        'message' => $e->getMessage(),
+                    ]);
+                }
             }
         }
 
-        event(new OrderCreatedSendAdminEmailEvent(config('mail.admin_email'), $order));
+        try {
+            event(new OrderCreatedSendAdminEmailEvent(config('mail.admin_email'), $order));
+        } catch (\Throwable $e) {
+            Log::error('Order created but admin email failed', [
+                'order_id' => $order->id,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
         return $order;
     }

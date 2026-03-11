@@ -1,69 +1,103 @@
 <?php
+
 namespace App\Repositories\Onec;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class OnecRepository
 {
-    public function getProductImportBatches()
+    public function getProductImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Products' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Products%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
 
-    public function getCategoryImportBatches()
+    /**
+     * @return Collection<int, object>
+     */
+    public function getProductImportFailedJobs(?string $batchId = null): Collection
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Categories' . '%')
-            ->get()
-            ->last()
-         ;
+        $batch = $batchId
+            ? DB::table('job_batches')->where('id', $batchId)->first()
+            : $this->getProductImportBatches();
+
+        if ($batch === null) {
+            return collect();
+        }
+
+        $failedIds = json_decode($batch->failed_job_ids ?? '[]', true);
+        if (!is_array($failedIds) || empty($failedIds)) {
+            return collect();
+        }
+
+        return DB::table('failed_jobs')
+            ->whereIn('uuid', $failedIds)
+            ->orderByDesc('failed_at')
+            ->get();
     }
 
-    public function getBrandImportBatches()
+    public function getCategoryImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Brands' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Categories%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
 
-    public function getAttributeImportBatches()
+    public function getBrandImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Attributes' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Brands%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
 
-    public function getAttributeValueImportBatches()
+    public function getAttributeImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Attribute Values' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Attributes%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
 
-    public function getDescriptionImportBatches()
+    public function getAttributeValueImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Descriptions' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Attribute Values%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
-    public function getPackageImportBatches()
+
+    public function getDescriptionImportBatches(): ?object
     {
-        return DB::table('job_batches')
-            ->where('name', 'like', '%' . 'Import Packages' . '%')
-            ->get()
-            ->last()
-        ;
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Descriptions%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
+    }
+
+    public function getPackageImportBatches(): ?object
+    {
+        $batches = DB::table('job_batches')
+            ->where('name', 'like', '%Import Packages%')
+            ->orderByDesc('id')
+            ->get();
+
+        return $batches->isEmpty() ? null : $batches->first();
     }
 }

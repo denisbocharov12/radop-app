@@ -1080,7 +1080,7 @@ document.addEventListener("DOMContentLoaded", (() => {
             const allSecondColumnLinks = catalog.querySelectorAll(".catalog__second-column .drop-menu-list__link");
             let mainCurrentLink = null;
             let secondCurrenLink = null;
-            
+
             function getBack(event) {
                 event.stopPropagation();
                 if (event.target.classList.contains("column-catalog__back")) {
@@ -1095,7 +1095,7 @@ document.addEventListener("DOMContentLoaded", (() => {
                     }
                 }
             }
-            
+
             function openCatalog(event) {
                 event.stopPropagation();
                 if (event.target.classList.contains("catalog-btn") || event.target.closest(".catalog-btn")) {
@@ -1110,26 +1110,26 @@ document.addEventListener("DOMContentLoaded", (() => {
                     }
                 }
             }
-            
+
             function removeCatalog({target}) {
                 if (target.classList.contains("catalog") || target.closest(".catalog")) return;
                 closeMenu();
             }
-            
+
             function openSecondColumn(event) {
                 const target = event.target;
                 const link = target.closest(".main-column-catalog__link");
-                
+
                 if (link && link.hasAttribute("data-main-category")) {
                     event.preventDefault();
                     event.stopPropagation();
-                    
+
                     if (mainCurrentLink) mainCurrentLink.classList.remove("_active");
                     if (secondCurrenLink) secondCurrenLink.classList.remove("_active");
-                    
+
                     link.classList.add("_active");
                     mainCurrentLink = link;
-                    
+
                     if (secondColumn) {
                         secondColumn.classList.add("_active");
                         const elemId = link.getAttribute("data-main-category");
@@ -1138,17 +1138,17 @@ document.addEventListener("DOMContentLoaded", (() => {
                             if (elem.id === elemId) elem.classList.add("column-catalog__item--active");
                         }));
                     }
-                    
+
                     return false;
                 }
             }
-            
+
             function closeBtnHeadler({target}) {
                 if (target.classList.contains("catalog__close-btn") || target.closest(".catalog__close-btn")) {
                     closeMenu();
                 }
             }
-            
+
             function closeMenu() {
                 catalogNavBarMenu.classList.remove("_active");
                 catalog.classList.remove("catalog--active");
@@ -1161,7 +1161,7 @@ document.addEventListener("DOMContentLoaded", (() => {
                 body.classList.remove("body-lock");
                 body.removeEventListener("click", removeCatalog);
             }
-            
+
             if (catalogBtn) {
                 catalogBtn.addEventListener("click", openCatalog);
             }
@@ -1193,6 +1193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         searchNavBarMenu?.classList.remove("_active");
         otherNavBarMenu?.classList.remove("_active");
         catalogNavBarMenu?.classList.remove("_active");
+        document.body.classList.remove("body-lock");
     }
 
     if (btnSearch && searchNavBarMenu) {
@@ -1287,12 +1288,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error('Ошибка загрузки мобильного мега-меню:', error);
                 if (mobileLoading) mobileLoading.style.display = 'none';
                 closeMobileMenu();
-                
+
                 if (mobileContainer) {
                     const closeBtnHtml = '<button class="catalog__close-btn _icon-close" type="button"></button>';
                     mobileContainer.innerHTML = '<div class="catalog__error"><div class="catalog__error-content">' + closeBtnHtml + '<p>' + translateLoadErrorMessage + '</p></div></div>';
                     mobileContainer.style.display = 'block';
-                    
+
                     const errorCloseBtn = mobileContainer.querySelector('.catalog__close-btn');
                     if (errorCloseBtn) {
                         errorCloseBtn.addEventListener('click', function(e) {
@@ -1324,7 +1325,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loadingIndicator.className = 'catalog__loading';
             loadingIndicator.innerHTML = '<div class="mega-menu__spinner"></div>';
             loadingIndicator.style.display = 'flex';
-            
+
             secondColumn.innerHTML = '';
             secondColumn.appendChild(loadingIndicator);
             secondColumn.classList.add('_active');
@@ -1374,7 +1375,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (secondColumn) {
                 secondColumn.innerHTML = mobileCategoryContentCache[itemId];
                 secondColumn.classList.add('_active');
-                
+
                 const categoryItem = secondColumn.querySelector(`[data-category-id="${itemId}"]`);
                 if (categoryItem) {
                     categoryItem.classList.add('column-catalog__item--active');
@@ -1446,8 +1447,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             function handleCatalogClick(event) {
                 const target = event.target;
-                
-                if (target.classList.contains('column-catalog__back') || 
+
+                if (target.classList.contains('column-catalog__back') ||
                     target.classList.contains('column-catalog__close') ||
                     target.closest('.column-catalog__back') ||
                     target.closest('.column-catalog__close')) {
@@ -1461,7 +1462,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (link && link.hasAttribute('data-main-category')) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
-                    
+
                     const itemId = link.getAttribute('data-main-category');
                     loadCategoryContent(itemId, link);
                 }
@@ -1793,14 +1794,14 @@ class SearchHistory {
         this.clearButton = document.querySelector(clearButtonSelector);
         this.debounceTimer = null;
         this.currentMode = 'history';
-        
+
         if (!this.input || !this.dropdown || !this.list || !this.clearButton) {
             return;
         }
-        
+
         this.init();
     }
-    
+
     init() {
         this.input.addEventListener('focus', () => {
             if (this.input.value.trim() === '') {
@@ -1809,12 +1810,12 @@ class SearchHistory {
                 this.loadAndShowSuggestions(this.input.value);
             }
         });
-        
+
         this.input.addEventListener('input', () => {
             clearTimeout(this.debounceTimer);
-            
+
             const query = this.input.value.trim();
-            
+
             if (query === '') {
                 this.loadAndShowHistory();
             } else {
@@ -1823,16 +1824,16 @@ class SearchHistory {
                 }, 300);
             }
         });
-        
+
         this.clearButton.addEventListener('click', () => this.clearHistory());
-        
+
         document.addEventListener('click', (e) => {
             if (!this.dropdown.contains(e.target) && !this.input.contains(e.target)) {
                 this.hideHistory();
             }
         });
     }
-    
+
     loadAndShowHistory() {
         this.currentMode = 'history';
         fetch('/search/history')
@@ -1849,12 +1850,12 @@ class SearchHistory {
                 console.error('Ошибка загрузки истории поиска:', error);
             });
     }
-    
+
     loadAndShowSuggestions(query) {
         this.currentMode = 'suggestions';
-        
+
         const locale = document.documentElement.lang || 'ru';
-        
+
         fetch('/search/suggestions?query=' + encodeURIComponent(query) + '&locale=' + locale)
             .then(response => response.json())
             .then(data => {
@@ -1869,21 +1870,21 @@ class SearchHistory {
                 console.error('Ошибка загрузки подсказок:', error);
             });
     }
-    
+
     renderHistory(items) {
         this.list.innerHTML = '';
-        
+
         const emptyText = this.clearButton.getAttribute('data-empty-text');
-        
+
         if (items.length === 0) {
             this.list.innerHTML = '<div class="search-history-empty">' + emptyText + '</div>';
             return;
         }
-        
+
         items.forEach(query => {
             const item = document.createElement('div');
             item.className = 'search-history-item';
-            
+
             const textSpan = document.createElement('span');
             textSpan.className = 'search-history-item-text';
             textSpan.textContent = query;
@@ -1891,7 +1892,7 @@ class SearchHistory {
                 this.input.value = query;
                 this.input.form.submit();
             });
-            
+
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'search-history-item-delete';
             deleteBtn.innerHTML = '<i class="icon-close"></i>';
@@ -1899,24 +1900,24 @@ class SearchHistory {
                 e.stopPropagation();
                 this.deleteHistoryItem(query);
             });
-            
+
             item.appendChild(textSpan);
             item.appendChild(deleteBtn);
             this.list.appendChild(item);
         });
     }
-    
+
     renderSuggestions(items) {
         this.list.innerHTML = '';
-        
+
         if (items.length === 0) {
             return;
         }
-        
+
         items.forEach(suggestion => {
             const item = document.createElement('div');
             item.className = 'search-suggestion-item';
-            
+
             const icon = document.createElement('i');
             if (suggestion.type === 'product') {
                 icon.className = 'icon-search search-suggestion-icon';
@@ -1925,36 +1926,36 @@ class SearchHistory {
             } else if (suggestion.type === 'brand') {
                 icon.className = 'icon-star search-suggestion-icon';
             }
-            
+
             const textSpan = document.createElement('span');
             textSpan.className = 'search-suggestion-text';
             textSpan.textContent = suggestion.text;
-            
+
             item.appendChild(icon);
             item.appendChild(textSpan);
-            
+
             item.addEventListener('click', () => {
                 this.input.value = suggestion.text;
                 this.input.form.submit();
             });
-            
+
             this.list.appendChild(item);
         });
     }
-    
+
     showHistory() {
         this.updateHeaderTitle();
         this.dropdown.style.display = 'block';
     }
-    
+
     hideHistory() {
         this.dropdown.style.display = 'none';
     }
-    
+
     updateHeaderTitle() {
         const headerTitle = this.dropdown.querySelector('.search-history-title');
         if (!headerTitle) return;
-        
+
         if (this.currentMode === 'suggestions') {
             headerTitle.textContent = headerTitle.getAttribute('data-suggestions-title') || 'Похожие запросы';
             this.clearButton.style.display = 'none';
@@ -1963,10 +1964,10 @@ class SearchHistory {
             this.clearButton.style.display = 'flex';
         }
     }
-    
+
     clearHistory() {
         const emptyText = this.clearButton.getAttribute('data-empty-text');
-        
+
         fetch('/search/history/clear', {
             method: 'POST',
             headers: {
@@ -1985,7 +1986,7 @@ class SearchHistory {
             console.error('Ошибка очистки истории:', error);
         });
     }
-    
+
     deleteHistoryItem(query) {
         fetch('/search/history/delete', {
             method: 'DELETE',
