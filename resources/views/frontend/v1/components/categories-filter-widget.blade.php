@@ -15,7 +15,7 @@
                            data-page-sub-type="{{ $pageSubType ?? '' }}"
                            data-brand-onec-id="{{ $brandOnecId ?? '' }}">
                             <span>{{ $category->name }}</span>
-                            <span class="category-filter-count">({{ $category->products_count ?? 0 }})</span>
+                            <span class="category-filter-count">{{ $category->products_count ?? 0 }}</span>
                         </a>
                     </div>
                 @endforeach
@@ -262,7 +262,7 @@
                         window.history.pushState({}, '', newUrl.toString());
                     }
                     hideLoading();
-                    
+
                     setTimeout(function() {
                         closeFilterModal();
                     }, 100);
@@ -291,7 +291,7 @@
 
         function initCategoryFilters() {
             const links = document.querySelectorAll('.category-filter-link');
-            
+
             links.forEach(function(link) {
                 link.removeEventListener('click', handleCategoryClick);
                 link.addEventListener('click', handleCategoryClick);
