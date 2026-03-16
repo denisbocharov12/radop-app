@@ -319,12 +319,12 @@ class CategoryController extends Controller
             throw new CategoryNotFoundException();
         }
 
-        $products = $this->productRepository->getAllProductsByCategoryForAdminExport($category);
+        $products = $this->productRepository->getAllProductsByCategoryAndDescendantsForAdminExport($category);
 
         if ($products->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'В категории нет товаров',
+                'message' => 'В категории и дочерних категориях нет товаров',
             ], 404);
         }
 

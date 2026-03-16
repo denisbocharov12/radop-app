@@ -131,9 +131,38 @@ final class ProductRepository
             ->get();
     }
 
+    /**
+     * @param Category $category
+     * @return \Illuminate\Database\Eloquent\Collection<int, Product>
+     */
     public function getAllProductsByCategoryForAdminExport(Category $category)
     {
         $query = $category->products();
+
+        return QueryBuilder::for($query)
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
+            ->orderBy('products.title')
+            ->get();
+    }
+
+    /**
+     * @param Category $category
+     * @return \Illuminate\Database\Eloquent\Collection<int, Product>
+     */
+    public function getAllProductsByCategoryAndDescendantsForAdminExport(Category $category)
+    {
+        $categoryOnecIds = $category->descendantsAndSelf()->pluck('onec_id')->toArray();
+
+        if ($categoryOnecIds === []) {
+            return new \Illuminate\Database\Eloquent\Collection([]);
+        }
+
+        $query = Product::query()->whereHas('categories', function (Builder $q) use ($categoryOnecIds): void {
+            $q->whereIn('categories.onec_id', $categoryOnecIds);
+        });
 
         return QueryBuilder::for($query)
             ->where('stock', '!=', 0)
