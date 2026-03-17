@@ -40,28 +40,36 @@ final class AttributeRepository
     public function getAllSorted(): Collection
     {
         return Attribute::where('status', true)
+            ->orderBy('global_sort_order')
             ->orderBy('order')
-            ->get()
-        ;
+            ->get();
     }
 
     public function getAllToShop(): ?array
     {
-        $cacheKey = 'attributes_all_shop_' . app()->getLocale();
+        $cacheKey = 'attributes_all_shop_sorted_' . app()->getLocale();
 
         return Cache::remember($cacheKey, 7200, function () {
-            $collect = array();
-
+            $locale = str_replace('_', '-', app()->getLocale());
             $join = DB::table('attribute_values')
                 ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
                 ->get()
-                ->groupBy('attribute_onec_id')
-            ;
+                ->groupBy('attribute_onec_id');
 
-            foreach ($join as $key => $value)
-            {
-                $keyName = Attribute::where('onec_id', $key)->first()?->getTranslation('name', str_replace('_', '-', app()->getLocale()));
+            $attributeOnecIds = $join->keys()->toArray();
+            $orderedAttributes = Attribute::whereIn('onec_id', $attributeOnecIds)
+                ->where('status', true)
+                ->orderBy('global_sort_order')
+                ->orderBy('order')
+                ->get();
 
+            $collect = [];
+            foreach ($orderedAttributes as $attr) {
+                $value = $join->get($attr->onec_id);
+                if ($value === null) {
+                    continue;
+                }
+                $keyName = $attr->getTranslation('name', $locale);
                 $collect[$keyName] = $value->keyBy('value')->values()->toArray();
             }
 
@@ -159,6 +167,81 @@ final class AttributeRepository
         });
     }
 
+    /**
+     * @param array<int, string> $productOnecIds
+     * @return array<string, mixed>|null
+     */
+    public function getAllAttributesByProductOnecIdsToFrontEndSorted(array $productOnecIds): ?array
+    {
+        if ($productOnecIds === []) {
+            return [];
+        }
+
+        $locale = str_replace('_', '-', app()->getLocale());
+        $cacheKey = 'shop_attributes_by_onec_ids_sorted_' . $locale . '_' . md5(implode(',', $productOnecIds));
+
+        return Cache::remember($cacheKey, 7200, function () use ($productOnecIds, $locale) {
+            $attributeValues = DB::table('attribute_values')
+                ->select('attribute_values.attribute_onec_id', 'attribute_values.id', 'attribute_values.value')
+                ->whereIn('attribute_values.product_onec_id', $productOnecIds)
+                ->get()
+                ->groupBy('attribute_onec_id');
+
+            $attributeOnecIds = $attributeValues->keys()->toArray();
+            $orderedAttributes = Attribute::whereIn('onec_id', $attributeOnecIds)
+                ->where('status', true)
+                ->orderBy('global_sort_order')
+                ->orderBy('order')
+                ->get();
+
+            $collect = [];
+            foreach ($orderedAttributes as $attr) {
+                $value = $attributeValues->get($attr->onec_id);
+                if ($value === null) {
+                    continue;
+                }
+                $keyName = $attr->getTranslation('name', $locale);
+                $collect[$keyName] = $value->keyBy('value')->values()->toArray();
+            }
+
+            return $collect;
+        });
+    }
+
+    /**
+     * @param string $categoryOnecId
+     * @return array<string, mixed>|null
+     */
+    public function getAllByCategoryIdSortedForFrontEnd(string $categoryOnecId): ?array
+    {
+        $raw = $this->getAllByCategoryId($categoryOnecId);
+        if ($raw === null || $raw === []) {
+            return $raw;
+        }
+
+        $category = Category::where('onec_id', $categoryOnecId)->first();
+        if ($category === null) {
+            return $raw;
+        }
+
+        $sortedAttributes = $this->getAttributesForCategorySort($category);
+        $locale = str_replace('_', '-', app()->getLocale());
+        $result = [];
+        foreach ($sortedAttributes as $attr) {
+            $keyName = $attr->getTranslation('name', $locale);
+            if (array_key_exists($keyName, $raw)) {
+                $result[$keyName] = $raw[$keyName];
+            }
+        }
+        foreach ($raw as $keyName => $vals) {
+            if (!array_key_exists($keyName, $result)) {
+                $result[$keyName] = $vals;
+            }
+        }
+
+        return $result;
+    }
+
     public function getAllAttributesByProductsIdsToFrontEnd(Collection $products): ?array
     {
         $productIds = $products->pluck('onec_id')->toArray();
@@ -220,6 +303,23 @@ final class AttributeRepository
 
             return $attributeCounts;
         });
+    }
+
+    /**
+     * @return Collection<int, Attribute>
+     */
+    public function getAttributesForCategorySort(Category $category): Collection
+    {
+        $all = Attribute::where('status', true)->orderBy('global_sort_order')->orderBy('order')->get();
+        $categoryAttributes = $category->attributes()->get();
+        $pivotMap = $categoryAttributes->keyBy('id');
+
+        return $all->map(function (Attribute $attr) use ($pivotMap) {
+            $pivot = $pivotMap->get($attr->id);
+            $order = $pivot ? (int) $pivot->pivot->sort_order : (int) ($attr->global_sort_order ?? 0);
+            $attr->setAttribute('category_sort_order', $order);
+            return $attr;
+        })->sortBy('category_sort_order')->values();
     }
 
     /**

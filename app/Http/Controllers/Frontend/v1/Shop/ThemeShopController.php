@@ -547,7 +547,7 @@ final class ThemeShopController extends Controller
                 default => [],
             };
 
-            $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEnd($productOnecIds);
+            $attributes = $this->attributeRepository->getAllAttributesByProductOnecIdsToFrontEndSorted($productOnecIds);
             $brands = $this->brandRepository->getAllBrandsByProductOnecIdsToFrontEnd($productOnecIds);
             $categories = $this->categoryRepository->getLastNestedCategoriesWithProductCountByOnecIds($productOnecIds, $locale);
 
