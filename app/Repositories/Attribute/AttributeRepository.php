@@ -310,7 +310,21 @@ final class AttributeRepository
      */
     public function getAttributesForCategorySort(Category $category): Collection
     {
-        $all = Attribute::where('status', true)->orderBy('global_sort_order')->orderBy('order')->get();
+        $attributeOnecIds = DB::table('product_categories')
+            ->join('attribute_values', 'attribute_values.product_onec_id', '=', 'product_categories.product_id')
+            ->where('product_categories.category_id', $category->onec_id)
+            ->distinct()
+            ->pluck('attribute_values.attribute_onec_id');
+
+        if ($attributeOnecIds->isEmpty()) {
+            return collect();
+        }
+
+        $all = Attribute::where('status', true)
+            ->whereIn('onec_id', $attributeOnecIds)
+            ->orderBy('global_sort_order')
+            ->orderBy('order')
+            ->get();
         $categoryAttributes = $category->attributes()->get();
         $pivotMap = $categoryAttributes->keyBy('id');
 
