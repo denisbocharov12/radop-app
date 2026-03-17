@@ -813,6 +813,16 @@ $(document).ready(function () {
       $(this).toggleClass('show');
       $('#header-catalog-action').toggleClass('show');
   });
+  $(document).on('click', '.js-trigger-mega-menu', function(e) {
+      e.preventDefault();
+      var $megaTrigger = $('[data-mega-menu-toggle]');
+      if ($megaTrigger.length) {
+          $megaTrigger[0].click();
+      } else {
+          $('#btn-header-catalog').toggleClass('show');
+          $('#header-catalog-action').toggleClass('show');
+      }
+  });
     $(document).on('click', function(e) {
         if (!$(e.target).closest(".btn-header-catalog-wrap").length) {
             $('#header-catalog-action').removeClass('show');

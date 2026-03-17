@@ -173,4 +173,15 @@ final class Category extends Model implements HasMedia, Sitemapable
     {
         return $this->hasMany(ProductCategorySort::class, 'category_id', 'onec_id');
     }
+
+    /**
+     * @return BelongsToMany<Attribute, Category>
+     */
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_category', 'category_id', 'attribute_id', 'onec_id', 'id')
+            ->withPivot('sort_order')
+            ->withTimestamps()
+            ->orderByPivot('sort_order');
+    }
 }

@@ -107,7 +107,7 @@ final class ThemeCategoryController extends Controller
         $productsByCategory = $this->productRepository->getAllProductsByCategory($existedCategory);
 
         $brands = $this->brandRepository->getAllToFrontEnd();
-        $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
+        $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);
 
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
@@ -278,7 +278,7 @@ final class ThemeCategoryController extends Controller
         $productOnecIds = $allCategoryProducts->pluck('onec_id')->toArray();
         $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
 
-        $attributes = $this->attributeRepository->getAllByCategoryId($existedCategory->onec_id);
+        $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);
         $attributeCounts = $this->attributeRepository->getAttributeProductCounts($productOnecIds, $attributes);
 
         $tableView = view('frontend.v1.pages.brand.parts.list', compact('products'))->render();

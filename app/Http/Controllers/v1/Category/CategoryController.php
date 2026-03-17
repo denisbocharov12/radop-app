@@ -26,17 +26,19 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     private CategoryRepository $categoryRepository;
+
     private CategoryManager $categoryManager;
+
     private CategoryDataMapper $categoryDataMapper;
+
     private ProductRepository $productRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
-        CategoryManager    $categoryManager,
+        CategoryManager $categoryManager,
         CategoryDataMapper $categoryDataMapper,
         ProductRepository $productRepository
-    )
-    {
+    ) {
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
         $this->categoryDataMapper = $categoryDataMapper;
@@ -73,7 +75,8 @@ class CategoryController extends Controller
         $categories = $this->categoryRepository->getAllIgnored($category);
 
         return view('category.edit', compact([
-            'category', 'categories'
+            'category',
+            'categories',
         ]));
     }
 

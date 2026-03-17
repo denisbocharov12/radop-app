@@ -5,7 +5,7 @@
                 <nav>
                     <ol class="breadcrumb text-white d-none d-md-flex">
                         <li class="breadcrumb-item"><a href="{{route('theme.home')}}">{{__('theme.home')}}</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('theme.shop.catalog')}}">{{__('theme.shop')}}</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('theme.shop.catalog')}}" class="js-trigger-mega-menu">{{__('theme.shop')}}</a></li>
                     </ol>
                     <ol class="breadcrumb text-white d-flex d-md-none">
                         @php

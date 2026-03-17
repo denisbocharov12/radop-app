@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
 final class AttributeImportJsonJob implements ShouldQueue
 {
@@ -36,16 +35,16 @@ final class AttributeImportJsonJob implements ShouldQueue
             if (!empty($attribute->id)) {
                 $data = [
                     'name' => [
-                        'ro' => isset($attribute->name_ro) ? $attribute->name_ro : '',
-                        'ru' => isset($attribute->name_ru) ? $attribute->name_ru : '',
+                        'ro' => $attribute->name_ro ?? '',
+                        'ru' => $attribute->name_ru ?? '',
                     ],
-                    'slug' => Str::slug($attribute->name_ro),
                     'onec_id' => $attribute->id,
                 ];
 
-                Attribute::updateOrCreate([
-                    'onec_id' => $attribute->id
-                ], $data);
+                Attribute::updateOrCreate(
+                    ['onec_id' => $attribute->id],
+                    $data
+                );
             }
         }
     }

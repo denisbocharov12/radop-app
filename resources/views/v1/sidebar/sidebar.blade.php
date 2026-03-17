@@ -67,6 +67,12 @@
                             <li class="nk-menu-item">
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка атрибутов</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{route('attribute.sort.category.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка атрибутов по категориям</span></a>
+                            </li>
                             @endhasrole
 
                             @hasrole('manager')
@@ -158,9 +164,6 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('product.sort.index.new')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка "New" товаров</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{route('attribute.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка аттрибутов</span></a>
                             </li>
                             @endhasrole
 

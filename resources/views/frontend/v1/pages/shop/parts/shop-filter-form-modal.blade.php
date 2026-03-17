@@ -116,10 +116,12 @@
                     </div>
                     <div class="theme-toggle-item-content">
                         @foreach($brands as $brand)
+                            @if(isset($brand) && trim((string)($brand->title ?? '')) !== '')
                             <div class="col-6">
                                 <input type="checkbox" class="theme-checkbox" {{isset($query['brand']) && is_array($query['brand']) && in_array($brand->onec_id, $query['brand']) ? 'checked' : ''}} id="mobile-brand-{{$brand->onec_id}}" name="filter[brand][]" value="{{$brand->onec_id}}">
                                 <label for="mobile-brand-{{$brand->onec_id}}">{{$brand->title}}</label>
                             </div>
+                            @endif
                         @endforeach
                     </div>
                 </li>
