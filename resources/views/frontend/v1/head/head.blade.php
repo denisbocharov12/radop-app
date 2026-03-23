@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.min.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.86" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.86" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.87" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.87" />
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
