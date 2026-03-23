@@ -14,7 +14,7 @@ return [
             'description'  => 'Avem 30 ani de activitate in domeniu și suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca.', // set false to total remove
             'separator'    => ' - ',
             'keywords'     => [],
-            'canonical'    => false, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
+            'canonical'    => null, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'robots'       => 'index,follow', // Set to false or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'default_image' => env('APP_URL') . '/default.png', // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
         ],
@@ -39,7 +39,7 @@ return [
         'defaults' => [
             'title'       => 'Radop - Magazin online', // set false to total remove
             'description' => 'Avem 30 ani de activitate in domeniu și suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca.', // set false to total remove
-            'url'         => false, // Set null for using Url::current(), set false to total remove
+            'url'         => null, // Set null for using Url::current(), set false to total remove
             'type'        => false,
             'site_name'   => false,
             'images'      => [env('APP_URL') . '/default.png'],
@@ -61,7 +61,7 @@ return [
         'defaults' => [
             'title'       => 'Radop - Magazin online', // set false to total remove
             'description' => 'Avem 30 ani de activitate in domeniu și suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca.', // set false to total remove
-            'url'         => false, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
+            'url'         => null, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'type'        => 'WebPage',
             'images'      => [env('APP_URL') . '/default.png'],
         ],
