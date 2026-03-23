@@ -5887,7 +5887,7 @@ header .section-header .row-main .header-menu .col-lg{
 .section-category .row-category-list .col-theme-filters .theme-wg-wrap .theme-toggle-list .theme-checkbox + label{
     width: 100%;
     flex: 0 0 100%;
-    word-break: break-all;
+    word-break: break-word;
     font-size: 14px;
 }
 
