@@ -96,6 +96,13 @@ final class ThemeProductManager
                 $response['cart-page'] = $cart_page;
                 $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart-content', ['product' => $existedProduct])->render();
             }
+
+            $response['ga4_add'] = [
+                'item_id' => (string) ($existedProduct->onec_id ?? $existedProduct->id),
+                'item_name' => $this->resolveGa4ItemName($existedProduct),
+                'price' => (float) $price,
+                'quantity' => $productQty,
+            ];
         }
 
         return $response;
@@ -295,6 +302,20 @@ final class ThemeProductManager
             $sessionId = auth()->guard('user')->user()->id;
         }
 
+        $cartItem = \Cart::session($sessionId)->get($productId);
+        $qty = $cartItem !== null ? (int) $cartItem->quantity : 0;
+        $existedProduct = $this->productRepository->getById((int) $productId);
+        $ga4Remove = null;
+        if ($existedProduct !== null && $qty > 0) {
+            $priceStr = $this->getProductPriceForCart($existedProduct);
+            $ga4Remove = [
+                'item_id' => (string) ($existedProduct->onec_id ?? $existedProduct->id),
+                'item_name' => $this->resolveGa4ItemName($existedProduct),
+                'price' => (float) $priceStr,
+                'quantity' => $qty,
+            ];
+        }
+
         \Cart::session($sessionId)->remove($productId);
 
         $response['status'] = true;
@@ -310,7 +331,25 @@ final class ThemeProductManager
             $response['cart-page'] = $cart_page;
         }
 
+        if ($ga4Remove !== null) {
+            $response['ga4_remove'] = $ga4Remove;
+        }
+
         return $response;
+    }
+
+    private function resolveGa4ItemName(Product $product): string
+    {
+        $t = $product->getTranslation('title', app()->getLocale(), false);
+        if (is_string($t) && $t !== '') {
+            return strip_tags($t);
+        }
+        $raw = $product->title;
+        if (is_string($raw)) {
+            return strip_tags($raw);
+        }
+
+        return 'item';
     }
 
     /**

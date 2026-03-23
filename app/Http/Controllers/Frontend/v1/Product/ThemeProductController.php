@@ -9,6 +9,7 @@ use App\Exceptions\Product\ProductNotFoundException;
 use App\Exceptions\Product\ProductNotFoundValidationException;
 use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\AddToCartDataMapper;
+use App\Models\Product;
 use App\Http\Requests\Theme\Product\AddToCartRequest;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
@@ -92,10 +93,23 @@ final class ThemeProductController extends Controller
 
         //$this->viewCountManager->incrementProductViewCount($product, $request);
 
+        $priceFloat = (float) ThemeProductManager::getProductTotalSum($product);
+        $ga4ViewItem = [
+            'currency' => (string) config('analytics.currency', 'MDL'),
+            'value' => $priceFloat,
+            'items' => [[
+                'item_id' => (string) ($product->onec_id ?? $product->id),
+                'item_name' => $this->productDisplayName($product),
+                'price' => $priceFloat,
+                'quantity' => 1,
+            ]],
+        ];
+
         return view('frontend.v1.pages.product.index-v2', compact([
             'product',
             'similarProducts',
             'breadcrumbs',
+            'ga4ViewItem',
         ]));
     }
 
@@ -161,5 +175,19 @@ final class ThemeProductController extends Controller
         $renderedView = view('frontend.v1.pages.product.quick-view-v2', compact(['product', 'similarProducts']))->render();
 
         return response()->json($renderedView);
+    }
+
+    private function productDisplayName(Product $product): string
+    {
+        $t = $product->getTranslation('title', app()->getLocale(), false);
+        if (is_string($t) && $t !== '') {
+            return strip_tags($t);
+        }
+        $raw = $product->title;
+        if (is_string($raw)) {
+            return strip_tags($raw);
+        }
+
+        return 'item';
     }
 }

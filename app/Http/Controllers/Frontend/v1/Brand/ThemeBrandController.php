@@ -15,6 +15,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use App\Services\ViewCount\ViewCountManager;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
@@ -40,6 +41,7 @@ final class ThemeBrandController extends Controller
         private readonly PageTypes $pageTypes,
         private readonly PageSortSettingRepository $pageSortSettingRepository,
         private readonly ViewCountManager $viewCountManager,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     ) {
     }
 
@@ -102,6 +104,11 @@ final class ThemeBrandController extends Controller
 
         //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
+        $listId = 'brand_' . $existedBrand->onec_id;
+        $listName = $this->brandListDisplayName($existedBrand);
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, $listId, $listName);
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.brand.index', compact([
             'existedBrand',
             'products',
@@ -111,7 +118,18 @@ final class ThemeBrandController extends Controller
             'attributes',
             'categories',
             'defaultSort',
+            'ga4ItemLists',
         ]));
+    }
+
+    private function brandListDisplayName(Brand $brand): string
+    {
+        $t = $brand->getTranslation('title', app()->getLocale(), false);
+        if (is_string($t) && $t !== '') {
+            return strip_tags($t);
+        }
+
+        return strip_tags((string) $brand->title);
     }
 
     /**

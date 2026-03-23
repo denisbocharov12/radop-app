@@ -21,6 +21,22 @@
 @endsection
 @section('scripts')
     <script>
+        @php($ga4Purchase = session('ga4_purchase'))
+        @if(is_array($ga4Purchase))
+        $(function () {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push({
+                event: 'purchase',
+                ecommerce: {
+                    transaction_id: @json($ga4Purchase['transaction_id'] ?? ''),
+                    value: {{ (float) ($ga4Purchase['value'] ?? 0) }},
+                    currency: @json($ga4Purchase['currency'] ?? config('analytics.currency', 'MDL')),
+                    items: @json($ga4Purchase['items'] ?? [])
+                }
+            });
+        });
+        @endif
         $(document).ready(function() {
             // Добавляем класс active к первому элементу vertical-tabs-content при загрузке страницы
             $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(0).addClass('active');

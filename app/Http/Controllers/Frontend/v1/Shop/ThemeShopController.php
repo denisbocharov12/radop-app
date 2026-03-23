@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\v1\Shop;
 
 use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
@@ -34,6 +35,7 @@ final class ThemeShopController extends Controller
      * @param PageSortSettingRepository $pageSortSettingRepository
      * @param SeoMetaRepository $seoMetaRepository
      * @param PageTypes $pageTypes
+     * @param Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder
      */
     public function __construct(
         private readonly ProductRepository $productRepository,
@@ -43,6 +45,7 @@ final class ThemeShopController extends Controller
         private readonly PageSortSettingRepository $pageSortSettingRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     ) {
     }
 
@@ -76,6 +79,9 @@ final class ThemeShopController extends Controller
             $this->seo()->jsonLd()->setType('WebPage');
         }
 
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'shop', 'Shop');
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.shop.index', compact([
             'products',
             'query',
@@ -83,6 +89,7 @@ final class ThemeShopController extends Controller
             'attributes',
             'allProducts',
             'defaultSort',
+            'ga4ItemLists',
         ]));
     }
 
@@ -104,8 +111,11 @@ final class ThemeShopController extends Controller
             route('theme.shop.new')
         );
 
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'shop_new', 'Shop new');
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.shop.index', array_merge(
-            compact('products', 'query', 'defaultSort'),
+            compact('products', 'query', 'defaultSort', 'ga4ItemLists'),
             $filters
         ));
     }
@@ -128,8 +138,11 @@ final class ThemeShopController extends Controller
             route('theme.shop.popular')
         );
 
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'shop_popular', 'Shop popular');
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.shop.index', array_merge(
-            compact('products', 'query', 'defaultSort'),
+            compact('products', 'query', 'defaultSort', 'ga4ItemLists'),
             $filters
         ));
     }
@@ -152,8 +165,11 @@ final class ThemeShopController extends Controller
             route('theme.shop.sale')
         );
 
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'shop_sale', 'Shop sale');
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.shop.index', array_merge(
-            compact('products', 'query', 'defaultSort'),
+            compact('products', 'query', 'defaultSort', 'ga4ItemLists'),
             $filters
         ));
     }

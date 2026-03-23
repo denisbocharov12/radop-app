@@ -2,10 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('frontend.v1.head.head')
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB99NNLC"
+@php($gtmId = config('analytics.gtm_container_id'))
+@if(is_string($gtmId) && $gtmId !== '')
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+@endif
 <div class="wrapper theme-wrapper">
     <div class="container theme-container-wrapper">
     @include('frontend.v1.search.search-overlay')

@@ -9,6 +9,15 @@
 <script src="{{asset('/v1/frontend/assets')}}/js/sticky-filters-sidebar.js"></script>
 
 <script>
+    window.radopGaCurrency = @json((string) config('analytics.currency', 'MDL'));
+    window.radopGa4EcommercePush = function (eventName, payload) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ ecommerce: null });
+        window.dataLayer.push({ event: eventName, ecommerce: payload });
+    };
+</script>
+
+<script>
     window.getLimitedStockWarning = function(maxQty, unit){
         try {
             return @json(__('theme.limited_stock_warning', ['qty' => 'MAX_QTY', 'unit' => 'UNIT']))
@@ -251,6 +260,14 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
+                    if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
+                        var g = response['ga4_add'];
+                        window.radopGa4EcommercePush('add_to_cart', {
+                            currency: window.radopGaCurrency || 'MDL',
+                            value: g.price * g.quantity,
+                            items: [{ item_id: String(g.item_id), item_name: String(g.item_name), price: g.price, quantity: g.quantity }]
+                        });
+                    }
                 }
                 if(response['status'] === 'not_in_stock') {
                     var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
@@ -334,6 +351,14 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
+                    if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
+                        var gq = response['ga4_add'];
+                        window.radopGa4EcommercePush('add_to_cart', {
+                            currency: window.radopGaCurrency || 'MDL',
+                            value: gq.price * gq.quantity,
+                            items: [{ item_id: String(gq.item_id), item_name: String(gq.item_name), price: gq.price, quantity: gq.quantity }]
+                        });
+                    }
                 }
                 if(response['status'] === 'not_in_stock') {
                     var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
@@ -371,7 +396,14 @@
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
                     $('.cart-page').html(response['cart-page']);
-                    //toastr["success"](response['msg'])
+                    if (response['ga4_remove'] && typeof window.radopGa4EcommercePush === 'function') {
+                        var r = response['ga4_remove'];
+                        window.radopGa4EcommercePush('remove_from_cart', {
+                            currency: window.radopGaCurrency || 'MDL',
+                            value: r.price * r.quantity,
+                            items: [{ item_id: String(r.item_id), item_name: String(r.item_name), price: r.price, quantity: r.quantity }]
+                        });
+                    }
                 }
                 if(response['status'] === 'not_permitted') {
                     toastr["error"](response['msg'])

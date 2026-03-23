@@ -41,6 +41,7 @@
 @endsection
 
 @section('scripts')
+    @include('frontend.v1.analytics.ga4-view-cart')
     <script>
         $(document).on('click', '.btn-quantity-cart', function (e) {
             e.preventDefault();

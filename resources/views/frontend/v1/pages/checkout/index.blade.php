@@ -294,6 +294,13 @@
 
 @section('scripts')
     <script>
+        @if(!empty($ga4Checkout))
+        $(function () {
+            if (typeof window.radopGa4EcommercePush === 'function') {
+                window.radopGa4EcommercePush('begin_checkout', @json($ga4Checkout));
+            }
+        });
+        @endif
         $('.sc-btn-submit').click(function(e) {
             e.preventDefault();
             $('form#checkout').submit();

@@ -19,6 +19,7 @@ use App\Http\Mappers\Theme\ThemeCouponDataMapper;
 use App\Http\Requests\Theme\Coupon\ThemeCouponRequest;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Services\Theme\Cart\ThemeCartManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
@@ -34,6 +35,7 @@ final class ThemeCartController extends Controller
         private readonly ProductRepository $productRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     )
     {
     }
@@ -60,10 +62,17 @@ final class ThemeCartController extends Controller
             $this->seo()->jsonLd()->setType('CollectionPage');
         }
 
+        $sessionId = config('shopping_cart.default_session_id');
+        if (auth()->guard('user')->user()) {
+            $sessionId = auth()->guard('user')->user()->id;
+        }
+        $ga4ViewCart = $this->ga4EcommercePayloadBuilder->buildViewCart($sessionId);
+
         return view('frontend.v1.pages.cart.index', compact([
             'popularProducts',
             'discountProducts',
-            'featuredProducts'
+            'featuredProducts',
+            'ga4ViewCart',
         ]));
     }
 

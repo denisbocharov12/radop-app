@@ -8,12 +8,14 @@ use App\Enums\PageTypes;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\ViewCount\ViewCountManager;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
@@ -37,6 +39,7 @@ final class ThemeCategoryController extends Controller
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
         private readonly ViewCountManager $viewCountManager,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     ) {
     }
 
@@ -109,6 +112,11 @@ final class ThemeCategoryController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);
 
+        $listId = 'category_' . $existedCategory->onec_id;
+        $listName = $this->categoryListDisplayName($existedCategory);
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, $listId, $listName);
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.category.index', compact([
             'existedCategory',
             'products',
@@ -118,7 +126,18 @@ final class ThemeCategoryController extends Controller
             'brands',
             'attributes',
             'defaultSort',
+            'ga4ItemLists',
         ]));
+    }
+
+    private function categoryListDisplayName(Category $category): string
+    {
+        $n = $category->getTranslation('name', app()->getLocale(), false);
+        if (is_string($n) && $n !== '') {
+            return strip_tags($n);
+        }
+
+        return strip_tags((string) $category->name);
     }
 
     /**
