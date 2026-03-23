@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\BannerSetting;
 use App\Repositories\Banner\BannerRepository;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
@@ -26,6 +27,7 @@ final class ThemeHomeController extends Controller
         private readonly BannerRepository $bannerRepository,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     ) {
     }
 
@@ -60,6 +62,12 @@ final class ThemeHomeController extends Controller
             $this->seo()->jsonLd()->setType('WebPage');
         }
 
+        $ga4ItemLists = array_values(array_filter([
+            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($popularProducts, 'home_popular', 'Home popular'),
+            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($newProducts, 'home_new', 'Home new'),
+            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($discountProducts, 'home_sale', 'Home sale'),
+        ]));
+
         return view('frontend.v1.pages.home.index', compact([
             'themeBrands',
             'popularProducts',
@@ -68,6 +76,7 @@ final class ThemeHomeController extends Controller
             'banners',
             'locale',
             'autoplaySpeed',
+            'ga4ItemLists',
         ]));
     }
 }

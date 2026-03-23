@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Mappers\Theme\ThemeSearchDataMapper;
 use App\Http\Requests\Theme\Search\ThemeSearchRequest;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Services\Theme\Search\ThemeSearchManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
@@ -26,6 +27,7 @@ final class ThemeSearchController extends Controller
         private readonly ThemeSearchDataMapper $themeSearchDataMapper,
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
+        private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     )
     {
     }
@@ -58,10 +60,21 @@ final class ThemeSearchController extends Controller
             $this->seo()->jsonLd()->setType('SearchResultsPage');
         }
 
+        $searchLabel = trim((string) $request->get('search', ''));
+        if (function_exists('mb_substr')) {
+            $searchLabel = mb_substr($searchLabel, 0, 120);
+        } else {
+            $searchLabel = substr($searchLabel, 0, 120);
+        }
+        $listName = $searchLabel !== '' ? 'Search: ' . $searchLabel : 'Search';
+        $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'search_results', $listName);
+        $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
+
         return view('frontend.v1.pages.search.index', compact([
             'products',
             'themeSearchData',
-            'categories'
+            'categories',
+            'ga4ItemLists',
         ]));
     }
 

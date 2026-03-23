@@ -6,6 +6,7 @@
 @endsection
 
 @section('scripts')
+    @include('frontend.v1.analytics.ga4-item-lists')
     <script>
         $(document).ready(function(){
             $('.select-sort-per-page').change(function(){

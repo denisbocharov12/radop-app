@@ -206,6 +206,13 @@
 
 @section('scripts')
     <script>
+        @if(!empty($ga4ViewItem))
+        $(function () {
+            if (typeof window.radopGa4EcommercePush === 'function') {
+                window.radopGa4EcommercePush('view_item', @json($ga4ViewItem));
+            }
+        });
+        @endif
         Fancybox.bind('[data-fancybox="gallery"]', {
             selector: '.slick-slide:not(.slick-cloned)',
             hash: false
@@ -241,6 +248,14 @@
                         $('.header-cart-widget .summ').html(response['total']);
                         $('.cart-page').html(response['cart-page']);
                         toastr["success"](response['msg']);
+                        if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
+                            var g = response['ga4_add'];
+                            window.radopGa4EcommercePush('add_to_cart', {
+                                currency: window.radopGaCurrency || 'MDL',
+                                value: g.price * g.quantity,
+                                items: [{ item_id: String(g.item_id), item_name: String(g.item_name), price: g.price, quantity: g.quantity }]
+                            });
+                        }
                     }
                     if (response['status'] == "not_in_stock") {
                         var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');

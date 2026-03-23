@@ -250,3 +250,7 @@
         </div>
     </section>
 @endsection
+
+@section('scripts')
+    @include('frontend.v1.analytics.ga4-item-lists')
+@endsection
