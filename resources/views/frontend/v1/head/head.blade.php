@@ -27,8 +27,8 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.min.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.87" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.87" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.88" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.88" />
     @php($gtmId = config('analytics.gtm_container_id'))
     @if(is_string($gtmId) && $gtmId !== '')
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -38,3 +38,12 @@
         })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
     @endif
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-713BYG9HR2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-713BYG9HR2');
+</script>
