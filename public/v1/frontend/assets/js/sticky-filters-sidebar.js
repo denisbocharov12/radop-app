@@ -44,7 +44,7 @@
         var existing = parent.querySelector('.' + PLACEHOLDER_CLASS);
         if (existing) return existing;
         var placeholder = document.createElement('div');
-        placeholder.className = PLACEHOLDER_CLASS + ' col-12 col-md-3';
+        placeholder.className = PLACEHOLDER_CLASS + ' col-12 col-md-3  col-theme-md-3';
         placeholder.setAttribute('aria-hidden', 'true');
         parent.insertBefore(placeholder, sidebar);
         return placeholder;
