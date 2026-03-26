@@ -49,6 +49,11 @@
                 const result = await response.json();
 
                 if (result.status) {
+                    var jkl = window.radopAnalyticsJsonPayloadKeys || {};
+                    var kLogin = jkl.customer_account_login_succeeded;
+                    if (kLogin && result[kLogin] && typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.customer_account_login_succeeded, result[kLogin]);
+                    }
                     window.location.href = '/orders';
                 } else {
                     responseDiv.innerHTML = '<div class="alert alert-danger">{{ __('theme.login-error')}}</div>';

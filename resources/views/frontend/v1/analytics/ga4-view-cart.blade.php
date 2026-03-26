@@ -2,10 +2,10 @@
 @if(!empty($ga4ViewCart))
 <script>
     $(function () {
-        if (typeof window.radopGa4EcommercePush !== 'function') {
+        if (typeof window.radopGa4EcommercePush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
             return;
         }
-        window.radopGa4EcommercePush('view_cart', @json($ga4ViewCart));
+        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.shopping_cart_page_viewed, @json($ga4ViewCart));
     });
 </script>
 @endif

@@ -8,10 +8,24 @@
             $sessionId = auth()->guard('user')->user()->id;
         }
         $item = \Cart::session($sessionId)->get($product->id);
+        $ga4ItemListId = $ga4ItemListId ?? '';
+        $ga4ItemListName = $ga4ItemListName ?? '';
+        $ga4ItemId = (string) ($product->onec_id ?? $product->id);
+        $ga4Title = $product->getTranslation('title', app()->getLocale(), false);
+        if (!is_string($ga4Title) || $ga4Title === '') {
+            $ga4Title = is_string($product->title) ? $product->title : 'item';
+        }
+        $ga4Title = strip_tags($ga4Title);
+        $ga4Price = (float) \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product);
     @endphp
     @if($product !== null)
         <div class="col-lg-3 col-md-3 col-6 product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-             id="col-product-{{$product->id}}" data-onec-id="{{$product->onec_id}}">
+             id="col-product-{{$product->id}}" data-onec-id="{{$product->onec_id}}"
+             data-ga4-item-id="{{ e($ga4ItemId) }}"
+             data-ga4-item-name="{{ e($ga4Title) }}"
+             data-ga4-price="{{ $ga4Price }}"
+             @if($ga4ItemListId !== '') data-ga4-item-list-id="{{ e($ga4ItemListId) }}" @endif
+             @if($ga4ItemListName !== '') data-ga4-item-list-name="{{ e($ga4ItemListName) }}" @endif>
             <div class="product-wrap">
                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                     @include('frontend.v1.pages.product.components.label')

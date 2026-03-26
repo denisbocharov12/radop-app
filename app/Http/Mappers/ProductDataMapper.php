@@ -30,6 +30,7 @@ final class ProductDataMapper
             $request->iur_price,
             $request->condition,
             $request->shtrih_code,
+            $request->article,
             $request->min_order,
         );
     }

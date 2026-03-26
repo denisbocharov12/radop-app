@@ -27,6 +27,10 @@ final class ThemeUserLoginController extends Controller
     {
     }
 
+    /**
+     * @param ThemeUserLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(ThemeUserLoginRequest $request)
     {
         if (!$request->ajax()) {
@@ -64,7 +68,9 @@ final class ThemeUserLoginController extends Controller
             }
             \Cart::session($guestSessionId)->clear();
 
-            $response = $this->themeUserManager->generateResponse(true);
+            $response = array_merge($this->themeUserManager->generateResponse(true), [
+                (string) config('analytics.json_payload_keys.customer_account_login_succeeded') => (object) [],
+            ]);
 
             return response()->json($response);
         }
@@ -72,7 +78,6 @@ final class ThemeUserLoginController extends Controller
         $response = $this->themeUserManager->generateResponse(false);
 
         return response()->json($response);
-        //return redirect()->back()->withErrors(['auth' => 'Неверный логин или пароль.']);
     }
 
     public function logout(Request $request)

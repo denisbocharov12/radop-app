@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Frontend\v1\User\Auth;
 
 use App\Exceptions\City\CityNotFoundException;
@@ -38,6 +40,13 @@ final class ThemeUserRegisterController extends Controller
         ]));
     }
 
+    /**
+     * @param ThemeUserRegistrationRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \App\Exceptions\User\DuplicatedUserEmailValidationException
+     * @throws \App\Exceptions\User\UserTypeNotFoundValidationException
+     * @throws \App\Exceptions\City\ThemeCityNotFoundValidationException
+     */
     public function register(ThemeUserRegistrationRequest $request)
     {
         $registrationData = $this->themeRegistrationDataMapper->mapFromRequestToNormalized($request);
@@ -48,6 +57,11 @@ final class ThemeUserRegisterController extends Controller
             $this->themeRegistrationManager->generateActivationToken($user);
 
             toastr()->success(__('theme.registration-text').'<button type="button" class="btn-toast-clear" onclick="toastr.clear()">'.__('theme.notification_close_btn_text').'</button>');
+
+            session()->flash((string) config('analytics.json_payload_keys.customer_account_registration_completed'), [
+                'method' => 'email',
+            ]);
+
             return redirect()->route('theme.home');
         } catch (DuplicatedUserEmailException) {
             throw new DuplicatedUserEmailValidationException();

@@ -33,21 +33,34 @@
                                             tabindex="0"
                                             data-copy-value="{{ $product->shtrih_code }}"
                                             data-copy-message="{{ __('theme.product_code_copied') }}"
-                                            style="padding: 3px; border: 1px solid #34af31; color: #000"
                                         >{{$product->shtrih_code}}</span>
                                     </h3>
                                 </div>
                             @endif
-                            @if($product->brand !== null)
-                                <div class="product-brand-v2">
-                                    <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
+                            <div class="product-barcode-v2">
+                                <h3 class="product_item_barcode">
+                                    <span>{{__('theme.article')}}:</span>
+                                    @if($product->article !== null  && $product->article !== '')
+                                        <span
+                                            class="product-code product-code--article"
+                                            role="button"
+                                            tabindex="0"
+                                            data-copy-value="{{ $product->article }}"
+                                            data-copy-message="{{ __('theme.product_code_copied') }}"
+                                        >{{$product->article}}</span>
+                                    @endif
+                                </h3>
+                            </div>
+                            <div class="product-brand-v2">
+                                <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
+                                @if($product->brand !== null && trim((string)($product->brand->title ?? '')) !== '')
                                     <a href="{{route('theme.brand.index', $product->brand->onec_id)}}" class="product-mini-brand">
                                         <span class="brand-text">
                                             {{$product->brand->title}}
                                         </span>
                                     </a>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </div>
                         @include('frontend.v1.pages.product.components.variations')
                     </div>
@@ -208,8 +221,8 @@
     <script>
         @if(!empty($ga4ViewItem))
         $(function () {
-            if (typeof window.radopGa4EcommercePush === 'function') {
-                window.radopGa4EcommercePush('view_item', @json($ga4ViewItem));
+            if (typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.product_detail_page_viewed, @json($ga4ViewItem));
             }
         });
         @endif
@@ -248,9 +261,10 @@
                         $('.header-cart-widget .summ').html(response['total']);
                         $('.cart-page').html(response['cart-page']);
                         toastr["success"](response['msg']);
-                        if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
-                            var g = response['ga4_add'];
-                            window.radopGa4EcommercePush('add_to_cart', {
+                        var jkp = window.radopAnalyticsJsonPayloadKeys || {};
+                        if (jkp.cart_line_item_added && response[jkp.cart_line_item_added] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                            var g = response[jkp.cart_line_item_added];
+                            window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.cart_line_item_added, {
                                 currency: window.radopGaCurrency || 'MDL',
                                 value: g.price * g.quantity,
                                 items: [{ item_id: String(g.item_id), item_name: String(g.item_name), price: g.price, quantity: g.quantity }]

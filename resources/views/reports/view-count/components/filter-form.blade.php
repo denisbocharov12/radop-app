@@ -39,7 +39,7 @@
                 </select>
             </div>
             <small class="form-text text-muted">
-                Выбрана категория? 
+                Выбрана категория?
                 <a href="#" id="clear_category" class="text-danger" style="display: none;">
                     <em class="icon ni ni-cross-circle"></em> Сбросить
                 </a>
@@ -72,4 +72,4 @@
             </div>
         </div>
     </div>
-</div> 
+</div>

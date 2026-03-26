@@ -97,7 +97,7 @@ final class ThemeProductManager
                 $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart-content', ['product' => $existedProduct])->render();
             }
 
-            $response['ga4_add'] = [
+            $response[(string) config('analytics.json_payload_keys.cart_line_item_added')] = [
                 'item_id' => (string) ($existedProduct->onec_id ?? $existedProduct->id),
                 'item_name' => $this->resolveGa4ItemName($existedProduct),
                 'price' => (float) $price,
@@ -332,7 +332,7 @@ final class ThemeProductManager
         }
 
         if ($ga4Remove !== null) {
-            $response['ga4_remove'] = $ga4Remove;
+            $response[(string) config('analytics.json_payload_keys.cart_line_item_removed')] = $ga4Remove;
         }
 
         return $response;

@@ -63,16 +63,6 @@
                                                 <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
-                                        <div class="details-wrap">
-                                            {{--                    <span class="qty-box">24 шт / упаковка</span>--}}
-                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                                                @if($product->stock > 0)
-                                                    {{__('theme.in-stock')}}
-                                                @else
-                                                    {{__('theme.out-of-stock')}}
-                                                @endif
-                                            </span>
-                                        </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">
                                                 <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="{{$product->min_order ?? 1}}" min="{{$product->min_order ?? 1}}" max="{{$product->stock}}" id="product-{{$product->id}}-qty" step="{{$product->min_order ?? 1}}">
@@ -135,15 +125,6 @@
                                                 <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
                                         </div>
-                                        <div class="details-wrap">
-                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                                                @if($product->stock > 0)
-                                                    {{__('theme.in-stock')}}
-                                                @else
-                                                    {{__('theme.out-of-stock')}}
-                                                @endif
-                                            </span>
-                                        </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">
                                                 <input type="hidden" name="product-{{$product->id}}-qty" class="product-qty-input" value="{{$product->min_order ?? 1}}" min="{{$product->min_order ?? 1}}" max="{{$product->stock}}" id="product-{{$product->id}}-qty" step="{{$product->min_order ?? 1}}">
@@ -205,15 +186,6 @@
                                             @else
                                                 <span class="price">{{$product->price}} {{__('theme.MDL')}}</span>
                                             @endif
-                                        </div>
-                                        <div class="details-wrap">
-                                            <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                                                @if($product->stock > 0)
-                                                    {{__('theme.in-stock')}}
-                                                @else
-                                                    {{__('theme.out-of-stock')}}
-                                                @endif
-                                            </span>
                                         </div>
                                         <div class="qty-add-to-cart">
                                             <div class="qty-select">

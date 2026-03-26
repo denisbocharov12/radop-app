@@ -21,13 +21,13 @@
 @endsection
 @section('scripts')
     <script>
-        @php($ga4Purchase = session('ga4_purchase'))
+        @php($ga4Purchase = session((string) config('analytics.json_payload_keys.order_completed_purchase')))
         @if(is_array($ga4Purchase))
         $(function () {
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push({
-                event: 'purchase',
+                event: @json(config('analytics.data_layer_event_names.order_completed_purchase')),
                 ecommerce: {
                     transaction_id: @json($ga4Purchase['transaction_id'] ?? ''),
                     value: {{ (float) ($ga4Purchase['value'] ?? 0) }},

@@ -296,11 +296,25 @@
     <script>
         @if(!empty($ga4Checkout))
         $(function () {
-            if (typeof window.radopGa4EcommercePush === 'function') {
-                window.radopGa4EcommercePush('begin_checkout', @json($ga4Checkout));
+            if (typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.checkout_flow_started, @json($ga4Checkout));
             }
         });
         @endif
+        (function () {
+            var $form = $('#checkout');
+            if (!$form.length) {
+                return;
+            }
+            $form.one('focusin', 'input, select, textarea', function () {
+                if (typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                    window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.checkout_form_interaction_started, {
+                        form_id: 'checkout',
+                        form_destination: window.location.pathname
+                    });
+                }
+            });
+        })();
         $('.sc-btn-submit').click(function(e) {
             e.preventDefault();
             $('form#checkout').submit();

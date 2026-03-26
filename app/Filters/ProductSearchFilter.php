@@ -37,13 +37,19 @@ final class ProductSearchFilter implements Filter
             $query
                 ->where('products.title', 'like', "%{$value}%")
                 ->orWhere('products.onec_id', 'like', "%{$value}%")
+                ->orWhere('products.article', 'like', "%{$value}%")
                 ->orWhereIn('products.brand_id', $brandsIds)
             ;
 
             if (count($words) > 1) {
                 $query->orWhere(function ($subQuery) use ($words) {
                     foreach ($words as $word) {
-                        $subQuery->where('products.title', 'like', "%{$word}%");
+                        $subQuery->where(function (Builder $wordQuery) use ($word) {
+                            $wordQuery
+                                ->where('products.title', 'like', "%{$word}%")
+                                ->orWhere('products.article', 'like', "%{$word}%")
+                                ->orWhere('products.onec_id', 'like', "%{$word}%");
+                        });
                     }
                 });
             }

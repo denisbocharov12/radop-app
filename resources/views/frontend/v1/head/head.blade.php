@@ -27,8 +27,8 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.min.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.88" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.88" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.89" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.89" />
     @php($gtmId = config('analytics.gtm_container_id'))
     @if(is_string($gtmId) && $gtmId !== '')
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

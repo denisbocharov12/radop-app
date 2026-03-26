@@ -223,6 +223,7 @@ return array (
     'add-to-wishlist-with-error' => 'Ошибка добавления товара в избранное.',
     'delete-from-wishlist-with-success' => 'Товар успешно удалён из избранное.',
     'barcode' => 'Штрихкод',
+    'article' => 'Артикул',
     'package' => 'В упаковке',
     'all-brand-products' => 'Бренд:',
     'all-mobile-catalog' => 'Каталог',

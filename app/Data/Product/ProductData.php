@@ -23,6 +23,7 @@ namespace App\Data\Product;
  * @property string|null $iurPrice
  * @property string $condition
  * @property string|null $shtrih_code
+ * @property string|null $article
  * @property int|null $minOrder
  */
 final class ProductData
@@ -48,6 +49,7 @@ final class ProductData
         public readonly ?string $iurPrice,
         public readonly string $condition,
         public readonly ?string $shtrih_code,
+        public readonly ?string $article,
         public readonly ?int $minOrder,
     )
     {

@@ -820,11 +820,15 @@ final class ProductRepository
             } elseif ($length === 8) {
                 $query->where('products.onec_id', $search);
             } elseif ($length === 13) {
-                $query->where('shtrih_code', $search);
+                $query->where(function (Builder $builder) use ($search) {
+                    $builder->where('shtrih_code', $search)
+                        ->orWhere('article', $search);
+                });
             } elseif ($length > 8 && $length < 13) {
                 $query->where(function (Builder $builder) use ($search) {
                     $builder->where('products.onec_id', $search)
-                        ->orWhere('shtrih_code', $search);
+                        ->orWhere('shtrih_code', $search)
+                        ->orWhere('article', $search);
                 })->orderByRaw('CASE WHEN products.onec_id = ? THEN 0 ELSE 1 END', [$search]);
             } else {
                 $this->applyDefaultSearchConditions($query, $search, $words);
@@ -841,13 +845,19 @@ final class ProductRepository
         $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
             $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
 
             if (count($words) > 1) {
                 $builder->orWhere(function (Builder $subQuery) use ($words) {
                     foreach ($words as $word) {
                         $lowerWord = mb_strtolower($word);
-                        $subQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"]);
+                        $subQuery->where(function (Builder $wordQuery) use ($lowerWord) {
+                            $wordQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                        });
                     }
                 });
             }
@@ -859,13 +869,21 @@ final class ProductRepository
         $lowerValue = mb_strtolower($value);
 
         $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
-            $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"]);
+            $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
+                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
 
             if (count($words) > 1) {
                 $builder->orWhere(function (Builder $subQuery) use ($words) {
                     foreach ($words as $word) {
                         $lowerWord = mb_strtolower($word);
-                        $subQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"]);
+                        $subQuery->where(function (Builder $wordQuery) use ($lowerWord) {
+                            $wordQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                        });
                     }
                 });
             }

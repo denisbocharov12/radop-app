@@ -29,29 +29,37 @@
 @include('frontend.v1.components.show-filter-button')
 <section class="section-standart section-category pt-0">
     <div class="container">
+        @php
+            $ga4SelectListId = '';
+            $ga4SelectListName = '';
+            if (!empty($ga4ItemLists) && is_array($ga4ItemLists) && isset($ga4ItemLists[0]['item_list_id'])) {
+                $ga4SelectListId = (string) $ga4ItemLists[0]['item_list_id'];
+                $ga4SelectListName = (string) ($ga4ItemLists[0]['item_list_name'] ?? '');
+            }
+        @endphp
         <div class="row row-category-list">
             @if(count($existedCategory->products) < 1)
                 @include('frontend.v1.pages.category.parts.not-found')
             @else
-                <div class="col-12 col-md-3 col-theme-filters d-none d-md-block">
+                <div class="col-12 col-md-3 col-theme-filters d-none d-md-block col-theme-md-3">
                     <div class="sticky-sidebar">
                         @include('frontend.v1.pages.category.parts.category-filter-form')
                     </div>
                 </div>
-                <div class="col-md-9 col-12 col-theme-content">
+                <div class="col-md-9 col-12 col-theme-content col-theme-md-9">
                     @include('frontend.v1.components.mobile-sort-products', ['defaultSort' => $defaultSort])
                     <div class="d-none d-md-block">
-                        <div id="productsTableView" 
+                        <div id="productsTableView"
                              class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}">
-                            @include('frontend.v1.pages.brand.parts.list')
+                            @include('frontend.v1.pages.brand.parts.list', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
                         </div>
                         <div id="productsListView" style="display:none;">
-                            @include('frontend.v1.pages.brand.parts.list-view')
+                            @include('frontend.v1.pages.brand.parts.list-view', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
                         </div>
                     </div>
                     <div class="d-block d-md-none">
                         <div id="productsListViewMobile">
-                            @include('frontend.v1.pages.brand.parts.list-view')
+                            @include('frontend.v1.pages.brand.parts.list-view', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
                         </div>
                     </div>
                     <div id="mobile-per-page-block" class="mobile-per-page-block">

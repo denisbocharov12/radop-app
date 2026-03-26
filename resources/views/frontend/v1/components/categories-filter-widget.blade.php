@@ -20,38 +20,12 @@
                     </div>
                 @endforeach
             </div>
-            <button type="button" class="categories-toggle-btn">
-                <span class="toggle-text">{{ __('theme.show-all-categories') }}</span>
-            </button>
         </div>
     </li>
 @endif
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const toggleBtn = document.querySelector('.categories-toggle-btn');
-        const categoriesList = document.querySelector('.categories-filter-list');
-
-        if (toggleBtn && categoriesList) {
-            let isExpanded = false;
-
-            toggleBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                isExpanded = !isExpanded;
-
-                if (isExpanded) {
-                    categoriesList.style.height = 'auto';
-                    categoriesList.style.maxHeight = 'none';
-                    toggleBtn.querySelector('.toggle-text').textContent = '{{ __('theme.hide-categories') }}';
-                } else {
-                    categoriesList.style.height = '300px';
-                    categoriesList.style.maxHeight = '300px';
-                    toggleBtn.querySelector('.toggle-text').textContent = '{{ __('theme.show-all-categories') }}';
-                }
-            });
-        }
-
         function buildFormData(categoryId, page) {
             const formData = new FormData();
             formData.append('category_id', categoryId);

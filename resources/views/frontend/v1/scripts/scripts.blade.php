@@ -9,12 +9,94 @@
 <script src="{{asset('/v1/frontend/assets')}}/js/sticky-filters-sidebar.js"></script>
 
 <script>
+@php
+    $registrationFlashKey = (string) config('analytics.json_payload_keys.customer_account_registration_completed');
+    $registrationFlash = session()->pull($registrationFlashKey);
+@endphp
     window.radopGaCurrency = @json((string) config('analytics.currency', 'MDL'));
+    window.radopAnalyticsDataLayerEventNames = @json(config('analytics.data_layer_event_names'));
+    window.radopAnalyticsJsonPayloadKeys = @json(config('analytics.json_payload_keys'));
     window.radopGa4EcommercePush = function (eventName, payload) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ ecommerce: null });
         window.dataLayer.push({ event: eventName, ecommerce: payload });
     };
+    window.radopGa4EventPush = function (eventName, params) {
+        window.dataLayer = window.dataLayer || [];
+        var row = { event: eventName };
+        if (params && typeof params === 'object') {
+            Object.keys(params).forEach(function (k) {
+                row[k] = params[k];
+            });
+        }
+        window.dataLayer.push(row);
+    };
+    $(function () {
+        if (typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+            window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.frontend_page_context_reported, {
+                page_location: window.location.href,
+                page_title: document.title,
+                page_path: window.location.pathname + window.location.search
+            });
+@if(!empty($registrationFlash) && is_array($registrationFlash))
+            window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.customer_account_registration_completed, @json($registrationFlash));
+@endif
+        }
+    });
+    $(document).on('submit', 'form[action*="search"]', function () {
+        var $inp = $(this).find('input[name="search"]');
+        var q = ($inp.val() || '').toString().trim();
+        if (q && typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+            window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.frontend_site_search_submitted, { search_term: q });
+        }
+    });
+    $(document).on('click', 'a[href*="/product/"]', function () {
+        var $a = $(this);
+        var href = ($a.attr('href') || '').toString();
+        if (href.indexOf('/product/') === -1) {
+            return;
+        }
+        var $card = $a.closest('[id^="col-product-"], [id^="list-product-"]');
+        if (!$card.length) {
+            return;
+        }
+        var itemId = ($card.attr('data-ga4-item-id') || '').toString();
+        if (!itemId) {
+            return;
+        }
+        var name = ($card.attr('data-ga4-item-name') || '').toString();
+        var price = parseFloat($card.attr('data-ga4-price') || '0') || 0;
+        var listId = ($card.attr('data-ga4-item-list-id') || '').toString();
+        var listName = ($card.attr('data-ga4-item-list-name') || '').toString();
+        if (typeof window.radopGa4EcommercePush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
+            return;
+        }
+        var payload = {
+            currency: window.radopGaCurrency || 'MDL',
+            value: price,
+            items: [{ item_id: itemId, item_name: name, price: price, quantity: 1 }]
+        };
+        if (listId) {
+            payload.item_list_id = listId;
+        }
+        if (listName) {
+            payload.item_list_name = listName;
+        }
+        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.product_selected_from_listing, payload);
+    });
+    $(document).on('click', '#main-banner a[href]', function () {
+        var $a = $(this);
+        var id = ($a.attr('data-promotion-id') || '').toString();
+        if (!id || typeof window.radopGa4EventPush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
+            return;
+        }
+        window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.homepage_promotion_banner_clicked, {
+            promotion_id: id,
+            promotion_name: ($a.attr('data-promotion-name') || 'homepage_banner').toString(),
+            creative_name: ($a.attr('data-promotion-name') || 'homepage_banner').toString(),
+            creative_slot: ($a.attr('data-creative-slot') || 'main_banner').toString()
+        });
+    });
 </script>
 
 <script>
@@ -100,6 +182,10 @@
                     } else {
                         $('#wishlist_count').hide();
                     }
+                    var jk = window.radopAnalyticsJsonPayloadKeys || {};
+                    if (jk.wishlist_line_item_added && response[jk.wishlist_line_item_added] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.wishlist_line_item_added, response[jk.wishlist_line_item_added]);
+                    }
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
                 }
@@ -165,6 +251,10 @@
                         $('#wishlist_count').show();
                     } else {
                         $('#wishlist_count').hide();
+                    }
+                    var jkw = window.radopAnalyticsJsonPayloadKeys || {};
+                    if (jkw.wishlist_line_item_removed && response[jkw.wishlist_line_item_removed] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.wishlist_line_item_removed, response[jkw.wishlist_line_item_removed]);
                     }
                 } else if (response['present']) {
                     toastr["info"](response['msg']);
@@ -260,9 +350,10 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
-                    if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
-                        var g = response['ga4_add'];
-                        window.radopGa4EcommercePush('add_to_cart', {
+                    var jkc = window.radopAnalyticsJsonPayloadKeys || {};
+                    if (jkc.cart_line_item_added && response[jkc.cart_line_item_added] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        var g = response[jkc.cart_line_item_added];
+                        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.cart_line_item_added, {
                             currency: window.radopGaCurrency || 'MDL',
                             value: g.price * g.quantity,
                             items: [{ item_id: String(g.item_id), item_name: String(g.item_name), price: g.price, quantity: g.quantity }]
@@ -351,9 +442,10 @@
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
-                    if (response['ga4_add'] && typeof window.radopGa4EcommercePush === 'function') {
-                        var gq = response['ga4_add'];
-                        window.radopGa4EcommercePush('add_to_cart', {
+                    var jkq = window.radopAnalyticsJsonPayloadKeys || {};
+                    if (jkq.cart_line_item_added && response[jkq.cart_line_item_added] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        var gq = response[jkq.cart_line_item_added];
+                        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.cart_line_item_added, {
                             currency: window.radopGaCurrency || 'MDL',
                             value: gq.price * gq.quantity,
                             items: [{ item_id: String(gq.item_id), item_name: String(gq.item_name), price: gq.price, quantity: gq.quantity }]
@@ -396,9 +488,10 @@
                     $('.header-cart-widget .count').html(response['cart_count']);
                     $('.header-cart-widget .summ').html(response['total']);
                     $('.cart-page').html(response['cart-page']);
-                    if (response['ga4_remove'] && typeof window.radopGa4EcommercePush === 'function') {
-                        var r = response['ga4_remove'];
-                        window.radopGa4EcommercePush('remove_from_cart', {
+                    var jkr = window.radopAnalyticsJsonPayloadKeys || {};
+                    if (jkr.cart_line_item_removed && response[jkr.cart_line_item_removed] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                        var r = response[jkr.cart_line_item_removed];
+                        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.cart_line_item_removed, {
                             currency: window.radopGaCurrency || 'MDL',
                             value: r.price * r.quantity,
                             items: [{ item_id: String(r.item_id), item_name: String(r.item_name), price: r.price, quantity: r.quantity }]
