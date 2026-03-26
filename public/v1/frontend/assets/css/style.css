@@ -6743,6 +6743,7 @@ hr.product-card-item{
     font-size: 14px;
     text-align: center;
     font-style: italic;
+    min-height: 14px;
 }
 .packages-wrap-min-to-order{
     margin-top: 5px;
