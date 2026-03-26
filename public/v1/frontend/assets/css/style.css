@@ -8700,6 +8700,7 @@ hr.product-card-item{
     border: 1px solid rgba(0, 0, 0, .125);
     padding: 12px;
     border-radius: 10px;
+    background-color: #fff;
 }
 
 .col-theme-filters-modal{
