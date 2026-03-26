@@ -1535,6 +1535,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('filtersModal');
+    if (!modal) {
+        return;
+    }
     const openBtn = document.querySelector('[data-bs-target="#filtersModal"]');
     const closeBtn = document.querySelector('[data-bs-dismiss="modal"]');
     const cancelBtn = document.querySelector('.modal-footer .btn-secondary');
@@ -1736,6 +1739,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnList = document.getElementById('viewList');
     const tableView = document.getElementById('productsTableView');
     const listView = document.getElementById('productsListView');
+    if (!btnTable || !btnList || !tableView || !listView) {
+        return;
+    }
     function setViewMode(mode) {
         if (mode === 'list') {
             tableView.style.display = 'none';
@@ -1760,8 +1766,14 @@ document.addEventListener('DOMContentLoaded', function() {
 // open sort options for products pages
 document.addEventListener('DOMContentLoaded', function() {
     const dropdown = document.querySelector('.sort-dropdown');
+    if (!dropdown) {
+        return;
+    }
     const toggle = dropdown.querySelector('.sort-dropdown-toggle');
     const menu = dropdown.querySelector('.sort-dropdown-menu');
+    if (!toggle || !menu) {
+        return;
+    }
     const options = menu.querySelectorAll('.sort-option');
     let opened = false;
     function openMenu() {

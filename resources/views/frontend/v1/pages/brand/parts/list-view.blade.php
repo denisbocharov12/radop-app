@@ -8,8 +8,22 @@
             $sessionId = auth()->guard('user')->user()->id;
         }
         $item = \Cart::session($sessionId)->get($product->id);
+        $ga4ItemListId = $ga4ItemListId ?? '';
+        $ga4ItemListName = $ga4ItemListName ?? '';
+        $ga4ItemId = (string) ($product->onec_id ?? $product->id);
+        $ga4Title = $product->getTranslation('title', app()->getLocale(), false);
+        if (!is_string($ga4Title) || $ga4Title === '') {
+            $ga4Title = is_string($product->title) ? $product->title : 'item';
+        }
+        $ga4Title = strip_tags($ga4Title);
+        $ga4Price = (float) \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product);
     @endphp
-    <div class="product-list-item card mb-3 @if($item !== null) product-item-category-in-cart @endif" id="list-product-{{$product->id}}">
+    <div class="product-list-item card mb-3 @if($item !== null) product-item-category-in-cart @endif" id="list-product-{{$product->id}}"
+         data-ga4-item-id="{{ e($ga4ItemId) }}"
+         data-ga4-item-name="{{ e($ga4Title) }}"
+         data-ga4-price="{{ $ga4Price }}"
+         @if($ga4ItemListId !== '') data-ga4-item-list-id="{{ e($ga4ItemListId) }}" @endif
+         @if($ga4ItemListName !== '') data-ga4-item-list-name="{{ e($ga4ItemListName) }}" @endif>
         <div class="row g-0">
             <div class="col-lg-3 col-12 text-center">
                 <div class="product-item-category" style="margin-bottom: 0; border: none;">
@@ -46,17 +60,15 @@
                     </div>
                     <div class="product-item-code-wrap">
                         <div class="product-item-article-wrap">
-                            <div class="details-wrap">
-                                <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">
-                                    @if($product->stock > 0)
-                                        {{__('theme.in-stock')}}
-                                    @else
-                                        {{__('theme.out-of-stock')}}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-                        <div class="wrapped">
+{{--                            <div class="details-wrap">--}}
+{{--                                <span class="stock {{$product->stock > 0 ? 'in-stock' : 'out-of-stock'}}">--}}
+{{--                                    @if($product->stock > 0)--}}
+{{--                                        {{__('theme.in-stock')}}--}}
+{{--                                    @else--}}
+{{--                                        {{__('theme.out-of-stock')}}--}}
+{{--                                    @endif--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
                             <h3 class="product_item_article">
                                 <span>@lang('theme.code'):</span>
                                 <span
@@ -67,6 +79,20 @@
                                     data-copy-message="{{ __('theme.product_code_copied') }}"
                                 >{{$product->onec_id}}</span>
                             </h3>
+                        </div>
+                        <div class="wrapped">
+                            <h3 class="product_item_barcode">
+                                <span>@lang('theme.article'):</span>
+                                @if($product->article && $product->article !== '')
+                                    <span
+                                        class="product-code product-code--article"
+                                        role="button"
+                                        tabindex="0"
+                                        data-copy-value="{{ $product->article }}"
+                                        data-copy-message="{{ __('theme.product_code_copied') }}"
+                                    >{{$product->article}}</span>
+                                @endif
+                            </h3>
                             @if($product->shtrih_code)
                                 <h3 class="product_item_barcode">
                                     <span>@lang('theme.barcode'):</span>
@@ -76,7 +102,6 @@
                                         tabindex="0"
                                         data-copy-value="{{ $product->shtrih_code }}"
                                         data-copy-message="{{ __('theme.product_code_copied') }}"
-                                        style="padding: 3px;  border: 1px solid #34af31; color: #000"
                                     >{{$product->shtrih_code}}</span>
                                 </h3>
                             @endif

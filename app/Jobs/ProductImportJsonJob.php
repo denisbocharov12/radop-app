@@ -77,6 +77,7 @@ final class ProductImportJsonJob implements ShouldQueue
         }
 
         $shtrihCode = isset($product->shtrih_code) ? $product->shtrih_code : null;
+        $article = isset($product->articul) ? $product->articul : null;
         $priceKoef = 1;
         if (isset($product->price_koef) && $product->price_koef > 0) {
             $priceKoef = $product->price_koef;
@@ -92,6 +93,7 @@ final class ProductImportJsonJob implements ShouldQueue
             'stock' => $product->stock,
             'brand_id' => $product->brand_id,
             'shtrih_code' => $shtrihCode,
+            'article' => $article,
             'characteristic' => json_encode($characteristics),
             'price_koef' => $priceKoef,
         ];
@@ -108,6 +110,15 @@ final class ProductImportJsonJob implements ShouldQueue
             ]);
         }
 
+//                    $ancestorsAndSelf = Category::where('onec_id', $item)->first()->ancestorsAndSelf->pluck('onec_id')->toArray();
+//
+//                    foreach ($ancestorsAndSelf as $categoryId)
+//                    {
+//                        ProductCategory::create([
+//                            'category_id' => $categoryId,
+//                            'product_id' => $product->id,
+//                        ]);
+//                    }
         $categoryIds = $product->category_id ?? [];
         foreach ($categoryIds as $item) {
             if (Category::where('onec_id', $item)->first() !== null) {

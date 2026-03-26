@@ -2,12 +2,12 @@
 @if(!empty($ga4ItemLists) && is_array($ga4ItemLists))
 <script>
     $(function () {
-        if (typeof window.radopGa4EcommercePush !== 'function') {
+        if (typeof window.radopGa4EcommercePush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
             return;
         }
         @foreach($ga4ItemLists as $ga4ItemListPayload)
         @if(!empty($ga4ItemListPayload))
-        window.radopGa4EcommercePush('view_item_list', @json($ga4ItemListPayload));
+        window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.product_listing_items_viewed, @json($ga4ItemListPayload));
         @endif
         @endforeach
     });

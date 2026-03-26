@@ -91,7 +91,9 @@ final class ThemeSearchManager
 
         if ($isNumeric) {
             if ($length === 13) {
-                $suggestions = $suggestions->merge($this->buildBarcodeSuggestions($products, $query, true, $locale));
+                $suggestions = $suggestions
+                    ->merge($this->buildBarcodeSuggestions($products, $query, true, $locale))
+                    ->merge($this->buildArticleSuggestions($products, $query, true, $locale));
 
                 if ($suggestions->isEmpty()) {
                     $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
@@ -106,10 +108,12 @@ final class ThemeSearchManager
             } elseif ($length > 8 && $length < 13) {
                 $onecSuggestions = $this->buildOnecSuggestions($products, $query, true, $locale);
                 $barcodeSuggestions = $this->buildBarcodeSuggestions($products, $query, true, $locale);
+                $articleSuggestions = $this->buildArticleSuggestions($products, $query, true, $locale);
 
                 $suggestions = $suggestions
                     ->merge($onecSuggestions)
-                    ->merge($barcodeSuggestions);
+                    ->merge($barcodeSuggestions)
+                    ->merge($articleSuggestions);
 
                 if ($suggestions->isEmpty()) {
                     $suggestions = $this->buildFallbackSuggestions($products, $locale, $query, $lowerQuery);
@@ -132,6 +136,7 @@ final class ThemeSearchManager
     {
         return collect()
             ->merge($this->buildOnecSuggestions($products, $query, false, $locale))
+            ->merge($this->buildArticleSuggestions($products, $query, false, $locale))
             ->merge($this->buildBarcodeSuggestions($products, $query, false, $locale))
             ->merge($this->buildTitleSuggestions($products, $locale, $lowerQuery));
     }
@@ -179,6 +184,33 @@ final class ThemeSearchManager
             })
             ->map(function (Product $product) use ($locale) {
                 $title = $locale !== null 
+                    ? ($product->getTranslation('title', $locale) ?? $product->title)
+                    : $product->title;
+
+                return [
+                    'text' => $title,
+                    'type' => 'product',
+                ];
+            })
+            ->values();
+    }
+
+    private function buildArticleSuggestions(Collection $products, string $query, bool $strict = false, string $locale = null): Collection
+    {
+        return $products
+            ->filter(function (Product $product) use ($query, $strict) {
+                if (empty($product->article)) {
+                    return false;
+                }
+
+                if ($strict) {
+                    return $product->article === $query;
+                }
+
+                return mb_stripos($product->article, $query) !== false;
+            })
+            ->map(function (Product $product) use ($locale) {
+                $title = $locale !== null
                     ? ($product->getTranslation('title', $locale) ?? $product->title)
                     : $product->title;
 

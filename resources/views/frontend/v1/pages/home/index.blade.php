@@ -8,7 +8,7 @@
                     <div id="main-banner" data-autoplay-speed="{{ $autoplaySpeed }}" class="theme-slider">
                         @foreach($banners as $banner)
                             <div class="item">
-                                <a href="{{ $banner->link }}">
+                                <a href="{{ $banner->link }}" data-promotion-id="{{ $banner->id }}" data-promotion-name="homepage_banner" data-creative-slot="main_banner">
                                     <img src="{{ asset('storage/' . ($locale === 'ro' ? $banner->image_path_ro : $banner->image_path_ru)) }}" alt="Radop - Magazin online" loading="lazy">
                                 </a>
                             </div>
@@ -37,9 +37,21 @@
                             }
 
                             $item = \Cart::session($sessionId)->get($product->id);
+                            $ga4ItemId = (string) ($product->onec_id ?? $product->id);
+                            $ga4Title = $product->getTranslation('title', app()->getLocale(), false);
+                            if (!is_string($ga4Title) || $ga4Title === '') {
+                                $ga4Title = is_string($product->title) ? $product->title : 'item';
+                            }
+                            $ga4Title = strip_tags($ga4Title);
+                            $ga4Price = (float) \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product);
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                             id="col-product-{{$product->id}}">
+                             id="col-product-{{$product->id}}"
+                             data-ga4-item-id="{{ e($ga4ItemId) }}"
+                             data-ga4-item-name="{{ e($ga4Title) }}"
+                             data-ga4-price="{{ $ga4Price }}"
+                             data-ga4-item-list-id="home_new"
+                             data-ga4-item-list-name="Home new">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
@@ -106,9 +118,21 @@
                             }
 
                             $item = \Cart::session($sessionId)->get($product->id);
+                            $ga4ItemId = (string) ($product->onec_id ?? $product->id);
+                            $ga4Title = $product->getTranslation('title', app()->getLocale(), false);
+                            if (!is_string($ga4Title) || $ga4Title === '') {
+                                $ga4Title = is_string($product->title) ? $product->title : 'item';
+                            }
+                            $ga4Title = strip_tags($ga4Title);
+                            $ga4Price = (float) \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product);
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                             id="col-product-{{$product->id}}">
+                             id="col-product-{{$product->id}}"
+                             data-ga4-item-id="{{ e($ga4ItemId) }}"
+                             data-ga4-item-name="{{ e($ga4Title) }}"
+                             data-ga4-price="{{ $ga4Price }}"
+                             data-ga4-item-list-id="home_popular"
+                             data-ga4-item-list-name="Home popular">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
@@ -176,9 +200,21 @@
                             }
 
                             $item = \Cart::session($sessionId)->get($product->id);
+                            $ga4ItemId = (string) ($product->onec_id ?? $product->id);
+                            $ga4Title = $product->getTranslation('title', app()->getLocale(), false);
+                            if (!is_string($ga4Title) || $ga4Title === '') {
+                                $ga4Title = is_string($product->title) ? $product->title : 'item';
+                            }
+                            $ga4Title = strip_tags($ga4Title);
+                            $ga4Price = (float) \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product);
                         @endphp
                         <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                             id="col-product-{{$product->id}}">
+                             id="col-product-{{$product->id}}"
+                             data-ga4-item-id="{{ e($ga4ItemId) }}"
+                             data-ga4-item-name="{{ e($ga4Title) }}"
+                             data-ga4-price="{{ $ga4Price }}"
+                             data-ga4-item-list-id="home_sale"
+                             data-ga4-item-list-name="Home sale">
                             <div class="product-wrap">
                                 <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
                                     @include('frontend.v1.pages.product.components.label')
@@ -253,4 +289,21 @@
 
 @section('scripts')
     @include('frontend.v1.analytics.ga4-item-lists')
+    @if(isset($banners) && $banners->isNotEmpty())
+        <script>
+            $(function () {
+                if (typeof window.radopGa4EventPush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
+                    return;
+                }
+                @foreach($banners as $banner)
+                window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.homepage_promotion_banner_viewed, {
+                    promotion_id: @json((string) $banner->id),
+                    promotion_name: 'homepage_banner',
+                    creative_name: 'homepage_banner',
+                    creative_slot: 'main_banner'
+                });
+                @endforeach
+            });
+        </script>
+    @endif
 @endsection

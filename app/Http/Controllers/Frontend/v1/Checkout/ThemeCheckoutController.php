@@ -138,7 +138,7 @@ final class ThemeCheckoutController
         }
 
         $order->load(['products.product']);
-        $request->session()->flash('ga4_purchase', $this->buildGa4PurchasePayload($order));
+        $request->session()->flash((string) config('analytics.json_payload_keys.order_completed_purchase'), $this->buildGa4PurchasePayload($order));
 
         return redirect()->route('theme.thankyou.index');
     }

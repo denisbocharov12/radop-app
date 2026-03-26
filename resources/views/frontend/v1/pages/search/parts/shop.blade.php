@@ -1,5 +1,13 @@
 <section class="section-standart section-category section-search pt-0">
     <div class="container">
+        @php
+            $ga4SelectListId = 'search_results';
+            $ga4SelectListName = '';
+            if (!empty($ga4ItemLists) && is_array($ga4ItemLists) && isset($ga4ItemLists[0]['item_list_id'])) {
+                $ga4SelectListId = (string) $ga4ItemLists[0]['item_list_id'];
+                $ga4SelectListName = (string) ($ga4ItemLists[0]['item_list_name'] ?? '');
+            }
+        @endphp
         <div class="row row-category-list">
             @if(count($products) < 1)
                 @include('frontend.v1.pages.search.parts.not-found')
@@ -20,7 +28,7 @@
                 </div>
                 <div class="col-12">
                     <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" >
-                        @include('frontend.v1.pages.search.parts.list')
+                        @include('frontend.v1.pages.search.parts.list', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
                     </div>
                     <div class="theme-pagination">
                         {{$products->links()}}

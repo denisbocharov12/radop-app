@@ -66,8 +66,21 @@
                                                 tabindex="0"
                                                 data-copy-value="{{ $product->shtrih_code }}"
                                                 data-copy-message="{{ __('theme.product_code_copied') }}"
-                                                style="padding: 3px;  border: 1px solid #34af31; color: #000"
                                             >{{$product->shtrih_code}}</span>
+                                        </p>
+                                    </li>
+                                @endif
+                                @if($product->article !== null && $product->article !== '')
+                                    <li style="width: fit-content;">
+                                        <p>
+                                            <span class="mini-heading">{{__('theme.article')}}:</span>
+                                            <span
+                                                class="product-code product-code--article"
+                                                role="button"
+                                                tabindex="0"
+                                                data-copy-value="{{ $product->article }}"
+                                                data-copy-message="{{ __('theme.product_code_copied') }}"
+                                            >{{$product->article}}</span>
                                         </p>
                                     </li>
                                 @endif
@@ -200,7 +213,7 @@
         </div>
     </section>
     @include('frontend.v1.pages.product.components.reviews')
-    
+
     @if($similarProducts !== null)
         <section class="section-standart section-catalog mb-5 section-similar-product">
             <div class="container">

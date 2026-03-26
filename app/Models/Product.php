@@ -32,6 +32,7 @@ use Spatie\Translatable\HasTranslations;
  * @param bool $site_status
  * @param string|null $brand_id
  * @param string|null $shtrih_code
+ * @param string|null $article
  * @param int|null $sale_order
  * @param int|null $featured_oder
  * @param int|null $popular_order
@@ -68,6 +69,7 @@ final class Product extends Model implements HasMedia, Sitemapable
         'site_status',
         'brand_id',
         'shtrih_code',
+        'article',
         'sale_order',
         'featured_oder',
         'popular_order',

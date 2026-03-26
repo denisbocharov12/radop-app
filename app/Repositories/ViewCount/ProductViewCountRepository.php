@@ -119,7 +119,8 @@ final class ProductViewCountRepository
             $query->where(function ($q) use ($productSearch) {
                 $q->where('title', 'like', "%{$productSearch}%")
                     ->orWhere('onec_id', 'like', "%{$productSearch}%")
-                    ->orWhere('shtrih_code', 'like', "%{$productSearch}%");
+                    ->orWhere('shtrih_code', 'like', "%{$productSearch}%")
+                    ->orWhere('article', 'like', "%{$productSearch}%");
             });
         }
 

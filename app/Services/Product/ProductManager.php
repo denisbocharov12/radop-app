@@ -66,6 +66,7 @@ class ProductManager
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
             'shtrih_code' => $productData->shtrih_code,
+            'article' => $productData->article,
             'min_order' => $productData->minOrder,
         ]);
 
@@ -124,6 +125,7 @@ class ProductManager
             'site_status' => $siteStatus,
             'brand_id' => $existedBrand->onec_id,
             'shtrih_code' => $productData->shtrih_code,
+            'article' => $productData->article,
             'min_order' => $productData->minOrder,
         ]);
 
