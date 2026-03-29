@@ -225,7 +225,7 @@ return array (
     'add-to-wishlist-with-error' => 'Eroare la adăugarea produsului la Favorite.',
     'delete-from-wishlist-with-success' => 'Produsul a fost şters cu succes din Favorite.',
     'barcode' => 'Cod de bare',
-    'article' => 'Articol',
+    'article' => 'Art',
     'package' => 'În ambalaj',
     'all-brand-products' => 'Brand:',
     'all-mobile-catalog' => 'Catalog',

@@ -363,6 +363,21 @@ final class ThemeProductManager
 
     /**
      * @param Product $product
+     * @return int
+     */
+    public static function getMinOrderDisplayMultiplier(Product $product): int
+    {
+        $mo = $product->min_order;
+        if ($mo === null) {
+            return 1;
+        }
+        $n = (int) $mo;
+
+        return $n > 1 ? $n : 1;
+    }
+
+    /**
+     * @param Product $product
      * @return string
      */
     public static function getProductTotalSum($product)
