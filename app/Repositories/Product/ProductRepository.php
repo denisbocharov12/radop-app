@@ -848,6 +848,11 @@ final class ProductRepository
                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
 
+            $brandOnecIds = $this->getBrandOnecIdsMatchingTitleLike($lowerValue);
+            if ($brandOnecIds->isNotEmpty()) {
+                $builder->orWhereIn('products.brand_id', $brandOnecIds->all());
+            }
+
             if (count($words) > 1) {
                 $builder->orWhere(function (Builder $subQuery) use ($words) {
                     foreach ($words as $word) {
@@ -857,6 +862,10 @@ final class ProductRepository
                                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                            $brandIdsWord = $this->getBrandOnecIdsMatchingTitleLike($lowerWord);
+                            if ($brandIdsWord->isNotEmpty()) {
+                                $wordQuery->orWhereIn('products.brand_id', $brandIdsWord->all());
+                            }
                         });
                     }
                 });
@@ -874,6 +883,11 @@ final class ProductRepository
                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
 
+            $brandOnecIds = $this->getBrandOnecIdsMatchingTitleLike($lowerValue);
+            if ($brandOnecIds->isNotEmpty()) {
+                $builder->orWhereIn('products.brand_id', $brandOnecIds->all());
+            }
+
             if (count($words) > 1) {
                 $builder->orWhere(function (Builder $subQuery) use ($words) {
                     foreach ($words as $word) {
@@ -883,11 +897,29 @@ final class ProductRepository
                                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                            $brandIdsWord = $this->getBrandOnecIdsMatchingTitleLike($lowerWord);
+                            if ($brandIdsWord->isNotEmpty()) {
+                                $wordQuery->orWhereIn('products.brand_id', $brandIdsWord->all());
+                            }
                         });
                     }
                 });
             }
         });
+    }
+
+    /**
+     * @param string $lowerValue
+     * @return Collection<int, string>
+     */
+    private function getBrandOnecIdsMatchingTitleLike(string $lowerValue): Collection
+    {
+        return Brand::query()
+            ->where('status', true)
+            ->whereNull('deleted_at')
+            ->whereRaw('LOWER(brands.title) LIKE ?', ["%{$lowerValue}%"])
+            ->pluck('onec_id')
+            ->filter(fn (?string $id): bool => $id !== null && $id !== '');
     }
 
     public function getById($productId): ?Product

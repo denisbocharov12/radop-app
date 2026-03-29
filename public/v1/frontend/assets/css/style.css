@@ -2745,6 +2745,9 @@ header .section-header .row-main .header-menu .col-lg{
     color: #0052a6;
     font-size: 14px;
 }
+.section-home.section-standart .col-heading .heading.heading-with-btn a.section-home-btn:hover{
+    text-decoration: underline!important;
+}
 .section-home.section-standart .col-heading .heading.heading-with-btn a:hover{
     transition: .3s all;
 }
