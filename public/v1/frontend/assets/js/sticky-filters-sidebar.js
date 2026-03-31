@@ -16,28 +16,6 @@
         return window.pageYOffset || document.documentElement.scrollTop;
     }
 
-    function getSidebarRect(sidebar, placeholder) {
-        var el = placeholder || sidebar;
-        var rect = el.getBoundingClientRect();
-        var scrollY = getScrollY();
-        var docTop = rect.top + scrollY;
-        var style = window.getComputedStyle(sidebar);
-        var marginBottom = parseFloat(style.marginBottom) || MARGIN_BOTTOM;
-        var height = sidebar.offsetHeight;
-        var width = sidebar.offsetWidth;
-        if (placeholder) {
-            height = placeholder.offsetHeight;
-            width = placeholder.offsetWidth;
-        }
-        return {
-            top: docTop,
-            height: height,
-            bottom: docTop + height + marginBottom,
-            width: width,
-            left: rect.left + (window.pageXOffset || document.documentElement.scrollLeft)
-        };
-    }
-
     function ensurePlaceholder(sidebar) {
         var parent = sidebar.parentElement;
         if (!parent) return null;
@@ -66,20 +44,44 @@
         var row = sidebar.parentElement;
         if (!row) return Infinity;
         var r = row.getBoundingClientRect();
-        return r.bottom + (window.pageYOffset || document.documentElement.scrollTop);
+        return r.bottom + getScrollY();
+    }
+
+    // Read fresh layout coordinates from the placeholder (which stays in flow).
+    // The sidebar itself is position:fixed so its rect is stale after resize.
+    function getFreshRect(sidebar) {
+        var parent = sidebar.parentElement;
+        var placeholder = parent ? parent.querySelector('.' + PLACEHOLDER_CLASS) : null;
+        var source = placeholder || sidebar;
+        var rect = source.getBoundingClientRect();
+        var scrollY = getScrollY();
+        var style = window.getComputedStyle(sidebar);
+        var marginBottom = parseFloat(style.marginBottom) || MARGIN_BOTTOM;
+        var height = sidebar.offsetHeight;
+        var width = source.offsetWidth;
+        if (placeholder) {
+            width = placeholder.offsetWidth;
+        }
+        var docTop = rect.top + scrollY;
+        return {
+            top: docTop,
+            height: height,
+            bottom: docTop + height + marginBottom,
+            width: width,
+            left: rect.left + (window.pageXOffset || document.documentElement.scrollLeft)
+        };
     }
 
     function updateSidebar(sidebar) {
-        var placeholder = sidebar.parentElement ? sidebar.parentElement.querySelector('.' + PLACEHOLDER_CLASS) : null;
-        var rect = getSidebarRect(sidebar, placeholder || null);
+        var rect = getFreshRect(sidebar);
         var scrollY = getScrollY();
         var vh = window.innerHeight;
         var rowBottom = getRowBottom(sidebar);
-        var state = null;
 
         var visibleHeight = vh - TOP_OFFSET;
         var sidebarTallerThanVisible = rect.height > visibleHeight;
 
+        var state;
         if (scrollY <= rect.top - TOP_OFFSET) {
             state = '';
         } else if (scrollY + vh >= rowBottom) {
@@ -92,52 +94,34 @@
             state = '';
         }
 
-        var hadSticky = sidebar.classList.contains(CLASS_STICKY_TOP) || sidebar.classList.contains(CLASS_STICKY_BOTTOM);
-
         if (state === '') {
             sidebar.classList.remove(CLASS_STICKY_TOP, CLASS_STICKY_BOTTOM);
             sidebar.style.left = '';
             sidebar.style.width = '';
+            sidebar.style.top = '';
+            sidebar.style.bottom = '';
             removePlaceholder(sidebar);
             return;
         }
 
-        if (state === 'top') {
-            var fixLeft, fixWidth;
-            if (!hadSticky) {
-                fixLeft = sidebar.getBoundingClientRect().left;
-                fixWidth = sidebar.offsetWidth;
-                var phTop = ensurePlaceholder(sidebar);
-                setPlaceholderSize(phTop, fixWidth, rect.height);
-            } else {
-                fixLeft = sidebar.getBoundingClientRect().left;
-                fixWidth = sidebar.offsetWidth;
-            }
-            sidebar.classList.remove(CLASS_STICKY_BOTTOM);
-            sidebar.classList.add(CLASS_STICKY_TOP);
-            sidebar.style.left = fixLeft + 'px';
-            sidebar.style.width = fixWidth + 'px';
-            sidebar.style.bottom = '';
-            return;
+        // Ensure placeholder exists so the layout doesn't collapse
+        var placeholder = ensurePlaceholder(sidebar);
+        if (placeholder) {
+            setPlaceholderSize(placeholder, rect.width, rect.height);
         }
 
-        if (state === 'bottom') {
-            var fixLeftBottom, fixWidthBottom;
-            if (!hadSticky) {
-                fixLeftBottom = sidebar.getBoundingClientRect().left;
-                fixWidthBottom = sidebar.offsetWidth;
-                var phBottom = ensurePlaceholder(sidebar);
-                setPlaceholderSize(phBottom, fixWidthBottom, rect.height);
-            } else {
-                fixLeftBottom = sidebar.getBoundingClientRect().left;
-                fixWidthBottom = sidebar.offsetWidth;
-            }
+        if (state === 'top') {
+            sidebar.classList.remove(CLASS_STICKY_BOTTOM);
+            sidebar.classList.add(CLASS_STICKY_TOP);
+            sidebar.style.left = rect.left + 'px';
+            sidebar.style.width = rect.width + 'px';
+            sidebar.style.bottom = '';
+        } else if (state === 'bottom') {
             sidebar.classList.remove(CLASS_STICKY_TOP);
             sidebar.classList.add(CLASS_STICKY_BOTTOM);
-            sidebar.style.left = fixLeftBottom + 'px';
-            sidebar.style.width = fixWidthBottom + 'px';
+            sidebar.style.left = rect.left + 'px';
+            sidebar.style.width = rect.width + 'px';
             sidebar.style.top = '';
-            return;
         }
     }
 
@@ -155,6 +139,27 @@
         }
     }
 
+    // On resize: temporarily un-fix the sidebar so the placeholder reflows
+    // to the correct position, then re-apply sticky with fresh coordinates.
+    function resetAndUpdate(sidebar) {
+        var wasTop = sidebar.classList.contains(CLASS_STICKY_TOP);
+        var wasBottom = sidebar.classList.contains(CLASS_STICKY_BOTTOM);
+        if (!wasTop && !wasBottom) {
+            updateSidebar(sidebar);
+            return;
+        }
+        // Temporarily remove fixed positioning so placeholder reflows
+        sidebar.classList.remove(CLASS_STICKY_TOP, CLASS_STICKY_BOTTOM);
+        sidebar.style.left = '';
+        sidebar.style.width = '';
+        sidebar.style.top = '';
+        sidebar.style.bottom = '';
+        // Force a sync reflow so the placeholder takes its natural position
+        void sidebar.offsetWidth;
+        // Now re-evaluate with fresh layout
+        updateSidebar(sidebar);
+    }
+
     function onResize() {
         if (!resizeTicking) {
             resizeTicking = true;
@@ -162,7 +167,7 @@
                 resizeTicking = false;
                 for (var i = 0; i < sidebars.length; i++) {
                     if (document.contains(sidebars[i])) {
-                        updateSidebar(sidebars[i]);
+                        resetAndUpdate(sidebars[i]);
                     }
                 }
             });
