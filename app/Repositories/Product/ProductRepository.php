@@ -186,6 +186,29 @@ final class ProductRepository
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Collection<int, Product>
+     */
+    public function getAllProductsByCategorySubtreeSortedByTitle(Category $category)
+    {
+        $categoryIds = $category->descendantsAndSelf()->pluck('onec_id')->toArray();
+
+        if ($categoryIds === []) {
+            return new \Illuminate\Database\Eloquent\Collection([]);
+        }
+
+        return QueryBuilder::for(
+            Product::query()->whereHas('categories', static function (Builder $q) use ($categoryIds): void {
+                $q->whereIn('categories.onec_id', $categoryIds);
+            })
+        )
+            ->where('status', true)
+            ->where('site_status', true)
+            ->whereNotNull('price_koef')
+            ->orderBy('title')
+            ->get();
+    }
+
+    /**
      * @return array<int, string>
      */
     public function getPopularProductOnecIds(): array

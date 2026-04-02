@@ -82,17 +82,19 @@
                         </div>
                         <div class="wrapped">
                             <h3 class="product_item_barcode">
-                                <span>@lang('theme.article'):</span>
-                                @if($product->article && $product->article !== '')
+                                @if($product->article !== null && $product->article !== '')
+                                    <span>@lang('theme.article'):</span>
                                     <span
                                         class="product-code product-code--article"
                                         role="button"
                                         tabindex="0"
                                         data-copy-value="{{ $product->article }}"
                                         data-copy-message="{{ __('theme.product_code_copied') }}"
-                                    >{{$product->article}}</span>
+                                    >{{$product->article}}
+                                    </span>
                                 @endif
                             </h3>
+
                             @if($product->shtrih_code)
                                 <h3 class="product_item_barcode">
                                     <span>@lang('theme.barcode'):</span>

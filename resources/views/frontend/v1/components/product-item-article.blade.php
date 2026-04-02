@@ -18,10 +18,11 @@
 {{--            @endif--}}
 {{--        </span>--}}
 {{--    </div>--}}
+
     <div class="product_item_article product_item_article_code">
-        <h3 class="product_item_barcode">
-            <span>{{__('theme.article')}}:</span>
-            @if($product->article !== null && $product->article !== '')
+        @if($product->article !== null && $product->article !== '')
+            <h3 class="product_item_barcode">
+                <span>{{__('theme.article')}}:</span>
                 <span
                     class="product-code product-code--article"
                     role="button"
@@ -29,7 +30,7 @@
                     data-copy-value="{{ $product->article }}"
                     data-copy-message="{{ __('theme.product_code_copied') }}"
                 >{{$product->article}}</span>
-            @endif
-        </h3>
+            </h3>
+        @endif
     </div>
 </div>

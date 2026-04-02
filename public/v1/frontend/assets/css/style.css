@@ -3036,6 +3036,7 @@ header .section-header .row-main .header-menu .col-lg{
 .col-category-childs .wrap-category-childs .link.parent-link{
     font-weight: 700;
     display: inline-block;
+    flex: none;
 }
 .col-category-childs .wrap-category-childs .list.category-list {
     margin-top: 10px;
@@ -9308,10 +9309,11 @@ hr.product-card-item{
 }
 
 .product-list-mini-brand-wrap{
-    margin: 10px 0 10px 0;
+    margin: 4px 0 10px 0;
     display: flex;
     align-items: center;
     font-size: 12px;
+    height: 26px;
 }
 .product-list-mini-brand-wrap a{
     color: #0990d9;
@@ -12538,6 +12540,41 @@ body.modal-open {
     display: flex;
     justify-content: flex-end;
 }
+.category-parent-export-wrap {
+    margin-top: 0.5rem;
+}
+@media (min-width: 768px) {
+    .category-parent-export-wrap {
+        margin-top: 0;
+    }
+}
+.category-child-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    width: 100%;
+    position: relative;
+}
+.category-child-header .parent-link {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.export-excel--category-row {
+    flex-shrink: 0;
+}
+.export-excel--category-row .export-excel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+.export-excel--category-row .export-excel-link svg {
+    display: block;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
 
 .page-sort-block {
     display: flex;
@@ -12669,6 +12706,7 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     align-items: center;
     font-size: 12px;
+    height: 26px;
 }
 .product-list-item .product-mini-brand-wrap .mini-heading{
     color: #555;
@@ -12975,6 +13013,7 @@ input[type="range"]::-moz-range-thumb {
     padding: 4px 0;
     display: inline-block;
     line-height: 1;
+    height: 29px;
 }
 .product_item_article span{
     color: #555;

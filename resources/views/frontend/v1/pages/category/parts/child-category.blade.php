@@ -9,12 +9,15 @@
                     <div class="col-category-childs-inner">
                         @foreach($childrenByColumn->get($col, collect()) as $category)
                             <div class="wrap-category-childs">
-                                <a class="link parent-link" href="{{route('theme.category.index', $category->onec_id)}}">
-                                    @if($category->getFirstMediaUrl('media') !== '')
-                                        <img src="{{$category->getFirstMediaUrl('media')}}" alt="{{$category->name}}" class="category-child-icon" loading="lazy">
-                                    @endif
-                                    {{$category->name}}
-                                </a>
+                                <div class="category-child-header">
+                                    <a class="link parent-link" href="{{route('theme.category.index', $category->onec_id)}}">
+                                        @if($category->getFirstMediaUrl('media') !== '')
+                                            <img src="{{$category->getFirstMediaUrl('media')}}" alt="{{$category->name}}" class="category-child-icon" loading="lazy">
+                                        @endif
+                                        {{$category->name}}
+                                    </a>
+                                    @include('frontend.v1.pages.category.parts.export-excel-category-row', ['category' => $category])
+                                </div>
                                 @include('frontend.v1.pages.category.parts.child-category-list', ['categories' => $category->childrenOrderedByColumn ?? $category->children])
                             </div>
                         @endforeach
