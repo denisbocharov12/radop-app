@@ -13,20 +13,23 @@ use App\Http\Requests\SeoMeta\SeoMetaRequest;
 use App\Http\Requests\SeoMeta\SeoMetaUpdateRequest;
 use App\Http\Mappers\SeoMeta\SeoMetaDataMapper;
 use App\Enums\PageTypes;
+use App\Services\Seo\CanonicalUrlResolver;
 
 class SeoMetaController extends Controller
 {
     private SeoMetaManager $seoMetaManager;
     private SeoMetaDataMapper $seoMetaDataMapper;
     private PageTypes $pageTypes;
+    private CanonicalUrlResolver $canonicalResolver;
 
     /**
      * @param SeoMetaManager $seoMetaManager
      * @param SeoMetaDataMapper $seoMetaDataMapper
      * @param PageTypes $pageTypes
      */
-    public function __construct(SeoMetaManager $seoMetaManager, SeoMetaDataMapper $seoMetaDataMapper, PageTypes $pageTypes)
+    public function __construct(SeoMetaManager $seoMetaManager, SeoMetaDataMapper $seoMetaDataMapper, PageTypes $pageTypes, CanonicalUrlResolver $canonicalResolver)
     {
+        $this->canonicalResolver = $canonicalResolver;
         $this->seoMetaManager = $seoMetaManager;
         $this->seoMetaDataMapper = $seoMetaDataMapper;
         $this->pageTypes = $pageTypes;
@@ -109,15 +112,23 @@ class SeoMetaController extends Controller
      */
     public function edit(SeoMeta $seoMeta)
     {
-        $pageTypes = $this->pageTypes->getAll();
-        $staticPages = $this->pageTypes->getStaticPages();
+        $pageTypes    = $this->pageTypes->getAll();
+        $staticPages  = $this->pageTypes->getStaticPages();
         $dynamicPages = $this->pageTypes->getDynamicPages();
 
+        // Suggest canonical URL if not already set
+        $suggestedCanonical = $seoMeta->canonical
+            ?? $this->canonicalResolver->resolve(
+                $seoMeta->page_type,
+                $seoMeta->page_id !== null ? (string) $seoMeta->page_id : null
+            );
+
         return view('v1.seo_meta.edit', [
-            'pageTypes' => $pageTypes,
-            'staticPages' => $staticPages,
-            'dynamicPages' => $dynamicPages,
-            'seoMeta' => $seoMeta,
+            'pageTypes'          => $pageTypes,
+            'staticPages'        => $staticPages,
+            'dynamicPages'       => $dynamicPages,
+            'seoMeta'            => $seoMeta,
+            'suggestedCanonical' => $suggestedCanonical,
         ]);
     }
 

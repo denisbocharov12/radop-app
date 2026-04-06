@@ -97,7 +97,28 @@
                                             <div class="form-group">
                                                 <label class="form-label" for="canonical">Каноническая ссылка</label>
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control @error('canonical') error @enderror" id="canonical" name="canonical" value="{{$seoMeta->canonical}}" placeholder="Каноническая ссылка">
+                                                    <div class="input-group">
+                                                        <input type="text"
+                                                               class="form-control @error('canonical') error @enderror"
+                                                               id="canonical"
+                                                               name="canonical"
+                                                               value="{{ $seoMeta->canonical ?? $suggestedCanonical ?? '' }}"
+                                                               placeholder="https://radop.md/...">
+                                                        @if(!empty($suggestedCanonical))
+                                                            <button type="button"
+                                                                    class="btn btn-outline-secondary"
+                                                                    title="Подставить автоматически определённый URL"
+                                                                    onclick="document.getElementById('canonical').value='{{ $suggestedCanonical }}'">
+                                                                <em class="icon ni ni-link"></em>
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                    @if(!empty($suggestedCanonical))
+                                                        <div class="form-note text-soft mt-1" style="font-size:11px;">
+                                                            <em class="icon ni ni-info-fill text-info me-1"></em>
+                                                            Авто: <code style="font-size:11px;">{{ $suggestedCanonical }}</code>
+                                                        </div>
+                                                    @endif
                                                     @error('canonical')
                                                     <span id="fv-canonical-error" class="invalid">{{ $message }}</span>
                                                     @enderror
