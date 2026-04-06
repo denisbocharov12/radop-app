@@ -33,7 +33,7 @@ final class ThemePrivacyPolicyController extends Controller
 
             SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.privacy.index'));
+            $this->seo()->opengraph()->setUrl(route('theme.privacy-policy.index'));
             $this->seo()->opengraph()->addProperty('type', 'page');
             $this->seo()->jsonLd()->setType('WebPage');
         }

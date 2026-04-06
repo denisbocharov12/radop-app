@@ -56,7 +56,7 @@ final class ThemeOrderController extends Controller
 
             SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.order.index'));
+            $this->seo()->opengraph()->setUrl(route('theme.user.orders.index'));
             $this->seo()->opengraph()->addProperty('type', 'page');
             $this->seo()->jsonLd()->setType('WebPage');
         }

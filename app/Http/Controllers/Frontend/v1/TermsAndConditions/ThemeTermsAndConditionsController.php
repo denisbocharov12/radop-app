@@ -33,7 +33,7 @@ final class ThemeTermsAndConditionsController extends Controller
 
             SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.terms.index'));
+            $this->seo()->opengraph()->setUrl(route('theme.terms-and-conditions.index'));
             $this->seo()->opengraph()->addProperty('type', 'page');
             $this->seo()->jsonLd()->setType('WebPage');
         }

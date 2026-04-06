@@ -33,7 +33,7 @@ final class ThemeOrderGuideController extends Controller
 
             SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('theme.order_guide.index'));
+            $this->seo()->opengraph()->setUrl(route('theme.order-guide.index'));
             $this->seo()->opengraph()->addProperty('type', 'page');
             $this->seo()->jsonLd()->setType('WebPage');
         }
