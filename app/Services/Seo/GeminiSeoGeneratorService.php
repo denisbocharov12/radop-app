@@ -9,36 +9,65 @@ use Illuminate\Support\Facades\Log;
 
 final class GeminiSeoGeneratorService
 {
-    private const SITE_NAME = 'Radop';
-    private const SITE_DOMAIN = 'radop.md';
+    private const SITE_NAME    = 'Radop';
+    private const SITE_DOMAIN  = 'radop.md';
     private const SITE_COUNTRY = 'Moldova';
+
+    /**
+     * Business context injected into every prompt.
+     * Radop — канцелярия, товары для офиса, школы и творчества.
+     */
+    private function businessContext(string $langName): string
+    {
+        return <<<CTX
+You are a senior SEO specialist with access to Google Search Console data, Google Trends, and keyword research tools (Ahrefs, SEMrush).
+
+ABOUT THE COMPANY:
+- Store: Radop (radop.md) — leading online stationery and office supplies store in Moldova
+- Specialization: stationery, office supplies, school supplies, art & craft materials, paper products, writing instruments, organizers, filing & archiving, printer supplies, gifts and packaging
+- Target market: Moldova (Chișinău and all regions), customers in Russian and Romanian
+- Competitors: local Moldovan stationery shops and marketplaces
+- USP: wide assortment, fast delivery across Moldova, competitive prices, official brands
+
+SEO STRATEGY:
+- Prioritize HIGH search volume, HIGH commercial intent keywords for Moldova market
+- Use transactional search intent patterns (users ready to buy)
+- Include geo-modifiers where relevant (Moldova, Chișinău, livrare Moldova)
+- Based on real search behavior: users search for product name + "купить", "цена", "интернет магазин" (in Russian) or "cumpăra", "preț", "magazin online" (in Romanian)
+- Title must have strong CTR: include brand/product + key benefit + store authority signal
+- Description must have CTA + key selling point (price, delivery, assortment)
+- Keywords: mix of head terms + long-tail, transactional intent, {$langName} language
+
+All output text must be in {$langName} language.
+CTX;
+    }
 
     /**
      * Generate SEO for a product.
      */
     public function generateForProduct(array $context, string $locale): array
     {
-        $langName = $this->getLangName($locale);
-        $title = $context['title'] ?? '';
-        $category = $context['category'] ?? '';
-        $brand = $context['brand'] ?? '';
-        $summary = $context['summary'] ?? '';
+        $langName    = $this->getLangName($locale);
+        $title       = $context['title'] ?? '';
+        $category    = $context['category'] ?? '';
+        $brand       = $context['brand'] ?? '';
+        $summary     = $context['summary'] ?? '';
+        $bizCtx      = $this->businessContext($langName);
 
         $prompt = <<<PROMPT
-You are an SEO expert for an online electronics store "{$this->getSiteName()}" ({$this->getSiteDomain()}) based in {$this->getSiteCountry()}.
+{$bizCtx}
 
-Generate SEO metadata for this product page in {$langName}.
+TASK: Generate SEO metadata for a PRODUCT page on radop.md.
 
-Product title: {$title}
+Product name: {$title}
 Category: {$category}
 Brand: {$brand}
 Description: {$summary}
 
-Rules:
-- Title: max 60 characters, include product name and brand, natural language in {$langName}
-- Description: max 160 characters, compelling, include key features and call-to-action in {$langName}
-- Keywords: 5-8 comma-separated keywords relevant to this product in {$langName}
-- All text must be in {$langName} language
+SEO REQUIREMENTS:
+- Title (max 60 chars): product name + brand if space allows + transactional modifier. High CTR pattern: "[Product Name] [Brand] – купить в Radop" or "[Product Name] — цена, доставка по Молдове". Do NOT pad with filler words.
+- Description (max 160 chars): lead with top benefit or unique feature, include CTA ("Заказать онлайн", "Быстрая доставка по Молдове", "Лучшая цена"), mention Radop. Must entice click from search results.
+- Keywords (6-10 keywords): exact product name, product name + brand, product name + "купить"/"cumpăra", product name + "цена"/"preț", product name + "Молдова"/"Moldova", category keywords, brand keywords. Comma-separated, no duplicates.
 
 Respond ONLY with a valid JSON object, no markdown, no extra text:
 {"title":"...","description":"...","keywords":"..."}
@@ -52,26 +81,26 @@ PROMPT;
      */
     public function generateForCategory(array $context, string $locale): array
     {
-        $langName = $this->getLangName($locale);
-        $name = $context['name'] ?? '';
-        $parent = $context['parent'] ?? '';
-        $summary = $context['summary'] ?? '';
-        $parentStr = $parent ? "Parent category: {$parent}" : '';
+        $langName    = $this->getLangName($locale);
+        $name        = $context['name'] ?? '';
+        $parent      = $context['parent'] ?? '';
+        $summary     = $context['summary'] ?? '';
+        $parentStr   = $parent ? "Parent category: {$parent}" : '';
+        $bizCtx      = $this->businessContext($langName);
 
         $prompt = <<<PROMPT
-You are an SEO expert for an online electronics store "{$this->getSiteName()}" ({$this->getSiteDomain()}) based in {$this->getSiteCountry()}.
+{$bizCtx}
 
-Generate SEO metadata for this product category page in {$langName}.
+TASK: Generate SEO metadata for a CATEGORY page on radop.md.
 
 Category name: {$name}
 {$parentStr}
 Category description: {$summary}
 
-Rules:
-- Title: max 60 characters, include category name, natural language in {$langName}
-- Description: max 160 characters, describe what products are in this category, include store name in {$langName}
-- Keywords: 5-8 comma-separated keywords relevant to this category in {$langName}
-- All text must be in {$langName} language
+SEO REQUIREMENTS:
+- Title (max 60 chars): category name + scope signal. Pattern: "[Category] – купить в Молдове | Radop" or "[Category] — широкий выбор, доставка". Focus on what shoppers search when browsing this category.
+- Description (max 160 chars): describe assortment breadth + key benefit (price, brands, delivery). CTA: "Смотреть каталог", "Выбирайте из X наименований", "Заказать с доставкой по Молдове". Include store name Radop.
+- Keywords (6-10): category name, category + "купить"/"cumpăra", category + "цены"/"prețuri", category + "интернет магазин"/"magazin online", category + "Молдова"/"Moldova", subcategory terms, popular brands in this category if known. Comma-separated.
 
 Respond ONLY with a valid JSON object, no markdown, no extra text:
 {"title":"...","description":"...","keywords":"..."}
@@ -85,23 +114,23 @@ PROMPT;
      */
     public function generateForBrand(array $context, string $locale): array
     {
-        $langName = $this->getLangName($locale);
-        $name = $context['name'] ?? '';
+        $langName    = $this->getLangName($locale);
+        $name        = $context['name'] ?? '';
         $description = $context['description'] ?? '';
+        $bizCtx      = $this->businessContext($langName);
 
         $prompt = <<<PROMPT
-You are an SEO expert for an online electronics store "{$this->getSiteName()}" ({$this->getSiteDomain()}) based in {$this->getSiteCountry()}.
+{$bizCtx}
 
-Generate SEO metadata for this brand page in {$langName}.
+TASK: Generate SEO metadata for a BRAND page on radop.md.
 
 Brand name: {$name}
 Brand description: {$description}
 
-Rules:
-- Title: max 60 characters, include brand name and product types, natural language in {$langName}
-- Description: max 160 characters, describe the brand and available products in {$langName}
-- Keywords: 5-8 comma-separated keywords for this brand in {$langName}
-- All text must be in {$langName} language
+SEO REQUIREMENTS:
+- Title (max 60 chars): "[Brand] — канцелярия и товары для офиса | Radop" or "[Brand] купить в Молдове – Radop". Use your knowledge of this brand's positioning and what products it's known for.
+- Description (max 160 chars): what this brand is known for (product types, quality, target audience), where to buy in Moldova, CTA. Use your knowledge of the brand from internet sources. Include Radop.
+- Keywords (6-10): brand name, brand + product types (e.g. "Bic ручки", "Stabilo маркеры"), brand + "купить"/"cumpăra", brand + "Молдова"/"Moldova", brand + "цена"/"preț", brand + "официальный магазин". Use real popular search patterns for this brand. Comma-separated.
 
 Respond ONLY with a valid JSON object, no markdown, no extra text:
 {"title":"...","description":"...","keywords":"..."}
@@ -116,20 +145,20 @@ PROMPT;
     public function generateForStaticPage(string $pageType, string $pageLabel, string $locale): array
     {
         $langName = $this->getLangName($locale);
+        $bizCtx   = $this->businessContext($langName);
 
         $prompt = <<<PROMPT
-You are an SEO expert for an online electronics store "{$this->getSiteName()}" ({$this->getSiteDomain()}) based in {$this->getSiteCountry()}.
+{$bizCtx}
 
-Generate SEO metadata for the "{$pageLabel}" page in {$langName}.
+TASK: Generate SEO metadata for a STATIC/INFORMATIONAL page on radop.md.
 
-Page type: {$pageType}
+Page type identifier: {$pageType}
 Page name: {$pageLabel}
 
-Rules:
-- Title: max 60 characters, describe this page clearly in {$langName}
-- Description: max 160 characters, describe what users can find on this page, include store name in {$langName}
-- Keywords: 5-7 comma-separated keywords relevant to this page in {$langName}
-- All text must be in {$langName} language
+SEO REQUIREMENTS:
+- Title (max 60 chars): clear page purpose + store name. Example patterns: "Доставка по Молдове — Radop", "Контакты магазина Radop | Кишинёв", "Политика конфиденциальности | Radop". Must be descriptive and match user search intent for this type of page.
+- Description (max 160 chars): what the user will find on this page, key info (working hours, delivery zones, return conditions, etc. — use your knowledge of what such pages contain), include Radop and Moldova context.
+- Keywords (5-8): page-relevant terms users actually search (e.g. "доставка канцелярии Молдова", "контакты канцелярского магазина", "возврат товара интернет магазин Молдова"). Comma-separated.
 
 Respond ONLY with a valid JSON object, no markdown, no extra text:
 {"title":"...","description":"...","keywords":"..."}
@@ -149,8 +178,11 @@ PROMPT;
             'verify'  => (bool) config('gemini.ssl_verify', true),
         ]);
 
+        $baseUrl = config('gemini.base_url', 'https://generativelanguage.googleapis.com/v1beta/');
+
         $client   = \Gemini::factory()
             ->withApiKey(apiKey: config('gemini.api_key'))
+            ->withBaseUrl(baseUrl: $baseUrl)
             ->withHttpClient(client: $guzzle)
             ->make();
 
@@ -183,8 +215,4 @@ PROMPT;
             default => 'English',
         };
     }
-
-    private function getSiteName(): string { return self::SITE_NAME; }
-    private function getSiteDomain(): string { return self::SITE_DOMAIN; }
-    private function getSiteCountry(): string { return self::SITE_COUNTRY; }
 }

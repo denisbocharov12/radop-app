@@ -154,6 +154,13 @@ final class SeoGenerationController extends Controller
 
             return response()->json(['status' => true, 'data' => $seoData]);
         } catch (\Throwable $e) {
+            if ($this->isQuotaError($e)) {
+                return response()->json([
+                    'status'    => false,
+                    'quota'     => true,
+                    'message'   => $this->friendlyQuotaMessage($e),
+                ], 429);
+            }
             return response()->json(['status' => false, 'message' => 'Ошибка генерации: ' . $e->getMessage()], 500);
         }
     }
@@ -164,7 +171,11 @@ final class SeoGenerationController extends Controller
     public function regenerate(SeoMeta $seoMeta): JsonResponse
     {
         try {
-            $seoData = $this->generateSingleData($seoMeta->page_type, $seoMeta->page_id !== null ? (string) $seoMeta->page_id : null, $seoMeta->locale);
+            $seoData = $this->generateSingleData(
+                $seoMeta->page_type,
+                $seoMeta->page_id !== null ? (string) $seoMeta->page_id : null,
+                $seoMeta->locale
+            );
 
             if (empty(array_filter($seoData))) {
                 return response()->json(['status' => false, 'message' => 'Не удалось сгенерировать SEO данные'], 422);
@@ -178,8 +189,53 @@ final class SeoGenerationController extends Controller
                 'data'    => $seoData,
             ]);
         } catch (\Throwable $e) {
+            if ($this->isQuotaError($e)) {
+                return response()->json([
+                    'status'  => false,
+                    'quota'   => true,
+                    'message' => $this->friendlyQuotaMessage($e),
+                ], 429);
+            }
             return response()->json(['status' => false, 'message' => 'Ошибка регенерации: ' . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Detect quota / rate-limit errors from Gemini API.
+     */
+    private function isQuotaError(\Throwable $e): bool
+    {
+        $msg = strtolower($e->getMessage());
+        foreach (['429', 'quota', 'rate limit', 'resource_exhausted', 'too many requests', 'exceeded your current quota'] as $kw) {
+            if (str_contains($msg, $kw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Build a user-friendly quota error message, extracting retry-after seconds if present.
+     */
+    private function friendlyQuotaMessage(\Throwable $e): string
+    {
+        $raw = $e->getMessage();
+
+        // Extract "Please retry in X.Xs"
+        if (preg_match('/please retry in ([\d.]+)s/i', $raw, $m)) {
+            $seconds = (int) ceil((float) $m[1]);
+            $wait    = $seconds >= 60
+                ? round($seconds / 60, 1) . ' мин.'
+                : $seconds . ' сек.';
+            return "Превышен лимит Gemini API. Повторите через {$wait}.";
+        }
+
+        // Billing / free-tier exhausted (limit: 0)
+        if (str_contains($raw, 'limit: 0')) {
+            return 'Исчерпан бесплатный лимит Gemini API. Включите биллинг на ai.google.dev или подождите сброса квоты.';
+        }
+
+        return 'Превышен лимит Gemini API. Попробуйте позже.';
     }
 
     private function generateSingleData(string $pageType, ?string $pageId, string $locale): array
@@ -252,52 +308,106 @@ final class SeoGenerationController extends Controller
     private function dispatchForProducts(string $locale, bool $force): int
     {
         $count = 0;
+        $ids   = [];
+
         Product::where('site_status', 1)
             ->select(['id', 'onec_id'])
-            ->chunk(100, function ($products) use ($locale, $force, &$count) {
-                foreach ($products as $product) {
-                    $pageId = (string)($product->onec_id ?? $product->id);
-                    GenerateSeoMetaForItemJob::dispatch('product', $pageId, $locale, $force);
-                    $count++;
+            ->chunk(200, function ($products) use (&$ids) {
+                foreach ($products as $p) {
+                    $ids[] = (string)($p->onec_id ?? $p->id);
                 }
             });
+
+        foreach ($ids as $index => $pageId) {
+            GenerateSeoMetaForItemJob::dispatch('product', $pageId, $locale, $force)
+                ->delay(now()->addSeconds($this->jobDelay($index)));
+            $count++;
+        }
+
         return $count;
     }
 
     private function dispatchForCategories(string $locale, bool $force): int
     {
         $count = 0;
+        $ids   = [];
+
         Category::where('status', 1)
             ->select(['id', 'onec_id'])
-            ->chunk(100, function ($categories) use ($locale, $force, &$count) {
-                foreach ($categories as $category) {
-                    GenerateSeoMetaForItemJob::dispatch('category', (string)$category->onec_id, $locale, $force);
-                    $count++;
+            ->chunk(200, function ($categories) use (&$ids) {
+                foreach ($categories as $c) {
+                    $ids[] = (string)$c->onec_id;
                 }
             });
+
+        foreach ($ids as $index => $pageId) {
+            GenerateSeoMetaForItemJob::dispatch('category', $pageId, $locale, $force)
+                ->delay(now()->addSeconds($this->jobDelay($index)));
+            $count++;
+        }
+
         return $count;
     }
 
     private function dispatchForBrands(string $locale, bool $force): int
     {
         $count = 0;
+        $ids   = [];
+
         Brand::where('status', 1)
             ->select(['id', 'onec_id'])
-            ->chunk(100, function ($brands) use ($locale, $force, &$count) {
-                foreach ($brands as $brand) {
-                    GenerateSeoMetaForItemJob::dispatch('brand', (string)$brand->onec_id, $locale, $force);
-                    $count++;
+            ->chunk(200, function ($brands) use (&$ids) {
+                foreach ($brands as $b) {
+                    $ids[] = (string)$b->onec_id;
                 }
             });
+
+        foreach ($ids as $index => $pageId) {
+            GenerateSeoMetaForItemJob::dispatch('brand', $pageId, $locale, $force)
+                ->delay(now()->addSeconds($this->jobDelay($index)));
+            $count++;
+        }
+
         return $count;
     }
 
     private function dispatchForStaticPages(string $locale, bool $force): int
     {
         $staticPages = $this->pageTypes->getStaticPages();
+        $index       = 0;
+
         foreach ($staticPages as $pageType => $label) {
-            GenerateSeoMetaForItemJob::dispatch($pageType, null, $locale, $force);
+            GenerateSeoMetaForItemJob::dispatch($pageType, null, $locale, $force)
+                ->delay(now()->addSeconds($this->jobDelay($index)));
+            $index++;
         }
+
         return count($staticPages);
+    }
+
+    /**
+     * Calculate dispatch delay (seconds) for job at position $index.
+     *
+     * Respects two free-tier limits:
+     *  - RPM: space requests by (60 / rpm_limit) seconds within each day-slot
+     *  - RPD: after rpd_limit jobs, shift to the next day
+     *
+     * Example with rpm=4, rpd=18:
+     *   index 0  → 0s      (day 0, slot 0)
+     *   index 1  → 15s     (day 0, slot 1)
+     *   index 17 → 255s    (day 0, slot 17) — last of day 0
+     *   index 18 → 86400s  (day 1, slot 0)
+     *   index 19 → 86415s  (day 1, slot 1)  etc.
+     */
+    private function jobDelay(int $index): int
+    {
+        $rpm          = max(1, (int) config('gemini.rpm_limit', 4));
+        $rpd          = max(1, (int) config('gemini.rpd_limit', 18));
+        $secPerReq    = (int) ceil(60 / $rpm);   // 15s for rpm=4
+
+        $day          = (int) floor($index / $rpd);
+        $slotInDay    = $index % $rpd;
+
+        return $day * 86400 + $slotInDay * $secPerReq;
     }
 }
