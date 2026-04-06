@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Seo;
 
-use Gemini\Laravel\Facades\Gemini;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Log;
 
@@ -150,7 +149,7 @@ PROMPT;
             'verify'  => (bool) config('gemini.ssl_verify', true),
         ]);
 
-        $client   = Gemini::factory()
+        $client   = \Gemini::factory()
             ->withApiKey(apiKey: config('gemini.api_key'))
             ->withHttpClient(client: $guzzle)
             ->make();
