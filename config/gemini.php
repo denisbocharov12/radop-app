@@ -63,4 +63,15 @@ return [
     | Default: 6 hours.
     */
     'rate_limit_backoff' => env('GEMINI_RATE_LIMIT_BACKOFF', 6 * 3600),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rate Limits (free tier)
+    |--------------------------------------------------------------------------
+    | rpm_limit — max requests per minute (free tier: 5, use 4 for safety buffer)
+    | rpd_limit — max requests per day   (free tier: 20, use 18 for safety buffer)
+    | Bulk dispatch spaces jobs so neither limit is exceeded.
+    */
+    'rpm_limit' => env('GEMINI_RPM_LIMIT', 4),   // requests per minute (safe)
+    'rpd_limit' => env('GEMINI_RPD_LIMIT', 20),  // requests per day (safe)
 ];

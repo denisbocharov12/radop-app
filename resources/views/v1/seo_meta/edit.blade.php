@@ -210,8 +210,18 @@
                     }
                 },
                 error: function(xhr) {
-                    const msg = xhr.responseJSON?.message || 'Ошибка запроса. Проверьте GEMINI_API_KEY в .env';
-                    alert('Ошибка: ' + msg);
+                    const res = xhr.responseJSON || {};
+                    if (xhr.status === 429 || res.quota) {
+                        const msg = res.message || 'Превышен лимит Gemini API. Попробуйте позже.';
+                        if (typeof NioApp !== 'undefined' && NioApp.Toast) {
+                            NioApp.Toast.warning('⚠️ ' + msg);
+                        } else {
+                            alert('⚠️ ' + msg);
+                        }
+                    } else {
+                        const msg = res.message || 'Ошибка запроса. Проверьте GEMINI_API_KEY в .env';
+                        alert('Ошибка: ' + msg);
+                    }
                 },
                 complete: function() {
                     btn.prop('disabled', false).html('<em class="icon ni ni-spark me-1"></em> Регенерировать с AI');
