@@ -37,10 +37,10 @@
                                     </h3>
                                 </div>
                             @endif
-                            <div class="product-barcode-v2">
-                                <h3 class="product_item_barcode">
-                                    <span>{{__('theme.article')}}:</span>
-                                    @if($product->article !== null  && $product->article !== '')
+                            @if($product->article !== null && $product->article !== '')
+                                <div class="product-barcode-v2">
+                                    <h3 class="product_item_barcode">
+                                        <span>{{__('theme.article')}}:</span>
                                         <span
                                             class="product-code product-code--article"
                                             role="button"
@@ -48,19 +48,19 @@
                                             data-copy-value="{{ $product->article }}"
                                             data-copy-message="{{ __('theme.product_code_copied') }}"
                                         >{{$product->article}}</span>
-                                    @endif
-                                </h3>
-                            </div>
-                            <div class="product-brand-v2">
-                                <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
-                                @if($product->brand !== null && trim((string)($product->brand->title ?? '')) !== '')
+                                    </h3>
+                                </div>
+                            @endif
+                            @if($product->brand !== null && trim((string)($product->brand->title ?? '')) !== '')
+                                <div class="product-brand-v2">
+                                    <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
                                     <a href="{{route('theme.brand.index', $product->brand->onec_id)}}" class="product-mini-brand">
                                         <span class="brand-text">
                                             {{$product->brand->title}}
                                         </span>
                                     </a>
-                                @endif
-                            </div>
+                                </div>
+                            @endif
                         </div>
                         @include('frontend.v1.pages.product.components.variations')
                     </div>

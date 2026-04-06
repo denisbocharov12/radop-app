@@ -22,6 +22,7 @@ use App\Jobs\GeneratePersonalizedExcelExportJob;
 use App\Exceptions\User\UserNoDiscountException;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -145,7 +146,7 @@ final class ThemeCategoryController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws ThemeCategoryNotFoundException
      */
-    public function export(string $onecId)
+    public function export(string $onecId): JsonResponse
     {
         $existedCategory = $this->categoryRepository->getByOnecId($onecId);
 
@@ -154,7 +155,10 @@ final class ThemeCategoryController extends Controller
         }
 
         $locale = app()->getLocale();
-        $fileName = "radop_categories_{$onecId}_{$locale}.xlsx";
+        $isParent = $existedCategory->children()->exists();
+        $fileName = $isParent
+            ? "radop_categories_grouped_{$onecId}_{$locale}.xlsx"
+            : "radop_categories_{$onecId}_{$locale}.xlsx";
 
         if (Storage::disk('export')->exists($fileName)) {
             $url = asset("export/{$fileName}");
@@ -198,7 +202,9 @@ final class ThemeCategoryController extends Controller
             throw new ThemeCategoryNotFoundException();
         }
 
-        $products = $this->productRepository->getAllProductsByCategorySortedByTitle($existedCategory);
+        $products = $existedCategory->children()->exists()
+            ? $this->productRepository->getAllProductsByCategorySubtreeSortedByTitle($existedCategory)
+            : $this->productRepository->getAllProductsByCategorySortedByTitle($existedCategory);
 
         if ($products->isEmpty()) {
             return response()->json([

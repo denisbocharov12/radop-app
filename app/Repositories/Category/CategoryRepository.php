@@ -13,6 +13,7 @@ use App\Filters\Theme\ThemeCategoryViewCountSort;
 use App\Filters\Theme\ThemeTitleSort;
 use App\Filters\Theme\NoOpSort;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -381,6 +382,90 @@ class CategoryRepository
             ->orderBy('products.title')
             ->get()
         ;
+    }
+
+    /**
+     * @return array<int, array{category_name: string, products: Collection<int, Product>}>
+     */
+    public function getProductGroupsByDirectChildrenForParentExport(Category $parent): array
+    {
+        if (!$parent->relationLoaded('childrenOrderedByColumn')) {
+            $parent->load(['childrenOrderedByColumn.childrenOrderedByColumn']);
+        }
+
+        $childrenOrdered = $parent->childrenOrderedByColumn->isNotEmpty()
+            ? $parent->childrenOrderedByColumn
+            : $parent->children()->orderBy('order')->get();
+
+        $childrenByColumn = $childrenOrdered->groupBy(static fn (Category $c): int => (int) ($c->column ?? 1));
+
+        $orderedChildren = collect();
+        for ($col = 1; $col <= 3; $col++) {
+            $orderedChildren = $orderedChildren->merge($childrenByColumn->get($col, collect()));
+        }
+
+        $assignedKeys = [];
+        $groups = [];
+
+        foreach ($orderedChildren as $child) {
+            $descendantCategoryIds = $child->descendantsAndSelf()->pluck('onec_id')->all();
+
+            $query = Product::query()
+                ->whereHas('categories', static function ($q) use ($descendantCategoryIds): void {
+                    $q->whereIn('categories.onec_id', $descendantCategoryIds);
+                })
+                ->where('stock', '!=', 0)
+                ->where('status', true)
+                ->where('site_status', true);
+
+            if ($assignedKeys !== []) {
+                $query->whereNotIn('products.onec_id', array_keys($assignedKeys));
+            }
+
+            $products = QueryBuilder::for($query)
+                ->with(['brand', 'values.attribute', 'packages'])
+                ->groupBy('products.onec_id')
+                ->orderBy('products.title')
+                ->get();
+
+            foreach ($products as $product) {
+                $assignedKeys[(string) $product->onec_id] = true;
+            }
+
+            if ($products->isNotEmpty()) {
+                $groups[] = [
+                    'category_name' => $child->name,
+                    'products' => $products->values(),
+                ];
+            }
+        }
+
+        $unassignedQuery = Product::query()
+            ->whereHas('categories', static function ($q) use ($parent): void {
+                $q->where('categories.onec_id', $parent->onec_id);
+            })
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true);
+
+        if ($assignedKeys !== []) {
+            $unassignedQuery->whereNotIn('products.onec_id', array_keys($assignedKeys));
+        }
+
+        $unassigned = QueryBuilder::for($unassignedQuery)
+            ->with(['brand', 'values.attribute', 'packages'])
+            ->groupBy('products.onec_id')
+            ->orderBy('products.title')
+            ->get();
+
+        if ($unassigned->isNotEmpty()) {
+            $groups[] = [
+                'category_name' => $parent->name,
+                'products' => $unassigned->values(),
+            ];
+        }
+
+        return $groups;
     }
 
     /**

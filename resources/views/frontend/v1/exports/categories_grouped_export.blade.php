@@ -1,0 +1,47 @@
+<table style="border-collapse: collapse; width: 100%; font-family: Arial;">
+    <thead>
+    <tr></tr>
+    <tr>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">№</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.code') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px; text-align: left;">{{ __('theme.excel-product-name') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.brand') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.photo') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.barcode_excel') }}</th>
+        <th colspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.packaging') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.characteristics') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.price_excel') }}</th>
+    </tr>
+    <tr>
+        <th style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.box') }}</th>
+        <th style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.pallet') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    @php $rowNum = 0; @endphp
+    @foreach($groups as $group)
+        <tr>
+            <td colspan="10" style="font-family: Arial; font-weight: bold; font-size: 13px; text-align: left; background-color: #f0f0f0;">{{ $group['category_name'] }}</td>
+        </tr>
+        @foreach($group['products'] as $product)
+            @php $rowNum++; @endphp
+            <tr>
+                <td style="font-family: Arial; font-size: 11px;">{{ $rowNum }}</td>
+                <td style="font-family: Arial; font-size: 11px;">{{ ' '.$product->onec_id.' ' }}</td>
+                <td style="font-family: Arial; font-size: 11px; text-align: left;">{{ $product->title }}</td>
+                <td style="font-family: Arial; font-size: 11px;">{{ $product->brand?->title }}</td>
+                <td style="font-family: Arial; font-size: 11px;"></td>
+                <td style="font-family: Arial; font-size: 11px;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->shtrih_code }}</td>
+                <td style="font-family: Arial; font-size: 11px;">{{ $product->packages->min('value') }}</td>
+                <td style="font-family: Arial; font-size: 11px;">{{ $product->packages->max('value') }}</td>
+                <td style="font-family: Arial; font-size: 11px; white-space: pre-line;">
+                    {!! $product->values
+                        ->map(fn($value) => e($value->attribute?->name . ': ' . $value->value))
+                        ->implode('<br>') !!}
+                </td>
+                <td style="font-family: Arial; font-size: 12px; font-weight: bold;">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
+            </tr>
+        @endforeach
+    @endforeach
+    </tbody>
+</table>

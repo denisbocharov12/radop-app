@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\GenerateActivePagesExcelExportJob;
 use App\Jobs\GenerateExcelExportJob;
+use App\Jobs\GenerateGroupedCategoryExcelExportJob;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
@@ -63,6 +63,13 @@ final class GenerateExcelExportsCommand extends Command
             $this->info("Found categories: {$categories->count()}");
 
             foreach ($categories as $category) {
+                if ($category->children()->exists()) {
+                    GenerateGroupedCategoryExcelExportJob::dispatch($category->onec_id, $locale);
+                    $this->info("  - Parent category {$category->name} ({$category->onec_id}): grouped export queued");
+
+                    continue;
+                }
+
                 $products = $categoryRepository->getAllByCategoryOnecIdForExport($category);
 
                 if ($products === null || $products->isEmpty()) {

@@ -8,8 +8,23 @@
                     @include('v1.errors.errors')
                     <div class="nk-block nk-block-lg">
                         <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование SEO записи - {{$seoMeta->locale}} версии</h4>
+                            <div class="nk-block-between">
+                                <div class="nk-block-head-content">
+                                    <h4 class="title nk-block-title">
+                                        Редактирование SEO записи — {{ strtoupper($seoMeta->locale) }}
+                                        @if($seoMeta->ai_generated)
+                                            <span class="badge bg-info ms-2 fs-6" title="Сгенерировано AI">AI</span>
+                                        @endif
+                                    </h4>
+                                    <div class="text-soft small">{{ $pageTypes[$seoMeta->page_type] ?? $seoMeta->page_type }}{{ $seoMeta->page_id ? ' · ID: '.$seoMeta->page_id : '' }}</div>
+                                </div>
+                                <div class="nk-block-head-content">
+                                    <button type="button" id="ai-regenerate-btn"
+                                            class="btn btn-warning"
+                                            data-seo-id="{{ $seoMeta->id }}">
+                                        <em class="icon ni ni-spark me-1"></em> Регенерировать с AI
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="card">
@@ -165,6 +180,45 @@
 
 @section('scripts')
     <script>
+        // AI Regenerate
+        $('#ai-regenerate-btn').on('click', function() {
+            const btn = $(this);
+            const seoId = btn.data('seo-id');
+
+            if (!confirm('Регенерировать SEO данные с помощью AI?\nТекущие значения заголовка, описания и ключевых слов будут заменены.')) return;
+
+            btn.prop('disabled', true).html('<em class="icon ni ni-loader ni-spin me-1"></em> Генерация...');
+
+            $.ajax({
+                url: '/admin/seo/' + seoId + '/regenerate',
+                type: 'POST',
+                data: { _token: '{{ csrf_token() }}' },
+                success: function(response) {
+                    if (response.status && response.data) {
+                        const d = response.data;
+                        if (d.title)       $('#title').val(d.title);
+                        if (d.description) $('#description').val(d.description);
+                        if (d.keywords)    $('#keywords').val(d.keywords);
+
+                        if (typeof NioApp !== 'undefined' && NioApp.Toast) {
+                            NioApp.Toast.success('SEO регенерирован. Сохраните форму для применения изменений.');
+                        } else {
+                            alert('SEO регенерирован. Нажмите "Обновить SEO запись" для сохранения.');
+                        }
+                    } else {
+                        alert('Ошибка: ' + (response.message || 'Не удалось сгенерировать SEO'));
+                    }
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Ошибка запроса. Проверьте GEMINI_API_KEY в .env';
+                    alert('Ошибка: ' + msg);
+                },
+                complete: function() {
+                    btn.prop('disabled', false).html('<em class="icon ni ni-spark me-1"></em> Регенерировать с AI');
+                }
+            });
+        });
+
         $(document).on('click','.model-media-delete',function (e) {
             e.preventDefault();
             var image_id = $(this).data('id');
