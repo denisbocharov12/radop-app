@@ -36,7 +36,7 @@ final class ThemeAboutUsController extends Controller
 
             SEOMeta::setKeywords($seoKeywords);
 
-            $this->seo()->opengraph()->setUrl(route('about-us'));
+            $this->seo()->opengraph()->setUrl(route('theme.about-us'));
             $this->seo()->opengraph()->addProperty('type', 'page');
             $this->seo()->jsonLd()->setType('WebPage');
         }
