@@ -8,18 +8,14 @@ use App\Enums\OrderPaymentMethods;
 use App\Enums\PageTypes;
 use App\Events\OrderCreatedSendEmailEvent;
 use App\Exceptions\Checkout\ManagerNotFoundException;
-use App\Exceptions\Checkout\ManagerNotFoundValidationException;
 use App\Exceptions\Checkout\MinOrderSumException;
-use App\Exceptions\Checkout\MinOrderSumValidationException;
 use App\Exceptions\Checkout\OrderErrorException;
-use App\Exceptions\Checkout\OrderErrorValidationException;
 use App\Exceptions\City\CityNotFoundException;
 use App\Exceptions\City\ThemeCityErrorRequiredSumException;
-use App\Exceptions\City\ThemeCityErrorRequiredSumValidationException;
-use App\Exceptions\City\ThemeCityNotFoundValidationException;
+use App\Exceptions\Filial\FilialNotFoundException;
 use App\Exceptions\Order\ThemeOrderMakeException;
-use App\Exceptions\Order\ThemeOrderMakeValidationException;
 use App\Exceptions\User\UserIsNotAuthenticatedException;
+use App\Exceptions\User\UserNotFoundException;
 use App\Http\Mappers\Theme\ThemeOrderDataMapper;
 use App\Http\Requests\Theme\Checkout\ThemeOrderRequest;
 use App\Models\Order;
@@ -110,35 +106,105 @@ final class ThemeCheckoutController
     public function store(ThemeOrderRequest $request)
     {
         $orderData = $this->themeOrderDataMapper->mapFromRequestToNormalized($request);
-        $user = Auth::guard('user')->user();
+        $user      = Auth::guard('user')->user();
+
+        Log::channel('checkout')->info('Checkout store: request received', [
+            'user_id'        => $user?->id,
+            'payment_method' => $orderData->payment_method,
+            'city_id'        => $orderData->cityId,
+            'filial_id'      => $orderData->filialId,
+            'ip'             => $request->ip(),
+        ]);
 
         try {
             $order = $this->themeCheckoutManager->store($orderData, $user);
-        } catch (ManagerNotFoundException) {
-            throw new ManagerNotFoundValidationException();
-        } catch (OrderErrorException) {
-            throw new OrderErrorValidationException();
-        } catch (CityNotFoundException) {
-            throw new ThemeCityNotFoundValidationException();
-        } catch (ThemeCityErrorRequiredSumException) {
-            throw new ThemeCityErrorRequiredSumValidationException();
-        }  catch (ThemeOrderMakeException) {
-            throw new ThemeOrderMakeValidationException();
-        } catch (MinOrderSumException) {
-            throw new MinOrderSumValidationException();
+        } catch (ManagerNotFoundException | UserNotFoundException $e) {
+            Log::channel('checkout')->warning('Checkout store: user/manager not found', [
+                'user_id' => $user?->id,
+                'error'   => $e->getMessage(),
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.checkout.manager_not_found'))
+                ->withInput();
+        } catch (OrderErrorException $e) {
+            Log::channel('checkout')->warning('Checkout store: order error', [
+                'error'   => $e->getMessage(),
+                'user_id' => $user?->id,
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.checkout.order_error'))
+                ->withInput();
+        } catch (FilialNotFoundException $e) {
+            Log::channel('checkout')->warning('Checkout store: filial not found', [
+                'filial_id' => $orderData->filialId,
+                'user_id'   => $user?->id,
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.city_not_found'))
+                ->withInput();
+        } catch (CityNotFoundException $e) {
+            Log::channel('checkout')->warning('Checkout store: city not found', [
+                'city_id' => $orderData->cityId,
+                'user_id' => $user?->id,
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.city_not_found'))
+                ->withInput();
+        } catch (ThemeCityErrorRequiredSumException $e) {
+            Log::channel('checkout')->warning('Checkout store: city required sum error', [
+                'city_id' => $orderData->cityId,
+                'user_id' => $user?->id,
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.city_required_sum_error'))
+                ->withInput();
+        } catch (MinOrderSumException $e) {
+            Log::channel('checkout')->info('Checkout store: min order sum not reached', [
+                'user_id' => $user?->id,
+                'error'   => $e->getMessage(),
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.min_delivery_sum_to_order', ['sum' => config('app.min_delivery_sum')]))
+                ->withInput();
+        } catch (ThemeOrderMakeException $e) {
+            Log::channel('checkout')->error('Checkout store: order make exception', [
+                'user_id' => $user?->id,
+                'error'   => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.order_not_permitted_to_create'))
+                ->withInput();
+        } catch (\Throwable $e) {
+            Log::channel('checkout')->critical('Checkout store: unexpected exception during order creation', [
+                'user_id'        => $user?->id,
+                'payment_method' => $orderData->payment_method,
+                'city_id'        => $orderData->cityId,
+                'error'          => $e->getMessage(),
+                'trace'          => $e->getTraceAsString(),
+            ]);
+            return redirect()->back()
+                ->withErrors(__('theme.order_not_permitted_to_create'))
+                ->withInput();
         }
 
+        // ── Customer confirmation email ────────────────────────────────────
         try {
             event(new OrderCreatedSendEmailEvent($order));
         } catch (\Throwable $e) {
-            Log::error('Order created but user confirmation email failed', [
+            Log::channel('checkout')->error('Checkout store: customer email failed', [
                 'order_id' => $order->id,
-                'message' => $e->getMessage(),
+                'error'    => $e->getMessage(),
+                'trace'    => $e->getTraceAsString(),
             ]);
         }
 
+        // ── Analytics ─────────────────────────────────────────────────────
         $order->load(['products.product']);
-        $request->session()->flash((string) config('analytics.json_payload_keys.order_completed_purchase'), $this->buildGa4PurchasePayload($order));
+        $request->session()->flash(
+            (string) config('analytics.json_payload_keys.order_completed_purchase'),
+            $this->buildGa4PurchasePayload($order)
+        );
 
         return redirect()->route('theme.thankyou.index');
     }

@@ -471,4 +471,9 @@ return array (
         'column_sort_updated_successfully' => 'Sortarea pe coloane a fost salvată',
         'column_sort_update_failed' => 'Nu s-a putut salva sortarea pe coloane',
     ],
+
+    'checkout' => [
+        'manager_not_found' => 'Nu am putut determina managerul pentru comanda dvs. Vă rugăm să contactați suportul.',
+        'order_error'       => 'A apărut o eroare la plasarea comenzii. Verificați datele introduse și încercați din nou.',
+    ],
 );

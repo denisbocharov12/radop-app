@@ -19,6 +19,6 @@ final class ManagerNotFoundValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(['Ошибка: Менеджер не найдет']);
+        return Redirect::back()->withErrors(__('theme.checkout.manager_not_found'))->withInput();
     }
 }
