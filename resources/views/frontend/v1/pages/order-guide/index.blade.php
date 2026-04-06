@@ -3,7 +3,6 @@
 @section('content')
     <section class="section-page">
         <div class="order-guide-section">
-            {{route('order-guide.index')}}
             <div class="container">
                 <h1>{{ __('order-guide.introduction') }}</h1>
                 <p>{!! __('order-guide.introduction-1') !!}</p>
