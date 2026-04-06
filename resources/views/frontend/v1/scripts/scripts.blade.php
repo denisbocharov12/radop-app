@@ -16,20 +16,52 @@
     window.radopGaCurrency = @json((string) config('analytics.currency', 'MDL'));
     window.radopAnalyticsDataLayerEventNames = @json(config('analytics.data_layer_event_names'));
     window.radopAnalyticsJsonPayloadKeys = @json(config('analytics.json_payload_keys'));
+    // Maps custom radop_* event names → standard GA4 event names (for Google Ads)
+    window.radopGa4StandardEventNames = @json(
+        collect(config('analytics.ga4_standard_event_names'))
+            ->mapWithKeys(fn($std, $key) => [
+                config('analytics.data_layer_event_names.' . $key, '') => $std
+            ])
+            ->filter()
+            ->all()
+    );
+    /**
+     * Push an ecommerce event to dataLayer.
+     * Fires the custom radop_* event first (for GTM triggers),
+     * then fires the standard GA4 event in parallel (for Google Ads / GA4 reports).
+     */
     window.radopGa4EcommercePush = function (eventName, payload) {
         window.dataLayer = window.dataLayer || [];
+        // 1. Custom event (GTM)
         window.dataLayer.push({ ecommerce: null });
         window.dataLayer.push({ event: eventName, ecommerce: payload });
+        // 2. Standard GA4 event (Google Ads / GA4 native reporting)
+        var stdName = window.radopGa4StandardEventNames[eventName];
+        if (stdName) {
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push({ event: stdName, ecommerce: payload });
+        }
     };
+    /**
+     * Push a non-ecommerce event to dataLayer.
+     * Fires the custom radop_* event, then the standard GA4 alias if mapped.
+     */
     window.radopGa4EventPush = function (eventName, params) {
         window.dataLayer = window.dataLayer || [];
         var row = { event: eventName };
         if (params && typeof params === 'object') {
-            Object.keys(params).forEach(function (k) {
-                row[k] = params[k];
-            });
+            Object.keys(params).forEach(function (k) { row[k] = params[k]; });
         }
         window.dataLayer.push(row);
+        // Standard GA4 alias
+        var stdName = window.radopGa4StandardEventNames[eventName];
+        if (stdName) {
+            var stdRow = { event: stdName };
+            if (params && typeof params === 'object') {
+                Object.keys(params).forEach(function (k) { stdRow[k] = params[k]; });
+            }
+            window.dataLayer.push(stdRow);
+        }
     };
     $(function () {
         if (typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {

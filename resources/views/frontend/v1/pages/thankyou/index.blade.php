@@ -21,19 +21,29 @@
 @endsection
 @section('scripts')
     <script>
-        @php($ga4Purchase = session((string) config('analytics.json_payload_keys.order_completed_purchase')))
-        @if(is_array($ga4Purchase))
+        @php
+            $ga4Purchase = session((string) config('analytics.json_payload_keys.order_completed_purchase'));
+            $ga4PurchaseEcommerce = is_array($ga4Purchase) ? [
+                'transaction_id' => $ga4Purchase['transaction_id'] ?? '',
+                'value'          => (float) ($ga4Purchase['value'] ?? 0),
+                'currency'       => $ga4Purchase['currency'] ?? config('analytics.currency', 'MDL'),
+                'items'          => $ga4Purchase['items'] ?? [],
+            ] : null;
+        @endphp
+        @if($ga4PurchaseEcommerce)
         $(function () {
             window.dataLayer = window.dataLayer || [];
+            // Custom event (GTM triggers)
             window.dataLayer.push({ ecommerce: null });
             window.dataLayer.push({
                 event: @json(config('analytics.data_layer_event_names.order_completed_purchase')),
-                ecommerce: {
-                    transaction_id: @json($ga4Purchase['transaction_id'] ?? ''),
-                    value: {{ (float) ($ga4Purchase['value'] ?? 0) }},
-                    currency: @json($ga4Purchase['currency'] ?? config('analytics.currency', 'MDL')),
-                    items: @json($ga4Purchase['items'] ?? [])
-                }
+                ecommerce: @json($ga4PurchaseEcommerce)
+            });
+            // Standard GA4 'purchase' event (Google Ads conversion + GA4 reports)
+            window.dataLayer.push({ ecommerce: null });
+            window.dataLayer.push({
+                event: 'purchase',
+                ecommerce: @json($ga4PurchaseEcommerce)
             });
         });
         @endif
