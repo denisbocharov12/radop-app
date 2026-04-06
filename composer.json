@@ -13,6 +13,7 @@
         "cknow/laravel-money": "^8.0",
         "cviebrock/eloquent-sluggable": "^10.0",
         "darryldecode/cart": "~4.0",
+        "google-gemini-php/laravel": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "joedixon/laravel-translation": "^2.2",
         "kwn/number-to-words": "^2.9",

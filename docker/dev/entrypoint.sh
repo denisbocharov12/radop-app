@@ -24,7 +24,7 @@ then
     echo "Logs start ..." > storage/logs/laravel.log
 fi
 
-composer install --no-dev
+composer install --no-dev --ignore-platform-reqs
 
 if [[ -z "$APP_KEY" ]]
 then

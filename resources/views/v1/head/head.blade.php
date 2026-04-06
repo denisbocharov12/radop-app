@@ -20,5 +20,8 @@
             width: auto;
         }
     }
-
+    .gap-1,
+    .gap-2 {
+        height: auto;!important;
+    }
 </style>

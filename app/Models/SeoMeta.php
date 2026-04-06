@@ -24,5 +24,10 @@ final class SeoMeta extends Model implements HasMedia
         'og_image',
         'canonical',
         'robots',
+        'ai_generated',
+    ];
+
+    protected $casts = [
+        'ai_generated' => 'boolean',
     ];
 }
