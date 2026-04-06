@@ -28,6 +28,29 @@ return [
         'homepage_promotion_banner_clicked' => 'radop_homepage_promotion_banner_clicked',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Standard GA4 event name aliases
+    |--------------------------------------------------------------------------
+    | Maps each custom radop_* event key → the standard GA4 ecommerce event
+    | name that fires IN PARALLEL. This lets Google Ads / GA4 reports use
+    | official event names while GTM keeps receiving the custom radop_* names.
+    */
+    'ga4_standard_event_names' => [
+        'product_detail_page_viewed'              => 'view_item',
+        'product_listing_items_viewed'            => 'view_item_list',
+        'product_selected_from_listing'           => 'select_item',
+        'shopping_cart_page_viewed'               => 'view_cart',
+        'cart_line_item_added'                    => 'add_to_cart',
+        'cart_line_item_removed'                  => 'remove_from_cart',
+        'wishlist_line_item_added'                => 'add_to_wishlist',
+        'checkout_flow_started'                   => 'begin_checkout',
+        'order_completed_purchase'                => 'purchase',
+        'frontend_site_search_submitted'          => 'search',
+        'customer_account_login_succeeded'        => 'login',
+        'customer_account_registration_completed' => 'sign_up',
+    ],
+
     'json_payload_keys' => [
         'customer_account_login_succeeded' => 'radop_customer_account_login_succeeded_payload',
         'customer_account_registration_completed' => 'radop_customer_account_registration_completed_payload',
