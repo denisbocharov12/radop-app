@@ -19,6 +19,6 @@ final class OrderErrorValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(['Ошибка: Неверные данные']);
+        return Redirect::back()->withErrors(__('theme.checkout.order_error'))->withInput();
     }
 }

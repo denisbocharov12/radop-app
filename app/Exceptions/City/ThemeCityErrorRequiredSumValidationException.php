@@ -19,6 +19,6 @@ class ThemeCityErrorRequiredSumValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(__('theme.city_required_sum_error'));
+        return Redirect::back()->withErrors(__('theme.city_required_sum_error'))->withInput();
     }
 }

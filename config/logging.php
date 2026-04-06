@@ -117,6 +117,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'checkout' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/checkout.log'),
+            'level'  => 'debug',
+            'days'   => 30,
+        ],
     ],
 
 ];

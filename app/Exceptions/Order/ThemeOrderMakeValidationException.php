@@ -19,6 +19,6 @@ class ThemeOrderMakeValidationException extends Exception
      */
     public function render($request)
     {
-        return Redirect::back()->withErrors(__('theme.order_not_permitted_to_create'));
+        return Redirect::back()->withErrors(__('theme.order_not_permitted_to_create'))->withInput();
     }
 }
