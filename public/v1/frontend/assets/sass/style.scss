@@ -3346,6 +3346,16 @@ header {
   z-index: 2;
 }
 
+.category-filter-count,
+.brand-filter-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: #797979;
+  position: relative;
+  top: -3px;
+  margin-left: 4px;
+}
+
 .section-category {
   .row-category-filters {
     .col-category-filters {

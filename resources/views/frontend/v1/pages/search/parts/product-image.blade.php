@@ -1,6 +1,6 @@
 <a href="{{route('theme.product.index', $product->slug)}}" class="wrap-image">
     @if($product->hasMedia('products'))
-        <a href="{{$product->getFirstMediaUrl('products')}}" data-fancybox-product>
+        <a href="{{$product->getFirstMediaUrl('products')}}" data-product-card-fancybox data-product-onec="{{$product->onec_id}}" data-product-title="{{$product->title}}">
             <img class="primary-image"
                  src="{{$product->getFirstMediaUrl('products')}}"
                  loading="lazy"

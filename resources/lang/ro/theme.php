@@ -476,4 +476,10 @@ return array (
         'manager_not_found' => 'Nu am putut determina managerul pentru comanda dvs. Vă rugăm să contactați suportul.',
         'order_error'       => 'A apărut o eroare la plasarea comenzii. Verificați datele introduse și încercați din nou.',
     ],
+
+    'product_api' => [
+        'invalid_id'    => 'Identificator de produs invalid.',
+        'not_found'     => 'Produsul nu a fost găsit.',
+        'gallery_error' => 'Nu am putut încărca galeria produsului. Încercați din nou mai târziu.',
+    ],
 );

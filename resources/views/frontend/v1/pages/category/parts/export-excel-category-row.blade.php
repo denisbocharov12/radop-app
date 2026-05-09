@@ -8,8 +8,7 @@
     }
 @endphp
 <div class="export-excel export-excel--category-row">
-    <a href="{{ $exportRoute }}" class="export-excel-link">
-        <span>{{ $buttonText }}</span>
+    <a href="{{ $exportRoute }}" class="export-excel-link" title="{{ $buttonText }}" aria-label="{{ $buttonText }}">
         @include('frontend.v1.pages.shop.parts.excel-svg')
     </a>
 </div>
