@@ -2,7 +2,7 @@
 
 @section('content')
     @include('frontend.v1.pages.product.parts.breadcrumbs')
-    <section class="section-product mb-5">
+    <section class="section-product mb-3">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-7 col-product-images">

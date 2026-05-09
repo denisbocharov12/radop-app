@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -133,6 +134,12 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
                 foreach ($this->groups as $group) {
                     $sheet->getRowDimension($row)->setRowHeight(22);
                     $sheet->getStyle("A{$row}:J{$row}")->getFont()->setBold(true);
+                    // Light orange highlight for category (group header) rows
+                    $sheet->getStyle("A{$row}:J{$row}")
+                        ->getFill()
+                        ->setFillType(Fill::FILL_SOLID)
+                        ->getStartColor()
+                        ->setARGB('FFFCD9B0');
                     $row++;
                     foreach ($group['products'] as $product) {
                         $sheet->getRowDimension($row)->setRowHeight(150);

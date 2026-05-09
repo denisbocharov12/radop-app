@@ -955,6 +955,20 @@ final class ProductRepository
         return Product::where('onec_id', $onecId)->first();
     }
 
+    /**
+     * Lightweight lookup for the public gallery API: selects only the columns
+     * actually needed and eager-loads media restricted to the 'products'
+     * collection so the controller can build the payload in a single query.
+     */
+    public function getForGalleryByOnecId(string $onecId): ?Product
+    {
+        return Product::query()
+            ->select(['id', 'onec_id', 'title'])
+            ->with(['media' => fn ($q) => $q->where('collection_name', 'products')])
+            ->where('onec_id', $onecId)
+            ->first();
+    }
+
     public function getBySlug(string $slug): ?Product
     {
         return Product::where('slug', $slug)->first();

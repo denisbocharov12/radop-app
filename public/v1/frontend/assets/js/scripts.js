@@ -2036,3 +2036,118 @@ document.addEventListener('DOMContentLoaded', function() {
     new SearchHistory('.search-sticky', '#search-history-dropdown-sticky', '#search-history-list-sticky', '#search-history-clear-sticky');
     new SearchHistory('.search-mobile-navbar', '#search-history-dropdown-mobile', '#search-history-list-mobile', '#search-history-clear-mobile');
 });
+
+/* ============================================================
+ * Product card → Fancybox full gallery (lazy-loaded)
+ * ------------------------------------------------------------
+ * Cards render only the first image for performance. On click
+ * we fetch the rest of the product's images from the API and
+ * upgrade the Fancybox into a full gallery with thumbnails
+ * and navigation arrows.
+ * Markup contract:
+ *   <a href="{single-image-fallback}"
+ *      data-product-card-fancybox
+ *      data-product-onec="{onec_id}"
+ *      data-product-title="{title}">…</a>
+ * ============================================================ */
+(function () {
+    if (typeof window === 'undefined' || typeof Fancybox === 'undefined') return;
+
+    var galleryCache = {};
+    var inFlight = {};
+
+    function buildSlides(images, title) {
+        return images.map(function (img) {
+            // No explicit type — let Fancybox auto-detect by URL extension.
+            // Explicit type: 'image' combined with custom Toolbar.display caused
+            // the main carousel pane to not render in some Fancybox v5 builds.
+            var slide = { src: img.full };
+            if (img.thumb && img.thumb !== img.full) {
+                slide.thumb = img.thumb;
+            }
+            if (title) {
+                slide.caption = title;
+            }
+            return slide;
+        });
+    }
+
+    function openGallery(slides) {
+        // Match the working `[data-fancybox^="product-gallery-"]` config from
+        // scripts.blade.php exactly. Custom Toolbar.display + Object.assign
+        // merge of nested objects breaks the main slide pane in v5.
+        Fancybox.show(slides, {
+            hash: false,
+            groupAll: true,
+            Carousel: { infinite: false },
+            Thumbs: { autoStart: true, axis: 'x' }
+        });
+    }
+
+    function fetchGallery(onecId) {
+        if (galleryCache[onecId]) return Promise.resolve(galleryCache[onecId]);
+        if (inFlight[onecId]) return inFlight[onecId];
+        inFlight[onecId] = fetch('/api/v1/products/' + encodeURIComponent(onecId) + '/gallery', {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin'
+        })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+            delete inFlight[onecId];
+            if (!data || data.success !== true || !Array.isArray(data.images)) return null;
+            galleryCache[onecId] = data;
+            return data;
+        })
+        .catch(function () {
+            delete inFlight[onecId];
+            return null;
+        });
+        return inFlight[onecId];
+    }
+
+    function showSingle(href, title) {
+        Fancybox.show(
+            [{ src: href, type: 'image', caption: title || '' }],
+            { hash: false, Carousel: { infinite: false } }
+        );
+    }
+
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('[data-product-card-fancybox]');
+        if (!link) return;
+        e.preventDefault();
+
+        var onecId = link.getAttribute('data-product-onec');
+        var fallbackHref = link.getAttribute('href');
+        var title = link.getAttribute('data-product-title') || '';
+
+        if (!onecId || !fallbackHref) {
+            if (fallbackHref) showSingle(fallbackHref, title);
+            return;
+        }
+
+        // Cached → open instantly
+        if (galleryCache[onecId]) {
+            var cached = galleryCache[onecId];
+            if (cached.images && cached.images.length > 1) {
+                openGallery(buildSlides(cached.images, cached.title || title));
+            } else {
+                showSingle(fallbackHref, title);
+            }
+            return;
+        }
+
+        // Fetch first, then open exactly once. Avoids the close+show race
+        // that leaves Fancybox with thumbs but no main slide.
+        fetchGallery(onecId).then(function (data) {
+            if (data && Array.isArray(data.images) && data.images.length > 1) {
+                openGallery(buildSlides(data.images, data.title || title));
+            } else {
+                showSingle(fallbackHref, title);
+            }
+        }).catch(function () {
+            showSingle(fallbackHref, title);
+        });
+    }, false);
+})();
+

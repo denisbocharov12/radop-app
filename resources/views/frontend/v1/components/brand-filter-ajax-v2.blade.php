@@ -146,11 +146,11 @@
                     if (link) {
                         const countSpan = link.querySelector('.category-filter-count');
                         if (countSpan) {
-                            countSpan.textContent = '(' + count + ')';
+                            countSpan.textContent = String(count);
                         } else {
                             const newCountSpan = document.createElement('span');
                             newCountSpan.className = 'category-filter-count';
-                            newCountSpan.textContent = '(' + count + ')';
+                            newCountSpan.textContent = String(count);
                             link.appendChild(newCountSpan);
                         }
                     }
@@ -166,11 +166,11 @@
                         if (label && label.tagName === 'LABEL') {
                             const existingCount = label.querySelector('.brand-filter-count');
                             if (existingCount) {
-                                existingCount.textContent = '(' + count + ')';
+                                existingCount.textContent = String(count);
                             } else {
                                 const countSpan = document.createElement('span');
                                 countSpan.className = 'brand-filter-count';
-                                countSpan.textContent = ' (' + count + ')';
+                                countSpan.textContent = String(count);
                                 label.appendChild(countSpan);
                             }
                         }
@@ -190,11 +190,11 @@
                                 if (label && label.tagName === 'LABEL') {
                                     const existingCount = label.querySelector('.attribute-filter-count');
                                     if (existingCount) {
-                                        existingCount.textContent = '(' + count + ')';
+                                        existingCount.textContent = String(count);
                                     } else {
                                         const countSpan = document.createElement('span');
                                         countSpan.className = 'attribute-filter-count';
-                                        countSpan.textContent = ' (' + count + ')';
+                                        countSpan.textContent = String(count);
                                         label.appendChild(countSpan);
                                     }
                                 }
