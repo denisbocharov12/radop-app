@@ -20,12 +20,10 @@
                                 ->merge($breadcrumbs ?? []);
                             $last = $all->last();
                         @endphp
-                        <li class="breadcrumb-item active" style="color: #000000" aria-current="page">
-                            @if(isset($last['url']))
-                                <a href="{{$last['url']}}" style="font-size: 18px;">{{$last['title']}}</a>
-                            @else
-                                {{$last['title'] ?? $last->title ?? ''}}
-                            @endif
+                        {{-- SEO P0 §3.3 — visually-prominent last breadcrumb item is the
+                             de-facto page heading; promote to a real <h1>. --}}
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <h1 class="breadcrumb-h1">{{ is_array($last) ? ($last['title'] ?? $last['name'] ?? '') : (is_object($last) ? ($last->title ?? $last->name ?? '') : '') }}</h1>
                         </li>
                     </ol>
                 </nav>

@@ -16,6 +16,7 @@ use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Analytics\Ga4EcommercePayloadBuilder;
+use App\Services\Seo\SeoFallbackGenerator;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\ViewCount\ViewCountManager;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
@@ -41,6 +42,7 @@ final class ThemeCategoryController extends Controller
         private readonly PageTypes $pageTypes,
         private readonly ViewCountManager $viewCountManager,
         private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
+        private readonly SeoFallbackGenerator $seoFallback,
     ) {
     }
 
@@ -61,10 +63,20 @@ final class ThemeCategoryController extends Controller
 
         $themeBrands = $this->brandRepository->getLimited();
 
-        $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, app()->getLocale());
+        $locale = app()->getLocale();
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getCategoryType(), (string)$existedCategory->onec_id, $locale);
 
-        $this->seo()->setTitle($seo->title ?? $existedCategory->name);
-        $this->seo()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
+        $seoTitle = ($seo?->title !== null && $seo->title !== '')
+            ? $seo->title
+            : $this->seoFallback->categoryTitle($existedCategory, $locale);
+        $seoDescription = ($seo?->description !== null && $seo->description !== '')
+            ? $seo->description
+            : $this->seoFallback->categoryDescription($existedCategory, $locale);
+
+        $this->seo()->setTitle($seoTitle);
+        $this->seo()->setDescription($seoDescription);
+
+        $seoContent = is_string($seo?->content) && trim($seo->content) !== '' ? $seo->content : null;
 
         $imageUrl = config('seotools.meta.defaults.default_image');
 
@@ -82,15 +94,11 @@ final class ThemeCategoryController extends Controller
 
         $this->seo()->addImages($imageUrl);
 
-        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-        SEOMeta::setKeywords($seoKeywords);
-
         $this->seo()->opengraph()->setUrl(route('theme.category.index', $existedCategory->onec_id));
         $this->seo()->opengraph()->addProperty('type', 'category');
-        $this->seo()->jsonLd()->setType('Article');
-        $this->seo()->jsonLd()->setTitle($seo->title ?? $existedCategory->name);
-        $this->seo()->jsonLd()->setDescription($seo?->description ?? strip_tags((string)$existedCategory->summary));
+        $this->seo()->jsonLd()->setType('CollectionPage');
+        $this->seo()->jsonLd()->setTitle($seoTitle);
+        $this->seo()->jsonLd()->setDescription($seoDescription);
         $this->seo()->jsonLd()->setUrl(route('theme.category.index', $existedCategory->onec_id));
 
         //$this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
@@ -128,6 +136,7 @@ final class ThemeCategoryController extends Controller
             'attributes',
             'defaultSort',
             'ga4ItemLists',
+            'seoContent',
         ]));
     }
 

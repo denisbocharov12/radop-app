@@ -69,7 +69,8 @@
 {{--                                    @endif--}}
 {{--                                </span>--}}
 {{--                            </div>--}}
-                            <h3 class="product_item_article">
+                            {{-- SEO P0 §3.4 — only product name is an H3; article/barcode are plain text. --}}
+                            <div class="product_item_article">
                                 <span>@lang('theme.code'):</span>
                                 <span
                                     class="product-code"
@@ -78,10 +79,10 @@
                                     data-copy-value="{{ $product->onec_id }}"
                                     data-copy-message="{{ __('theme.product_code_copied') }}"
                                 >{{$product->onec_id}}</span>
-                            </h3>
+                            </div>
                         </div>
                         <div class="wrapped">
-                            <h3 class="product_item_barcode">
+                            <div class="product_item_barcode">
                                 @if($product->article !== null && $product->article !== '')
                                     <span>@lang('theme.article'):</span>
                                     <span
@@ -93,10 +94,10 @@
                                     >{{$product->article}}
                                     </span>
                                 @endif
-                            </h3>
+                            </div>
 
                             @if($product->shtrih_code)
-                                <h3 class="product_item_barcode">
+                                <div class="product_item_barcode">
                                     <span>@lang('theme.barcode'):</span>
                                     <span
                                         class="product-code product-code--barcode"
@@ -105,7 +106,7 @@
                                         data-copy-value="{{ $product->shtrih_code }}"
                                         data-copy-message="{{ __('theme.product_code_copied') }}"
                                     >{{$product->shtrih_code}}</span>
-                                </h3>
+                                </div>
                             @endif
                         </div>
                     </div>

@@ -2,6 +2,7 @@
 
 @section('content')
     @include('frontend.v1.pages.product.parts.breadcrumbs')
+    @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs ?? [], 'leaf' => $product])
     <section class="section-product mb-3">
         <div class="container">
             <div class="row">
@@ -145,7 +146,7 @@
                 <div class="row-catalog row">
                     <div class="col-heading">
                         <div class="heading heading-with-btn">
-                            <h1>{{__('theme.similar-products')}}</h1>
+                            <h2 class="similar-products-title">{{__('theme.similar-products')}}</h2>
                         </div>
                     </div>
                     <div class="col catalog-slider">

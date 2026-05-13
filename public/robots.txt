@@ -1,2 +1,22 @@
 User-agent: *
-Disallow:
+
+Disallow: /search
+Disallow: /cart
+Disallow: /wishlist
+Disallow: /checkout
+Disallow: /login
+Disallow: /registration
+Disallow: /reset-password
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /user
+
+Disallow: /*?utm_
+Disallow: /*?fbclid=
+Disallow: /*?gclid=
+Disallow: /*?yclid=
+Disallow: /*?msclkid=
+
+Allow: /
+
+Sitemap: https://radop.md/sitemap.xml

@@ -1,6 +1,7 @@
 @extends('frontend.v1.layouts.layout')
 
 @section('content')
+    <h1 class="seo-h1-visually-hidden">{{ __('seo.home_h1') }}</h1>
     <section class="section-standart section-main section-primary">
         <div class="container">
             <div class="row">
