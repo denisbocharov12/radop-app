@@ -2,7 +2,9 @@
 
 @section('content')
     @include('frontend.v1.pages.category.parts.breadcrumbs')
+    @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs])
     @include('frontend.v1.pages.category.parts.category')
+    @include('frontend.v1.components.seo-content', ['seoContent' => $seoContent ?? null])
 @endsection
 
 @section('scripts')

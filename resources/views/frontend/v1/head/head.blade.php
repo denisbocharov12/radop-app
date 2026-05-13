@@ -2,10 +2,19 @@
     <script>window.dataLayer=window.dataLayer||[];</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    @include('frontend.v1.head.seo-directives')
     {!! SEOMeta::generate() !!}
     {!! OpenGraph::generate() !!}
     {!! Twitter::generate() !!}
     {!! JsonLd::generate() !!}
+    @include('frontend.v1.head.hreflang')
+    @include('frontend.v1.head.organization-schema')
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- CSRF Token -->
@@ -27,7 +36,7 @@
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/libs/slick/slick.css" />
     <!-- End Slick Slider -->
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/app.min.css" />
-    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.94" />
+    <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/style.css?v1.2.98" />
     <link rel="stylesheet" href="{{asset('/v1/frontend/assets')}}/css/mega-menu.css?v1.2.94" />
     @php($gtmId = config('analytics.gtm_container_id'))
     @if(is_string($gtmId) && $gtmId !== '')

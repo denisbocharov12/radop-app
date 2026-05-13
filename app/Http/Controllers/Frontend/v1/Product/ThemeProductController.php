@@ -15,9 +15,9 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Theme\Category\ThemeCategoryManager;
 use App\Services\Seo\ProductSchemaOrgBuilder;
+use App\Services\Seo\SeoFallbackGenerator;
 use App\Services\Theme\Product\ThemeProductManager;
 use App\Services\ViewCount\ViewCountManager;
-use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Http\Request;
 
@@ -34,6 +34,7 @@ final class ThemeProductController extends Controller
         private readonly PageTypes $pageTypes,
         private readonly ViewCountManager $viewCountManager,
         private readonly ProductSchemaOrgBuilder $productSchemaOrgBuilder,
+        private readonly SeoFallbackGenerator $seoFallback,
     ) {
     }
 
@@ -55,14 +56,20 @@ final class ThemeProductController extends Controller
             $breadcrumbs = $this->themeCategoryManager->getBreadcrumbsForCategory($product->categories->first());
         }
 
-        $seo = $this->seoMetaRepository->get($this->pageTypes->getProductType(), (string)($product->onec_id ?? $product->id), app()->getLocale());
-        $this->seo()->setTitle($seo->title ?? $product->title);
-        if (!empty($seo?->description) && $seo?->description !== null) {
-            $this->seo()->setDescription($seo?->description ? $seo?->description : trans('seo.description', [], app()->getLocale()));
+        $locale = app()->getLocale();
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getProductType(), (string)($product->onec_id ?? $product->id), $locale);
 
-        } else {
-            $this->seo()->setDescription(strip_tags((string)$product?->data?->summary) ? strip_tags((string)$product?->data?->summary) : trans('seo.description', [], app()->getLocale()));
-        }
+        $seoTitle = ($seo?->title !== null && $seo->title !== '')
+            ? $seo->title
+            : $this->seoFallback->productTitle($product, $locale);
+
+        $productSummary = strip_tags((string) $product?->data?->summary);
+        $seoDescription = ($seo?->description !== null && $seo->description !== '')
+            ? $seo->description
+            : ($productSummary !== '' ? $productSummary : $this->seoFallback->productDescription($product, $locale));
+
+        $this->seo()->setTitle($seoTitle);
+        $this->seo()->setDescription($seoDescription);
 
         $imageUrl = config('seotools.meta.defaults.default_image');
 
@@ -80,14 +87,11 @@ final class ThemeProductController extends Controller
 
         $this->seo()->addImages($imageUrl);
 
-        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-        SEOMeta::setKeywords($seoKeywords);
         $this->seo()->opengraph()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->opengraph()->addProperty('type', 'product');
         $this->seo()->jsonLd()->setType('Product');
-        $this->seo()->jsonLd()->setTitle($product->title);
-        $this->seo()->jsonLd()->setDescription(strip_tags((string)$product?->data?->summary) ? strip_tags((string)$product?->data?->summary) : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->jsonLd()->setTitle($seoTitle);
+        $this->seo()->jsonLd()->setDescription($seoDescription);
         $this->seo()->jsonLd()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->jsonLd()->addValues($this->productSchemaOrgBuilder->build($product));
 

@@ -16,6 +16,7 @@ use App\Repositories\PageSortSettingRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Analytics\Ga4EcommercePayloadBuilder;
+use App\Services\Seo\SeoFallbackGenerator;
 use App\Services\Theme\Brand\ThemeBrandManager;
 use App\Services\ViewCount\ViewCountManager;
 use App\Jobs\GeneratePersonalizedExcelExportJob;
@@ -42,6 +43,7 @@ final class ThemeBrandController extends Controller
         private readonly PageSortSettingRepository $pageSortSettingRepository,
         private readonly ViewCountManager $viewCountManager,
         private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
+        private readonly SeoFallbackGenerator $seoFallback,
     ) {
     }
 
@@ -61,10 +63,20 @@ final class ThemeBrandController extends Controller
             throw new BrandNotFoundValidationException();
         }
 
-        $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandType(), $existedBrand->onec_id, app()->getLocale());
+        $locale = app()->getLocale();
+        $seo = $this->seoMetaRepository->get($this->pageTypes->getBrandType(), $existedBrand->onec_id, $locale);
 
-        $this->seo()->setTitle($seo->title ?? $existedBrand->title);
-        $this->seo()->setDescription($seo?->description ? $existedBrand->description : trans('seo.description', [], app()->getLocale()));
+        $seoTitle = ($seo?->title !== null && $seo->title !== '')
+            ? $seo->title
+            : $this->seoFallback->brandTitle($existedBrand, $locale);
+        $seoDescription = ($seo?->description !== null && $seo->description !== '')
+            ? $seo->description
+            : $this->seoFallback->brandDescription($existedBrand, $locale);
+
+        $this->seo()->setTitle($seoTitle);
+        $this->seo()->setDescription($seoDescription);
+
+        $seoContent = is_string($seo?->content) && trim($seo->content) !== '' ? $seo->content : null;
 
         $imageUrl = config('seotools.meta.defaults.default_image');
 
@@ -82,15 +94,11 @@ final class ThemeBrandController extends Controller
 
         $this->seo()->addImages($imageUrl);
 
-        (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], app()->getLocale());
-
-        SeoMeta::setKeywords($seoKeywords);
-
         $this->seo()->opengraph()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
         $this->seo()->opengraph()->addProperty('type', 'articles');
-        $this->seo()->jsonLd()->setType('Article');
-        $this->seo()->jsonLd()->setTitle($seo->title ?? $existedBrand->title);
-        $this->seo()->jsonLd()->setDescription($seo?->description ? $seo?->description : trans('seo.description', [], app()->getLocale()));
+        $this->seo()->jsonLd()->setType('CollectionPage');
+        $this->seo()->jsonLd()->setTitle($seoTitle);
+        $this->seo()->jsonLd()->setDescription($seoDescription);
         $this->seo()->jsonLd()->setUrl(route('theme.brand.index', $existedBrand->onec_id));
 
         $defaultSort = $this->pageSortSettingRepository->getDefaultSortValueForBrandPage();
@@ -119,6 +127,7 @@ final class ThemeBrandController extends Controller
             'categories',
             'defaultSort',
             'ga4ItemLists',
+            'seoContent',
         ]));
     }
 

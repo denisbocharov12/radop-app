@@ -20,6 +20,7 @@ final class SeoMeta extends Model implements HasMedia
         'locale',
         'title',
         'description',
+        'content',
         'keywords',
         'og_image',
         'canonical',

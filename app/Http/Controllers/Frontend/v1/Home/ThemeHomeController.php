@@ -13,6 +13,7 @@ use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Seo\SeoFallbackGenerator;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
 use Illuminate\Support\Facades\Cache;
@@ -28,6 +29,7 @@ final class ThemeHomeController extends Controller
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
         private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
+        private readonly SeoFallbackGenerator $seoFallback,
     ) {
     }
 
@@ -48,19 +50,20 @@ final class ThemeHomeController extends Controller
 
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getHomeType(), $locale);
 
-        if ($seo !== null) {
-            $this->seo()->setTitle($seo->title ?? trans('seo.title', [], $locale));
-            $this->seo()->setDescription($seo->description ?? trans('seo.description', [], $locale));
-            $this->seo()->addImages($seo->getFirstMediaUrl('files') ?? config('seotools.meta.defaults.default_image'));
+        $title = ($seo?->title !== null && $seo->title !== '')
+            ? $seo->title
+            : $this->seoFallback->homeTitle($locale);
+        $description = ($seo?->description !== null && $seo?->description !== '')
+            ? $seo->description
+            : $this->seoFallback->homeDescription($locale);
 
-            (array)$seoKeywords = $seo?->keywords !== null && $seo?->keywords !== '' ? explode(',', $seo?->keywords) : trans('seo.keywords', [], $locale);
+        $this->seo()->setTitle($title);
+        $this->seo()->setDescription($description);
+        $this->seo()->addImages($seo?->getFirstMediaUrl('files') ?: config('seotools.meta.defaults.default_image'));
 
-            SEOMeta::setKeywords($seoKeywords);
-
-            $this->seo()->opengraph()->setUrl(route('theme.home'));
-            $this->seo()->opengraph()->addProperty('type', 'page');
-            $this->seo()->jsonLd()->setType('WebPage');
-        }
+        $this->seo()->opengraph()->setUrl(route('theme.home'));
+        $this->seo()->opengraph()->addProperty('type', 'page');
+        $this->seo()->jsonLd()->setType('WebPage');
 
         $ga4ItemLists = array_values(array_filter([
             $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($popularProducts, 'home_popular', 'Home popular'),
