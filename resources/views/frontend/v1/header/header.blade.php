@@ -37,7 +37,7 @@
                 <div class="header-search col col-md col-xl col-lg">
                     <div class="wrap wrap-with-history">
                         <form action="{{route('theme.search.index')}}" method="GET">
-                            <input type="text" class="search search-desktop" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
+                            <input type="text" class="search search-desktop" name="search" value="{{ e((string) (request('search') ?? request('filter.search') ?? '')) }}" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
                         <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
@@ -144,7 +144,7 @@
                 <div class="header-search header-mobile-search col col-md col-xl col-lg">
                     <div class="wrap wrap-with-history">
                         <form action="{{route('theme.search.index')}}" method="GET">
-                            <input type="text" class="search search-mobile-header" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
+                            <input type="text" class="search search-mobile-header" name="search" value="{{ e((string) (request('search') ?? request('filter.search') ?? '')) }}" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
                             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
                         </form>
                         <div class="search-history-dropdown search-history-mobile" id="search-history-dropdown-mobile-header" style="display: none;">

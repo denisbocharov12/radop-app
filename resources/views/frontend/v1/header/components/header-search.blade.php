@@ -34,7 +34,7 @@
         </div>
         <div class="sticky-search-wrapper">
             <form action="{{route('theme.search.index')}}" method="GET" class="form-with-history">
-                <input type="text" class="search search-sticky" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
+                <input type="text" class="search search-sticky" name="search" value="{{ e((string) (request('search') ?? request('filter.search') ?? '')) }}" placeholder="{{__('theme.search-on-site')}}" autocomplete="off" />
                 <button type="submit" class="btn-search"><i class="icon-search"></i></button>
             </form>
             <div class="search-history-dropdown search-history-sticky" id="search-history-dropdown-sticky" style="display: none;">

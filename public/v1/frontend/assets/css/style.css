@@ -3037,6 +3037,7 @@ header .section-header .row-main .header-menu .col-lg{
     font-weight: 700;
     display: inline-block;
     flex: none;
+    font-size: 18px;
 }
 .col-category-childs .wrap-category-childs .list.category-list {
     margin-top: 10px;
@@ -10318,7 +10319,7 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
         font-size: 12px;
     }
     .col-category-childs .wrap-category-childs .link.parent-link{
-        font-size: 14px;
+        font-size: 16px;
     }
     .col-category-childs .wrap-category-childs .list.category-list .item{
         margin-bottom: 7.5px;
@@ -15114,4 +15115,14 @@ input[type="range"]::-moz-range-thumb {
 .section-seo-content .seo-content-wrap ol { margin: 0 0 12px 1.4em; }
 .section-seo-content .seo-content-wrap li { margin: 4px 0; }
 .section-seo-content .seo-content-wrap a { color: #0068a7; text-decoration: underline; }
+
+/* Fancybox v5 thumbs — show the whole image (default is object-fit: cover
+   which crops portrait/landscape product photos). */
+.fancybox__thumbs .f-thumbs__slide__img,
+.fancybox__thumbs .f-thumbs__slide img {
+    object-fit: contain !important;
+    background: #fff;
+    padding: 2px;
+    box-sizing: border-box;
+}
 

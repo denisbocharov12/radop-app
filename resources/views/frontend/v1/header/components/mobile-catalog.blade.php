@@ -38,7 +38,7 @@
 <div class="search-navbar">
     <div class="search-navbar-wrap search-navbar-wrap-with-history">
         <form action="{{route('theme.search.index')}}" method="GET">
-            <input type="text" class="catalog-navbar__search search-mobile-navbar" name="search" placeholder="{{__('theme.search-on-site')}}" autocomplete="off">
+            <input type="text" class="catalog-navbar__search search-mobile-navbar" name="search" value="{{ e((string) (request('search') ?? request('filter.search') ?? '')) }}" placeholder="{{__('theme.search-on-site')}}" autocomplete="off">
             <button type="submit" class="btn-search"><i class="icon-search"></i></button>
         </form>
         <div class="search-history-dropdown search-history-mobile" id="search-history-dropdown-mobile" style="display: none;">

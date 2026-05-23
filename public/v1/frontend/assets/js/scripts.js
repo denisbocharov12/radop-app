@@ -2057,16 +2057,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var inFlight = {};
 
     function buildSlides(images, title) {
+        // title arg kept for API stability but intentionally NOT mapped to
+        // slide.caption — the caption block in Fancybox v5 renders at the
+        // bottom of the slide and overlaps the thumbnails strip. The product
+        // title is already visible on the catalog card behind the modal.
         return images.map(function (img) {
-            // No explicit type — let Fancybox auto-detect by URL extension.
-            // Explicit type: 'image' combined with custom Toolbar.display caused
-            // the main carousel pane to not render in some Fancybox v5 builds.
             var slide = { src: img.full };
             if (img.thumb && img.thumb !== img.full) {
                 slide.thumb = img.thumb;
-            }
-            if (title) {
-                slide.caption = title;
             }
             return slide;
         });
@@ -2105,9 +2103,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return inFlight[onecId];
     }
 
-    function showSingle(href, title) {
+    function showSingle(href, _title) {
         Fancybox.show(
-            [{ src: href, type: 'image', caption: title || '' }],
+            [{ src: href, type: 'image' }],
             { hash: false, Carousel: { infinite: false } }
         );
     }
