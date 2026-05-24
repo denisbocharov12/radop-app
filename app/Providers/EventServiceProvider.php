@@ -18,6 +18,10 @@ use App\Listeners\SendManagerOrderEmailListener;
 use App\Listeners\SendOrderStatusUpdatedEmailEventListener;
 use App\Listeners\SendUserActivationEmailListener;
 use App\Listeners\SendUserOrderEmailListener;
+use App\Models\Banner;
+use App\Models\BannerSetting;
+use App\Observers\BannerObserver;
+use App\Observers\BannerSettingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -72,7 +76,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Banner::observe(BannerObserver::class);
+        BannerSetting::observe(BannerSettingObserver::class);
     }
 
     /**
