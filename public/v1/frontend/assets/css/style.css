@@ -10021,9 +10021,15 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
 .export-excel .export-excel-link{
     color: #0990d9;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.export-excel .export-excel-link span{
+    margin-right: 3px;
 }
 .export-excel .export-excel-link:hover{
     color: #00aff0;
+    text-decoration: underline!important;
 }
 .section-search .grid-products-list-wrap{
     grid-template-columns: repeat(5, 1fr);
@@ -12526,6 +12532,17 @@ body.modal-open {
 .export-excel{
     display: flex;
     justify-content: flex-end;
+}
+/* Base size for the Excel icon (now an <img>); context rules below may
+   override. max-width:none defeats any global "img { max-width:100% }" reset
+   that was stretching it. */
+.excel-icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    max-width: none;
+    flex: 0 0 auto;
+    object-fit: contain;
 }
 .category-parent-export-wrap {
     margin-top: 0.5rem;
