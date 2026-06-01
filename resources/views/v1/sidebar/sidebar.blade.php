@@ -61,7 +61,7 @@
                                 <a href="{{route('brand.sort.index')}}" class="nk-menu-link"><span class="nk-menu-text">Сортировка брэндов</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары @if(!empty($sidebarProductErrors['products']))<span class="badge badge-danger round" title="{{ __('product_errors.sidebar_badge_title', [], 'ru') }}">{{ $sidebarProductErrors['products'] }}</span>@endif</span></a>
                             </li>
 
                             <li class="nk-menu-item">
@@ -83,7 +83,7 @@
                                 <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары @if(!empty($sidebarProductErrors['products']))<span class="badge badge-danger round" title="{{ __('product_errors.sidebar_badge_title', [], 'ru') }}">{{ $sidebarProductErrors['products'] }}</span>@endif</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>
@@ -175,7 +175,7 @@
                                 <a href="{{route('brand.index')}}" class="nk-menu-link"><span class="nk-menu-text">Бренды</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары</span></a>
+                                <a href="{{route('product.index')}}" class="nk-menu-link"><span class="nk-menu-text">Товары @if(!empty($sidebarProductErrors['products']))<span class="badge badge-danger round" title="{{ __('product_errors.sidebar_badge_title', [], 'ru') }}">{{ $sidebarProductErrors['products'] }}</span>@endif</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{route('attribute.index')}}" class="nk-menu-link"><span class="nk-menu-text">Атрибуты</span></a>

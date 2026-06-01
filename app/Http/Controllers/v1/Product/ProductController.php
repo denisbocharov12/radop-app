@@ -24,6 +24,7 @@ use App\Models\Product;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Jobs\RegenerateProductImagesJob;
+use App\Repositories\Product\ProductErrorRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\Product\ActivePagesCacheService;
 use App\Services\Product\ProductManager;
@@ -40,6 +41,7 @@ class ProductController extends Controller
         private readonly ProductConditions $productConditions,
         private readonly UpdateProductConditionDataMapper $updateProductConditionDataMapper,
         private readonly ActivePagesCacheService $activePagesCacheService,
+        private readonly ProductErrorRepository $productErrorRepository,
     ) {
     }
 
@@ -52,6 +54,7 @@ class ProductController extends Controller
         $brands = $this->brandRepository->getAllCached();
 
         $productConditions = $this->productConditions->getAll();
+        $productErrorsSummary = $this->productErrorRepository->summary();
 
         return view('product.index', compact([
             'products',
@@ -59,6 +62,7 @@ class ProductController extends Controller
             'brands',
             'query',
             'productConditions',
+            'productErrorsSummary',
         ]));
     }
 

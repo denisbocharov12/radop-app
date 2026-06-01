@@ -384,6 +384,8 @@ return array (
     'box' => 'пачка',
     'pallet' => 'короб',
     'price_excel' => 'Цена, ML',
+    'note_excel' => 'Примечание',
+    'export_other_category' => 'Прочие товары',
     'header_text' => 'Товары для офиса, школы и творчества',
     'login_register' => 'Вход/Регистрация',
     'search_footer' => 'Поиск',

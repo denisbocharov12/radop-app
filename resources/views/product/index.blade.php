@@ -56,6 +56,27 @@
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
                    @include('v1.errors.errors')
+
+                    @if(!empty($productErrorsSummary['products']))
+                        <div class="nk-block">
+                            <div class="alert alert-fill alert-danger alert-icon d-flex align-items-center justify-content-between flex-wrap" style="gap: 12px;">
+                                <div class="d-flex align-items-center" style="gap: 10px;">
+                                    <em class="icon ni ni-alert-circle" style="font-size: 22px;"></em>
+                                    <div>
+                                        <strong>{{ __('product_errors.panel_heading', ['count' => $productErrorsSummary['products']], 'ru') }}</strong>
+                                        <div style="font-size: 12px;">
+                                            <span class="badge badge-dim badge-danger">{{ __('product_errors.panel_with_critical', ['count' => $productErrorsSummary['products_critical']], 'ru') }}</span>
+                                            <span class="badge badge-dim badge-warning">{{ __('product_errors.panel_with_minor', ['count' => $productErrorsSummary['products_minor']], 'ru') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="{{ route('product.errors.index') }}" class="btn btn-white btn-dim">
+                                    <em class="icon ni ni-eye"></em><span>{{ __('product_errors.panel_details', [], 'ru') }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="nk-block">
                         <div class="card card-bordered card-stretch">
                             <div class="card-inner-group">

@@ -2,12 +2,8 @@
 
 namespace App\Filters\Theme;
 
-use App\Models\Attribute;
-use App\Models\AttributeValue;
-use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\Filters\Filter;
 
 final class ThemeAttributeFilter implements Filter
@@ -34,11 +30,26 @@ final class ThemeAttributeFilter implements Filter
                 $attributeValueIds = [$attributeValueIds];
             }
 
-            $query->whereHas('values', function ($q) use ($attributeId, $attributeValueIds, $locale) {
+            // The filter form sends numeric attribute values with a dot
+            // (e.g. "0.5"), but the database stores them with the locale
+            // decimal comma (e.g. "0,5"). Expand each incoming value to both
+            // variants so the JSON comparison matches regardless of format.
+            // For non-numeric text values both variants collapse to the same
+            // string and are de-duplicated below.
+            $matchValues = [];
+            foreach ($attributeValueIds as $valueId) {
+                $valueId = (string) $valueId;
+                $matchValues[$valueId] = true;
+                $matchValues[str_replace('.', ',', $valueId)] = true;
+                $matchValues[str_replace(',', '.', $valueId)] = true;
+            }
+            $matchValues = array_keys($matchValues);
+
+            $query->whereHas('values', function ($q) use ($attributeId, $matchValues, $locale) {
                 $q->where('attribute_values.attribute_onec_id', $attributeId)
-                    ->where(function ($subQuery) use ($attributeValueIds, $locale) {
-                        foreach ($attributeValueIds as $valueId) {
-                            $subQuery->orWhere("attribute_values.value->{$locale}", $valueId);
+                    ->where(function ($subQuery) use ($matchValues, $locale) {
+                        foreach ($matchValues as $variant) {
+                            $subQuery->orWhere("attribute_values.value->{$locale}", $variant);
                         }
                     });
             });

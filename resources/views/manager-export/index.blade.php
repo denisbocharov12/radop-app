@@ -33,7 +33,7 @@
                                                     <span>{{ $file['name'] }}</span>
                                                 </div>
                                                 <div class="nk-tb-col">
-                                                    <span>{{ number_format($file['size'] / 1024, 2) }} KB</span>
+                                                    <span>{{ number_format($file['size'] / 1048576, 2) }} MB</span>
                                                 </div>
                                                 <div class="nk-tb-col">
                                                     <span>{{ date('d.m.Y H:i', $file['modified']) }}</span>

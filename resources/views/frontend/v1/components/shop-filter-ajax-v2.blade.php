@@ -265,27 +265,30 @@
             newUrl.searchParams.delete('page');
             
             const checkboxes = form.querySelectorAll('.theme-checkbox:checked');
-            newUrl.searchParams.delete('filter[category]');
-            newUrl.searchParams.delete('filter[attribute]');
-            newUrl.searchParams.delete('filter[brand]');
-            newUrl.searchParams.delete('filter[price]');
-            
+            // Remove every existing filter[...] param; we rebuild them from the
+            // current checkbox state below. Collect keys first, then delete —
+            // the searchParams iterator must not be mutated while iterating.
+            const filterKeysToDelete = [];
+            newUrl.searchParams.forEach(function(_value, key) {
+                if (key.indexOf('filter[') === 0) {
+                    filterKeysToDelete.push(key);
+                }
+            });
+            filterKeysToDelete.forEach(function(key) {
+                newUrl.searchParams.delete(key);
+            });
+
             checkboxes.forEach(function(checkbox) {
                 const name = checkbox.getAttribute('name');
                 if (name && name.startsWith('filter[')) {
-                    const match = name.match(/filter\[([^\]]+)\](?:\[([^\]]+)\])?/);
-                    if (match) {
-                        const filterKey = match[1];
-                        const subKey = match[2];
-                        
-                        if (subKey) {
-                            if (!newUrl.searchParams.has('filter[' + filterKey + '][' + subKey + ']')) {
-                                newUrl.searchParams.append('filter[' + filterKey + '][' + subKey + ']', checkbox.value);
-                            }
-                        } else {
-                            newUrl.searchParams.append('filter[' + filterKey + ']', checkbox.value);
-                        }
-                    }
+                    // The checkbox `name` already carries the correct bracket
+                    // structure (e.g. filter[attribute][192][] or filter[brand][]).
+                    // Append each checked value verbatim so multi-select arrays
+                    // survive into the URL — PHP parses repeated []-suffixed keys
+                    // as an array. The previous code stripped the trailing [] and
+                    // used a has()-guard, which dropped every value after the
+                    // first and produced a scalar key like filter[attribute][192].
+                    newUrl.searchParams.append(name, checkbox.value);
                 }
             });
             
@@ -468,6 +471,27 @@
             });
         }
         
+        function scrollToContentTop() {
+            // After a pagination switch, bring the user back to the start of the
+            // product list. Skip inside the filter modal (the window isn't what
+            // scrolls there).
+            if (typeof isModal !== 'undefined' && isModal) {
+                return;
+            }
+            var anchor = document.getElementById('productsTableView')
+                || document.getElementById('productsListView')
+                || document.getElementById('productsListViewMobile');
+            if (!anchor) {
+                return;
+            }
+            var section = anchor.closest('.section-category, .section-standart') || anchor;
+            var headerOffset = 120; // sticky header height
+            var top = section.getBoundingClientRect().top
+                + (window.pageYOffset || document.documentElement.scrollTop || 0)
+                - headerOffset;
+            window.scrollTo({ top: top < 0 ? 0 : top, behavior: 'smooth' });
+        }
+
         function handlePaginationClick(e) {
             const link = e.target.closest('a');
             if (!link || !link.href) {
@@ -496,7 +520,9 @@
                 return;
             }
             
-            performAjaxRequest(parseInt(page));
+            performAjaxRequest(parseInt(page)).then(function () {
+                scrollToContentTop();
+            });
         }
         
         function initPaginationHandlers() {

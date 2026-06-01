@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Exports\ManagerExcelProductsExport;
+use App\Exports\ThemeExcelGroupedCategoryProductsExport;
 use App\Models\User;
 use App\Repositories\Brand\BrandRepository;
+use App\Services\Export\ProductCategoryGrouper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -69,7 +70,24 @@ final class GenerateManagerBrandExportJob implements ShouldQueue
             $fileName = "Бренд_{$safeBrandName}_{$this->locale}.xlsx";
             $filePath = $fileName;
 
-            $export = new ManagerExcelProductsExport($this->products, $this->locale);
+            // Group by category so the brand export shows the same yellow
+            // per-category sub-headers as the storefront catalogs.
+            $this->products->loadMissing([
+                'categories:id,onec_id,name',
+                'brand:id,onec_id,title',
+                'packages',
+                'values.attribute',
+                'media',
+                'data',
+            ]);
+
+            $groups = app(ProductCategoryGrouper::class)->group($this->products, $this->locale);
+
+            $export = new ThemeExcelGroupedCategoryProductsExport(
+                $groups,
+                $this->locale,
+                'frontend.v1.exports.manager_categories_grouped_export',
+            );
 
             Excel::store($export, $filePath, 'manager_exports');
 

@@ -8688,20 +8688,6 @@ hr.product-card-item{
     position: relative;
     height: fit-content;
 }
-.col-theme-filters.is-sticky-top{
-    position: fixed;
-    top: 80px;
-    z-index: 100;
-}
-.col-theme-filters.is-sticky-bottom{
-    position: fixed;
-    bottom: 0;
-    z-index: 100;
-}
-.col-theme-filters-placeholder{
-    flex: 0 0 auto;
-    box-sizing: border-box;
-}
 .col-theme-filters .sticky-sidebar{
     border: 1px solid rgba(0, 0, 0, .125);
     padding: 12px;
@@ -14868,11 +14854,11 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     text-decoration: none;
     color: inherit;
-    padding: 4px 0;
+    padding: 2px 0;
     transition: text-decoration 0.2s;
     font-size: 15px;
     position: relative;
-    line-height: 1.2;
+    line-height: 1;
 }
 
 .category-filter-link:hover {
@@ -15124,5 +15110,63 @@ input[type="range"]::-moz-range-thumb {
     background: #fff;
     padding: 2px;
     box-sizing: border-box;
+}
+
+/* "Catalog produse" dropdown — parent-category panel header:
+   title (left) + catalog download (right). */
+.mega-menu__panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 2px 0 8px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.mega-menu__panel-header .mega-menu__panel-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #404040;
+    text-decoration: none;
+}
+.mega-menu__panel-header .mega-menu__export-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #404040;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.mega-menu__panel-header .mega-menu__export-link:hover {
+    text-decoration: underline!important;
+    color: #0a58ca;
+}
+.mega-menu__panel-header .mega-menu__export-link svg {
+    flex: 0 0 auto;
+}
+
+/* Main banner responsive heights — override the earlier breakpoint rules.
+   Declared last so equal-specificity selectors win the cascade. */
+@media (max-width: 1400px) {
+    #main-banner .item {
+        min-height: 360px;
+    }
+}
+@media (max-width: 1200px) {
+    #main-banner .item {
+        min-height: 325px;
+    }
+}
+@media (max-width: 768px) {
+    #main-banner .item {
+        min-height: 170px;
+    }
+}
+@media (max-width: 576px) {
+    #main-banner .item {
+        min-height: 170px;
+    }
 }
 
