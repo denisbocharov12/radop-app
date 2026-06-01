@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use App\Exports\Concerns\StylesProductCatalogSheet;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -17,27 +18,20 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-/**
- * @param Collection $products
- * @param string|null $locale
- * @param User $user
- */
 final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithEvents
 {
+    use StylesProductCatalogSheet;
+
+    private const LAST_COLUMN = 'K';
+
     private readonly Collection $products;
 
-    /**
-     * @param Collection $products
-     * @param string|null $locale
-     * @param User $user
-     */
     public function __construct(
         Collection $products,
         private readonly ?string $locale = null,
-        private readonly User $user,
+        private readonly ?User $user = null,
     ) {
         $this->products = $products->filter(function ($product): bool {
             return (bool) $product->status === true
@@ -46,9 +40,6 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
         })->values();
     }
 
-    /**
-     * @return View
-     */
     public function view(): View
     {
         if ($this->locale) {
@@ -61,17 +52,11 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
         ]);
     }
 
-    /**
-     * @return string
-     */
     public function title(): string
     {
         return app()->getLocale() === 'ru' ? 'RU' : 'RO';
     }
 
-    /**
-     * @return array
-     */
     public function columnWidths(): array
     {
         return [
@@ -85,24 +70,26 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
             'H' => 10,
             'I' => 50,
             'J' => 15,
+            'K' => 12,
         ];
     }
 
-    /**
-     * @param Worksheet $sheet
-     * @return array
-     */
     public function styles(Worksheet $sheet): array
     {
         $productsCount = $this->products->count();
-        $startRow = 4;
-        $endRow = $startRow + $productsCount - 1;
-
-        for ($row = $startRow; $row <= $endRow; $row++) {
-            $sheet->getRowDimension($row)->setRowHeight(150);
+        if ($productsCount === 0) {
+            return [];
         }
 
-        $sheet->getStyle("A2:J{$endRow}")
+        $startRow = 4;
+        $endRow   = $startRow + $productsCount - 1;
+        $last     = self::LAST_COLUMN;
+
+        for ($row = $startRow; $row <= $endRow; $row++) {
+            $this->applyCatalogRowHeight($sheet, $row);
+        }
+
+        $sheet->getStyle("A2:{$last}{$endRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
             ->setVertical(Alignment::VERTICAL_CENTER)
@@ -114,7 +101,7 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
 
-        $sheet->getStyle("A2:J{$endRow}")
+        $sheet->getStyle("A2:{$last}{$endRow}")
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(Border::BORDER_MEDIUM)
@@ -124,49 +111,25 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
     }
 
     /**
-     * @return array
+     * @return array<class-string, callable>
      */
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event): void {
                 $sheet = $event->sheet->getDelegate();
+                $last  = self::LAST_COLUMN;
                 $startRow = 4;
 
                 $sheet->getStyle('B:B')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
-
                 $sheet->freezePane('A4');
+
+                $this->styleHeaderRows($sheet, $last);
 
                 foreach ($this->products as $index => $product) {
                     $row = $startRow + $index;
-
-                    if ($product->hasMedia('products')) {
-                        try {
-                            $media = $product->getFirstMedia('products');
-                            $imagePath = null;
-
-                            if ($media && $media->hasGeneratedConversion('thumb')) {
-                                $imagePath = $media->getPath('thumb');
-                            } elseif ($media) {
-                                $imagePath = $media->getPath();
-                            }
-
-                            if ($imagePath && file_exists($imagePath)) {
-                                $drawing = new Drawing();
-                                $drawing->setName('Product Image');
-                                $drawing->setDescription('Product Image');
-                                $drawing->setPath($imagePath);
-                                $drawing->setWidthAndHeight(140, 140);
-                                $drawing->setResizeProportional(true);
-                                $drawing->setOffsetX(20);
-                                $drawing->setOffsetY(8);
-                                $drawing->setCoordinates("E{$row}");
-                                $drawing->setWorksheet($sheet);
-                            }
-                        } catch (\Exception $e) {
-                            continue;
-                        }
-                    }
+                    $this->placeProductImage($sheet, $product, $row);
+                    $this->writeNota($sheet, $product, $last, $row);
                 }
             },
         ];

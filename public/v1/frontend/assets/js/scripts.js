@@ -665,13 +665,59 @@ $(function () {
   });
 });
 $(document).ready(function () {
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 117) {
-            $('#header-js-sticky').addClass('header-js-sticky container');
-        } else {
-            $('#header-js-sticky').removeClass('header-js-sticky container');
+    /* Sticky header — single source of truth.
+       Replaces both the old jQuery scroll handler and the duplicate inline
+       script in header-search.blade.php. Uses requestAnimationFrame so we
+       never write to the DOM more than once per frame, plus hysteresis
+       (120 / 60) so trackpad inertia / elastic scroll near the threshold
+       doesn't toggle the class repeatedly and cause the visible flicker. */
+    (function initStickyHeader() {
+        var stickyEl = document.getElementById('header-js-sticky');
+        if (!stickyEl) return;
+
+        var stickyAccountBlocks = document.getElementById('sticky-account-blocks');
+        var stickyLogo          = document.getElementById('sticky-header-logo');
+
+        var STICKY_ON  = 120;
+        var STICKY_OFF = 60;
+        var isSticky    = false;
+        var rafQueued   = false;
+
+        function setStickyClasses(on) {
+            if (on) {
+                stickyEl.classList.add('header-js-sticky', 'container');
+                if (stickyAccountBlocks) stickyAccountBlocks.style.display = 'flex';
+                if (stickyLogo)          stickyLogo.style.display          = 'block';
+            } else {
+                stickyEl.classList.remove('header-js-sticky', 'container');
+                if (stickyAccountBlocks) stickyAccountBlocks.style.display = 'none';
+                if (stickyLogo)          stickyLogo.style.display          = 'none';
+            }
         }
-    });
+
+        function evaluate() {
+            rafQueued = false;
+            var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+            if (!isSticky && y > STICKY_ON) {
+                isSticky = true;
+                setStickyClasses(true);
+            } else if (isSticky && y < STICKY_OFF) {
+                isSticky = false;
+                setStickyClasses(false);
+            }
+        }
+
+        function onScroll() {
+            if (!rafQueued) {
+                rafQueued = true;
+                window.requestAnimationFrame(evaluate);
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        evaluate(); // sync state on page load (handles deep links / scroll restoration)
+    })();
+
     $("a.scroll-element").click(function(e) {
         e.preventDefault();
         var target = $(this).data("anchor");
@@ -2077,7 +2123,9 @@ document.addEventListener('DOMContentLoaded', function() {
         Fancybox.show(slides, {
             hash: false,
             groupAll: true,
-            Carousel: { infinite: false },
+            // Infinite looping: pressing "next" on the last image wraps to the
+            // first, and "prev" on the first wraps to the last.
+            Carousel: { infinite: true },
             Thumbs: { autoStart: true, axis: 'x' }
         });
     }

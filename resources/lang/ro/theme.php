@@ -385,6 +385,8 @@ return array (
     'box' => 'pachet',
     'pallet' => 'cutie',
     'price_excel' => 'Preț, ML',
+    'note_excel' => 'Nota',
+    'export_other_category' => 'Alte produse',
     'header_text' => 'Produse pentru birou, școală și creativitate',
     'login_register' => 'Autentificare/Înregistrare',
     'search_footer' => 'Căutare',

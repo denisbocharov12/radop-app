@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Exports\ManagerExcelProductsExport;
+use App\Exports\ThemeExcelGroupedCategoryProductsExport;
 use App\Models\Category;
 use App\Models\User;
 use App\Repositories\Category\CategoryRepository;
@@ -69,7 +69,18 @@ final class GenerateManagerCategoryExportJob implements ShouldQueue
             $fileName = "Категория_{$safeCategoryPath}_{$this->locale}.xlsx";
             $filePath = $fileName;
 
-            $export = new ManagerExcelProductsExport($this->products, $this->locale);
+            // Group by the parent's direct children — the same proven method
+            // the storefront category catalog uses — so a parent-category
+            // export shows proper yellow per-subcategory sub-headers (the naive
+            // "first attached category" grouping is unreliable for parents
+            // whose products are pivoted to the parent itself).
+            $groups = $categoryRepository->getProductGroupsByDirectChildrenForParentExport($category);
+
+            $export = new ThemeExcelGroupedCategoryProductsExport(
+                $groups,
+                $this->locale,
+                'frontend.v1.exports.manager_categories_grouped_export',
+            );
 
             Excel::store($export, $filePath, 'manager_exports');
 

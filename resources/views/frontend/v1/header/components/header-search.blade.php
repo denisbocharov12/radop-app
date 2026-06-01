@@ -137,21 +137,5 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var sticky = document.getElementById('header-js-sticky');
-        var accountBlocks = document.getElementById('sticky-account-blocks');
-        var logo = document.getElementById("sticky-header-logo");
-        function toggleStickyBlocks() {
-            if (sticky.classList.contains('header-js-sticky')) {
-                accountBlocks.style.display = 'flex';
-                logo.style.display = 'block';
-            } else {
-                accountBlocks.style.display = 'none';
-                logo.style.display = 'none';
-            }
-        }
-        window.addEventListener('scroll', toggleStickyBlocks);
-        toggleStickyBlocks();
-    });
-</script>
+{{-- Sticky-header scroll handling is owned by `initStickyHeader` in
+     public/v1/frontend/assets/js/scripts.js — single source of truth. --}}

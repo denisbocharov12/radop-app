@@ -112,7 +112,7 @@ final class ProductRepository
                 ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
             END ASC
             ")
-            ->paginate($request->query('perPage') !== null ? $request->query('perPage') : self::COUNT_OF_PAGINATION)
+            ->paginate($request->input('perPage') !== null ? $request->input('perPage') : self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query())
         ;
@@ -355,7 +355,7 @@ final class ProductRepository
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
 
         return $queryBuilder
-            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
+            ->paginate($request->input('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -557,7 +557,7 @@ final class ProductRepository
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
 
         return $queryBuilder
-            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
+            ->paginate($request->input('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }
@@ -702,7 +702,7 @@ final class ProductRepository
         $queryBuilder = $queryBuilder->defaultSort($defaultSortObj);
 
         return $queryBuilder
-            ->paginate($request->query('perPage') ?? self::COUNT_OF_PAGINATION)
+            ->paginate($request->input('perPage') ?? self::COUNT_OF_PAGINATION)
             ->withQueryString()
             ->appends(request()->query());
     }

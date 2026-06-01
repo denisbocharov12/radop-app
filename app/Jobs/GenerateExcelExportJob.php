@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Exports\ThemeExcelProductsExport;
+use App\Exports\ThemeExcelGroupedCategoryProductsExport;
+use App\Services\Export\ProductCategoryGrouper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -47,8 +48,23 @@ final class GenerateExcelExportJob implements ShouldQueue
             $fileName = "radop_{$this->type}_{$this->identifier}_{$this->locale}.xlsx";
             $filePath = "{$fileName}";
 
-            $export = new ThemeExcelProductsExport($this->products, $this->locale);
-            
+            // §5 — group every catalog (brands / new / popular / sale) by
+            // category so it matches the category catalog layout (yellow
+            // sub-headers). Eager-load the relations the grouped view needs to
+            // avoid N+1 inside the queued job.
+            $this->products->loadMissing([
+                'categories:id,onec_id,name',
+                'brand:id,onec_id,title',
+                'packages',
+                'values.attribute',
+                'media',
+                'data',
+            ]);
+
+            $groups = app(ProductCategoryGrouper::class)->group($this->products, $this->locale);
+
+            $export = new ThemeExcelGroupedCategoryProductsExport($groups, $this->locale);
+
             Excel::store($export, $filePath, 'export');
 
             Log::info("Export file successfully created: {$filePath}", [

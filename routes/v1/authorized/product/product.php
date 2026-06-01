@@ -3,12 +3,23 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\v1\Product\ProductController;
+use App\Http\Controllers\v1\Product\ProductErrorController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('products')->name('product.')->group(function () {
     Route::middleware(['app.permissions'])
         ->get('/', [ProductController::class, 'index'])
         ->name('index')
+    ;
+
+    // Product quality issues (missing images / category / brand / description / attributes).
+    Route::middleware(['app.permissions'])
+        ->get('/errors', [ProductErrorController::class, 'index'])
+        ->name('errors.index')
+    ;
+    Route::middleware(['app.permissions'])
+        ->post('/errors/rescan', [ProductErrorController::class, 'rescan'])
+        ->name('errors.rescan')
     ;
     Route::middleware(['app.permissions'])
         ->post('/', [ProductController::class, 'store'])

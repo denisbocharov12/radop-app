@@ -10,7 +10,7 @@
         <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.barcode_excel') }}</th>
         <th colspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.packaging') }}</th>
         <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.characteristics') }}</th>
-        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.price_excel') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.personalized_price_excel') }}</th>
         <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.note_excel') }}</th>
     </tr>
     <tr>
@@ -21,8 +21,8 @@
     <tbody>
     @php $rowNum = 0; @endphp
     @foreach($groups as $group)
-        {{-- Category sub-header: NOT merged — name sits in the first cell only,
-             the whole row is painted yellow in the export's AfterSheet hook. --}}
+        {{-- Category sub-header: NOT merged — name in the first cell, the whole
+             row is painted yellow in the export's AfterSheet hook. --}}
         <tr>
             <td style="font-family: Arial; font-weight: bold; font-size: 13px; text-align: left;">{{ $group['category_name'] }}</td>
         </tr>
@@ -42,7 +42,7 @@
                         ->map(fn($value) => e($value->attribute?->name . ': ' . $value->value))
                         ->implode('<br>') !!}
                 </td>
-                <td style="font-family: Arial; font-size: 12px; font-weight: bold;">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
+                <td style="font-family: Arial; font-size: 12px; font-weight: bold;">{{ number_format((float)$product->price, 2, ',', ' ') }}</td>
                 <td style="font-family: Arial; font-size: 11px;"></td>
             </tr>
         @endforeach

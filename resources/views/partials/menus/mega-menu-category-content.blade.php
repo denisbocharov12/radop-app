@@ -1,6 +1,22 @@
 @php
     $locale = app()->getLocale();
+    $panelTitle = $item->getTranslation('title', $locale);
+    $panelLink = $item->getTranslation('link', $locale);
+    $panelOnecId = $item->category_id;
 @endphp
+@if($panelOnecId)
+    {{-- §7 — parent category title + grouped catalog download for the
+         currently opened "Catalog produse" panel. The grouped export
+         (radop_categories_grouped_{onec}) is produced for every category with
+         children and served via theme.category.export. --}}
+    <div class="mega-menu__panel-header">
+        <a href="{{ $panelLink ?? '#' }}" class="mega-menu__panel-title">{{ $panelTitle }}</a>
+        <a href="{{ route('theme.category.export', $panelOnecId) }}" class="export-excel-link mega-menu__export-link" title="{{ __('theme.download-catalog') }}">
+            <span>{{ __('theme.download-catalog') }}</span>
+            @include('frontend.v1.pages.shop.parts.excel-svg')
+        </a>
+    </div>
+@endif
 @if($item->children && $item->children->where('type', '!=', 'widget_link')->isNotEmpty())
     @php
         $allChildren = $item->children->where('type', '!=', 'widget_link')->values();

@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('sitemap:generate')->dailyAt('01:00');
         $schedule->command('excel:generate-exports')->dailyAt('10:00');
         $schedule->command('manager-exports:cleanup')->dailyAt('02:00');
+        // Refresh the product-error report after the nightly 1C import cycle.
+        $schedule->command('products:scan-errors')->dailyAt('03:00');
         //$schedule->command('view-counts:cleanup --days=90')->quarterly();
     }
 

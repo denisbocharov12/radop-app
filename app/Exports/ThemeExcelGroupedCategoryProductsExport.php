@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use App\Exports\Concerns\StylesProductCatalogSheet;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -15,13 +16,15 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTitle, WithColumnWidths, WithStyles, WithEvents
 {
+    use StylesProductCatalogSheet;
+
+    private const LAST_COLUMN = 'K';
+
     /**
      * @var array<int, array{category_name: string, products: Collection<int, \App\Models\Product>}>
      */
@@ -30,9 +33,14 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
     /**
      * @param array<int, array{category_name: string, products: Collection<int, \App\Models\Product>}> $groups
      * @param string|null $locale
+     * @param string $viewName  row template — defaults to the storefront catalog;
+     *                          pass the manager template for manager pricing.
      */
-    public function __construct(array $groups, private readonly ?string $locale = null)
-    {
+    public function __construct(
+        array $groups,
+        private readonly ?string $locale = null,
+        private readonly string $viewName = 'frontend.v1.exports.categories_grouped_export',
+    ) {
         $filtered = [];
         foreach ($groups as $g) {
             $prods = $g['products']->filter(static function ($product): bool {
@@ -56,7 +64,7 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
             app()->setLocale($this->locale);
         }
 
-        return view('frontend.v1.exports.categories_grouped_export', [
+        return view($this->viewName, [
             'groups' => $this->groups,
         ]);
     }
@@ -82,6 +90,7 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
             'H' => 10,
             'I' => 50,
             'J' => 15,
+            'K' => 12,
         ];
     }
 
@@ -95,14 +104,15 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
             return [];
         }
 
-        $sheet->getStyle("A2:J{$lastRow}")
+        $last = self::LAST_COLUMN;
+
+        $sheet->getStyle("A2:{$last}{$lastRow}")
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_CENTER)
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
 
-        $productRows = $this->resolveProductRows();
-        foreach ($productRows as $row) {
+        foreach ($this->resolveProductRows() as $row) {
             $sheet->getStyle("C{$row}")
                 ->getAlignment()
                 ->setHorizontal(Alignment::HORIZONTAL_LEFT)
@@ -110,7 +120,7 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
                 ->setWrapText(true);
         }
 
-        $sheet->getStyle("A2:J{$lastRow}")
+        $sheet->getStyle("A2:{$last}{$lastRow}")
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(Border::BORDER_MEDIUM)
@@ -127,48 +137,22 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
         return [
             AfterSheet::class => function (AfterSheet $event): void {
                 $sheet = $event->sheet->getDelegate();
+                $last  = self::LAST_COLUMN;
+
                 $sheet->getStyle('B:B')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
                 $sheet->freezePane('A4');
 
+                $this->styleHeaderRows($sheet, $last);
+
                 $row = 4;
                 foreach ($this->groups as $group) {
-                    $sheet->getRowDimension($row)->setRowHeight(22);
-                    $sheet->getStyle("A{$row}:J{$row}")->getFont()->setBold(true);
-                    // Light orange highlight for category (group header) rows
-                    $sheet->getStyle("A{$row}:J{$row}")
-                        ->getFill()
-                        ->setFillType(Fill::FILL_SOLID)
-                        ->getStartColor()
-                        ->setARGB('FFFCD9B0');
+                    $this->styleCategoryRow($sheet, $row, $last);
                     $row++;
+
                     foreach ($group['products'] as $product) {
-                        $sheet->getRowDimension($row)->setRowHeight(150);
-                        if ($product->hasMedia('products')) {
-                            try {
-                                $media = $product->getFirstMedia('products');
-                                $imagePath = null;
-
-                                if ($media && $media->hasGeneratedConversion('thumb')) {
-                                    $imagePath = $media->getPath('thumb');
-                                } elseif ($media) {
-                                    $imagePath = $media->getPath();
-                                }
-
-                                if ($imagePath && file_exists($imagePath)) {
-                                    $drawing = new Drawing();
-                                    $drawing->setName('Product Image');
-                                    $drawing->setDescription('Product Image');
-                                    $drawing->setPath($imagePath);
-                                    $drawing->setWidthAndHeight(140, 140);
-                                    $drawing->setResizeProportional(true);
-                                    $drawing->setOffsetX(20);
-                                    $drawing->setOffsetY(8);
-                                    $drawing->setCoordinates("E{$row}");
-                                    $drawing->setWorksheet($sheet);
-                                }
-                            } catch (\Exception $e) {
-                            }
-                        }
+                        $this->applyCatalogRowHeight($sheet, $row);
+                        $this->placeProductImage($sheet, $product, $row);
+                        $this->writeNota($sheet, $product, $last, $row);
                         $row++;
                     }
                 }

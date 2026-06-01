@@ -11,6 +11,7 @@
         <th colspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.packaging') }}</th>
         <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.characteristics') }}</th>
         <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.personalized_price_excel') }}</th>
+        <th rowspan="2" style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.note_excel') }}</th>
     </tr>
     <tr>
         <th style="font-family: Arial; font-weight: bold; font-size: 12px;">{{ __('theme.box') }}</th>
@@ -39,6 +40,7 @@
                 @endphp
                 {{ $personalizedPrice }}
             </td>
+            <td style="font-family: Arial; font-size: 11px;"></td>
         </tr>
     @endforeach
     </tbody>
