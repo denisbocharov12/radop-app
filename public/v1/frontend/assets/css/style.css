@@ -12556,7 +12556,8 @@ body.modal-open {
     gap: 8px;
     font-size: 12px;
 }
-.export-excel--category-row .export-excel-link svg {
+.export-excel--category-row .export-excel-link svg,
+.export-excel--category-row .export-excel-link .excel-icon {
     display: block;
     flex-shrink: 0;
     width: 18px;
@@ -15119,17 +15120,24 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 2px 0 8px;
+    /* small right padding so the icon clears the scroll panel's clipped edge */
+    padding: 2px 4px 8px 0;
     margin-bottom: 14px;
     border-bottom: 1px solid #e6e6e6;
 }
 .mega-menu__panel-header .mega-menu__panel-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 18px;
     font-weight: 700;
     color: #404040;
     text-decoration: none;
 }
 .mega-menu__panel-header .mega-menu__export-link {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -15143,8 +15151,13 @@ input[type="range"]::-moz-range-thumb {
     text-decoration: underline!important;
     color: #0a58ca;
 }
-.mega-menu__panel-header .mega-menu__export-link svg {
+.mega-menu__panel-header .mega-menu__export-link svg,
+.mega-menu__panel-header .mega-menu__export-link .excel-icon {
     flex: 0 0 auto;
+    flex-shrink: 0;
+    display: block;
+    width: 28px;
+    height: 28px;
 }
 
 /* Main banner responsive heights — override the earlier breakpoint rules.
