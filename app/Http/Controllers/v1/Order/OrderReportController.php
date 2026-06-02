@@ -35,7 +35,8 @@ final class OrderReportController extends Controller
         $reportData = $this->orderReportManager->generateReport(
             $request->get('start_date'),
             $request->get('end_date'),
-            $request->get('user_id')
+            $request->get('user_id'),
+            $request->boolean('group_by_clients')
         );
 
         return response()->json([
@@ -54,7 +55,10 @@ final class OrderReportController extends Controller
 
         $fileName = 'order_report_' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx';
 
-        return Excel::download(new OrderReportExport($orders), $fileName);
+        return Excel::download(
+            new OrderReportExport($orders, $request->boolean('group_by_clients')),
+            $fileName
+        );
     }
 
     /**

@@ -13,12 +13,13 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-final class StatusOrderReportExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents
+final class StatusOrderReportExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithEvents, WithColumnFormatting
 {
     use Exportable;
 
@@ -79,7 +80,7 @@ final class StatusOrderReportExport implements FromCollection, WithHeadings, Wit
             $order->created_at->format('d.m.Y'),
             $order->cityModel?->name ?? $order->city,
             $order->filial?->address ?? '-',
-            number_format((float)$order->total, 2, '.', ' '),
+            number_format((float)$order->total, 2, ',', ' '),
         ];
     }
 
@@ -140,18 +141,21 @@ final class StatusOrderReportExport implements FromCollection, WithHeadings, Wit
     }
 
     /**
+     * Fiscal code as a real integer (numeric cell, no separators, no scientific
+     * notation, no rounding). '-' when missing; raw digits if > 15 chars.
+     *
      * @param mixed $order
-     * @return string
+     * @return int|string
      */
-    private function getFiscCode($order): string
+    private function getFiscCode($order): int|string
     {
-        $fiscCode = $order->user?->profile?->cod_fiscal ?? null;
+        $raw = preg_replace('/\D+/', '', (string) ($order->user?->profile?->cod_fiscal ?? ''));
 
-        if ($fiscCode && number_format((float)$fiscCode, 0, '.', ' ') !== '0') {
-            return number_format((float)$fiscCode, 0, '.', ' ');
+        if ($raw === '' || $raw === '0') {
+            return '-';
         }
 
-        return '-';
+        return strlen($raw) > 15 ? $raw : (int) $raw;
     }
 
     /**
@@ -200,7 +204,7 @@ final class StatusOrderReportExport implements FromCollection, WithHeadings, Wit
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_NUMBER_00,
+            'D' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 }

@@ -21,9 +21,13 @@ final class OrderReportManager
      * @param int|null $userId
      * @return array
      */
-    public function generateReport(string $startDate, string $endDate, ?int $userId = null): array
+    public function generateReport(string $startDate, string $endDate, ?int $userId = null, bool $groupByClients = false): array
     {
         $orders = $this->orderRepository->getOrdersForReport($startDate, $endDate, $userId);
+
+        if ($groupByClients) {
+            return $this->buildGroupedReport($orders, $startDate, $endDate);
+        }
 
         $reportData = [];
         $totalSum = 0;
@@ -32,7 +36,7 @@ final class OrderReportManager
             $reportData[] = [
                 'number' => $order->order_number,
                 'id' => $order->id,
-                'client' => $order->fio,
+                'client' => $this->getClientName($order),
                 'date' => $order->created_at->format('d.m.Y'),
                 'city' => $order->cityModel?->name ?? $order->city,
                 'filial' => $order->filial?->address ?? '-',
@@ -43,9 +47,78 @@ final class OrderReportManager
         }
 
         return [
+            'grouped' => false,
             'orders' => $reportData,
             'total_sum' => $totalSum,
             'count' => count($reportData),
+            'period' => [
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]
+        ];
+    }
+
+    /**
+     * Build the client-grouped on-screen report (mirrors the grouped Excel).
+     *
+     * @param \Illuminate\Support\Collection $orders
+     * @return array
+     */
+    private function buildGroupedReport($orders, string $startDate, string $endDate): array
+    {
+        $groups = [];
+        $totalSum = 0;
+        $count = 0;
+
+        $byClient = $orders->groupBy(
+            static fn ($order) => $order->user?->id !== null
+                ? 'u:' . $order->user->id
+                : 'f:' . ($order->fio ?? $order->order_number)
+        );
+
+        foreach ($byClient as $clientOrders) {
+            $sorted = $clientOrders->sortBy(static fn ($o) => $o->created_at)->values();
+            $first = $sorted->first();
+
+            $orderRows = [];
+            $clientTotal = 0;
+            $minDate = null;
+            $maxDate = null;
+
+            foreach ($sorted as $order) {
+                $orderRows[] = [
+                    'number' => $order->order_number,
+                    'id' => $order->id,
+                    'date' => $order->created_at->format('d.m.Y'),
+                    'sum' => $order->total,
+                ];
+                $clientTotal += $order->total;
+                $count++;
+
+                $date = $order->created_at;
+                $minDate = ($minDate === null || $date->lt($minDate)) ? $date : $minDate;
+                $maxDate = ($maxDate === null || $date->gt($maxDate)) ? $date : $maxDate;
+            }
+
+            $from = $minDate?->format('d.m.Y') ?? '-';
+            $to = $maxDate?->format('d.m.Y') ?? $from;
+
+            $groups[] = [
+                'client' => $this->getClientName($first),
+                'fisc_code' => $this->getFiscCode($first),
+                'period' => $from === $to ? $from : "{$from}-{$to}",
+                'total' => $clientTotal,
+                'orders' => $orderRows,
+            ];
+
+            $totalSum += $clientTotal;
+        }
+
+        return [
+            'grouped' => true,
+            'groups' => $groups,
+            'total_sum' => $totalSum,
+            'count' => $count,
             'period' => [
                 'start_date' => $startDate,
                 'end_date' => $endDate,
@@ -114,13 +187,9 @@ final class OrderReportManager
      */
     private function getFiscCode($order): string
     {
-        $fiscCode = $order->user?->profile?->cod_fiscal ?? null;
-        
-        if ($fiscCode) {
-            return $order->user?->profile?->cod_fiscal;
-        }
-        
-        return '-';
+        $raw = preg_replace('/\s+/', '', (string) ($order->user?->profile?->cod_fiscal ?? ''));
+
+        return ($raw === '' || $raw === '0') ? '-' : $raw;
     }
 
     /**

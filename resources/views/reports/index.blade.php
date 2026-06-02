@@ -32,7 +32,7 @@
                     <div class="nk-block">
                         <div class="card card-bordered card-stretch">
                             <div class="card-inner">
-                                @include('reports.components.filter-form')
+                                @include('reports.components.filter-form', ['groupByClientsOption' => true])
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             <div class="card-inner">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
-                                        <thead>
+                                        <thead id="reportTableHead">
                                             <tr>
                                                 <th>№</th>
                                                 <th>ID</th>
@@ -156,6 +156,7 @@
                         start_date: startDate,
                         end_date: endDate,
                         user_id: userId,
+                        group_by_clients: $('#group_by_clients').is(':checked') ? 1 : 0,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
@@ -217,6 +218,12 @@
 
                 form.append($('<input>', {
                     type: 'hidden',
+                    name: 'group_by_clients',
+                    value: $('#group_by_clients').is(':checked') ? 1 : 0
+                }));
+
+                form.append($('<input>', {
+                    type: 'hidden',
                     name: '_token',
                     value: '{{ csrf_token() }}'
                 }));
@@ -234,28 +241,72 @@
                 const managerName = $('#user_id option:selected').text();
                 $('#reportManager').text(managerName || 'Все менеджеры');
 
-                let tableBody = '';
-                data.orders.forEach(function(order) {
-                    tableBody += `
-                        <tr>
-                            <td>${order.number}</td>
-                            <td>${order.id}</td>
-                            <td>${order.client}</td>
-                            <td>${order.date}</td>
-                            <td>${order.city}</td>
-                            <td>${order.filial}</td>
-                            <td>${formatNumber(order.sum)}</td>
-                        </tr>
-                    `;
-                });
+                if (data.grouped) {
+                    renderGroupedTable(data.groups || []);
+                } else {
+                    renderFlatTable(data.orders || []);
+                }
 
-                $('#reportTableBody').html(tableBody);
                 $('#reportResults').show();
                 $('#reportTable').show();
             }
 
+            function renderFlatTable(orders) {
+                var head = '<tr><th>№</th><th>ID</th><th>Клиент</th><th>Дата</th><th>Город</th><th>Филиал</th><th>Сумма</th></tr>';
+                var body = '';
+                orders.forEach(function(order) {
+                    body += '<tr>'
+                        + '<td>' + esc(order.number) + '</td>'
+                        + '<td>' + esc(order.id) + '</td>'
+                        + '<td>' + esc(order.client) + '</td>'
+                        + '<td>' + esc(order.date) + '</td>'
+                        + '<td>' + esc(order.city) + '</td>'
+                        + '<td>' + esc(order.filial) + '</td>'
+                        + '<td>' + formatNumber(order.sum) + '</td>'
+                        + '</tr>';
+                });
+                $('#reportTableHead').html(head);
+                $('#reportTableBody').html(body);
+            }
+
+            function renderGroupedTable(groups) {
+                var head = '<tr><th>№</th><th>ID</th><th>Клиент</th><th>Фискальный код</th><th>Период</th><th>Сумма</th></tr>';
+                var body = '';
+                groups.forEach(function(group) {
+                    (group.orders || []).forEach(function(order) {
+                        body += '<tr>'
+                            + '<td>' + esc(order.number) + '</td>'
+                            + '<td>' + esc(order.id) + '</td>'
+                            + '<td>' + esc(group.client) + '</td>'
+                            + '<td>' + esc(group.fisc_code) + '</td>'
+                            + '<td>' + esc(order.date) + '</td>'
+                            + '<td>' + formatNumber(order.sum) + '</td>'
+                            + '</tr>';
+                    });
+                    body += '<tr class="fw-bold" style="background:#d9f2e6;">'
+                        + '<td></td><td></td>'
+                        + '<td>' + esc(group.client) + '</td>'
+                        + '<td>' + esc(group.fisc_code) + '</td>'
+                        + '<td>' + esc(group.period) + '</td>'
+                        + '<td>' + formatNumber(group.total) + '</td>'
+                        + '</tr>';
+                });
+                $('#reportTableHead').html(head);
+                $('#reportTableBody').html(body);
+            }
+
+            function esc(value) {
+                return $('<div>').text(value === null || value === undefined ? '' : value).html();
+            }
+
             function formatNumber(value) {
-                return parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                var num = parseFloat(value);
+                if (isNaN(num)) {
+                    num = 0;
+                }
+                var parts = num.toFixed(2).split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                return parts[0] + ',' + parts[1];
             }
         });
     </script>
