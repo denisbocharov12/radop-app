@@ -162,6 +162,13 @@ final class SeoGenerationController extends Controller
 
             return response()->json(['status' => true, 'data' => $seoData]);
         } catch (\Throwable $e) {
+            if ($this->isBillingError($e)) {
+                return response()->json([
+                    'status'  => false,
+                    'billing' => true,
+                    'message' => $this->friendlyBillingMessage($provider),
+                ], 402);
+            }
             if ($this->isQuotaError($e)) {
                 return response()->json([
                     'status'    => false,
@@ -204,6 +211,13 @@ final class SeoGenerationController extends Controller
                 'data'    => $seoData,
             ]);
         } catch (\Throwable $e) {
+            if ($this->isBillingError($e)) {
+                return response()->json([
+                    'status'  => false,
+                    'billing' => true,
+                    'message' => $this->friendlyBillingMessage($provider),
+                ], 402);
+            }
             if ($this->isQuotaError($e)) {
                 return response()->json([
                     'status'  => false,
@@ -227,6 +241,35 @@ final class SeoGenerationController extends Controller
             }
         }
         return false;
+    }
+
+    /**
+     * Detect billing / insufficient-credit errors (HTTP 402-style).
+     * Retrying will not help until the account is topped up.
+     */
+    private function isBillingError(\Throwable $e): bool
+    {
+        $msg = strtolower($e->getMessage());
+        foreach (['credit balance is too low', 'credit balance', 'insufficient', 'billing', 'payment required', 'plans & billing'] as $kw) {
+            if (str_contains($msg, $kw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Build a user-friendly billing / insufficient-credit message.
+     */
+    private function friendlyBillingMessage(string $provider = 'gemini'): string
+    {
+        $label = (string) config("seo_ai.labels.{$provider}", ucfirst($provider));
+
+        if ($provider === SeoGeneratorFactory::PROVIDER_CLAUDE) {
+            return "Недостаточно средств на балансе {$label} API. Пополните баланс в console.anthropic.com → Plans & Billing (подписка Claude.ai не даёт доступ к API).";
+        }
+
+        return "Недостаточно средств на балансе {$label} API. Пополните баланс в биллинге провайдера.";
     }
 
     /**

@@ -241,7 +241,14 @@
                 },
                 error: function(xhr) {
                     const res = xhr.responseJSON || {};
-                    if (xhr.status === 429 || res.quota) {
+                    if (xhr.status === 402 || res.billing) {
+                        const msg = res.message || 'Недостаточно средств на балансе AI API.';
+                        if (typeof NioApp !== 'undefined' && NioApp.Toast) {
+                            NioApp.Toast.warning('💳 ' + msg);
+                        } else {
+                            alert('💳 ' + msg);
+                        }
+                    } else if (xhr.status === 429 || res.quota) {
                         const msg = res.message || 'Превышен лимит Gemini API. Попробуйте позже.';
                         if (typeof NioApp !== 'undefined' && NioApp.Toast) {
                             NioApp.Toast.warning('⚠️ ' + msg);
