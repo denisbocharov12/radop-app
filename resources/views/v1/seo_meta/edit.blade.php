@@ -19,11 +19,18 @@
                                     <div class="text-soft small">{{ $pageTypes[$seoMeta->page_type] ?? $seoMeta->page_type }}{{ $seoMeta->page_id ? ' · ID: '.$seoMeta->page_id : '' }}</div>
                                 </div>
                                 <div class="nk-block-head-content">
-                                    <button type="button" id="ai-regenerate-btn"
-                                            class="btn btn-warning"
-                                            data-seo-id="{{ $seoMeta->id }}">
-                                        <em class="icon ni ni-spark me-1"></em> Регенерировать с AI
-                                    </button>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @php $aiDefault = config('seo_ai.provider', 'gemini'); @endphp
+                                        <select id="ai-provider-select" class="form-select form-select-sm" style="width:auto;" title="AI провайдер">
+                                            <option value="gemini" {{ $aiDefault === 'gemini' ? 'selected' : '' }}>Google Gemini</option>
+                                            <option value="claude" {{ $aiDefault === 'claude' ? 'selected' : '' }}>Anthropic Claude</option>
+                                        </select>
+                                        <button type="button" id="ai-regenerate-btn"
+                                                class="btn btn-warning"
+                                                data-seo-id="{{ $seoMeta->id }}">
+                                            <em class="icon ni ni-spark me-1"></em> Регенерировать с AI
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -210,10 +217,12 @@
 
             btn.prop('disabled', true).html('<em class="icon ni ni-loader ni-spin me-1"></em> Генерация...');
 
+            const provider = $('#ai-provider-select').val() || 'gemini';
+
             $.ajax({
                 url: '/admin/seo/' + seoId + '/regenerate',
                 type: 'POST',
-                data: { _token: '{{ csrf_token() }}' },
+                data: { _token: '{{ csrf_token() }}', provider },
                 success: function(response) {
                     if (response.status && response.data) {
                         const d = response.data;

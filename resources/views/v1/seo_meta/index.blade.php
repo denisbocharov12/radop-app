@@ -60,18 +60,32 @@
                                             <em class="icon ni ni-spark" style="font-size:22px;color:#f4bd0e;"></em>
                                         </div>
                                         <div>
-                                            <div class="fw-bold" style="font-size:15px;">AI Генерация SEO &mdash; Google Gemini</div>
+                                            <div class="fw-bold" style="font-size:15px;">AI Генерация SEO &mdash; <span id="ai-provider-name">{{ config('seo_ai.labels.' . config('seo_ai.provider', 'gemini'), 'Google Gemini') }}</span></div>
                                             <div class="text-soft" style="font-size:12px;margin-top:2px;">
                                                 Существующие записи не перезаписываются автоматически
                                             </div>
                                         </div>
                                     </div>
-                                    <button id="refresh-stats-btn"
-                                            class="btn btn-white btn-outline-light d-flex align-items-center gap-1"
-                                            style="font-size:13px;padding: 8px 14px;white-space:nowrap;">
-                                        <em class="icon ni ni-reload" style="font-size:15px;"></em>
-                                        <span>Обновить</span>
-                                    </button>
+                                    <div class="d-flex align-items-center gap-3">
+                                        {{-- AI provider selector --}}
+                                        @php $aiDefault = config('seo_ai.provider', 'gemini'); @endphp
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="AI провайдер">
+                                            <input type="radio" class="btn-check" name="ai_provider" id="ai-prov-gemini" value="gemini" autocomplete="off" {{ $aiDefault === 'gemini' ? 'checked' : '' }}>
+                                            <label class="btn btn-outline-primary d-flex align-items-center gap-1" for="ai-prov-gemini" style="font-size:12px;">
+                                                <em class="icon ni ni-google"></em> Gemini
+                                            </label>
+                                            <input type="radio" class="btn-check" name="ai_provider" id="ai-prov-claude" value="claude" autocomplete="off" {{ $aiDefault === 'claude' ? 'checked' : '' }}>
+                                            <label class="btn btn-outline-primary d-flex align-items-center gap-1" for="ai-prov-claude" style="font-size:12px;">
+                                                <em class="icon ni ni-spark"></em> Claude
+                                            </label>
+                                        </div>
+                                        <button id="refresh-stats-btn"
+                                                class="btn btn-white btn-outline-light d-flex align-items-center gap-1"
+                                                style="font-size:13px;padding: 8px 14px;white-space:nowrap;">
+                                            <em class="icon ni ni-reload" style="font-size:15px;"></em>
+                                            <span>Обновить</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -158,7 +172,7 @@
                                     <strong class="text-dark">Заполнить</strong> — генерирует SEO только для записей без него.&nbsp;
                                     <strong class="text-dark"><em class="icon ni ni-reload"></em></strong> — перегенерирует всё, перезаписывая AI-записи.&nbsp;
                                     Задачи выполняются в фоне через очередь.&nbsp;
-                                    Требуется <code>GEMINI_API_KEY</code> в <code>.env</code>.
+                                    Требуется <code id="ai-key-hint">{{ config('seo_ai.provider', 'gemini') === 'claude' ? 'CLAUDE_API_KEY' : 'GEMINI_API_KEY' }}</code> в <code>.env</code>.
                                 </span>
                             </div>
 
@@ -256,6 +270,22 @@ $(document).ready(function () {
     let searchTimeout = {};
 
     // ──────────────────────────────────────
+    // AI provider selection
+    // ──────────────────────────────────────
+    const AI_LABELS   = { gemini: 'Google Gemini', claude: 'Anthropic Claude' };
+    const AI_KEY_HINT = { gemini: 'GEMINI_API_KEY', claude: 'CLAUDE_API_KEY' };
+
+    function getProvider() {
+        return $('input[name="ai_provider"]:checked').val() || 'gemini';
+    }
+
+    $('input[name="ai_provider"]').on('change', function () {
+        const p = getProvider();
+        $('#ai-provider-name').text(AI_LABELS[p] || p);
+        $('#ai-key-hint').text(AI_KEY_HINT[p] || 'GEMINI_API_KEY');
+    });
+
+    // ──────────────────────────────────────
     // Stats loader
     // ──────────────────────────────────────
     function spinAll() {
@@ -312,9 +342,12 @@ $(document).ready(function () {
         const labels  = { products:'товаров', categories:'категорий', brands:'брендов', static_pages:'статических страниц' };
         const locLbl  = locale === 'ru' ? 'RU' : 'RO';
 
+        const provider = getProvider();
+        const provLbl  = AI_LABELS[provider] || provider;
+
         const msg = force
-            ? `Перегенерировать SEO для ВСЕХ ${labels[type]} (${locLbl})?\n\nEto перезапишет все AI-записи.`
-            : `Сгенерировать SEO для ${labels[type]} без записей (${locLbl})?`;
+            ? `Перегенерировать SEO для ВСЕХ ${labels[type]} (${locLbl}) через ${provLbl}?\n\nЭто перезапишет все AI-записи.`
+            : `Сгенерировать SEO для ${labels[type]} без записей (${locLbl}) через ${provLbl}?`;
 
         if (!confirm(msg)) return;
 
@@ -324,7 +357,7 @@ $(document).ready(function () {
         $.ajax({
             url: '{{ route("seo_meta.generation.bulk") }}',
             type: 'POST',
-            data: { _token: '{{ csrf_token() }}', type, locale, force: force ? 1 : 0 },
+            data: { _token: '{{ csrf_token() }}', type, locale, force: force ? 1 : 0, provider },
             success: function (res) {
                 if (res.status) {
                     if (typeof NioApp !== 'undefined' && NioApp.Toast) {
