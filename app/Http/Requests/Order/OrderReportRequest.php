@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property int|null $city_id
  * @property string|null $status_id
  * @property string|null $user_type_id
+ * @property bool $group_by_clients
  */
 class OrderReportRequest extends FormRequest
 {
@@ -26,6 +27,7 @@ class OrderReportRequest extends FormRequest
             'city_id' => ['nullable', 'integer', 'exists:cities,id'],
             'status_id' => ['nullable', 'string', 'in:pending,processing,shipped,delivered,cancelled'],
             'user_type_id' => ['nullable', 'string', 'in:iur,fiz'],
+            'group_by_clients' => ['nullable', 'boolean'],
         ];
     }
 

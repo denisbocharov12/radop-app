@@ -30,4 +30,15 @@
             </div>
         </div>
     </div>
+    @if($groupByClientsOption ?? false)
+    <div class="col-lg-12">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="group_by_clients" name="group_by_clients" value="1">
+                <label class="custom-control-label" for="group_by_clients">Группировать по клиентам</label>
+            </div>
+            <span class="form-note">Заказы группируются по клиентам, скрываются телефон/город/филиал, дата заменяется периодом и добавляется сумма по клиенту.</span>
+        </div>
+    </div>
+    @endif
 </div>
