@@ -9,7 +9,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\SeoMeta;
-use App\Services\Seo\GeminiSeoGeneratorService;
+use App\Services\Seo\Contracts\SeoGeneratorContract;
+use App\Services\Seo\SeoGeneratorFactory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -48,11 +49,15 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         private readonly ?string $pageId,
         private readonly string $locale,
         private readonly bool $force = false,
+        private readonly ?string $provider = null,
     ) {
     }
 
-    public function handle(GeminiSeoGeneratorService $generator, PageTypes $pageTypes): void
+    public function handle(SeoGeneratorFactory $factory, PageTypes $pageTypes): void
     {
+        $generator = $factory->make($this->provider);
+
+
         if (!$this->force) {
             $exists = SeoMeta::where('page_type', $this->pageType)
                 ->where('page_id', $this->pageId)
@@ -68,7 +73,10 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
             $seoData = $this->buildSeoData($generator, $pageTypes);
         } catch (\Throwable $e) {
             if ($this->isRateLimitError($e)) {
-                $backoff = (int) config('gemini.rate_limit_backoff', 6 * 3600);
+                $configKey = $factory->normalize($this->provider) === SeoGeneratorFactory::PROVIDER_CLAUDE
+                    ? 'claude.rate_limit_backoff'
+                    : 'gemini.rate_limit_backoff';
+                $backoff = (int) config($configKey, 6 * 3600);
                 Log::warning('GenerateSeoMetaForItemJob: Rate limit hit, releasing for ' . ($backoff / 3600) . 'h', [
                     'page_type' => $this->pageType,
                     'page_id'   => $this->pageId,
@@ -124,8 +132,8 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
             }
         }
 
-        // Keyword match for various Gemini SDK error formats
-        foreach (['429', 'quota', 'rate limit', 'resource_exhausted', 'too many requests'] as $keyword) {
+        // Keyword match for various Gemini / Claude error formats
+        foreach (['429', 'quota', 'rate limit', 'resource_exhausted', 'too many requests', 'overloaded', 'rate_limit'] as $keyword) {
             if (str_contains($message, $keyword)) {
                 return true;
             }
@@ -134,7 +142,7 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         return false;
     }
 
-    private function buildSeoData(GeminiSeoGeneratorService $generator, PageTypes $pageTypes): array
+    private function buildSeoData(SeoGeneratorContract $generator, PageTypes $pageTypes): array
     {
         return match ($this->pageType) {
             'product'  => $this->generateForProduct($generator),
@@ -144,7 +152,7 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         };
     }
 
-    private function generateForProduct(GeminiSeoGeneratorService $generator): array
+    private function generateForProduct(SeoGeneratorContract $generator): array
     {
         $product = Product::with(['categories', 'brand', 'data'])
             ->where(function ($q) {
@@ -165,7 +173,7 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         ], $this->locale);
     }
 
-    private function generateForCategory(GeminiSeoGeneratorService $generator): array
+    private function generateForCategory(SeoGeneratorContract $generator): array
     {
         $category = Category::with('parent')->where('onec_id', $this->pageId)->first();
 
@@ -181,7 +189,7 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         ], $this->locale);
     }
 
-    private function generateForBrand(GeminiSeoGeneratorService $generator): array
+    private function generateForBrand(SeoGeneratorContract $generator): array
     {
         $brand = Brand::where('onec_id', $this->pageId)->first();
 
@@ -196,7 +204,7 @@ final class GenerateSeoMetaForItemJob implements ShouldQueue
         ], $this->locale);
     }
 
-    private function generateForStaticPage(GeminiSeoGeneratorService $generator, PageTypes $pageTypes): array
+    private function generateForStaticPage(SeoGeneratorContract $generator, PageTypes $pageTypes): array
     {
         $allTypes = $pageTypes->getAll();
         return $generator->generateForStaticPage($this->pageType, $allTypes[$this->pageType] ?? $this->pageType, $this->locale);
