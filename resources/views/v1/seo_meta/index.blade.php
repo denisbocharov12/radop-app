@@ -263,6 +263,9 @@
 <style>
     .progress-bar-mini { height: 5px; border-radius: 3px; background: #e5e9f2; overflow: hidden; width: 90px; }
     .progress-bar-mini > div { height: 100%; border-radius: 3px; transition: width .3s; }
+    /* Keep SEO pagination inside the card — wrap instead of overflowing horizontally */
+    #pagination-ru, #pagination-ro { max-width: 100%; overflow-x: auto; }
+    #pagination-ru .pagination, #pagination-ro .pagination { flex-wrap: wrap; row-gap: 6px; margin-bottom: 0; }
 </style>
 <script>
 $(document).ready(function () {
@@ -453,16 +456,36 @@ $(document).ready(function () {
 
     function buildPagination(container, p) {
         if (p.last_page <= 1) { container.html(''); return; }
-        let h = '<ul class="pagination">';
-        if (p.current_page > 1)
-            h += `<li class="page-item"><a class="page-link" href="#" data-page="${p.current_page - 1}">‹</a></li>`;
-        for (let i = 1; i <= p.last_page; i++) {
-            h += i === p.current_page
-                ? `<li class="page-item active"><span class="page-link">${i}</span></li>`
-                : `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+
+        const cur = p.current_page;
+        const last = p.last_page;
+        const win = 2; // pages to show on each side of the current page
+
+        const pageItem = (i) => i === cur
+            ? `<li class="page-item active"><span class="page-link">${i}</span></li>`
+            : `<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+        const gap = '<li class="page-item disabled"><span class="page-link">…</span></li>';
+
+        // Build a compact, windowed set of page numbers around the current page.
+        const pages = new Set([1, last]);
+        for (let i = cur - win; i <= cur + win; i++) {
+            if (i >= 1 && i <= last) pages.add(i);
         }
-        if (p.current_page < p.last_page)
-            h += `<li class="page-item"><a class="page-link" href="#" data-page="${p.current_page + 1}">›</a></li>`;
+        const sorted = Array.from(pages).sort((a, b) => a - b);
+
+        let h = '<ul class="pagination flex-wrap">';
+        if (cur > 1)
+            h += `<li class="page-item"><a class="page-link" href="#" data-page="${cur - 1}">‹</a></li>`;
+
+        let prev = 0;
+        sorted.forEach((i) => {
+            if (prev && i - prev > 1) h += gap; // insert ellipsis for skipped ranges
+            h += pageItem(i);
+            prev = i;
+        });
+
+        if (cur < last)
+            h += `<li class="page-item"><a class="page-link" href="#" data-page="${cur + 1}">›</a></li>`;
         container.html(h + '</ul>');
     }
 
