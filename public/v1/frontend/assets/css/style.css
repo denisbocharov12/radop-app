@@ -15148,7 +15148,7 @@ input[type="range"]::-moz-range-thumb {
     white-space: nowrap;
     font-size: 18px;
     font-weight: 700;
-    color: #0052a6;
+    color: #404040;
     text-decoration: none;
 }
 .mega-menu__panel-header .mega-menu__export-link {
@@ -15158,13 +15158,13 @@ input[type="range"]::-moz-range-thumb {
     gap: 6px;
     font-size: 14px;
     font-weight: 600;
-    color: #0052a6;
+    color: #0990d9;
     text-decoration: none;
     white-space: nowrap;
 }
 .mega-menu__panel-header .mega-menu__export-link:hover {
     text-decoration: underline!important;
-    color: #0a58ca;
+    color: #00aff0;
 }
 .mega-menu__panel-header .mega-menu__export-link svg,
 .mega-menu__panel-header .mega-menu__export-link .excel-icon {
