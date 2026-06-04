@@ -14872,7 +14872,7 @@ input[type="range"]::-moz-range-thumb {
     color: inherit;
     padding: 2px 0;
     transition: text-decoration 0.2s;
-    font-size: 15px;
+    font-size: 14px;
     position: relative;
     line-height: 1;
 }
@@ -15072,7 +15072,7 @@ input[type="range"]::-moz-range-thumb {
     color: #797979;
     position: relative;
     top: -3px;
-    margin-left: 4px;
+    margin-left: 0px;
 }
 
 .seo-h1-visually-hidden {
@@ -15157,7 +15157,7 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     gap: 6px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     color: #0990d9;
     text-decoration: none;
     white-space: nowrap;
