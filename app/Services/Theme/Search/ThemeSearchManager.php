@@ -24,6 +24,45 @@ final class ThemeSearchManager
         return $this->productRepository->getAllBySearch($themeSearchData->search);
     }
 
+    /**
+     * Build a "related products" collection for a narrow search result.
+     * Strategy: products from the same categories as the found items first,
+     * then topped up by the same brands. Found products are excluded.
+     *
+     * @param ThemeSearchData $themeSearchData
+     * @param iterable        $foundProducts Paginator or collection of found products.
+     * @param int             $limit
+     * @return Collection
+     */
+    public function getRelatedProducts(ThemeSearchData $themeSearchData, $foundProducts, int $limit = 8): Collection
+    {
+        $found = method_exists($foundProducts, 'getCollection')
+            ? $foundProducts->getCollection()
+            : collect($foundProducts);
+
+        $excludeOnecIds = $found->pluck('onec_id')->filter()->unique()->values()->toArray();
+        $brandIds       = $found->pluck('brand_id')->filter()->unique()->values()->toArray();
+
+        $categoryOnecIds = $this->productRepository
+            ->getProductCategoryIdsBySearch($themeSearchData->search)
+            ->pluck('category_id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        if (empty($categoryOnecIds) && empty($brandIds)) {
+            return collect();
+        }
+
+        return $this->productRepository->getRelatedSearchProducts(
+            $excludeOnecIds,
+            $categoryOnecIds,
+            $brandIds,
+            $limit
+        );
+    }
+
     public function getCategoriesFromQuery(ThemeSearchData $themeSearchData)
     {
         $categoryIds = $this->productRepository->getProductCategoryIdsBySearch($themeSearchData->search);
