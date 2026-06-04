@@ -21,10 +21,11 @@
     <tbody>
     @php $rowNum = 0; @endphp
     @foreach($groups as $group)
-        {{-- Category sub-header: NOT merged — name in the first cell, the whole
-             row is painted yellow in the export's AfterSheet hook. --}}
+        {{-- Category sub-header: spans the full row width (colspan) so the name
+             is never squashed into the narrow first column; the band is also
+             merged + wrapped in the export's AfterSheet hook. --}}
         <tr>
-            <td style="font-family: Arial; font-weight: bold; font-size: 13px; text-align: left;">{{ $group['category_name'] }}</td>
+            <td colspan="11" style="font-family: Arial; font-weight: bold; font-size: 13px; text-align: left; white-space: normal; word-wrap: break-word;">{{ $group['category_name'] }}</td>
         </tr>
         @foreach($group['products'] as $product)
             @php $rowNum++; @endphp

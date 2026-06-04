@@ -80,7 +80,7 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
     public function columnWidths(): array
     {
         return [
-            'A' => 4,
+            'A' => 46, // ~322px (≥320px) so the merged category band reads comfortably
             'B' => 10,
             'C' => 50,
             'D' => 15,

@@ -39,6 +39,14 @@ final class ThemeSearchController extends Controller
         $products = $this->themeSearchManager->index($themeSearchData);
         $categories = $this->themeSearchManager->getCategoriesFromQuery($themeSearchData);
 
+        // For a narrow result (1-3 found) suggest related products:
+        // same categories first, then same brands.
+        $relatedProducts = collect();
+        $foundTotal = $products->total();
+        if ($foundTotal >= 1 && $foundTotal <= 3) {
+            $relatedProducts = $this->themeSearchManager->getRelatedProducts($themeSearchData, $products, 8);
+        }
+
         $searchQuery = $request->get('search');
         if (!empty($searchQuery)) {
             $this->saveSearchQuery($searchQuery);
@@ -74,6 +82,7 @@ final class ThemeSearchController extends Controller
             'products',
             'themeSearchData',
             'categories',
+            'relatedProducts',
             'ga4ItemLists',
         ]));
     }

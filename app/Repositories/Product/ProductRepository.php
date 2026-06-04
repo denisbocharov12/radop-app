@@ -817,6 +817,74 @@ final class ProductRepository
             ->get();
     }
 
+    /**
+     * Related products for a narrow search result: first by the found products'
+     * categories, then topped up by their brands. Found products are excluded.
+     *
+     * @param array<int, string> $excludeOnecIds Found product onec_ids to skip.
+     * @param array<int, string> $categoryOnecIds Category onec_ids to match.
+     * @param array<int, string> $brandIds        Brand ids (= products.brand_id) to match.
+     * @param int                $limit
+     * @return Collection
+     */
+    public function getRelatedSearchProducts(
+        array $excludeOnecIds,
+        array $categoryOnecIds,
+        array $brandIds,
+        int $limit = 8
+    ): Collection {
+        if ($limit < 1) {
+            return collect();
+        }
+
+        $with = ['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'];
+        $collected = collect();
+
+        // 1) By category.
+        if (!empty($categoryOnecIds)) {
+            $categoryProductIds = ProductCategory::whereIn('category_id', $categoryOnecIds)
+                ->pluck('product_id')
+                ->unique()
+                ->values()
+                ->toArray();
+
+            if (!empty($categoryProductIds)) {
+                $collected = Product::whereIn('onec_id', $categoryProductIds)
+                    ->whereNotIn('onec_id', $excludeOnecIds)
+                    ->where('status', true)
+                    ->where('site_status', true)
+                    ->where('stock', '!=', 0)
+                    ->whereNotNull('price_koef')
+                    ->with($with)
+                    ->take($limit)
+                    ->get();
+            }
+        }
+
+        // 2) Top up by brand.
+        $remaining = $limit - $collected->count();
+        if ($remaining > 0 && !empty($brandIds)) {
+            $exclude = array_values(array_unique(array_merge(
+                $excludeOnecIds,
+                $collected->pluck('onec_id')->all()
+            )));
+
+            $byBrand = Product::whereIn('brand_id', $brandIds)
+                ->whereNotIn('onec_id', $exclude)
+                ->where('status', true)
+                ->where('site_status', true)
+                ->where('stock', '!=', 0)
+                ->whereNotNull('price_koef')
+                ->with($with)
+                ->take($remaining)
+                ->get();
+
+            $collected = $collected->merge($byBrand);
+        }
+
+        return $collected->take($limit)->values();
+    }
+
     private function buildSearchQuery(string $value): Builder
     {
         $search = trim($value);

@@ -1105,9 +1105,6 @@ header .section-header .row-main .header-account .nav-drill .menu-mobile-account
 .section-header.section-header-top .header-with-menu{
     height: 70px;
 }
-.section-header .row-main .header-account{
-    height: 70px;
-}
 .section-header.section-header-top .header-with-menu .wrap-top-menu{
     margin-bottom: 0px;
 }
@@ -10027,6 +10024,7 @@ header .section-header .row-main .header-menu .header-main-menu ul.menu .item .l
 .export-excel .export-excel-link span{
     margin-right: 3px;
 }
+
 .export-excel .export-excel-link:hover{
     color: #00aff0;
     text-decoration: underline!important;
@@ -15138,7 +15136,7 @@ input[type="range"]::-moz-range-thumb {
     justify-content: space-between;
     gap: 16px;
     /* small right padding so the icon clears the scroll panel's clipped edge */
-    padding: 2px 4px 8px 0;
+    padding: 2px 4px 16px 0;
     margin-bottom: 14px;
     border-bottom: 1px solid #e6e6e6;
 }
@@ -15150,7 +15148,7 @@ input[type="range"]::-moz-range-thumb {
     white-space: nowrap;
     font-size: 18px;
     font-weight: 700;
-    color: #404040;
+    color: #0052a6;
     text-decoration: none;
 }
 .mega-menu__panel-header .mega-menu__export-link {
@@ -15158,9 +15156,9 @@ input[type="range"]::-moz-range-thumb {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    color: #404040;
+    color: #0052a6;
     text-decoration: none;
     white-space: nowrap;
 }

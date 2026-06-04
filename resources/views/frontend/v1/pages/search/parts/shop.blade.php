@@ -21,6 +21,9 @@
                 <div class="col-12 col-search-meta">
                     <div class="wrap wrap-items">
                         <a href="{{route('theme.search.index', ['search' => $themeSearchData->search])}}" title="{{__('theme.search_meta_title')}}" class="wrap-item-link limk-meta theme-bold">{{__('theme.search_meta_title')}} ({{$products->total()}})</a>
+                        @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+                            <span class="wrap-item-link limk-meta limk-meta-suggested" title="{{ __('theme.search_suggested') }}">{{ __('theme.search_suggested') }} ({{ $relatedProducts->count() }})</span>
+                        @endif
                         @foreach($categories as $category)
                             <a href="{{ route('theme.category.index', ['onecId' => $category->category_id, 'filter' => ['search' => $themeSearchData->search]]) }}" title="{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}" class="wrap-item-link limk-meta">{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}</a>
                         @endforeach
@@ -29,6 +32,15 @@
                 <div class="col-12">
                     <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" >
                         @include('frontend.v1.pages.search.parts.list', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
+                        {{-- Suggested products (same category, then brand) flow into the
+                             common list right after the found item(s). --}}
+                        @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+                            @include('frontend.v1.pages.search.parts.list', [
+                                'products' => $relatedProducts,
+                                'ga4ItemListId' => 'search_related',
+                                'ga4ItemListName' => 'Search related',
+                            ])
+                        @endif
                     </div>
                     <div class="theme-pagination">
                         {{$products->links()}}

@@ -340,6 +340,8 @@ return array (
     'min_required_sum_to_label' => 'Мин. сумма:',
     'search_meta_title' => 'Все',
     'search_results_title' => 'Результаты поиска по запросу: ":text"',
+    'search_related_title' => 'Возможно, вы искали',
+    'search_suggested' => 'Рекомендуемые',
     'min_order_sum_warning_message' => 'Мин. сумма заказа:',
     'user_not_permitted_to_view_order' => 'Отказано в доступе.',
     'order_not_found' => 'Заказ не найден.',

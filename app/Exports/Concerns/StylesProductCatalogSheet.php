@@ -51,12 +51,21 @@ trait StylesProductCatalogSheet
     }
 
     /**
-     * Paint a category sub-header row yellow, bold, left-aligned. The row is
-     * NOT merged — the category name sits in the first cell.
+     * Paint a category sub-header row yellow, bold, left-aligned.
+     *
+     * The whole band is merged (A → last column) so the category title spans the
+     * full table width instead of being squashed into the narrow first (№, width 4)
+     * column. Wrap is enabled so long names flow onto extra lines instead of being
+     * clipped, and the row height auto-grows to fit them.
      */
     protected function styleCategoryRow(Worksheet $sheet, int $row, string $lastColumn): void
     {
         $range = "A{$row}:{$lastColumn}{$row}";
+
+        if (!$sheet->getCell("A{$row}")->isInMergeRange()) {
+            $sheet->mergeCells($range);
+        }
+
         $sheet->getStyle($range)
             ->getFill()
             ->setFillType(Fill::FILL_SOLID)
@@ -64,12 +73,15 @@ trait StylesProductCatalogSheet
             ->setARGB($this->categoryFillArgb);
 
         $sheet->getStyle($range)->getFont()->setBold(true);
-        $sheet->getStyle("A{$row}")
+        $sheet->getStyle($range)
             ->getAlignment()
             ->setHorizontal(Alignment::HORIZONTAL_LEFT)
-            ->setVertical(Alignment::VERTICAL_CENTER);
+            ->setVertical(Alignment::VERTICAL_CENTER)
+            ->setWrapText(true);
 
-        $sheet->getRowDimension($row)->setRowHeight(22);
+        // -1 = auto height: the row grows to fit a wrapped (multi-line) title,
+        // with 22pt as the effective minimum for a single line.
+        $sheet->getRowDimension($row)->setRowHeight(-1);
     }
 
     protected function applyCatalogRowHeight(Worksheet $sheet, int $row): void
