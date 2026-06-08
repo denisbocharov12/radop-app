@@ -97,7 +97,7 @@
             Puteți urmări starea comenzii în cabinetul personal.<br>
             Pentru orice informații sau modificări ale comenzii, contactați
             <a href="tel:022781212" style="color: #0056b3;">022 78 12 12</a>,
-            <a href="tel:+37378781212" style="color: #0056b3;">+373 78 78 12 12</a><br>
+            <a href="tel:+37379782112" style="color: #0056b3;">+373 79 78 21 12</a><br>
             Program de lucru: Luni – Vineri: 08:00 – 17:00
         </td>
     </tr>
