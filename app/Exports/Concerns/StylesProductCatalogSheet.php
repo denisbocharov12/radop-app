@@ -7,6 +7,8 @@ namespace App\Exports\Concerns;
 use App\Models\Product;
 use App\Services\Export\ProductExcelStatusResolver;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -18,8 +20,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  */
 trait StylesProductCatalogSheet
 {
-    /** Row height that fits a ~120px product photo (Excel uses points: 120px ≈ 90pt). */
-    protected int $catalogRowHeightPoints = 90;
+    /** Catalog product-row height, in Excel points (matches the "Высота строки" dialog). */
+    protected int $catalogRowHeightPoints = 120;
+
+    /** Product photo height in pixels; width auto-scales to keep aspect ratio. Leaves padding inside the row. */
+    protected int $catalogImageHeightPx = 140;
 
     /** Header band colour (№, Cod, Denumirea produsului, …). */
     protected string $headerFillArgb = 'FFFFCC98';
@@ -79,6 +84,15 @@ trait StylesProductCatalogSheet
             ->setVertical(Alignment::VERTICAL_CENTER)
             ->setWrapText(true);
 
+        // Cosmetic: the band reads as one clean empty strip — strip the inner
+        // per-column grid lines but keep a visible outer frame around the row.
+        // (Runs in AfterSheet, i.e. after the export's styles() drew the grid,
+        // so this override wins.)
+        $sheet->getStyle($range)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_NONE);
+        $sheet->getStyle($range)->getBorders()->getOutline()
+            ->setBorderStyle(Border::BORDER_MEDIUM)
+            ->setColor(new Color(Color::COLOR_BLACK));
+
         // -1 = auto height: the row grows to fit a wrapped (multi-line) title,
         // with 22pt as the effective minimum for a single line.
         $sheet->getRowDimension($row)->setRowHeight(-1);
@@ -90,8 +104,12 @@ trait StylesProductCatalogSheet
     }
 
     /**
-     * Place the product photo so it sits inside its cell, centred, and "moves
-     * and sizes with cells" (two-cell anchor) for easy editing in Excel.
+     * Place the product photo inside its cell WITHOUT distorting it.
+     *
+     * The previous two-cell anchor forced every image into a fixed box
+     * (≈132×104px) regardless of its real proportions, which squashed tall or
+     * wide photos. Here we set only the height and let the width auto-scale
+     * (resizeProportional), so the original aspect ratio is always preserved.
      */
     protected function placeProductImage(Worksheet $sheet, Product $product, int $row): void
     {
@@ -108,16 +126,17 @@ trait StylesProductCatalogSheet
             $drawing->setDescription('Product Image');
             $drawing->setPath($imagePath);
 
-            // Two-cell anchor: top-left and bottom-right both inside the same
-            // cell, inset by a small padding. editAs=twoCell makes Excel treat
-            // it as "move and size with cells".
+            // Keep aspect ratio: setHeight() recomputes width from the image's
+            // native dimensions (resizeProportional is true by default).
+            $drawing->setResizeProportional(true);
+            $drawing->setHeight($this->catalogImageHeightPx);
+
+            // One-cell anchor with a little padding: the photo keeps its own
+            // size and is not stretched to the cell box.
             $drawing->setCoordinates($cell);
-            $drawing->setOffsetX(18);
+            $drawing->setOffsetX(20);
             $drawing->setOffsetY(8);
-            $drawing->setCoordinates2($cell);
-            $drawing->setOffsetX2(150);
-            $drawing->setOffsetY2(112);
-            $drawing->setEditAs(Drawing::EDIT_AS_TWOCELL);
+            $drawing->setEditAs(Drawing::EDIT_AS_ONECELL);
 
             $drawing->setWorksheet($sheet);
         } catch (\Throwable $e) {

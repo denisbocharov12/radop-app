@@ -15151,6 +15151,9 @@ input[type="range"]::-moz-range-thumb {
     color: #404040;
     text-decoration: none;
 }
+.mega-menu__panel-header .mega-menu__panel-title:hover {
+    text-decoration: underline !important;
+}
 .mega-menu__panel-header .mega-menu__export-link {
     flex: 0 0 auto;
     display: inline-flex;

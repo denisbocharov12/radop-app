@@ -57,7 +57,7 @@ final class ThemeExcelProductsExport implements FromView, WithTitle, WithColumnW
     public function columnWidths(): array
     {
         return [
-            'A' => 46, // ~322px (≥320px) so the merged category band reads comfortably
+            'A' => 5,
             'B' => 10,
             'C' => 50,
             'D' => 15,

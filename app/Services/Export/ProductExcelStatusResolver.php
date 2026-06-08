@@ -13,15 +13,16 @@ use App\Models\Product;
  * Mapping (mirrors the storefront badges, see the product label blade and
  * the theme lang files):
  *   - SALE  when sale_price is set            (label_on_sale => "Sale")  red
- *   - NEW   when data.condition === 'new'     (label_new     => "New")   dark blue
- *   - HIT   when data.condition === 'popular' (label_popular => "Hit")   dark blue
+ *   - NEW   when data.condition === 'new'     (label_new     => "New")   green
+ *   - HIT   when data.condition === 'popular' (label_popular => "Hit")   blue
  *
  * Priority when several apply: SALE then NEW then HIT.
  */
 final class ProductExcelStatusResolver
 {
-    public const COLOR_BLUE = 'FF002060'; // dark blue for NEW / HIT
-    public const COLOR_RED  = 'FFC00000'; // red for SALE
+    public const COLOR_GREEN = 'FF2EA560'; // #2ea560 — NEW
+    public const COLOR_BLUE  = 'FF0701DC'; // #0701dc — HIT
+    public const COLOR_RED   = 'FFE63F48'; // #e63f48 — SALE
 
     /**
      * @return array{label: string, argb: string}|null
@@ -35,7 +36,7 @@ final class ProductExcelStatusResolver
         $condition = $product->data?->condition;
 
         if ($condition === 'new') {
-            return ['label' => 'NEW', 'argb' => self::COLOR_BLUE];
+            return ['label' => 'NEW', 'argb' => self::COLOR_GREEN];
         }
 
         if ($condition === 'popular') {
