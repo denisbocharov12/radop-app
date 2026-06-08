@@ -17,6 +17,12 @@ Disallow: /*?gclid=
 Disallow: /*?yclid=
 Disallow: /*?msclkid=
 
+# POST-only filter endpoints — crawled as GET they return 4xx, never index them
+# Covers /category/{id}/filter, /brand/{id}/filter, /{locale}/.../filter and /filter/{type}
+Disallow: /filter
+Disallow: /*/filter
+Disallow: /*/filter-by-category
+
 Allow: /
 
 Sitemap: https://radop.md/sitemap.xml
