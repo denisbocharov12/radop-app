@@ -26,6 +26,19 @@ trait StylesProductCatalogSheet
     /** Product photo height in pixels; width auto-scales to keep aspect ratio. Leaves padding inside the row. */
     protected int $catalogImageHeightPx = 140;
 
+    /**
+     * Media conversions embedded into the workbook, smallest first.
+     *
+     * Excel stores the RAW image bytes — resizing the drawing's display height
+     * does NOT shrink them — so embedding a small generated conversion (thumb
+     * 150×150, then medium 264×264) is what keeps the file lightweight. The
+     * full-resolution original is used only as a last resort when no conversion
+     * exists.
+     *
+     * @var list<string>
+     */
+    protected array $catalogImageConversions = ['thumb', 'medium'];
+
     /** Header band colour (№, Cod, Denumirea produsului, …). */
     protected string $headerFillArgb = 'FFFFCC98';
 
@@ -175,9 +188,19 @@ trait StylesProductCatalogSheet
                 return null;
             }
 
-            $path = $media->hasGeneratedConversion('thumb')
-                ? $media->getPath('thumb')
-                : $media->getPath();
+            // Prefer a small generated conversion (thumb → medium) to keep the
+            // workbook lightweight. Embedding the full-res original is what
+            // bloats the file, so it is only the last-resort fallback.
+            foreach ($this->catalogImageConversions as $conversion) {
+                if ($media->hasGeneratedConversion($conversion)) {
+                    $conversionPath = $media->getPath($conversion);
+                    if ($conversionPath !== '' && file_exists($conversionPath)) {
+                        return $conversionPath;
+                    }
+                }
+            }
+
+            $path = $media->getPath();
 
             return ($path !== '' && file_exists($path)) ? $path : null;
         } catch (\Throwable $e) {
