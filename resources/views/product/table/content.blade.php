@@ -4,6 +4,7 @@
             <div class="nk-tb-col" style="width:30px"><input type="checkbox" id="select-all-products-head"></div>
             <div class="nk-tb-col"><span class="sub-text">ID</span></div>
             <div class="nk-tb-col"><span class="sub-text">Название товара</span></div>
+            <div class="nk-tb-col"><span class="sub-text">Код (1C)</span></div>
             <div class="nk-tb-col tb-col-lg"><span class="sub-text">Бренд</span></div>
             <div class="nk-tb-col"><span class="sub-text">Категория</span></div>
             <div class="nk-tb-col"><span class="sub-text">Цена</span></div>
@@ -23,6 +24,9 @@
                 </div>
                 <div class="nk-tb-col">
                     <span>{{$product->title}}</span>
+                </div>
+                <div class="nk-tb-col">
+                    <span class="text-soft">{{$product->onec_id}}</span>
                 </div>
                 <div class="nk-tb-col tb-col-lg">
                     <span>{{$product->brand?->title}}</span>

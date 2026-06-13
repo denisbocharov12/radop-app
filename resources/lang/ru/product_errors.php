@@ -42,6 +42,8 @@ return [
     'filter_search_ph'      => 'Название или onec_id',
     'filter_all'            => 'Все',
     'filter_apply'          => 'Фильтр',
+    'filter_in_stock'       => 'В наличии',
+    'filter_in_stock_hint'  => 'Показывать ошибки только для товаров, отображаемых на сайте (есть остатки, активные, с ценой)',
     'col_id'                => 'ID',
     'col_product'           => 'Товар',
     'col_code'              => 'Код (1C)',

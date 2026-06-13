@@ -327,7 +327,7 @@ return array (
     'add_to_cart_product_item' => 'Товар',
     'notification_close_btn_text' => 'Закрыть',
     'sum_to_period_discount' => 'До скидки в :koef %:',
-    'min_delivery_sum_to_order' => 'До мин. заказа: :sum лей.',
+    'min_delivery_sum_to_order' => 'Для вашего региона мин. сумма заказа составляет: :sum лей.',
     'default_delivery_method' => 'Доставка клиенту от минимальной суммы заказа.',
     'fio' => 'Имя',
     'fio_iur' => 'Название компании',

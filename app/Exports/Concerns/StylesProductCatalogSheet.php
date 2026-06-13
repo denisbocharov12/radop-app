@@ -23,8 +23,23 @@ trait StylesProductCatalogSheet
     /** Catalog product-row height, in Excel points (matches the "Высота строки" dialog). */
     protected int $catalogRowHeightPoints = 120;
 
-    /** Product photo height in pixels; width auto-scales to keep aspect ratio. Leaves padding inside the row. */
-    protected int $catalogImageHeightPx = 140;
+    /**
+     * Display box for a catalog photo, in pixels. The image is scaled to FIT
+     * inside this box preserving aspect ratio (so wide "Asortat" photos can no
+     * longer overflow the column) and is then centred horizontally + vertically.
+     */
+    protected int $catalogImageBoxWidthPx = 150;
+    protected int $catalogImageBoxHeightPx = 140;
+
+    /**
+     * When a product has NO generated conversion, its original is downscaled on
+     * the fly to at most this long-edge size (JPEG q75) before embedding — so a
+     * missing thumbnail never bloats the workbook with a multi-MB photo.
+     */
+    protected int $catalogImageFallbackMaxPx = 300;
+
+    /** Temp downscaled files to delete once the request/job ends. @var list<string> */
+    private array $catalogTempImages = [];
 
     /**
      * Media conversions embedded into the workbook, smallest first.
@@ -106,9 +121,8 @@ trait StylesProductCatalogSheet
             ->setBorderStyle(Border::BORDER_MEDIUM)
             ->setColor(new Color(Color::COLOR_BLACK));
 
-        // -1 = auto height: the row grows to fit a wrapped (multi-line) title,
-        // with 22pt as the effective minimum for a single line.
-        $sheet->getRowDimension($row)->setRowHeight(-1);
+        // Fixed group-header row height.
+        $sheet->getRowDimension($row)->setRowHeight(20);
     }
 
     protected function applyCatalogRowHeight(Worksheet $sheet, int $row): void
@@ -117,12 +131,11 @@ trait StylesProductCatalogSheet
     }
 
     /**
-     * Place the product photo inside its cell WITHOUT distorting it.
+     * Place the product photo inside its cell, scaled to FIT the display box
+     * (preserving aspect ratio) and centred both horizontally and vertically.
      *
-     * The previous two-cell anchor forced every image into a fixed box
-     * (≈132×104px) regardless of its real proportions, which squashed tall or
-     * wide photos. Here we set only the height and let the width auto-scale
-     * (resizeProportional), so the original aspect ratio is always preserved.
+     * Fitting to the box — rather than just fixing the height — is what stops
+     * wide composite "Asortat" photos from spilling past the column edge.
      */
     protected function placeProductImage(Worksheet $sheet, Product $product, int $row): void
     {
@@ -131,7 +144,26 @@ trait StylesProductCatalogSheet
             return;
         }
 
-        $cell = $this->imageColumn . $row;
+        $size = @getimagesize($imagePath);
+        if ($size === false || (int) $size[0] < 1 || (int) $size[1] < 1) {
+            return;
+        }
+        [$nativeW, $nativeH] = $size;
+
+        // Fit inside the box, preserving aspect ratio (never upscale past native).
+        $scale = min(
+            $this->catalogImageBoxWidthPx / $nativeW,
+            $this->catalogImageBoxHeightPx / $nativeH,
+            1.0
+        );
+        $width  = max(1, (int) round($nativeW * $scale));
+        $height = max(1, (int) round($nativeH * $scale));
+
+        // Centre horizontally in the column and vertically in the row.
+        $colWidthPx  = $this->resolveColumnWidthPx($sheet, $this->imageColumn, $this->catalogImageBoxWidthPx + 30);
+        $rowHeightPx = (int) round($this->catalogRowHeightPoints * 96 / 72);
+        $offsetX = max(2, (int) round(($colWidthPx - $width) / 2));
+        $offsetY = max(2, (int) round(($rowHeightPx - $height) / 2));
 
         try {
             $drawing = new Drawing();
@@ -139,16 +171,14 @@ trait StylesProductCatalogSheet
             $drawing->setDescription('Product Image');
             $drawing->setPath($imagePath);
 
-            // Keep aspect ratio: setHeight() recomputes width from the image's
-            // native dimensions (resizeProportional is true by default).
-            $drawing->setResizeProportional(true);
-            $drawing->setHeight($this->catalogImageHeightPx);
+            // Exact, pre-computed dimensions (aspect ratio already preserved).
+            $drawing->setResizeProportional(false);
+            $drawing->setWidth($width);
+            $drawing->setHeight($height);
 
-            // One-cell anchor with a little padding: the photo keeps its own
-            // size and is not stretched to the cell box.
-            $drawing->setCoordinates($cell);
-            $drawing->setOffsetX(20);
-            $drawing->setOffsetY(8);
+            $drawing->setCoordinates($this->imageColumn . $row);
+            $drawing->setOffsetX($offsetX);
+            $drawing->setOffsetY($offsetY);
             $drawing->setEditAs(Drawing::EDIT_AS_ONECELL);
 
             $drawing->setWorksheet($sheet);
@@ -200,11 +230,112 @@ trait StylesProductCatalogSheet
                 }
             }
 
-            $path = $media->getPath();
+            // No usable conversion → downscale the original on the fly so a
+            // product whose thumbnails were never generated still embeds a small
+            // image instead of a multi-MB original.
+            $original = $media->getPath();
+            if ($original === '' || !file_exists($original)) {
+                return null;
+            }
 
-            return ($path !== '' && file_exists($path)) ? $path : null;
+            return $this->downscaledTempImage($original) ?? $original;
         } catch (\Throwable $e) {
             return null;
         }
+    }
+
+    /**
+     * Pixel width of a column as Excel will render it; falls back when the
+     * column has no explicit width set yet.
+     */
+    private function resolveColumnWidthPx(Worksheet $sheet, string $column, int $fallback): int
+    {
+        try {
+            $units = $sheet->getColumnDimension($column)->getWidth();
+            if ($units > 0) {
+                $font = $sheet->getParent()->getDefaultStyle()->getFont();
+
+                return (int) round(\PhpOffice\PhpSpreadsheet\Shared\Drawing::cellDimensionToPixels($units, $font));
+            }
+        } catch (\Throwable $e) {
+            // fall through to the fallback
+        }
+
+        return $fallback;
+    }
+
+    /**
+     * Downscale an image to {@see self::$catalogImageFallbackMaxPx} on its long
+     * edge (JPEG q75) into a temp file, registered for cleanup at shutdown.
+     * Returns null (→ caller embeds the original) if GD is unavailable, the
+     * source is unreadable, or the image is already small.
+     */
+    private function downscaledTempImage(string $source): ?string
+    {
+        if (!function_exists('imagecreatefromstring')) {
+            return null;
+        }
+
+        $data = @file_get_contents($source);
+        if ($data === false) {
+            return null;
+        }
+
+        $src = @imagecreatefromstring($data);
+        if ($src === false) {
+            return null;
+        }
+
+        $w   = imagesx($src);
+        $h   = imagesy($src);
+        $max = $this->catalogImageFallbackMaxPx;
+        $scale = min(1.0, $max / max($w, $h));
+
+        // Already small in both dimensions and bytes — keep the original.
+        if ($scale >= 1.0 && strlen($data) <= 60 * 1024) {
+            imagedestroy($src);
+
+            return null;
+        }
+
+        $nw = max(1, (int) round($w * $scale));
+        $nh = max(1, (int) round($h * $scale));
+
+        $dst   = imagecreatetruecolor($nw, $nh);
+        $white = imagecolorallocate($dst, 255, 255, 255);
+        imagefilledrectangle($dst, 0, 0, $nw, $nh, $white);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+
+        $tmp = tempnam(sys_get_temp_dir(), 'catimg_');
+        if ($tmp === false) {
+            imagedestroy($src);
+            imagedestroy($dst);
+
+            return null;
+        }
+        $tmpJpg = $tmp . '.jpg';
+        @unlink($tmp);
+
+        $ok = imagejpeg($dst, $tmpJpg, 75);
+        imagedestroy($src);
+        imagedestroy($dst);
+
+        if ($ok !== true || !file_exists($tmpJpg)) {
+            return null;
+        }
+
+        $this->registerTempImage($tmpJpg);
+
+        return $tmpJpg;
+    }
+
+    private function registerTempImage(string $path): void
+    {
+        $this->catalogTempImages[] = $path;
+        register_shutdown_function(static function () use ($path): void {
+            if (is_file($path)) {
+                @unlink($path);
+            }
+        });
     }
 }

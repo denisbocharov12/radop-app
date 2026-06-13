@@ -15160,7 +15160,7 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     gap: 6px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     color: #0990d9;
     text-decoration: none;
     white-space: nowrap;

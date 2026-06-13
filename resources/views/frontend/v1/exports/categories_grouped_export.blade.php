@@ -43,7 +43,7 @@
                         ->map(fn($value) => e($value->attribute?->name . ': ' . $value->value))
                         ->implode('<br>') !!}
                 </td>
-                <td style="font-family: Arial; font-size: 12px; font-weight: bold;">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
+                <td data-format="#,##0.00" style="font-family: Arial; font-size: 12px; font-weight: bold;">{{ \App\Services\Theme\Product\ThemeProductManager::getProductTotalSum($product) }}</td>
                 <td style="font-family: Arial; font-size: 11px;"></td>
             </tr>
         @endforeach

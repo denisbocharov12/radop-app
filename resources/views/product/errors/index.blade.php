@@ -87,7 +87,7 @@
                                         <option value="minor" {{ request('severity') === 'minor' ? 'selected' : '' }}>{{ __('product_errors.severities.minor') }}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label class="form-label">{{ __('product_errors.filter_type') }}</label>
                                     <select name="type" class="form-select">
                                         <option value="">{{ __('product_errors.filter_all') }}</option>
@@ -96,9 +96,16 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-label">{{ __('product_errors.filter_search') }}</label>
                                     <input type="text" name="search" class="form-control" value="{{ e((string) request('search', '')) }}" placeholder="{{ __('product_errors.filter_search_ph') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label d-block">&nbsp;</label>
+                                    <div class="custom-control custom-switch mt-1" title="{{ __('product_errors.filter_in_stock_hint') }}">
+                                        <input type="checkbox" class="custom-control-input" id="filter_in_stock" name="in_stock" value="1" {{ request()->boolean('in_stock') ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="filter_in_stock">{{ __('product_errors.filter_in_stock') }}</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-primary btn-block"><em class="icon ni ni-search"></em><span>{{ __('product_errors.filter_apply') }}</span></button>

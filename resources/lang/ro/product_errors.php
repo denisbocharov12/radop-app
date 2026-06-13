@@ -42,6 +42,8 @@ return [
     'filter_search_ph'      => 'Denumire sau onec_id',
     'filter_all'            => 'Toate',
     'filter_apply'          => 'Filtru',
+    'filter_in_stock'       => 'În stoc',
+    'filter_in_stock_hint'  => 'Afișează erorile doar pentru produsele vizibile pe site (în stoc, active, cu preț)',
     'col_id'                => 'ID',
     'col_product'           => 'Produs',
     'col_code'              => 'Cod (1C)',
