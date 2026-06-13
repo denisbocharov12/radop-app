@@ -34,7 +34,7 @@
                     ->map(fn($value) => e($value->attribute?->name . ': ' . $value->value))
                     ->implode('<br>') !!}
             </td>
-            <td style="font-family: Arial; font-size: 12px; font-weight: bold;">
+            <td data-format="#,##0.00" style="font-family: Arial; font-size: 12px; font-weight: bold;">
                 @php
                     $personalizedPrice = \App\Services\Theme\Product\ThemeProductManager::getPersonalizedProductPrice($product, $user);
                 @endphp

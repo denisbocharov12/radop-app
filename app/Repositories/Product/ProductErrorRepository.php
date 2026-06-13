@@ -86,6 +86,20 @@ final class ProductErrorRepository
                         ->orWhere('product_onec_id', 'like', "%{$search}%");
                 });
             })
+            // Optionally restrict to products currently VISIBLE on the storefront:
+            // in stock, active, site-active and priced — the same rule the
+            // catalog/category/shop listings use in ProductRepository.
+            ->when(request()->boolean('in_stock'), function ($q) {
+                $q->whereExists(function ($sub) {
+                    $sub->selectRaw('1')
+                        ->from('products')
+                        ->whereColumn('products.onec_id', 'product_errors.product_onec_id')
+                        ->where('products.stock', '!=', 0)
+                        ->where('products.status', true)
+                        ->where('products.site_status', true)
+                        ->whereNotNull('products.price_koef');
+                });
+            })
             // Critical first, then by product so all issues of one product group.
             ->orderByRaw("FIELD(severity, '" . ProductError::SEVERITY_CRITICAL . "', '" . ProductError::SEVERITY_MINOR . "')")
             ->orderBy('product_onec_id')
