@@ -31,7 +31,7 @@
             @php $rowNum++; @endphp
             <tr>
                 <td style="font-family: Arial; font-size: 11px;">{{ $rowNum }}</td>
-                <td style="font-family: Arial; font-size: 11px;">{{ ' '.$product->onec_id.' ' }}</td>
+                <td data-type="{{ \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING }}" style="font-family: Arial; font-size: 11px;">{{ $product->onec_id }}</td>
                 <td style="font-family: Arial; font-size: 11px; text-align: left;">{{ $product->title }}</td>
                 <td style="font-family: Arial; font-size: 11px;">{{ $product->brand?->title }}</td>
                 <td style="font-family: Arial; font-size: 11px;"></td>
