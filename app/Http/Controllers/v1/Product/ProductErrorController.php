@@ -30,8 +30,12 @@ final class ProductErrorController extends Controller
     {
         App::setLocale(self::ADMIN_LOCALE);
 
+        // In-stock (storefront-visible) products only by default; the cards and
+        // the list reflect the current toggle state.
+        $inStock = $this->productErrorRepository->inStockFilterActive();
+
         $errors  = $this->productErrorRepository->paginatedWithFilters();
-        $summary = $this->productErrorRepository->summary();
+        $summary = $this->productErrorRepository->summary($inStock);
         $affectedProducts = $summary['products'];
 
         // type => localized label, for the filter dropdown.
@@ -42,6 +46,7 @@ final class ProductErrorController extends Controller
             'summary',
             'affectedProducts',
             'types',
+            'inStock',
         ]));
     }
 

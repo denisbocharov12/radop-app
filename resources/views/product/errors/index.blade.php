@@ -103,7 +103,9 @@
                                 <div class="col-md-2">
                                     <label class="form-label d-block">&nbsp;</label>
                                     <div class="custom-control custom-switch mt-1" title="{{ __('product_errors.filter_in_stock_hint') }}">
-                                        <input type="checkbox" class="custom-control-input" id="filter_in_stock" name="in_stock" value="1" {{ request()->boolean('in_stock') ? 'checked' : '' }}>
+                                        {{-- Hidden field so unchecking submits in_stock=0 (the switch defaults to ON). --}}
+                                        <input type="hidden" name="in_stock" value="0">
+                                        <input type="checkbox" class="custom-control-input" id="filter_in_stock" name="in_stock" value="1" {{ ($inStock ?? true) ? 'checked' : '' }}>
                                         <label class="custom-control-label" for="filter_in_stock">{{ __('product_errors.filter_in_stock') }}</label>
                                     </div>
                                 </div>
