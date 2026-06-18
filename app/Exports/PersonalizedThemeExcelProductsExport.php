@@ -59,19 +59,25 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
 
     public function columnWidths(): array
     {
-        return [
+        // Excel's "Column Width" dialog shows a stored width N as N − 5/MDW
+        // (it subtracts the cell padding). For the default Calibri-11 font
+        // (MDW = 7px) that is −0.71, so we add 5/7 to make the dialog show
+        // EXACTLY these character widths.
+        $padding = 5 / 7;
+
+        return array_map(static fn (float $w): float => $w + $padding, [
             'A' => 5,
             'B' => 10,
             'C' => 50,
-            'D' => 12,
-            'E' => 22,
-            'F' => 16,
-            'G' => 9,
-            'H' => 9,
+            'D' => 15,
+            'E' => 25,
+            'F' => 15,
+            'G' => 8,
+            'H' => 8,
             'I' => 50,
             'J' => 12,
-            'K' => 12,
-        ];
+            'K' => 20,
+        ]);
     }
 
     public function styles(Worksheet $sheet): array

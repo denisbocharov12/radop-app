@@ -1,3 +1,16 @@
+@php
+    // Product-error counts for the "Товары" badge. Normally injected by the
+    // View::composer in AppServiceProvider; this fallback guarantees the
+    // variable exists even if that composer did not run (e.g. stale bootstrap
+    // cache after a deploy). summary() is cached internally, so it is cheap.
+    if (!isset($sidebarProductErrors) || !is_array($sidebarProductErrors)) {
+        try {
+            $sidebarProductErrors = app(\App\Repositories\Product\ProductErrorRepository::class)->summary();
+        } catch (\Throwable $e) {
+            $sidebarProductErrors = ['products' => 0];
+        }
+    }
+@endphp
 <!-- sidebar @s -->
 <div class="nk-sidebar nk-sidebar-fixed is-dark " data-content="sidebarMenu">
     <div class="nk-sidebar-element nk-sidebar-head">
