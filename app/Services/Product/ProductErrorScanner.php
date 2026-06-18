@@ -97,6 +97,7 @@ final class ProductErrorScanner
     public function forgetCache(): void
     {
         Cache::forget(self::CACHE_KEY);
+        Cache::forget(self::CACHE_KEY . '_in_stock');
     }
 
     // ── Rules ──────────────────────────────────────────────────────────────

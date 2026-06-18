@@ -27,13 +27,20 @@ final class ProductErrorRepository
      *     by_type: array<string, int>
      * }
      */
-    public function summary(): array
+    public function summary(bool $inStockOnly = true): array
     {
+        $cacheKey = $inStockOnly
+            ? ProductErrorScanner::CACHE_KEY . '_in_stock'
+            : ProductErrorScanner::CACHE_KEY;
+
         return Cache::remember(
-            ProductErrorScanner::CACHE_KEY,
+            $cacheKey,
             ProductErrorScanner::CACHE_TTL,
-            static function (): array {
+            function () use ($inStockOnly): array {
                 $base = ProductError::query()->whereNull('resolved_at');
+                if ($inStockOnly) {
+                    $this->applyInStockConstraint($base);
+                }
 
                 $products = (clone $base)->distinct('product_onec_id')->count('product_onec_id');
 
@@ -64,6 +71,38 @@ final class ProductErrorRepository
     }
 
     /**
+     * Whether the "in stock / visible on the storefront" filter is active for
+     * the current request. On (default) unless explicitly turned off via
+     * `?in_stock=0`.
+     */
+    public function inStockFilterActive(): bool
+    {
+        return request()->has('in_stock')
+            ? request()->boolean('in_stock')
+            : true;
+    }
+
+    /**
+     * Restrict an error query to products currently VISIBLE on the storefront:
+     * in stock, active, site-active and priced — the same rule the
+     * catalog/category/shop listings use in ProductRepository.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
+    private function applyInStockConstraint($query): void
+    {
+        $query->whereExists(function ($sub) {
+            $sub->selectRaw('1')
+                ->from('products')
+                ->whereColumn('products.onec_id', 'product_errors.product_onec_id')
+                ->where('products.stock', '!=', 0)
+                ->where('products.status', true)
+                ->where('products.site_status', true)
+                ->whereNotNull('products.price_koef');
+        });
+    }
+
+    /**
      * Filtered, paginated listing for the detail page.
      *
      * Supported query params: severity, type, source, search.
@@ -86,20 +125,9 @@ final class ProductErrorRepository
                         ->orWhere('product_onec_id', 'like', "%{$search}%");
                 });
             })
-            // Optionally restrict to products currently VISIBLE on the storefront:
-            // in stock, active, site-active and priced — the same rule the
-            // catalog/category/shop listings use in ProductRepository.
-            ->when(request()->boolean('in_stock'), function ($q) {
-                $q->whereExists(function ($sub) {
-                    $sub->selectRaw('1')
-                        ->from('products')
-                        ->whereColumn('products.onec_id', 'product_errors.product_onec_id')
-                        ->where('products.stock', '!=', 0)
-                        ->where('products.status', true)
-                        ->where('products.site_status', true)
-                        ->whereNotNull('products.price_koef');
-                });
-            })
+            // Restrict to products currently visible on the storefront. Active
+            // by default; turn off with ?in_stock=0.
+            ->when($this->inStockFilterActive(), fn ($q) => $this->applyInStockConstraint($q))
             // Critical first, then by product so all issues of one product group.
             ->orderByRaw("FIELD(severity, '" . ProductError::SEVERITY_CRITICAL . "', '" . ProductError::SEVERITY_MINOR . "')")
             ->orderBy('product_onec_id')
