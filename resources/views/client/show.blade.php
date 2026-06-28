@@ -32,6 +32,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#filial"><em class="icon ni ni-building-fill"></em><span>Филиалы</span></a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#category-discounts"><em class="icon ni ni-percent"></em><span>Скидки по категориям</span></a>
+                                        </li>
                                         <li class="nav-item nav-item-trigger d-xxl-none">
                                             <a href="#" class="toggle btn btn-icon btn-trigger" data-target="userAside"><em class="icon ni ni-user-list-fill"></em></a>
                                         </li>
@@ -136,6 +139,9 @@
                                         </div>
                                         <div class="tab-pane" id="filial">
                                             @include('client.components.filial')
+                                        </div>
+                                        <div class="tab-pane" id="category-discounts">
+                                            @include('client.components.category-discounts', ['user' => $user])
                                         </div>
                                         <div class="tab-pane" id="activity">
 

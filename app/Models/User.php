@@ -104,4 +104,20 @@ final class User extends Authenticatable
     {
         return $this->hasMany(Review::class, 'user_id');
     }
+
+    /**
+     * @return HasMany<UserCategoryDiscount, User>
+     */
+    public function categoryDiscounts(): HasMany
+    {
+        return $this->hasMany(UserCategoryDiscount::class);
+    }
+
+    /**
+     * @return HasMany<UserProductDiscount, User>
+     */
+    public function productDiscounts(): HasMany
+    {
+        return $this->hasMany(UserProductDiscount::class);
+    }
 }

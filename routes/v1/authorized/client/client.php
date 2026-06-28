@@ -2,10 +2,20 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\v1\Client\ClientCategoryDiscountController;
 use App\Http\Controllers\v1\Client\ClientController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('clients')->name('client.')->group(function () {
+    // Per-client category / product discounts.
+    Route::middleware(['app.permissions'])->group(function () {
+        Route::get('discounts/categories', [ClientCategoryDiscountController::class, 'categories'])->name('discounts.categories');
+        Route::get('{user}/discounts/data', [ClientCategoryDiscountController::class, 'data'])->name('discounts.data');
+        Route::get('{user}/discounts/products', [ClientCategoryDiscountController::class, 'products'])->name('discounts.products');
+        Route::post('{user}/discounts/category', [ClientCategoryDiscountController::class, 'saveCategory'])->name('discounts.category.save');
+        Route::post('{user}/discounts/product', [ClientCategoryDiscountController::class, 'saveProduct'])->name('discounts.product.save');
+    });
+
     Route::middleware(['app.permissions'])
         ->get('/', [ClientController::class, 'index'])
         ->name('index')
