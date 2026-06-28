@@ -386,6 +386,17 @@ final class ThemeProductManager
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
 
+        // Per-user category/product discount takes precedence when present.
+        // Base = the user's normal unit price BEFORE any personal sale:
+        // wholesale users pay $price, retail users pay $price * $priceKoef.
+        if ($user !== null) {
+            $base = $user->with_sale ? $price : $price * $priceKoef;
+            $custom = UserDiscountResolver::resolveUnitPrice($product, $base, $user);
+            if ($custom !== null) {
+                return number_format($custom, 2, '.', '');
+            }
+        }
+
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
@@ -451,6 +462,15 @@ final class ThemeProductManager
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
 
+        // Per-user category/product discount takes precedence when present.
+        if ($user !== null) {
+            $base = $user->with_sale ? $price : $price * $priceKoef;
+            $custom = UserDiscountResolver::resolveUnitPrice($product, $base, $user);
+            if ($custom !== null) {
+                return number_format($custom, 2, ',', '');
+            }
+        }
+
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
@@ -484,6 +504,15 @@ final class ThemeProductManager
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
 
+        // Per-user category/product discount takes precedence when present.
+        if ($user !== null) {
+            $base = $user->with_sale ? $price : $price * $priceKoef;
+            $custom = UserDiscountResolver::resolveUnitPrice($product, $base, $user);
+            if ($custom !== null) {
+                return number_format($custom, 2, '.', '');
+            }
+        }
+
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
                 $price = number_format($price - $price * ($user->sale / 100), 2, '.', '');
@@ -516,6 +545,13 @@ final class ThemeProductManager
     {
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
+
+        // Per-user category/product discount takes precedence when present.
+        $base = $user->with_sale ? $price : $price * $priceKoef;
+        $custom = UserDiscountResolver::resolveUnitPrice($product, $base, $user);
+        if ($custom !== null) {
+            return number_format($custom, 2, '.', '');
+        }
 
         if ($user->with_sale) {
             if($user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {

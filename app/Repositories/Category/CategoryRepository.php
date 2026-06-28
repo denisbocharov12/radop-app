@@ -493,6 +493,7 @@ class CategoryRepository
             ->orderBy('product_category_sorts.sort')
             ->orderBy('products.onec_id')
             ->select('products.*')
+            ->with('media')
             ->get()
         ;
     }
