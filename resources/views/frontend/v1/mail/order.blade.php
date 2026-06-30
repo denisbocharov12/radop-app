@@ -10,7 +10,7 @@
                 detaliile referitor la comandă.</p>
         </td>
         <td style="padding: 20px 40px 20px 0; vertical-align: middle; width: 100%" width="30%">
-            <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" alt="Radop Logo" />
+            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo.svg" alt="Radop Logo" />
         </td>
     </tr>
 
@@ -96,7 +96,7 @@
         <td colspan="2" width="700px" style="padding: 10px 20px; font-size: 14px; color: #555; text-align: center;">
             Puteți urmări starea comenzii în cabinetul personal.<br>
             Pentru orice informații sau modificări ale comenzii, contactați
-            <a href="tel:022781212" style="color: #0056b3;">022 78 12 12</a>,
+            <a href="tel:022782112" style="color: #0056b3;">022 78 21 12</a>,
             <a href="tel:+37379782112" style="color: #0056b3;">+373 79 78 21 12</a><br>
             Program de lucru: Luni – Vineri: 08:00 – 17:00
         </td>
