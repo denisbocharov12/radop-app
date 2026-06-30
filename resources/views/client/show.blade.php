@@ -87,6 +87,7 @@
                 <div class="tab-list px-2">
                     <button type="button" class="tab-button" :class="{ 'active': tab === 'info' }" @click="tab = 'info'">Информация</button>
                     <button type="button" class="tab-button" :class="{ 'active': tab === 'filial' }" @click="tab = 'filial'">Филиалы ({{ $filials->count() }})</button>
+                    <button type="button" class="tab-button" :class="{ 'active': tab === 'discounts' }" @click="tab = 'discounts'; $nextTick(() => window.dispatchEvent(new Event('cd-tab-shown')))">Скидки по категориям</button>
                 </div>
 
                 {{-- Info tab --}}
@@ -136,6 +137,11 @@
                 {{-- Filials tab --}}
                 <div x-show="tab === 'filial'" style="display:none;">
                     @include('client.components.filial')
+                </div>
+
+                {{-- Category discounts tab --}}
+                <div x-show="tab === 'discounts'" style="display:none;">
+                    @include('client.components.category-discounts')
                 </div>
             </x-card>
         </div>
