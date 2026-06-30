@@ -140,7 +140,7 @@
             </p>
         </div>
         <div class="logo">
-            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo.svg" />
+            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo_wide.svg" />
         </div>
     </div>
 

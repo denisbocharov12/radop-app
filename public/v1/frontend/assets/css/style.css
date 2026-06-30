@@ -3031,7 +3031,7 @@ header .section-header .row-main .header-menu .col-lg{
 }
 
 .col-category-childs .wrap-category-childs .link.parent-link{
-    font-weight: 700;
+    font-weight: 500;
     display: inline-block;
     flex: none;
     font-size: 18px;
@@ -12557,6 +12557,7 @@ body.modal-open {
     gap: 8px 12px;
     width: 100%;
     position: relative;
+    justify-content: space-between;
 }
 .category-child-header .parent-link {
     flex: 1 1 auto;
