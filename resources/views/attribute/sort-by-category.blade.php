@@ -4,8 +4,6 @@
     <x-page-header title="Сортировка атрибутов по категории"
                    description="Выберите категорию, чтобы настроить порядок атрибутов." />
 
-    @include('v1.errors.errors')
-
     <x-card>
         <form method="GET" action="{{ route('attribute.sort.category.index') }}"
               class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-end">
@@ -28,22 +26,19 @@
     </x-card>
 
     @if($selectedCategory)
-        <x-card class="mt-5">
-            <p class="text-sm text-gray-500 mb-4">Порядок атрибутов для категории «{{ $selectedCategory->name }}». Перетаскивайте элементы для изменения порядка.</p>
-            @if(isset($attributesForSort) && $attributesForSort->count() > 0)
-                <ul id="sortable-contents" class="space-y-2">
-                    @foreach($attributesForSort as $attribute)
-                        <li class="sortable-item flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 cursor-grab hover:border-brand-300 hover:bg-brand-50/40"
-                            data-id="{{ $attribute->id }}">
-                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
-                            <span class="font-medium">{{ $attribute->name }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
+        @if(isset($attributesForSort) && $attributesForSort->count() > 0)
+            @php $sortItems = collect($attributesForSort)->map(fn ($a) => ['id' => $a->id, 'label' => $a->name]); @endphp
+            <div class="mt-5">
+                <x-sortable-list :items="$sortItems"
+                                 :title="'Порядок атрибутов — «' . $selectedCategory->name . '»'"
+                                 :withHeader="false"
+                                 :showImage="false" :showCode="false" />
+            </div>
+        @else
+            <x-card class="mt-5">
                 <x-empty-state icon="list" title="Нет атрибутов" text="Для выбранной категории нет атрибутов." />
-            @endif
-        </x-card>
+            </x-card>
+        @endif
     @else
         <x-card class="mt-5">
             <x-empty-state icon="filter" title="Выберите категорию" text="Выберите категорию и нажмите «Показать», чтобы настроить порядок атрибутов." />
@@ -54,17 +49,13 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            $('.js-select2').select2({
-                placeholder: 'Выберите категорию',
-                allowClear: true
-            });
+            $('.js-select2').select2({ placeholder: 'Выберите категорию', allowClear: true });
         });
     </script>
     @if($selectedCategory && isset($attributesForSort) && $attributesForSort->count() > 0)
         @include('v2.partials.sortable-script', [
-            'orderUrl'     => route('attribute.sort.category.order'),
-            'orderExtra'   => ['category_id' => $selectedCategory->onec_id],
-            'positionBase' => 0,
+            'orderUrl'   => route('attribute.sort.category.order'),
+            'orderExtra' => ['category_id' => $selectedCategory->onec_id],
         ])
     @endif
 @endsection

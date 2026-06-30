@@ -6,6 +6,7 @@
     'showImage'   => true,
     'showCode'    => true,
     'codeLabel'   => 'Код (1C)',
+    'withHeader'  => true,
 ])
 
 {{--
@@ -13,6 +14,7 @@
     Items: ['id' => mixed, 'label' => string, 'code' => ?string, 'image' => ?string].
     Pair with @include('v2.partials.sortable-script', ['orderUrl' => ..., 'orderExtra' => [...]]).
 --}}
+@if($withHeader)
 <x-page-header :title="$title"
     :description="$description ?? 'Перетащите строки за рукоятку, измените «Порядок» вручную или используйте кнопки. Изменения сохраняются по кнопке «Сохранить».'">
     <x-slot:actions>
@@ -24,6 +26,7 @@
         </button>
     </x-slot:actions>
 </x-page-header>
+@endif
 
 <x-card :padding="false">
     {{-- Toolbar: search --}}
@@ -34,6 +37,11 @@
                    class="block w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
         </div>
         <span class="ml-auto text-xs text-gray-400" id="sortable-count">{{ count($items) }}</span>
+        @unless($withHeader)
+            <button type="button" id="sortable-save" class="btn-primary btn-sm shrink-0">
+                <i data-lucide="save" class="w-4 h-4"></i> <span>Сохранить</span>
+            </button>
+        @endunless
     </div>
 
     {{-- Column header --}}
