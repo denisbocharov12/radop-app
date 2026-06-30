@@ -1,30 +1,36 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content" style="margin-top: 70px">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    @php
-                        $rows = collect($categories)->map(fn ($c) => [
-                            'id'    => $c->id,
-                            'title' => $c->name . ($c->parent_id === null ? ' (Родительская)' : ''),
-                            'code'  => $c->onec_id,
-                        ])->values()->all();
-                    @endphp
-                    @include('v1.sortable.list', [
-                        'rows'      => $rows,
-                        'title'     => 'Редактирование сортировки категорий Каталога',
-                        'showImage' => false,
-                    ])
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-page-header title="Сортировка категорий каталога"
+                   description="Перетаскивайте категории для изменения порядка в каталоге." />
+
+    @include('v1.errors.errors')
+
+    <x-card>
+        @if($categories->count() > 0)
+            <ul id="sortable-contents" class="space-y-2">
+                @foreach($categories as $category)
+                    <li class="sortable-item rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 cursor-grab hover:border-brand-300 hover:bg-brand-50/40"
+                        data-id="{{ $category->id }}">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                            <span class="font-medium">{{ $category->name }}</span>
+                            @if($category->parent_id === null)
+                                <span class="inline-flex items-center rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">Родительская</span>
+                            @endif
+                        </div>
+                        @include('category.components.child-category', ['childs' => $category->children])
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <x-empty-state icon="folder-tree" title="Нет категорий" text="Нет категорий для сортировки." />
+        @endif
+    </x-card>
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    @include('v1.sortable.scripts', ['saveUrl' => route('category.sort.order.catalog')])
+    @include('v2.partials.sortable-script', [
+        'orderUrl' => route('category.sort.order.catalog'),
+    ])
 @endsection

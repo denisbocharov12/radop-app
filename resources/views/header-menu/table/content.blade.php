@@ -1,82 +1,65 @@
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">Код</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Название</span></div>
-            <div class="nk-tb-col tb-col-md"><span class="sub-text">Ссылка</span></div>
-            <div class="nk-tb-col tb-col-md"><span class="sub-text">Элементов</span></div>
-            <div class="nk-tb-col tb-col-md"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col tb-col-md"><span class="sub-text">Дата создания</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
-        </div>
-        @foreach($menus as $menu)
-            <div class="nk-tb-item">
-                <div class="nk-tb-col">
-                    <div class="user-card">
-                        <div class="user-name">
-                            <span class="tb-lead"><code>{{ $menu->code }}</code></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-tb-col">
-                    @php
-                        $nameRaw = $menu->getRawOriginal('name');
-                        $menuName = is_array(json_decode($nameRaw, true)) 
-                            ? $menu->getTranslation('name', app()->getLocale()) 
-                            : ($nameRaw ?? '');
-                    @endphp
-                    <span>{{ $menuName }}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    @php
-                        $linkRaw = $menu->getRawOriginal('link');
-                        $menuLink = is_array(json_decode($linkRaw, true)) 
-                            ? $menu->getTranslation('link', app()->getLocale()) 
-                            : ($linkRaw ?? '—');
-                    @endphp
-                    <span class="tb-sub text-primary">{{ $menuLink }}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    <span class="badge badge-dim bg-outline-info">{{ $menu->items->count() }}</span>
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    @if($menu->is_active)
-                        <span class="badge bg-success">Активное</span>
-                    @else
-                        <span class="badge bg-secondary">Неактивное</span>
-                    @endif
-                </div>
-                <div class="nk-tb-col tb-col-md">
-                    <span class="tb-sub">{{ $menu->created_at->format('d.m.Y H:i') }}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools">
-                    <ul class="nk-tb-actions gx-1">
-                        <li class="nk-tb-action-hidden">
-                            <a href="{{ route('admin.header-menus.edit', $menu->id) }}" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">
-                                <em class="icon ni ni-edit-fill"></em>
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+            <tr class="text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th class="px-4 py-3">Код</th>
+                <th class="px-4 py-3">Название</th>
+                <th class="px-4 py-3">Ссылка</th>
+                <th class="px-4 py-3">Элементов</th>
+                <th class="px-4 py-3">Статус</th>
+                <th class="px-4 py-3">Дата создания</th>
+                <th class="px-4 py-3 text-right"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            @forelse($menus as $menu)
+                @php
+                    $nameRaw = $menu->getRawOriginal('name');
+                    $menuName = is_array(json_decode($nameRaw, true)) ? $menu->getTranslation('name', app()->getLocale()) : ($nameRaw ?? '');
+                    $linkRaw = $menu->getRawOriginal('link');
+                    $menuLink = is_array(json_decode($linkRaw, true)) ? $menu->getTranslation('link', app()->getLocale()) : ($linkRaw ?? '—');
+                @endphp
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3"><code class="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-brand-700">{{ $menu->code }}</code></td>
+                    <td class="px-4 py-3 font-medium text-gray-900">{{ $menuName }}</td>
+                    <td class="px-4 py-3 text-brand-600">{{ $menuLink }}</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center rounded-full bg-sky-50 px-2 py-0.5 text-xs font-medium text-sky-700">{{ $menu->items->count() }}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        @if($menu->is_active)
+                            <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">Активное</span>
+                        @else
+                            <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">Неактивное</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 text-gray-500">{{ $menu->created_at->format('d.m.Y H:i') }}</td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center justify-end gap-1">
+                            <a href="{{ route('admin.header-menus.edit', $menu->id) }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-brand-600" title="Редактировать">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
                             </a>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{ route('admin.header-menus.edit', $menu->id) }}"><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="{{ route('admin.header-menus.items.create', $menu->id) }}"><em class="icon ni ni-plus"></em><span>Добавить элемент</span></a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#" onclick="event.preventDefault(); if(confirm('Вы уверены?')) document.getElementById('delete-header-menu-{{ $menu->id }}').submit();"><em class="icon ni ni-trash"></em><span>Удалить</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <form id="delete-header-menu-{{ $menu->id }}" action="{{ route('admin.header-menus.destroy', $menu->id) }}" method="POST" style="display: none;">
-                    @csrf
-                    @method('DELETE')
-                </form>
-            </div>
-        @endforeach
-    </div>
+                            <a href="{{ route('admin.header-menus.items.create', $menu->id) }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-brand-600" title="Добавить элемент">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </a>
+                            <button type="button" onclick="if(confirm('Вы уверены?')) document.getElementById('delete-header-menu-{{ $menu->id }}').submit();"
+                                    class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-red-50 hover:text-red-600" title="Удалить">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                            <form id="delete-header-menu-{{ $menu->id }}" action="{{ route('admin.header-menus.destroy', $menu->id) }}" method="POST" class="hidden">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="px-4 py-10">
+                        <x-empty-state icon="menu" title="Нет меню" text="Список пуст. Добавьте первое меню." />
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
-

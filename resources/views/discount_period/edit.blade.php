@@ -1,69 +1,48 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Редактирование периода скидки')
+@section('breadcrumb')
+    <a href="{{ route('discount-period.index') }}" class="hover:text-brand-600 transition-colors">Период скидок</a>
+    <i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-2 text-gray-300"></i>
+    <span class="text-gray-700">#{{ $discountPeriod->id }}</span>
+@endsection
 
 @section('content')
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    <div class="nk-block nk-block-lg">
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование периода скидки {{$discountPeriod->id}}</h4>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-inner">
-                                <form action="{{route('discount-period.update', $discountPeriod)}}" enctype="multipart/form-data" method="POST" class="form-validate is-alter">
-                                    @csrf
-                                    <div class="row g-gs">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="sum_from">Сумма от</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('sum_from') error @enderror" id="sum_from" name="sum_from" value="{{(float)$discountPeriod->sum_from}}" placeholder="500">
-                                                    @error('sum_from')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="sum_to">Сумма до</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="text" required class="form-control @error('sum_from') error @enderror" id="sum_to" name="sum_to" value="{{(float)$discountPeriod->sum_to}}" placeholder="1500">
-                                                    @error('sum_to')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="discount_koef">Коэф скидки</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="number" step="0.001" required class="form-control @error('discount_koef') error @enderror" id="discount_koef" name="discount_koef" value="{{(float)$discountPeriod->discount_koef}}" placeholder="1.25">
-                                                    @error('discount_koef')
-                                                    <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                                <li>
-                                                    <button type="submit" class="btn btn-primary">Обновить период скидеи</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div><!-- .nk-block -->
+    <x-page-header title="Редактирование периода скидки" description="#{{ $discountPeriod->id }}">
+        <x-slot:actions>
+            <a href="{{ route('discount-period.index') }}" class="btn-secondary btn-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i> К списку</a>
+        </x-slot:actions>
+    </x-page-header>
+
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
+
+    <x-card>
+        <form action="{{ route('discount-period.update', $discountPeriod) }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="form-label" for="sum_from">Сумма от <span class="text-red-500">*</span></label>
+                    <input type="text" required name="sum_from" id="sum_from" value="{{ (float) $discountPeriod->sum_from }}" class="form-input @error('sum_from') border-red-400 @enderror">
+                    @error('sum_from')<p class="form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="form-label" for="sum_to">Сумма до <span class="text-red-500">*</span></label>
+                    <input type="text" required name="sum_to" id="sum_to" value="{{ (float) $discountPeriod->sum_to }}" class="form-input @error('sum_to') border-red-400 @enderror">
+                    @error('sum_to')<p class="form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="form-label" for="discount_koef">Коэф. скидки <span class="text-red-500">*</span></label>
+                    <input type="number" step="0.001" required name="discount_koef" id="discount_koef" value="{{ (float) $discountPeriod->discount_koef }}" class="form-input @error('discount_koef') border-red-400 @enderror">
+                    @error('discount_koef')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="flex justify-end pt-2 border-t border-gray-100">
+                <button type="submit" class="btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Обновить</button>
+            </div>
+        </form>
+    </x-card>
 @endsection

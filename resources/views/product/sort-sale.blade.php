@@ -1,30 +1,17 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Сортировка «Sale»')
+@section('breadcrumb')
+    <a href="{{ route('product.index') }}" class="hover:text-brand-600 transition-colors">Товары</a>
+    <i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-2 text-gray-300"></i>
+    <span class="text-gray-700">Сортировка «Sale»</span>
+@endsection
 
 @section('content')
-    <div class="nk-content" style="margin-top: 70px">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    @php
-                        $rows = $products->map(fn ($p) => [
-                            'id'    => $p->id,
-                            'title' => $p->title,
-                            'code'  => $p->onec_id,
-                            'image' => $p->getFirstMediaUrl('products', 'thumb') ?: $p->getFirstMediaUrl('products'),
-                        ])->values()->all();
-                    @endphp
-                    @include('v1.sortable.list', [
-                        'rows'  => $rows,
-                        'title' => 'Редактирование сортировки «Sale» товаров',
-                    ])
-                </div>
-            </div>
-        </div>
-    </div>
+    @php $sortItems = collect($products)->map(fn ($p) => ['id' => $p->id, 'label' => $p->title]); @endphp
+    <x-sortable-list :items="$sortItems" title="Сортировка «Sale» товаров" :backUrl="route('product.index')" />
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    @include('v1.sortable.scripts', ['saveUrl' => route('product.sort.order.sale')])
+    @include('v2.partials.sortable-script', ['orderUrl' => route('product.sort.order.sale')])
 @endsection

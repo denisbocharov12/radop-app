@@ -1,183 +1,85 @@
 @php
     $orderStatusEnum = new \App\Enums\OrderStatus();
+    $statusBadge = [
+        'new' => 'info', 'pending' => 'warning', 'processing' => 'primary',
+        'sent' => 'primary', 'delivered' => 'success', 'canceled' => 'danger',
+    ];
+    $sortUrl = fn ($col) => request()->fullUrlWithQuery(['sort' => request('sort') === $col ? '-' . $col : $col]);
+    $sortArrow = function ($col) {
+        if (request('sort') === $col) return '▲';
+        if (request('sort') === '-' . $col) return '▼';
+        return '';
+    };
 @endphp
-<style>
-    .text-dark {
-        display: flex;
-        justify-content: center;
-    }
-    .new-order {
-        background-color: #d4f4e1;
-    }
-    .processing-order {
-        background-color: #fdf3cd;
-    }
-    .nk-tb-col{
-        border-left: 1px solid;
-        border-right: 1px solid;
-    }
-    .nk-tb-col{
-        border-left: 0;
-        border-right: 1px solid #dbdfea;
-    }
-</style>
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head fw-bold">
-            <div class="nk-tb-col" style="width: 40px;">
-                <input type="checkbox" id="select-all-orders-head">
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'id') ? '-id' : 'id' }}" class="text-dark">
-                    <span class="sub-text">ID</span>
-                    @if(request('sort') == 'id') ▲@elseif(request('sort') == '-id') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'fio') ? '-fio' : 'fio' }}" class="text-dark">
-                    <span class="sub-text">Клиент</span>
-                    @if(request('sort') == 'fio') ▲@elseif(request('sort') == '-fio') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'cod_fiscal') ? '-cod_fiscal' : 'cod_fiscal' }}" class="text-dark">
-                    <span class="sub-text">Ф.К.</span>
-                    @if(request('sort') == 'cod_fiscal') ▲@elseif(request('sort') == '-cod_fiscal') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'manager_first_name') ? '-manager_first_name' : 'manager_first_name' }}" class="text-dark">
-                    <span class="sub-text">Менеджер</span>
-                    @if(request('sort') == 'manager_first_name') ▲@elseif(request('sort') == '-manager_first_name') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'created_at') ? '-created_at' : 'created_at' }}" class="text-dark">
-                    <span class="sub-text">Дата</span>
-                    @if(request('sort') == 'created_at') ▲@elseif(request('sort') == '-created_at') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'order_number') ? '-order_number' : 'order_number' }}" class="text-dark">
-                    <span class="sub-text">Номер заказа</span>
-                    @if(request('sort') == 'order_number') ▲@elseif(request('sort') == '-order_number') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'status') ? '-status' : 'status' }}" class="text-dark">
-                    <span class="sub-text">Статус заказа</span>
-                    @if(request('sort') == 'status') ▲@elseif(request('sort') == '-status') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'city') ? '-city' : 'city' }}" class="text-dark">
-                    <span class="sub-text">Город</span>
-                    @if(request('sort') == 'city') ▲@elseif(request('sort') == '-city') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'address') ? '-address' : 'address' }}" class="text-dark">
-                    <span class="sub-text">Адрес</span>
-                    @if(request('sort') == 'address') ▲@elseif(request('sort') == '-address') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'filial_id') ? '-filial_id' : 'filial_id' }}" class="text-dark">
-                    <span class="sub-text">Филиал</span>
-                    @if(request('sort') == 'filial_id') ▲@elseif(request('sort') == '-filial_id') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col">
-                <a href="?sort={{ (request('sort') == 'total') ? '-total' : 'total' }}" class="text-dark">
-                    <span class="sub-text">Сумма</span>
-                    @if(request('sort') == 'total') ▲@elseif(request('sort') == '-total') ▼@endif
-                </a>
-            </div>
-            <div class="nk-tb-col nk-tb-col-tools text-end"></div>
-        </div>
-        @foreach($orders as $order)
-            @php
-                $lastHistory = $order->orderHistory->first();
-                $historyData = null;
-                if ($lastHistory) {
-                    $data = json_decode($lastHistory->data, true);
-                    $historyData = [
-                        'created_at' => $lastHistory->created_at,
-                        'type_localized' => __('theme.history_' . $lastHistory->type),
-                        'status_localized' => $orderStatusEnum->getAll()[$lastHistory->order_status] ?? $lastHistory->order_status,
-                        'total' => $data['order']['total'] ?? '',
-                        'products_count' => isset($data['products']) ? count($data['products']) : 0,
-                    ];
-                }
-            @endphp
-            <div class="nk-tb-item @if($order->status === $orderStatusEnum->getPendingStatus()) processing-order @elseif($order->status === $orderStatusEnum->getNewStatus()) new-order @endif"
-                 id="order-id-{{$order->id}}" data-manager-id="{{ $order->manager_id }}"
-                 data-history='@json($historyData)'>
-                <div class="nk-tb-col" style="width: 40px;">
-                    <input type="checkbox" class="order-checkbox" value="{{$order->id}}">
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>#{{$order->id}}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>
-                        @if($order->user?->type?->key_name === 'fiz')
-                            {{$order->fio}}
-                        @else
-                            {{$order->user?->profile?->organization_name}}
-                        @endif
-                    </span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$order->user?->profile?->cod_fiscal}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$order->manager?->profile?->last_name}} {{$order->manager?->profile?->first_name}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$order->created_at->format('d.m.Y')}}</span><br>
-                    <span>{{$order->created_at->format('H:i:s')}}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>{{$order->order_number}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{ __('theme.' . $order->status) }}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>{{$order->cityModel?->name}}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>{{$order->address}}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span>{{$order->filial?->address}}</span>
-                </div>
-                <div class="nk-tb-col order-details">
-                    <span style="white-space: nowrap">{{ number_format($order->total, 2, ',', ' ')}}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools order-details">
-                    <ul class="nk-tb-actions gx-2">
-                        <li>
-                            <div class="drodown">
-                                <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.excel', $order)}}"><em class="icon ni ni-download"></em><span>Скачать Excel</a></li>
-                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-file-pdf"></em><span>Просмотреть заказ</span></a></li>
-                                        <li><a href="#" class="modal-add-manager" id="modal-add-manager-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-user-add"></em><span>Назначить менеджера</span></a></li>
-                                        <li><a href="{{route('order.edit', $order)}}" data-id="{{$order->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-{{--                                        <li><a href="#" class="model-delete" id="model-delete-{{$order->id}}" data-id="{{$order->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>--}}
-{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.pdf', $order)}}"><em class="icon ni ni-printer"></em><span>Скачать PDF</span></a></li>--}}
-{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.view.invoice', $order)}}"><em class="icon ni ni-eye"></em><span>Просмотреть инвойс</span></a></li>--}}
-{{--                                        <li><a data-id="{{$order->id}}" href="{{route('order.download.invoice', $order)}}"><em class="icon ni ni-download"></em><span>Скачать инвойс</span></a></li>--}}
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .nk-tb-item -->
-        @endforeach
-    </div><!-- .nk-tb-list -->
-</div><!-- .card-inner -->
+
+<thead>
+    <tr>
+        <th class="w-10"><input type="checkbox" id="select-all-orders-head" class="w-4 h-4 rounded border-gray-300 accent-brand-600"></th>
+        <th><a href="{{ $sortUrl('id') }}" class="inline-flex items-center gap-1 hover:text-brand-600">ID {{ $sortArrow('id') }}</a></th>
+        <th><a href="{{ $sortUrl('fio') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Клиент {{ $sortArrow('fio') }}</a></th>
+        <th class="hidden xl:table-cell"><a href="{{ $sortUrl('cod_fiscal') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Ф.К. {{ $sortArrow('cod_fiscal') }}</a></th>
+        <th class="hidden lg:table-cell"><a href="{{ $sortUrl('manager_first_name') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Менеджер {{ $sortArrow('manager_first_name') }}</a></th>
+        <th><a href="{{ $sortUrl('created_at') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Дата {{ $sortArrow('created_at') }}</a></th>
+        <th><a href="{{ $sortUrl('order_number') }}" class="inline-flex items-center gap-1 hover:text-brand-600">№ заказа {{ $sortArrow('order_number') }}</a></th>
+        <th><a href="{{ $sortUrl('status') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Статус {{ $sortArrow('status') }}</a></th>
+        <th class="hidden xl:table-cell"><a href="{{ $sortUrl('city') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Город {{ $sortArrow('city') }}</a></th>
+        <th class="hidden xl:table-cell">Филиал</th>
+        <th class="text-right"><a href="{{ $sortUrl('total') }}" class="inline-flex items-center gap-1 hover:text-brand-600">Сумма {{ $sortArrow('total') }}</a></th>
+        <th class="text-right">Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($orders as $order)
+        @php
+            $st = $order->status;
+            $bt = $statusBadge[$st] ?? 'gray';
+            $label = __('theme.' . $st);
+            if (str_starts_with((string) $label, 'theme.')) { $label = $orderStatus[$st] ?? $st; }
+            try { $totalStr = number_format((float) $order->total, 2, ',', ' '); }
+            catch (\Throwable $e) { try { $totalStr = (string) $order->total; } catch (\Throwable $e2) { $totalStr = '—'; } }
+            $clientName = ($order->user?->type?->key_name === 'fiz')
+                ? ($order->fio ?: '—')
+                : ($order->user?->profile?->organization_name ?: ($order->fio ?: '—'));
+        @endphp
+        <tr id="order-id-{{ $order->id }}" data-manager-id="{{ $order->manager_id }}">
+            <td><input type="checkbox" class="order-checkbox w-4 h-4 rounded border-gray-300 accent-brand-600" value="{{ $order->id }}"></td>
+            <td class="font-semibold text-gray-900">#{{ $order->id }}</td>
+            <td>
+                <div class="font-medium text-gray-900">{{ $clientName }}</div>
+                <div class="text-xs text-gray-400 xl:hidden">{{ $order->user?->profile?->cod_fiscal }}</div>
+            </td>
+            <td class="hidden xl:table-cell">{{ $order->user?->profile?->cod_fiscal ?: '—' }}</td>
+            <td class="hidden lg:table-cell">{{ trim(($order->manager?->profile?->last_name ?? '') . ' ' . ($order->manager?->profile?->first_name ?? '')) ?: '—' }}</td>
+            <td class="whitespace-nowrap text-gray-500">
+                {{ optional($order->created_at)->format('d.m.Y') }}
+                <span class="block text-xs text-gray-400">{{ optional($order->created_at)->format('H:i') }}</span>
+            </td>
+            <td class="font-medium text-gray-700">{{ $order->order_number }}</td>
+            <td><x-badge :type="$bt">{{ $label }}</x-badge></td>
+            <td class="hidden xl:table-cell">{{ $order->cityModel?->name ?: '—' }}</td>
+            <td class="hidden xl:table-cell">{{ $order->filial?->address ?: '—' }}</td>
+            <td class="text-right font-semibold text-gray-900 whitespace-nowrap">{{ $totalStr }}</td>
+            <td class="text-right">
+                <x-table-actions :editUrl="route('order.edit', $order)">
+                    @if(Route::has('order.view.invoice'))
+                        <a href="{{ route('order.view.invoice', $order) }}" class="dropdown-item"><i data-lucide="file-text" class="w-4 h-4"></i> Просмотреть заказ</a>
+                    @endif
+                    @if(Route::has('order.download.excel'))
+                        <a href="{{ route('order.download.excel', $order) }}" class="dropdown-item"><i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Скачать Excel</a>
+                    @endif
+                    <button type="button" class="dropdown-item w-full text-left"
+                            @click="close(); $dispatch('open-assign-manager', { id: {{ $order->id }} })">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i> Назначить менеджера
+                    </button>
+                </x-table-actions>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="12">
+                <x-empty-state icon="shopping-cart" title="Заказы не найдены"
+                               text="Измените параметры фильтра — здесь появятся заказы." />
+            </td>
+        </tr>
+    @endforelse
+</tbody>

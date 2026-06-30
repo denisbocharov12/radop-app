@@ -1,99 +1,42 @@
-<!-- @@ Banner Add Modal -->
-<div class="modal fade" role="dialog" id="addModel">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-            <div class="modal-body modal-body-md">
-                <h5 class="title">Добавить баннер</h5>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="banner-create">
-                        <form action="{{ route('banner.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row gy-4">
-                                <!-- Порядок -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Порядок отображения</label>
-                                        <div class="form-control-wrap">
-                                            <input type="number" name="order" class="form-control" value="{{ old('order', 1) }}" min="1">
-                                            @error('order')
-                                            <span class="invalid">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Активность -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Статус</label>
-                                        <div class="form-control-wrap">
-                                            <select class="form-select js-select2" name="active" required>
-                                                <option value="1" selected>Активный</option>
-                                                <option value="0">Неактивный</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Ссылка -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Ссылка</label>
-                                        <div class="form-control-wrap">
-                                            <input type="text" name="link" class="form-control @error('link') error @enderror" value="{{ old('link') }}">
-                                            @error('link')
-                                            <span class="invalid">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Изображение Ru-->
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label">Изображение (JPEG) RU</label>
-                                        <div class="form-control-wrap">
-                                            <div class="form-file">
-                                                <input type="file" name="image_ru" class="form-file-input" id="bannerImageRu" accept="image/jpeg" required>
-                                                <label class="form-file-label" for="bannerImageRu">Выбрать изображение RU</label>
-                                                @error('image_ru')
-                                                <span class="invalid">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Изображение Ro-->
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label">Изображение (JPEG) RO</label>
-                                        <div class="form-control-wrap">
-                                            <div class="form-file">
-                                                <input type="file" name="image_ro" class="form-file-input" id="bannerImageRo" accept="image/jpeg" required>
-                                                <label class="form-file-label" for="bannerImageRo">Выбрать изображение RO</label>
-                                                @error('image_ro')
-                                                <span class="invalid">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Кнопка -->
-                                <div class="col-12">
-                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                        <li>
-                                            <button type="submit" class="btn btn-primary">Сохранить баннер</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </form>
-                    </div><!-- .tab-pane -->
-                </div><!-- .tab-content -->
-            </div><!-- .modal-body -->
-        </div><!-- .modal-content -->
-    </div><!-- .modal-dialog -->
-</div><!-- .modal -->
+<x-modal name="banner-create" title="Добавить баннер" maxWidth="max-w-xl">
+    <form action="{{ route('banner.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        @csrf
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+                <label class="form-label" for="bn_order">Порядок <span class="text-red-500">*</span></label>
+                <input type="number" name="order" id="bn_order" value="{{ old('order', 1) }}" min="1" class="form-input @error('order') border-red-400 @enderror">
+                @error('order')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="form-label" for="bn_active">Статус <span class="text-red-500">*</span></label>
+                <select required name="active" id="bn_active" class="form-select js-select2">
+                    <option value="1">Активный</option>
+                    <option value="0">Неактивный</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label" for="bn_link">Ссылка</label>
+                <input type="text" name="link" id="bn_link" value="{{ old('link') }}" class="form-input @error('link') border-red-400 @enderror" placeholder="/catalog/...">
+                @error('link')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="form-label" for="bannerImageRu">Изображение RU (JPEG) <span class="text-red-500">*</span></label>
+                <input type="file" name="image_ru" id="bannerImageRu" accept="image/jpeg" required
+                       class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                @error('image_ru')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="form-label" for="bannerImageRo">Изображение RO (JPEG) <span class="text-red-500">*</span></label>
+                <input type="file" name="image_ro" id="bannerImageRo" accept="image/jpeg" required
+                       class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                @error('image_ro')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+            <button type="button" class="btn-secondary" @click="$dispatch('close-modal', 'banner-create')">Отмена</button>
+            <button type="submit" class="btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Сохранить баннер</button>
+        </div>
+    </form>
+</x-modal>

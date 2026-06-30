@@ -1,83 +1,38 @@
-<div class="card-inner position-relative card-tools-toggle">
-    <div class="mb-3 p-3" style="background: #f8f9fa; border-radius: 8px; border: 1px solid #e5e7eb;">
-        <div class="mb-1" style="font-size: 15px; color: #555;">
-            1. Отметьте товары галочками или кнопкой "Выделить все".<br>
-            2. Выберите состояние.<br>
-            3. Нажмите "Изменить состояние".
-        </div>
-        <div class="d-flex align-items-center mb-2">
-            <input type="checkbox" id="select-all-products" style="margin-right: 10px;">
-            <span style="margin-right: 20px; font-weight: 500;">Выделить все товары</span>
-            <select id="bulk-condition-select" class="form-select" style="width: 200px; margin-right: 10px;">
-                <option value="">Выбрать состояние</option>
-                <option value="new">Новинка</option>
-                <option value="popular">Популярный товар</option>
-                <option value="regular">Обычный</option>
-            </select>
-            <button id="bulk-condition-update-btn" class="btn btn-primary">Изменить состояние</button>
-        </div>
+<div class="px-5 py-4 border-b border-gray-100 space-y-4">
+    {{-- Bulk condition --}}
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <label class="inline-flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">
+            <input type="checkbox" id="select-all-products" class="w-4 h-4 rounded border-gray-300 accent-brand-600">
+            Выделить все
+        </label>
+        <select id="bulk-condition-select" class="form-select no-select2 w-full sm:w-52">
+            <option value="">Изменить состояние…</option>
+            <option value="new">Новинка</option>
+            <option value="popular">Популярный товар</option>
+            <option value="regular">Обычный</option>
+        </select>
+        <button id="bulk-condition-update-btn" type="button" class="btn-primary btn-sm"><i data-lucide="check-check" class="w-4 h-4"></i> Применить</button>
     </div>
-    <form action="{{route('product.index')}}" method="GET" class="card-title-group" style="gap: 10px; align-items: center;">
-        @csrf
-        <div class="card-tools" style="flex: 1; min-width: 200px;">
-            <input type="text" name="filter[search]" style="padding: 8px" value="{{isset($query['search']) ? $query['search'] : ''}}" class="form-control {{isset($query['search']) && $query['search'] !== '' ? 'border-primary' : 'border-transparent'}} form-focus-none" placeholder="Поиск по названию, ID, бренду">
-        </div><!-- .card-tools -->
-        <div class="card-tools">
-            <select name="filter[status]" class="form-select {{isset($query['status']) && $query['status'] !== '' ? 'border-primary' : ''}}" style="min-width: 180px; padding: 8px;">
-                <option value="">Все статусы выгрузки</option>
-                <option value="1" {{isset($query['status']) && $query['status'] == '1' ? 'selected' : ''}}>Активный</option>
-                <option value="0" {{isset($query['status']) && $query['status'] == '0' ? 'selected' : ''}}>Неактивный</option>
-            </select>
-        </div><!-- .card-tools -->
-        <div class="card-tools">
-            <select name="filter[site_status]" class="form-select {{isset($query['site_status']) && $query['site_status'] !== '' ? 'border-primary' : ''}}" style="min-width: 180px; padding: 8px;">
-                <option value="">Все статусы сайта</option>
-                <option value="1" {{isset($query['site_status']) && $query['site_status'] == '1' ? 'selected' : ''}}>Активный</option>
-                <option value="0" {{isset($query['site_status']) && $query['site_status'] == '0' ? 'selected' : ''}}>Неактивный</option>
-            </select>
-        </div><!-- .card-tools -->
-        <div class="card-tools me-n1">
-            <ul class="btn-toolbar gx-1">
-                <li>
-                    <button type="submit" class="btn btn-icon btn-primary" title="Применить фильтры"><em class="icon ni ni-search"></em></button>
-                </li><!-- li -->
-                <li>
-                    <a href="{{route('product.index')}}" class="btn btn-icon btn-outline-light" title="Сбросить фильтры"><em class="icon ni ni-cross"></em></a>
-                </li><!-- li -->
-                <li class="btn-toolbar-sep"></li><!-- li -->
-                <li>
-                    <div class="toggle-wrap">
-                        <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-menu-right"></em></a>
-                        <div class="toggle-content" data-content="cardTools">
-                            <ul class="btn-toolbar gx-1">
-                                <li class="toggle-close">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a>
-                                </li><!-- li -->
-                                <li>
-                                    <div class="dropdown">
-                                        <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                            <em class="icon ni ni-setting"></em>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                            <ul class="link-check">
-                                                <li><span>Показать</span></li>
-                                                <li class="active"><a href="#">10</a></li>
-                                                <li><a href="#">20</a></li>
-                                                <li><a href="#">50</a></li>
-                                            </ul>
-                                            <ul class="link-check">
-                                                <li><span>Сортировка</span></li>
-                                                <li class="active"><a href="#">DESC</a></li>
-                                                <li><a href="#">ASC</a></li>
-                                            </ul>
-                                        </div>
-                                    </div><!-- .dropdown -->
-                                </li><!-- li -->
-                            </ul><!-- .btn-toolbar -->
-                        </div><!-- .toggle-content -->
-                    </div><!-- .toggle-wrap -->
-                </li><!-- li -->
-            </ul><!-- .btn-toolbar -->
-        </div><!-- .card-tools -->
-    </form><!-- .card-title-group -->
-</div><!-- .card-inner -->
+
+    {{-- Filters --}}
+    <form action="{{ route('product.index') }}" method="GET" class="flex flex-col lg:flex-row lg:items-center gap-3">
+        <div class="search-bar w-full lg:w-80">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" name="filter[search]" value="{{ $query['search'] ?? '' }}" placeholder="Поиск по названию, ID, бренду…">
+        </div>
+        <select name="filter[status]" class="form-select no-select2 w-full lg:w-48" onchange="this.form.submit()">
+            <option value="">Все статусы выгрузки</option>
+            <option value="1" {{ ($query['status'] ?? '') === '1' ? 'selected' : '' }}>Активный</option>
+            <option value="0" {{ ($query['status'] ?? '') === '0' ? 'selected' : '' }}>Неактивный</option>
+        </select>
+        <select name="filter[site_status]" class="form-select no-select2 w-full lg:w-48" onchange="this.form.submit()">
+            <option value="">Все статусы сайта</option>
+            <option value="1" {{ ($query['site_status'] ?? '') === '1' ? 'selected' : '' }}>Активный</option>
+            <option value="0" {{ ($query['site_status'] ?? '') === '0' ? 'selected' : '' }}>Неактивный</option>
+        </select>
+        <div class="flex items-center gap-2 lg:ml-auto">
+            <button type="submit" class="btn-primary btn-sm"><i data-lucide="filter" class="w-4 h-4"></i> Найти</button>
+            <a href="{{ route('product.index') }}" class="btn-secondary btn-sm"><i data-lucide="x" class="w-4 h-4"></i> Сбросить</a>
+        </div>
+    </form>
+</div>

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    // Order change history (admin order card)
+    'history_edited' => 'Edited',
+    'history_updated_status' => 'Status changed',
+    'history_downloaded_excel' => 'Excel downloaded',
     'product_code_copied' => 'Product code copied to clipboard',
     'no-subcategories' => 'No subcategories',
     'reset-filters' => 'Reset filters',

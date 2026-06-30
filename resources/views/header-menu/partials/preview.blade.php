@@ -9,8 +9,7 @@
         </nav>
     </div>
 @else
-    <div class="alert alert-warning">
-        <p class="mb-0">Меню неактивно или не содержит элементов</p>
+    <div class="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
+        Меню неактивно или не содержит элементов
     </div>
 @endif
-

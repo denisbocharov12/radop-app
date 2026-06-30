@@ -1,60 +1,52 @@
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Название</span></div>
-            <div class="nk-tb-col text-center"><span class="sub-text">Каталог (Цены 1C)</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Родительская категория</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Краткое описание</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
-        </div><!-- .nk-tb-item -->
-        @foreach($categories as $category)
-            <div class="nk-tb-item" id="category-id-{{$category->id}}">
-                <div class="nk-tb-col">
-                    <span>#{{$category->id}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$category->name}}</span>
-                </div>
-                <div class="nk-tb-col text-center">
-                    <a href="#" class="category-export-onec-btn" 
-                       data-category-id="{{$category->onec_id}}" 
-                       title="Экспорт с ценами 1C">
-                        @include('frontend.v1.pages.shop.parts.excel-svg')
-                    </a>
-                </div>
-                <div class="nk-tb-col tb-col-lg">
-                    <span>{{$category->parent->name ?? ''}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    @if($category->status)
-                        <span class="tb-status text-success">Активная</span>
-                    @else
-                        <span class="tb-status text-danger">Неактивная</span>
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th class="text-center">Цены 1C</th>
+        <th class="hidden lg:table-cell">Родитель</th>
+        <th>Статус</th>
+        <th class="hidden xl:table-cell">Описание</th>
+        <th class="text-right">Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($categories as $category)
+        <tr id="category-id-{{ $category->id }}">
+            <td class="font-medium text-gray-500">#{{ $category->id }}</td>
+            <td class="font-medium text-gray-900">{{ $category->name }}</td>
+            <td class="text-center">
+                <button type="button" class="btn-icon mx-auto" title="Экспорт цен 1C"
+                        @click="$dispatch('open-category-export', { id: '{{ $category->onec_id }}' })">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                </button>
+            </td>
+            <td class="hidden lg:table-cell text-gray-600">{{ $category->parent->name ?? '—' }}</td>
+            <td>
+                @if($category->status)
+                    <x-badge type="success">Активная</x-badge>
+                @else
+                    <x-badge type="danger">Неактивная</x-badge>
+                @endif
+            </td>
+            <td class="hidden xl:table-cell text-gray-500 max-w-xs truncate">{{ $category->summary ?: '—' }}</td>
+            <td class="text-right">
+                <x-table-actions :editUrl="route('category.edit', $category)"
+                                 :deleteUrl="route('category.delete') . '?category_id=' . $category->id"
+                                 :deleteName="'категорию «' . $category->name . '»'">
+                    @if(Route::has('category.sort.products.order.index'))
+                        <a href="{{ route('category.sort.products.order.index', ['category_id' => $category->onec_id]) }}" class="dropdown-item">
+                            <i data-lucide="arrow-down-up" class="w-4 h-4"></i> Сортировка товаров
+                        </a>
                     @endif
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$category->summary}}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools">
-                    <ul class="nk-tb-actions gx-2">
-                        <li>
-                            <div class="drodown">
-                                <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{route('category.edit', $category)}}" data-id="{{$category->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="{{route('category.sort.products.order.index', ['category_id' => $category->onec_id])}}" data-id="{{$category->id}}" ><em class="icon ni ni-sort"></em><span>Сортировка товаров</span></a></li>
-                                        <li><a href="#" class="category-delete" id="category-delete-{{$category->id}}" data-id="{{$category->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .nk-tb-item -->
-        @endforeach
-    </div><!-- .nk-tb-list -->
-</div><!-- .card-inner -->
+                </x-table-actions>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="7">
+                <x-empty-state icon="folder-tree" title="Категории не найдены"
+                               text="Измените запрос поиска или добавьте новую категорию." />
+            </td>
+        </tr>
+    @endforelse
+</tbody>

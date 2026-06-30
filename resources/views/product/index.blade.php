@@ -1,190 +1,97 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Товары')
+@section('breadcrumb')<span class="text-gray-700">Товары</span>@endsection
 
 @section('content')
-    <!-- content @s -->
-    <style>
-        .text-dark {
-            display: flex;
-            justify-content: center;
-        }
+    @php $bulkUrl = \Illuminate\Support\Facades\Route::has('product.products.update-conditions') ? route('product.products.update-conditions') : ''; @endphp
 
-        .nk-tb-col {
-            border-left: 1px solid;
-            border-right: 1px solid;
-        }
+    <x-page-header title="Товары" description="Всего товаров: {{ $products->total() }}">
+        <x-slot:actions>
+            @if(Route::has('product.export-descriptions'))
+                <a href="{{ route('product.export-descriptions') }}" class="btn-secondary btn-sm"><i data-lucide="download" class="w-4 h-4"></i> Экспорт описаний</a>
+            @endif
+            <button type="button" class="btn-primary btn-sm" @click="$dispatch('open-modal', 'product-create')">
+                <i data-lucide="plus" class="w-4 h-4"></i> Добавить товар
+            </button>
+        </x-slot:actions>
+    </x-page-header>
 
-        .nk-tb-col {
-            border-left: 0;
-            border-right: 1px solid #dbdfea;
-        }
-    </style>
-    <div class="nk-content mt-5">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Товары</h3>
-                                <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $products->total() }} @choice('единица|едц.', $products->total())</p>
-                                    @if(!isset($query['status']))
-                                        <p class="text-primary" style="font-size: 12px;">По умолчанию показаны товары со статусом выгрузки "Активный"</p>
-                                    @endif
-                                </div>
-                            </div><!-- .nk-block-head-content -->
-                            <div class="nk-block-head-content">
-                                <div class="toggle-wrap nk-block-tools-toggle">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                        <ul class="nk-block-tools g-3">
-                                            <li><a href="{{route('product.export-descriptions')}}" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Экспорт описаний</span></a></li>
-                                            <li class="nk-block-tools-opt">
-                                                <div class="drodown">
-                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul class="link-list-opt no-bdr">
-                                                            <li><a href="" data-bs-toggle="modal" data-bs-target="#addProduct"><span>Добавить товар</span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- .toggle-wrap -->
-                            </div><!-- .nk-block-head-content -->
-                        </div><!-- .nk-block-between -->
-                    </div><!-- .nk-block-head -->
-                   @include('v1.errors.errors')
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
 
-                    @if(!empty($productErrorsSummary['products']))
-                        <div class="nk-block">
-                            <div class="alert alert-fill alert-danger alert-icon d-flex align-items-center justify-content-between flex-wrap" style="gap: 12px;">
-                                <div class="d-flex align-items-center" style="gap: 10px;">
-                                    <em class="icon ni ni-alert-circle" style="font-size: 22px;"></em>
-                                    <div>
-                                        <strong>{{ __('product_errors.panel_heading', ['count' => $productErrorsSummary['products']], 'ru') }}</strong>
-                                        <div style="font-size: 12px;">
-                                            <span class="badge badge-dim badge-danger">{{ __('product_errors.panel_with_critical', ['count' => $productErrorsSummary['products_critical']], 'ru') }}</span>
-                                            <span class="badge badge-dim badge-warning">{{ __('product_errors.panel_with_minor', ['count' => $productErrorsSummary['products_minor']], 'ru') }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="{{ route('product.errors.index') }}" class="btn btn-white btn-dim">
-                                    <em class="icon ni ni-eye"></em><span>{{ __('product_errors.panel_details', [], 'ru') }}</span>
-                                </a>
-                            </div>
-                        </div>
-                    @endif
-
-                    <div class="nk-block">
-                        <div class="card card-bordered card-stretch">
-                            <div class="card-inner-group">
-                                @include('product.table.head')
-                                @include('product.table.content')
-                                @include('product.table.footer')
-                            </div><!-- .card-inner-group -->
-                        </div><!-- .card -->
-                    </div><!-- .nk-block -->
+    @if(!empty($productErrorsSummary['products']))
+        <div class="mb-4 flex items-center justify-between gap-3 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+            <div class="flex items-start gap-3">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+                <div class="text-sm text-red-700">
+                    <p class="font-medium">{{ __('product_errors.panel_heading', ['count' => $productErrorsSummary['products']], 'ru') }}</p>
+                    <p class="text-xs mt-1 flex flex-wrap gap-2">
+                        <span class="badge badge-danger">{{ __('product_errors.panel_with_critical', ['count' => $productErrorsSummary['products_critical']], 'ru') }}</span>
+                        <span class="badge badge-warning">{{ __('product_errors.panel_with_minor', ['count' => $productErrorsSummary['products_minor']], 'ru') }}</span>
+                    </p>
                 </div>
             </div>
+            @if(Route::has('product.errors.index'))
+                <a href="{{ route('product.errors.index') }}" class="btn-secondary btn-sm flex-shrink-0"><i data-lucide="eye" class="w-4 h-4"></i> Подробнее</a>
+            @endif
         </div>
+    @endif
+
+    @if(!isset($query['status']))
+        <p class="mb-3 text-xs text-brand-600">По умолчанию показаны товары со статусом выгрузки «Активный».</p>
+    @endif
+
+    <div class="card">
+        @include('product.table.head')
+        <div class="table-wrap">
+            <table class="data-table" id="products-table">
+                @include('product.table.content')
+            </table>
+        </div>
+        @include('product.table.footer')
     </div>
-    <!-- content @e -->
+
     @include('product.modal.create')
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2({
-                dropdownParent: $(".modal")
-            });
+<script>
+    $(function () {
+        var bulkUrl = @json($bulkUrl);
 
-            $('select[name="filter[status]"], select[name="filter[site_status]"]').on('change', function() {
-                $(this).closest('form').submit();
-            });
-
-            $('#select-all-products, #select-all-products-head').on('change', function() {
-                const checked = $(this).is(':checked');
-                $('.product-checkbox').prop('checked', checked);
-                $('#select-all-products, #select-all-products-head').prop('checked', checked);
-            });
-
-            $('#bulk-condition-update-btn').on('click', function(e) {
-                e.preventDefault();
-                const productIds = $('.product-checkbox:checked').map(function() { return $(this).val(); }).get();
-                const condition = $('#bulk-condition-select').val();
-
-                if (productIds.length === 0) {
-                    Swal.fire('Ошибка', 'Выберите хотя бы один товар', 'error');
-                    return;
-                }
-                if (!condition) {
-                    Swal.fire('Ошибка', 'Выберите состояние', 'error');
-                    return;
-                }
-
-                $.ajax({
-                    url: "{{ route('product.products.update-conditions') }}",
-                    type: "POST",
-                    data: {
-                        product_ids: productIds,
-                        condition: condition,
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function() {
-                        Swal.fire({
-                            title: 'Успех',
-                            text: 'Состояние успешно обновлено. Страница будет перезагружена...',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function(){ location.reload(); }, 1500);
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Ошибка', xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Произошла ошибка', 'error');
-                    }
-                });
-            });
+        $('#select-all-products, #select-all-products-head').on('change', function () {
+            var c = $(this).is(':checked');
+            $('.product-checkbox').prop('checked', c);
+            $('#select-all-products, #select-all-products-head').prop('checked', c);
+        });
+        $(document).on('change', '.product-checkbox', function () {
+            var all = $('.product-checkbox').length, sel = $('.product-checkbox:checked').length;
+            $('#select-all-products, #select-all-products-head').prop('checked', all > 0 && sel === all);
         });
 
-        function askToDeleteProduct(product_id, token, path)
-        {
-            Swal.fire({
-                title: 'Вы хотите удалить товар - #'+product_id+' ?',
-                showDenyButton: true,
-                showCancelButton: true,
-                cancelButtonText: 'Отмена',
-                confirmButtonText: 'Удалить',
-                denyButtonText: `Не удалять`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: path,
-                        type: "DELETE",
-                        dataType:"JSON",
-                        data:{
-                            product_id: product_id,
-                            _token: token
-                        }
-                    });
-                    Swal.fire('Товар '+product_id+' успешно удален', '', 'success');
-                    $('#product-id-'+product_id).fadeOut(1000);
-                } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление товара '+product_id, '', 'info')
-                }
-            })
-        }
-
-        $(document).on('click','.product-delete',function (e) {
+        $('#bulk-condition-update-btn').on('click', function (e) {
             e.preventDefault();
-            var product_id = $(this).data('id');
-            var token = "{{csrf_token()}}";
-            var path = "{{route('product.delete')}}";
-            askToDeleteProduct(product_id, token, path)
+            if (!bulkUrl) { Swal.fire('Недоступно', 'Функция недоступна', 'info'); return; }
+            var ids = $('.product-checkbox:checked').map(function () { return $(this).val(); }).get();
+            var condition = $('#bulk-condition-select').val();
+            if (!ids.length) { Swal.fire('Ошибка', 'Выберите хотя бы один товар', 'error'); return; }
+            if (!condition) { Swal.fire('Ошибка', 'Выберите состояние', 'error'); return; }
+            $.ajax({
+                url: bulkUrl, type: "POST",
+                data: { product_ids: ids, condition: condition, _token: "{{ csrf_token() }}" },
+                success: function () {
+                    Swal.fire({ title: 'Готово', text: 'Состояние обновлено', icon: 'success', timer: 1500, showConfirmButton: false });
+                    setTimeout(function () { location.reload(); }, 1500);
+                },
+                error: function (xhr) {
+                    Swal.fire('Ошибка', (xhr.responseJSON && xhr.responseJSON.error) ? xhr.responseJSON.error : 'Произошла ошибка', 'error');
+                }
+            });
         });
-
-    </script>
+    });
+</script>
 @endsection

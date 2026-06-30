@@ -1,30 +1,30 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content" style="margin-top: 70px">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    @php
-                        $rows = $brands->map(fn ($b) => [
-                            'id'    => $b->id,
-                            'title' => $b->title,
-                            'code'  => $b->onec_id,
-                            'image' => $b->getFirstMediaUrl(),
-                        ])->values()->all();
-                    @endphp
-                    @include('v1.sortable.list', [
-                        'rows'  => $rows,
-                        'title' => 'Редактирование сортировки каталога брендов',
-                    ])
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-page-header title="Сортировка каталога брендов"
+                   description="Перетаскивайте бренды для изменения порядка в каталоге." />
+
+    @include('v1.errors.errors')
+
+    <x-card>
+        @if($brands->count() > 0)
+            <ul id="sortable-contents" class="space-y-2">
+                @foreach($brands as $brand)
+                    <li class="sortable-item flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 cursor-grab hover:border-brand-300 hover:bg-brand-50/40"
+                        data-id="{{ $brand->id }}">
+                        <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        <span class="font-medium">{{ $brand->title }}</span>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <x-empty-state icon="tag" title="Нет брендов" text="Нет брендов для сортировки." />
+        @endif
+    </x-card>
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    @include('v1.sortable.scripts', ['saveUrl' => route('brand.sort.catalog.order')])
+    @include('v2.partials.sortable-script', [
+        'orderUrl' => route('brand.sort.catalog.order'),
+    ])
 @endsection

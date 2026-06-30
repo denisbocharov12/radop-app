@@ -21,10 +21,10 @@ final class AttributeController extends Controller
     }
     public function index()
     {
-        $attributes = $this->attributeRepository->getAllPaginatedWithFilters();
+        $attributeItems = $this->attributeRepository->getAllPaginatedWithFilters();
 
         return view('attribute.index', compact([
-            'attributes',
+            'attributeItems',
         ]));
     }
 

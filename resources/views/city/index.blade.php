@@ -1,100 +1,41 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Города')
+@section('breadcrumb')<span class="text-gray-700">Города</span>@endsection
 
 @section('content')
-    <!-- content @s -->
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Города</h3>
-                                <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $cities->total() }} Едц.</p>
-                                </div>
-                            </div><!-- .nk-block-head-content -->
-                            <div class="nk-block-head-content">
-                                <div class="toggle-wrap nk-block-tools-toggle">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                        <ul class="nk-block-tools g-3">
-                                            <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
-                                            <li class="nk-block-tools-opt">
-                                                <div class="drodown">
-                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul class="link-list-opt no-bdr">
-                                                            <li><a href="" data-bs-toggle="modal" data-bs-target="#addCity"><span>Добавить город</span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- .toggle-wrap -->
-                            </div><!-- .nk-block-head-content -->
-                        </div><!-- .nk-block-between -->
-                    </div><!-- .nk-block-head -->
-                   @include('v1.errors.errors')
-                    <div class="nk-block">
-                        <div class="card card-bordered card-stretch">
-                            <div class="card-inner-group">
-                                @include('city.table.head')
-                                @include('city.table.content')
-                                @include('city.table.footer')
-                            </div><!-- .card-inner-group -->
-                        </div><!-- .card -->
-                    </div><!-- .nk-block -->
-                </div>
+    <x-page-header title="Города" description="Всего городов: {{ $cities->total() }}">
+        <x-slot:actions>
+            <button type="button" class="btn-primary btn-sm" @click="$dispatch('open-modal', 'city-create')">
+                <i data-lucide="plus" class="w-4 h-4"></i> Добавить город
+            </button>
+        </x-slot:actions>
+    </x-page-header>
+
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
+
+    <div class="card">
+        <form action="{{ route('city.index') }}" method="GET" class="flex flex-col sm:flex-row sm:items-center gap-3 px-5 py-4 border-b border-gray-100">
+            <div class="search-bar w-full sm:w-72">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" name="filter[search]" value="{{ request('filter.search') }}" placeholder="Поиск по названию…">
             </div>
+            <div class="sm:ml-auto flex items-center gap-2">
+                <button type="submit" class="btn-primary btn-sm"><i data-lucide="filter" class="w-4 h-4"></i> Найти</button>
+                <a href="{{ route('city.index') }}" class="btn-secondary btn-sm"><i data-lucide="x" class="w-4 h-4"></i> Сбросить</a>
+            </div>
+        </form>
+        <div class="table-wrap">
+            <table class="data-table">
+                @include('city.table.content')
+            </table>
         </div>
+        <x-pager :paginator="$cities" />
     </div>
-    <!-- content @e -->
+
     @include('city.modal.create')
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2({
-                dropdownParent: $(".modal")
-            });
-        });
-        function askToDeleteCity(city_id, token, path)
-        {
-            Swal.fire({
-                title: 'Вы хотите удалить город - #'+city_id+' ?',
-                showDenyButton: true,
-                showCancelButton: true,
-                cancelButtonText: 'Отмена',
-                confirmButtonText: 'Удалить',
-                denyButtonText: `Не удалять`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: path,
-                        type: "DELETE",
-                        dataType:"JSON",
-                        data:{
-                            city_id: city_id,
-                            _token: token
-                        }
-                    });
-                    Swal.fire('Город '+city_id+' успешно удалён', '', 'success');
-                    $('#city-id-'+city_id).fadeOut(1000);
-                } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление города '+city_id, '', 'info')
-                }
-            })
-        }
-
-        $(document).on('click','.city-delete',function (e) {
-            e.preventDefault();
-            var city_id = $(this).data('id');
-            var token = "{{csrf_token()}}";
-            var path = "{{route('city.delete')}}";
-            askToDeleteCity(city_id, token, path)
-        });
-    </script>
 @endsection

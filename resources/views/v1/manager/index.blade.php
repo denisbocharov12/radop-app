@@ -1,116 +1,82 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <!-- content @s -->
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Менеджеры</h3>
-                                <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $managers->total() }} @choice('Менеджер|Менеджеров', $managers->total())</p>
+<div x-data="{ createOpen: false }">
+    <x-page-header title="Менеджеры"
+                   description="Всего: {{ $managers->total() }} @choice('менеджер|менеджеров', $managers->total())">
+        <x-slot:actions>
+            <button type="button" class="btn-primary btn-sm" @click="createOpen = true">
+                <i data-lucide="plus" class="w-4 h-4"></i> Добавить менеджера
+            </button>
+        </x-slot:actions>
+    </x-page-header>
+
+    @include('v1.errors.errors')
+    @if(session('success'))
+        <x-alert type="success" class="mb-4">{{ session('success') }}</x-alert>
+    @endif
+
+    <x-card :padding="false">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100 text-sm">
+                <thead class="bg-gray-50">
+                    <tr class="text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                        <th class="px-5 py-3">#</th>
+                        <th class="px-5 py-3">Фамилия имя</th>
+                        <th class="px-5 py-3">Email</th>
+                        <th class="px-5 py-3">Телефон</th>
+                        <th class="px-5 py-3">Статус</th>
+                        <th class="px-5 py-3 text-right">Действия</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($managers as $manager)
+                        <tr id="model-id-{{ $manager->id }}" class="hover:bg-brand-50/40 transition-colors">
+                            <td class="px-5 py-3 text-gray-500">{{ $manager->id }}</td>
+                            <td class="px-5 py-3 font-medium text-gray-800">{{ $manager?->profile->last_name }} {{ $manager?->profile->first_name }}</td>
+                            <td class="px-5 py-3 text-gray-600">{{ $manager->email }}</td>
+                            <td class="px-5 py-3 text-gray-600">{{ $manager?->profile->phone }}</td>
+                            <td class="px-5 py-3">
+                                @if($manager->status)
+                                    <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">Активный</span>
+                                @else
+                                    <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">Неактивный</span>
+                                @endif
+                            </td>
+                            <td class="px-5 py-3">
+                                <div class="flex items-center justify-end gap-1">
+                                    <a href="{{ route('manager.list.show', $manager->id) }}" class="btn-secondary btn-sm" title="Просмотр">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </a>
+                                    <a href="{{ route('manager.list.edit.form', $manager->id) }}" class="btn-secondary btn-sm" title="Редактировать">
+                                        <i data-lucide="pencil" class="w-4 h-4"></i>
+                                    </a>
+                                    <a href="#" data-id="{{ $manager->id }}" class="btn-danger btn-sm model-delete" title="Удалить">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </a>
                                 </div>
-                            </div><!-- .nk-block-head-content -->
-                            <div class="nk-block-head-content">
-                                <div class="toggle-wrap nk-block-tools-toggle">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
-                                       data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                        <ul class="nk-block-tools g-3">
-                                            <li class="nk-block-tools-opt">
-                                                <div class="drodown">
-                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
-                                                       data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul class="link-list-opt no-bdr">
-                                                            <li><a href="" data-bs-toggle="modal"
-                                                                   data-bs-target="#addModel"><span>Добавить менеджера</span></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- .toggle-wrap -->
-                            </div><!-- .nk-block-head-content -->
-                        </div><!-- .nk-block-between -->
-                    </div><!-- .nk-block-head -->
-                    @include('v1.errors.errors')
-                    <div class="nk-block">
-                        <div class="card card-bordered card-stretch">
-                            <div class="card-inner-group">
-                                <div class="card-inner p-0">
-                                    <div class="nk-tb-list nk-tb-ulist">
-                                        <div class="nk-tb-item nk-tb-head">
-                                            <div class="nk-tb-col"><span class="sub-text">#</span></div>
-                                            <div class="nk-tb-col"><span class="sub-text">Фамилия имя</span></div>
-                                            <div class="nk-tb-col"><span class="sub-text">Email</span></div>
-                                            <div class="nk-tb-col"><span class="sub-text">Телефон</span></div>
-                                            <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
-                                            <div class="nk-tb-col nk-tb-col-tools text-end"><span class="sub-text">Действия</span></div>
-                                        </div><!-- .nk-tb-item -->
-                                        @foreach($managers as $manager)
-                                            <div class="nk-tb-item" id="model-id-{{$manager->id}}">
-                                                <div class="nk-tb-col">
-                                                    <span>{{$manager->id}}</span>
-                                                </div>
-                                                <div class="nk-tb-col">
-                                                    <span>{{$manager?->profile->last_name}} {{$manager?->profile->first_name}}</span>
-                                                </div>
-                                                <div class="nk-tb-col">
-                                                    <span>{{$manager->email}}</span>
-                                                </div>
-                                                <div class="nk-tb-col">
-                                                    <span>{{$manager?->profile->phone}}</span>
-                                                </div>
-                                                <div class="nk-tb-col tb-col-lg">
-                                                    @if($manager->status)
-                                                        <span class="tb-status text-success">Активный</span>
-                                                    @else
-                                                        <span class="tb-status text-danger">Неактивный</span>
-                                                    @endif
-                                                </div>
-                                                <div class="nk-tb-col nk-tb-col-tools">
-                                                    <ul class="nk-tb-actions gx-1">
-                                                        <li>
-                                                            <div class="drodown">
-                                                                <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <ul class="link-list-opt no-bdr">
-                                                                        <li><a href="{{ route('manager.list.show', $manager->id) }}"><em class="icon ni ni-eye"></em><span>Просмотр</span></a></li>
-                                                                        <li><a href="{{ route('manager.list.edit.form', $manager->id) }}"><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                                                        <li><a href="#" data-id="{{$manager->id}}" class="model-delete"><em class="icon ni ni-trash"></em><span>Удалить</span></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div><!-- .nk-tb-item -->
-                                        @endforeach
-                                    </div><!-- .nk-tb-list -->
-                                </div><!-- .card-inner -->
-                                <div class="card-inner">
-                                    @if(session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-                                    {{ $managers->links() }}
-                                </div><!-- .card-inner -->
-                            </div><!-- .card-inner-group -->
-                        </div><!-- .card -->
-                    </div><!-- .nk-block -->
-                </div>
-            </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-5 py-8">
+                                <x-empty-state icon="users" title="Менеджеры не найдены" text="Добавьте первого менеджера." />
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-    </div>
-    <!-- content @e -->
+
+        @if($managers->hasPages())
+            <div class="border-t border-gray-100 px-5 py-3">
+                <x-pager :paginator="$managers" />
+            </div>
+        @endif
+    </x-card>
+
     @include('v1.manager.modal.create')
+</div>
 @endsection
 
 @section('scripts')
@@ -149,17 +115,5 @@
             var path = "{{route('manager.list.delete')}}";
             askToDeleteModel(model_id, token, path)
         });
-
-        $(document).on('click', '.model-edit', function (e) {
-            e.preventDefault();
-            var model_id = $(this).data('id');
-            $.get("{{ url('manager-list') }}/" + model_id + "/edit", function(data) {
-                $('#edit_id').val(data.id);
-                $('#edit_name').val(data.name);
-                $('#edit_email').val(data.email);
-                $('#edit_password').val('');
-                $('#editModel').modal('show');
-            });
-        });
     </script>
-@endsection 
+@endsection

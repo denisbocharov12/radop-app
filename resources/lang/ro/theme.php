@@ -438,6 +438,10 @@ return array (
     'limited_stock_contact' => '📞 Pentru a comanda sau a verifica stocul, contactați managerul nostru: +373 79 782 112',
     'account_text' => 'Cabinetul meu',
     'order_repeated_successfully' => 'Puteți repeta comanda sau plăsa comandă fără modificări.',
+    // Order change history (admin order card)
+    'history_edited' => 'Modificat',
+    'history_updated_status' => 'Status modificat',
+    'history_downloaded_excel' => 'Excel descărcat',
     'search_history' => 'Căutări recente',
     'search_history_clear_all' => 'Șterge tot',
     'search_history_empty' => 'Căutări recente sunt goale',

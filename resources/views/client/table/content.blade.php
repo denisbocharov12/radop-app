@@ -1,77 +1,62 @@
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Имя/Фамилия</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Фискальный код</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Менеджер</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Телефон</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Город</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
-        </div><!-- .nk-tb-item -->
-        @foreach($users as $user)
-            <div class="nk-tb-item" id="model-id-{{$user->id}}" style="background-color: {{$user->deleted_at !== null ? 'rgba(255,0,0,0.4);color: black;' : ''}}">
-                <div class="nk-tb-col">
-                    <span>#{{$user->id}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <div class="user-card">
-                        <div class="user-name">
-                            <span class="tb-lead">@if($user?->type?->key_name === 'iur') {{$user->profile->organization_name}} @else {{$user->profile->first_name}} {{$user->profile->last_name}} @endif</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-tb-col">
-                    <div class="user-card">
-                        <div class="user-name">
-                            <span class="tb-lead">{{$user?->profile->cod_fiscal}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-tb-col">
-                    <div class="user-card">
-                        <div class="user-name">
-                            <span class="tb-lead">{{$user?->manager?->profile->first_name}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-tb-col tb-col-lg">
-                    @if($user->status)
-                        <span class="tb-status text-success">Активный</span>
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Клиент</th>
+        <th>Фискальный код</th>
+        <th>Менеджер</th>
+        <th>Статус</th>
+        <th class="hidden lg:table-cell">Телефон</th>
+        <th class="hidden lg:table-cell">Город</th>
+        <th class="text-right">Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($users as $user)
+        <tr @if($user->deleted_at !== null) class="bg-red-50/60" @endif>
+            <td class="font-medium text-gray-500">#{{ $user->id }}</td>
+            <td>
+                <div class="font-medium text-gray-900">
+                    @if($user?->type?->key_name === 'iur')
+                        {{ $user?->profile?->organization_name ?: '—' }}
                     @else
-                        <span class="tb-status text-danger">Неактивный</span>
+                        {{ trim(($user?->profile?->first_name ?? '') . ' ' . ($user?->profile?->last_name ?? '')) ?: '—' }}
                     @endif
                 </div>
-                <div class="nk-tb-col tb-col-lg">
-                    <span>{{$user->profile->phone}}</span>
-                </div>
-                <div class="nk-tb-col tb-col-lg">
-                    <span>{{$user?->city?->name}}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools">
-                    <ul class="nk-tb-actions gx-2">
-                        <li>
-                            <div class="drodown">
-                                <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        @if($user->deleted_at !== null)
-                                            <li><a href="{{route('client.restore', ['user_id' => $user->id])}}"><em class="icon ni ni-arrow-left-fill-c"></em><span>Восстановить</span></a></li>
-                                        @else
-                                            <li><a href="{{route('client.show', $user)}}"><em class="icon ni ni-eye"></em><span>Просмотреть</span></a></li>
-                                            <li><a href="{{route('client.edit', $user)}}" data-id="{{$user->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                            <li><a href="#" class="model-delete" id="model-delete-{{$user->id}}" data-id="{{$user->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                        @endif
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .nk-tb-item -->
-        @endforeach
-    </div><!-- .nk-tb-list -->
-</div><!-- .card-inner -->
+                <div class="text-xs text-gray-400">{{ $user->email }}</div>
+            </td>
+            <td>{{ $user?->profile?->cod_fiscal ?: '—' }}</td>
+            <td>{{ $user?->manager?->profile?->first_name ?: '—' }}</td>
+            <td>
+                @if($user->deleted_at !== null)
+                    <x-badge type="gray">Удалён</x-badge>
+                @elseif($user->status)
+                    <x-badge type="success">Активный</x-badge>
+                @else
+                    <x-badge type="danger">Неактивный</x-badge>
+                @endif
+            </td>
+            <td class="hidden lg:table-cell">{{ $user?->profile?->phone ?: '—' }}</td>
+            <td class="hidden lg:table-cell">{{ $user?->city?->name ?: '—' }}</td>
+            <td class="text-right">
+                @if($user->deleted_at !== null)
+                    <a href="{{ route('client.restore', ['user_id' => $user->id]) }}" class="btn-secondary btn-sm">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Восстановить
+                    </a>
+                @else
+                    <x-table-actions
+                        :showUrl="route('client.show', $user)"
+                        :editUrl="route('client.edit', $user)"
+                        :deleteUrl="route('client.delete') . '?user_id=' . $user->id"
+                        :deleteName="'клиента #' . $user->id" />
+                @endif
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="8">
+                <x-empty-state icon="users" title="Клиенты не найдены"
+                               text="Измените параметры фильтра или добавьте нового клиента." />
+            </td>
+        </tr>
+    @endforelse
+</tbody>

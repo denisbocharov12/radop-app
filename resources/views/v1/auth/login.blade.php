@@ -1,113 +1,69 @@
 <!DOCTYPE html>
-<html lang="{{ App::currentLocale() }}" class="js">
-@include('v1.head.head')
-<body class="nk-body bg-white npc-general pg-auth">
-<div class="nk-app-root">
-    <!-- main @s -->
-    <div class="nk-main ">
-        <!-- wrap @s -->
-        <div class="nk-wrap nk-wrap-nosidebar">
-            <!-- content @s -->
-            <div class="nk-content ">
-                <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
-                    <div class="brand-logo pb-4 text-center">
-                        <a href="#" class="logo-link">
-                            <img src="{{asset('/v1/dashboard/assets')}}/images/logo_colored_radop.svg" alt="Radop" style="width: 160px">
-                        </a>
-                    </div>
-                    <div class="card card-bordered">
-                        <div class="card-inner card-inner-lg">
-                            <div class="nk-block-head">
-                                <div class="nk-block-head-content">
-                                    <h4 class="nk-block-title">Вход</h4>
-                                </div>
-                            </div>
-                            <form method="POST" action="{{ route('auth') }}">
-                                @csrf
-                                <div class="form-group">
-                                    <div class="form-label-group">
-                                        <label class="form-label" for="username">Email или Login</label>
-                                        @error('username')
-                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Enter your email address or username">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-label-group">
-                                        <label class="form-label" for="password">Пароль</label>
-                                        <a class="link link-primary link-sm" href="#">Забыли пароль?</a>
-                                    </div>
-                                    <div class="form-control-wrap">
-                                        <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
-                                            <em class="passcode-icon icon-show icon ni ni-eye"></em>
-                                            <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
-                                        </a>
-                                        <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter your passcode">
-                                        @error('password')
-                                        <span id="fv-full-name-error" class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-lg btn-primary btn-block">Войти</button>
-                                    @error('role_permission')
-                                        <span id="fv-full-name-error" style="text-align: center;
-                                                                            padding: 5px 15px;
-                                                                            background-color: #ec4e5d;
-                                                                            color: white;
-                                                                            display: flex;
-                                                                            align-items: center;
-                                                                            justify-content: center;
-                                                                            border-radius: 5px;
-                                                                            margin-top: 10px;" class="invalid"
-                                        >
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                    @error('auth')
-                                        <span id="fv-full-name-error" style="text-align: center;
-                                                                            padding: 5px 15px;
-                                                                            background-color: #ec4e5d;
-                                                                            color: white;
-                                                                            display: flex;
-                                                                            align-items: center;
-                                                                            justify-content: center;
-                                                                            border-radius: 5px;
-                                                                            margin-top: 10px;" class="invalid"
-                                        >
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="nk-footer nk-auth-footer-full">
-                    <div class="container wide-lg">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <div class="nk-block-content text-center text-lg-center">
-                                    <p class="text-soft">&copy; 2025 RĂDOP. All Rights Reserved.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<html lang="{{ App::currentLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <title>Вход — Radop</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+    @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+</head>
+<body class="font-sans bg-gray-50 text-gray-700 antialiased min-h-screen flex flex-col">
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            {{-- Brand --}}
+            <div class="flex justify-center mb-6">
+                <img src="{{ asset('/v1/dashboard/assets/images/logo_colored_radop.svg') }}" alt="Radop" class="h-20 w-auto">
             </div>
-            <!-- wrap @e -->
+
+            <div class="card p-8">
+                <h1 class="text-xl font-bold text-gray-900">Вход</h1>
+                <p class="text-sm text-gray-500 mt-1 mb-6">Панель управления Radop</p>
+
+                @if($errors->has('auth') || $errors->has('role_permission'))
+                    <x-alert type="error" class="mb-4">
+                        {{ $errors->first('auth') ?: $errors->first('role_permission') }}
+                    </x-alert>
+                @endif
+
+                <form method="POST" action="{{ route('auth') }}" class="space-y-4" x-data="{ show: false }">
+                    @csrf
+                    <div>
+                        <label class="form-label" for="username">Email или Login</label>
+                        <input type="text" id="username" name="username" value="{{ old('username') }}" autofocus
+                               class="form-input @error('username') border-red-400 @enderror"
+                               placeholder="Введите email или логин">
+                        @error('username')<p class="form-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="form-label !mb-0" for="password">Пароль</label>
+                            <a href="#" class="text-sm text-brand-600 hover:text-brand-700">Забыли пароль?</a>
+                        </div>
+                        <div class="relative">
+                            <input :type="show ? 'text' : 'password'" id="password" name="password"
+                                   class="form-input pr-10 @error('password') border-red-400 @enderror"
+                                   placeholder="Введите пароль">
+                            <button type="button" @click="show = !show" tabindex="-1"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+                                <span x-show="!show"><i data-lucide="eye" class="w-4 h-4"></i></span>
+                                <span x-show="show" style="display:none;"><i data-lucide="eye-off" class="w-4 h-4"></i></span>
+                            </button>
+                        </div>
+                        @error('password')<p class="form-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full justify-center">
+                        <i data-lucide="log-in" class="w-4 h-4"></i> Войти
+                    </button>
+                </form>
+            </div>
+
+            <p class="text-center text-xs text-gray-400 mt-6">&copy; {{ date('Y') }} RĂDOP. All Rights Reserved.</p>
         </div>
-        <!-- content @e -->
-    </div>
-    <!-- main @e -->
-</div>
-<!-- modals -->
-@yield('modals')
-<!-- modals -->>
-<!-- JavaScript -->
-@include('v1.scripts.scripts')
+    </main>
 </body>
 </html>

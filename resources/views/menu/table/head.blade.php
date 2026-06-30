@@ -1,29 +1,8 @@
-<form action="{{route('admin.menus.index')}}" method="GET" class="card-inner position-relative card-tools-toggle">
-    @csrf
-    <div class="card-title-group">
-        <div class="card-tools">
-            <input type="text" name="search" style="padding: 0" value="{{request('search')}}" class="form-control border-transparent form-focus-none" placeholder="Поиск по коду или названию...">
-        </div><!-- .card-tools -->
-        <div class="card-tools me-n1">
-            <ul class="btn-toolbar gx-1">
-                <li>
-                    <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
-                </li><!-- li -->
-                <li class="btn-toolbar-sep"></li><!-- li -->
-                <li>
-                    <div class="toggle-wrap">
-                        <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-menu-right"></em></a>
-                        <div class="toggle-content" data-content="cardTools">
-                            <ul class="btn-toolbar gx-1">
-                                <li class="toggle-close">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a>
-                                </li><!-- li -->
-                            </ul><!-- .btn-toolbar -->
-                        </div><!-- .toggle-content -->
-                    </div><!-- .toggle-wrap -->
-                </li><!-- li -->
-            </ul><!-- .btn-toolbar -->
-        </div><!-- .card-tools -->
-    </div><!-- .card-title-group -->
-</form><!-- .card-inner -->
-
+<form action="{{ route('admin.menus.index') }}" method="GET" class="border-b border-gray-100 p-4">
+    <div class="relative max-w-md">
+        <i data-lucide="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"></i>
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="Поиск по коду или названию..."
+               class="block w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+    </div>
+</form>
