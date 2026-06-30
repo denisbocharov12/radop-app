@@ -8,7 +8,12 @@
 @endsection
 
 @section('content')
-    @php $sortItems = collect($products)->map(fn ($p) => ['id' => $p->id, 'label' => $p->title]); @endphp
+    @php $sortItems = collect($products)->map(fn ($p) => [
+        'id'    => $p->id,
+        'label' => $p->title,
+        'code'  => $p->onec_id,
+        'image' => $p->getFirstMediaUrl('products', 'thumb') ?: $p->getFirstMediaUrl('products'),
+    ]); @endphp
     <x-sortable-list :items="$sortItems" title="Сортировка «Featured» товаров" :backUrl="route('product.index')" />
 @endsection
 

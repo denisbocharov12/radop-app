@@ -9,7 +9,7 @@
 
 @section('content')
     @php $sortItems = collect($banners)->map(fn ($b) => ['id' => $b->id, 'label' => 'Баннер #' . $b->id . ($b->link ? ' — ' . $b->link : '')]); @endphp
-    <x-sortable-list :items="$sortItems" title="Сортировка баннеров" :backUrl="route('banner.index')" />
+    <x-sortable-list :items="$sortItems" title="Сортировка баннеров" :backUrl="route('banner.index')" :showImage="false" :showCode="false" />
 @endsection
 
 @section('scripts')

@@ -9,7 +9,7 @@
 
 @section('content')
     @php $sortItems = collect($cities)->map(fn ($c) => ['id' => $c->id, 'label' => $c->name]); @endphp
-    <x-sortable-list :items="$sortItems" title="Сортировка городов" :backUrl="route('city.index')" />
+    <x-sortable-list :items="$sortItems" title="Сортировка городов" :backUrl="route('city.index')" :showImage="false" :showCode="false" />
 @endsection
 
 @section('scripts')

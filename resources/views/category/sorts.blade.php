@@ -8,8 +8,12 @@
 @endsection
 
 @section('content')
-    @php $sortItems = collect($categories)->map(fn ($c) => ['id' => $c->id, 'label' => $c->name]); @endphp
-    <x-sortable-list :items="$sortItems" title="Сортировка категорий" :backUrl="route('category.index')" />
+    @php $sortItems = collect($categories)->map(fn ($c) => [
+        'id'    => $c->id,
+        'label' => $c->name . ($c->parent_id === null ? ' (Родительская)' : ''),
+        'code'  => $c->onec_id,
+    ]); @endphp
+    <x-sortable-list :items="$sortItems" title="Сортировка категорий" :backUrl="route('category.index')" :showImage="false" />
 @endsection
 
 @section('scripts')
