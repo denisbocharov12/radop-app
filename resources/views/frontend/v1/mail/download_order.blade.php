@@ -140,7 +140,7 @@
             </p>
         </div>
         <div class="logo">
-            <img width="120px" src="https://floradelivery.md/wp-content/uploads/2025/03/radop_logo.jpg" />
+            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo.svg" />
         </div>
     </div>
 
@@ -215,7 +215,7 @@
     <div class="footer">
         Puteti urmari starea comenzii în cabinetul personal.<br>
         Pentru orice informatii sau modificari ale comenzii, contactati
-        <a href="tel:022781212">022 78 12 12</a>,
+        <a href="tel:022782112">022 78 21 12</a>,
         <a href="tel:+37379782112">+373 79 78 21 12</a><br>
         Program de lucru: Luni – Vineri: 08:00 – 17:00
     </div>
