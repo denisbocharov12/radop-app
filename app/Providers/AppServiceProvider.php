@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //$this->app['request']->server->set('HTTPS', 'on');
+        $this->app['request']->server->set('HTTPS', 'on');
 
         // Share the product-error summary with the admin sidebar so the
         // "Товары" menu item can show a badge with the number of broken
