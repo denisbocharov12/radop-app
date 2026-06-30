@@ -1,15 +1,15 @@
 @php
     $hasChildren = $item->children && $item->children->isNotEmpty();
-    
+
     $linkRaw = $item->getRawOriginal('link');
     $titleRaw = $item->getRawOriginal('title');
-    
-    $itemLink = is_array(json_decode($linkRaw, true)) 
-        ? $item->getTranslation('link', app()->getLocale()) 
+
+    $itemLink = is_array(json_decode($linkRaw, true))
+        ? $item->getTranslation('link', app()->getLocale())
         : ($linkRaw ?? '');
-    
-    $itemTitle = is_array(json_decode($titleRaw, true)) 
-        ? $item->getTranslation('title', app()->getLocale()) 
+
+    $itemTitle = is_array(json_decode($titleRaw, true))
+        ? $item->getTranslation('title', app()->getLocale())
         : ($titleRaw ?? '');
 @endphp
 <li class="menu-preview-item @if($hasChildren) has-children @endif">
@@ -20,7 +20,7 @@
             @endif
             <span>{{ $itemTitle }}</span>
             @if($hasChildren)
-                <em class="icon ni ni-chevron-down"></em>
+                <i data-lucide="chevron-down" class="w-3 h-3"></i>
             @endif
         </a>
     @else
@@ -30,7 +30,7 @@
             @endif
             <span>{{ $itemTitle }}</span>
             @if($hasChildren)
-                <em class="icon ni ni-chevron-down"></em>
+                <i data-lucide="chevron-down" class="w-3 h-3"></i>
             @endif
         </span>
     @endif
@@ -42,4 +42,3 @@
         </ul>
     @endif
 </li>
-

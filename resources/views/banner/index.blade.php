@@ -1,101 +1,31 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Баннеры')
+@section('breadcrumb')<span class="text-gray-700">Баннеры</span>@endsection
 
 @section('content')
-    <!-- content @s -->
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Баннеры</h3>
-                                <div class="nk-block-des text-soft">
-                                    <p>Количество: {{ $banners->total() }} Едц.</p>
-                                </div>
-                            </div><!-- .nk-block-head-content -->
-                            <div class="nk-block-head-content">
-                                <div class="toggle-wrap nk-block-tools-toggle">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
-                                    <div class="toggle-expand-content" data-content="pageMenu">
-                                        <ul class="nk-block-tools g-3">
-{{--                                            <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>--}}
-                                            <li class="nk-block-tools-opt">
-                                                <div class="drodown">
-                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <ul class="link-list-opt no-bdr">
-                                                            <li><a href="" data-bs-toggle="modal" data-bs-target="#addModel"><span>Добавить баннер</span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- .toggle-wrap -->
-                            </div><!-- .nk-block-head-content -->
-                        </div><!-- .nk-block-between -->
-                    </div><!-- .nk-block-head -->
-                   @include('v1.errors.errors')
-                    <div class="nk-block">
-                        <div class="card card-bordered card-stretch">
-                            <div class="card-inner-group">
-                                @include('banner.table.content')
-                                @include('banner.table.footer')
-                            </div><!-- .card-inner-group -->
-                        </div><!-- .card -->
-                    </div><!-- .nk-block -->
-                </div>
-            </div>
+    <x-page-header title="Баннеры" description="Всего баннеров: {{ $banners->total() }}">
+        <x-slot:actions>
+            <button type="button" class="btn-primary btn-sm" @click="$dispatch('open-modal', 'banner-create')">
+                <i data-lucide="plus" class="w-4 h-4"></i> Добавить баннер
+            </button>
+        </x-slot:actions>
+    </x-page-header>
+
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
+
+    <div class="card">
+        <div class="table-wrap">
+            <table class="data-table">
+                @include('banner.table.content')
+            </table>
         </div>
+        <x-pager :paginator="$banners" />
     </div>
-    <!-- content @e -->
+
     @include('banner.modal.create')
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2({
-                dropdownParent: $(".modal")
-            });
-        });
-
-        function askToDeleteBanner(banner_id, token, path)
-        {
-            Swal.fire({
-                title: 'Вы хотите удалить баннер - #'+banner_id+' ?',
-                showDenyButton: true,
-                showCancelButton: true,
-                cancelButtonText: 'Отмена',
-                confirmButtonText: 'Удалить',
-                denyButtonText: `Не удалять`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: path,
-                        type: "DELETE",
-                        dataType:"JSON",
-                        data:{
-                            banner_id: banner_id,
-                            _token: token
-                        }
-                    });
-                    Swal.fire('Баннер '+banner_id+' успешно удален', '', 'success');
-                    $('#brand-id-'+banner_id).fadeOut(1000);
-                } else if (result.isDenied) {
-                    Swal.fire('Вы отменили удаление баннера '+banner_id, '', 'info')
-                }
-            })
-        }
-
-        $(document).on('click','.banner-delete',function (e) {
-            e.preventDefault();
-            var banner_id = $(this).data('id');
-            var token = "{{csrf_token()}}";
-            var path = "{{route('banner.delete')}}";
-            askToDeleteBanner(banner_id, token, path)
-        });
-
-    </script>
 @endsection

@@ -1,30 +1,18 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content" style="margin-top: 70px">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    @php
-                        $rows = $brands->map(fn ($b) => [
-                            'id'    => $b->id,
-                            'title' => $b->title,
-                            'code'  => $b->onec_id,
-                            'image' => $b->getFirstMediaUrl(),
-                        ])->values()->all();
-                    @endphp
-                    @include('v1.sortable.list', [
-                        'rows'  => $rows,
-                        'title' => 'Редактирование сортировки каталога брендов',
-                    ])
-                </div>
-            </div>
-        </div>
-    </div>
+    @php $sortItems = collect($brands)->map(fn ($b) => [
+        'id'    => $b->id,
+        'label' => $b->title,
+        'code'  => $b->onec_id,
+        'image' => $b->getFirstMediaUrl(),
+    ]); @endphp
+    <x-sortable-list :items="$sortItems"
+                     title="Сортировка каталога брендов"
+                     description="Порядок брендов в каталоге. Перетащите строки или измените «Порядок» вручную, затем «Сохранить»."
+                     :backUrl="route('brand.index')" />
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    @include('v1.sortable.scripts', ['saveUrl' => route('brand.sort.catalog.order')])
+    @include('v2.partials.sortable-script', ['orderUrl' => route('brand.sort.catalog.order')])
 @endsection

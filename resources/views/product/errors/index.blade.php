@@ -1,182 +1,143 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
+    <x-page-header :title="__('product_errors.page_title')"
+                   :description="__('product_errors.subtitle', ['rows' => $summary['rows'], 'products' => $affectedProducts])">
+        <x-slot:actions>
+            <a href="{{ route('product.index') }}" class="btn-secondary btn-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> {{ __('product_errors.back_to_products') }}
+            </a>
+            <form action="{{ route('product.errors.rescan') }}" method="POST"
+                  onsubmit="this.querySelector('button').disabled=true;this.querySelector('button span').innerHTML='{{ __('product_errors.rescanning') }}';">
+                @csrf
+                <button type="submit" class="btn-primary btn-sm">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> <span>{{ __('product_errors.rescan') }}</span>
+                </button>
+            </form>
+        </x-slot:actions>
+    </x-page-header>
 
-                    <div class="nk-block-head nk-block-head-sm">
-                        <div class="nk-block-between">
-                            <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">{{ __('product_errors.page_title') }}</h3>
-                                <div class="nk-block-des text-soft">
-                                    <p>{{ __('product_errors.subtitle', ['rows' => $summary['rows'], 'products' => $affectedProducts]) }}</p>
-                                </div>
-                            </div>
-                            <div class="nk-block-head-content">
-                                <ul class="nk-block-tools g-3">
-                                    <li>
-                                        <a href="{{ route('product.index') }}" class="btn btn-white btn-outline-light">
-                                            <em class="icon ni ni-arrow-left"></em><span>{{ __('product_errors.back_to_products') }}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('product.errors.rescan') }}" method="POST" onsubmit="this.querySelector('button').disabled=true;this.querySelector('button span').innerHTML='{{ __('product_errors.rescanning') }}';">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary">
-                                                <em class="icon ni ni-reload"></em><span>{{ __('product_errors.rescan') }}</span>
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+    @if(session('success'))
+        <x-alert type="success" class="mb-4">{{ session('success') }}</x-alert>
+    @endif
 
-                    @if(session('success'))
-                        <div class="alert alert-success alert-icon"><em class="icon ni ni-check-circle"></em> {{ session('success') }}</div>
-                    @endif
-
-                    {{-- Summary cards --}}
-                    <div class="row g-gs mb-3">
-                        <div class="col-sm-4">
-                            <div class="card card-bordered">
-                                <div class="card-inner">
-                                    <div class="card-title-group align-start mb-0">
-                                        <div class="card-title"><h6 class="subtitle">{{ __('product_errors.card_critical') }}</h6></div>
-                                    </div>
-                                    <div class="card-amount"><span class="amount text-danger">{{ $summary['products_critical'] }}</span></div>
-                                    <div class="text-soft" style="font-size: 12px;">{{ __('product_errors.card_critical_hint') }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card card-bordered">
-                                <div class="card-inner">
-                                    <div class="card-title-group align-start mb-0">
-                                        <div class="card-title"><h6 class="subtitle">{{ __('product_errors.card_minor') }}</h6></div>
-                                    </div>
-                                    <div class="card-amount"><span class="amount text-warning">{{ $summary['products_minor'] }}</span></div>
-                                    <div class="text-soft" style="font-size: 12px;">{{ __('product_errors.card_minor_hint') }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="card card-bordered">
-                                <div class="card-inner">
-                                    <div class="card-title-group align-start mb-0">
-                                        <div class="card-title"><h6 class="subtitle">{{ __('product_errors.card_affected') }}</h6></div>
-                                    </div>
-                                    <div class="card-amount"><span class="amount">{{ $affectedProducts }}</span></div>
-                                    <div class="text-soft" style="font-size: 12px;">{{ __('product_errors.card_affected_hint') }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Filters --}}
-                    <div class="card card-bordered mb-3">
-                        <div class="card-inner">
-                            <form action="{{ route('product.errors.index') }}" method="GET" class="row g-2 align-items-end">
-                                <div class="col-md-3">
-                                    <label class="form-label">{{ __('product_errors.filter_severity') }}</label>
-                                    <select name="severity" class="form-select">
-                                        <option value="">{{ __('product_errors.filter_all') }}</option>
-                                        <option value="critical" {{ request('severity') === 'critical' ? 'selected' : '' }}>{{ __('product_errors.severities.critical') }}</option>
-                                        <option value="minor" {{ request('severity') === 'minor' ? 'selected' : '' }}>{{ __('product_errors.severities.minor') }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">{{ __('product_errors.filter_type') }}</label>
-                                    <select name="type" class="form-select">
-                                        <option value="">{{ __('product_errors.filter_all') }}</option>
-                                        @foreach($types as $typeKey => $typeLabel)
-                                            <option value="{{ $typeKey }}" {{ request('type') === $typeKey ? 'selected' : '' }}>{{ $typeLabel }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">{{ __('product_errors.filter_search') }}</label>
-                                    <input type="text" name="search" class="form-control" value="{{ e((string) request('search', '')) }}" placeholder="{{ __('product_errors.filter_search_ph') }}">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label d-block">&nbsp;</label>
-                                    <div class="custom-control custom-switch mt-1" title="{{ __('product_errors.filter_in_stock_hint') }}">
-                                        {{-- Hidden field so unchecking submits in_stock=0 (the switch defaults to ON). --}}
-                                        <input type="hidden" name="in_stock" value="0">
-                                        <input type="checkbox" class="custom-control-input" id="filter_in_stock" name="in_stock" value="1" {{ ($inStock ?? true) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="filter_in_stock">{{ __('product_errors.filter_in_stock') }}</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-primary btn-block"><em class="icon ni ni-search"></em><span>{{ __('product_errors.filter_apply') }}</span></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    {{-- Table --}}
-                    <div class="nk-block">
-                        <div class="card card-bordered card-stretch">
-                            <div class="card-inner-group">
-                                <div class="card-inner p-0">
-                                    <table class="table table-tranx">
-                                        <thead>
-                                            <tr class="tb-tnx-head">
-                                                <th><span>{{ __('product_errors.col_id') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_product') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_code') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_severity') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_type') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_message') }}</span></th>
-                                                <th><span>{{ __('product_errors.col_action') }}</span></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse($errors as $error)
-                                                <tr class="tb-tnx-item">
-                                                    <td><span class="tb-tnx-id">#{{ $error->product_id ?? '—' }}</span></td>
-                                                    <td><span>{{ $error->product_title ?: '—' }}</span></td>
-                                                    <td><span class="text-soft">{{ $error->product_onec_id }}</span></td>
-                                                    <td>
-                                                        @if($error->isCritical())
-                                                            <span class="badge badge-dim badge-danger">{{ $error->severityLabel() }}</span>
-                                                        @else
-                                                            <span class="badge badge-dim badge-warning">{{ $error->severityLabel() }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td><span>{{ $error->typeLabel() }}</span></td>
-                                                    <td><span class="text-soft">{{ $error->localizedMessage() }}</span></td>
-                                                    <td>
-                                                        @if($error->product_id)
-                                                            <a href="{{ route('product.edit', $error->product_id) }}" class="btn btn-sm btn-outline-primary">
-                                                                <em class="icon ni ni-edit"></em><span>{{ __('product_errors.open') }}</span>
-                                                            </a>
-                                                        @else
-                                                            <span class="text-soft">—</span>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="7" class="text-center p-4 text-soft">{{ __('product_errors.empty') }}</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-                                </div>
-                                @if($errors->hasPages())
-                                    <div class="card-inner">
-                                        {{ $errors->links() }}
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+    {{-- Summary cards --}}
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-5">
+        <x-card>
+            <h6 class="text-xs font-medium uppercase tracking-wide text-gray-500">{{ __('product_errors.card_critical') }}</h6>
+            <div class="mt-1 text-3xl font-bold text-red-600">{{ $summary['products_critical'] }}</div>
+            <p class="mt-1 text-xs text-gray-400">{{ __('product_errors.card_critical_hint') }}</p>
+        </x-card>
+        <x-card>
+            <h6 class="text-xs font-medium uppercase tracking-wide text-gray-500">{{ __('product_errors.card_minor') }}</h6>
+            <div class="mt-1 text-3xl font-bold text-amber-500">{{ $summary['products_minor'] }}</div>
+            <p class="mt-1 text-xs text-gray-400">{{ __('product_errors.card_minor_hint') }}</p>
+        </x-card>
+        <x-card>
+            <h6 class="text-xs font-medium uppercase tracking-wide text-gray-500">{{ __('product_errors.card_affected') }}</h6>
+            <div class="mt-1 text-3xl font-bold text-gray-800">{{ $affectedProducts }}</div>
+            <p class="mt-1 text-xs text-gray-400">{{ __('product_errors.card_affected_hint') }}</p>
+        </x-card>
     </div>
+
+    {{-- Filters --}}
+    <x-card class="mb-5">
+        <form action="{{ route('product.errors.index') }}" method="GET"
+              class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-end">
+            <div class="md:col-span-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('product_errors.filter_severity') }}</label>
+                <select name="severity" class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+                    <option value="">{{ __('product_errors.filter_all') }}</option>
+                    <option value="critical" {{ request('severity') === 'critical' ? 'selected' : '' }}>{{ __('product_errors.severities.critical') }}</option>
+                    <option value="minor" {{ request('severity') === 'minor' ? 'selected' : '' }}>{{ __('product_errors.severities.minor') }}</option>
+                </select>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('product_errors.filter_type') }}</label>
+                <select name="type" class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+                    <option value="">{{ __('product_errors.filter_all') }}</option>
+                    @foreach($types as $typeKey => $typeLabel)
+                        <option value="{{ $typeKey }}" {{ request('type') === $typeKey ? 'selected' : '' }}>{{ $typeLabel }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="md:col-span-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('product_errors.filter_search') }}</label>
+                <input type="text" name="search" value="{{ e((string) request('search', '')) }}"
+                       placeholder="{{ __('product_errors.filter_search_ph') }}"
+                       class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+                <label class="flex items-center gap-2 cursor-pointer" title="{{ __('product_errors.filter_in_stock_hint') }}">
+                    <input type="checkbox" id="filter_in_stock" name="in_stock" value="1"
+                           {{ request()->boolean('in_stock') ? 'checked' : '' }}
+                           class="rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                    <span class="text-sm text-gray-700">{{ __('product_errors.filter_in_stock') }}</span>
+                </label>
+            </div>
+            <div class="md:col-span-2">
+                <button type="submit" class="btn-primary w-full justify-center">
+                    <i data-lucide="search" class="w-4 h-4"></i> {{ __('product_errors.filter_apply') }}
+                </button>
+            </div>
+        </form>
+    </x-card>
+
+    {{-- Table --}}
+    <x-card :padding="false">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100 text-sm">
+                <thead class="bg-gray-50">
+                    <tr class="text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                        <th class="px-5 py-3">{{ __('product_errors.col_id') }}</th>
+                        <th class="px-5 py-3">{{ __('product_errors.col_product') }}</th>
+                        <th class="px-5 py-3">{{ __('product_errors.col_code') }}</th>
+                        <th class="px-5 py-3">{{ __('product_errors.col_severity') }}</th>
+                        <th class="px-5 py-3">{{ __('product_errors.col_type') }}</th>
+                        <th class="px-5 py-3">{{ __('product_errors.col_message') }}</th>
+                        <th class="px-5 py-3 text-right">{{ __('product_errors.col_action') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($errors as $error)
+                        <tr class="hover:bg-brand-50/40 transition-colors">
+                            <td class="px-5 py-3 font-medium text-gray-800">#{{ $error->product_id ?? '—' }}</td>
+                            <td class="px-5 py-3 text-gray-700">{{ $error->product_title ?: '—' }}</td>
+                            <td class="px-5 py-3 text-gray-500">{{ $error->product_onec_id }}</td>
+                            <td class="px-5 py-3">
+                                @if($error->isCritical())
+                                    <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">{{ $error->severityLabel() }}</span>
+                                @else
+                                    <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">{{ $error->severityLabel() }}</span>
+                                @endif
+                            </td>
+                            <td class="px-5 py-3 text-gray-700">{{ $error->typeLabel() }}</td>
+                            <td class="px-5 py-3 text-gray-500">{{ $error->localizedMessage() }}</td>
+                            <td class="px-5 py-3 text-right">
+                                @if($error->product_id)
+                                    <a href="{{ route('product.edit', $error->product_id) }}" class="btn-secondary btn-sm">
+                                        <i data-lucide="pencil" class="w-4 h-4"></i> {{ __('product_errors.open') }}
+                                    </a>
+                                @else
+                                    <span class="text-gray-400">—</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-5 py-8">
+                                <x-empty-state icon="check-circle" title="{{ __('product_errors.empty') }}" />
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if($errors->hasPages())
+            <div class="border-t border-gray-100 px-5 py-3">
+                <x-pager :paginator="$errors" />
+            </div>
+        @endif
+    </x-card>
 @endsection

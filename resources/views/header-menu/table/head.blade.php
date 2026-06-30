@@ -1,29 +1,9 @@
-<form action="{{route('admin.header-menus.index')}}" method="GET" class="card-inner position-relative card-tools-toggle">
-    @csrf
-    <div class="card-title-group">
-        <div class="card-tools">
-            <input type="text" name="search" style="padding: 0" value="{{request('search')}}" class="form-control border-transparent form-focus-none" placeholder="Поиск по коду или названию...">
-        </div>
-        <div class="card-tools me-n1">
-            <ul class="btn-toolbar gx-1">
-                <li>
-                    <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
-                </li>
-                <li class="btn-toolbar-sep"></li>
-                <li>
-                    <div class="toggle-wrap">
-                        <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-menu-right"></em></a>
-                        <div class="toggle-content" data-content="cardTools">
-                            <ul class="btn-toolbar gx-1">
-                                <li class="toggle-close">
-                                    <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</form>
-
+<div class="border-b border-gray-200 p-4">
+    <form action="{{ route('admin.header-menus.index') }}" method="GET" class="relative max-w-md">
+        <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">
+            <i data-lucide="search" class="w-4 h-4"></i>
+        </span>
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Поиск по коду или названию..."
+               class="block w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+    </form>
+</div>

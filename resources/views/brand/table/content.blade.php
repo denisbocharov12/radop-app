@@ -1,55 +1,44 @@
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Название</span></div>
-            <div class="nk-tb-col text-center"><span class="sub-text">Каталог (Цены 1C)</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Описание</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
-        </div><!-- .nk-tb-item -->
-        @foreach($brands as $brand)
-            <div class="nk-tb-item" id="brand-id-{{$brand->id}}">
-                <div class="nk-tb-col">
-                    <span>#{{$brand->id}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$brand->title}}</span>
-                </div>
-                <div class="nk-tb-col text-center">
-                    <a href="#" class="brand-export-onec-btn" 
-                       data-brand-id="{{$brand->id}}" 
-                       title="Экспорт с ценами 1C">
-                        @include('frontend.v1.pages.shop.parts.excel-svg')
-                    </a>
-                </div>
-                <div class="nk-tb-col">
-                    @if($brand->status)
-                        <span class="tb-status text-success">Активная</span>
-                    @else
-                        <span class="tb-status text-danger">Неактивная</span>
-                    @endif
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$brand->description}}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools">
-                    <ul class="nk-tb-actions gx-2">
-                        <li>
-                            <div class="drodown">
-                                <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{route('brand.edit', $brand)}}" data-id="{{$brand->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="#" class="model-delete" id="model-delete-{{$brand->id}}" data-id="{{$brand->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .nk-tb-item -->
-        @endforeach
-    </div><!-- .nk-tb-list -->
-</div><!-- .card-inner -->
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th class="text-center">Цены 1C</th>
+        <th>Статус</th>
+        <th class="hidden lg:table-cell">Описание</th>
+        <th class="text-right">Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($brands as $brand)
+        <tr id="brand-id-{{ $brand->id }}">
+            <td class="font-medium text-gray-500">#{{ $brand->id }}</td>
+            <td class="font-medium text-gray-900">{{ $brand->title }}</td>
+            <td class="text-center">
+                <button type="button" class="btn-icon mx-auto" title="Экспорт цен 1C"
+                        @click="$dispatch('open-brand-export', { id: '{{ $brand->id }}' })">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                </button>
+            </td>
+            <td>
+                @if($brand->status)
+                    <x-badge type="success">Активный</x-badge>
+                @else
+                    <x-badge type="danger">Неактивный</x-badge>
+                @endif
+            </td>
+            <td class="hidden lg:table-cell text-gray-500 max-w-md truncate">{{ $brand->description ?: '—' }}</td>
+            <td class="text-right">
+                <x-table-actions :editUrl="route('brand.edit', $brand)"
+                                 :deleteUrl="route('brand.delete') . '?brand_id=' . $brand->id"
+                                 :deleteName="'бренд «' . $brand->title . '»'" />
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6">
+                <x-empty-state icon="award" title="Бренды не найдены"
+                               text="Измените запрос поиска или добавьте новый бренд." />
+            </td>
+        </tr>
+    @endforelse
+</tbody>

@@ -1,57 +1,41 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    <div class="nk-block nk-block-lg">
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Сортировка категорий по колонкам</h4>
-                                <p class="text-muted">«Каталог» — корневые категории на странице shop/catalog. Для подкатегорий выберите родительскую категорию из списка, нажмите «Загрузить», распределите по колонкам и сохраните.</p>
-                            </div>
-                        </div>
-                        <div class="row g-gs mt-3">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-inner">
-                                        <h6 class="title mb-3">Контекст</h6>
-                                        <div class="form-group">
-                                            <select class="form-select" id="parent-category-select">
-                                                <option value="">Каталог — корневые категории</option>
-                                                @foreach($rootCategories as $root)
-                                                    @if($root->children_count > 0)
-                                                        <option value="{{ $root->id }}">{{ $root->name }} — подкатегории ({{ $root->children_count }})</option>
-                                                        @foreach($root->children as $child)
-                                                            @if(isset($child->children_count) && $child->children_count > 0)
-                                                                <option value="{{ $child->id }}">{{ $root->name }} » {{ $child->name }} — подкатегории ({{ $child->children_count }})</option>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group mt-3">
-                                            <button type="button" class="btn btn-primary w-100" id="load-column-sort-btn">
-                                                <em class="icon ni ni-refresh"></em> Загрузить
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div id="column-sort-container" style="display: none;">
-                                    <div class="card">
-                                        <div class="card-inner" id="column-sort-inner">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <x-page-header title="Сортировка категорий по колонкам"
+                   description="«Каталог» — корневые категории на странице shop/catalog. Для подкатегорий выберите родительскую категорию, нажмите «Загрузить», распределите по колонкам и сохраните." />
+
+    @include('v1.errors.errors')
+
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div class="lg:col-span-1">
+            <x-card>
+                <h6 class="text-sm font-semibold text-gray-900 mb-3">Контекст</h6>
+                <div class="mb-3">
+                    <select class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
+                            id="parent-category-select">
+                        <option value="">Каталог — корневые категории</option>
+                        @foreach($rootCategories as $root)
+                            @if($root->children_count > 0)
+                                <option value="{{ $root->id }}">{{ $root->name }} — подкатегории ({{ $root->children_count }})</option>
+                                @foreach($root->children as $child)
+                                    @if(isset($child->children_count) && $child->children_count > 0)
+                                        <option value="{{ $child->id }}">{{ $root->name }} » {{ $child->name }} — подкатегории ({{ $child->children_count }})</option>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
+                <button type="button" class="btn-primary w-full justify-center" id="load-column-sort-btn">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Загрузить
+                </button>
+            </x-card>
+        </div>
+        <div class="lg:col-span-2">
+            <div id="column-sort-container" style="display: none;">
+                <x-card>
+                    <div id="column-sort-inner"></div>
+                </x-card>
             </div>
         </div>
     </div>
@@ -61,22 +45,19 @@
             min-height: 200px;
             padding: 10px;
             border: 2px dashed #e5e9f2;
-            border-radius: 4px;
+            border-radius: 8px;
         }
         .column-sort-item {
             background: #fff;
             padding: 10px;
             margin-bottom: 8px;
             border: 1px solid #e5e9f2;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: move;
+            font-size: 0.875rem;
         }
-        .column-sort-item:hover {
-            background: #f8f9fa;
-        }
-        .column-sort-item.sortable-ghost {
-            opacity: 0.4;
-        }
+        .column-sort-item:hover { background: #f8fafc; }
+        .column-sort-item.sortable-ghost { opacity: 0.4; }
     </style>
 @endsection
 
@@ -95,20 +76,13 @@
             const updateUrl = '{{ route('category.sort.columns.update') }}';
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
             const msg = window.columnSortMessages || {};
-            function setColumnSortToastrOptions() {
-                if (typeof toastr === 'undefined') return;
-                toastr.options = Object.assign({}, toastr.options || {}, {
-                    closeButton: false,
-                    progressBar: true,
-                    positionClass: 'toast-top-right',
-                    timeOut: 5000,
-                    extendedTimeOut: 1000,
-                    toastClass: 'toastr',
-                    showEasing: 'swing',
-                    hideEasing: 'linear',
-                    showMethod: 'fadeIn',
-                    hideMethod: 'fadeOut'
-                });
+
+            function notify(text, type) {
+                if (window.Alpine && window.Alpine.store('toast')) {
+                    window.Alpine.store('toast').add(text, type === 'error' || type === 'warning' ? 'error' : 'success');
+                } else {
+                    alert(text);
+                }
             }
 
             const parentSelect = document.getElementById('parent-category-select');
@@ -131,8 +105,9 @@
             }
 
             function loadColumnSortData() {
-                inner.innerHTML = '<div class="text-center p-4"><div class="spinner-border"></div></div>';
+                inner.innerHTML = '<div class="flex justify-center p-6"><i data-lucide="loader-circle" class="w-6 h-6 animate-spin text-brand-500"></i></div>';
                 container.style.display = 'block';
+                if (window.lucide) window.lucide.createIcons();
                 const url = dataUrl + (getParentIdParam() ? '?parent_id=' + getParentIdParam() : '');
                 fetch(url, {
                     method: 'GET',
@@ -142,46 +117,34 @@
                 .then(function(data) {
                     if (data.success && data.items && data.items.length > 0) {
                         inner.innerHTML = `
-                            <h6 class="title mb-3">Распределение по колонкам</h6>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-inner">
-                                            <h6 class="title">Колонка 1</h6>
-                                            <div id="column-1" class="column-sort-list" data-column="1"></div>
-                                        </div>
-                                    </div>
+                            <h6 class="text-sm font-semibold text-gray-900 mb-4">Распределение по колонкам</h6>
+                            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                <div class="rounded-lg bg-gray-50 p-3">
+                                    <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Колонка 1</h6>
+                                    <div id="column-1" class="column-sort-list" data-column="1"></div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-inner">
-                                            <h6 class="title">Колонка 2</h6>
-                                            <div id="column-2" class="column-sort-list" data-column="2"></div>
-                                        </div>
-                                    </div>
+                                <div class="rounded-lg bg-gray-50 p-3">
+                                    <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Колонка 2</h6>
+                                    <div id="column-2" class="column-sort-list" data-column="2"></div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card bg-light">
-                                        <div class="card-inner">
-                                            <h6 class="title">Колонка 3</h6>
-                                            <div id="column-3" class="column-sort-list" data-column="3"></div>
-                                        </div>
-                                    </div>
+                                <div class="rounded-lg bg-gray-50 p-3">
+                                    <h6 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Колонка 3</h6>
+                                    <div id="column-3" class="column-sort-list" data-column="3"></div>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-primary" id="save-column-sort">Сохранить сортировку</button>
+                            <div class="mt-4">
+                                <button type="button" class="btn-primary" id="save-column-sort">Сохранить сортировку</button>
                             </div>
                         `;
                         renderColumnSortItems(data.items);
                         initColumnSortables();
                         document.getElementById('save-column-sort').addEventListener('click', saveColumnSort);
                     } else {
-                        inner.innerHTML = '<div class="alert alert-warning">Нет категорий для отображения.</div>';
+                        inner.innerHTML = '<div class="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">Нет категорий для отображения.</div>';
                     }
                 })
                 .catch(function() {
-                    inner.innerHTML = '<div class="alert alert-danger">Ошибка загрузки данных.</div>';
+                    inner.innerHTML = '<div class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">Ошибка загрузки данных.</div>';
                 });
             }
 
@@ -202,10 +165,11 @@
                         itemEl.dataset.itemId = item.id;
                         itemEl.dataset.column = col;
                         itemEl.dataset.columnOrder = item.column_order || 0;
-                        itemEl.innerHTML = '<div class="d-flex align-items-center"><em class="icon ni ni-menu me-2"></em><span>' + (item.name || '') + '</span></div>';
+                        itemEl.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i><span>' + (item.name || '') + '</span></div>';
                         columnEl.appendChild(itemEl);
                     }
                 });
+                if (window.lucide) window.lucide.createIcons();
             }
 
             function initColumnSortables() {
@@ -252,10 +216,7 @@
                     }
                 });
                 if (items.length === 0) {
-                    if (typeof toastr !== 'undefined') {
-                        setColumnSortToastrOptions();
-                        toastr.warning('Нет элементов для сохранения');
-                    } else alert('Нет элементов для сохранения');
+                    notify('Нет элементов для сохранения', 'warning');
                     return;
                 }
                 var saveBtn = document.getElementById('save-column-sort');
@@ -278,23 +239,14 @@
                 .then(function(data) {
                     if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Сохранить сортировку'; }
                     if (data.success) {
-                        if (typeof toastr !== 'undefined') {
-                            setColumnSortToastrOptions();
-                            toastr.success(data.message || msg.success);
-                        } else alert(data.message || msg.success);
+                        notify(data.message || msg.success, 'success');
                     } else {
-                        if (typeof toastr !== 'undefined') {
-                            setColumnSortToastrOptions();
-                            toastr.error(data.message || msg.error);
-                        } else alert(data.message || msg.error);
+                        notify(data.message || msg.error, 'error');
                     }
                 })
                 .catch(function() {
                     if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Сохранить сортировку'; }
-                    if (typeof toastr !== 'undefined') {
-                        setColumnSortToastrOptions();
-                        toastr.error(msg.saveError);
-                    } else alert(msg.saveError);
+                    notify(msg.saveError, 'error');
                 });
             }
         });

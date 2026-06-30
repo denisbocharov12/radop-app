@@ -20,7 +20,7 @@
             @endif
             <span>{{ $itemTitle }}</span>
             @if($hasChildren)
-                <em class="icon ni ni-chevron-down"></em>
+                <i data-lucide="chevron-down" class="w-3 h-3"></i>
             @endif
         </a>
     @else
@@ -30,7 +30,7 @@
             @endif
             <span>{{ $itemTitle }}</span>
             @if($hasChildren)
-                <em class="icon ni ni-chevron-down"></em>
+                <i data-lucide="chevron-down" class="w-3 h-3"></i>
             @endif
         </span>
     @endif

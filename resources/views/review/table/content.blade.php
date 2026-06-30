@@ -1,88 +1,63 @@
-<div class="card-inner p-0">
-    <div class="nk-tb-list nk-tb-ulist">
-        <div class="nk-tb-item nk-tb-head">
-            <div class="nk-tb-col"><span class="sub-text">ID</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Пользователь</span></div>
-            <div class="nk-tb-col tb-col-lg"><span class="sub-text">Товар</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Оценка</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Текст</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Статус</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Подтвержден</span></div>
-            <div class="nk-tb-col"><span class="sub-text">Дата</span></div>
-            <div class="nk-tb-col nk-tb-col-tools text-end">
-            </div>
-        </div><!-- .nk-tb-item -->
-        @foreach($reviews as $review)
-            <div class="nk-tb-item" id="review-id-{{$review->id}}">
-                <div class="nk-tb-col">
-                    <span>#{{$review->id}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>
-                        @if($review->user)
-                            @if($review->user->type?->key_name === 'iur')
-                                {{ $review->user->profile->organization_name ?? 'Удален' }}
-                            @else
-                                {{ $review->user->profile->first_name ?? '' }} {{ $review->user->profile->last_name ?? '' }}
-                            @endif
-                        @else
-                            Удален
-                        @endif
-                    </span>
-                </div>
-                <div class="nk-tb-col tb-col-lg">
-                    <span>{{$review->product->title ?? 'Удален'}}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <span class="badge badge-dim bg-warning">
-                        <em class="icon ni ni-star-fill"></em> {{$review->score}}
-                    </span>
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{ Str::limit($review->text, 50) }}</span>
-                </div>
-                <div class="nk-tb-col">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input review-status-toggle" 
-                               id="review-status-{{$review->id}}" 
-                               data-id="{{$review->id}}"
-                               {{$review->status ? 'checked' : ''}}>
-                        <label class="custom-control-label" for="review-status-{{$review->id}}">
-                            @if($review->status)
-                                <span class="badge badge-dim bg-success">Одобрен</span>
-                            @else
-                                <span class="badge badge-dim bg-warning">На модерации</span>
-                            @endif
-                        </label>
-                    </div>
-                </div>
-                <div class="nk-tb-col">
-                    @if($review->is_verified)
-                        <span class="badge badge-dim bg-success"><em class="icon ni ni-check-circle"></em> Да</span>
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Пользователь</th>
+        <th class="hidden lg:table-cell">Товар</th>
+        <th>Оценка</th>
+        <th class="hidden xl:table-cell">Текст</th>
+        <th>Статус</th>
+        <th class="hidden lg:table-cell">Подтверждён</th>
+        <th class="hidden lg:table-cell">Дата</th>
+        <th class="text-right">Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($reviews as $review)
+        <tr id="review-id-{{ $review->id }}">
+            <td class="font-medium text-gray-500">#{{ $review->id }}</td>
+            <td class="font-medium text-gray-900">
+                @if($review->user)
+                    @if($review->user->type?->key_name === 'iur')
+                        {{ $review->user->profile->organization_name ?? 'Удалён' }}
                     @else
-                        <span class="badge badge-dim bg-secondary">Нет</span>
+                        {{ trim(($review->user->profile->first_name ?? '') . ' ' . ($review->user->profile->last_name ?? '')) ?: 'Удалён' }}
                     @endif
-                </div>
-                <div class="nk-tb-col">
-                    <span>{{$review->created_at->format('d.m.Y H:i')}}</span>
-                </div>
-                <div class="nk-tb-col nk-tb-col-tools">
-                    <ul class="nk-tb-actions gx-2">
-                        <li>
-                            <div class="drodown">
-                                <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <ul class="link-list-opt no-bdr">
-                                        <li><a href="{{route('review.edit', $review)}}" data-id="{{$review->id}}" ><em class="icon ni ni-edit"></em><span>Редактировать</span></a></li>
-                                        <li><a href="#" class="review-delete" id="review-delete-{{$review->id}}" data-id="{{$review->id}}"><em class="icon ni ni-delete"></em><span>Удалить</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- .nk-tb-item -->
-        @endforeach
-    </div><!-- .nk-tb-list -->
-</div><!-- .card-inner -->
-
+                @else
+                    <span class="text-gray-400">Удалён</span>
+                @endif
+            </td>
+            <td class="hidden lg:table-cell">{{ $review->product->title ?? '—' }}</td>
+            <td>
+                <span class="inline-flex items-center gap-1 text-amber-600 font-medium">
+                    <i data-lucide="star" class="w-3.5 h-3.5"></i> {{ $review->score }}
+                </span>
+            </td>
+            <td class="hidden xl:table-cell text-gray-500 max-w-xs truncate">{{ \Illuminate\Support\Str::limit($review->text, 50) }}</td>
+            <td>
+                <label class="relative inline-flex items-center cursor-pointer" title="{{ $review->status ? 'Одобрен' : 'На модерации' }}">
+                    <input type="checkbox" class="review-status-toggle sr-only peer" data-id="{{ $review->id }}" {{ $review->status ? 'checked' : '' }}>
+                    <div class="w-9 h-5 bg-gray-200 rounded-full peer-checked:bg-brand-600 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                </label>
+            </td>
+            <td class="hidden lg:table-cell">
+                @if($review->is_verified)
+                    <x-badge type="success">Да</x-badge>
+                @else
+                    <x-badge type="gray">Нет</x-badge>
+                @endif
+            </td>
+            <td class="hidden lg:table-cell text-gray-500 whitespace-nowrap">{{ optional($review->created_at)->format('d.m.Y H:i') }}</td>
+            <td class="text-right">
+                <x-table-actions :editUrl="route('review.edit', $review)"
+                                 :deleteUrl="route('review.delete') . '?review_id=' . $review->id"
+                                 :deleteName="'отзыв #' . $review->id" />
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="9">
+                <x-empty-state icon="message-square" title="Отзывов нет" text="Отзывы клиентов появятся здесь." />
+            </td>
+        </tr>
+    @endforelse
+</tbody>

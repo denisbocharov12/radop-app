@@ -1,33 +1,21 @@
-<div class="row g-4">
-    <div class="col-lg-6">
-        <div class="form-group">
-            <label class="form-label" for="start_date">Дата начала периода</label>
-            <div class="form-control-wrap">
-                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}" required>
-            </div>
-        </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+        <label class="form-label" for="start_date">Дата начала периода</label>
+        <input type="date" class="form-input" id="start_date" name="start_date" value="{{ request('start_date') }}" required>
     </div>
-    <div class="col-lg-6">
-        <div class="form-group">
-            <label class="form-label" for="end_date">Дата окончания периода</label>
-            <div class="form-control-wrap">
-                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}" required>
-            </div>
-        </div>
+    <div>
+        <label class="form-label" for="end_date">Дата окончания периода</label>
+        <input type="date" class="form-input" id="end_date" name="end_date" value="{{ request('end_date') }}" required>
     </div>
-    <div class="col-lg-12">
-        <div class="form-group">
-            <label class="form-label" for="category_id">Категория (необязательно)</label>
-            <div class="form-control-wrap">
-                <select class="form-select js-select2" id="category_id" name="category_id">
-                    <option value="">Все категории</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ $category->getTranslation('name', app()->getLocale()) }} ({{ $category->onec_id }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+    <div class="sm:col-span-2">
+        <label class="form-label" for="category_id">Категория (необязательно)</label>
+        <select class="form-select js-select2" id="category_id" name="category_id">
+            <option value="">Все категории</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->getTranslation('name', app()->getLocale()) }} ({{ $category->onec_id }})
+                </option>
+            @endforeach
+        </select>
     </div>
-</div> 
+</div>

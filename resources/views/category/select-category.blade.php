@@ -1,86 +1,56 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
 
 @section('content')
-    <div class="nk-content" style="margin-top: 70px">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    <div class="nk-block nk-block-lg">
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Выбор категории для сортировки товаров</h4>
-                                <div class="nk-block-des text-soft">
-                                    <p>Выберите категорию из списка для настройки сортировки товаров</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-inner">
-                                <form method="GET" action="{{ route('category.sort.products.order.index') }}">
-                                    <div class="row g-3">
-                                        <div class="col-md-8">
-                                            <div class="form-group">
-                                                <label class="form-label" for="category_id">Выберите категорию</label>
-                                                <select class="form-select js-select2" id="category_id" name="category_id" required>
-                                                    <option value="">-- Выберите категорию --</option>
-                                                    @foreach($categories as $category)
-                                                        <option value="{{ $category->onec_id }}"
-                                                                @if(request('category_id') == $category->onec_id) selected @endif>
-                                                            {{ $category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="form-label">&nbsp;</label>
-                                                <button type="submit" class="btn btn-primary d-block w-100">
-                                                    <em class="icon ni ni-sort"></em>
-                                                    Перейти к сортировке
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+    <x-page-header title="Выбор категории для сортировки товаров"
+                   description="Выберите категорию из списка для настройки сортировки товаров." />
 
-                        @if(request('category_id'))
-                            <div class="card mt-4">
-                                <div class="card-inner">
-                                    <div class="nk-block-head">
-                                        <div class="nk-block-head-content">
-                                            <h5 class="title">Товары в выбранной категории</h5>
-                                        </div>
-                                    </div>
-                                    @if($selectedCategory && $selectedCategory->products->count() > 0)
-                                        <div class="alert alert-info">
-                                            <p>В категории "{{ $selectedCategory->name }}" найдено {{ $selectedCategory->products->count() }} товаров.</p>
-                                             <a href="{{ route('category.sort.products.order.index', ['category_id' => $selectedCategory->onec_id]) }}" class="btn btn-primary">
-                                                <em class="icon ni ni-sort"></em>
-                                                Настроить сортировку
-                                            </a>
-                                        </div>
-                                    @else
-                                        <div class="alert alert-warning">
-                                            <p>В выбранной категории нет товаров для сортировки.</p>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
+    @include('v1.errors.errors')
+
+    <x-card>
+        <form method="GET" action="{{ route('category.sort.products.order.index') }}"
+              class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-end">
+            <div class="md:col-span-8">
+                <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Выберите категорию</label>
+                <select class="js-select2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
+                        id="category_id" name="category_id" required>
+                    <option value="">-- Выберите категорию --</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->onec_id }}" @if(request('category_id') == $category->onec_id) selected @endif>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
-        </div>
-    </div>
+            <div class="md:col-span-4">
+                <button type="submit" class="btn-primary w-full justify-center">
+                    <i data-lucide="arrow-down-up" class="w-4 h-4"></i> Перейти к сортировке
+                </button>
+            </div>
+        </form>
+    </x-card>
+
+    @if(request('category_id'))
+        <x-card class="mt-5">
+            <h5 class="text-base font-semibold text-gray-900 mb-3">Товары в выбранной категории</h5>
+            @if($selectedCategory && $selectedCategory->products->count() > 0)
+                <x-alert type="info">
+                    <div class="flex flex-col gap-3">
+                        <span>В категории «{{ $selectedCategory->name }}» найдено {{ $selectedCategory->products->count() }} товаров.</span>
+                        <a href="{{ route('category.sort.products.order.index', ['category_id' => $selectedCategory->onec_id]) }}" class="btn-primary btn-sm w-max">
+                            <i data-lucide="arrow-down-up" class="w-4 h-4"></i> Настроить сортировку
+                        </a>
+                    </div>
+                </x-alert>
+            @else
+                <x-alert type="warning">В выбранной категории нет товаров для сортировки.</x-alert>
+            @endif
+        </x-card>
+    @endif
 @endsection
 
 @section('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.js-select2').select2({
                 placeholder: 'Выберите категорию',
                 allowClear: true

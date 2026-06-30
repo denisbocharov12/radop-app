@@ -1,62 +1,43 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Назначение менеджера')
+@section('breadcrumb')
+    <a href="{{ route('manager.index') }}" class="hover:text-brand-600 transition-colors">Менеджеры</a>
+    <i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-2 text-gray-300"></i>
+    <span class="text-gray-700">Назначение</span>
+@endsection
 
 @section('content')
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    <div class="nk-block nk-block-lg">
-                        <div class="nk-block-head">
-                            @if($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-{{--                                        @foreach($errors->all() as $error)--}}
-{{--                                            <li>{{$error}}</li>--}}
-{{--                                        @endforeach--}}
-                                    </ul>
-                                </div>
-                            @endif
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Назначение менеджера пользователю №{{$user->id}}</h4>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-inner">
-                                <form action="{{route('manager.update')}}" method="post" class="form-validate is-alter">
-                                    @csrf
-                                    <input type="hidden" name="user" value="{{$user->id}}">
-                                    <div class="row g-gs">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h6>Назначение менеджера пользователю - {{$user->profile->first_name}} {{$user->profile->last_name}}</h6>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Выбор менеджера</label>
-                                                <div class="form-control-wrap">
-                                                    <div class="form-control-select">
-                                                        <select name="manager_id" class="form-select js-select2" data-search="on">
-                                                            @foreach($managers as $manager)
-                                                                <option value="{{$manager->id}}" {{$user->manager_id !== $manager->id ? 'selected' : ''}}>{{$manager->profile->first_name}} {{$manager->profile->last_name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-lg btn-primary">Назначить</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div><!-- .nk-block -->
-                </div>
+    <x-page-header title="Назначение менеджера"
+                   description="Пользователь №{{ $user->id }} — {{ trim(($user->profile?->first_name ?? '') . ' ' . ($user->profile?->last_name ?? '')) }}">
+        <x-slot:actions>
+            <a href="{{ route('manager.index') }}" class="btn-secondary btn-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i> К списку</a>
+        </x-slot:actions>
+    </x-page-header>
+
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
+
+    <x-card class="max-w-xl">
+        <form action="{{ route('manager.update') }}" method="POST" class="space-y-4">
+            @csrf
+            <input type="hidden" name="user" value="{{ $user->id }}">
+            <div>
+                <label class="form-label" for="manager_id">Выбор менеджера</label>
+                <select name="manager_id" id="manager_id" class="form-select js-select2">
+                    @foreach($managers as $manager)
+                        <option value="{{ $manager->id }}" {{ $user->manager_id === $manager->id ? 'selected' : '' }}>
+                            {{ $manager->profile?->first_name }} {{ $manager->profile?->last_name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
-        </div>
-    </div>
+            <div class="flex justify-end pt-2 border-t border-gray-100">
+                <button type="submit" class="btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Назначить</button>
+            </div>
+        </form>
+    </x-card>
 @endsection

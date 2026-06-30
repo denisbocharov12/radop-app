@@ -1,8 +1,5 @@
-<ul>
+<ul class="flex flex-wrap gap-1.5">
     @foreach($childs as $child)
-        <li class="child ms-3 border-bottom d-inline-block">
-            {{ $child->name }}
-        </li>
+        <li class="inline-flex items-center px-2 py-0.5 text-xs rounded-md bg-gray-100 text-gray-600">{{ $child->name }}</li>
     @endforeach
 </ul>
-<div class="clearfix"></div>

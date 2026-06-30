@@ -1,125 +1,77 @@
-@extends('v1.layouts.layout')
+@extends('v2.layouts.app')
+
+@section('title', 'Редактирование отзыва')
+@section('breadcrumb')
+    <a href="{{ route('review.index') }}" class="hover:text-brand-600 transition-colors">Отзывы</a>
+    <i data-lucide="chevron-right" class="w-3.5 h-3.5 mx-2 text-gray-300"></i>
+    <span class="text-gray-700">#{{ $review->id }}</span>
+@endsection
 
 @section('content')
-    <div class="nk-content ">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
-                    @include('v1.errors.errors')
-                    <div class="nk-block nk-block-lg">
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="title nk-block-title">Редактирование отзыва #{{$review->id}}</h4>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-inner">
-                                <form action="{{route('review.update', $review)}}" method="POST" class="form-validate is-alter">
-                                    @csrf
-                                    <div class="row g-gs">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Пользователь</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" required name="user_id" id="user_id" data-placeholder="Выберите пользователя">
-                                                        <option value="">Выберите пользователя</option>
-                                                        @foreach($users as $user)
-                                                            <option value="{{$user->id}}" {{$review->user_id == $user->id ? 'selected' : ''}}>{{$user->name}} ({{$user->email}})</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('user_id')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Товар</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" required name="product_onec_id" id="product_onec_id" data-placeholder="Выберите товар">
-                                                        <option value="">Выберите товар</option>
-                                                        @foreach($products as $product)
-                                                            <option value="{{$product->onec_id}}" {{$review->product_onec_id == $product->onec_id ? 'selected' : ''}}>{{$product->title}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('product_onec_id')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" for="score">Оценка (от 0 до 5)</label>
-                                                <div class="form-control-wrap">
-                                                    <input type="number" step="0.5" min="0" max="5" required class="form-control @error('score') error @enderror" id="score" name="score" value="{{$review->score}}" placeholder="5">
-                                                    @error('score')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Статус</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" required name="status" id="status" data-placeholder="Выберите статус">
-                                                        <option value="0" {{$review->status == false ? 'selected' : ''}}>На модерации</option>
-                                                        <option value="1" {{$review->status == true ? 'selected' : ''}}>Одобрен</option>
-                                                    </select>
-                                                    @error('status')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Подтвержденная покупка</label>
-                                                <div class="form-control-wrap">
-                                                    <select class="form-select js-select2" name="is_verified" id="is_verified" data-placeholder="Подтвержденная покупка">
-                                                        <option value="0" {{$review->is_verified == false ? 'selected' : ''}}>Нет</option>
-                                                        <option value="1" {{$review->is_verified == true ? 'selected' : ''}}>Да</option>
-                                                    </select>
-                                                    @error('is_verified')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label class="form-label" for="text">Текст отзыва</label>
-                                                <div class="form-control-wrap">
-                                                    <textarea required class="form-control @error('text') error @enderror" id="text" name="text" rows="5" placeholder="Введите текст отзыва">{{$review->text}}</textarea>
-                                                    @error('text')
-                                                    <span class="invalid">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-lg btn-primary">Обновить отзыв</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <x-page-header title="Редактирование отзыва" description="#{{ $review->id }}">
+        <x-slot:actions>
+            <a href="{{ route('review.index') }}" class="btn-secondary btn-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i> К списку</a>
+        </x-slot:actions>
+    </x-page-header>
+
+    @if($errors->any())
+        <x-alert type="error" class="mb-4">
+            <ul class="list-disc list-inside space-y-0.5">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+        </x-alert>
+    @endif
+
+    <x-card>
+        <form action="{{ route('review.update', $review) }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="form-label" for="user_id">Пользователь <span class="text-red-500">*</span></label>
+                    <select required name="user_id" id="user_id" class="form-select js-select2">
+                        <option value="">Выберите пользователя</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ $review->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>
+                        @endforeach
+                    </select>
+                    @error('user_id')<p class="form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="form-label" for="product_onec_id">Товар <span class="text-red-500">*</span></label>
+                    <select required name="product_onec_id" id="product_onec_id" class="form-select js-select2">
+                        <option value="">Выберите товар</option>
+                        @foreach($products as $product)
+                            <option value="{{ $product->onec_id }}" {{ $review->product_onec_id == $product->onec_id ? 'selected' : '' }}>{{ $product->title }}</option>
+                        @endforeach
+                    </select>
+                    @error('product_onec_id')<p class="form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="form-label" for="score">Оценка (0–5) <span class="text-red-500">*</span></label>
+                    <input type="number" step="0.5" min="0" max="5" required name="score" id="score" value="{{ $review->score }}" class="form-input @error('score') border-red-400 @enderror">
+                    @error('score')<p class="form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="form-label" for="status">Статус <span class="text-red-500">*</span></label>
+                    <select required name="status" id="status" class="form-select js-select2">
+                        <option value="0" {{ !$review->status ? 'selected' : '' }}>На модерации</option>
+                        <option value="1" {{ $review->status ? 'selected' : '' }}>Одобрен</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label" for="is_verified">Подтверждённая покупка</label>
+                    <select name="is_verified" id="is_verified" class="form-select js-select2">
+                        <option value="0" {{ !$review->is_verified ? 'selected' : '' }}>Нет</option>
+                        <option value="1" {{ $review->is_verified ? 'selected' : '' }}>Да</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </div>
+            <div>
+                <label class="form-label" for="text">Текст отзыва <span class="text-red-500">*</span></label>
+                <textarea required name="text" id="text" rows="5" class="form-input resize-none @error('text') border-red-400 @enderror">{{ $review->text }}</textarea>
+                @error('text')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+            <div class="flex justify-end pt-2 border-t border-gray-100">
+                <button type="submit" class="btn-primary"><i data-lucide="check" class="w-4 h-4"></i> Обновить отзыв</button>
+            </div>
+        </form>
+    </x-card>
 @endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2();
-        });
-    </script>
-@endsection
-
