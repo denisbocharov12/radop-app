@@ -19,4 +19,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.claude
 composer.lock
+*~
