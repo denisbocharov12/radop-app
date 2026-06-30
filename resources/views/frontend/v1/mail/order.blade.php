@@ -10,7 +10,7 @@
                 detaliile referitor la comandă.</p>
         </td>
         <td style="padding: 20px 40px 20px 0; vertical-align: middle; width: 100%" width="30%">
-            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo.svg" alt="Radop Logo" />
+            <img width="120px" src="https://radop.md/v1/frontend/assets/images/logo_wide.svg" alt="Radop Logo" />
         </td>
     </tr>
 
