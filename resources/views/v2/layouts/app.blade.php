@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('v2.partials.head')
-<body class="font-sans bg-gray-50 text-gray-700 antialiased min-h-screen" x-data>
+<body class="font-sans bg-gray-50 text-gray-700 antialiased min-h-screen" x-data style="overflow-x: clip;">
 
     @php
         // ── Central navigation definition (single source of truth: sidebar + command palette) ──
