@@ -206,7 +206,14 @@
    Select2 — themed to match v2 form controls (overrides CDN).
    Loaded after select2's CDN CSS, so !important is required.
    ============================================================ */
-.select2-container { width: 100% !important; }
+/* Force full width only on the INLINE selection box — NOT the body-appended
+   dropdown wrapper. select2 positions that wrapper absolutely (inline
+   `position:absolute`) and sizes it itself; forcing it to 100% + its left
+   offset overflowed the whole page horizontally. Excluding absolutely-
+   positioned containers fixes select2 dropdowns that lack a dropdownParent. */
+.select2-container:not([style*="absolute"]) { width: 100% !important; }
+/* Belt: a body-appended dropdown must never widen the page. */
+.select2-container[style*="absolute"] { max-width: 100vw !important; }
 .select2-container--default .select2-selection--single {
     height: 38px !important;
     border: 1px solid #d1d5db !important;
