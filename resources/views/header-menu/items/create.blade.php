@@ -51,7 +51,7 @@
                 </div>
                 <div id="category-select-wrapper" style="display: none;">
                     <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Категория (для автозаполнения)</label>
-                    <select class="js-select2 block w-full" name="category_id" id="category_id" data-placeholder="Выберите категорию" data-search="true">
+                    <select class="js-select2 no-select2 block w-full" name="category_id" id="category_id" data-placeholder="Выберите категорию" data-search="true">
                         <option value="">Выберите категорию</option>
                     </select>
                 </div>
@@ -153,8 +153,10 @@
                             categorySelect.appendChild(option);
                         });
                         if (typeof $ !== 'undefined' && $.fn.select2) {
+                            $(categorySelect).parent().css('position', 'relative');
                             $(categorySelect).select2({
                                 placeholder: 'Выберите категорию', allowClear: true,
+                                dropdownParent: $(categorySelect).parent(),
                                 language: { noResults: () => 'Категории не найдены', searching: () => 'Поиск...' }
                             }).on('select2:select', function () {
                                 const selectedValue = $(this).val();
