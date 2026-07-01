@@ -127,13 +127,18 @@
         }).html(opts);
 
         if ($.fn.select2) {
-            $('#cd-cat-select, #cd-prod-cat-select').select2({
-                width: '100%',
-                templateResult: function (opt) {
-                    if (!opt.id) return opt.text;
-                    var depth = $(opt.element).data('depth') || 0;
-                    return depth === 0 ? $('<strong>').text(opt.text) : opt.text;
-                }
+            var tmpl = function (opt) {
+                if (!opt.id) return opt.text;
+                var depth = $(opt.element).data('depth') || 0;
+                return depth === 0 ? $('<strong>').text(opt.text) : opt.text;
+            };
+            // Anchor the dropdown to the field's own wrapper (position:relative) so
+            // it is width-constrained and stacks in the content layer instead of
+            // being appended to <body> (which overflowed the whole page).
+            $('#cd-cat-select, #cd-prod-cat-select').each(function () {
+                var $el = $(this), $parent = $el.parent();
+                $parent.css('position', 'relative');
+                $el.select2({ width: '100%', dropdownParent: $parent, templateResult: tmpl });
             });
         }
         selectsBuilt = true;
