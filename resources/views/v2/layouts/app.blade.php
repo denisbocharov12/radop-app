@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('v2.partials.head')
-<body class="font-sans bg-gray-50 text-gray-700 antialiased min-h-screen" x-data>
+<body class="font-sans bg-gray-50 text-gray-700 antialiased min-h-screen" x-data style="overflow-x: clip;">
 
     @php
         // ── Central navigation definition (single source of truth: sidebar + command palette) ──
@@ -105,7 +105,7 @@
 
         @include('v2.partials.header', ['navFlat' => $navFlat])
 
-        <main class="flex-1 px-4 sm:px-6 py-6">
+        <main class="flex-1 px-4 sm:px-6 py-6" style="overflow-x: clip;">
             @if(session('success') || session('status'))
                 <div class="mb-4 flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700" x-data="{ show: true }" x-show="show">
                     <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>

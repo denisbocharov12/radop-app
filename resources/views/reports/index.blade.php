@@ -59,7 +59,14 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('.js-select2').select2();
+            // #user_id (.js-select2) is already initialised by the global select2
+            // helper (with a dropdownParent). Re-calling .select2() double-inits it
+            // and leaves the raw <select>. Only init anything the helper missed.
+            $('.js-select2').not('.select2-hidden-accessible').each(function () {
+                var $el = $(this), $p = $el.parent();
+                $p.css('position', 'relative');
+                $el.select2({ width: '100%', dropdownParent: $p });
+            });
 
             $('#generateReport').on('click', function() {
                 generateReport();
