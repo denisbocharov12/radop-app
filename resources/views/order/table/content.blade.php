@@ -40,8 +40,12 @@
             $clientName = ($order->user?->type?->key_name === 'fiz')
                 ? ($order->fio ?: '—')
                 : ($order->user?->profile?->organization_name ?: ($order->fio ?: '—'));
+            // Row highlight by status: new = green, pending = yellow (restored legacy scheme).
+            $rowBg = $st === $orderStatusEnum->getNewStatus() ? '#d4f4e1'
+                : ($st === $orderStatusEnum->getPendingStatus() ? '#fdf3cd' : '');
         @endphp
-        <tr id="order-id-{{ $order->id }}" data-manager-id="{{ $order->manager_id }}">
+        <tr id="order-id-{{ $order->id }}" data-manager-id="{{ $order->manager_id }}"
+            @if($rowBg) style="background-color: {{ $rowBg }};" @endif>
             <td><input type="checkbox" class="order-checkbox w-4 h-4 rounded border-gray-300 accent-brand-600" value="{{ $order->id }}"></td>
             <td class="font-semibold text-gray-900">#{{ $order->id }}</td>
             <td>
