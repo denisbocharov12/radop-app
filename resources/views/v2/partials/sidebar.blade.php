@@ -5,12 +5,16 @@
        ]">
 
     {{-- Brand --}}
-    <div class="flex items-center h-16 px-4 border-b border-sidebar-border flex-shrink-0">
-        <a href="{{ route('dashboard.index') }}" class="flex items-center gap-2 overflow-hidden">
-            <img src="{{ asset('/v1/dashboard/assets/images/logo_white_radop.svg') }}" alt="Radop"
-                 class="h-8 w-auto max-w-full flex-shrink-0 transition-all" :class="$store.sidebar.open ? '' : '!h-7 mx-auto'">
+    <div class="flex items-center h-16 px-4 border-b border-sidebar-border flex-shrink-0 bg-white">
+        <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 overflow-hidden">
+            <img src="{{ asset('/v1/frontend/assets/images/logo.svg') }}" alt="RĂDOP-OPT SRL"
+                 class="h-8 w-auto flex-shrink-0 transition-all" :class="$store.sidebar.open ? '' : 'mx-auto'">
+            <span class="flex flex-col leading-tight overflow-hidden" x-show="$store.sidebar.open">
+                <span class="text-[13px] font-semibold text-gray-800 tracking-wide whitespace-nowrap">RĂDOP-OPT</span>
+                <span class="text-[10px] font-medium text-gray-400 uppercase tracking-[0.22em]">SRL</span>
+            </span>
         </a>
-        <button type="button" @click="$store.sidebar.closeMobile()" class="ml-auto lg:hidden text-sidebar-text hover:text-white">
+        <button type="button" @click="$store.sidebar.closeMobile()" class="ml-auto lg:hidden text-gray-400 hover:text-gray-700">
             <i data-lucide="x" class="w-5 h-5"></i>
         </button>
     </div>

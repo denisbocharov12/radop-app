@@ -12,7 +12,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public const HOME = '/admin/dashboard';
+    public const HOME = '/admin/orders';
     public const CLIENT_HOME = '/dashboard';
 
     public function boot(): void
