@@ -37,8 +37,8 @@
             ]],
             ['label' => 'Контент', 'roles' => ['admin'], 'items' => [
                 ['Баннеры',         'banner.index',              'image',     'banner.index'],
-                ['Меню',            'menu.index',                'list-tree', 'menu.*'],
-                ['Шапка-меню',      'header-menu.index',         'panel-top', 'header-menu.*'],
+                ['Меню',            'admin.menus.index',         'list-tree', 'admin.menus.*'],
+                ['Шапка-меню',      'admin.header-menus.index',  'panel-top', 'admin.header-menus.*'],
                 ['SEO',             'seo_meta.index',            'search',    'seo_meta.*'],
                 ['Языки',           'languages.index',           'languages', 'languages.*'],
                 ['Экспорт страниц', 'active-pages-export.index', 'file-down', 'active-pages-export.*'],
@@ -76,6 +76,10 @@
             ]],
             ['label' => null, 'roles' => ['admin', 'manager'], 'items' => [
                 ['Период скидок', 'discount-period.index', 'calendar-clock', 'discount-period.index'],
+            ]],
+            ['label' => 'Настройки сайта', 'roles' => ['admin'], 'items' => [
+                ['Скорость баннеров',  'banner.banner-settings.edit',           'timer',        'banner.banner-settings.*'],
+                ['Сортировка страниц', 'page-setting.page-sort-settings.index',  'list-ordered', 'page-setting.*'],
             ]],
         ];
 
