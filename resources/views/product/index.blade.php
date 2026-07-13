@@ -11,6 +11,11 @@
             @if(Route::has('product.export-descriptions'))
                 <a href="{{ route('product.export-descriptions') }}" class="btn-secondary btn-sm"><i data-lucide="download" class="w-4 h-4"></i> Экспорт описаний</a>
             @endif
+            @if(Route::has('product.export-excel'))
+                <button type="button" class="btn-secondary btn-sm" @click="$dispatch('open-modal', 'product-export')">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Экспорт Excel
+                </button>
+            @endif
             <button type="button" class="btn-primary btn-sm" @click="$dispatch('open-modal', 'product-create')">
                 <i data-lucide="plus" class="w-4 h-4"></i> Добавить товар
             </button>
@@ -56,6 +61,7 @@
     </div>
 
     @include('product.modal.create')
+    @include('product.modal.export')
 @endsection
 
 @section('scripts')

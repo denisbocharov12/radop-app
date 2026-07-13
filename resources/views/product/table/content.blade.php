@@ -21,7 +21,8 @@
         <tr id="product-id-{{ $product->id }}">
             <td><input type="checkbox" class="product-checkbox w-4 h-4 rounded border-gray-300 accent-brand-600" value="{{ $product->id }}"></td>
             <td class="font-medium text-gray-500">#{{ $product->id }}</td>
-            <td class="font-medium text-gray-900 max-w-xs truncate" title="{{ $product->title }}">{{ $product->title }}</td>
+            {{-- white-space:pre keeps intentional multiple spaces from the import (HTML would otherwise collapse them) while still truncating on one line. --}}
+            <td class="font-medium text-gray-900 max-w-xs truncate" style="white-space: pre;" title="{{ $product->title }}">{{ $product->title }}</td>
             <td class="hidden lg:table-cell text-gray-400">{{ $product->onec_id }}</td>
             <td class="hidden lg:table-cell">{{ $product->brand?->title ?: '—' }}</td>
             <td class="hidden xl:table-cell text-gray-500 max-w-[12rem] truncate">{{ $product->categories->pluck('name')->unique()->values()->implode(', ') ?: '—' }}</td>

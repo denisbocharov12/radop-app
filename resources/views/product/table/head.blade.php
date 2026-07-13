@@ -15,17 +15,36 @@
     </div>
 
     {{-- Filters --}}
-    <form action="{{ route('product.index') }}" method="GET" class="flex flex-col lg:flex-row lg:items-center gap-3">
-        <div class="search-bar w-full lg:w-80">
+    <form action="{{ route('product.index') }}" method="GET" class="flex flex-col lg:flex-row lg:flex-wrap lg:items-center gap-3">
+        <div class="search-bar w-full lg:w-72">
             <i data-lucide="search" class="search-icon"></i>
             <input type="text" name="filter[search]" value="{{ $query['search'] ?? '' }}" placeholder="Поиск по названию, ID, бренду…">
         </div>
-        <select name="filter[status]" class="form-select no-select2 w-full lg:w-48" onchange="this.form.submit()">
+
+        {{-- Category (hierarchical, searchable) --}}
+        <select name="filter[category]" class="form-select w-full lg:w-56" data-placeholder="Все категории">
+            <option value="">Все категории</option>
+            @foreach(($categoryOptions ?? []) as $opt)
+                <option value="{{ $opt['onec_id'] }}" {{ (string) ($query['category'] ?? '') === (string) $opt['onec_id'] ? 'selected' : '' }}>{{ $opt['label'] }}</option>
+            @endforeach
+        </select>
+
+        {{-- Marketing condition: HIT / new / sale … --}}
+        <select name="filter[condition]" class="form-select no-select2 w-full lg:w-44" onchange="this.form.submit()">
+            <option value="">Все состояния</option>
+            <option value="new" {{ ($query['condition'] ?? '') === 'new' ? 'selected' : '' }}>Новинки</option>
+            <option value="popular" {{ ($query['condition'] ?? '') === 'popular' ? 'selected' : '' }}>Популярные</option>
+            <option value="hot" {{ ($query['condition'] ?? '') === 'hot' ? 'selected' : '' }}>Hit</option>
+            <option value="featured" {{ ($query['condition'] ?? '') === 'featured' ? 'selected' : '' }}>Рекомендуемые</option>
+            <option value="sale" {{ ($query['condition'] ?? '') === 'sale' ? 'selected' : '' }}>Со скидкой</option>
+        </select>
+
+        <select name="filter[status]" class="form-select no-select2 w-full lg:w-44" onchange="this.form.submit()">
             <option value="">Все статусы выгрузки</option>
             <option value="1" {{ ($query['status'] ?? '') === '1' ? 'selected' : '' }}>Активный</option>
             <option value="0" {{ ($query['status'] ?? '') === '0' ? 'selected' : '' }}>Неактивный</option>
         </select>
-        <select name="filter[site_status]" class="form-select no-select2 w-full lg:w-48" onchange="this.form.submit()">
+        <select name="filter[site_status]" class="form-select no-select2 w-full lg:w-44" onchange="this.form.submit()">
             <option value="">Все статусы сайта</option>
             <option value="1" {{ ($query['site_status'] ?? '') === '1' ? 'selected' : '' }}>Активный</option>
             <option value="0" {{ ($query['site_status'] ?? '') === '0' ? 'selected' : '' }}>Неактивный</option>

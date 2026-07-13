@@ -94,4 +94,8 @@ Route::prefix('products')->name('product.')->group(function () {
         ->get('/export-descriptions', [ProductController::class, 'exportDescriptions'])
         ->name('export-descriptions')
     ;
+    Route::middleware(['app.permissions'])
+        ->get('/export-excel', [ProductController::class, 'exportExcel'])
+        ->name('export-excel')
+    ;
 });
