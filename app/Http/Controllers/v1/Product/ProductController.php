@@ -20,6 +20,8 @@ use App\Http\Requests\Media\ModelMediaDeleteRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductIndexRequest;
 use App\Http\Requests\Product\ProductRequest;
+use App\Exports\AdminProductsExport;
+use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Category\CategoryRepository;
@@ -29,6 +31,7 @@ use App\Repositories\Product\ProductRepository;
 use App\Services\Product\ActivePagesCacheService;
 use App\Services\Product\ProductManager;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -55,6 +58,7 @@ class ProductController extends Controller
 
         $productConditions = $this->productConditions->getAll();
         $productErrorsSummary = $this->productErrorRepository->summary();
+        $categoryOptions = $this->categoryFilterOptions();
 
         return view('product.index', compact([
             'products',
@@ -63,7 +67,61 @@ class ProductController extends Controller
             'query',
             'productConditions',
             'productErrorsSummary',
+            'categoryOptions',
         ]));
+    }
+
+    /**
+     * Download the filtered products as an Excel file.
+     * Reuses the same request filters as the products list.
+     */
+    public function exportExcel(Request $request)
+    {
+        $products = $this->productRepository->getAllForAdminExport();
+        $fileName = 'products_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+        return Excel::download(new AdminProductsExport($products), $fileName);
+    }
+
+    /**
+     * Flat, hierarchy-ordered category list for the filter dropdown:
+     * each entry = ['onec_id' => ..., 'label' => '— — Name' (indented by depth)].
+     *
+     * @return array<int, array{onec_id: string, label: string}>
+     */
+    private function categoryFilterOptions(): array
+    {
+        $all = Category::query()->orderBy('name')->get(['onec_id', 'name', 'parent_id']);
+
+        $byParent = [];
+        foreach ($all as $c) {
+            $key = $c->parent_id === null ? '__root__' : (string) $c->parent_id;
+            $byParent[$key][] = $c;
+        }
+
+        $result = [];
+        $included = [];
+        $walk = function (string $parentKey, int $depth) use (&$walk, &$result, &$included, $byParent): void {
+            foreach ($byParent[$parentKey] ?? [] as $c) {
+                $onec = (string) $c->onec_id;
+                $included[$onec] = true;
+                $result[] = [
+                    'onec_id' => $onec,
+                    'label'   => ($depth > 0 ? str_repeat('— ', $depth) : '') . (string) $c->name,
+                ];
+                $walk($onec, $depth + 1);
+            }
+        };
+        $walk('__root__', 0);
+
+        foreach ($all as $c) {
+            $onec = (string) $c->onec_id;
+            if (!isset($included[$onec])) {
+                $result[] = ['onec_id' => $onec, 'label' => (string) $c->name];
+            }
+        }
+
+        return $result;
     }
 
     public function store(ProductRequest $request)

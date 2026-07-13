@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\MoneyCast;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -87,6 +88,25 @@ final class Product extends Model implements HasMedia, Sitemapable
     ];
 
     public $translatable = ['title'];
+
+    /**
+     * Canonical ordering for the "Новинки" (NEW) products listings.
+     *
+     * Manually arranged items (products.new_order set via the admin sort page)
+     * come first, in their exact admin order. Items without a manual position
+     * (new_order IS NULL — e.g. products just added by the 1C import) come AFTER
+     * the arranged block, newest first by created_at. This stops a freshly
+     * imported "new" product from jumping to the very top (MySQL sorts NULL first
+     * on a plain `ORDER BY new_order`, which was the bug) and keeps the admin's
+     * first-N arrangement stable across imports.
+     */
+    public function scopeOrderedForNew(Builder $query): Builder
+    {
+        return $query
+            ->orderByRaw('products.new_order IS NULL') // 0 = has order (first), 1 = NULL (last)
+            ->orderBy('products.new_order')
+            ->orderByDesc('products.created_at');
+    }
 
     /**
      * @param Media|null $media

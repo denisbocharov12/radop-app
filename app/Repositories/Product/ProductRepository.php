@@ -3,12 +3,15 @@
 namespace App\Repositories\Product;
 
 use App\Enums\ProductConditions;
+use App\Filters\ProductCategoryFilter;
+use App\Filters\ProductConditionFilter;
 use App\Filters\ProductSearchFilter;
 use App\Filters\ProductSiteStatusFilter;
 use App\Filters\ProductStatusFilter;
 use App\Filters\Theme\ThemeAttributeFilter;
 use App\Filters\Theme\ThemeCategoryFilter;
 use App\Filters\Theme\ThemeConditionSort;
+use App\Filters\Theme\ThemeNewOrderSort;
 use App\Filters\Theme\ThemePriceFilter;
 use App\Filters\Theme\ThemePriceSort;
 use App\Filters\Theme\ThemeProductSearchFilter;
@@ -43,7 +46,11 @@ final class ProductRepository
     private const COUNT_OF_PRODUCTS_FOR_FRONTEND = 10;
     private const PRODUCTS_FOR_HOME_PAGE_SLIDER = 20;
 
-    public function getAllPaginatedWithFilters(): LengthAwarePaginator
+    /**
+     * Shared admin products query (list + export) with all admin filters applied.
+     * By default (no explicit status filter) only shows active-upload products.
+     */
+    private function adminProductsQueryBuilder(): QueryBuilder
     {
         $query = Product::query();
 
@@ -57,7 +64,14 @@ final class ProductRepository
                 AllowedFilter::custom('brand', new ThemeBrandsFilter()),
                 AllowedFilter::custom('status', new ProductStatusFilter()),
                 AllowedFilter::custom('site_status', new ProductSiteStatusFilter()),
-            ])
+                AllowedFilter::custom('category', new ProductCategoryFilter()),
+                AllowedFilter::custom('condition', new ProductConditionFilter()),
+            ]);
+    }
+
+    public function getAllPaginatedWithFilters(): LengthAwarePaginator
+    {
+        return $this->adminProductsQueryBuilder()
             ->with([
                 'brand:id,onec_id,title',
                 'categories' => function ($query) {
@@ -72,6 +86,24 @@ final class ProductRepository
             ->paginate(self::COUNT_OF_PAGINATION)
             ->appends(request()->query())
         ;
+    }
+
+    /**
+     * Full (non-paginated) filtered products collection for the admin Excel export.
+     * Applies exactly the same filters as the admin list.
+     */
+    public function getAllForAdminExport(): Collection
+    {
+        return $this->adminProductsQueryBuilder()
+            ->with([
+                'brand:id,onec_id,title',
+                'categories' => function ($query) {
+                    $query->select('categories.id', 'categories.onec_id', 'categories.name');
+                },
+                'data:id,product_id,condition',
+            ])
+            ->orderBy('id')
+            ->get();
     }
 
     public function getAllPaginatedWithFiltersToFrontEnd(Request $request): LengthAwarePaginator
@@ -446,7 +478,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->with(['brand', 'values.attribute', 'packages'])
-            ->orderBy('new_order')
+            ->orderedForNew()
             ->get()
         ;
     }
@@ -465,7 +497,7 @@ final class ProductRepository
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
             ->with(['brand', 'values.attribute', 'packages'])
-            ->orderBy('new_order')
+            ->orderedForNew()
             ->orderBy('title')
             ->get()
         ;
@@ -492,7 +524,7 @@ final class ProductRepository
                 ->where('stock', '!=', 0)
                 ->whereNotNull('price_koef')
                 ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'])
-                ->orderBy('new_order')
+                ->orderedForNew()
                 ->take(self::PRODUCTS_FOR_HOME_PAGE_SLIDER)
                 ->get();
         });
@@ -514,8 +546,10 @@ final class ProductRepository
             $defaultSortObj = AllowedSort::custom('price', new ThemePriceSort(), 'price');
         } elseif ($defaultSort === '-price') {
             $defaultSortObj = AllowedSort::custom('-price', new ThemePriceSort(), 'price');
-        } elseif ($defaultSort === 'condition') {
-            $defaultSortObj = AllowedSort::custom('condition', new ThemeConditionSort(), 'product_profiles.condition');
+        } elseif ($defaultSort === 'condition' || $defaultSort === 'new_order') {
+            // NEW page "по новизне": admin manual order (new_order) first, then
+            // newest by created_at; freshly imported items no longer jump to the top.
+            $defaultSortObj = AllowedSort::custom('new_order', new ThemeNewOrderSort(), 'new_order');
         } elseif ($defaultSort === 'popular_order') {
             $defaultSortObj = AllowedSort::custom('popular_order', new ThemeProductViewCountSort(), 'popular_order');
         } elseif ($defaultSort === 'title' || $defaultSort === '-title') {
@@ -574,7 +608,7 @@ final class ProductRepository
             ->where('site_status', true)
             ->where('stock', '!=', 0)
             ->whereNotNull('price_koef')
-            ->orderBy('new_order')
+            ->orderedForNew()
             ->get();
     }
 
