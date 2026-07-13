@@ -3,7 +3,7 @@
     <div class="wrap wrap-with-history" id="header-js-sticky">
         <div class="header-logo col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto" id="sticky-header-logo" style="display: none">
             <a href="{{route('theme.home')}}" class="link-logo">
-                <img src="{{ asset('/v1/frontend/assets/images/logo.svg') }}" alt="Radop" style="height: 28px; width: auto; display: block; filter: brightness(0) invert(1);">
+                <img src="{{ asset('/v1/frontend/assets/images/logo.svg') }}" alt="Radop" style="height: 42px; width: auto; display: block; filter: brightness(0) invert(1);">
             </a>
         </div>
         <div class="btn-header-catalog-wrap">
