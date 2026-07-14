@@ -13,7 +13,7 @@
                 <div class="col-12 col-lg-5 col-product-info">
                     <div class="product-info-wrap">
                         <div class="product-name">
-                            <h1>{{$product->title}}</h1>
+                            <h1 style="white-space: pre-wrap;">{{$product->title}}</h1>
                         </div>
                         <div class="product-info-row">
                             <div class="product-sku">

@@ -6211,6 +6211,7 @@ header .section-header .row-main .header-menu .col-lg{
     font-size: 14px;
     width: calc(100% - 5px);
     margin-bottom: 10px;
+    display: flex;
 }
 
 .product-item-category a.add_to_wishlist {
@@ -15204,6 +15205,42 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 576px) {
     #main-banner .item {
         min-height: 170px;
+    }
+}
+
+/* Preserve intentional multiple spaces in product names on cards (HTML collapses them by default).
+   !important + high-specificity selector so it beats `.product-item-category .product-item-title-wrap .product_item_name a`. */
+.product_item_name,
+.product_item_name a,
+.product-item-title-wrap .product_item_name a,
+.product-item-category .product-item-title-wrap .product_item_name a {
+    white-space: pre-wrap;
+}
+
+/* Subtle periodic shine sweep on the Catalog button (indicates it's interactive). */
+.btn-header-catalog {
+    position: relative;
+    overflow: hidden;
+}
+.btn-header-catalog::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.30) 50%, transparent 100%);
+    transform: skewX(-20deg);
+    pointer-events: none;
+    animation: catalogBtnShine 3s ease-in-out infinite;
+}
+@keyframes catalogBtnShine {
+    0%, 55%   { left: -75%; }
+    85%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .btn-header-catalog::after {
+        animation: none;
     }
 }
 

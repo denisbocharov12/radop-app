@@ -968,10 +968,11 @@ final class ProductRepository
         $lowerValue = mb_strtolower($value);
 
         $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
+            // Barcode (shtrih_code) is intentionally NOT matched by LIKE here —
+            // it is searched only on an exact full 13-digit query (see applySearchFilters()).
             $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
-                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"])
-                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
+                ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"]);
 
             $brandOnecIds = $this->getBrandOnecIdsMatchingTitleLike($lowerValue);
             if ($brandOnecIds->isNotEmpty()) {
@@ -985,8 +986,7 @@ final class ProductRepository
                         $subQuery->where(function (Builder $wordQuery) use ($lowerWord) {
                             $wordQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
-                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
-                                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"]);
                             $brandIdsWord = $this->getBrandOnecIdsMatchingTitleLike($lowerWord);
                             if ($brandIdsWord->isNotEmpty()) {
                                 $wordQuery->orWhereIn('products.brand_id', $brandIdsWord->all());
@@ -1003,10 +1003,10 @@ final class ProductRepository
         $lowerValue = mb_strtolower($value);
 
         $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
+            // Barcode (shtrih_code) is matched only on an exact 13-digit query (see applySearchFilters()).
             $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"])
-                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
-                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerValue}%"]);
+                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"]);
 
             $brandOnecIds = $this->getBrandOnecIdsMatchingTitleLike($lowerValue);
             if ($brandOnecIds->isNotEmpty()) {
@@ -1020,8 +1020,7 @@ final class ProductRepository
                         $subQuery->where(function (Builder $wordQuery) use ($lowerWord) {
                             $wordQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
-                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
-                                ->orWhereRaw('LOWER(shtrih_code) LIKE ?', ["%{$lowerWord}%"]);
+                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"]);
                             $brandIdsWord = $this->getBrandOnecIdsMatchingTitleLike($lowerWord);
                             if ($brandIdsWord->isNotEmpty()) {
                                 $wordQuery->orWhereIn('products.brand_id', $brandIdsWord->all());
