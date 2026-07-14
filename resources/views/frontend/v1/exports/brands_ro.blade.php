@@ -26,7 +26,7 @@
         <tr>
             <td style="font-family: Arial; font-size: 11px;"></td>
             <td style="font-family: Arial; font-size: 11px; border: 1px solid black;">{{ $i + 1 }}</td>
-            <td style="font-family: Arial; font-size: 11px; border: 1px solid black;">{{ $product->onec_id }}</td>
+            <td data-type="{{ \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING }}" style="font-family: Arial; font-size: 11px; border: 1px solid black;">{{ $product->onec_id }}</td>
             <td style="font-family: Arial; font-size: 11px; border: 1px solid black;">{!! $product->title !!}</td>
             <td style="font-family: Arial; font-size: 11px; border: 1px solid black;">{{ $product->brand?->title }}</td>
             <td style="font-family: Arial; font-size: 11px; border: 1px solid black;" data-format="{{PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER}}">{{ $product->shtrih_code }}</td>

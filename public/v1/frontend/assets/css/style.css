@@ -5313,6 +5313,15 @@ header .section-header .row-main .header-menu .col-lg{
     color: #fff;
 }
 
+/* Active search tab (Все / Похожие) — filled like hover. */
+.section-search .col-search-meta .wrap.wrap-items .wrap-item-link.active{
+    background-color: #0052a6;
+    color: #fff;
+}
+.section-search .col-search-meta .wrap.wrap-items a[data-search-tab]{
+    cursor: pointer;
+}
+
 .section-search .col-search-meta .col-search-meta-title{
     font-size: 20px;
     font-weight: 300;

@@ -206,6 +206,25 @@ trait StylesProductCatalogSheet
             ->setVertical(Alignment::VERTICAL_CENTER);
     }
 
+    /**
+     * Fill the whole product row with a light tint of its NEW / HIT / SALE status
+     * colour (NEW green, HIT blue, SALE red — same scheme as the Nota column and
+     * the storefront badges). Products with no status keep the default white row.
+     */
+    protected function fillProductRow(Worksheet $sheet, Product $product, string $lastColumn, int $row): void
+    {
+        $fill = ProductExcelStatusResolver::fill($product);
+        if ($fill === null) {
+            return;
+        }
+
+        $sheet->getStyle("A{$row}:{$lastColumn}{$row}")
+            ->getFill()
+            ->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB($fill);
+    }
+
     protected function resolveProductImagePath(Product $product): ?string
     {
         if (!$product->hasMedia('products')) {
