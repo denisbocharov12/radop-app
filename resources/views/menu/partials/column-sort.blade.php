@@ -9,7 +9,7 @@
     <div class="lg:col-span-1">
         <div class="rounded-xl border border-gray-200 bg-white p-5">
             <h6 class="text-sm font-semibold text-gray-900 mb-3">Выберите родительскую категорию</h6>
-            <select class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none" id="parent-category-select">
+            <select class="no-select2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none" id="parent-category-select">
                 <option value="">-- Выберите категорию --</option>
                 @foreach($rootItems as $rootItem)
                     @php
