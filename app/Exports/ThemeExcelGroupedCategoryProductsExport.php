@@ -157,6 +157,7 @@ final class ThemeExcelGroupedCategoryProductsExport implements FromView, WithTit
 
                     foreach ($group['products'] as $product) {
                         $this->applyCatalogRowHeight($sheet, $row);
+                        $this->fillProductRow($sheet, $product, $last, $row);
                         $this->placeProductImage($sheet, $product, $row);
                         $this->writeNota($sheet, $product, $last, $row);
                         $row++;

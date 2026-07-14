@@ -134,6 +134,7 @@ final class PersonalizedThemeExcelProductsExport implements FromView, WithTitle,
 
                 foreach ($this->products as $index => $product) {
                     $row = $startRow + $index;
+                    $this->fillProductRow($sheet, $product, $last, $row);
                     $this->placeProductImage($sheet, $product, $row);
                     $this->writeNota($sheet, $product, $last, $row);
                 }

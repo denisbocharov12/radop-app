@@ -20,9 +20,11 @@
                 </div>
                 <div class="col-12 col-search-meta">
                     <div class="wrap wrap-items">
-                        <a href="{{route('theme.search.index', ['search' => $themeSearchData->search])}}" title="{{__('theme.search_meta_title')}}" class="wrap-item-link limk-meta theme-bold">{{__('theme.search_meta_title')}} ({{$products->total()}})</a>
+                        {{-- "Все" and "Похожие" are client-side tabs that filter the results below.
+                             Category links stay real links (they navigate to the category page). --}}
+                        <a href="{{route('theme.search.index', ['search' => $themeSearchData->search])}}" data-search-tab="all" title="{{__('theme.search_meta_title')}}" class="wrap-item-link limk-meta theme-bold active">{{__('theme.search_meta_title')}} ({{$products->total()}})</a>
                         @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
-                            <span class="wrap-item-link limk-meta limk-meta-suggested" title="{{ __('theme.search_suggested') }}">{{ __('theme.search_suggested') }} ({{ $relatedProducts->count() }})</span>
+                            <a href="javascript:void(0);" data-search-tab="related" class="wrap-item-link limk-meta limk-meta-suggested" title="{{ __('theme.search_suggested') }}">{{ __('theme.search_suggested') }} ({{ $relatedProducts->count() }})</a>
                         @endif
                         @foreach($categories as $category)
                             <a href="{{ route('theme.category.index', ['onecId' => $category->category_id, 'filter' => ['search' => $themeSearchData->search]]) }}" title="{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}" class="wrap-item-link limk-meta">{{\App\Models\Category::where('onec_id', $category->category_id)->first()?->name}}</a>
@@ -30,23 +32,48 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" >
-                        @include('frontend.v1.pages.search.parts.list', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
-                        {{-- Suggested products (same category, then brand) flow into the
-                             common list right after the found item(s). --}}
-                        @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
-                            @include('frontend.v1.pages.search.parts.list', [
-                                'products' => $relatedProducts,
-                                'ga4ItemListId' => 'search_related',
-                                'ga4ItemListName' => 'Search related',
-                            ])
-                        @endif
+                    {{-- "Все": found products + pagination --}}
+                    <div class="search-group" data-search-group="all">
+                        <div class="{{$products->isEmpty() ? 'row' : 'grid-products-list-wrap'}}" >
+                            @include('frontend.v1.pages.search.parts.list', ['ga4ItemListId' => $ga4SelectListId, 'ga4ItemListName' => $ga4SelectListName])
+                        </div>
+                        <div class="theme-pagination">
+                            {{$products->links()}}
+                        </div>
                     </div>
-                    <div class="theme-pagination">
-                        {{$products->links()}}
-                    </div>
+                    {{-- "Похожие": related products (same category, then brand) --}}
+                    @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+                        <div class="search-group" data-search-group="related" style="display: none;">
+                            <div class="grid-products-list-wrap">
+                                @include('frontend.v1.pages.search.parts.list', [
+                                    'products' => $relatedProducts,
+                                    'ga4ItemListId' => 'search_related',
+                                    'ga4ItemListName' => 'Search related',
+                                ])
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @endif
         </div>
     </div>
 </section>
+
+<script>
+    (function () {
+        var tabs = document.querySelectorAll('.section-search [data-search-tab]');
+        var groups = document.querySelectorAll('.section-search [data-search-group]');
+        if (!tabs.length || !groups.length) return;
+
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = tab.getAttribute('data-search-tab');
+                tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+                groups.forEach(function (g) {
+                    g.style.display = (g.getAttribute('data-search-group') === target) ? '' : 'none';
+                });
+            });
+        });
+    })();
+</script>

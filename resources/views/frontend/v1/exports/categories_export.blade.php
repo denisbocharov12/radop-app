@@ -16,7 +16,7 @@
         <tr>
             <td></td>
             <td>{{ $index + 1 }}</td>
-            <td>{{ $category->onec_id }}</td>
+            <td data-type="{{ \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING }}">{{ $category->onec_id }}</td>
             <td>{{ $category->getTranslation('name', app()->getLocale()) }}</td>
             <td>{{ $category->parent?->getTranslation('name', app()->getLocale()) }}</td>
             <td>{{ $category->status ? __('theme.active') : __('theme.inactive') }}</td>
