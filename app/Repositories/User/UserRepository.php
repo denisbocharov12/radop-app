@@ -161,6 +161,11 @@ final class UserRepository
         return User::query()->role('user')->where('manager_id', null)->get();
     }
 
+    public function getUsersWithoutManagerCount() : int
+    {
+        return User::query()->role('user')->whereNull('manager_id')->count();
+    }
+
     public function getUserById(int $userId) : User
     {
         return User::query()->role('user')->where('id', $userId)->first();

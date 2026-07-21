@@ -29,5 +29,25 @@
 </script>
 @endif
 
+@if(Route::has('client.without-manager-count'))
+<script>
+    (function () {
+        function refresh() {
+            $.ajax({
+                url: "{{ route('client.without-manager-count') }}", type: "GET", dataType: "json",
+                success: function (data) {
+                    var n = (data && typeof data.count !== 'undefined') ? (parseInt(data.count, 10) || 0) : 0;
+                    var $b = $('#clients_no_manager');
+                    if (n > 0) { $b.text(n).removeClass('hidden'); } else { $b.text('').addClass('hidden'); }
+                },
+                error: function (xhr, s, e) { console.error('clients-without-manager counter:', e); }
+            });
+        }
+        window.updateClientsNoManagerCounter = refresh;
+        document.addEventListener('DOMContentLoaded', function () { refresh(); setInterval(refresh, 20000); });
+    })();
+</script>
+@endif
+
 @stack('scripts')
 @yield('scripts')

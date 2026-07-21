@@ -36,11 +36,23 @@ final class ThemeHomeController extends Controller
     public function index()
     {
         $locale = app()->getLocale();
-        $cacheKey = 'home_page_autoplay_speed_' . $locale;
+        $cacheKey = 'home_page_slider_speeds';
 
-        $autoplaySpeed = Cache::remember($cacheKey, now()->addDay(), function () {
-            return BannerSetting::first()?->rotation_speed ?? 3000;
+        $speeds = Cache::remember($cacheKey, now()->addDay(), function () {
+            $settings = BannerSetting::first();
+
+            return [
+                'banner'  => $settings?->rotation_speed ?? 3000,
+                'new'     => $settings?->new_slider_speed ?? 3000,
+                'popular' => $settings?->popular_slider_speed ?? 3000,
+                'sale'    => $settings?->sale_slider_speed ?? 3000,
+            ];
         });
+
+        $autoplaySpeed = $speeds['banner'];
+        $newSliderSpeed = $speeds['new'];
+        $popularSliderSpeed = $speeds['popular'];
+        $saleSliderSpeed = $speeds['sale'];
 
         $popularProducts = $this->productRepository->getPopularProductsForHomePage();
         $newProducts = $this->productRepository->getNewProductsForHomePage();
@@ -79,6 +91,9 @@ final class ThemeHomeController extends Controller
             'banners',
             'locale',
             'autoplaySpeed',
+            'newSliderSpeed',
+            'popularSliderSpeed',
+            'saleSliderSpeed',
             'ga4ItemLists',
         ]));
     }

@@ -16,7 +16,7 @@
             ]],
             ['label' => 'Продажи', 'roles' => ['admin', 'manager'], 'items' => [
                 ['Заказы',  'order.index',  'shopping-cart', 'order.*', 'new_orders'],
-                ['Клиенты', 'client.index', 'users',         'client.*'],
+                ['Клиенты', 'client.index', 'users',         'client.*', 'clients_no_manager'],
                 ['Купоны',  'coupon.index', 'badge-percent', 'coupon.*'],
                 ['Отзывы',  'review.index', 'star', 'review.*'],
             ]],
@@ -44,8 +44,9 @@
                 ['Экспорт страниц', 'active-pages-export.index', 'file-down', 'active-pages-export.*'],
             ]],
             ['type' => 'tree', 'title' => 'Сортировка', 'icon' => 'arrow-down-up', 'match' => '*.sort.*', 'roles' => ['admin'], 'items' => [
-                ['Категории',              'category.sort.index',           'folder-tree',        'category.sort.index'],
-                ['Категории (каталог)',    'category.sort.index.catalog',   'folder-tree',        'category.sort.index.catalog'],
+                ['Категории',                          'category.sort.index',           'folder-tree',        'category.sort.index'],
+                ['Категории (каталог)',                'category.sort.index.catalog',   'folder-tree',        'category.sort.index.catalog'],
+                ['Категории — Сортировка по колонкам', 'category.sort.columns.index',   'columns-3',          'category.sort.columns.*'],
                 ['Товары по категориям',   'category.select.category',      'folder-tree',        'category.select.*'],
                 ['Бренды',                 'brand.sort.index',              'award',              'brand.sort.index'],
                 ['Бренды (каталог)',       'brand.sort.catalog',            'award',              'brand.sort.catalog'],
@@ -78,7 +79,7 @@
                 ['Период скидок', 'discount-period.index', 'calendar-clock', 'discount-period.index'],
             ]],
             ['label' => 'Настройки сайта', 'roles' => ['admin'], 'items' => [
-                ['Скорость баннеров',  'banner.banner-settings.edit',           'timer',        'banner.banner-settings.*'],
+                ['Скорость слайдеров', 'banner.banner-settings.edit',           'timer',        'banner.banner-settings.*'],
                 ['Сортировка страниц', 'page-setting.page-sort-settings.index',  'list-ordered', 'page-setting.*'],
             ]],
         ];

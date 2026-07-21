@@ -43,7 +43,7 @@
                     <div x-show="open && $store.sidebar.open" x-collapse style="display:none;" class="mt-1 ml-4 pl-3 border-l border-sidebar-border space-y-0.5">
                         @foreach($visible as $item)
                             @php [$label, $route, $icon, $pattern] = $item; @endphp
-                            <a href="{{ route($route) }}" class="sidebar-sublink {{ request()->routeIs($pattern) ? 'active' : '' }}">
+                            <a href="{{ route($route) }}" title="{{ $label }}" class="sidebar-sublink {{ request()->routeIs($pattern) ? 'active' : '' }}">
                                 <i data-lucide="{{ $icon }}" class="w-4 h-4 flex-shrink-0"></i>
                                 <span class="truncate">{{ $label }}</span>
                             </a>
@@ -59,7 +59,7 @@
                     @endif
                     @foreach($visible as $item)
                         @php [$label, $route, $icon, $pattern] = $item; $badgeId = $item[4] ?? null; @endphp
-                        <a href="{{ route($route) }}" class="sidebar-link {{ request()->routeIs($pattern) ? 'active' : '' }}"
+                        <a href="{{ route($route) }}" title="{{ $label }}" class="sidebar-link {{ request()->routeIs($pattern) ? 'active' : '' }}"
                            :class="$store.sidebar.open ? '' : 'justify-center px-0'"
                            x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
                             <i data-lucide="{{ $icon }}" class="w-5 h-5 flex-shrink-0"></i>

@@ -1,8 +1,8 @@
 @extends('v2.layouts.app')
 
 @section('content')
-    <x-page-header title="Настройки баннера"
-                   description="Скорость автоматического переключения слайдов баннера на витрине.">
+    <x-page-header title="Скорость слайдеров"
+                   description="Скорость автоматического переключения баннера и товарных слайдеров на главной (мс).">
         <x-slot:actions>
             <a href="{{ route('banner.index') }}" class="btn-secondary btn-sm">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> К баннерам
@@ -19,7 +19,7 @@
             @csrf
             <div>
                 <label for="rotation_speed" class="block text-sm font-medium text-gray-700 mb-1">
-                    Скорость переключения (мс)
+                    Баннер — скорость переключения (мс)
                 </label>
                 <input type="number" id="rotation_speed" name="rotation_speed"
                        value="{{ old('rotation_speed', $settings->rotation_speed) }}"
@@ -29,6 +29,30 @@
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
+
+            <hr class="border-gray-100">
+            <p class="text-sm text-gray-500">Слайдеры товаров на главной. Значение — интервал автопереключения в мс. <b>0</b> — автопрокрутка выключена.</p>
+
+            @php
+                $sliderFields = [
+                    'new_slider_speed'     => 'Новинки — скорость переключения (мс)',
+                    'popular_slider_speed' => 'Топ продаж — скорость переключения (мс)',
+                    'sale_slider_speed'    => 'Товары со скидкой — скорость переключения (мс)',
+                ];
+            @endphp
+            @foreach($sliderFields as $field => $label)
+                <div>
+                    <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
+                    <input type="number" id="{{ $field }}" name="{{ $field }}"
+                           value="{{ old($field, $settings->{$field} ?? 3000) }}"
+                           min="0" step="100"
+                           class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none">
+                    @error($field)
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endforeach
+
             <button type="submit" class="btn-primary">
                 <i data-lucide="save" class="w-4 h-4"></i> Сохранить
             </button>

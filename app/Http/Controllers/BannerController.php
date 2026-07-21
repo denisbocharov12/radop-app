@@ -132,7 +132,10 @@ class BannerController extends Controller
     public function editBannerSettings()
     {
         $settings = BannerSetting::first() ?? new BannerSetting([
-            'rotation_speed' => 3000,
+            'rotation_speed'       => 3000,
+            'new_slider_speed'     => 3000,
+            'popular_slider_speed' => 3000,
+            'sale_slider_speed'    => 3000,
         ]);
 
         return view('banner.settings', compact('settings'));
@@ -141,10 +144,16 @@ class BannerController extends Controller
     public function updateBannerSettings(Request $request)
     {
         $validated = $request->validate([
-            'rotation_speed' => 'required|integer|min:100',
+            'rotation_speed'       => 'required|integer|min:100',
+            // Home product-slider auto-switch speed (ms). 0 = autoplay off.
+            'new_slider_speed'     => 'required|integer|min:0',
+            'popular_slider_speed' => 'required|integer|min:0',
+            'sale_slider_speed'    => 'required|integer|min:0',
         ]);
 
         BannerSetting::updateOrCreate([], $validated);
+
+        \Illuminate\Support\Facades\Cache::forget('home_page_slider_speeds');
 
         return redirect()->back()->with('success', 'Настройки обновлены.');
     }

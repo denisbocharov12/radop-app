@@ -17,6 +17,10 @@ Route::prefix('clients')->name('client.')->group(function () {
     });
 
     Route::middleware(['app.permissions'])
+        ->get('/without-manager-count', [ClientController::class, 'withoutManagerCount'])
+        ->name('without-manager-count')
+    ;
+    Route::middleware(['app.permissions'])
         ->get('/', [ClientController::class, 'index'])
         ->name('index')
     ;
