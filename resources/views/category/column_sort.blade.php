@@ -11,7 +11,7 @@
             <x-card>
                 <h6 class="text-sm font-semibold text-gray-900 mb-3">Контекст</h6>
                 <div class="mb-3">
-                    <select class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
+                    <select class="no-select2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
                             id="parent-category-select">
                         <option value="">Каталог — корневые категории</option>
                         @foreach($rootCategories as $root)

@@ -373,11 +373,16 @@ $(document).ready(function () {
     cssEase: "ease-out",
   });
 
-  $(".catalog-slider")
+  $(".catalog-slider").each(function () {
+    // Per-slider auto-switch speed (ms) from data-autoplay-speed. 0 / empty = no autoplay.
+    var autoplaySpeed = parseInt($(this).data("autoplay-speed"), 10);
+    var hasAutoplay = !isNaN(autoplaySpeed) && autoplaySpeed > 0;
+
+    $(this)
     .slick({
-      autoplay: false,
+      autoplay: hasAutoplay,
       dots: false,
-      autoplaySpeed: 3000,
+      autoplaySpeed: hasAutoplay ? autoplaySpeed : 3000,
       speed: 1000,
       infinite: true,
       slidesToShow: 5,
@@ -414,6 +419,7 @@ $(document).ready(function () {
     .on("setPosition", function (event, slick) {
       slick.$slides.css("height", slick.$slideTrack.height() + "px");
     });
+  });
   $(".categories-cards-slider").slick({
     autoplay: false,
     dots: false,

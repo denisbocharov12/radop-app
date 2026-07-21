@@ -55,6 +55,14 @@ class ClientController extends Controller
     }
 
     /**
+     * Sidebar badge: number of clients with no manager assigned yet.
+     */
+    public function withoutManagerCount(): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(['count' => $this->userRepository->getUsersWithoutManagerCount()]);
+    }
+
+    /**
      * @throws CityNotFoundValidationException
      * @throws DuplicatedUserEmailValidationException
      */

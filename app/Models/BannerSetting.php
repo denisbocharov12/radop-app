@@ -10,5 +10,8 @@ class BannerSetting extends Model
 {
     protected $fillable = [
         'rotation_speed',
+        'new_slider_speed',
+        'popular_slider_speed',
+        'sale_slider_speed',
     ];
 }

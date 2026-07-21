@@ -12561,7 +12561,7 @@ body.modal-open {
     }
 }
 .category-child-header {
-    display: flex;
+    display: inline;
     align-items: center;
     flex-wrap: wrap;
     gap: 8px 12px;
@@ -12575,6 +12575,9 @@ body.modal-open {
 }
 .export-excel--category-row {
     flex-shrink: 0;
+    position: absolute;
+    right: -20px;
+    top: -2px;
 }
 .export-excel--category-row .export-excel-link {
     display: inline-flex;
@@ -12589,7 +12592,10 @@ body.modal-open {
     width: 18px;
     height: 18px;
 }
-
+.export-excel--category-row .export-excel-link .excel-icon{
+    width: 14px;
+    height: 14px;
+}
 .page-sort-block {
     display: flex;
     align-items: center;

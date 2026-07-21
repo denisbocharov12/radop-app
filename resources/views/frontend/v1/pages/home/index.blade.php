@@ -28,7 +28,7 @@
                         <a class="section-home-btn" href="{{route('theme.shop.new')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
-                <div class="col catalog-slider">
+                <div class="col catalog-slider" data-autoplay-speed="{{ $newSliderSpeed ?? 0 }}">
                     @foreach($newProducts as $product)
                         @php
                             $sessionId = config('shopping_cart.default_session_id');
@@ -109,7 +109,7 @@
                         <a class="section-home-btn" href="{{route('theme.shop.popular')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
-                <div class="col catalog-slider">
+                <div class="col catalog-slider" data-autoplay-speed="{{ $popularSliderSpeed ?? 0 }}">
                     @foreach($popularProducts as $product)
                         @php
                             $sessionId = config('shopping_cart.default_session_id');
@@ -191,7 +191,7 @@
                         <a class="section-home-btn" href="{{route('theme.shop.sale')}}">{{__('theme.view-all')}}</a>
                     </div>
                 </div>
-                <div class="col catalog-slider">
+                <div class="col catalog-slider" data-autoplay-speed="{{ $saleSliderSpeed ?? 0 }}">
                     @foreach($discountProducts as $product)
                         @php
                             $sessionId = config('shopping_cart.default_session_id');
