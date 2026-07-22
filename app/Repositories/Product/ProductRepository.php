@@ -940,21 +940,15 @@ final class ProductRepository
         $length = $isNumeric ? mb_strlen($search) : 0;
 
         if ($isNumeric) {
-            if ($length < 8) {
-                $this->applyTitleSearchConditions($query, $search, $words);
+            if ($length <= 7) {
+                // 2.1 — up to 7 digits → search strictly by article.
+                $query->where('products.article', $search);
             } elseif ($length === 8) {
+                // 2.2 — 8 digits → search by code (1C onec_id).
                 $query->where('products.onec_id', $search);
-            } elseif ($length === 13) {
-                $query->where(function (Builder $builder) use ($search) {
-                    $builder->where('shtrih_code', $search)
-                        ->orWhere('article', $search);
-                });
-            } elseif ($length > 8 && $length < 13) {
-                $query->where(function (Builder $builder) use ($search) {
-                    $builder->where('products.onec_id', $search)
-                        ->orWhere('shtrih_code', $search)
-                        ->orWhere('article', $search);
-                })->orderByRaw('CASE WHEN products.onec_id = ? THEN 0 ELSE 1 END', [$search]);
+            } elseif ($length <= 13) {
+                // 2.3 — 9…13 digits → search by barcode (shtrih_code).
+                $query->where('products.shtrih_code', $search);
             } else {
                 $this->applyDefaultSearchConditions($query, $search, $words);
             }
@@ -969,10 +963,16 @@ final class ProductRepository
 
         $query->where(function (Builder $builder) use ($value, $words, $lowerValue) {
             // Barcode (shtrih_code) is intentionally NOT matched by LIKE here —
-            // it is searched only on an exact full 13-digit query (see applySearchFilters()).
+            // it is searched only on an exact numeric query (see applySearchFilters()).
             $builder->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerValue}%"])
                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerValue}%"]);
+
+            // 2.4 — also match by category / subcategory name (e.g. "Ранцы" → subcategory Ранцы).
+            // categories.name is a translatable JSON column, so LIKE matches either locale.
+            $builder->orWhereHas('categories', function (Builder $categoryQuery) use ($lowerValue) {
+                $categoryQuery->whereRaw('LOWER(categories.name) LIKE ?', ["%{$lowerValue}%"]);
+            });
 
             $brandOnecIds = $this->getBrandOnecIdsMatchingTitleLike($lowerValue);
             if ($brandOnecIds->isNotEmpty()) {
@@ -986,7 +986,10 @@ final class ProductRepository
                         $subQuery->where(function (Builder $wordQuery) use ($lowerWord) {
                             $wordQuery->whereRaw('LOWER(products.title) LIKE ?', ["%{$lowerWord}%"])
                                 ->orWhereRaw('LOWER(products.article) LIKE ?', ["%{$lowerWord}%"])
-                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"]);
+                                ->orWhereRaw('LOWER(products.onec_id) LIKE ?', ["%{$lowerWord}%"])
+                                ->orWhereHas('categories', function (Builder $categoryQuery) use ($lowerWord) {
+                                    $categoryQuery->whereRaw('LOWER(categories.name) LIKE ?', ["%{$lowerWord}%"]);
+                                });
                             $brandIdsWord = $this->getBrandOnecIdsMatchingTitleLike($lowerWord);
                             if ($brandIdsWord->isNotEmpty()) {
                                 $wordQuery->orWhereIn('products.brand_id', $brandIdsWord->all());
