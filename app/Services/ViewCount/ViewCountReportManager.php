@@ -49,7 +49,7 @@ final class ViewCountReportManager
                 'total_views' => $views,
                 'unique_views' => $uniqueViews,
                 'period_views' => $periodViews,
-                'views_per_unit' => $views > 0 ? round($views / 1, 2) : 0,
+                'views_per_unit' => $uniqueViews > 0 ? round($views / $uniqueViews, 2) : 0,
             ];
 
             $totalViews += $views;
@@ -63,6 +63,7 @@ final class ViewCountReportManager
             'total_views' => $totalViews,
             'total_unique_views' => $totalUniqueViews,
             'count' => count($reportData),
+            'series' => $this->productViewCountRepository->getDailySeries($startDateTime, $endDateTime, $productId),
             'period' => [
                 'start_date' => $startDate,
                 'end_date' => $endDate,
@@ -123,7 +124,7 @@ final class ViewCountReportManager
                 'total_views' => $views,
                 'unique_views' => $uniqueViews,
                 'period_views' => $periodViews,
-                'views_per_unit' => $views > 0 ? round($views / 1, 2) : 0,
+                'views_per_unit' => $uniqueViews > 0 ? round($views / $uniqueViews, 2) : 0,
             ];
 
             $totalViews += $views;
@@ -135,6 +136,7 @@ final class ViewCountReportManager
             'total_views' => $totalViews,
             'total_unique_views' => $totalUniqueViews,
             'count' => count($reportData),
+            'series' => $this->brandViewCountRepository->getDailySeries($startDateTime, $endDateTime, $brandId),
             'period' => [
                 'start_date' => $startDate,
                 'end_date' => $endDate,
@@ -171,7 +173,7 @@ final class ViewCountReportManager
                 'total_views' => $views,
                 'unique_views' => $uniqueViews,
                 'period_views' => $periodViews,
-                'views_per_unit' => $views > 0 ? round($views / 1, 2) : 0,
+                'views_per_unit' => $uniqueViews > 0 ? round($views / $uniqueViews, 2) : 0,
             ];
 
             $totalViews += $views;
@@ -183,6 +185,7 @@ final class ViewCountReportManager
             'total_views' => $totalViews,
             'total_unique_views' => $totalUniqueViews,
             'count' => count($reportData),
+            'series' => $this->categoryViewCountRepository->getDailySeries($startDateTime, $endDateTime, $categoryId),
             'period' => [
                 'start_date' => $startDate,
                 'end_date' => $endDate,

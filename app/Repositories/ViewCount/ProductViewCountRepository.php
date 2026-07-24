@@ -41,6 +41,29 @@ final class ProductViewCountRepository
         );
     }
 
+    /**
+     * Add a batched amount to the (product, ip, session) bucket. Used by the
+     * scheduled flush of the cache buffer — one write per visitor per flush.
+     */
+    public function addViewCount(int $productId, string $ipAddress, string $sessionId, int $amount): void
+    {
+        if ($amount <= 0) {
+            return;
+        }
+
+        ProductViewCount::updateOrCreate(
+            [
+                'product_id' => $productId,
+                'ip_address' => $ipAddress,
+                'session_id' => $sessionId,
+            ],
+            [
+                'view_count' => DB::raw('view_count + ' . (int) $amount),
+                'last_viewed_at' => now(),
+            ]
+        );
+    }
+
     public function getTotalViewCount(Product $product): int
     {
         return ProductViewCount::where('product_id', $product->id)->sum('view_count');
@@ -94,6 +117,28 @@ final class ProductViewCountRepository
     public function deleteOldRecords(Carbon $cutoffDate): int
     {
         return ProductViewCount::where('last_viewed_at', '<', $cutoffDate)->delete();
+    }
+
+    /**
+     * Daily views activity for the trend chart (grouped by last_viewed_at date).
+     *
+     * @return array<int, array{date: string, views: int, uniques: int}>
+     */
+    public function getDailySeries(Carbon $startDate, Carbon $endDate, ?int $productId = null): array
+    {
+        $query = ProductViewCount::query()
+            ->whereBetween('last_viewed_at', [$startDate, $endDate])
+            ->selectRaw('DATE(last_viewed_at) as d, SUM(view_count) as views, COUNT(*) as uniques')
+            ->groupBy('d')
+            ->orderBy('d');
+
+        if ($productId !== null) {
+            $query->where('product_id', $productId);
+        }
+
+        return $query->get()
+            ->map(fn ($row) => ['date' => (string) $row->d, 'views' => (int) $row->views, 'uniques' => (int) $row->uniques])
+            ->all();
     }
 
     /**

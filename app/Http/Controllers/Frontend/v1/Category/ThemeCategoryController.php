@@ -101,7 +101,7 @@ final class ThemeCategoryController extends Controller
         $this->seo()->jsonLd()->setDescription($seoDescription);
         $this->seo()->jsonLd()->setUrl(route('theme.category.index', $existedCategory->onec_id));
 
-        //$this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
+        $this->viewCountManager->incrementCategoryViewCount($existedCategory, $request);
 
         if ($existedCategory->children->isNotEmpty()) {
             $existedCategory->load(['childrenOrderedByColumn.childrenOrderedByColumn']);

@@ -46,6 +46,21 @@
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
     @endif
+    @cookieconsentscripts
+    {{-- Recolour the cookie-consent dialog to the Radop theme (package default is #7959EF).
+         The package stylesheet loads after this block with equal specificity, so !important
+         is used to win the default state (not just :hover). --}}
+    <style>
+        #cookies-policy .cookiesBtn__link { background: #0052a6 !important; border-color: #0052a6 !important; }
+        #cookies-policy .cookiesBtn__link:focus,
+        #cookies-policy .cookiesBtn__link:hover { background: #034486 !important; border-color: #034486 !important; opacity: 1 !important; }
+        #cookies-policy .cookies__category input:checked + .cookies__box:after { background: #0052a6 !important; }
+        #cookies-policy .cookies__details,
+        #cookies-policy .cookies__details:focus,
+        #cookies-policy .cookies__details:hover,
+        #cookies-policy .cookies__intro a:focus,
+        #cookies-policy .cookies__intro a:hover { color: #0052a6 !important; }
+    </style>
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-713BYG9HR2"></script>

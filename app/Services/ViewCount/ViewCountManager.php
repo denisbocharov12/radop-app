@@ -4,72 +4,55 @@ declare(strict_types=1);
 
 namespace App\Services\ViewCount;
 
-use App\Jobs\IncrementBrandViewCountJob;
-use App\Jobs\IncrementCategoryViewCountJob;
-use App\Jobs\IncrementProductViewCountJob;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+/**
+ * Thin entry point used by the storefront controllers. Delegates to the batched
+ * ViewCountRecorder (cache buffer + 15-min flush) — no per-request queued job.
+ */
 final class ViewCountManager
 {
+    public function __construct(
+        private readonly ViewCountRecorder $recorder,
+    ) {
+    }
+
     public function incrementProductViewCount(Product $product, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
-
-        IncrementProductViewCountJob::dispatch(
-            $product->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
-        );
+        $this->record('product', $product->id, $request);
     }
 
     public function incrementBrandViewCount(Brand $brand, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
-
-        IncrementBrandViewCountJob::dispatch(
-            $brand->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
-        );
+        $this->record('brand', $brand->id, $request);
     }
 
     public function incrementCategoryViewCount(Category $category, Request $request): void
     {
-        $ipAddress = $this->getClientIp();
-        $sessionId = $request->session()->getId();
-        $shouldIncrement = $request->attributes->get('should_increment_view', true);
+        $this->record('category', $category->id, $request);
+    }
 
-        IncrementCategoryViewCountJob::dispatch(
-            $category->id,
-            $ipAddress,
-            $sessionId,
-            $shouldIncrement
+    private function record(string $type, int $id, Request $request): void
+    {
+        $this->recorder->record(
+            $type,
+            $id,
+            $this->getClientIp($request),
+            $request->session()->getId(),
+            $request->userAgent()
         );
     }
 
-    public function getClientIp(): string
+    /**
+     * Trusted client IP. Relies on Laravel's TrustProxies configuration instead of
+     * blindly reading spoofable X-Forwarded-* headers (which used to inflate unique
+     * view counts by creating a new bucket per forged header).
+     */
+    public function getClientIp(Request $request): string
     {
-        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
-
-            if (array_key_exists($key, $_SERVER) === true){
-                foreach (explode(',', $_SERVER[$key]) as $ip){
-                    $ip = trim($ip);
-                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
-                        return $ip;
-                    }
-                }
-            }
-        }
-
-        return request()->ip();
+        return (string) ($request->ip() ?? '0.0.0.0');
     }
 }

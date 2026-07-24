@@ -41,6 +41,25 @@ final class BrandViewCountRepository
         );
     }
 
+    public function addViewCount(int $brandId, string $ipAddress, string $sessionId, int $amount): void
+    {
+        if ($amount <= 0) {
+            return;
+        }
+
+        BrandViewCount::updateOrCreate(
+            [
+                'brand_id' => $brandId,
+                'ip_address' => $ipAddress,
+                'session_id' => $sessionId,
+            ],
+            [
+                'view_count' => DB::raw('view_count + ' . (int) $amount),
+                'last_viewed_at' => now(),
+            ]
+        );
+    }
+
     public function getTotalViewCount(Brand $brand): int
     {
         return (int)BrandViewCount::where('brand_id', $brand->id)->sum('view_count');
@@ -94,6 +113,26 @@ final class BrandViewCountRepository
     public function deleteOldRecords(Carbon $cutoffDate): int
     {
         return BrandViewCount::where('last_viewed_at', '<', $cutoffDate)->delete();
+    }
+
+    /**
+     * @return array<int, array{date: string, views: int, uniques: int}>
+     */
+    public function getDailySeries(Carbon $startDate, Carbon $endDate, ?int $brandId = null): array
+    {
+        $query = BrandViewCount::query()
+            ->whereBetween('last_viewed_at', [$startDate, $endDate])
+            ->selectRaw('DATE(last_viewed_at) as d, SUM(view_count) as views, COUNT(*) as uniques')
+            ->groupBy('d')
+            ->orderBy('d');
+
+        if ($brandId !== null) {
+            $query->where('brand_id', $brandId);
+        }
+
+        return $query->get()
+            ->map(fn ($row) => ['date' => (string) $row->d, 'views' => (int) $row->views, 'uniques' => (int) $row->uniques])
+            ->all();
     }
 
     /**

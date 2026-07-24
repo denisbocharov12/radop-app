@@ -26,6 +26,7 @@
     @include('frontend.v1.footer.footer')
     @include('frontend.v1.scripts.scripts')
 </div>
+@cookieconsentview
 </body>
 
 
