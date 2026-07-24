@@ -95,7 +95,7 @@ final class ThemeProductController extends Controller
         $this->seo()->jsonLd()->setUrl(route('theme.product.index', $product->slug));
         $this->seo()->jsonLd()->addValues($this->productSchemaOrgBuilder->build($product));
 
-        //$this->viewCountManager->incrementProductViewCount($product, $request);
+        $this->viewCountManager->incrementProductViewCount($product, $request);
 
         $priceFloat = (float) ThemeProductManager::getProductTotalSum($product);
         $ga4ViewItem = [
@@ -174,7 +174,8 @@ final class ThemeProductController extends Controller
             $similarProducts = $this->productRepository->getAllSimilarProducts($product);
         }
 
-        //$this->viewCountManager->incrementProductViewCount($product, $request);
+        // Quick-view (AJAX modal) intentionally does NOT count a view — the full
+        // product page counts it, so counting here would double-count.
 
         $renderedView = view('frontend.v1.pages.product.quick-view-v2', compact(['product', 'similarProducts']))->render();
 

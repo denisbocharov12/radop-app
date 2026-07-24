@@ -30,6 +30,17 @@
         </div>
     </div>
 
+    <div id="reportCharts" style="display:none;" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <x-card>
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Активность просмотров по дням</h3>
+            <canvas id="viewsTrendChart" height="120"></canvas>
+        </x-card>
+        <x-card>
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Топ-10 товаров по просмотрам</h3>
+            <canvas id="viewsTopChart" height="120"></canvas>
+        </x-card>
+    </div>
+
     <div id="reportTable" style="display:none;">
         <x-card :padding="false">
             <div class="table-wrap">
@@ -133,8 +144,43 @@
                     tbody.append(row);
                 });
 
+                renderCharts(data);
+
                 $('#reportResults').show();
                 $('#reportTable').show();
+            }
+
+            var trendChart = null, topChart = null;
+            function renderCharts(data) {
+                if (typeof Chart === 'undefined') { return; }
+
+                // Daily activity (line).
+                var series = data.series || [];
+                var labels = series.map(function (p) { return p.date; });
+                var views  = series.map(function (p) { return p.views; });
+                var uniques = series.map(function (p) { return p.uniques; });
+
+                if (trendChart) { trendChart.destroy(); }
+                trendChart = new Chart(document.getElementById('viewsTrendChart'), {
+                    type: 'line',
+                    data: { labels: labels, datasets: [
+                        { label: 'Просмотры', data: views, borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.1)', tension: .3, fill: true },
+                        { label: 'Уникальные', data: uniques, borderColor: '#0284c7', backgroundColor: 'rgba(2,132,199,.08)', tension: .3, fill: true }
+                    ]},
+                    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+                });
+
+                // Top-10 products (bar).
+                var top = (data.products || []).slice().sort(function (a, b) { return b.total_views - a.total_views; }).slice(0, 10);
+                if (topChart) { topChart.destroy(); }
+                topChart = new Chart(document.getElementById('viewsTopChart'), {
+                    type: 'bar',
+                    data: { labels: top.map(function (p) { return (p.title || '').substring(0, 28); }),
+                        datasets: [{ label: 'Просмотры', data: top.map(function (p) { return p.total_views; }), backgroundColor: '#0068a7' }] },
+                    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+                });
+
+                $('#reportCharts').show();
             }
         });
     </script>

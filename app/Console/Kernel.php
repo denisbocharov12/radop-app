@@ -17,7 +17,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('manager-exports:cleanup')->dailyAt('02:00');
         // Refresh the product-error report after the nightly 1C import cycle.
         $schedule->command('products:scan-errors')->dailyAt('03:00');
-        //$schedule->command('view-counts:cleanup --days=90')->quarterly();
+        // Batch-write buffered product/category/brand views from cache into the DB.
+        $schedule->command('view-counts:flush')->everyFifteenMinutes()->withoutOverlapping();
+        // Prune stale view-count buckets quarterly.
+        $schedule->command('view-counts:cleanup --days=90')->quarterly();
     }
 
     /**

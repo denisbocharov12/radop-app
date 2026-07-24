@@ -1,6 +1,8 @@
 {{-- Legacy helpers kept during migration: jQuery ($.ajax), SweetAlert2 --}}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- Charts for the analytics/reports pages. --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 {{-- Select2 lives in its own isolated initializer (error-isolated + single place
      to control its z-index layer). Included after jQuery, which it depends on. --}}

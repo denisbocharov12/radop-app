@@ -41,6 +41,25 @@ final class CategoryViewCountRepository
         );
     }
 
+    public function addViewCount(int $categoryId, string $ipAddress, string $sessionId, int $amount): void
+    {
+        if ($amount <= 0) {
+            return;
+        }
+
+        CategoryViewCount::updateOrCreate(
+            [
+                'category_id' => $categoryId,
+                'ip_address' => $ipAddress,
+                'session_id' => $sessionId,
+            ],
+            [
+                'view_count' => DB::raw('view_count + ' . (int) $amount),
+                'last_viewed_at' => now(),
+            ]
+        );
+    }
+
     public function getTotalViewCount(Category $category): int
     {
         return (int)CategoryViewCount::where('category_id', $category->id)->sum('view_count');
@@ -94,6 +113,26 @@ final class CategoryViewCountRepository
     public function deleteOldRecords(Carbon $cutoffDate): int
     {
         return CategoryViewCount::where('last_viewed_at', '<', $cutoffDate)->delete();
+    }
+
+    /**
+     * @return array<int, array{date: string, views: int, uniques: int}>
+     */
+    public function getDailySeries(Carbon $startDate, Carbon $endDate, ?int $categoryId = null): array
+    {
+        $query = CategoryViewCount::query()
+            ->whereBetween('last_viewed_at', [$startDate, $endDate])
+            ->selectRaw('DATE(last_viewed_at) as d, SUM(view_count) as views, COUNT(*) as uniques')
+            ->groupBy('d')
+            ->orderBy('d');
+
+        if ($categoryId !== null) {
+            $query->where('category_id', $categoryId);
+        }
+
+        return $query->get()
+            ->map(fn ($row) => ['date' => (string) $row->d, 'views' => (int) $row->views, 'uniques' => (int) $row->uniques])
+            ->all();
     }
 
     /**

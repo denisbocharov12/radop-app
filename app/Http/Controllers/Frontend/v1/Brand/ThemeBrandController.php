@@ -110,7 +110,7 @@ final class ThemeBrandController extends Controller
         $attributes = $filters['attributes'];
         $categories = $filters['categories'];
 
-        //$this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
+        $this->viewCountManager->incrementBrandViewCount($existedBrand, $request);
 
         $listId = 'brand_' . $existedBrand->onec_id;
         $listName = $this->brandListDisplayName($existedBrand);
