@@ -52,6 +52,7 @@
                 </table>
             </div>
         </x-card>
+        <div id="reportPagination" class="flex flex-wrap items-center justify-between gap-3 mt-4"></div>
     </div>
 @endsection
 
@@ -65,22 +66,23 @@
             $('#category_id').on('change', function() { toggleClearCategory(); });
             $('#clear_category').click(function(e) { e.preventDefault(); $('#category_id').val('').trigger('change'); });
 
-            $('#generateReport').click(function() {
+            var PER_PAGE = 25;
+
+            function loadReport(page) {
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();
-                const productSearch = $('#product_search').val();
-                const categoryId = $('#category_id').val();
-                const sortBy = $('#sort_by').val();
-                const sortDirection = $('#sort_direction').val();
-
                 if (!startDate || !endDate) { alert('Пожалуйста, выберите даты начала и окончания периода'); return; }
 
                 $.ajax({
                     url: '{{ route("reports.view-count.product.report.generate") }}',
                     method: 'POST',
                     data: {
-                        start_date: startDate, end_date: endDate, product_search: productSearch,
-                        category_id: categoryId, sort_by: sortBy, sort_direction: sortDirection,
+                        start_date: startDate, end_date: endDate,
+                        product_search: $('#product_search').val(),
+                        category_id: $('#category_id').val(),
+                        sort_by: $('#sort_by').val(),
+                        sort_direction: $('#sort_direction').val(),
+                        page: page || 1, per_page: PER_PAGE,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
@@ -95,7 +97,9 @@
                         } else { alert('Ошибка при генерации отчета'); }
                     }
                 });
-            });
+            }
+
+            $('#generateReport').click(function() { loadReport(1); });
 
             $('#exportReport').click(function() {
                 const startDate = $('#start_date').val();
@@ -144,10 +148,31 @@
                     tbody.append(row);
                 });
 
+                renderPagination(data);
                 renderCharts(data);
 
                 $('#reportResults').show();
                 $('#reportTable').show();
+            }
+
+            function renderPagination(data) {
+                var p = data.pagination || { current_page: 1, last_page: 1, per_page: PER_PAGE, total: data.count || 0 };
+                var el = $('#reportPagination').empty();
+                var from = p.total === 0 ? 0 : (p.current_page - 1) * p.per_page + 1;
+                var to = Math.min(p.current_page * p.per_page, p.total);
+                el.append('<span class="text-sm text-gray-500">Показано ' + from + '–' + to + ' из ' + p.total + '</span>');
+                if (p.last_page <= 1) { return; }
+                var nav = $('<div class="flex items-center gap-1"></div>');
+                function btn(label, page, disabled, active) {
+                    var b = $('<button type="button" class="btn-sm ' + (active ? 'btn-primary' : 'btn-secondary') + '">' + label + '</button>');
+                    if (disabled) { b.prop('disabled', true).addClass('opacity-50'); } else { b.on('click', function () { loadReport(page); }); }
+                    return b;
+                }
+                nav.append(btn('‹', p.current_page - 1, p.current_page <= 1, false));
+                var start = Math.max(1, p.current_page - 2), end = Math.min(p.last_page, p.current_page + 2);
+                for (var i = start; i <= end; i++) { nav.append(btn(i, i, false, i === p.current_page)); }
+                nav.append(btn('›', p.current_page + 1, p.current_page >= p.last_page, false));
+                el.append(nav);
             }
 
             var trendChart = null, topChart = null;
@@ -170,8 +195,8 @@
                     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
                 });
 
-                // Top-10 products (bar).
-                var top = (data.products || []).slice().sort(function (a, b) { return b.total_views - a.total_views; }).slice(0, 10);
+                // Top-10 products (bar) — from the full-set aggregate, not the current page.
+                var top = data.top || [];
                 if (topChart) { topChart.destroy(); }
                 topChart = new Chart(document.getElementById('viewsTopChart'), {
                     type: 'bar',

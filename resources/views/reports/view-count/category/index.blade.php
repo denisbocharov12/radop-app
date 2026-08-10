@@ -51,30 +51,53 @@
                 </table>
             </div>
         </x-card>
+        <div id="reportPagination" class="flex flex-wrap items-center justify-between gap-3 mt-4"></div>
     </div>
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#generateReport').click(function() {
+            var PER_PAGE = 25;
+
+            function loadReport(page) {
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();
-                const categoryId = $('#category_id').val();
-
                 if (!startDate || !endDate) { alert('Пожалуйста, выберите даты начала и окончания периода'); return; }
 
                 $.ajax({
                     url: '{{ route("reports.view-count.category.report.generate") }}',
                     method: 'POST',
-                    data: { start_date: startDate, end_date: endDate, category_id: categoryId, _token: '{{ csrf_token() }}' },
+                    data: { start_date: startDate, end_date: endDate, category_id: $('#category_id').val(), page: page || 1, per_page: PER_PAGE, _token: '{{ csrf_token() }}' },
                     success: function(response) {
                         if (response.success) { displayReport(response.data); }
                         else { alert('Ошибка при генерации отчета'); }
                     },
                     error: function() { alert('Ошибка при генерации отчета'); }
                 });
-            });
+            }
+
+            $('#generateReport').click(function() { loadReport(1); });
+
+            function renderPagination(data) {
+                var p = data.pagination || { current_page: 1, last_page: 1, per_page: PER_PAGE, total: data.count || 0 };
+                var el = $('#reportPagination').empty();
+                var from = p.total === 0 ? 0 : (p.current_page - 1) * p.per_page + 1;
+                var to = Math.min(p.current_page * p.per_page, p.total);
+                el.append('<span class="text-sm text-gray-500">Показано ' + from + '–' + to + ' из ' + p.total + '</span>');
+                if (p.last_page <= 1) { return; }
+                var nav = $('<div class="flex items-center gap-1"></div>');
+                function btn(label, page, disabled, active) {
+                    var b = $('<button type="button" class="btn-sm ' + (active ? 'btn-primary' : 'btn-secondary') + '">' + label + '</button>');
+                    if (disabled) { b.prop('disabled', true).addClass('opacity-50'); } else { b.on('click', function () { loadReport(page); }); }
+                    return b;
+                }
+                nav.append(btn('‹', p.current_page - 1, p.current_page <= 1, false));
+                var start = Math.max(1, p.current_page - 2), end = Math.min(p.last_page, p.current_page + 2);
+                for (var i = start; i <= end; i++) { nav.append(btn(i, i, false, i === p.current_page)); }
+                nav.append(btn('›', p.current_page + 1, p.current_page >= p.last_page, false));
+                el.append(nav);
+            }
 
             function displayReport(data) {
                 $('#categoriesCount').text(data.count);
@@ -100,6 +123,7 @@
                     tbody.append(row);
                 });
 
+                renderPagination(data);
                 renderCharts(data);
 
                 $('#reportResults').show();
@@ -119,7 +143,7 @@
                     ]},
                     options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
                 });
-                var top = (data.categories || []).slice().sort(function (a, b) { return b.total_views - a.total_views; }).slice(0, 10);
+                var top = data.top || [];
                 if (topChart) { topChart.destroy(); }
                 topChart = new Chart(document.getElementById('viewsTopChart'), {
                     type: 'bar',
