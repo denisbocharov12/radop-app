@@ -4,9 +4,6 @@
     <x-page-header :title="__('product_errors.page_title')"
                    :description="__('product_errors.subtitle', ['rows' => $summary['rows'], 'products' => $affectedProducts])">
         <x-slot:actions>
-            <a href="{{ route('product.index') }}" class="btn-secondary btn-sm">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> {{ __('product_errors.back_to_products') }}
-            </a>
             <form action="{{ route('product.errors.rescan') }}" method="POST"
                   onsubmit="this.querySelector('button').disabled=true;this.querySelector('button span').innerHTML='{{ __('product_errors.rescanning') }}';">
                 @csrf
@@ -14,6 +11,12 @@
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i> <span>{{ __('product_errors.rescan') }}</span>
                 </button>
             </form>
+            <a href="{{ route('product.errors.export', request()->query()) }}" class="btn-success btn-sm">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> {{ __('product_errors.export') }}
+            </a>
+            <a href="{{ route('product.index') }}" class="btn-secondary btn-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> {{ __('product_errors.back_to_products') }}
+            </a>
         </x-slot:actions>
     </x-page-header>
 

@@ -9,7 +9,7 @@
                     <div id="main-banner" data-autoplay-speed="{{ $autoplaySpeed }}" class="theme-slider">
                         @foreach($banners as $banner)
                             <div class="item">
-                                <a href="{{ $banner->link }}" data-promotion-id="{{ $banner->id }}" data-promotion-name="homepage_banner" data-creative-slot="main_banner">
+                                <a href="{{ $banner->linkForLocale() }}" data-promotion-id="{{ $banner->id }}" data-promotion-name="homepage_banner" data-creative-slot="main_banner">
                                     <img src="{{ asset('storage/' . ($locale === 'ro' ? $banner->image_path_ro : $banner->image_path_ru)) }}" alt="Radop - Magazin online" loading="lazy">
                                 </a>
                             </div>

@@ -29,11 +29,13 @@ final class ProductError extends Model
     public const SEVERITY_CRITICAL = 'critical';
     public const SEVERITY_MINOR    = 'minor';
 
-    public const TYPE_MISSING_IMAGES      = 'missing_images';
-    public const TYPE_MISSING_CATEGORY    = 'missing_category';
-    public const TYPE_MISSING_BRAND       = 'missing_brand';
-    public const TYPE_MISSING_DESCRIPTION = 'missing_description';
-    public const TYPE_MISSING_ATTRIBUTES  = 'missing_attributes';
+    public const TYPE_MISSING_IMAGES         = 'missing_images';
+    public const TYPE_MISSING_PRIMARY_IMAGES = 'missing_primary_images';
+    public const TYPE_MISSING_CATEGORY       = 'missing_category';
+    public const TYPE_MISSING_BRAND          = 'missing_brand';
+    public const TYPE_MISSING_DESCRIPTION    = 'missing_description';
+    public const TYPE_MISSING_ATTRIBUTES     = 'missing_attributes';
+    public const TYPE_INVALID_NAME_FORMAT    = 'invalid_name_format';
 
     /**
      * Canonical catalogue of error types → severity. Human labels and
@@ -43,11 +45,13 @@ final class ProductError extends Model
      * @var array<string, string>
      */
     public const TYPE_SEVERITY = [
-        self::TYPE_MISSING_IMAGES      => self::SEVERITY_CRITICAL,
-        self::TYPE_MISSING_CATEGORY    => self::SEVERITY_CRITICAL,
-        self::TYPE_MISSING_BRAND       => self::SEVERITY_CRITICAL,
-        self::TYPE_MISSING_DESCRIPTION => self::SEVERITY_MINOR,
-        self::TYPE_MISSING_ATTRIBUTES  => self::SEVERITY_MINOR,
+        self::TYPE_MISSING_IMAGES         => self::SEVERITY_CRITICAL,
+        self::TYPE_MISSING_PRIMARY_IMAGES => self::SEVERITY_CRITICAL,
+        self::TYPE_MISSING_CATEGORY       => self::SEVERITY_CRITICAL,
+        self::TYPE_MISSING_BRAND          => self::SEVERITY_CRITICAL,
+        self::TYPE_MISSING_DESCRIPTION    => self::SEVERITY_MINOR,
+        self::TYPE_MISSING_ATTRIBUTES     => self::SEVERITY_MINOR,
+        self::TYPE_INVALID_NAME_FORMAT    => self::SEVERITY_MINOR,
     ];
 
     protected $fillable = [

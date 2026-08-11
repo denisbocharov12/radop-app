@@ -21,6 +21,8 @@ class BannerRequest extends FormRequest
             'image_ru' => 'nullable|image|mimes:jpeg,jpg|max:2048',
             'image_ro' => 'nullable|image|mimes:jpeg,jpg|max:2048',
             'link' => 'nullable|string',
+            'link_ru' => 'nullable|string|max:1000',
+            'link_ro' => 'nullable|string|max:1000',
             'active' => 'boolean',
             'order' => 'nullable|integer|min:1',
         ];

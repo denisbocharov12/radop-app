@@ -53,7 +53,9 @@ class BannerController extends Controller
         Banner::create([
             'image_path_ru' => $pathRu,
             'image_path_ro' => $pathRo,
-            'link' => $bannerData->link,
+            'link' => $bannerData->link_ru ?: $bannerData->link,
+            'link_ru' => $bannerData->link_ru,
+            'link_ro' => $bannerData->link_ro,
             'active' => $bannerData->active,
             'order' => $order,
         ]);
@@ -99,7 +101,9 @@ class BannerController extends Controller
         $banner->update([
             'image_path_ru' => $pathRu,
             'image_path_ro' => $pathRo,
-            'link' => $bannerData->link,
+            'link' => $bannerData->link_ru ?: $bannerData->link,
+            'link_ru' => $bannerData->link_ru,
+            'link_ro' => $bannerData->link_ro,
             'active' => $bannerData->active,
             'order' => $order,
         ]);

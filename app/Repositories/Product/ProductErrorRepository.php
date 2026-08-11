@@ -109,6 +109,27 @@ final class ProductErrorRepository
      */
     public function paginatedWithFilters(): LengthAwarePaginator
     {
+        return $this->filteredQuery()
+            ->paginate(self::PER_PAGE)
+            ->appends(request()->query());
+    }
+
+    /**
+     * Full (non-paginated) filtered error rows for the Excel export.
+     */
+    public function filteredForExport(): \Illuminate\Support\Collection
+    {
+        return $this->filteredQuery()->get();
+    }
+
+    /**
+     * Shared filter + ordering used by the listing and the export.
+     * Supported query params: severity, type, source, search, in_stock.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder<ProductError>
+     */
+    private function filteredQuery()
+    {
         $severity = request()->query('severity');
         $type     = request()->query('type');
         $source   = request()->query('source');
@@ -131,8 +152,6 @@ final class ProductErrorRepository
             // Critical first, then by product so all issues of one product group.
             ->orderByRaw("FIELD(severity, '" . ProductError::SEVERITY_CRITICAL . "', '" . ProductError::SEVERITY_MINOR . "')")
             ->orderBy('product_onec_id')
-            ->orderBy('type')
-            ->paginate(self::PER_PAGE)
-            ->appends(request()->query());
+            ->orderBy('type');
     }
 }

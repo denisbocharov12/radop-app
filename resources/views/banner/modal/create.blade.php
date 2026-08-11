@@ -15,9 +15,14 @@
                 </select>
             </div>
             <div>
-                <label class="form-label" for="bn_link">Ссылка</label>
-                <input type="text" name="link" id="bn_link" value="{{ old('link') }}" class="form-input @error('link') border-red-400 @enderror" placeholder="/catalog/...">
-                @error('link')<p class="form-error">{{ $message }}</p>@enderror
+                <label class="form-label" for="bn_link_ru">Ссылка (RU)</label>
+                <input type="text" name="link_ru" id="bn_link_ru" value="{{ old('link_ru') }}" class="form-input @error('link_ru') border-red-400 @enderror" placeholder="/ru/catalog/...">
+                @error('link_ru')<p class="form-error">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="form-label" for="bn_link_ro">Ссылка (RO)</label>
+                <input type="text" name="link_ro" id="bn_link_ro" value="{{ old('link_ro') }}" class="form-input @error('link_ro') border-red-400 @enderror" placeholder="/ro/catalog/...">
+                @error('link_ro')<p class="form-error">{{ $message }}</p>@enderror
             </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
