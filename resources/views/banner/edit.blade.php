@@ -37,8 +37,12 @@
                     </select>
                 </div>
                 <div>
-                    <label class="form-label" for="link">Ссылка</label>
-                    <input type="text" name="link" id="link" value="{{ $banner->link }}" class="form-input">
+                    <label class="form-label" for="link_ru">Ссылка (RU)</label>
+                    <input type="text" name="link_ru" id="link_ru" value="{{ old('link_ru', $banner->link_ru ?? $banner->link) }}" class="form-input" placeholder="/ru/catalog/...">
+                </div>
+                <div>
+                    <label class="form-label" for="link_ro">Ссылка (RO)</label>
+                    <input type="text" name="link_ro" id="link_ro" value="{{ old('link_ro', $banner->link_ro ?? $banner->link) }}" class="form-input" placeholder="/ro/catalog/...">
                 </div>
             </div>
 

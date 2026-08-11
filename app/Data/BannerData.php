@@ -8,6 +8,8 @@ final class BannerData
         public readonly ?string $image_ru,
         public readonly ?string $image_ro,
         public readonly ?string $link,
+        public readonly ?string $link_ru,
+        public readonly ?string $link_ro,
         public readonly string $active,
         public readonly ?string $order,
     ) {

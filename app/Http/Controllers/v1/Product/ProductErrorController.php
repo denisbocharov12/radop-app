@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v1\Product;
 
+use App\Exports\ProductErrorsExport;
 use App\Http\Controllers\Controller;
 use App\Models\ProductError;
 use App\Repositories\Product\ProductErrorRepository;
 use App\Services\Product\ProductErrorScanner;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class ProductErrorController extends Controller
 {
@@ -68,5 +70,18 @@ final class ProductErrorController extends Controller
                 'critical' => $summary['critical'],
                 'minor'    => $summary['minor'],
             ]));
+    }
+
+    /**
+     * Download the currently filtered error list as an Excel file.
+     */
+    public function export()
+    {
+        App::setLocale(self::ADMIN_LOCALE);
+
+        return Excel::download(
+            new ProductErrorsExport($this->productErrorRepository->filteredForExport()),
+            'product_errors_' . date('Y-m-d_H-i-s') . '.xlsx'
+        );
     }
 }

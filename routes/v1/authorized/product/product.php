@@ -22,6 +22,10 @@ Route::prefix('products')->name('product.')->group(function () {
         ->name('errors.rescan')
     ;
     Route::middleware(['app.permissions'])
+        ->get('/errors/export', [ProductErrorController::class, 'export'])
+        ->name('errors.export')
+    ;
+    Route::middleware(['app.permissions'])
         ->post('/', [ProductController::class, 'store'])
         ->name('store')
     ;

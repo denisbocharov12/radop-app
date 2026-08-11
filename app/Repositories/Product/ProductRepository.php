@@ -937,23 +937,36 @@ final class ProductRepository
     private function applySearchFilters(Builder $query, string $search, array $words): void
     {
         $isNumeric = $search !== '' && ctype_digit($search);
-        $length = $isNumeric ? mb_strlen($search) : 0;
 
-        if ($isNumeric) {
-            if ($length <= 7) {
-                // 2.1 — up to 7 digits → search strictly by article.
-                $query->where('products.article', $search);
-            } elseif ($length === 8) {
-                // 2.2 — 8 digits → search by code (1C onec_id).
-                $query->where('products.onec_id', $search);
-            } elseif ($length <= 13) {
-                // 2.3 — 9…13 digits → search by barcode (shtrih_code).
-                $query->where('products.shtrih_code', $search);
-            } else {
-                $this->applyDefaultSearchConditions($query, $search, $words);
-            }
-        } else {
+        if (!$isNumeric) {
             $this->applyDefaultSearchConditions($query, $search, $words);
+            return;
+        }
+
+        $length = mb_strlen($search);
+        $lower = mb_strtolower($search);
+
+        // Progressive field inclusion by digit count:
+        //   1–7   → title, article
+        //   8–12  → + onec_id (code)
+        //   13+   → + shtrih_code (barcode)
+        $fields = ['products.title', 'products.article'];
+        if ($length >= 8) {
+            $fields[] = 'products.onec_id';
+        }
+        if ($length >= 13) {
+            $fields[] = 'shtrih_code';
+        }
+
+        $query->where(function (Builder $builder) use ($fields, $lower) {
+            foreach ($fields as $field) {
+                $builder->orWhereRaw('LOWER(' . $field . ') LIKE ?', ["%{$lower}%"]);
+            }
+        });
+
+        // Exactly 13 digits → exact barcode matches ranked first, other matches after.
+        if ($length === 13) {
+            $query->orderByRaw('CASE WHEN shtrih_code = ? THEN 0 ELSE 1 END', [$search]);
         }
     }
 

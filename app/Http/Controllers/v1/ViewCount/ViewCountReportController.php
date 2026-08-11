@@ -35,7 +35,9 @@ final class ViewCountReportController extends Controller
             $request->get('product_search'),
             $request->get('category_id'),
             $request->get('sort_by', 'total_views'),
-            $request->get('sort_direction', 'desc')
+            $request->get('sort_direction', 'desc'),
+            (int) $request->get('page', 1),
+            (int) $request->get('per_page', 25)
         );
 
         return response()->json([
@@ -54,7 +56,11 @@ final class ViewCountReportController extends Controller
         $reportData = $this->viewCountReportManager->generateBrandReport(
             $request->get('start_date'),
             $request->get('end_date'),
-            $request->get('brand_id')
+            $request->get('brand_id'),
+            $request->get('sort_by', 'total_views'),
+            $request->get('sort_direction', 'desc'),
+            (int) $request->get('page', 1),
+            (int) $request->get('per_page', 25)
         );
 
         return response()->json([
@@ -73,7 +79,11 @@ final class ViewCountReportController extends Controller
         $reportData = $this->viewCountReportManager->generateCategoryReport(
             $request->get('start_date'),
             $request->get('end_date'),
-            $request->get('category_id')
+            $request->get('category_id'),
+            $request->get('sort_by', 'total_views'),
+            $request->get('sort_direction', 'desc'),
+            (int) $request->get('page', 1),
+            (int) $request->get('per_page', 25)
         );
 
         return response()->json([
@@ -115,7 +125,7 @@ final class ViewCountReportController extends Controller
 
     public function exportProductReport(ViewCountReportRequest $request)
     {
-        $reportData = $this->viewCountReportManager->generateProductReport(
+        $reportData = $this->viewCountReportManager->generateProductReportForExport(
             $request->get('start_date'),
             $request->get('end_date'),
             $request->get('product_id'),

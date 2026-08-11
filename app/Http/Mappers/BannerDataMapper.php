@@ -13,6 +13,8 @@ final class BannerDataMapper
             $request->image_ru,
             $request->image_ro,
             $request->link,
+            $request->link_ru,
+            $request->link_ro,
             $request->active,
             $request->order,
         );
