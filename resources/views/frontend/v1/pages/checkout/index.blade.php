@@ -105,7 +105,7 @@
                                                 <select name="city_id" id="city_id"
                                                         class="select-2-container @error('city_id') input-error-validation @enderror">
                                                     <option data-delivery-charge="{{ 0 }}"
-                                                            data-required-sum="{{ (float) config('app.min_delivery_sum') }}"
+                                                            data-required-sum="{{ (float) $user->minOrderSum() }}"
                                                             value="0" selected>{{ __('theme.select-city') }}</option>
                                                     @foreach ($cities as $city)
                                                         <option data-delivery-charge="{{ (float) $city->delivery_sum }}"
@@ -257,15 +257,27 @@
                                                 data-total="{{ \Cart::session($sessionId)->getTotal() }}">{{ number_format(\Cart::session($sessionId)->getTotal() + (float) $user?->city?->delivery_sum, 2, '.', '') }}</span>
                                         {{ __('theme.MDL') }}</span>
                                 </div>
+                                @php
+                                    $minSum = $user->minOrderSum();
+                                    $isSupplement = $user->isSupplementWindowOpen();
+                                    $cartTotal = \Cart::session($sessionId)->getTotal();
+                                    $belowMin = !$isSupplement && $cartTotal < $minSum;
+                                @endphp
                                 <div class="sc-buttons-wrap">
+                                    @if ($isSupplement)
+                                        <p class="supplement-order-note show">
+                                            {{ __('theme.supplement_order_note') }}
+                                            <span class="sum">{{ $user->supplementParentNumber() }}</span>
+                                        </p>
+                                    @endif
                                     <p
-                                        class="min-order-sum-warning-text {{ \Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'show' : '' }}">
+                                        class="min-order-sum-warning-text {{ $belowMin ? 'show' : '' }}">
                                         {{ __('theme.min_order_sum_warning_message') }} <span
-                                            class="sum">{{ config('app.min_delivery_sum') }}</span>
+                                            class="sum">{{ $minSum }}</span>
                                         {{ __('theme.MDL') }}
                                     </p>
                                     <a href="#"
-                                       class="sc-btn-checkout sc-btn sc-btn-submit {{ \Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{ __('theme.place-order') }}</a>
+                                       class="sc-btn-checkout sc-btn sc-btn-submit {{ $belowMin ? 'hide-important' : '' }}">{{ __('theme.place-order') }}</a>
                                     <a href="{{ route('theme.shop.catalog') }}"
                                        class="sc-btn-continuie sc-btn">{{ __('theme.сontinue-shopping') }}</a>
                                 </div>
@@ -330,16 +342,17 @@
                 $('.vertical-tabs-content-wrap .vertical-tabs-content').removeClass('active');
                 $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(tabIndex).addClass('active');
             });
+            var isSupplementOrder = {{ $isSupplement ? 'true' : 'false' }};
             $('#city_id').change(function() {
                 var total = $('#checkout-final-price').data('total');
                 $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
-                if (total < $(this).find(':selected').data('required-sum')) {
-                    $('.sc-btn-submit').addClass('hide');
+                if (!isSupplementOrder && total < $(this).find(':selected').data('required-sum')) {
+                    $('.sc-btn-submit').addClass('hide').addClass('hide-important');
                     $('.min-order-sum-warning-text').addClass('show');
                     $('.min-order-sum-warning-text').find('.sum').text($(this).find(':selected').data(
                         'required-sum'));
                 } else {
-                    $('.sc-btn-submit').removeClass('hide');
+                    $('.sc-btn-submit').removeClass('hide').removeClass('hide-important');
                     $('.min-order-sum-warning-text').removeClass('show');
                 }
 

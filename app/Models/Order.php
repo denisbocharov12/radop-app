@@ -39,6 +39,7 @@ final class Order extends Model
         'recommended_time',
         'user_type',
         'filial_id',
+        'parent_order_id',
     ];
 
     protected $casts = [
@@ -102,5 +103,25 @@ final class Order extends Model
     public function orderHistory(): HasMany
     {
         return $this->hasMany(OrderHistory::class);
+    }
+
+    /**
+     * Root order this order is attached to as a supplement (дозаказ).
+     *
+     * @return BelongsTo<Order, Order>
+     */
+    public function parentOrder(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'parent_order_id');
+    }
+
+    /**
+     * Supplement orders attached to this order.
+     *
+     * @return HasMany<Order>
+     */
+    public function supplements(): HasMany
+    {
+        return $this->hasMany(Order::class, 'parent_order_id');
     }
 }

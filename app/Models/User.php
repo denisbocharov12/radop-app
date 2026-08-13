@@ -98,6 +98,53 @@ final class User extends Authenticatable
     }
 
     /**
+     * Minimum order sum for this user: the selected city's required_sum,
+     * falling back to the global minimum when the user has no city set.
+     */
+    public function minOrderSum(): float
+    {
+        $required = $this->city?->required_sum;
+
+        return $required !== null
+            ? (float) $required
+            : (float) config('app.min_delivery_sum', 500);
+    }
+
+    /**
+     * The user's most recent order (including supplements), if any.
+     */
+    public function lastOrder(): ?Order
+    {
+        return $this->orders()->latest('id')->first();
+    }
+
+    /**
+     * True when the user placed an order within the supplement window
+     * (default 5h): the next order should be attached as a supplement and
+     * the minimum-order-sum rules should be bypassed.
+     */
+    public function isSupplementWindowOpen(): bool
+    {
+        $lastOrder = $this->lastOrder();
+
+        if ($lastOrder === null || $lastOrder->created_at === null) {
+            return false;
+        }
+
+        $windowHours = (int) config('app.supplement_order_window_hours', 5);
+
+        return $lastOrder->created_at->copy()->addHours($windowHours)->isFuture();
+    }
+
+    /**
+     * The order_number of the root order a supplement would attach to.
+     */
+    public function supplementParentNumber(): ?string
+    {
+        return $this->lastOrder()?->order_number;
+    }
+
+    /**
      * @return HasMany<Review, User>
      */
     public function reviews(): HasMany

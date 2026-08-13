@@ -58,7 +58,25 @@
                 {{ optional($order->created_at)->format('d.m.Y') }}
                 <span class="block text-xs text-gray-400">{{ optional($order->created_at)->format('H:i') }}</span>
             </td>
-            <td class="font-medium text-gray-700">{{ $order->order_number }}</td>
+            <td class="font-medium text-gray-700">
+                @php
+                    $hasSupplements = ($order->supplements_count ?? 0) > 0;
+                    $isSupplement = $order->parent_order_id !== null;
+                @endphp
+                @if($isSupplement)
+                    <a href="{{ route('order.edit', $order->parent_order_id) }}"
+                       title="Дополнение к заказу #{{ $order->parent_order_id }}"
+                       class="inline-flex items-center align-middle mr-1 text-amber-500 hover:text-amber-600">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                    </a>
+                @elseif($hasSupplements)
+                    <span title="Есть доп. заказы: {{ $order->supplements_count }}"
+                          class="inline-flex items-center align-middle mr-1 text-brand-600">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                    </span>
+                @endif
+                {{ $order->order_number }}
+            </td>
             <td><x-badge :type="$bt">{{ $label }}</x-badge></td>
             <td class="hidden xl:table-cell">{{ $order->cityModel?->name ?: '—' }}</td>
             <td class="hidden xl:table-cell">{{ $order->filial?->address ?: '—' }}</td>

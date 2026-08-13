@@ -343,6 +343,7 @@ return array (
     'search_related_title' => 'Возможно, вы искали',
     'search_suggested' => 'Похожие',
     'min_order_sum_warning_message' => 'Мин. сумма заказа:',
+    'supplement_order_note' => 'Этот заказ будет присоединён как дополнение к заказу №',
     'user_not_permitted_to_view_order' => 'Отказано в доступе.',
     'order_not_found' => 'Заказ не найден.',
     'filial' => 'Филиал',

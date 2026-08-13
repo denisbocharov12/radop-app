@@ -58,11 +58,28 @@ final class ThemeCheckoutManager
         $userId    = null;
         $userType  = self::FIZ;
 
+        // Supplement order (дозаказ): a new order attached to the user's
+        // previous one when placed within the supplement window.
+        $isSupplement       = false;
+        $supplementParentId = null;
+
         if ($user !== null) {
             $authUser  = $this->checkForExistedUser($user->id);
             $userId    = $authUser->id;
             $managerId = $user->manager_id;
             $userType  = $authUser->type->key_name;
+
+            $lastOrder   = Order::where('user_id', $authUser->id)->latest('id')->first();
+            $windowHours = (int) config('app.supplement_order_window_hours', 8);
+
+            if ($lastOrder !== null
+                && $lastOrder->created_at !== null
+                && $lastOrder->created_at->copy()->addHours($windowHours)->isFuture()
+            ) {
+                $isSupplement       = true;
+                // Attach to the ROOT order so all supplements group together.
+                $supplementParentId = $lastOrder->parent_order_id ?? $lastOrder->id;
+            }
         }
 
         // ── Validate payment method ────────────────────────────────────────
@@ -107,8 +124,11 @@ final class ThemeCheckoutManager
 
         $cartSubtotal = $this->getCartSubtotalValue();
 
-        // Minimum order for this city
-        if ($existedFilial === null && $cartSubtotal < (float) $existedCity->required_sum) {
+        // Minimum order for this city. Skipped entirely for supplements
+        // (дозаказ), which attach to a recent order regardless of cart sum.
+        // The per-city required_sum is the authoritative minimum here
+        // (checkout is available to authenticated users only).
+        if (!$isSupplement && $existedFilial === null && $cartSubtotal < (float) $existedCity->required_sum) {
             Log::channel('checkout')->info('Checkout: cart subtotal below city required_sum', [
                 'subtotal'     => $cartSubtotal,
                 'required_sum' => $existedCity->required_sum,
@@ -117,18 +137,10 @@ final class ThemeCheckoutManager
             throw new MinOrderSumException();
         }
 
-        // Global minimum order
-        if ($cartSubtotal < (float) config('app.min_delivery_sum', 0)) {
-            Log::channel('checkout')->info('Checkout: cart subtotal below global min_delivery_sum', [
-                'subtotal'        => $cartSubtotal,
-                'min_delivery_sum' => config('app.min_delivery_sum'),
-            ]);
-            throw new MinOrderSumException();
-        }
-
         // ── Delivery charge ────────────────────────────────────────────────
+        // Supplements attach to a recent order and never add a second delivery.
         $deliverySum = (float) $existedCity->delivery_sum;
-        if ($cartSubtotal >= (float) $existedCity->required_sum || $existedFilial !== null) {
+        if ($isSupplement || $cartSubtotal >= (float) $existedCity->required_sum || $existedFilial !== null) {
             $deliverySum = 0.0;
         }
 
@@ -154,7 +166,8 @@ final class ThemeCheckoutManager
 
         $order = DB::transaction(function () use (
             $orderData, $userId, $managerId, $userType,
-            $orderAddress, $cityId, $deliverySum, $cartSubtotal, $sessionId
+            $orderAddress, $cityId, $deliverySum, $cartSubtotal, $sessionId,
+            $supplementParentId
         ) {
             // Lock to prevent duplicate order_number race condition
             $orderNumber = $this->getLatestOrderNumber($userType);
@@ -182,6 +195,7 @@ final class ThemeCheckoutManager
                 'discount'       => 0,
                 'recommended_time' => $orderData->recommendedTime,
                 'filial_id'      => $orderData->filialId,
+                'parent_order_id'=> $supplementParentId,
             ]);
 
             OrderProfile::create([

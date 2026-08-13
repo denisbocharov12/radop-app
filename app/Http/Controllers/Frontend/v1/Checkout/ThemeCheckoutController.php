@@ -164,7 +164,7 @@ final class ThemeCheckoutController
                 'error'   => $e->getMessage(),
             ]);
             return redirect()->back()
-                ->withErrors(__('theme.min_delivery_sum_to_order', ['sum' => config('app.min_delivery_sum')]))
+                ->withErrors(__('theme.min_delivery_sum_to_order', ['sum' => $user?->minOrderSum() ?? config('app.min_delivery_sum')]))
                 ->withInput();
         } catch (ThemeOrderMakeException $e) {
             Log::channel('checkout')->error('Checkout store: order make exception', [
