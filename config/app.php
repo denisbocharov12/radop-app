@@ -20,6 +20,11 @@ return [
 
     'min_delivery_sum' => env('MIN_DELIVERY_SUM', 500),
 
+    // Window (in hours) during which a new order by an authenticated user is
+    // attached to their previous order as a supplement (дозаказ), bypassing
+    // the minimum-order-sum rules.
+    'supplement_order_window_hours' => env('SUPPLEMENT_ORDER_WINDOW_HOURS', 8),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

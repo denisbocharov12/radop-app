@@ -35,6 +35,40 @@
         </x-alert>
     @endif
 
+    {{-- Supplement (дозаказ) links --}}
+    @if($order->parentOrder !== null)
+        <div class="mb-4 flex items-start gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3">
+            <i data-lucide="info" class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+            <div class="text-sm text-amber-800">
+                Этот заказ является <strong>дополнением</strong> к заказу
+                <a href="{{ route('order.edit', $order->parentOrder) }}" class="font-semibold underline hover:text-amber-900">
+                    №{{ $order->parentOrder->order_number }} (#{{ $order->parentOrder->id }})
+                </a>.
+            </div>
+        </div>
+    @endif
+
+    @if($order->supplements->isNotEmpty())
+        <div class="mb-4 rounded-lg border border-brand-200 bg-brand-50 px-4 py-3">
+            <div class="flex items-center gap-2 mb-2 text-sm font-semibold text-brand-800">
+                <i data-lucide="info" class="w-5 h-5 text-brand-600"></i>
+                К этому заказу присоединены дополнения ({{ $order->supplements->count() }})
+            </div>
+            <ul class="space-y-1 text-sm">
+                @foreach($order->supplements as $supplement)
+                    <li class="flex items-center justify-between gap-3">
+                        <a href="{{ route('order.edit', $supplement) }}" class="font-medium text-brand-700 hover:underline">
+                            №{{ $supplement->order_number }} (#{{ $supplement->id }})
+                        </a>
+                        <span class="text-gray-500 whitespace-nowrap">
+                            {{ optional($supplement->created_at)->format('d.m.Y H:i') }} · {{ $money($supplement->total) }} {{ $mdl }}
+                        </span>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Main column --}}
         <div class="lg:col-span-2 space-y-6">

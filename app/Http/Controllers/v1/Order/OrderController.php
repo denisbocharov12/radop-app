@@ -91,6 +91,9 @@ class OrderController extends Controller
 
         $history = $order->orderHistory()->get();
 
+        // Supplement links (дозаказы): parent this order attaches to, and its own supplements.
+        $order->load(['parentOrder', 'supplements' => fn ($q) => $q->orderBy('id')]);
+
         return view('order.edit', compact([
             'order',
             'paymentMethods',

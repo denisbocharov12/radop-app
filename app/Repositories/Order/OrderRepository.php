@@ -24,7 +24,8 @@ final class OrderRepository
             ->leftJoin('profiles', 'orders.user_id', '=', 'profiles.user_id')
             ->leftJoin('users as managers', 'orders.manager_id', '=', 'managers.id')
             ->leftJoin('profiles as manager_profile', 'managers.id', '=', 'manager_profile.user_id')
-            ->select('orders.*');
+            ->select('orders.*')
+            ->withCount('supplements');
 
         if ($search = request('filter.fio')) {
             $query->where(function ($q) use ($search) {

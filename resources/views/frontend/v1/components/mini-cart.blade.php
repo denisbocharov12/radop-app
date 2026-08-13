@@ -4,6 +4,11 @@
     if (auth()->guard('user')->user()) {
         $sessionId = auth()->guard('user')->user()->id;
     }
+
+    $cartAuthUser = auth()->guard('user')->user();
+    $cartMinSum = $cartAuthUser ? $cartAuthUser->minOrderSum() : (float) config('app.min_delivery_sum');
+    $cartIsSupplement = $cartAuthUser ? $cartAuthUser->isSupplementWindowOpen() : false;
+    $cartBelowMin = !$cartIsSupplement && \Cart::session($sessionId)->getTotal() < $cartMinSum;
 @endphp
 @if(\Cart::session($sessionId)->getContent()->count() > 0)
         <ul class="content-shopping-cart">
@@ -73,8 +78,8 @@
                 </li>
             @endforeach
         </ul>
-        <p class="min-order-sum-warning-text {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'show' : ''}}">
-            {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{config('app.min_delivery_sum')}}</span> {{__('theme.MDL')}}
+        <p class="min-order-sum-warning-text {{ $cartBelowMin ? 'show' : '' }}">
+            {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{ $cartMinSum }}</span> {{__('theme.MDL')}}
         </p>
         <div class="heading-shopping-cart mb-2 mt-2">
             <span class="sc-subtotal">
@@ -88,5 +93,5 @@
     @endif
 <div class="bottom-shopping-cart">
     <a href="{{route('theme.shop.catalog')}}" class="btn-shopping-cart ">{{__('theme.сontinue-shopping')}}</a>
-    <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red {{\Cart::session($sessionId)->getTotal() < config('app.min_delivery_sum') ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
+    <a href="{{route('theme.cart.index')}}" class="btn-shopping-cart red {{ $cartBelowMin ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>
 </div>
