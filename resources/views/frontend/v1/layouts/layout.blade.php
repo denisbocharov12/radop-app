@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('frontend.v1.head.head')
-<body>
+<body class="min-h-screen bg-white">
 @php($gtmId = config('analytics.gtm_container_id'))
 @if(is_string($gtmId) && $gtmId !== '')
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 @endif
-<div class="wrapper theme-wrapper">
-    <div class="container theme-container-wrapper">
-    @include('frontend.v1.search.search-overlay')
+
+<a href="#main" class="sf-sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-modal focus:h-auto focus:w-auto focus:rounded-md focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white">
+    {{ __('theme.navigation-menu') }}
+</a>
+
+@include('frontend.v1.chrome.topbar')
+@include('frontend.v1.chrome.header')
+
+<main id="main" class="min-h-[50vh]">
+    <div class="sf-container">
+        @include('frontend.v1.errors.errors')
     </div>
-    <div class="theme-wrapper-bg-white theme-wrapper-sticky">
-        <div class="container theme-container-wrapper theme-container-wrapper-sticky">
-            @include('frontend.v1.header.header-top')
-        </div>
-    </div>
-    @include('frontend.v1.header.header')
-    <div class="container theme-container-wrapper">
-        <main id="main">
-            @include('frontend.v1.errors.errors')
+
+    {{--
+        Pages migrated to the storefront design system declare
+        @section('sf-page', 1) and lay out their own containers.
+        Everything still on the legacy stylesheet keeps the Bootstrap
+        `.container` wrapper it was written against.
+    --}}
+    @hasSection('sf-page')
+        @yield('content')
+    @else
+        <div class="container theme-container-wrapper">
             @yield('content')
-        </main>
-    </div>
-    @include('frontend.v1.footer.footer')
-    @include('frontend.v1.scripts.scripts')
-</div>
+        </div>
+    @endif
+</main>
+
+@include('frontend.v1.chrome.footer')
+@include('frontend.v1.scripts.scripts')
 @cookieconsentview
 </body>
-
-
+</html>

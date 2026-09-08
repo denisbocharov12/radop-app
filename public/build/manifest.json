@@ -1,34 +1,73 @@
 {
-  "_index-BZ84_VUH.js": {
-    "file": "assets/index-BZ84_VUH.js",
-    "name": "index"
+  "_SfIcon-BsI3KEVi.js": {
+    "file": "assets/SfIcon-BsI3KEVi.js",
+    "name": "SfIcon",
+    "imports": [
+      "_vue-DB0ehBFa.js"
+    ]
+  },
+  "_vue-DB0ehBFa.js": {
+    "file": "assets/vue-DB0ehBFa.js",
+    "name": "vue"
   },
   "resources/css/admin.css": {
-    "file": "assets/admin-fUjbaASd.css",
+    "file": "assets/admin-DGTpTUVc.css",
     "src": "resources/css/admin.css",
     "isEntry": true
   },
+  "resources/css/storefront.css": {
+    "file": "assets/storefront-C6jSgSWG.css",
+    "src": "resources/css/storefront.css",
+    "isEntry": true
+  },
   "resources/js/admin.js": {
-    "file": "assets/admin-CcDPjy0M.js",
+    "file": "assets/admin-CbfYbRnZ.js",
     "name": "admin",
     "src": "resources/js/admin.js",
-    "isEntry": true,
-    "imports": [
-      "_index-BZ84_VUH.js"
-    ]
-  },
-  "resources/js/app.js": {
-    "file": "assets/app-DFMYKMat.js",
-    "name": "app",
-    "src": "resources/js/app.js",
-    "isEntry": true,
-    "imports": [
-      "_index-BZ84_VUH.js"
-    ]
-  },
-  "resources/sass/app.scss": {
-    "file": "assets/app-CIHgcprs.css",
-    "src": "resources/sass/app.scss",
     "isEntry": true
+  },
+  "resources/js/storefront.js": {
+    "file": "assets/storefront-CqdRWGR_.js",
+    "name": "storefront",
+    "src": "resources/js/storefront.js",
+    "isEntry": true,
+    "imports": [
+      "_vue-DB0ehBFa.js"
+    ],
+    "dynamicImports": [
+      "resources/js/storefront/components/MegaMenu.vue",
+      "resources/js/storefront/components/SiteSearch.vue",
+      "resources/js/storefront/components/MobileNav.vue"
+    ]
+  },
+  "resources/js/storefront/components/MegaMenu.vue": {
+    "file": "assets/MegaMenu-B5QaeZSt.js",
+    "name": "MegaMenu",
+    "src": "resources/js/storefront/components/MegaMenu.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vue-DB0ehBFa.js",
+      "_SfIcon-BsI3KEVi.js"
+    ]
+  },
+  "resources/js/storefront/components/MobileNav.vue": {
+    "file": "assets/MobileNav-GxURK3HB.js",
+    "name": "MobileNav",
+    "src": "resources/js/storefront/components/MobileNav.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vue-DB0ehBFa.js",
+      "_SfIcon-BsI3KEVi.js"
+    ]
+  },
+  "resources/js/storefront/components/SiteSearch.vue": {
+    "file": "assets/SiteSearch-nHN9KFtJ.js",
+    "name": "SiteSearch",
+    "src": "resources/js/storefront/components/SiteSearch.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vue-DB0ehBFa.js",
+      "_SfIcon-BsI3KEVi.js"
+    ]
   }
 }

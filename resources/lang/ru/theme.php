@@ -14,6 +14,7 @@ return array (
     'add-to-wishlist' => 'Добавить в избранное',
     'address' => 'Адрес',
     'agree-with' => 'Я согласен с',
+    'registration-privacy-notice' => 'Предоставленные данные (имя, контакты, адрес) обрабатываются для создания аккаунта и оформления заказов на основании исполнения договора. Подробнее — в <a href=":url">Политике конфиденциальности</a>.',
     'all-rights-reserved-according-to' => 'Все права защищены согласно',
     'apply' => 'Применить',
     'assortment' => 'АССОРТИМЕНТ',
@@ -512,4 +513,15 @@ return array (
         'not_found'     => 'Товар не найден.',
         'gallery_error' => 'Не удалось загрузить галерею товара. Попробуйте ещё раз позже.',
     ],
+
+    // Storefront v2 — footer trust strip and catalogue island.
+    'footer_usp_delivery_title' => 'Доставка по всей Молдове',
+    'footer_usp_delivery_text' => 'Кишинёв — за 24 часа, регионы — 1–3 дня',
+    'footer_usp_assortment_title' => 'Более 8 000 товаров',
+    'footer_usp_assortment_text' => 'Офисные и школьные товары, бумага',
+    'footer_usp_quality_title' => 'Оригинальная продукция',
+    'footer_usp_quality_text' => 'Только проверенные бренды, с гарантией',
+    'footer_usp_support_title' => 'Консультация',
+    'footer_usp_support_text' => 'Пн–Пт, 08:30–17:30',
+    'menu-load-error' => 'Не удалось загрузить каталог. Повторите попытку.',
 );

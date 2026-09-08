@@ -14,6 +14,7 @@ return array (
     'add-to-wishlist' => 'Adăugați la Favorite',
     'address' => 'Adresa',
     'agree-with' => 'Sunt de acord cu',
+    'registration-privacy-notice' => 'Datele furnizate (nume, date de contact, adresă) sunt prelucrate pentru crearea contului și procesarea comenzilor, în temeiul executării contractului. Detalii în <a href=":url">Politica de confidențialitate</a>.',
     'all-rights-reserved-according-to' => 'Toate drepturile rezervate în conformitate cu',
     'apply' => 'Aplicați',
     'assortment' => 'SORTIMENT',
@@ -491,4 +492,15 @@ return array (
         'not_found'     => 'Produsul nu a fost găsit.',
         'gallery_error' => 'Nu am putut încărca galeria produsului. Încercați din nou mai târziu.',
     ],
+
+    // Storefront v2 — footer trust strip and catalogue island.
+    'footer_usp_delivery_title' => 'Livrare în toată Moldova',
+    'footer_usp_delivery_text' => 'Chișinău în 24 h, restul țării în 1–3 zile',
+    'footer_usp_assortment_title' => 'Peste 8 000 de produse',
+    'footer_usp_assortment_text' => 'Rechizite de birou, școlare și hârtie',
+    'footer_usp_quality_title' => 'Produse originale',
+    'footer_usp_quality_text' => 'Doar branduri verificate, cu garanție',
+    'footer_usp_support_title' => 'Consultanță',
+    'footer_usp_support_text' => 'Luni–Vineri, 08:30–17:30',
+    'menu-load-error' => 'Nu am putut încărca catalogul. Reîncercați.',
 );

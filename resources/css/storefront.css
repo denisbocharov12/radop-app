@@ -1,0 +1,358 @@
+@config "../../tailwind.storefront.config.js";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==================================================================
+   Radop storefront — design system
+   ------------------------------------------------------------------
+   Built from zero to replace the legacy bundle in
+   public/v1/frontend/assets/css (~520 KB of hand-written CSS +
+   Bootstrap + FontAwesome + Select2 + Slick).
+
+   Layers:
+     base       — element defaults and CSS custom properties
+     components — the reusable object vocabulary (.sf-*)
+     utilities  — Tailwind, plus the few extras at the bottom
+
+   Rule: no colour, radius, shadow or font-size literal below —
+   everything resolves through tailwind.storefront.config.js.
+   ================================================================== */
+
+@layer base {
+    :root {
+        --sf-header-h: 4.5rem;
+        --sf-gutter: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+        :root {
+            --sf-gutter: 1.5rem;
+        }
+    }
+
+    * {
+        @apply border-ink-200;
+    }
+
+    html {
+        @apply antialiased;
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-white font-sans text-base text-ink-800;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-semibold leading-tight text-ink-900;
+        text-wrap: balance;
+    }
+
+    h1 { @apply text-2xl lg:text-3xl; }
+    h2 { @apply text-xl lg:text-2xl; }
+    h3 { @apply text-lg; }
+
+    a {
+        @apply text-inherit no-underline transition-colors duration-150;
+    }
+
+    img, svg, video {
+        @apply block max-w-full;
+    }
+
+    /* One visible focus treatment for the entire storefront. */
+    :focus-visible {
+        @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-white;
+    }
+
+    /* Inputs inherit the type scale rather than the UA 13.33px default. */
+    input, select, textarea, button {
+        @apply font-sans text-base;
+    }
+
+    /* Kill the iOS zoom-on-focus without shrinking the desktop scale. */
+    @supports (-webkit-touch-callout: none) {
+        input, select, textarea {
+            font-size: 16px;
+        }
+    }
+
+    ::-webkit-scrollbar { @apply h-2 w-2; }
+    ::-webkit-scrollbar-track { @apply bg-ink-100; }
+    ::-webkit-scrollbar-thumb { @apply rounded bg-ink-300; }
+    ::-webkit-scrollbar-thumb:hover { @apply bg-ink-400; }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer components {
+    /* ---------------------------------------------------------- layout */
+    .sf-container {
+        @apply mx-auto w-full max-w-sf;
+        padding-inline: var(--sf-gutter);
+    }
+
+    .sf-section {
+        @apply py-8 lg:py-12;
+    }
+
+    .sf-section-head {
+        @apply mb-4 flex items-baseline justify-between gap-4 lg:mb-6;
+    }
+
+    .sf-section-title {
+        @apply text-xl font-bold tracking-tight text-ink-900 lg:text-2xl;
+    }
+
+    .sf-section-link {
+        @apply shrink-0 text-sm font-medium text-brand-600 hover:text-brand-700;
+    }
+
+    /* ---------------------------------------------------------- buttons */
+    .sf-btn {
+        @apply inline-flex select-none items-center justify-center gap-2 rounded-md
+               px-4 py-2.5 text-base font-semibold leading-none
+               transition-all duration-150 ease-sf
+               disabled:pointer-events-none disabled:opacity-50;
+    }
+
+    .sf-btn-primary {
+        @apply sf-btn bg-brand-600 text-white shadow-card
+               hover:bg-brand-700 hover:shadow-card-hover active:bg-brand-800;
+    }
+
+    .sf-btn-accent {
+        @apply sf-btn bg-accent-500 text-white shadow-card
+               hover:bg-accent-600 hover:shadow-card-hover active:bg-accent-700;
+    }
+
+    .sf-btn-secondary {
+        @apply sf-btn border border-ink-200 bg-white text-ink-800
+               hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700;
+    }
+
+    .sf-btn-ghost {
+        @apply sf-btn text-ink-600 hover:bg-ink-100 hover:text-ink-900;
+    }
+
+    .sf-btn-sm { @apply px-3 py-2 text-sm; }
+    .sf-btn-lg { @apply px-6 py-3.5 text-md; }
+    .sf-btn-block { @apply w-full; }
+
+    /* Square icon-only control — header actions, carousel arrows, steppers. */
+    .sf-icon-btn {
+        @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md
+               text-ink-600 transition-colors duration-150
+               hover:bg-ink-100 hover:text-ink-900;
+    }
+
+    /* ---------------------------------------------------------- forms */
+    .sf-field {
+        @apply block w-full rounded-md border border-ink-200 bg-white
+               px-3.5 py-2.5 text-base text-ink-900 placeholder:text-ink-400
+               transition-colors duration-150
+               focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25
+               disabled:bg-ink-50 disabled:text-ink-400;
+    }
+
+    .sf-field-error {
+        @apply border-danger-500 focus:border-danger-500 focus:ring-danger-500/25;
+    }
+
+    .sf-label {
+        @apply mb-1.5 block text-sm font-medium text-ink-700;
+    }
+
+    .sf-hint { @apply mt-1.5 text-xs text-ink-500; }
+    .sf-error { @apply mt-1.5 text-xs font-medium text-danger-600; }
+
+    /* ---------------------------------------------------------- surfaces */
+    .sf-card {
+        @apply rounded-lg border border-ink-200 bg-white shadow-card;
+    }
+
+    .sf-panel {
+        @apply rounded-lg bg-ink-50 p-4 lg:p-5;
+    }
+
+    .sf-divider { @apply h-px w-full bg-ink-200; }
+
+    /* ---------------------------------------------------------- badges */
+    .sf-badge {
+        @apply inline-flex items-center rounded px-1.5 py-0.5
+               text-2xs font-bold uppercase leading-4 tracking-wide;
+    }
+
+    .sf-badge-new     { @apply sf-badge bg-success-500 text-white; }
+    .sf-badge-sale    { @apply sf-badge bg-accent-500 text-white; }
+    .sf-badge-hit     { @apply sf-badge bg-brand-600 text-white; }
+    .sf-badge-neutral { @apply sf-badge bg-ink-100 text-ink-600; }
+
+    /* ---------------------------------------------------------- product card */
+    .sf-product {
+        @apply group relative flex h-full flex-col overflow-hidden rounded-lg
+               border border-ink-200 bg-white
+               transition-shadow duration-200 ease-sf hover:shadow-card-hover;
+    }
+
+    .sf-product-media {
+        @apply relative aspect-square overflow-hidden bg-white p-3;
+    }
+
+    .sf-product-img {
+        @apply h-full w-full object-contain
+               transition-transform duration-300 ease-sf group-hover:scale-[1.04];
+    }
+
+    .sf-product-flags {
+        @apply pointer-events-none absolute left-2 top-2 z-10 flex flex-col items-start gap-1;
+    }
+
+    .sf-product-body {
+        @apply flex flex-1 flex-col gap-2 border-t border-ink-100 p-3;
+    }
+
+    .sf-product-title {
+        @apply line-clamp-2 text-sm font-medium text-ink-800
+               transition-colors group-hover:text-brand-600;
+    }
+
+    .sf-product-price {
+        @apply text-lg font-bold leading-none text-ink-900;
+    }
+
+    .sf-product-price-old {
+        @apply text-sm font-medium leading-none text-ink-400 line-through;
+    }
+
+    /* ---------------------------------------------------------- grids */
+    .sf-grid-products {
+        @apply grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5;
+    }
+
+    /* Horizontal rail: CSS scroll-snap, no carousel library needed. */
+    .sf-rail {
+        @apply -mx-[var(--sf-gutter)] flex snap-x snap-mandatory gap-3
+               overflow-x-auto scroll-smooth px-[var(--sf-gutter)] pb-2 lg:gap-4;
+        scrollbar-width: none;
+    }
+
+    .sf-rail::-webkit-scrollbar { @apply hidden; }
+
+    .sf-rail > * {
+        @apply w-[46%] shrink-0 snap-start sm:w-[31%] lg:w-[23%] xl:w-[19%];
+    }
+
+    /* ---------------------------------------------------------- header */
+    .sf-topbar {
+        @apply hidden border-b border-ink-100 bg-ink-50 text-xs text-ink-600 lg:block;
+    }
+
+    .sf-topbar-link {
+        @apply py-2 hover:text-brand-600;
+    }
+
+    .sf-header {
+        @apply sticky top-0 z-header border-b border-ink-100 bg-white/95 backdrop-blur
+               supports-[backdrop-filter]:bg-white/80;
+    }
+
+    .sf-header-row {
+        @apply flex items-center gap-3 py-3 lg:gap-5;
+    }
+
+    /* ---------------------------------------------------------- mega menu */
+    /* Anchored to the viewport, not to the trigger, so the panel spans the full
+       page width while the header above it stays visible and clickable. */
+    .sf-mega-panel {
+        @apply fixed inset-x-0 z-menu origin-top border-t border-ink-100 bg-white shadow-pop;
+        top: var(--sf-mega-top, var(--sf-header-h));
+        max-height: calc(100vh - var(--sf-mega-top, var(--sf-header-h)));
+        overflow-y: auto;
+    }
+
+    .sf-mega-col {
+        @apply max-h-[min(70vh,34rem)] overflow-y-auto overscroll-contain;
+    }
+
+    .sf-mega-root {
+        @apply flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left
+               text-base font-medium text-ink-700 transition-colors duration-100;
+    }
+
+    .sf-mega-root-active {
+        @apply bg-brand-50 text-brand-700;
+    }
+
+    .sf-mega-group-title {
+        @apply mb-2 block text-sm font-semibold text-ink-900 hover:text-brand-600;
+    }
+
+    .sf-mega-leaf {
+        @apply block py-1 text-sm text-ink-600 hover:text-brand-600;
+    }
+
+    /* ---------------------------------------------------------- overlay */
+    .sf-overlay {
+        @apply fixed inset-0 z-overlay bg-ink-900/40 backdrop-blur-[2px];
+    }
+
+    /* ---------------------------------------------------------- misc */
+    .sf-breadcrumb {
+        @apply flex flex-wrap items-center gap-x-1.5 gap-y-1 py-3 text-xs text-ink-500;
+    }
+
+    .sf-breadcrumb a { @apply hover:text-brand-600; }
+
+    .sf-skeleton {
+        @apply relative overflow-hidden rounded bg-ink-100;
+    }
+
+    .sf-skeleton::after {
+        @apply absolute inset-0 -translate-x-full;
+        content: '';
+        background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
+        animation: sf-shimmer 1.4s infinite;
+    }
+
+    /* Long-form CMS copy (about, delivery, policy pages). */
+    .sf-prose {
+        @apply max-w-[72ch] text-md leading-relaxed text-ink-700;
+    }
+
+    .sf-prose :where(h2) { @apply mb-3 mt-8 text-xl; }
+    .sf-prose :where(h3) { @apply mb-2 mt-6 text-lg; }
+    .sf-prose :where(p)  { @apply my-3; }
+    .sf-prose :where(ul) { @apply my-3 list-disc space-y-1 pl-5; }
+    .sf-prose :where(ol) { @apply my-3 list-decimal space-y-1 pl-5; }
+    .sf-prose :where(a)  { @apply font-medium text-brand-600 underline underline-offset-2 hover:text-brand-700; }
+    .sf-prose :where(table) { @apply my-4 w-full border-collapse text-sm; }
+    .sf-prose :where(th) { @apply border border-ink-200 bg-ink-50 p-2 text-left font-semibold; }
+    .sf-prose :where(td) { @apply border border-ink-200 p-2 align-top; }
+}
+
+@layer utilities {
+    /* Hide until the Vue island that owns the node has mounted. */
+    [v-cloak] { @apply invisible; }
+
+    .sf-scrollbar-none {
+        scrollbar-width: none;
+    }
+
+    .sf-scrollbar-none::-webkit-scrollbar { @apply hidden; }
+
+    /* Screen-reader-only, without pulling in a plugin. */
+    .sf-sr-only {
+        @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+        clip: rect(0, 0, 0, 0);
+    }
+}

@@ -1,68 +1,123 @@
 <?php
 
-return array(
-    'privacy-policy' => 'Politica de Confidențialitate',
-    'introduction-1' => 'Respectarea confidențialității datelor utilizatorilor, în conformitate cu cerințele Regulamentului (UE) 2016/679 („Regulamentul General privind Protecția Datelor” sau GDPR), este un principiu fundamental al activității companiei noastre.',
-    'introduction-2' => 'Pentru a respecta cerințele GDPR și pentru a proteja datele cu caracter personal, compania noastră se angajează să utilizeze resursele necesare în acest scop.',
-    'introduction-3' => 'Această politică de confidențialitate descrie ce tipuri de date colectăm, cum utilizăm informațiile personale obținute în timpul utilizării site-ului. Pentru mai multe detalii despre termenii de utilizare a site-ului și modalitățile de plată, vă rugăm să consultați pagina Termeni și Condiții de Utilizare.',
-    'gdpr' => 'Ce este GDPR?',
-    'gdpr-1' => 'Începând cu 25 mai 2018, a intrat în vigoare Regulamentul General al UE 2016/679 privind protecția datelor cu caracter personal și privind libera circulație a acestor date, cunoscut sub numele de GDPR (General Data Protection Regulation).',
-    'gdpr-2' => 'Regulamentul prevede că orice companie sau operator care prelucrează date cu caracter personal trebuie să respecte noile cerințe și să ofere informații transparente despre modalitățile de prelucrare a datelor.',
-    'personal-data' => 'De ce sunt necesare colectarea și prelucrarea datelor cu caracter personal?',
-    'personal-data-1' => 'În conformitate cu cerințele GDPR și obligațiile de protecție a datelor dumneavoastră personale pe care le stocăm în baza noastră de date, vă informăm că acestea sunt utilizate exclusiv pentru: plasarea și procesarea comenzilor, vânzarea și livrarea produselor, furnizarea serviciilor de garanție și asistență clienți.',
-    'personal-data-processing' => 'Ce date cu caracter personal sunt prelucrate?',
-    'personal-data-processing-1' => 'Colectăm informații pentru a vă oferi o experiență cât mai plăcută în utilizarea serviciilor noastre. În principal, datele considerate personale sunt obținute direct de la dumneavoastră atunci când:',
-    'personal-data-processing-2' => 'Creați un cont sau cumpărați produse pe site-ul nostru (nume, prenume, număr de telefon, adresă de e-mail, adresă fizică, metode de plată, date ale cardului bancar etc.);',
-    'personal-data-processing-3' => 'Solicitați asistență de la serviciul nostru de suport pentru clienți (de exemplu, număr de telefon);',
-    'personal-data-processing-4' => 'Completați formulare de contact sau solicitați informații de la noi (de exemplu, adresă de e-mail);',
-    'personal-data-processing-5' => 'Participați la concursuri, sondaje sau aplicați pentru un loc de muncă în cadrul activităților noastre.',
-    'personal-data-processing-6' => 'De asemenea, colectăm informații suplimentare pentru a asigura calitatea serviciilor oferite.',
-    'information' => 'Cum utilizăm informațiile colectate?',
-    'information-introduction-1' => 'În conformitate cu Regulamentul (UE) 2016/679 și legislația Republicii Moldova, datele personale sunt utilizate exclusiv în relația dintre compania noastră și dumneavoastră (clientul). Ne străduim să asigurăm confidențialitatea maximă a informațiilor și să le utilizăm doar în scopurile pentru care au fost colectate.',
-    'information-introduction-2' => 'Utilizăm datele dumneavoastră cu caracter personal în următoarele scopuri:',
-    'information-1' => '4.1. Pentru comunicarea cu clienții',
-    'information-2' => 'a) Accesul la site: La vizitarea site-ului, unele informații (cum ar fi adresa IP, tipul browserului, paginile accesate) sunt colectate automat.',
-    'information-3' => 'b) Localizarea: Folosim adresa IP pentru a determina locația geografică a utilizatorului.',
-    'information-4' => 'c) Contul clientului: Datele introduse la înregistrarea unui cont sunt stocate în baza noastră de date. Puteți solicita ștergerea acestora în orice moment.',
-    'information-5' => 'd) Procesarea comenzilor: Folosim datele personale pentru a procesa și livra comenzile dumneavoastră.',
-    'information-6' => 'e) Livrarea bunurilor: Pentru a ne îndeplini în mod corespunzător obligațiile contractuale, prelucrăm datele dumneavoastră cu caracter personal și pentru livrarea cu succes a bunurilor.',
-    'information-7' => '4.2. Pentru angajare',
-    'information-8' => 'Datele dumneavoastră personale sunt utilizate pentru a vă evalua candidatura și a vă contacta în cazul unor oportunități de angajare.',
-    'information-9' => '4.3. Pentru comunicarea cu clienții',
-    'information-10' => 'Putem folosi datele dumneavoastră pentru a vă trimite mesaje legate de produsele sau serviciile achiziționate, sau pentru a vă oferi informații despre promoții și oferte speciale (cu acordul dumneavoastră):',
-    'information-11' => 'adresa de e-mail;',
-    'information-12' => 'mesaje text (SMS);',
-    'information-13' => 'apeluri telefonice;',
-    'information-14' => 'apeluri telefonice automate sau mesaje text.',
-    'information-15' => 'Dacă colectăm informații de la dumneavoastră în legătură cu o ofertă comună, în momentul colectării va fi clar cine colectează informațiile și a cui politică de confidențialitate ar trebui să se aplice. În plus, vi se vor oferi opțiuni cu privire la modul în care datele dvs. cu caracter personal sunt utilizate sau divulgate partenerului de asociere în participațiune și o explicație a modului de exercitare a acestor opțiuni.',
-    'information-16' => 'Dacă credeți că cineva ne-a furnizat datele dumneavoastră cu caracter personal și doriți ca acestea să fie eliminate din baza noastră de date, vă rugăm să ne trimiteți un e-mail la <a href="mailto:support@radop.md">support@radop.md</a>.',
-    'information-17' => '4.4. Pentru colaborarea cu autoritățile',
-    'information-18' => 'Cooperăm cu guvernul și cu autoritățile de aplicare a legii și cu părțile private pentru a respecta și a aplica legea. Dezvăluim informații despre dvs. autorităților guvernamentale sau agenților de aplicare a legii și părților private, după cum considerăm necesar pentru a ne proteja proprietatea și drepturile sau proprietatea și drepturile terților, pentru a proteja siguranța publică sau personală sau pentru a preveni sau opri activități pe care le considerăm ilegale.',
-    'information-19' => 'În măsura permisă de lege, vom lua măsuri rezonabile pentru a vă notifica în cazul în care suntem obligați să împărtășim informațiile dvs. personale cu terțe părți ca parte a unui proces legal.',
-    'information-20' => '4.5. Pentru analiza web',
-    'information-21' => 'Folosim servicii precum Google Analytics pentru a analiza traficul site-ului și a îmbunătăți experiența utilizatorilor.',
-    'information-22' => '4.6. Pentru utilizarea cookie-urilor',
-    'information-23' => 'Cookie-urile ne ajută să vă identificăm la vizitele ulterioare și să vă oferim o experiență personalizată.',
-    'information-24' => 'Informațiile colectate prin intermediul modulelor cookie pot fi transferate către un partener de servicii și stocate pe serverele acestuia într-o altă țară decât țara dumneavoastră de reședință. Deși informațiile colectate nu includ informații personale, cum ar fi numele, adresa, informațiile de plată etc., acestea sunt utilizate de furnizorul de servicii și partajate cu alte persoane în conformitate cu politica de confidențialitate a furnizorului respectiv.',
-    'information-25' => '4.7. Pentru site-uri terțe',
-    'information-26' => 'Site-ul nostru poate conține link-uri către alte site-uri. Nu suntem responsabili pentru politicile de confidențialitate ale acestora.',
-    'information-27' => '4.8. Pentru publicitate țintită',
-    'information-28' => 'Putem folosi datele dumneavoastră pentru a vă afișa reclame personalizate, bazate pe interesele și comportamentul dumneavoastră online.',
-    'personal-information' => '5. Destinatarii datelor cu caracter personal',
-    'personal-information-1' => 'Destinatarii de date cu caracter personal sunt obligați să respecte cerințele legislației aplicabile.',
-    'personal-information-2' => 'Datele dumneavoastră personale pot fi accesate sau transferate către:',
-    'personal-information-3' => 'Angajații companiei noastre;',
-    'personal-information-4' => 'Parteneri de logistică pentru livrarea comenzilor;',
-    'personal-information-5' => 'Partenerii companiei;',
-    'personal-information-6' => 'Furnizori de servicii de plată / bancare;',
-    'personal-information-7' => 'Furnizori de servicii de cercetare de piață;',
-    'personal-information-8' => 'Furnizori de servicii de promovare și publicitate;',
-    'personal-information-9' => 'Furnizori de servicii IT;',
-    'personal-information-10' => 'Alte organizații guvernamentale sau juridice pentru inițierea procedurilor penale.',
-    'personal-information-11' => 'Temei juridic',
-    'legal-framework' => 'Baza legală',
-    'legal-framework-1' => 'Pentru mai multe informații, consultați:',
-    'legal-framework-2' => 'Legea Republicii Moldova nr. 133 din 08.07.2011 privind protecția datelor cu caracter personal;',
-    'legal-framework-3' => 'Regulamentul (UE) 2016/679 privind protecția datelor.',
-    'legal-framework-4' => 'Persoana responsabilă de securitatea datelor personale în cadrul proiectului Radop.md poate fi contactată la adresa:mun. Chișinău, str. Sarmizegetusa 15 sau prin e-mail: <a href="mailto:support@radop.md">support@radop.md</a>.',
-);
+return [
+    'title' => 'Politica de confidențialitate',
+    'updated' => 'Ultima actualizare: 8 septembrie 2026',
+
+    'intro-1' => 'Prezenta Politică de confidențialitate descrie modul în care SRL „RĂDOP-OPT” („Operatorul”, „noi”) colectează, utilizează, stochează și protejează datele cu caracter personal ale utilizatorilor magazinului online <strong>radop.md</strong>, în conformitate cu <strong>Legea nr. 195/2024 privind protecția datelor cu caracter personal</strong> a Republicii Moldova și cu celelalte prevederi legale aplicabile.',
+    'intro-2' => 'Prin utilizarea site-ului radop.md și transmiterea datelor dumneavoastră, luați cunoștință de prezenta Politică. Vă recomandăm să o citiți cu atenție. Consimțământul, acolo unde este necesar, este solicitat separat și poate fi retras oricând.',
+
+    // 1. Operator
+    's1-title' => 'Operatorul de date',
+    's1-1' => 'Operatorul care stabilește scopurile și mijloacele de prelucrare a datelor cu caracter personal prin intermediul site-ului radop.md este:<br><strong>SRL „RĂDOP-OPT”</strong><br>Adresa juridică: [adresa juridică — de completat]<br>IDNO: [IDNO — de completat]<br>E-mail: support@radop.md<br>Telefon: 079 782 112, 022 782 112',
+    's1-2' => 'Pentru orice întrebare sau solicitare privind datele cu caracter personal și exercitarea drepturilor dumneavoastră, ne puteți contacta la adresa de e-mail <strong>support@radop.md</strong>, cu mențiunea „Date cu caracter personal”.',
+
+    // 2. Definitions
+    's2-title' => 'Ce sunt datele cu caracter personal',
+    's2-1' => 'Datele cu caracter personal reprezintă orice informație referitoare la o persoană fizică identificată sau identificabilă (de exemplu: nume și prenume, adresă, număr de telefon, adresă de e-mail, precum și identificatori online, cum ar fi adresa IP sau identificatorii din cookie-uri, atunci când permit identificarea, direct sau indirect, a persoanei).',
+
+    // 3. Data we collect
+    's3-title' => 'Ce date colectăm',
+    's3-intro' => 'În funcție de modul în care utilizați site-ul, putem prelucra următoarele categorii de date:',
+    's3-account' => '<strong>Date de cont</strong> — la crearea unui cont: nume și prenume (sau denumirea companiei pentru persoane juridice), adresă de e-mail, număr de telefon, parolă (stocată în formă criptată/hash) și, pentru clienții persoane juridice, codul fiscal.',
+    's3-order' => '<strong>Date de comandă și livrare</strong> — nume, prenume, telefon, e-mail, adresa de livrare, conținutul comenzii și comentariile atașate comenzii.',
+    's3-comm' => '<strong>Date de comunicare</strong> — informațiile pe care ni le transmiteți prin formularele de contact, e-mail sau telefon (nume, contact, conținutul mesajului).',
+    's3-tech' => '<strong>Date tehnice</strong> — adresa IP, tipul dispozitivului și al browserului, paginile vizitate și interacțiunile pe site, colectate prin cookie-uri și tehnologii similare (a se vedea Politica de cookie-uri).',
+
+    // 4. Purposes & legal bases
+    's4-title' => 'Scopurile și temeiurile juridice ale prelucrării',
+    's4-intro' => 'Prelucrăm datele dumneavoastră numai pentru scopuri determinate, având la bază unul dintre temeiurile prevăzute la art. 5 din Legea nr. 195/2024:',
+    's4-th-purpose' => 'Scopul prelucrării',
+    's4-th-data' => 'Categorii de date',
+    's4-th-basis' => 'Temeiul juridic',
+
+    's4-r1-p' => 'Crearea și administrarea contului de utilizator',
+    's4-r1-d' => 'Date de cont',
+    's4-r1-b' => 'Executarea contractului (art. 5 lit. b) — utilizarea contului la cererea dumneavoastră',
+
+    's4-r2-p' => 'Procesarea, confirmarea și livrarea comenzilor',
+    's4-r2-d' => 'Date de comandă și livrare',
+    's4-r2-b' => 'Executarea contractului (art. 5 lit. b)',
+
+    's4-r3-p' => 'Îndeplinirea obligațiilor contabile și fiscale (facturare)',
+    's4-r3-d' => 'Date de identificare și de facturare',
+    's4-r3-b' => 'Obligație legală (art. 5 lit. c)',
+
+    's4-r4-p' => 'Răspuns la solicitări, reclamații și asistență clienți',
+    's4-r4-d' => 'Date de comunicare',
+    's4-r4-b' => 'Interes legitim / măsuri precontractuale (art. 5 lit. b și f)',
+
+    's4-r5-p' => 'Securitatea site-ului, prevenirea fraudelor și jurnalele tehnice',
+    's4-r5-d' => 'Date tehnice, adresa IP, jurnale',
+    's4-r5-b' => 'Interes legitim (art. 5 lit. f)',
+
+    's4-r6-p' => 'Analiza statistică și îmbunătățirea site-ului (Google Analytics)',
+    's4-r6-d' => 'Identificatori cookie, date de utilizare',
+    's4-r6-b' => 'Consimțământ (art. 5 lit. a)',
+
+    's4-r7-p' => 'Comunicări de marketing (dacă vă abonați)',
+    's4-r7-d' => 'Nume, e-mail și/sau telefon',
+    's4-r7-b' => 'Consimțământ (art. 5 lit. a)',
+
+    's4-note' => 'În prezent, plata comenzilor nu se efectuează online pe site; nu colectăm și nu stocăm date ale cardurilor bancare. Achitarea se realizează la livrare sau prin transfer bancar, conform Termenilor și condițiilor.',
+
+    // 5. Recipients
+    's5-title' => 'Destinatarii datelor',
+    's5-intro' => 'Nu vindem datele dumneavoastră. Le putem divulga doar categoriilor de destinatari necesari pentru funcționarea site-ului și executarea comenzilor:',
+    's5-1' => '<strong>Furnizori de livrare/curierat</strong> — pentru livrarea comenzilor (nume, telefon, adresă).',
+    's5-2' => '<strong>Furnizorul de găzduire și dezvoltatorul site-ului</strong> — pentru funcționarea și mentenanța tehnică a platformei.',
+    's5-3' => '<strong>Furnizori de servicii IT și de analiză web</strong> — de exemplu Google (Google Analytics), în limitele descrise în Politica de cookie-uri.',
+    's5-4' => '<strong>Consultanți profesioniști</strong> — contabili, auditori, avocați, în măsura necesară îndeplinirii obligațiilor legale.',
+    's5-5' => '<strong>Autorități publice</strong> — atunci când divulgarea este impusă de lege sau de o cerere legală.',
+    's5-note' => 'Acolo unde este cazul, cu persoanele împuternicite (procesatori) încheiem acorduri care le obligă să prelucreze datele numai conform instrucțiunilor noastre și să asigure confidențialitatea și securitatea acestora.',
+
+    // 6. International transfers
+    's6-title' => 'Transferuri internaționale',
+    's6-1' => 'Unii furnizori de servicii (de exemplu Google) pot prelucra date pe servere situate în afara Republicii Moldova. În astfel de cazuri asigurăm că transferul are loc cu respectarea condițiilor prevăzute de Legea nr. 195/2024 (capitolul privind transferurile transfrontaliere), pe baza unor garanții adecvate.',
+    's6-2' => 'La cerere, vă putem oferi informații suplimentare privind statele de destinație și garanțiile aplicate.',
+
+    // 7. Retention
+    's7-title' => 'Perioadele de păstrare',
+    's7-intro' => 'Păstrăm datele doar atât timp cât este necesar scopurilor pentru care au fost colectate:',
+    's7-1' => '<strong>Datele de cont</strong> — pe durata existenței contului; le ștergem la cererea de ștergere a contului sau după o perioadă rezonabilă de inactivitate.',
+    's7-2' => '<strong>Datele de comandă</strong> — pe durata executării comenzii și pe perioada de garanție și de soluționare a eventualelor reclamații.',
+    's7-3' => '<strong>Documentele contabile și fiscale</strong> — conform termenelor prevăzute de legislația contabilă și fiscală a Republicii Moldova.',
+    's7-4' => '<strong>Datele din comunicări/reclamații</strong> — până la soluționare și o perioadă rezonabilă ulterioară.',
+    's7-5' => '<strong>Datele de marketing</strong> — până la retragerea consimțământului; <strong>jurnalele tehnice și cookie-urile</strong> — conform duratelor indicate în Politica de cookie-uri.',
+
+    // 8. Cookies
+    's8-title' => 'Cookie-uri',
+    's8-1' => 'Site-ul utilizează cookie-uri și tehnologii similare. Cookie-urile care nu sunt strict necesare sunt activate doar după obținerea consimțământului dumneavoastră prin bannerul de cookie-uri, iar alegerea poate fi modificată ulterior. Detaliile complete sunt descrise în <a href=":url">Politica de cookie-uri</a>.',
+
+    // 9. Security
+    's9-title' => 'Securitatea datelor',
+    's9-1' => 'Aplicăm măsuri tehnice și organizatorice adecvate pentru a proteja datele împotriva accesului neautorizat, pierderii sau divulgării, inclusiv criptarea conexiunii (HTTPS), stocarea parolelor sub formă de hash și restricționarea accesului pe bază de roluri.',
+
+    // 10. Rights
+    's10-title' => 'Drepturile dumneavoastră',
+    's10-intro' => 'În conformitate cu Legea nr. 195/2024, beneficiați de următoarele drepturi:',
+    's10-access' => '<strong>Dreptul de acces</strong> — de a obține confirmarea și o copie a datelor prelucrate.',
+    's10-rectify' => '<strong>Dreptul la rectificare</strong> — de a corecta datele inexacte sau incomplete.',
+    's10-erase' => '<strong>Dreptul la ștergere</strong> — de a solicita ștergerea datelor, atunci când se aplică.',
+    's10-restrict' => '<strong>Dreptul la restricționarea prelucrării</strong> — în cazurile prevăzute de lege.',
+    's10-object' => '<strong>Dreptul la opoziție</strong> — de a vă opune prelucrării întemeiate pe interes legitim și marketingului direct.',
+    's10-portability' => '<strong>Dreptul la portabilitatea datelor</strong> — de a primi datele într-un format structurat, atunci când se aplică.',
+    's10-withdraw' => '<strong>Dreptul de a retrage consimțământul</strong> — oricând, fără a afecta legalitatea prelucrării anterioare.',
+    's10-how' => 'Pentru exercitarea drepturilor, trimiteți o solicitare la <strong>support@radop.md</strong>. Vă vom răspunde în termenele prevăzute de lege. Este posibil să vă solicităm informații suplimentare pentru verificarea identității.',
+
+    // 11. Complaint
+    's11-title' => 'Dreptul de a depune plângere',
+    's11-1' => 'Dacă considerați că prelucrarea datelor dumneavoastră încalcă legea, aveți dreptul de a depune o plângere la <strong>Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP)</strong>:<br>mun. Chișinău, str. Serghei Lazo 48, MD-2004<br>Telefon: +373 22 811 807 · E-mail: centru@datepersonale.md · Web: datepersonale.md',
+
+    // 12. Minors
+    's12-title' => 'Protecția minorilor',
+    's12-1' => 'Site-ul se adresează persoanelor cu capacitate deplină de exercițiu. Nu colectăm cu bună știință date ale minorilor fără consimțământul reprezentanților legali. Dacă aflăm că am colectat astfel de date fără temei, le vom șterge.',
+
+    // 13. Changes
+    's13-title' => 'Modificări ale politicii',
+    's13-1' => 'Putem actualiza periodic prezenta Politică. Versiunea în vigoare este publicată permanent pe această pagină, cu data ultimei actualizări.',
+
+    // 14. Contact
+    's14-title' => 'Contact',
+    's14-1' => 'Pentru orice întrebare privind prezenta Politică sau prelucrarea datelor, contactați-ne la <strong>support@radop.md</strong> sau la telefon 079 782 112.',
+];

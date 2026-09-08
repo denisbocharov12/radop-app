@@ -81,6 +81,7 @@
             ['label' => 'Настройки сайта', 'roles' => ['admin'], 'items' => [
                 ['Скорость слайдеров', 'banner.banner-settings.edit',           'timer',        'banner.banner-settings.*'],
                 ['Сортировка страниц', 'page-setting.page-sort-settings.index',  'list-ordered', 'page-setting.*'],
+                ['Доставка (дозаказ)', 'setting.delivery.edit',                  'truck',        'setting.delivery.*'],
             ]],
         ];
 

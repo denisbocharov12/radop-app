@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\Setting\DeliverySettingRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -119,21 +120,16 @@ final class User extends Authenticatable
     }
 
     /**
-     * True when the user placed an order within the supplement window
-     * (default 5h): the next order should be attached as a supplement and
-     * the minimum-order-sum rules should be bypassed.
+     * True when the user already has an order placed earlier today and the
+     * current time is inside the configured daily free-supplement window
+     * (e.g. 08:00–15:00): the next order is attached as a supplement with free
+     * delivery and the minimum-order-sum rules are bypassed.
      */
     public function isSupplementWindowOpen(): bool
     {
-        $lastOrder = $this->lastOrder();
-
-        if ($lastOrder === null || $lastOrder->created_at === null) {
-            return false;
-        }
-
-        $windowHours = (int) config('app.supplement_order_window_hours', 5);
-
-        return $lastOrder->created_at->copy()->addHours($windowHours)->isFuture();
+        return app(DeliverySettingRepository::class)
+            ->getSettings()
+            ->isSupplementEligible($this->lastOrder()?->created_at);
     }
 
     /**

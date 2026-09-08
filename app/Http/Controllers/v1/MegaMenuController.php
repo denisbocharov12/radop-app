@@ -236,21 +236,12 @@ final class MegaMenuController extends Controller
     private function formatMenuItems(\Illuminate\Support\Collection $items, string $locale): array
     {
         return $items->map(function ($item) use ($locale) {
-            $titleRaw = $item->getRawOriginal('title');
-            $title = is_array(json_decode($titleRaw, true))
-                ? $item->getTranslation('title', $locale)
-                : ($titleRaw ?? '');
-            $linkRaw = $item->getRawOriginal('link');
-            $link = is_array(json_decode($linkRaw, true))
-                ? $item->getTranslation('link', $locale)
-                : ($linkRaw ?? '');
+            $title = $this->translatedValue($item, 'title', $locale);
+            $link = $this->translatedValue($item, 'link', $locale);
 
             $image = $item->getFirstMedia('menu_item_image');
 
-            $labelNameRaw = $item->getRawOriginal('label_name');
-            $labelName = is_array(json_decode($labelNameRaw, true))
-                ? $item->getTranslation('label_name', $locale)
-                : ($labelNameRaw ?? null);
+            $labelName = $this->translatedValue($item, 'label_name', $locale) ?: null;
 
             $formatted = [
                 'id' => $item->id,
@@ -275,4 +266,27 @@ final class MegaMenuController extends Controller
             return $formatted;
         })->values()->toArray();
     }
+    /**
+     * Read a Spatie-translatable attribute that may legitimately be NULL in the
+     * database. json_decode(null) is a TypeError on PHP 8.1+, which is what made
+     * /api/v1/mega-menu/{code}/data return a 500.
+     *
+     * @param mixed $model
+     * @param string $attribute
+     * @param string $locale
+     * @return string
+     */
+    private function translatedValue($model, string $attribute, string $locale): string
+    {
+        $raw = $model->getRawOriginal($attribute);
+
+        if ($raw === null || $raw === '') {
+            return '';
+        }
+
+        return is_array(json_decode((string) $raw, true))
+            ? (string) ($model->getTranslation($attribute, $locale) ?? '')
+            : (string) $raw;
+    }
 }
+

@@ -21,6 +21,7 @@ use App\Models\OrderProfile;
 use App\Models\User;
 use App\Repositories\City\CityRepository;
 use App\Repositories\Filial\FilialRepository;
+use App\Repositories\Setting\DeliverySettingRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,7 @@ final class ThemeCheckoutManager
         private readonly OrderPaymentMethods $orderPaymentMethods,
         private readonly CityRepository $cityRepository,
         private readonly FilialRepository $filialRepository,
+        private readonly DeliverySettingRepository $deliverySettingRepository,
     ) {
     }
 
@@ -69,12 +71,13 @@ final class ThemeCheckoutManager
             $managerId = $user->manager_id;
             $userType  = $authUser->type->key_name;
 
-            $lastOrder   = Order::where('user_id', $authUser->id)->latest('id')->first();
-            $windowHours = (int) config('app.supplement_order_window_hours', 8);
+            $lastOrder = Order::where('user_id', $authUser->id)->latest('id')->first();
 
+            // Free supplement (дозаказ): there must be an order placed earlier
+            // today and the current time must fall inside the configured daily
+            // free-delivery window (e.g. 08:00–15:00). Outside it — normal rules.
             if ($lastOrder !== null
-                && $lastOrder->created_at !== null
-                && $lastOrder->created_at->copy()->addHours($windowHours)->isFuture()
+                && $this->deliverySettingRepository->getSettings()->isSupplementEligible($lastOrder->created_at)
             ) {
                 $isSupplement       = true;
                 // Attach to the ROOT order so all supplements group together.
