@@ -1,9 +1,18 @@
 <footer>
     @include('frontend.v1.components.auth')
     <style>
-        /* Cookie settings link in the footer menu: render the consent-reset form as a plain link */
+        /* Cookie settings link in the footer menu: render the consent-reset form
+           as a plain link matching the sibling <a> items (14px, not the 12px li default) */
         .cookie-settings-btn{display:inline;margin:0;padding:0;}
-        .cookie-settings-btn__link{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;text-align:left;}
+        .footer-menu .item .cookie-settings-btn__link,
+        .footer-menu .item .cookie-settings-btn__label{
+            font-family:inherit;
+            font-size:14px;
+            line-height:14px;
+            font-weight:400;
+            color:inherit;
+        }
+        .cookie-settings-btn__link{background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left;}
         .cookie-settings-btn__link:hover{text-decoration:underline;}
     </style>
     <section class="section-footer">

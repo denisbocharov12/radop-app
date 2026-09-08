@@ -4,13 +4,24 @@
     <section class="section-page">
         <div class="privacy-policy-section">
             <div class="container">
+                <style>
+                    .privacy-table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px;}
+                    .privacy-table th,.privacy-table td{border:1px solid #e2e6ee;padding:8px 10px;text-align:left;vertical-align:top;}
+                    .privacy-table thead th{background:#f5f7fa;font-weight:600;}
+                    .table-responsive{overflow-x:auto;}
+                </style>
                 <h1>{{ __('privacy-policy.title') }}</h1>
                 <p class="privacy-updated"><em>{{ __('privacy-policy.updated') }}</em></p>
                 <p>{!! __('privacy-policy.intro-1') !!}</p>
                 <p>{!! __('privacy-policy.intro-2') !!}</p>
 
                 <h2>1. {{ __('privacy-policy.s1-title') }}</h2>
-                <p>{!! __('privacy-policy.s1-1') !!}</p>
+                <p>{{ __('privacy-policy.s1-1') }}</p>
+                <p><strong>{{ __('privacy-policy.s1-name') }}</strong></p>
+                <p>{{ __('privacy-policy.s1-address') }}</p>
+                <p>{{ __('privacy-policy.s1-idno') }}</p>
+                <p>{{ __('privacy-policy.s1-email') }}</p>
+                <p>{{ __('privacy-policy.s1-phone') }}</p>
                 <p>{!! __('privacy-policy.s1-2') !!}</p>
 
                 <h2>2. {{ __('privacy-policy.s2-title') }}</h2>
@@ -93,6 +104,8 @@
 
                 <h2>11. {{ __('privacy-policy.s11-title') }}</h2>
                 <p>{!! __('privacy-policy.s11-1') !!}</p>
+                <p>{{ __('privacy-policy.s11-address') }}</p>
+                <p>{{ __('privacy-policy.s11-contacts') }}</p>
 
                 <h2>12. {{ __('privacy-policy.s12-title') }}</h2>
                 <p>{{ __('privacy-policy.s12-1') }}</p>
