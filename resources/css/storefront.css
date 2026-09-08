@@ -188,6 +188,17 @@
     .sf-hint { @apply mt-1.5 text-xs text-ink-500; }
     .sf-error { @apply mt-1.5 text-xs font-medium text-danger-600; }
 
+    /* ---------------------------------------------------------- tabs */
+    .sf-tab {
+        @apply cursor-pointer select-none rounded-md border border-ink-200 bg-white
+               px-4 py-2.5 text-base font-medium text-ink-600 transition-colors
+               hover:border-brand-300 hover:text-brand-700;
+    }
+
+    .sf-tab-active {
+        @apply border-brand-600 bg-brand-600 text-white hover:border-brand-700 hover:text-white;
+    }
+
     /* ---------------------------------------------------------- surfaces */
     .sf-card {
         @apply rounded-lg border border-ink-200 bg-white shadow-card;
@@ -291,10 +302,13 @@
         @apply hidden bg-brand-600 text-white lg:block;
     }
 
+    /* Long category names wrap rather than overflow; `items-stretch` on the row
+       keeps every cell the same height once one of them takes two lines. */
     .sf-nav-link {
-        @apply flex h-11 items-center gap-1.5 px-3.5 text-xs font-semibold uppercase
-               leading-tight tracking-wide text-white/95 transition-colors
-               hover:bg-brand-700 hover:text-white xl:px-4 xl:text-sm xl:normal-case xl:tracking-normal;
+        @apply flex h-full min-h-[2.75rem] items-center gap-1.5 px-3 py-2
+               text-2xs font-semibold uppercase leading-tight tracking-wide text-white/95
+               transition-colors hover:bg-brand-700 hover:text-white
+               xl:px-3.5 xl:text-xs;
     }
 
     .sf-nav-panel {

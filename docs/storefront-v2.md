@@ -58,25 +58,37 @@ icon fonts.
 
 ## Pages converted
 
-Home, category, shop (`/shop`, `/new`, `/popular`, `/sale`), catalogue index,
-product, basket, search, wishlist, brand listing and brand index, all long-form
-pages (about, delivery, terms, privacy, cookies, returns), contacts, sign-in,
-password reset, plus the global chrome and the auth dialog.
+Every public page. A crawl of 25 URLs (both locales) finds no Bootstrap grid,
+no legacy section markup and no legacy stylesheet inside `<main>`:
+
+home, category, shop (`/shop`, `/new`, `/popular`, `/sale`), catalogue index,
+product, basket, search, wishlist, brand listing and brand index, registration,
+sign-in, password reset, contacts, and the long-form pages (about, delivery,
+terms, privacy, cookies, returns) — plus the global chrome, the blue category
+strip under the header, and the auth dialog.
+
+Registration's two 250-line tab bodies are one data-driven form; the tabs are
+radio inputs, so switching needs no JavaScript and survives a validation
+redirect. Select2 was dropped in favour of native selects.
+
+**The legacy stylesheets now load only on pages that have not been converted.**
+Converted views declare `@section('sf-page')` and `head/head.blade.php` skips
+the ~1.2 MB legacy block for them, so every public page ships the 50 KB design
+system on its own.
 
 ## Still on the legacy stylesheet
 
-Registration, checkout, and the account area (orders, profile, branches).
-They are reachable only behind a form submission or a login, so they could not
-be exercised in this environment — converting them without being able to place
-a test order would risk the transactional flow. They are the next stage:
+Checkout and the account area (orders, profile, branches). Both sit behind a
+login and could not be exercised here; converting them without being able to
+place a test order would risk the transactional flow. To finish:
 
 1. Create a test customer of each type (`fiz`, `iur`).
-2. Convert `registration/` — the two tab variants share most fields, so extract
-   a `sf-form-field` component first. Note it depends on `imask` and `select2`.
-3. Convert `checkout/` and `account/`.
-4. Delete the legacy `<link>` block in `head/head.blade.php`, the `body *`
-   border-style workaround in `storefront.css`, and the unused part trees under
-   `pages/*/parts/`.
+2. Convert `checkout/` and `account/`, reusing
+   `registration/components/form.blade.php` for the field vocabulary.
+3. Delete the legacy `<link>` block in `head/head.blade.php`, the `body *`
+   border-style workaround in `storefront.css`, the unused part trees under
+   `pages/*/parts/`, and the legacy script bundle — once the analytics helpers
+   it defines have moved into `storefront/lib/`.
 
 ## Fixes made along the way
 
@@ -86,6 +98,13 @@ a test order would risk the transactional flow. They are the next stage:
   phones.
 - The GA4 snippet was emitted after `</head>`.
 - The categories view composer still targeted a deleted view name.
+- The mobile-drawer island hid its component but not its wrapper on desktop, so
+  the header row reserved a flex gap and the logo sat 24px out of line with
+  every other container.
+- The catalogue button was 48px tall against a 44px search field.
+- Breadcrumbs drew a separator only after linkable items, and category entries
+  carried no URL, so the middle of a product trail was dead text.
+- The delivery page used four `<h1>` elements.
 
 ## Running it
 

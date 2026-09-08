@@ -81,8 +81,6 @@
             @endif
         </div>
 
-        @include('frontend.v1.pages.product.components.variations')
-
         <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
             {{-- Gallery --}}
             <div class="relative lg:col-span-5">

@@ -31,12 +31,15 @@
     >
 
     {{--
-        LEGACY STOREFRONT CSS — being retired page by page.
-        Each of these disappears as the pages that still depend on it are
-        migrated to the storefront design system below. Nothing in
-        resources/views/frontend/v1/chrome/** uses them any more.
+        LEGACY STOREFRONT CSS — ~1.2 MB across eight files (Bootstrap,
+        FontAwesome and its webfonts, the bespoke `radop` icon font, Select2,
+        Slick, app.min.css, style.css).
+
+        Pages converted to the design system declare `@section('sf-page')` and
+        skip the lot; only the views still on the old markup (checkout and the
+        account area) pay for it. Delete this block once those are converted.
     --}}
-    @unless(View::hasSection('sf-no-legacy'))
+    @unless(View::hasSection('sf-page'))
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/libs/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/libs/bootsrap-font/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/font-icon/font/css/radop.css">
@@ -45,8 +48,10 @@
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/libs/slick/slick-theme.css">
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/css/app.min.css">
         <link rel="stylesheet" href="{{ asset('/v1/frontend/assets') }}/css/style.css?v1.3.99">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
     @endunless
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+
+    {{-- Toast notifications are still shared by both stacks. --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     {{-- Storefront v2 design system. Loaded last so its utilities win any
