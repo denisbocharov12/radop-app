@@ -25,6 +25,7 @@ const registry = {
     'product-gallery': () => import('./storefront/components/ProductGallery.vue'),
     'add-to-cart': () => import('./storefront/components/AddToCart.vue'),
     'cart-table': () => import('./storefront/components/CartTable.vue'),
+    'auth-modal': () => import('./storefront/components/AuthModal.vue'),
     'wishlist-button': () => import('./storefront/components/WishlistButton.vue'),
 };
 

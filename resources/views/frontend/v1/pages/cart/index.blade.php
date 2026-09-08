@@ -87,7 +87,9 @@
         </div>
     </div>
 
-    @include('frontend.v1.components.cart_auth_modal')
+    {{-- The checkout button carries the legacy `.cart-auth-modal-btn` hook, which
+         the shared auth dialog (rendered in the footer for guests) listens for,
+         so the page no longer needs its own copy of that modal. --}}
     @include('frontend.v1.pages.cart.parts.tabs')
 @endsection
 

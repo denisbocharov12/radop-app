@@ -1,6 +1,6 @@
 {
-  "_SfIcon-BqZeMxBG.js": {
-    "file": "assets/SfIcon-BqZeMxBG.js",
+  "_SfIcon-CLAiw4ur.js": {
+    "file": "assets/SfIcon-CLAiw4ur.js",
     "name": "SfIcon",
     "imports": [
       "_vue-f0NOlEuo.js"
@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-VScGKXBT.css",
+    "file": "assets/storefront-CZmOVkx7.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-CyXE8Kgr.js",
+    "file": "assets/storefront-DjCzcgZD.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -46,89 +46,100 @@
       "resources/js/storefront/components/ProductGallery.vue",
       "resources/js/storefront/components/AddToCart.vue",
       "resources/js/storefront/components/CartTable.vue",
+      "resources/js/storefront/components/AuthModal.vue",
       "resources/js/storefront/components/WishlistButton.vue"
     ]
   },
   "resources/js/storefront/components/AddToCart.vue": {
-    "file": "assets/AddToCart-YU0-ZoSM.js",
+    "file": "assets/AddToCart-Cia_ydzk.js",
     "name": "AddToCart",
     "src": "resources/js/storefront/components/AddToCart.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SfIcon-BqZeMxBG.js",
+      "_SfIcon-CLAiw4ur.js",
       "_cart-4upf0naP.js",
       "_vue-f0NOlEuo.js"
     ]
   },
+  "resources/js/storefront/components/AuthModal.vue": {
+    "file": "assets/AuthModal-5WnIZTH2.js",
+    "name": "AuthModal",
+    "src": "resources/js/storefront/components/AuthModal.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vue-f0NOlEuo.js",
+      "_SfIcon-CLAiw4ur.js"
+    ]
+  },
   "resources/js/storefront/components/CartTable.vue": {
-    "file": "assets/CartTable-BBPlfgbF.js",
+    "file": "assets/CartTable-BrUaVyms.js",
     "name": "CartTable",
     "src": "resources/js/storefront/components/CartTable.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SfIcon-BqZeMxBG.js",
+      "_SfIcon-CLAiw4ur.js",
       "_cart-4upf0naP.js",
       "_vue-f0NOlEuo.js"
     ]
   },
   "resources/js/storefront/components/HeroSlider.vue": {
-    "file": "assets/HeroSlider-B1rtLXAf.js",
+    "file": "assets/HeroSlider-nrX7v32Z.js",
     "name": "HeroSlider",
     "src": "resources/js/storefront/components/HeroSlider.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_SfIcon-BqZeMxBG.js",
+      "_SfIcon-CLAiw4ur.js",
       "_vue-f0NOlEuo.js"
     ]
   },
   "resources/js/storefront/components/MegaMenu.vue": {
-    "file": "assets/MegaMenu-Ekt7IrKu.js",
+    "file": "assets/MegaMenu-BOTfUk0E.js",
     "name": "MegaMenu",
     "src": "resources/js/storefront/components/MegaMenu.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vue-f0NOlEuo.js",
-      "_SfIcon-BqZeMxBG.js"
+      "_SfIcon-CLAiw4ur.js"
     ]
   },
   "resources/js/storefront/components/MobileNav.vue": {
-    "file": "assets/MobileNav-ssfB8pJX.js",
+    "file": "assets/MobileNav-CuJm5Xzh.js",
     "name": "MobileNav",
     "src": "resources/js/storefront/components/MobileNav.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vue-f0NOlEuo.js",
-      "_SfIcon-BqZeMxBG.js"
+      "_SfIcon-CLAiw4ur.js"
     ]
   },
   "resources/js/storefront/components/ProductGallery.vue": {
-    "file": "assets/ProductGallery-C9Ld1GHi.js",
+    "file": "assets/ProductGallery-BAkqvwat.js",
     "name": "ProductGallery",
     "src": "resources/js/storefront/components/ProductGallery.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vue-f0NOlEuo.js",
-      "_SfIcon-BqZeMxBG.js"
+      "_SfIcon-CLAiw4ur.js"
     ]
   },
   "resources/js/storefront/components/SiteSearch.vue": {
-    "file": "assets/SiteSearch-l5T1Ets7.js",
+    "file": "assets/SiteSearch-Cz1CKq2k.js",
     "name": "SiteSearch",
     "src": "resources/js/storefront/components/SiteSearch.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vue-f0NOlEuo.js",
-      "_SfIcon-BqZeMxBG.js"
+      "_SfIcon-CLAiw4ur.js"
     ]
   },
   "resources/js/storefront/components/WishlistButton.vue": {
-    "file": "assets/WishlistButton-B96MxLFu.js",
+    "file": "assets/WishlistButton-nmHFBkNF.js",
     "name": "WishlistButton",
     "src": "resources/js/storefront/components/WishlistButton.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vue-f0NOlEuo.js",
-      "_SfIcon-BqZeMxBG.js",
+      "_SfIcon-CLAiw4ur.js",
       "_cart-4upf0naP.js"
     ]
   }

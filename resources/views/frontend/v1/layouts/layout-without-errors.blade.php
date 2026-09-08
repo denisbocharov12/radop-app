@@ -1,29 +1,38 @@
+{{--
+    Same chrome as `layout.blade.php`; only the error partial differs.
+    Kept as a separate file because the registration page renders field-level
+    validation errors itself and would otherwise show them twice.
+--}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('frontend.v1.head.head')
-<body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB99NNLC"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div class="wrapper theme-wrapper">
-    <div class="container theme-container-wrapper">
-        @include('frontend.v1.search.search-overlay')
+<body class="min-h-screen bg-white">
+@php($gtmId = config('analytics.gtm_container_id'))
+@if(is_string($gtmId) && $gtmId !== '')
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+@endif
+
+@include('frontend.v1.chrome.topbar')
+@include('frontend.v1.chrome.header')
+
+<main id="main" class="min-h-[50vh]">
+    <div class="sf-container">
+        @include('frontend.v1.errors.registration-errors')
     </div>
-    <div class="theme-wrapper-bg-white theme-wrapper-sticky">
-        <div class="container theme-container-wrapper theme-container-wrapper-sticky">
-            @include('frontend.v1.header.header-top')
-        </div>
-    </div>
-    @include('frontend.v1.header.header')
-    <div class="container theme-container-wrapper">
-        <main id="main">
-            @include('frontend.v1.errors.registration-errors')
+
+    @hasSection('sf-page')
+        @yield('content')
+    @else
+        <div class="container theme-container-wrapper">
             @yield('content')
-        </main>
-    </div>
-    @include('frontend.v1.footer.footer')
-    @include('frontend.v1.scripts.scripts')
-</div>
+        </div>
+    @endif
+</main>
+
+@include('frontend.v1.chrome.footer')
+@include('frontend.v1.scripts.scripts')
+@stack('scripts')
 @cookieconsentview
 </body>
+</html>

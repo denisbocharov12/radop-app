@@ -1,97 +1,84 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <div class="login-container d-flex align-items-center justify-content-center">
-        <div class="card shadow-lg p-4 rounded" style="max-width: 450px; width: 100%;">
-            <div class="login-logo d-flex align-items-center justify-content-center">
-                <img style="width: 90px; height: auto" src="{{asset('/v1/frontend/assets')}}/images/logo.svg" alt="Radop Logo" />
-            </div>
-            <h2 class="text-center mb-4 fw-bold">
-                {{ __('theme.log-in-account') }}
-            </h2>
+    <div class="sf-container flex justify-center py-12 lg:py-20">
+        <div class="sf-card w-full max-w-sm p-6">
+            <img
+                src="{{ asset('/v1/frontend/assets') }}/images/logo.svg"
+                alt="Radop"
+                class="mx-auto mb-4 h-12 w-auto"
+            />
+            <h1 class="mb-6 text-center text-lg font-bold text-ink-900">{{ __('theme.log-in-account') }}</h1>
 
-            <div id="auth-response" class="mb-3"></div>
+            <p id="auth-response" class="mb-3 hidden rounded-md bg-danger-50 p-3 text-sm text-danger-600"></p>
 
-            <form id="loginForm" method="POST" action="{{ route('user.login') }}">
+            <form id="loginForm" method="POST" action="{{ route('user.login') }}" class="space-y-3">
                 @csrf
 
-                <div class="form-group mb-3">
-                    <label for="username" class="form-label">Email:</label>
-                    <input type="text" id="username" name="username" class="form-control" required placeholder="Email">
-                </div>
+                <label class="block">
+                    <span class="sf-label">Email</span>
+                    <input type="text" id="username" name="username" class="sf-field" required autocomplete="username" />
+                </label>
 
-                <div class="form-group mb-3">
-                    <label for="password" class="form-label">{{ __('theme.password') }}:</label>
-                    <input type="password" id="password" name="password" class="form-control" required placeholder="{{ __('theme.password') }}">
-                </div>
+                <label class="block">
+                    <span class="sf-label">{{ __('theme.password') }}</span>
+                    <input type="password" id="password" name="password" class="sf-field" required autocomplete="current-password" />
+                </label>
 
-                <button type="submit" class="btn btn-primary w-100">{{ __('theme.enter') }}</button>
+                <button type="submit" class="sf-btn-primary sf-btn-block sf-btn-lg">{{ __('theme.enter') }}</button>
             </form>
+
+            <p class="mt-5 text-center text-sm text-ink-500">
+                <a href="{{ route('user.registration.index') }}" class="font-medium text-brand-600 hover:text-brand-700">
+                    {{ __('theme.registration') }}
+                </a>
+            </p>
         </div>
     </div>
+@endsection
 
+@section('scripts')
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
 
-            const formData = new FormData(this);
-            const responseDiv = document.getElementById('auth-response');
+            var box = document.getElementById('auth-response');
+            var fail = function (message) {
+                box.textContent = message;
+                box.hidden = false;
+                box.classList.remove('hidden');
+            };
 
             try {
-                const response = await fetch(this.action, {
+                var response = await fetch(this.action, {
                     method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
+                    body: new FormData(this),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
                 });
+                var result = await response.json();
 
-                const result = await response.json();
-
-                if (result.status) {
-                    var jkl = window.radopAnalyticsJsonPayloadKeys || {};
-                    var kLogin = jkl.customer_account_login_succeeded;
-                    if (kLogin && result[kLogin] && typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
-                        window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.customer_account_login_succeeded, result[kLogin]);
-                    }
-                    window.location.href = '/orders';
-                } else {
-                    responseDiv.innerHTML = '<div class="alert alert-danger">{{ __('theme.login-error')}}</div>';
+                if (!result.status) {
+                    fail(@json(__('theme.login-error')));
+                    return;
                 }
+
+                var keys = window.radopAnalyticsJsonPayloadKeys || {};
+                var loginKey = keys.customer_account_login_succeeded;
+                if (loginKey && result[loginKey]
+                    && typeof window.radopGa4EventPush === 'function'
+                    && window.radopAnalyticsDataLayerEventNames) {
+                    window.radopGa4EventPush(
+                        window.radopAnalyticsDataLayerEventNames.customer_account_login_succeeded,
+                        result[loginKey]
+                    );
+                }
+
+                window.location.href = '/orders';
             } catch (error) {
-                responseDiv.innerHTML = '<div class="alert alert-danger">{{ __('theme.error-message') }}</div>';
+                fail(@json(__('theme.error-message')));
             }
         });
     </script>
-
-    <style>
-        .login-container{
-            margin: 50px 0;
-        }
-        .card {
-            background: #fff;
-            border: none;
-            border-radius: 16px;
-        }
-
-        .form-control {
-            border-radius: 8px;
-            padding: 10px 15px;
-        }
-
-        .btn-primary {
-            background: #0052a6;
-            border: none;
-            padding: 10px 0;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #034486;
-        }
-        h2 {
-            font-size: 26px;
-        }
-    </style>
 @endsection

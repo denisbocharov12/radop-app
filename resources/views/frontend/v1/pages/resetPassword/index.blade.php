@@ -1,47 +1,59 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="reset-password" style="margin-bottom: 100px">
-        <div class="container">
-            <h1 class="reset-password__title title">{{ __('theme.reset-password') }}</h1>
-            <div class="reset-password__wrapper">
-                <div class="reset-password__form">
-                    <form action="{{ route('theme.passwords.reset') }}" method="POST">
-                        @csrf
+    <div class="sf-container flex justify-center py-12 lg:py-20">
+        <div class="sf-card w-full max-w-sm p-6">
+            <h1 class="mb-6 text-center text-lg font-bold text-ink-900">{{ __('theme.reset-password') }}</h1>
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+            <form action="{{ route('theme.passwords.reset') }}" method="POST" class="space-y-3">
+                @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group">
-                            <label for="email" style="margin-bottom: 4px">Email</label>
-                            <input type="email" id="email" name="email" class="form-control" required
-                                   placeholder="Email"
-                                   value="{{ old('email') }}" autofocus>
-                            @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                <label class="block">
+                    <span class="sf-label">Email</span>
+                    <input
+                        type="email"
+                        name="email"
+                        class="sf-field @error('email') sf-field-error @enderror"
+                        value="{{ old('email') }}"
+                        autocomplete="email"
+                        required
+                        autofocus
+                    />
+                    @error('email')<span class="sf-error">{{ $message }}</span>@enderror
+                </label>
 
-                        <div class="form-group">
-                            <label for="password" style="margin-bottom: 4px">{{ __('theme.new-password') }}</label>
-                            <input type="password" id="password" name="password" class="form-control" required
-                                   placeholder="{{ __('theme.enter-new-password') }}">
-                            @error('password')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                <label class="block">
+                    <span class="sf-label">{{ __('theme.new-password') }}</span>
+                    <input
+                        type="password"
+                        name="password"
+                        class="sf-field @error('password') sf-field-error @enderror"
+                        placeholder="{{ __('theme.enter-new-password') }}"
+                        autocomplete="new-password"
+                        required
+                    />
+                    @error('password')<span class="sf-error">{{ $message }}</span>@enderror
+                </label>
 
-                        <div class="form-group">
-                            <label for="password-confirm" style="margin-bottom: 4px">{{ __('theme.confirm-password') }}</label>
-                            <input type="password" id="password-confirm" name="password_confirmation" class="form-control" required
-                                   placeholder="{{ __('theme.confirm-new-password') }}">
-                        </div>
+                <label class="block">
+                    <span class="sf-label">{{ __('theme.confirm-password') }}</span>
+                    <input
+                        type="password"
+                        name="password_confirmation"
+                        class="sf-field"
+                        placeholder="{{ __('theme.confirm-new-password') }}"
+                        autocomplete="new-password"
+                        required
+                    />
+                </label>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary mt-3">{{ __('theme.reset-password-button') }}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                <button type="submit" class="sf-btn-primary sf-btn-block sf-btn-lg">
+                    {{ __('theme.reset-password-button') }}
+                </button>
+            </form>
         </div>
-    </section>
+    </div>
 @endsection

@@ -141,8 +141,7 @@
                 @else
                     <a
                         href="javascript:;"
-                        data-fancybox
-                        data-src="#loginModal"
+                        data-sf-auth-open
                         class="sf-icon-btn w-auto gap-2 px-2.5"
                         aria-label="{{ __('theme.log-in-account') }}"
                     >
