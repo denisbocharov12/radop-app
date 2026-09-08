@@ -46,7 +46,7 @@
         data-sf-drawer-open="catalog-filters"
     >
         <x-sf-icon name="filter" :size="15" />
-        {{ __('theme.show-all-filters') }}
+        {{ __('theme.filters') }}
     </button>
 
     <p class="hidden text-sm text-ink-500 sm:block">
