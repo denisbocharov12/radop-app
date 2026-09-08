@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-DjCzcgZD.js",
+    "file": "assets/storefront-D4gVyirA.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -51,7 +51,7 @@
     ]
   },
   "resources/js/storefront/components/AddToCart.vue": {
-    "file": "assets/AddToCart-Cia_ydzk.js",
+    "file": "assets/AddToCart-C_hRtSf-.js",
     "name": "AddToCart",
     "src": "resources/js/storefront/components/AddToCart.vue",
     "isDynamicEntry": true,

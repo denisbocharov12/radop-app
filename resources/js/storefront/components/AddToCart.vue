@@ -79,9 +79,11 @@ onMounted(() => {
 
 <template>
     <div class="mt-auto space-y-2">
-        <p v-if="price > 0" class="flex items-baseline justify-between text-xs text-ink-500">
-            <span>{{ labelTotal }}</span>
-            <span class="font-semibold text-ink-800">{{ formatted }} {{ currency }}</span>
+        <!-- Only worth showing once the quantity is more than one pack; at the
+             default it just repeats the unit price next to it. -->
+        <p v-if="price > 0 && qty > step" class="flex items-baseline justify-between gap-2 text-xs text-ink-500">
+            <span class="truncate">{{ labelTotal }}</span>
+            <span class="shrink-0 whitespace-nowrap font-semibold text-ink-800">{{ formatted }} {{ currency }}</span>
         </p>
 
         <div class="flex items-stretch gap-2">
