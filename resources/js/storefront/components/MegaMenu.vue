@@ -104,8 +104,15 @@ function show() {
  * reflows (mobile search row, promo bar, sticky shrink).
  */
 function syncPanelTop() {
-    const bottom = triggerEl.value?.getBoundingClientRect().bottom ?? 0;
-    document.documentElement.style.setProperty('--sf-mega-top', `${Math.round(bottom + 12)}px`);
+    const trigger = triggerEl.value?.getBoundingClientRect().bottom ?? 0;
+
+    // When the category strip is on screen the panel hangs below it rather than
+    // across it, so the strip stays readable while the menu is open.
+    const nav = document.querySelector('.sf-nav');
+    const navBottom = nav && nav.offsetParent !== null ? nav.getBoundingClientRect().bottom : 0;
+
+    const top = Math.max(trigger + 12, navBottom);
+    document.documentElement.style.setProperty('--sf-mega-top', `${Math.round(top)}px`);
 }
 
 function close({ restoreFocus = false } = {}) {
@@ -185,7 +192,7 @@ onBeforeUnmount(() => {
         <button
             ref="triggerEl"
             type="button"
-            class="sf-btn-primary sf-btn-lg group/cat w-full justify-start gap-2.5 lg:w-auto"
+            class="sf-btn-primary h-11 w-full justify-start gap-2.5 px-5 lg:w-auto"
             :aria-expanded="open"
             aria-haspopup="true"
             @click="toggle"

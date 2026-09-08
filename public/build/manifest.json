@@ -15,12 +15,12 @@
     "name": "vue"
   },
   "resources/css/admin.css": {
-    "file": "assets/admin-BSsJ50ad.css",
+    "file": "assets/admin-lFAuYRix.css",
     "src": "resources/css/admin.css",
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-CZmOVkx7.css",
+    "file": "assets/storefront-CcNV6YHo.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-D4gVyirA.js",
+    "file": "assets/storefront-BC_ytQZp.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -93,7 +93,7 @@
     ]
   },
   "resources/js/storefront/components/MegaMenu.vue": {
-    "file": "assets/MegaMenu-BOTfUk0E.js",
+    "file": "assets/MegaMenu-syDMv9_t.js",
     "name": "MegaMenu",
     "src": "resources/js/storefront/components/MegaMenu.vue",
     "isDynamicEntry": true,

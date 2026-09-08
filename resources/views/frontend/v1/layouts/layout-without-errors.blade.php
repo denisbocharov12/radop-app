@@ -15,6 +15,7 @@
 
 @include('frontend.v1.chrome.topbar')
 @include('frontend.v1.chrome.header')
+@include('frontend.v1.chrome.nav')
 
 <main id="main" class="min-h-[50vh]">
     <div class="sf-container">

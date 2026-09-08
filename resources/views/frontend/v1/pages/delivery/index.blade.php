@@ -3,59 +3,101 @@
 @section('sf-page', 1)
 
 @section('content')
-    <x-sf-page>
-                <h1>{{ __('delivery.delivery') }}</h1>
-{{--                <p>{!! __('delivery.introduction') !!}</p>--}}
-{{--                <p>{!! __('delivery.introduction-1') !!}</p>--}}
-{{--                <p>{!! __('delivery.introduction-2') !!}</p>--}}
-                <h2>{{ __('delivery.rules') }}</h2>
-                <p>{!! __('delivery.rules-1') !!}</p>
-                <p class="warning">{!! __('delivery.rules-2') !!}</p>
-                <p>{!! __('delivery.rules-3') !!}</p>
-                <h1 class="mt-4">{{ __('delivery.conditions') }}</h1>
-                <h3>{!! __('delivery.conditions-1') !!}</h3>
-                <p>{!! __('delivery.conditions-2') !!}</p>
-                <p>{!! __('delivery.conditions-3') !!}</p>
-                <p>{!! __('delivery.conditions-4') !!}</p>
-{{--                <p>{!! __('delivery.conditions-5') !!}</p>--}}
-                <h3>{!! __('delivery.conditions-6') !!}</h3>
-                <p>{!! __('delivery.conditions-7') !!}</p>
-                <p>{!! __('delivery.conditions-8') !!}</p>
-                <p>{!! __('delivery.conditions-4') !!}</p>
-{{--                <p>{!! __('delivery.conditions-5') !!}</p>--}}
-                <h3>{!! __('delivery.conditions-9') !!}</h3>
-                <p>{!! __('delivery.conditions-10') !!}</p>
-{{--                <p>{!! __('delivery.conditions-11') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-12') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-13') !!}</p>--}}
-                <p>{!! __('delivery.conditions-8') !!}</p>
-                <p>{!! __('delivery.conditions-4-1') !!}</p>
+    @php
+        /*
+         * Same copy as before, restructured: the page used four <h1> elements
+         * and carried ~20 lines of commented-out paragraphs. Delivery tiers are
+         * cards now, and the "attention" line is a callout rather than a
+         * paragraph with a `warning` class the storefront no longer defines.
+         */
+        $tiers = [
+            [__('delivery.conditions-1'), [__('delivery.conditions-2'), __('delivery.conditions-3'), __('delivery.conditions-4')]],
+            [__('delivery.conditions-6'), [__('delivery.conditions-7'), __('delivery.conditions-8'), __('delivery.conditions-4')]],
+            [__('delivery.conditions-9'), [__('delivery.conditions-10'), __('delivery.conditions-8'), __('delivery.conditions-4-1')]],
+        ];
 
-{{--                <h3>{!! __('delivery.conditions-14') !!}</h3>--}}
-{{--                <p>{!! __('delivery.conditions-15') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-16') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-17') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-18') !!}</p>--}}
-{{--                <p>{!! __('delivery.conditions-19') !!}</p>--}}
-{{--                <iframe class="mt-3" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d680.9933342100716!2d28.944600928446476!3d46.94256314441308!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c9796f2e9660e1%3A0x1f8453d8712be44e!2sDepozit%20R%C4%83dop!5e0!3m2!1sru!2s!4v1743005800272!5m2!1sru!2s"--}}
-{{--                        width="50%" height="450" style="border:0;" allowfullscreen="" loading="lazy"--}}
-{{--                        referrerpolicy="no-referrer-when-downgrade">--}}
-{{--                </iframe>--}}
-                <h1>{{ __('delivery.payment-condition') }}</h1>
+        $paymentMethods = [
+            __('delivery.payment-method-1'),
+            __('delivery.payment-method-2'),
+            __('delivery.payment-method-3'),
+        ];
+
+        $information = [
+            __('delivery.information-1'),
+            __('delivery.information-2'),
+            __('delivery.information-3'),
+            __('delivery.information-4'),
+            __('delivery.information-5'),
+            __('delivery.information-6'),
+        ];
+    @endphp
+
+    <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('delivery.delivery')]]" />
+
+    <div class="sf-container pb-16">
+        <h1 class="mb-6 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('delivery.delivery') }}</h1>
+
+        <section>
+            <h2 class="sf-section-title mb-3">{{ __('delivery.rules') }}</h2>
+            <div class="sf-prose max-w-none">
+                <p>{!! __('delivery.rules-1') !!}</p>
+            </div>
+
+            <p class="my-4 flex items-start gap-2.5 rounded-lg border border-accent-200 bg-accent-50 p-3.5 text-sm text-accent-800">
+                <x-sf-icon name="info" :size="16" class="mt-0.5 shrink-0" />
+                <span>{!! __('delivery.rules-2') !!}</span>
+            </p>
+
+            <div class="sf-prose max-w-none">
+                <p>{!! __('delivery.rules-3') !!}</p>
+            </div>
+        </section>
+
+        <section class="sf-section">
+            <h2 class="sf-section-title mb-4">{{ __('delivery.conditions') }}</h2>
+            <div class="grid gap-4 lg:grid-cols-3">
+                @foreach($tiers as [$title, $lines])
+                    <div class="sf-card flex flex-col p-4">
+                        <span class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                            <x-sf-icon name="truck" :size="20" />
+                        </span>
+                        <h3 class="mb-2 text-md font-semibold text-ink-900">{!! $title !!}</h3>
+                        <div class="space-y-1.5 text-sm leading-relaxed text-ink-600">
+                            @foreach($lines as $line)
+                                <p>{!! $line !!}</p>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        <section class="sf-section pt-0">
+            <h2 class="sf-section-title mb-3">{{ __('delivery.payment-condition') }}</h2>
+            <div class="sf-prose max-w-none">
                 <p>{!! __('delivery.payment-condition-1') !!}</p>
-{{--                <p>{!! __('delivery.payment-condition-2') !!}</p>--}}
-{{--                <p>{!! __('delivery.payment-condition-3') !!}</p>--}}
-{{--                <p>{!! __('delivery.payment-condition-4') !!}</p>--}}
-                <h1>{{ __('delivery.payment-method') }}</h1>
-                <p>{!! __('delivery.payment-method-1') !!}</p>
-                <p>{!! __('delivery.payment-method-2') !!}</p>
-                <p>{!! __('delivery.payment-method-3') !!}</p>
-                <h2>{{ __('delivery.information') }}</h2>
-                <p>{!! __('delivery.information-1') !!}</p>
-                <p>{!! __('delivery.information-2') !!}</p>
-                <p>{!! __('delivery.information-3') !!}</p>
-                <p>{!! __('delivery.information-4') !!}</p>
-                <p>{!! __('delivery.information-5') !!}</p>
-                <p>{!! __('delivery.information-6') !!}</p>
-    </x-sf-page>
+            </div>
+        </section>
+
+        <section class="sf-section pt-0">
+            <h2 class="sf-section-title mb-4">{{ __('delivery.payment-method') }}</h2>
+            <ul class="grid gap-3 sm:grid-cols-3">
+                @foreach($paymentMethods as $method)
+                    <li class="flex items-start gap-2.5 rounded-lg bg-ink-50 p-3.5 text-sm text-ink-700">
+                        <x-sf-icon name="check" :size="16" class="mt-0.5 shrink-0 text-success-500" />
+                        <span>{!! $method !!}</span>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+
+        <section class="sf-section pt-0">
+            <h2 class="sf-section-title mb-3">{{ __('delivery.information') }}</h2>
+            <div class="sf-prose max-w-none">
+                @foreach($information as $line)
+                    <p>{!! $line !!}</p>
+                @endforeach
+            </div>
+        </section>
+    </div>
 @endsection

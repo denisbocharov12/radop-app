@@ -1,225 +1,187 @@
-<section class="section-reviews mb-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="reviews-wrap">
-                    <div class="reviews-header">
-                        <h2 class="reviews-title">{{ __('theme.reviews') }}</h2>
-                        <div class="reviews-summary">
-                            @php
-                                $averageScore = $product->approvedReviews()->avg('score') ?? 0;
-                                $reviewsCount = $product->approvedReviews()->count();
-                            @endphp
-                            @if($reviewsCount > 0)
-                                <div class="average-rating">
-                                    <span class="rating-value">{{ number_format($averageScore, 1) }}</span>
-                                    <div class="stars">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            @if($i <= floor($averageScore))
-                                                <i class="icon-star-fill"></i>
-                                            @elseif($i - 0.5 <= $averageScore)
-                                                <i class="icon-star-half"></i>
-                                            @else
-                                                <i class="icon-star"></i>
-                                            @endif
-                                        @endfor
-                                    </div>
-                                    <span class="reviews-count">({{ $reviewsCount }} {{ __('theme.reviews_count') }})</span>
-                                </div>
-                            @else
-                                <p class="no-reviews-text">{{ __('theme.no_reviews_yet') }}</p>
-                            @endif
-                        </div>
-                    </div>
+@php
+    $averageScore = (float) ($product->approvedReviews()->avg('score') ?? 0);
+    $reviewsCount = (int) $product->approvedReviews()->count();
+@endphp
 
-                    @auth('user')
-                        <div class="review-form-wrap mt-4">
-                            <h3 class="form-title">{{ __('theme.leave_review') }}</h3>
-                            <form id="review-form" class="review-form">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ auth('user')->id() }}">
-                                <input type="hidden" name="product_onec_id" value="{{ $product->onec_id }}">
+<section class="sf-section" id="reviews">
+    <div class="sf-container">
+        <div class="sf-section-head mb-4">
+            <h2 class="sf-section-title">{{ __('theme.reviews') }}</h2>
 
-                                <div class="form-group mb-3">
-                                    <label for="score" class="form-label">{{ __('theme.your_rating') }}</label>
-                                    <div class="rating-input">
-                                        <div class="star-rating" id="star-rating">
-                                            <i class="icon-star" data-rating="1"></i>
-                                            <i class="icon-star" data-rating="2"></i>
-                                            <i class="icon-star" data-rating="3"></i>
-                                            <i class="icon-star" data-rating="4"></i>
-                                            <i class="icon-star" data-rating="5"></i>
-                                        </div>
-                                        <input type="hidden" name="score" id="review-score" value="5" required>
-                                    </div>
-                                </div>
+            @if($reviewsCount > 0)
+                <div class="flex items-center gap-2">
+                    <x-sf-rating :score="$averageScore" />
+                    <span class="text-md font-bold text-ink-900">{{ number_format($averageScore, 1) }}</span>
+                    <span class="text-xs text-ink-500">({{ $reviewsCount }} {{ __('theme.reviews_count') }})</span>
+                </div>
+            @endif
+        </div>
 
-                                <div class="form-group mb-3">
-                                    <label for="review-text" class="form-label">{{ __('theme.your_review') }}</label>
-                                    <textarea name="text" id="review-text" class="form-control" rows="4"
-                                              placeholder="{{ __('theme.write_your_review') }}"
-                                              required minlength="10" maxlength="2000"></textarea>
-                                    <small class="form-text text-muted pt-2 d-block">{{ __('theme.min_characters') }}: 10</small>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">{{ __('theme.submit_review') }}</button>
-                            </form>
-                        </div>
-                    @else
-                        <div class="review-auth-notice mt-4 p-3">
-                            <p>{{ __('theme.login_to_review') }} <a href="{{ route('user.login') }}">{{ __('theme.login-registration') }}</a></p>
-                        </div>
-                    @endauth
-
-                    <div class="reviews-list mt-5" id="reviews-list">
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+            <div>
+                @if($reviewsCount === 0)
+                    <p class="text-sm italic text-ink-500">{{ __('theme.no_reviews_yet') }}</p>
+                @else
+                    <ul class="space-y-3">
                         @foreach($product->approvedReviews as $review)
-                            <div class="review-item mb-4">
-                                <div class="review-header">
-                                    <div class="reviewer-info">
-                                        <strong class="reviewer-name">
+                            <li class="sf-card p-4">
+                                <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <strong class="text-sm font-semibold text-ink-900">
                                             @if($review->user)
                                                 @if($review->user->type?->key_name === 'iur')
                                                     {{ $review->user->profile->organization_name ?? __('theme.deleted_user') }}
                                                 @else
-                                                    {{ $review->user->profile->first_name ?? '' }} {{ $review->user->profile->last_name ?? '' }}
+                                                    {{ trim(($review->user->profile->first_name ?? '') . ' ' . ($review->user->profile->last_name ?? '')) ?: __('theme.deleted_user') }}
                                                 @endif
                                             @else
                                                 {{ __('theme.deleted_user') }}
                                             @endif
                                         </strong>
                                         @if($review->is_verified)
-                                            <span class="verified-badge">
-                                                <i class="icon-check-circle"></i> {{ __('theme.verified_purchase') }}
+                                            <span class="inline-flex items-center gap-1 rounded bg-success-50 px-1.5 py-0.5 text-2xs font-semibold text-success-600">
+                                                <x-sf-icon name="check" :size="11" />{{ __('theme.verified_purchase') }}
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="review-meta">
-                                        <div class="review-rating">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                @if($i <= $review->score)
-                                                    <i class="icon-star-fill"></i>
-                                                @else
-                                                    <i class="icon-star"></i>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <span class="review-date">{{ $review->created_at->format('d.m.Y') }}</span>
+
+                                    <div class="flex items-center gap-2">
+                                        <x-sf-rating :score="$review->score" :size="13" />
+                                        <span class="text-2xs text-ink-400">{{ $review->created_at->format('d.m.Y') }}</span>
                                     </div>
                                 </div>
-                                <div class="review-content mt-2">
-                                    <p>{{ $review->text }}</p>
-                                </div>
-                            </div>
+
+                                <p class="mt-2 text-sm leading-relaxed text-ink-700">{{ $review->text }}</p>
+                            </li>
                         @endforeach
-                    </div>
-                </div>
+                    </ul>
+                @endif
+            </div>
+
+            <div class="sf-card p-4">
+                @auth('user')
+                    <h3 class="mb-3 text-md font-bold text-ink-900">{{ __('theme.leave_review') }}</h3>
+
+                    <form id="review-form" class="space-y-3">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ auth('user')->id() }}">
+                        <input type="hidden" name="product_onec_id" value="{{ $product->onec_id }}">
+                        <input type="hidden" name="score" id="review-score" value="5" required>
+
+                        <div>
+                            <span class="sf-label">{{ __('theme.your_rating') }}</span>
+                            <div class="flex gap-1" id="star-rating">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <button
+                                        type="button"
+                                        class="p-0.5 text-accent-400 transition-transform hover:scale-110"
+                                        data-rating="{{ $i }}"
+                                        aria-label="{{ $i }}"
+                                    >
+                                        <x-sf-icon name="star" :size="24" stroke-width="1.5" style="fill: currentColor" />
+                                    </button>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <label class="block">
+                            <span class="sf-label">{{ __('theme.your_review') }}</span>
+                            <textarea
+                                name="text"
+                                id="review-text"
+                                rows="4"
+                                class="sf-field resize-y"
+                                placeholder="{{ __('theme.write_your_review') }}"
+                                required
+                                minlength="10"
+                                maxlength="2000"
+                            ></textarea>
+                            <span class="sf-hint">{{ __('theme.min_characters') }}: 10</span>
+                        </label>
+
+                        <button type="submit" class="sf-btn-primary sf-btn-block">{{ __('theme.submit_review') }}</button>
+                    </form>
+                @else
+                    <p class="text-center text-sm text-ink-600">
+                        {{ __('theme.login_to_review') }}
+                        <a href="javascript:;" data-sf-auth-open class="font-medium text-brand-600 hover:text-brand-700">
+                            {{ __('theme.login-registration') }}
+                        </a>
+                    </p>
+                @endauth
             </div>
         </div>
     </div>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const starRating = document.getElementById('star-rating');
-    const scoreInput = document.getElementById('review-score');
+@auth('user')
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var rating = document.getElementById('star-rating');
+                var score = document.getElementById('review-score');
+                var form = document.getElementById('review-form');
+                if (!rating || !form) return;
 
-    if (starRating) {
-        const stars = starRating.querySelectorAll('i');
+                var stars = rating.querySelectorAll('button');
 
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                const rating = this.getAttribute('data-rating');
-                scoreInput.value = rating;
-
-                stars.forEach((s, index) => {
-                    if (index < rating) {
-                        s.classList.remove('icon-star');
-                        s.classList.add('icon-star-fill', 'active');
-                    } else {
-                        s.classList.remove('icon-star-fill', 'active');
-                        s.classList.add('icon-star');
-                    }
-                });
-            });
-
-            star.addEventListener('mouseenter', function() {
-                const rating = this.getAttribute('data-rating');
-                stars.forEach((s, index) => {
-                    if (index < rating) {
-                        s.style.color = '#ffa500';
-                    } else {
-                        s.style.color = '#ddd';
-                    }
-                });
-            });
-        });
-
-        starRating.addEventListener('mouseleave', function() {
-            const currentRating = scoreInput.value;
-            stars.forEach((s, index) => {
-                if (index < currentRating) {
-                    s.style.color = '#ffa500';
-                } else {
-                    s.style.color = '#ddd';
-                }
-            });
-        });
-    }
-
-    const reviewForm = document.getElementById('review-form');
-    if (reviewForm) {
-        reviewForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = '{{ __('theme.sending') }}...';
-
-            fetch('{{ route('theme.review.store') }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    toastr.success(data.message);
-                    reviewForm.reset();
-                    scoreInput.value = '5';
-
-                    const stars = starRating.querySelectorAll('i');
-                    stars.forEach((s, index) => {
-                        if (index < 5) {
-                            s.classList.remove('icon-star');
-                            s.classList.add('icon-star-fill', 'active');
-                        } else {
-                            s.classList.remove('icon-star-fill', 'active');
-                            s.classList.add('icon-star');
-                        }
+                /* Stars are drawn filled and dimmed past the current value —
+                   one class toggle instead of the old swap between two icon
+                   font classes plus inline colours. */
+                var paint = function (value) {
+                    stars.forEach(function (star, index) {
+                        star.classList.toggle('text-accent-400', index < value);
+                        star.classList.toggle('text-ink-200', index >= value);
                     });
+                };
 
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                } else {
-                    toastr.error(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                toastr.error('{{ __('theme.error_occurred') }}');
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
+                stars.forEach(function (star) {
+                    star.addEventListener('click', function () {
+                        score.value = star.dataset.rating;
+                        paint(Number(score.value));
+                    });
+                    star.addEventListener('mouseenter', function () {
+                        paint(Number(star.dataset.rating));
+                    });
+                });
+
+                rating.addEventListener('mouseleave', function () { paint(Number(score.value)); });
+                paint(Number(score.value));
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    var button = form.querySelector('button[type=submit]');
+                    var label = button.textContent;
+                    button.disabled = true;
+                    button.textContent = @json(__('theme.sending')) + '…';
+
+                    fetch(@json(route('theme.review.store')), {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content },
+                    })
+                        .then(function (response) { return response.json(); })
+                        .then(function (data) {
+                            if (!data.success) {
+                                window.toastr && window.toastr.error(data.message);
+                                return;
+                            }
+                            window.toastr && window.toastr.success(data.message);
+                            form.reset();
+                            score.value = '5';
+                            paint(5);
+                            setTimeout(function () { location.reload(); }, 1500);
+                        })
+                        .catch(function () {
+                            window.toastr && window.toastr.error(@json(__('theme.error_occurred')));
+                        })
+                        .finally(function () {
+                            button.disabled = false;
+                            button.textContent = label;
+                        });
+                });
             });
-        });
-    }
-});
-</script>
-
+        </script>
+    @endpush
+@endauth

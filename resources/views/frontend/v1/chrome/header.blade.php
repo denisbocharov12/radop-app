@@ -56,8 +56,12 @@
 <header class="sf-header transition-shadow duration-200" data-sf-header>
     <div class="sf-container">
         <div class="sf-header-row">
-            {{-- Mobile: catalogue drawer --}}
+            {{-- Mobile: catalogue drawer. The wrapper itself must be hidden on
+                 desktop, not just the component inside it, or the row's `gap`
+                 still reserves space and the logo sits out of line with the
+                 container below it. --}}
             <div
+                class="lg:hidden"
                 data-sf-island="mobile-nav"
                 data-sf-props="{{ $mobileNavProps }}"
                 v-cloak
@@ -103,7 +107,7 @@
             <div class="ml-auto flex items-center gap-0.5 lg:gap-1">
                 <a
                     href="{{ route('theme.wishlist.index') }}"
-                    class="sf-icon-btn hidden lg:inline-flex"
+                    class="sf-icon-btn hidden h-11 w-11 lg:inline-flex"
                     aria-label="{{ __('theme.wishlist') }}"
                 >
                     <x-sf-icon name="heart" :size="21" />
@@ -111,7 +115,7 @@
 
                 @if($user)
                     <div class="group relative hidden lg:block">
-                        <a href="{{ route('theme.user.orders.index') }}" class="sf-icon-btn w-auto gap-2 px-2.5">
+                        <a href="{{ route('theme.user.orders.index') }}" class="sf-icon-btn h-11 w-auto gap-2 px-3">
                             <x-sf-icon name="user" :size="21" />
                             <span class="max-w-[9rem] truncate text-sm font-medium">
                                 {{ $user->type->key_name === 'fiz'
@@ -142,7 +146,7 @@
                     <a
                         href="javascript:;"
                         data-sf-auth-open
-                        class="sf-icon-btn w-auto gap-2 px-2.5"
+                        class="sf-icon-btn h-11 w-auto gap-2 px-3"
                         aria-label="{{ __('theme.log-in-account') }}"
                     >
                         <x-sf-icon name="user" :size="21" />
@@ -152,7 +156,7 @@
 
                 <a
                     href="{{ route('theme.cart.index') }}"
-                    class="relative ml-1 inline-flex items-center gap-2.5 rounded-md bg-brand-50 px-3 py-2 text-brand-700 transition-colors hover:bg-brand-100"
+                    class="relative ml-1 inline-flex h-11 items-center gap-2.5 rounded-md bg-brand-50 px-3.5 text-brand-700 transition-colors hover:bg-brand-100"
                     aria-label="{{ __('theme.cart') }}"
                 >
                     <span class="relative">

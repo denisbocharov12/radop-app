@@ -284,6 +284,27 @@
         @apply flex items-center gap-3 py-3 lg:gap-5;
     }
 
+    /* ---------------------------------------------------------- primary nav */
+    /* The brand-blue category strip under the header. Hidden below `lg`, where
+       the same tree is reached through the mobile drawer. */
+    .sf-nav {
+        @apply hidden bg-brand-600 text-white lg:block;
+    }
+
+    .sf-nav-link {
+        @apply flex h-11 items-center gap-1.5 px-3.5 text-xs font-semibold uppercase
+               leading-tight tracking-wide text-white/95 transition-colors
+               hover:bg-brand-700 hover:text-white xl:px-4 xl:text-sm xl:normal-case xl:tracking-normal;
+    }
+
+    .sf-nav-panel {
+        @apply invisible absolute left-0 top-full z-menu w-[min(46rem,90vw)] translate-y-1
+               rounded-b-lg border border-t-0 border-ink-200 bg-white p-5 opacity-0 shadow-pop
+               transition-all duration-150 ease-sf
+               group-hover/nav:visible group-hover/nav:translate-y-0 group-hover/nav:opacity-100
+               group-focus-within/nav:visible group-focus-within/nav:translate-y-0 group-focus-within/nav:opacity-100;
+    }
+
     /* ---------------------------------------------------------- mega menu */
     /* Anchored to the viewport, not to the trigger, so the panel spans the full
        page width while the header above it stays visible and clickable. */

@@ -1,225 +1,39 @@
-<section class="section-standart section-cart-tabs overflow-h">
-    <div class="container">
-        <div class="col-heading">
-            <div class="heading">
-                <h1>{{__('theme.сontinue-shopping')}}</h1>
-            </div>
-        </div>
-        <hr/>
-        <div class="row wrap-vertical-tabs">
-            <ul class="vertical-tabs col-lg-3">
-                <li class="chosen">{{__('theme.popular-products')}}</li>
-                <li>{{__('theme.on-discount')}}</li>
-                <li>{{__('theme.recommended')}}</li>
-            </ul>
-            <div class="vertical-tabs-content-wrap col-lg-9">
-                <div class="vertical-tabs-content">
-                    <div class="col cart-catalog-slider" style="margin-top: 0">
-                        @foreach($popularProducts as $product)
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
+@php
+    /*
+     * "Continue shopping" rails under the basket.
+     *
+     * The three lists used to be a jQuery vertical-tab widget wired by index;
+     * they are now three plain sections, each a scroll-snap rail of the shared
+     * product card. Empty lists are skipped rather than rendering a bare tab.
+     */
+    $rails = [
+        ['title' => __('theme.popular-products'), 'products' => $popularProducts ?? collect(), 'list' => 'cart_popular'],
+        ['title' => __('theme.on-discount'), 'products' => $discountProducts ?? collect(), 'list' => 'cart_sale'],
+        ['title' => __('theme.recommended'), 'products' => $featuredProducts ?? collect(), 'list' => 'cart_featured'],
+    ];
+@endphp
 
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                                 id="col-product-{{$product->id}}">
-                                <div class="product-wrap">
-                                    <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
-                                        @include('frontend.v1.pages.product.components.label')
-                                        @if($product->sale_price !== '')
-                                            <a href="{{route('theme.product.index', $product->slug)}}"
-                                               class="product-label">
-                                                <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                        <div class="wrap">
-                                            @include('frontend.v1.pages.category.parts.product-category-image')
-                                        </div>
-                                        @include('frontend.v1.pages.product.components.quick-view')
-                                        @if(app('wishlist')->get($product->id) !== null)
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"
-                                               data-has-text="false">
-                                                <i class="fa fa-heart" style="color: red"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        @endif
-                                        <div class="product-item-title-wrap">
-                                            <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::limit($product->title, 80, '...')}}</a>
-                                            </h3>
-                                        </div>
-                                        @include('frontend.v1.components.product-item-article')
-                                        @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                    </div>
-                                    <div class="product-card-bottom">
-                                        <div class="add_to_cart_wrap">
-                                            <hr class="product-card-item">
-                                            <div class="wrap">
-                                                @include('frontend.v1.components.product_price')
-                                            </div>
-                                            @include('frontend.v1.components.product_card_summary')
-                                            @include('frontend.v1.components.add_to_cart_widget_v2')
-                                        </div>
-                                        @include('frontend.v1.components.packages_card_wrap')
-                                    </div>
-                                </div>
-                                @include('frontend.v1.components.in_cart_widget')
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="vertical-tabs-content">
-                    <div class="col cart-catalog-slider" style="margin-top: 0">
-                        @foreach($discountProducts as $product)
-
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
-
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                                 id="col-product-{{$product->id}}">
-                                <div class="product-wrap">
-                                    <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
-                                        @include('frontend.v1.pages.product.components.label')
-                                        @if($product->sale_price !== '')
-                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
-                                                <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                        <div class="wrap">
-                                            @include('frontend.v1.pages.category.parts.product-category-image')
-                                        </div>
-                                        @include('frontend.v1.pages.product.components.quick-view')
-                                        @if(app('wishlist')->get($product->id) !== null)
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"
-                                               data-has-text="false">
-                                                <i class="fa fa-heart" style="color: red"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        @endif
-                                        <div class="product-item-title-wrap">
-                                            <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::limit($product->title, 80, '...')}}</a>
-                                            </h3>
-                                        </div>
-                                        @include('frontend.v1.components.product-item-article')
-                                        @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                    </div>
-                                    <div class="product-card-bottom">
-                                        <div class="add_to_cart_wrap">
-                                            <hr class="product-card-item">
-                                            <div class="wrap">
-                                                @include('frontend.v1.components.product_price')
-                                            </div>
-                                            @include('frontend.v1.components.product_card_summary')
-                                            @include('frontend.v1.components.add_to_cart_widget_v2')
-                                        </div>
-                                        @include('frontend.v1.components.packages_card_wrap')
-                                    </div>
-                                </div>
-                                @include('frontend.v1.components.in_cart_widget')
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="vertical-tabs-content">
-                    <div class="col cart-catalog-slider" style="margin-top: 0">
-                        @foreach($featuredProducts as $product)
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
-
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                                 id="col-product-{{$product->id}}">
-                                <div class="product-wrap">
-                                    <div class="product-wrap-main {{$product->sale_price !== '' ? 'product-wrap-main-with-sale' : ''}}">
-                                        @include('frontend.v1.pages.product.components.label')
-                                        @if($product->sale_price !== '')
-                                            <a href="{{route('theme.product.index', $product->slug)}}" class="product-label">
-                                                <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price * (float)$product->price_koef - (float)$product->sale_price) / $product->price * (float)$product->price_koef) * 100)}}%</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                        <div class="wrap">
-                                            @include('frontend.v1.pages.category.parts.product-category-image')
-                                        </div>
-                                        @include('frontend.v1.pages.product.components.quick-view')
-                                        @if(app('wishlist')->get($product->id) !== null)
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"
-                                               data-has-text="false">
-                                                <i class="fa fa-heart" style="color: red"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist add-to-wishlist-btn" data-has-text="false">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        @endif
-                                        <div class="product-item-title-wrap">
-                                            <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{\Illuminate\Support\Str::limit($product->title, 80, '...')}}</a>
-                                            </h3>
-                                        </div>
-                                        @include('frontend.v1.components.product-item-article')
-                                        @include('frontend.v1.pages.product.components.variations-product-card')
-                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                    </div>
-                                    <div class="product-card-bottom">
-                                        <div class="add_to_cart_wrap">
-                                            <hr class="product-card-item">
-                                            <div class="wrap">
-                                                @include('frontend.v1.components.product_price')
-                                            </div>
-                                            @include('frontend.v1.components.product_card_summary')
-                                            @include('frontend.v1.components.add_to_cart_widget_v2')
-                                        </div>
-                                        @include('frontend.v1.components.packages_card_wrap')
-                                    </div>
-                                </div>
-                                @include('frontend.v1.components.in_cart_widget')
-                            </div>
-                        @endforeach
-                    </div>
+@foreach($rails as $rail)
+    @continue($rail['products']->isEmpty())
+    <section class="sf-section">
+        <div class="sf-container" data-sf-rail>
+            <div class="sf-section-head">
+                <h2 class="sf-section-title">{{ $rail['title'] }}</h2>
+                <div class="flex items-center gap-2">
+                    <button type="button" class="sf-icon-btn hidden h-8 w-8 border border-ink-200 disabled:opacity-30 lg:inline-flex" data-sf-rail-prev aria-label="←">
+                        <x-sf-icon name="chevronLeft" :size="16" />
+                    </button>
+                    <button type="button" class="sf-icon-btn hidden h-8 w-8 border border-ink-200 disabled:opacity-30 lg:inline-flex" data-sf-rail-next aria-label="→">
+                        <x-sf-icon name="chevronRight" :size="16" />
+                    </button>
                 </div>
             </div>
+
+            <div class="sf-rail">
+                @foreach($rail['products'] as $product)
+                    <x-sf-product-card :product="$product" :list-id="$rail['list']" :list-name="$rail['title']" />
+                @endforeach
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+@endforeach
