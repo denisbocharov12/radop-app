@@ -9,7 +9,12 @@ return [
 
     // 1. Operator
     's1-title' => 'Operatorul de date',
-    's1-1' => 'Operatorul care stabilește scopurile și mijloacele de prelucrare a datelor cu caracter personal prin intermediul site-ului radop.md este:<br><strong>SRL „RĂDOP-OPT”</strong><br>Adresa juridică: [adresa juridică — de completat]<br>IDNO: [IDNO — de completat]<br>E-mail: support@radop.md<br>Telefon: 079 782 112, 022 782 112',
+    's1-1' => 'Operatorul care stabilește scopurile și mijloacele de prelucrare a datelor cu caracter personal prin intermediul site-ului radop.md este:',
+    's1-name' => 'SRL „RĂDOP-OPT”',
+    's1-address' => 'Adresa juridică: [adresa juridică — de completat]',
+    's1-idno' => 'IDNO: [IDNO — de completat]',
+    's1-email' => 'E-mail: support@radop.md',
+    's1-phone' => 'Telefon: 079 782 112, 022 782 112',
     's1-2' => 'Pentru orice întrebare sau solicitare privind datele cu caracter personal și exercitarea drepturilor dumneavoastră, ne puteți contacta la adresa de e-mail <strong>support@radop.md</strong>, cu mențiunea „Date cu caracter personal”.',
 
     // 2. Definitions
@@ -107,7 +112,9 @@ return [
 
     // 11. Complaint
     's11-title' => 'Dreptul de a depune plângere',
-    's11-1' => 'Dacă considerați că prelucrarea datelor dumneavoastră încalcă legea, aveți dreptul de a depune o plângere la <strong>Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP)</strong>:<br>mun. Chișinău, str. Serghei Lazo 48, MD-2004<br>Telefon: +373 22 811 807 · E-mail: centru@datepersonale.md · Web: datepersonale.md',
+    's11-1' => 'Dacă considerați că prelucrarea datelor dumneavoastră încalcă legea, aveți dreptul de a depune o plângere la <strong>Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP)</strong>:',
+    's11-address' => 'mun. Chișinău, str. Serghei Lazo 48, MD-2004',
+    's11-contacts' => 'Telefon: +373 22 811 807 · E-mail: centru@datepersonale.md · Web: datepersonale.md',
 
     // 12. Minors
     's12-title' => 'Protecția minorilor',
