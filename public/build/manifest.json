@@ -15,12 +15,12 @@
     "name": "vue"
   },
   "resources/css/admin.css": {
-    "file": "assets/admin-eoL8APcC.css",
+    "file": "assets/admin-zktuVh_a.css",
     "src": "resources/css/admin.css",
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-BHtUM4Ww.css",
+    "file": "assets/storefront-DhGVdCmb.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-QEhU88EJ.js",
+    "file": "assets/storefront-D1G5PRgQ.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,

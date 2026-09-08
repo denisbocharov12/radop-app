@@ -27,6 +27,8 @@ final class PropertyServiceProvider extends ServiceProvider
 
             $viewName = $view->getName();
             $needsCategories = str_starts_with($viewName, 'frontend.v1.header')
+                || str_starts_with($viewName, 'frontend.v1.chrome')
+                || $viewName === 'frontend.v1.pages.shop.catalog'
                 || $viewName === 'frontend.v1.pages.shop.parts.catalog'
                 || str_contains($viewName, 'header-search')
                 || str_contains($viewName, 'mobile-catalog')

@@ -37,6 +37,8 @@
 
 @include('frontend.v1.chrome.footer')
 @include('frontend.v1.scripts.scripts')
+{{-- Components push their own behaviour here (catalogue toolbar, filters). --}}
+@stack('scripts')
 @cookieconsentview
 </body>
 </html>

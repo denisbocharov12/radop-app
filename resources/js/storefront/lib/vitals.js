@@ -77,11 +77,74 @@ function cartBadge() {
     });
 }
 
+/**
+ * Off-canvas panels driven by data attributes, so a panel's contents can stay
+ * server-rendered and appear exactly once in the DOM:
+ *
+ *   <button data-sf-drawer-open="filters">
+ *   <div data-sf-drawer="filters"> … <button data-sf-drawer-close> … </div>
+ *
+ * The catalogue sidebar uses this to be a column on desktop and a slide-over on
+ * mobile without the form being duplicated the way the legacy modal did it.
+ */
+function drawers() {
+    const setOpen = (panel, open) => {
+        panel.classList.toggle('translate-x-0', open);
+        panel.classList.toggle('-translate-x-full', !open);
+        panel.dataset.sfDrawerOpen = open ? 'true' : 'false';
+
+        const overlay = document.querySelector(`[data-sf-drawer-overlay="${panel.dataset.sfDrawer}"]`);
+        if (overlay) overlay.hidden = !open;
+
+        document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    document.addEventListener('click', (event) => {
+        const opener = event.target.closest('[data-sf-drawer-open]');
+        if (opener) {
+            const panel = document.querySelector(`[data-sf-drawer="${opener.dataset.sfDrawerOpen}"]`);
+            if (panel) {
+                event.preventDefault();
+                setOpen(panel, true);
+            }
+            return;
+        }
+
+        const closer = event.target.closest('[data-sf-drawer-close], [data-sf-drawer-overlay]');
+        if (!closer) return;
+        const id = closer.dataset.sfDrawerOverlay ?? closer.closest('[data-sf-drawer]')?.dataset.sfDrawer;
+        const panel = document.querySelector(`[data-sf-drawer="${id}"]`);
+        if (panel) setOpen(panel, false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        document.querySelectorAll('[data-sf-drawer][data-sf-drawer-open="true"]')
+            .forEach((panel) => setOpen(panel, false));
+    });
+}
+
+/** Copy a product code to the clipboard from anywhere on the page. */
+function copyButtons() {
+    document.addEventListener('click', async (event) => {
+        const el = event.target.closest('[data-copy-value]');
+        if (!el) return;
+        try {
+            await navigator.clipboard.writeText(el.dataset.copyValue);
+            if (window.toastr?.success) window.toastr.success(el.dataset.copyMessage ?? '');
+        } catch {
+            /* clipboard blocked (insecure origin, denied permission) — ignore */
+        }
+    });
+}
+
 function boot() {
     stickyHeaderShadow();
     productRails();
     accordions();
     cartBadge();
+    drawers();
+    copyButtons();
 }
 
 if (document.readyState === 'loading') {
