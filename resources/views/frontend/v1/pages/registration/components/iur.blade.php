@@ -237,6 +237,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
+                <p class="registration-privacy-notice">{!! __('theme.registration-privacy-notice', ['url' => route('theme.privacy-policy.index')]) !!}</p>
             </div>
         </div>
         <div class="block-botton">

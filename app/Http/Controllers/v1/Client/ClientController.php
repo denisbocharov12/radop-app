@@ -38,7 +38,7 @@ class ClientController extends Controller
 
     public function index(Request $request)
     {
-        $query = $request->query('filter');
+        $query = $request->query('filter') ?? [];
 
         $users = $this->userRepository->getUsersPaginatedWithFilters();
         $roles = $this->userRepository->getAllRoles();

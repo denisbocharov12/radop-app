@@ -774,10 +774,30 @@
         })
     }
 
-    $(document).on('click','#login-btn-modal',function () {
+    // Shows the login error INSIDE the modal without replacing #loginModal
+    // (Fancybox v5 moves #loginModal into the dialog, so replacing its HTML
+    // would close the modal — hiding the error and blocking a retry).
+    function showLoginModalError() {
+        var $form = $('#form-login-modal');
+        if (!$form.length) { return; }
+        $form.find('.input-login').addClass('input-error');
+        if ($form.find('.text-error').length === 0) {
+            $form.find('.form-block-wrap').first()
+                .before('<div class="form-block-wrap"><p class="text-error">{{ __('theme.login-error') }}</p></div>');
+        }
+        $form.find('.input-password').val('');
+        if (typeof toastr !== 'undefined') {
+            toastr['error']('{{ __('theme.login-error') }}');
+        }
+    }
+
+    $(document).on('click','#login-btn-modal',function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        if ($btn.data('loading')) { return; }
+        var originalBtnHtml = $btn.html();
         var token = "{{csrf_token()}}";
         var path = "{{route('user.login')}}";
-        var form = $('#form-login-modal');
         var username = $('#form-login-modal .input-login[type=text]').val();
         var password = $('#form-login-modal .input-password[type=password]').val();
         $.ajax({
@@ -790,15 +810,28 @@
                 _token: token
             },
             beforeSend:function () {
-                $('#loginModal').find('.login-modal-wrap').css({ "display": "flex", "justify-content": "center","font-size":"30px" });
-                $('#loginModal').find('.login-modal-wrap').html('<i class="fa fa-spin fa-spinner"></i>');
+                // Non-destructive loading state: keep the form intact so the
+                // modal stays open and the error can be shown for a retry.
+                $btn.data('loading', true).prop('disabled', true)
+                    .html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#form-login-modal .input-login').removeClass('input-error');
             },
             success:function (response) {
                 if (!response['status']){
-                    $('#loginModal').html(response['html']);
+                    // Wrong credentials (HTTP 200, status:false): show the error
+                    // inline and keep the modal open for re-authentication.
+                    showLoginModalError();
                 } else {
                     window.location.replace('{{config('app.url')}}'+'/orders');
                 }
+            },
+            error:function () {
+                // Any non-2xx (validation 422 for a too-short password, 419, 500…):
+                // show the error instead of hanging the spinner.
+                showLoginModalError();
+            },
+            complete:function () {
+                $btn.data('loading', false).prop('disabled', false).html(originalBtnHtml);
             }
         });
     });

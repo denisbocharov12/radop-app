@@ -1,4 +1,19 @@
 <div class="px-5 py-4 border-b border-gray-100 space-y-4">
+    {{-- Quick search: client, e-mail, phone, order #, filial, city --}}
+    <form method="get" class="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div class="search-bar w-full sm:max-w-xl">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" name="filter[search]" value="{{ request('filter.search') }}"
+                   placeholder="Быстрый поиск: клиент, компания, e-mail, телефон, № заказа, филиал, город…">
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="submit" class="btn-primary btn-sm"><i data-lucide="search" class="w-4 h-4"></i> Найти</button>
+            @if(request('filter.search'))
+                <a href="{{ route('order.index') }}" class="btn-secondary btn-sm"><i data-lucide="x" class="w-4 h-4"></i> Сброс</a>
+            @endif
+        </div>
+    </form>
+
     {{-- Bulk actions --}}
     <div class="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
         <label class="inline-flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">

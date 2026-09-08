@@ -4,70 +4,104 @@
     <section class="section-page">
         <div class="privacy-policy-section">
             <div class="container">
-                <h1>{{ __('privacy-policy.privacy-policy') }}</h1>
-                <p>{!! __('privacy-policy.introduction-1') !!}</p>
-                <p>{!! __('privacy-policy.introduction-2') !!}</p>
-                <p>{{ __('privacy-policy.introduction-3') }}</p>
-                <h2>1. {{ __('privacy-policy.gdpr') }}</h2>
-                <p>{{ __('privacy-policy.gdpr-1') }}</p>
-                <p>{{ __('privacy-policy.gdpr-2') }}</p>
-                <h2>2. {{ __('privacy-policy.personal-data') }}</h2>
-                <p>{{ __('privacy-policy.personal-data-1') }}</p>
-                <h2>3. {{ __('privacy-policy.personal-data-processing') }}</h2>
-                <p>{{ __('privacy-policy.personal-data-processing-1') }}</p>
-                <p>1) {{ __('privacy-policy.personal-data-processing-2') }}</p>
-                <p>2) {{ __('privacy-policy.personal-data-processing-3') }}</p>
-                <p>3) {{ __('privacy-policy.personal-data-processing-4') }}</p>
-                <p>4) {{ __('privacy-policy.personal-data-processing-5') }}</p>
-                <p>{{ __('privacy-policy.personal-data-processing-6') }}</p>
-                <h2>{{ __('privacy-policy.information') }}</h2>
-                <p>{{ __('privacy-policy.information-introduction-1') }}</p>
-                <p>{{ __('privacy-policy.information-introduction-2') }}</p>
-                <p>{{ __('privacy-policy.information-1') }}</p>
-                <p>{{ __('privacy-policy.information-2') }}</p>
-                <p>{{ __('privacy-policy.information-3') }}</p>
-                <p>{{ __('privacy-policy.information-4') }}</p>
-                <p>{{ __('privacy-policy.information-5') }}</p>
-                <p>{{ __('privacy-policy.information-6') }}</p>
-                <p>{{ __('privacy-policy.information-7') }}</p>
-                <p>{{ __('privacy-policy.information-8') }}</p>
-                <p>{{ __('privacy-policy.information-9') }}</p>
-                <p>{{ __('privacy-policy.information-10') }}</p>
-                <p>{{ __('privacy-policy.information-11') }}</p>
-                <p>{{ __('privacy-policy.information-12') }}</p>
-                <p>{{ __('privacy-policy.information-13') }}</p>
-                <p>{{ __('privacy-policy.information-14') }}</p>
-                <p>{{ __('privacy-policy.information-15') }}</p>
-                <p>{!! __('privacy-policy.information-16') !!}</p>
-                <p>{{ __('privacy-policy.information-17') }}</p>
-                <p>{{ __('privacy-policy.information-18') }}</p>
-                <p>{{ __('privacy-policy.information-19') }}</p>
-                <p>{{ __('privacy-policy.information-20') }}</p>
-                <p>{{ __('privacy-policy.information-21') }}</p>
-                <p>{{ __('privacy-policy.information-22') }}</p>
-                <p>{{ __('privacy-policy.information-23') }}</p>
-                <p>{{ __('privacy-policy.information-24') }}</p>
-                <p>{{ __('privacy-policy.information-25') }}</p>
-                <p>{{ __('privacy-policy.information-26') }}</p>
-                <p>{{ __('privacy-policy.information-27') }}</p>
-                <p>{{ __('privacy-policy.information-28') }}</p>
-                <h2>{{ __('privacy-policy.personal-information') }}</h2>
-                <p>{{ __('privacy-policy.personal-information-1') }}</p>
-                <p>{{ __('privacy-policy.personal-information-2') }}</p>
-                <p>{{ __('privacy-policy.personal-information-3') }}</p>
-                <p>{{ __('privacy-policy.personal-information-4') }}</p>
-                <p>{{ __('privacy-policy.personal-information-5') }}</p>
-                <p>{{ __('privacy-policy.personal-information-6') }}</p>
-                <p>{{ __('privacy-policy.personal-information-7') }}</p>
-                <p>{{ __('privacy-policy.personal-information-8') }}</p>
-                <p>{{ __('privacy-policy.personal-information-9') }}</p>
-                <p>{{ __('privacy-policy.personal-information-10') }}</p>
-                <p>{{ __('privacy-policy.personal-information-11') }}</p>
-                <h2>{{ __('privacy-policy.legal-framework') }}</h2>
-                <p>{{ __('privacy-policy.legal-framework-1') }}</p>
-                <p>{{ __('privacy-policy.legal-framework-2') }}</p>
-                <p>{{ __('privacy-policy.legal-framework-3') }}</p>
-                <p>{!! __('privacy-policy.legal-framework-4') !!}</p>
+                <h1>{{ __('privacy-policy.title') }}</h1>
+                <p class="privacy-updated"><em>{{ __('privacy-policy.updated') }}</em></p>
+                <p>{!! __('privacy-policy.intro-1') !!}</p>
+                <p>{!! __('privacy-policy.intro-2') !!}</p>
+
+                <h2>1. {{ __('privacy-policy.s1-title') }}</h2>
+                <p>{!! __('privacy-policy.s1-1') !!}</p>
+                <p>{!! __('privacy-policy.s1-2') !!}</p>
+
+                <h2>2. {{ __('privacy-policy.s2-title') }}</h2>
+                <p>{{ __('privacy-policy.s2-1') }}</p>
+
+                <h2>3. {{ __('privacy-policy.s3-title') }}</h2>
+                <p>{{ __('privacy-policy.s3-intro') }}</p>
+                <p>{!! __('privacy-policy.s3-account') !!}</p>
+                <p>{!! __('privacy-policy.s3-order') !!}</p>
+                <p>{!! __('privacy-policy.s3-comm') !!}</p>
+                <p>{!! __('privacy-policy.s3-tech') !!}</p>
+
+                <h2>4. {{ __('privacy-policy.s4-title') }}</h2>
+                <p>{{ __('privacy-policy.s4-intro') }}</p>
+                <div class="table-responsive">
+                    <table class="privacy-table">
+                        <thead>
+                            <tr>
+                                <th>{{ __('privacy-policy.s4-th-purpose') }}</th>
+                                <th>{{ __('privacy-policy.s4-th-data') }}</th>
+                                <th>{{ __('privacy-policy.s4-th-basis') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (range(1, 7) as $i)
+                                <tr>
+                                    <td>{{ __('privacy-policy.s4-r' . $i . '-p') }}</td>
+                                    <td>{{ __('privacy-policy.s4-r' . $i . '-d') }}</td>
+                                    <td>{{ __('privacy-policy.s4-r' . $i . '-b') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <p>{{ __('privacy-policy.s4-note') }}</p>
+
+                <h2>5. {{ __('privacy-policy.s5-title') }}</h2>
+                <p>{{ __('privacy-policy.s5-intro') }}</p>
+                <ul>
+                    <li>{!! __('privacy-policy.s5-1') !!}</li>
+                    <li>{!! __('privacy-policy.s5-2') !!}</li>
+                    <li>{!! __('privacy-policy.s5-3') !!}</li>
+                    <li>{!! __('privacy-policy.s5-4') !!}</li>
+                    <li>{!! __('privacy-policy.s5-5') !!}</li>
+                </ul>
+                <p>{{ __('privacy-policy.s5-note') }}</p>
+
+                <h2>6. {{ __('privacy-policy.s6-title') }}</h2>
+                <p>{{ __('privacy-policy.s6-1') }}</p>
+                <p>{{ __('privacy-policy.s6-2') }}</p>
+
+                <h2>7. {{ __('privacy-policy.s7-title') }}</h2>
+                <p>{{ __('privacy-policy.s7-intro') }}</p>
+                <ul>
+                    <li>{!! __('privacy-policy.s7-1') !!}</li>
+                    <li>{!! __('privacy-policy.s7-2') !!}</li>
+                    <li>{!! __('privacy-policy.s7-3') !!}</li>
+                    <li>{!! __('privacy-policy.s7-4') !!}</li>
+                    <li>{!! __('privacy-policy.s7-5') !!}</li>
+                </ul>
+
+                <h2>8. {{ __('privacy-policy.s8-title') }}</h2>
+                <p>{!! __('privacy-policy.s8-1', ['url' => route('theme.cookie.index')]) !!}</p>
+
+                <h2>9. {{ __('privacy-policy.s9-title') }}</h2>
+                <p>{{ __('privacy-policy.s9-1') }}</p>
+
+                <h2>10. {{ __('privacy-policy.s10-title') }}</h2>
+                <p>{{ __('privacy-policy.s10-intro') }}</p>
+                <ul>
+                    <li>{!! __('privacy-policy.s10-access') !!}</li>
+                    <li>{!! __('privacy-policy.s10-rectify') !!}</li>
+                    <li>{!! __('privacy-policy.s10-erase') !!}</li>
+                    <li>{!! __('privacy-policy.s10-restrict') !!}</li>
+                    <li>{!! __('privacy-policy.s10-object') !!}</li>
+                    <li>{!! __('privacy-policy.s10-portability') !!}</li>
+                    <li>{!! __('privacy-policy.s10-withdraw') !!}</li>
+                </ul>
+                <p>{!! __('privacy-policy.s10-how') !!}</p>
+
+                <h2>11. {{ __('privacy-policy.s11-title') }}</h2>
+                <p>{!! __('privacy-policy.s11-1') !!}</p>
+
+                <h2>12. {{ __('privacy-policy.s12-title') }}</h2>
+                <p>{{ __('privacy-policy.s12-1') }}</p>
+
+                <h2>13. {{ __('privacy-policy.s13-title') }}</h2>
+                <p>{{ __('privacy-policy.s13-1') }}</p>
+
+                <h2>14. {{ __('privacy-policy.s14-title') }}</h2>
+                <p>{!! __('privacy-policy.s14-1') !!}</p>
             </div>
         </div>
     </section>

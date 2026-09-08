@@ -9,8 +9,6 @@
         </div>
         <div class="login-form-wrap">
             <a href="javascript:;" id="cart-auth-login-btn"
-               data-fancybox
-               data-src="#loginModal"
                class="cart-auth-btn cart-auth-btn-blue">{{__('theme.cart-auth-modal-login')}}</a>
             <div class="cart-auth-separator"><span>{{__('theme.or')}}</span></div>
             <a href="{{route('user.registration.index')}}"
@@ -19,48 +17,45 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var btns = document.querySelectorAll('.cart-auth-modal-btn');
-        var overlay = document.getElementById('cartAuthModalOverlay');
-        var closeBtn = document.getElementById('cart-auth-modal-close');
-        btns.forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-                if (window.$ && $.fancybox) {
-                    $.fancybox.open({src: '#cartAuthModalOverlay', type: 'inline'});
+    // Delegated + idempotent: survives AJAX re-render of the cart (.cart-page),
+    // so the guest checkout button keeps working after quantity changes.
+    (function () {
+        if (window.__cartAuthModalBound) { return; }
+        window.__cartAuthModalBound = true;
+
+        function overlay() { return document.getElementById('cartAuthModalOverlay'); }
+
+        document.addEventListener('click', function (e) {
+            // Guest "place order" button -> show the login/register overlay
+            if (e.target.closest('.cart-auth-modal-btn')) {
+                e.preventDefault();
+                var o = overlay();
+                if (o) { o.style.display = 'flex'; }
+                return;
+            }
+            // Close button
+            if (e.target.closest('#cart-auth-modal-close')) {
+                var oc = overlay();
+                if (oc) { oc.style.display = 'none'; }
+                return;
+            }
+            // Click on the backdrop closes the overlay
+            if (e.target.id === 'cartAuthModalOverlay') {
+                e.target.style.display = 'none';
+                return;
+            }
+            // "Login" inside the overlay -> open the login modal
+            if (e.target.closest('#cart-auth-login-btn')) {
+                e.preventDefault();
+                var ol = overlay();
+                if (ol) { ol.style.display = 'none'; }
+                if (typeof window.Fancybox !== 'undefined') {
+                    window.Fancybox.show([{ src: '#loginModal', type: 'inline' }]);
                 } else {
-                    overlay.style.display = 'flex';
+                    var trigger = document.querySelector('[data-src="#loginModal"]');
+                    if (trigger) { trigger.click(); }
                 }
-            });
-        });
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function () {
-                if (window.$ && $.fancybox) {
-                    $.fancybox.close();
-                } else {
-                    overlay.style.display = 'none';
-                }
-            });
-        }
-        overlay && overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                overlay.style.display = 'none';
             }
         });
-        var loginBtn = document.getElementById('cart-auth-login-btn');
-        if (loginBtn) {
-            loginBtn.addEventListener('click', function (e) {
-                if (window.$ && $.fancybox) {
-                    $.fancybox.close();
-                    $.fancybox.open({src: '#loginModal', type: 'inline'});
-                } else {
-                    overlay.style.display = 'none';
-                    if (typeof openLoginModalCart === 'function') {
-                        openLoginModalCart();
-                    } else {
-                        document.getElementById('loginModal').style.display = 'block';
-                    }
-                }
-            });
-        }
-    });
+    })();
 </script>
