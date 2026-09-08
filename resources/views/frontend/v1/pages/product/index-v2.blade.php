@@ -1,217 +1,226 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    @include('frontend.v1.pages.product.parts.breadcrumbs')
+    @php
+        use App\Services\Product\ProductImagesManager;
+        use App\Services\Theme\Product\ThemeProductManager;
+        use Illuminate\Support\Str;
+
+        $sfJson = static fn (array $data): string => json_encode(
+            $data,
+            JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE
+        );
+
+        $user = auth()->guard('user')->user();
+        $cartSession = $user ? $user->id : config('shopping_cart.default_session_id');
+        $cartLine = \Cart::session($cartSession)->get($product->id);
+
+        $unitPrice = (float) ThemeProductManager::getProductTotalSum($product);
+        $priceMultiplier = ThemeProductManager::getMinOrderDisplayMultiplier($product);
+        $displayPrice = $unitPrice * $priceMultiplier;
+
+        $hasSale = $product->sale_price !== '' && $product->price_koef !== null;
+        $oldPrice = $user && $user->with_sale
+            ? round((float) $product->price, 2) * $priceMultiplier
+            : round((float) $product->price * (float) $product->price_koef, 2) * $priceMultiplier;
+
+        // Media library first, absolute-path fallback second — the same order
+        // the old gallery partial used, expressed once.
+        if ($product->hasMedia('products')) {
+            $galleryImages = $product->getMedia('products')
+                ->map(fn ($file) => ['url' => $file->getUrl(), 'thumb' => $file->getUrl()])
+                ->values()
+                ->all();
+        } else {
+            $galleryImages = collect(ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id))
+                ->map(fn ($path) => [
+                    'url' => Str::startsWith($path, ['http://', 'https://'])
+                        ? $path
+                        : config('app.url') . '/' . ltrim($path, '/'),
+                ])
+                ->map(fn ($image) => $image + ['thumb' => $image['url']])
+                ->values()
+                ->all();
+        }
+
+        $summary = $product->data?->getTranslation('summary', app()->getLocale());
+        $condition = $product?->data?->condition;
+
+        $codes = array_filter([
+            __('theme.code') => $product->onec_id,
+            __('theme.barcode') => $product->shtrih_code,
+            __('theme.article') => $product->article,
+        ], static fn ($value) => $value !== null && $value !== '');
+    @endphp
+
+    <x-sf-breadcrumbs :items="collect($breadcrumbs ?? [])->push(['url' => null, 'name' => $product->title])" />
     @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs ?? [], 'leaf' => $product])
-    <section class="section-product mb-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="product-info-wrap-v2">
-                        <div class="product-name-v2">
-                            <h1 style="white-space: pre-wrap;">{{$product->title}}</h1>
-                        </div>
-                        <div class="product-meta-info">
-                            <div class="product-sku-v2">
-                                <h3 class="product_item_article">
-                                    <span>@lang('theme.code'):</span>
-                                    <span
-                                        class="product-code"
-                                        role="button"
-                                        tabindex="0"
-                                        data-copy-value="{{ $product->onec_id }}"
-                                        data-copy-message="{{ __('theme.product_code_copied') }}"
-                                    >{{$product->onec_id}}</span>
-                                </h3>
-                            </div>
-                            @if($product->shtrih_code !== null)
-                                <div class="product-barcode-v2">
-                                    <h3 class="product_item_barcode">
-                                        <span>{{__('theme.barcode')}}:</span>
-                                        <span
-                                            class="product-code product-code--barcode"
-                                            role="button"
-                                            tabindex="0"
-                                            data-copy-value="{{ $product->shtrih_code }}"
-                                            data-copy-message="{{ __('theme.product_code_copied') }}"
-                                        >{{$product->shtrih_code}}</span>
-                                    </h3>
-                                </div>
-                            @endif
-                            @if($product->article !== null && $product->article !== '')
-                                <div class="product-barcode-v2">
-                                    <h3 class="product_item_barcode">
-                                        <span>{{__('theme.article')}}:</span>
-                                        <span
-                                            class="product-code product-code--article"
-                                            role="button"
-                                            tabindex="0"
-                                            data-copy-value="{{ $product->article }}"
-                                            data-copy-message="{{ __('theme.product_code_copied') }}"
-                                        >{{$product->article}}</span>
-                                    </h3>
-                                </div>
-                            @endif
-                            @if($product->brand !== null && trim((string)($product->brand->title ?? '')) !== '')
-                                <div class="product-brand-v2">
-                                    <span class="mini-heading">{{__('theme.all-brand-products')}}</span>
-                                    <a href="{{route('theme.brand.index', $product->brand->onec_id)}}" class="product-mini-brand">
-                                        <span class="brand-text">
-                                            {{$product->brand->title}}
-                                        </span>
-                                    </a>
-                                </div>
-                            @endif
-                        </div>
-                        @include('frontend.v1.pages.product.components.variations')
-                    </div>
-                </div>
-            </div>
-            <div class="row product-v2-main-row">
-                <div class="col-12 col-lg-45 col-product-gallery">
-                    @include('frontend.v1.pages.product.components.label')
-                    @include('frontend.v1.pages.product.parts.gallery-v2')
-                </div>
-                <div class="col-12 col-lg-30 col-product-characteristics">
-                    <div class="product-details-wrap-v2">
-                        <h3 class="details-heading">{{__('theme.product-details')}}</h3>
-                        <div class="details-list-wrap">
-                            <ul class="ul-details">
-                                @foreach($product->values as $value)
-                                    <li class="item">
-                                        <span class="left">{{$value->attribute?->name}}</span>
-                                        <span class="right">{{$value->value}}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                @php
-                    $sessionId = config('shopping_cart.default_session_id');
-                    if (auth()->guard('user')->user()) {
-                        $sessionId = auth()->guard('user')->user()->id;
-                    }
-                    $item = \Cart::session($sessionId)->get($product->id);
-                @endphp
-                <div class="col-12 col-lg-25 col-product-cart-widget">
-                    <div class="product-cart-widget-wrap-v2 @if(\Cart::session($sessionId)->get($product->id) !== null) product-cart-widget-in-cart @endif">
-                        <div class="product-price-wrap">
-                            @include('frontend.v1.components.product_price')
-                        </div>
-                        @include('frontend.v1.components.product_card_summary')
-                        @php
-                            $package = isset($product->packages->where('order_status', true)->first()->value) ? $product->packages->sortBy('value')->first()->value : 1;
-                        @endphp
-                        <div class="add_to_cart_wrap">
-                            @include('frontend.v1.components.add_to_cart_widget_v2')
-                        </div>
-                        @include('frontend.v1.components.packages_card_wrap')
-                        <div class="product-card-summary-in-cart-v2" id="product-card-summary-in-cart-{{$product->id}}">
-                            @if(\Cart::session($sessionId)->get($product->id) !== null)
-                                <p>
-                                    <span class="summary-title"><i class="icon-check"></i>{{__('theme.in-cart')}}</span>
-                                    <span class="product-card-summary-cart-title">{{ $item?->quantity ?? 0 }}</span>
-                                    {{__('theme.in_cart_unit')}}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+    <div class="sf-container pb-10">
+        <h1 class="mb-3 mt-2 text-xl font-bold leading-snug text-ink-900 lg:text-2xl">{{ $product->title }}</h1>
+
+        <div class="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-ink-500">
+            @foreach($codes as $label => $value)
+                <span>
+                    {{ $label }}:
+                    <button
+                        type="button"
+                        class="font-medium text-ink-700 hover:text-brand-600"
+                        data-copy-value="{{ $value }}"
+                        data-copy-message="{{ __('theme.product_code_copied') }}"
+                    >{{ $value }}</button>
+                </span>
+            @endforeach
+
+            @if($product->brand && trim((string) ($product->brand->title ?? '')) !== '')
+                <a href="{{ route('theme.brand.index', $product->brand->onec_id) }}" class="font-medium text-brand-600 hover:text-brand-700">
+                    {{ $product->brand->title }}
+                </a>
+            @endif
         </div>
-    </section>
-    <section class="section-product-description mb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="description-block-heading">{{__('theme.description')}}</h2>
-                    <div class="product-description-content">
-                        @if($product->data?->getTranslation('summary', app()->getLocale()) === null || empty(strip_tags($product->data?->getTranslation('summary', app()->getLocale()))))
-                            <p class="description-text">{{__('theme.no-description')}}</p>
-                        @else
-                            <div class="description-text">{!! $product->data?->getTranslation('summary', app()->getLocale()) !!}</div>
+
+        @include('frontend.v1.pages.product.components.variations')
+
+        <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
+            {{-- Gallery --}}
+            <div class="relative lg:col-span-5">
+                <div class="sf-product-flags">
+                    @if($hasSale)
+                        <span class="sf-badge-sale">-{{ ThemeProductManager::getProductSaleForLabel($product) }}%</span>
+                    @endif
+                    @if($condition === 'new')
+                        <span class="sf-badge-new">{{ __('theme.label_new') }}</span>
+                    @elseif($condition === 'popular')
+                        <span class="sf-badge-hit">{{ __('theme.label_popular') }}</span>
+                    @endif
+                </div>
+
+                @if(! empty($galleryImages))
+                    <div
+                        data-sf-island="product-gallery"
+                        data-sf-props="{{ $sfJson(['images' => $galleryImages, 'alt' => $product->title]) }}"
+                        v-cloak
+                    >
+                        <img
+                            src="{{ $galleryImages[0]['url'] }}"
+                            alt="{{ $product->title }}"
+                            class="aspect-square w-full rounded-lg border border-ink-200 object-contain p-6"
+                            fetchpriority="high"
+                        />
+                    </div>
+                @else
+                    <div class="flex aspect-square items-center justify-center rounded-lg border border-ink-200 text-ink-300">
+                        <x-sf-icon name="box" :size="56" />
+                    </div>
+                @endif
+            </div>
+
+            {{-- Specifications --}}
+            <div class="lg:col-span-4">
+                <h2 class="mb-3 text-md font-bold text-ink-900">{{ __('theme.product-details') }}</h2>
+                @if($product->values->isNotEmpty())
+                    <dl class="divide-y divide-ink-100 rounded-lg border border-ink-200">
+                        @foreach($product->values as $value)
+                            <div class="flex gap-3 px-3 py-2 text-sm">
+                                <dt class="w-1/2 shrink-0 text-ink-500">{{ $value->attribute?->name }}</dt>
+                                <dd class="min-w-0 flex-1 font-medium text-ink-800">{{ $value->value }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                @else
+                    <p class="text-sm text-ink-500">{{ __('theme.no-description') }}</p>
+                @endif
+            </div>
+
+            {{-- Buy box --}}
+            <div class="lg:col-span-3">
+                <div class="sf-card sticky top-24 space-y-4 p-4">
+                    <div class="flex flex-wrap items-baseline gap-2">
+                        <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $hasSale])>
+                            {{ number_format($displayPrice, 2, ',', ' ') }}
+                        </span>
+                        <span class="text-sm text-ink-500">{{ __('theme.MDL') }}</span>
+                        @if($hasSale)
+                            <span class="sf-product-price-old">{{ number_format($oldPrice, 2, ',', ' ') }}</span>
                         @endif
                     </div>
+
+                    <p class="flex items-center gap-1.5 text-sm">
+                        @if($product->stock > 0)
+                            <x-sf-icon name="check" :size="15" class="text-success-500" />
+                            <span class="font-medium text-success-600">{{ __('theme.in-stock') }}</span>
+                        @else
+                            <x-sf-icon name="info" :size="15" class="text-ink-400" />
+                            <span class="text-ink-500">{{ __('theme.out-of-stock') }}</span>
+                        @endif
+                    </p>
+
+                    <div
+                        data-sf-island="add-to-cart"
+                        data-sf-props="{{ $sfJson([
+                            'productId' => $product->id,
+                            'step' => (int) ($product->min_order ?: 1),
+                            'stock' => (int) $product->stock,
+                            'price' => $unitPrice,
+                            'inCart' => $cartLine ? (int) $cartLine->quantity : 0,
+                            'currency' => __('theme.MDL'),
+                            'labelAdd' => __('theme.add-to-cart'),
+                            'labelInCart' => __('theme.in-cart'),
+                            'labelTotal' => __('theme.total'),
+                            'disabled' => (int) $product->stock <= 0,
+                        ]) }}"
+                        v-cloak
+                    ></div>
+
+                    @include('frontend.v1.components.packages_card_wrap')
+
+                    <div class="space-y-2 border-t border-ink-100 pt-3 text-xs text-ink-500">
+                        <p class="flex items-center gap-2">
+                            <x-sf-icon name="truck" :size="15" class="text-brand-600" />
+                            {{ __('theme.footer_usp_delivery_text') }}
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <x-sf-icon name="shield" :size="15" class="text-brand-600" />
+                            {{ __('theme.footer_usp_quality_text') }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <section class="sf-section">
+            <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
+            @if($summary === null || empty(strip_tags($summary)))
+                <p class="text-sm text-ink-500">{{ __('theme.no-description') }}</p>
+            @else
+                <div class="sf-prose">{!! $summary !!}</div>
+            @endif
+        </section>
+    </div>
 
     @include('frontend.v1.pages.product.components.reviews')
 
-    @if($similarProducts !== null)
-        <section class="section-standart section-catalog mb-5 section-similar-product">
-            <div class="container">
-                <div class="row-catalog row">
-                    <div class="col-heading">
-                        <div class="heading heading-with-btn">
-                            <h2 class="similar-products-title">{{__('theme.similar-products')}}</h2>
-                        </div>
+    @if(! empty($similarProducts) && count($similarProducts))
+        <section class="sf-section">
+            <div class="sf-container" data-sf-rail>
+                <div class="sf-section-head">
+                    <h2 class="sf-section-title">{{ __('theme.similar-products') }}</h2>
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="sf-icon-btn hidden h-8 w-8 border border-ink-200 disabled:opacity-30 lg:inline-flex" data-sf-rail-prev aria-label="←">
+                            <x-sf-icon name="chevronLeft" :size="16" />
+                        </button>
+                        <button type="button" class="sf-icon-btn hidden h-8 w-8 border border-ink-200 disabled:opacity-30 lg:inline-flex" data-sf-rail-next aria-label="→">
+                            <x-sf-icon name="chevronRight" :size="16" />
+                        </button>
                     </div>
-                    <div class="col catalog-slider">
-                        @foreach($similarProducts as $product)
-                            @php
-                                $sessionId = config('shopping_cart.default_session_id');
+                </div>
 
-                                if (auth()->guard('user')->user()) {
-                                    $sessionId = auth()->guard('user')->user()->id;
-                                }
-
-                                $item = \Cart::session($sessionId)->get($product->id);
-                            @endphp
-                            <div class="product_item product-item-category drop-shadow @if($item !== null) product-item-category-in-cart @endif"
-                                 id="col-product-{{$product->id}}">
-                                <div class="product-wrap">
-                                    @include('frontend.v1.pages.product.components.label')
-                                    <div class="product-wrap-main">
-                                        @if($product->sale_price !== '')
-                                            <a href="{{route('theme.product.index', $product->slug)}}"
-                                               class="product-label">
-                                                <div class="product-label-wrap">
-                                                    <span class="product-label-span">- {{round((((float)$product->price - (float)$product->sale_price) / $product->price) * 100)}}%</span>
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @include('frontend.v1.pages.shop.parts.product-image')
-                                        @include('frontend.v1.pages.product.components.quick-view')
-                                        @if(app('wishlist')->get($product->id) !== null)
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist delete-from-wishlist-btn" tabindex="0"><i
-                                                        class="fa fa-heart" style="color: red"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);" id="add_to_wishlist-{{$product->id}}"
-                                               data-id="{{$product->id}}" data-qty="1"
-                                               class="add_to_wishlist add-to-wishlist-btn">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        @endif
-                                        <div class="product-item-title-wrap">
-                                            <h3 class="product_item_name">
-                                                <a href="{{route('theme.product.index', $product->slug)}}">{{$product->title}}</a>
-                                            </h3>
-                                        </div>
-                                        @include('frontend.v1.components.product-item-article')
-                                        @include('frontend.v1.components.product-list-mini-brand-wrap')
-                                    </div>
-                                    <div class="product-card-bottom">
-                                        <div class="add_to_cart_wrap">
-                                            <hr class="product-card-item">
-                                            <div class="wrap">
-                                                @include('frontend.v1.components.product_price')
-                                            </div>
-                                            @include('frontend.v1.components.product_card_summary')
-                                            @include('frontend.v1.components.add_to_cart_widget_v2')
-                                        </div>
-                                        @include('frontend.v1.components.packages_card_wrap')
-                                    </div>
-                                </div>
-                                @include('frontend.v1.components.in_cart_widget')
-                            </div>
-                        @endforeach
-                    </div>
+                <div class="sf-rail">
+                    @foreach($similarProducts as $similar)
+                        <x-sf-product-card :product="$similar" list-id="product_similar" list-name="Similar products" />
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -219,123 +228,16 @@
 @endsection
 
 @section('scripts')
-    <script>
-        @if(!empty($ga4ViewItem))
-        $(function () {
-            if (typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
-                window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.product_detail_page_viewed, @json($ga4ViewItem));
-            }
-        });
-        @endif
-        Fancybox.bind('[data-fancybox="gallery"]', {
-            selector: '.slick-slide:not(.slick-cloned)',
-            hash: false
-        });
-
-        $(document).on('click', '.product-add-to-cart-btn', function (e) {
-            e.preventDefault();
-            var product_id = $(this).data('id');
-            var product_qty = $('.qty-item-' + product_id).val();
-            var token = "{{csrf_token()}}";
-            var path = "{{route('theme.product.store')}}";
-            $.ajax({
-                url: path,
-                type: "POST",
-                dataType: "JSON",
-                data: {
-                    product_id: product_id,
-                    product_qty: product_qty,
-                    _token: token
-                },
-                beforeSend: function () {
-                    $('#add-to-cart-' + product_id).html('<i class="fa fa-spin fa-spinner"></i>');
-                },
-                complete: function () {
-                    $('#add-to-cart-' + product_id).html('{{__('theme.add-to-cart')}}');
-                },
-                success: function (response) {
-                    if (response['status'] == true) {
-                        $('.cart-update').html(response['cart']);
-                        $('.mini-cart-count').html(response['cart_count']);
-                        $('.mini-cart-subtotal').html(response['total']);
-                        $('.header-cart-widget .count').html(response['cart_count']);
-                        $('.header-cart-widget .summ').html(response['total']);
-                        $('.cart-page').html(response['cart-page']);
-                        toastr["success"](response['msg']);
-                        var jkp = window.radopAnalyticsJsonPayloadKeys || {};
-                        if (jkp.cart_line_item_added && response[jkp.cart_line_item_added] && typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
-                            var g = response[jkp.cart_line_item_added];
-                            window.radopGa4EcommercePush(window.radopAnalyticsDataLayerEventNames.cart_line_item_added, {
-                                currency: window.radopGaCurrency || 'MDL',
-                                value: g.price * g.quantity,
-                                items: [{ item_id: String(g.item_id), item_name: String(g.item_name), price: g.price, quantity: g.quantity }]
-                            });
-                        }
-                    }
-                    if (response['status'] == "not_in_stock") {
-                        var _msg = (response['msg'] || '').toString().replace(/\n/g,'<br/>');
-                        toastr.options = {
-                            "escapeHtml": false,
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-bottom-right",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-                        toastr["warning"](_msg)
-                    }
+    @if(!empty($ga4ViewItem))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof window.radopGa4EcommercePush === 'function' && window.radopAnalyticsDataLayerEventNames) {
+                    window.radopGa4EcommercePush(
+                        window.radopAnalyticsDataLayerEventNames.product_detail_page_viewed,
+                        @json($ga4ViewItem)
+                    );
                 }
             });
-        })
-
-        $(document).on('input change', '.product-qty-item', function () {
-            var qtyCount = $(this).val();
-            var max = $(this).attr('max');
-            if (max !== undefined && max !== '' && Number(qtyCount) > Number(max)) {
-                $(this).val(max);
-                if (!$(this).data('warnedMaxShown')) {
-                    var msgs = (typeof window.getLimitedStockWarnings === 'function') ? window.getLimitedStockWarnings(max, $(this).attr('data-unit') || undefined) : null;
-                    if (typeof toastr !== 'undefined') {
-                        if (msgs && msgs.length) {
-                            var html = msgs.join('<br/><br/>');
-                            toastr.options = Object.assign({}, toastr.options, { escapeHtml: false });
-                            toastr["warning"](html);
-                        } else {
-                            toastr["warning"]('Доступно только ' + max);
-                        }
-                    }
-                    $(this).data('warnedMaxShown', true);
-                }
-                qtyCount = max;
-            } else {
-                $(this).data('warnedMaxShown', false);
-            }
-            var productId = $(this).data('product-id');
-            var productPrice = $(this).data('price');
-            var packageCount = $(this).data('package');
-            var changedElement = $('#product-card-summary-' + productId);
-            if (changedElement.length === 0) {
-                changedElement = $('#product-card-summary-cart-' + productId);
-            }
-            if (changedElement.length === 0) {
-                changedElement = $('#product-card-summary-in-cart-' + productId);
-            }
-            if (changedElement.length === 0) {
-                changedElement = $('#product-' + productId + '-cart-info');
-            }
-            var result = (qtyCount * productPrice) / packageCount;
-            changedElement.html(result.toFixed(2).replace('.', ','));
-        });
-    </script>
+        </script>
+    @endif
 @endsection
-

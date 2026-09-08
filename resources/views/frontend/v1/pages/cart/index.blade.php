@@ -1,113 +1,96 @@
 @extends('frontend.v1.layouts.layout')
 
-@section('content')
-    @include('frontend.v1.pages.cart.parts.breadcrumbs')
-    @php
-        $sessionId = config('shopping_cart.default_session_id');
+@section('sf-page', 1)
 
-        if (auth()->guard('user')->user()) {
-            $sessionId = auth()->guard('user')->user()->id;
-        }
+@section('content')
+    @php
+        use App\Services\Product\ProductImagesManager;
+        use App\Services\Theme\Product\ThemeProductManager;
+        use Illuminate\Support\Str;
+
+        $user = auth()->guard('user')->user();
+        $cartSession = $user ? $user->id : config('shopping_cart.default_session_id');
+        $cart = \Cart::session($cartSession);
+
+        $lines = $cart->getContent()
+            ->sortBy('attributes.added_at')
+            ->map(function ($item) {
+                $product = $item->associatedModel;
+
+                $image = $product->hasMedia('products')
+                    ? $product->getFirstMediaUrl('products', 'medium')
+                    : (ProductImagesManager::getProductImagesFromAbsolutePath($product->onec_id)[0] ?? null);
+
+                if ($image && ! Str::startsWith($image, ['http://', 'https://'])) {
+                    $image = config('app.url') . '/' . ltrim($image, '/');
+                }
+
+                return [
+                    'id' => (int) $item->id,
+                    'title' => (string) $product->title,
+                    'code' => (string) $product->onec_id,
+                    'url' => route('theme.product.index', $product->slug),
+                    'image' => $image,
+                    'qty' => (int) $item->quantity,
+                    'step' => (int) ($product->min_order ?: 1),
+                    'stock' => (int) $product->stock,
+                    'price' => (float) ThemeProductManager::getProductTotalSum($product),
+                ];
+            })
+            ->values()
+            ->all();
+
+        $minOrderSum = $user
+            ? ($user->isSupplementWindowOpen() ? 0 : (float) $user->minOrderSum())
+            : (float) config('app.min_delivery_sum');
+
+        $props = json_encode([
+            'lines' => $lines,
+            'total' => number_format($cart->getTotal(), 2, ',', ''),
+            'currency' => __('theme.MDL'),
+            'minOrderSum' => $minOrderSum,
+            'checkoutUrl' => route('theme.checkout.index'),
+            'continueUrl' => route('theme.shop.catalog'),
+            'destroyUrl' => route('theme.cart.destroy'),
+            'authenticated' => $user !== null,
+            't' => [
+                'code' => __('theme.code'),
+                'empty' => __('theme.empty-cart'),
+                'remove' => __('theme.cart-destroy'),
+                'destroy' => __('theme.cart-destroy'),
+                'payable' => __('theme.invoice-payable'),
+                'quantity' => __('theme.quantity-shortly'),
+                'summary' => __('theme.summary'),
+                'forPayment' => __('theme.for-payment'),
+                'minOrder' => __('theme.min_order_sum_warning_message'),
+                'checkout' => __('theme.place-order'),
+                'continue' => __('theme.сontinue-shopping'),
+            ],
+        ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
     @endphp
-    @if(\Cart::session($sessionId)->getContent()->count() > 0 || Auth::guard('user')->user() !== null)
-        <section class="section-content section-shopping-cart padding-y bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-cart-heading">
-                        <div class="heading">
-                            <h1>{{__('theme.cart')}}</h1>
-                        </div>
-                    </div>
+
+    <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.cart')]]" />
+
+    <div class="sf-container pb-12">
+        <h1 class="mb-5 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.cart') }}</h1>
+
+        <div data-sf-island="cart-table" data-sf-props="{{ $props }}" v-cloak>
+            {{-- Pre-hydration placeholder keeps the page from jumping. --}}
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+                <div class="space-y-2">
+                    @foreach($lines as $line)
+                        <div class="sf-skeleton h-20 w-full"></div>
+                    @endforeach
                 </div>
-                <div class="row cart-page">
-                    @include('frontend.v1.components.cart-table')
-                </div>
+                <div class="sf-skeleton h-56 w-full"></div>
             </div>
-        </section>
-    @else
-        <section class="section-content padding-y bg">
-            <div class="container pt-5 pb-5">
-                <div class="row">
-                    <div class="col-12 pt-4 pb-2 d-flex" style="justify-content: center; align-items: center; flex-direction: column">
-                        <h5 style="margin-top: 30px; font-size: 30px; font-weight: 600; color: #394360">{{__('theme.empty-cart')}}</h5>
-                    </div>
-                </div>
-            </div>
-        </section>
-    @endif
-    @include('frontend.v1.pages.cart.parts.map')
+        </div>
+    </div>
+
+    @include('frontend.v1.components.cart_auth_modal')
     @include('frontend.v1.pages.cart.parts.tabs')
-{{--    @include('frontend.v1.components.sales_period_modal')--}}
 @endsection
 
 @section('scripts')
     @include('frontend.v1.analytics.ga4-view-cart')
-    <script>
-        $(document).on('click', '.btn-quantity-cart', function (e) {
-            e.preventDefault();
-            var rowId = $(this).parent('.input-group-btn').parent('.sc-product-qty').find('input[type=number]').data("id");
-            var $qtyInput = $('#qty-item-cart-' + rowId);
-            var product_qty = parseInt($qtyInput.val());
-            var min_order = parseInt($qtyInput.attr('min')) || 1;
-            if (product_qty % min_order !== 0) {
-                toastr["warning"]('{{ __('theme.min-order-text') }} ' + min_order);
-                return false;
-            }
-            var productStock = $('#update-cart-page-'+rowId).data('product-stock');
-            update_mini_cart_page(rowId, productStock);
-        });
-        function update_mini_cart_page(rowId,productStock) {
-            var product_qty =  $('#qty-item-cart-'+rowId).val();
-            var token = '{{csrf_token()}}';
-            var path = "{{route('theme.product.update')}}";
-            $.ajax({
-                url: path,
-                type: 'POST',
-                data:{
-                    _token: token,
-                    product_qty: product_qty,
-                    product_id: rowId,
-                    productStock: productStock
-                },
-                success: function (response) {
-                    if(response['status']){
-                        $('.cart-update').html(response['cart']);
-                        $('.mini-cart-count').html(response['cart_count']);
-                        $('.mini-cart-subtotal').html(response['total']);
-                        $('.header-cart-widget .count').html(response['cart_count']);
-                        $('.header-cart-widget .summ').html(response['total']);
-                        $('.cart-page').html(response['cart-page']);
-                    }
-                    if(response['status'] === 'not_in_stock') {
-                        toastr["warning"](response['msg'])
-                    }
-                    if(response['status'] === 'not_permitted') {
-                        toastr["error"](response['msg'])
-                    }
-                    if(response['status'] === 'min_order_error') {
-                        toastr["warning"](response['msg'])
-                    }
-                }
-            })
-        }
-        $(document).on('click', '.coupon-btn', function (e) {
-            e.preventDefault();
-            var code = $('input[name=code]').val();
-            $('.coupon-btn').html('<i style="margin-right: 3px" class="fa fa-spin fa-spinner"></i> Loading');
-            $('#coupon-form').submit();
-        })
-        $(document).ready(function() {
-            // Добавляем класс active к первому элементу vertical-tabs-content при загрузке страницы
-            $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(0).addClass('active');
-
-            $('.vertical-tabs li').click(function() {
-                var tabIndex = $(this).index();
-                // $('.vertical-tabs li').removeClass('chosen');
-                // $(this).addClass('chosen');
-                $('.vertical-tabs-content-wrap .vertical-tabs-content').removeClass('active');
-                $('.vertical-tabs-content-wrap .vertical-tabs-content').eq(tabIndex).addClass('active');
-            });
-        });
-    </script>
 @endsection
-

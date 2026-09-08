@@ -321,8 +321,12 @@
     }
 
     /* ---------------------------------------------------------- misc */
+    /* One scrollable line on narrow screens — a wrapped trail on a product page
+       can otherwise take four lines before the visitor reaches the title. */
     .sf-breadcrumb {
-        @apply flex flex-wrap items-center gap-x-1.5 gap-y-1 py-3 text-xs text-ink-500;
+        @apply sf-scrollbar-none flex flex-nowrap items-center gap-x-1.5 gap-y-1
+               overflow-x-auto whitespace-nowrap py-3 text-xs text-ink-500
+               lg:flex-wrap lg:overflow-visible;
     }
 
     .sf-breadcrumb a { @apply hover:text-brand-600; }

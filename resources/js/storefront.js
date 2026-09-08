@@ -22,7 +22,9 @@ const registry = {
     'site-search': () => import('./storefront/components/SiteSearch.vue'),
     'mobile-nav': () => import('./storefront/components/MobileNav.vue'),
     'hero-slider': () => import('./storefront/components/HeroSlider.vue'),
+    'product-gallery': () => import('./storefront/components/ProductGallery.vue'),
     'add-to-cart': () => import('./storefront/components/AddToCart.vue'),
+    'cart-table': () => import('./storefront/components/CartTable.vue'),
     'wishlist-button': () => import('./storefront/components/WishlistButton.vue'),
 };
 
