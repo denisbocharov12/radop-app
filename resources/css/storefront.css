@@ -347,6 +347,7 @@
         @apply max-w-[72ch] text-md leading-relaxed text-ink-700;
     }
 
+    .sf-prose :where(h1) { @apply mb-4 mt-2; }
     .sf-prose :where(h2) { @apply mb-3 mt-8 text-xl; }
     .sf-prose :where(h3) { @apply mb-2 mt-6 text-lg; }
     .sf-prose :where(p)  { @apply my-3; }

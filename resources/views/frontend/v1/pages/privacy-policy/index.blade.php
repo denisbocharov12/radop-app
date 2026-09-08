@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="privacy-policy-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('privacy-policy.title') }}</h1>
                 <p class="privacy-updated"><em>{{ __('privacy-policy.updated') }}</em></p>
                 <p>{!! __('privacy-policy.intro-1') !!}</p>
@@ -102,7 +102,5 @@
 
                 <h2>14. {{ __('privacy-policy.s14-title') }}</h2>
                 <p>{!! __('privacy-policy.s14-1') !!}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="terms-and-condition-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('terms-and-conditions.terms-and-conditions') }}</h1>
                 <p>{!! __('terms-and-conditions.introduction-1') !!}</p>
                 <p>{!! __('terms-and-conditions.introduction-2') !!}</p>
@@ -111,7 +111,5 @@
                 <p>{!! __('terms-and-conditions.claims-3') !!}</p>
                 <p>{!! __('terms-and-conditions.claims-4') !!}</p>
                 <p>{!! __('terms-and-conditions.claims-5') !!}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

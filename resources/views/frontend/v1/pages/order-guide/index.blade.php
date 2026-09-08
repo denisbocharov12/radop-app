@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="order-guide-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('order-guide.introduction') }}</h1>
                 <p>{!! __('order-guide.introduction-1') !!}</p>
                 <p>{{ __('order-guide.introduction-2') }}</p>
@@ -37,7 +37,5 @@
                 <p>{{ __('order-guide.customer-note-3') }}</p>
                 <p>{{ __('order-guide.customer-note-4') }}</p>
                 <p>{{ __('order-guide.customer-note-5') }}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

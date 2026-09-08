@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="return-rules-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('return-rules.introduction') }}</h1>
                 <p>{!! __('return-rules.introduction-1') !!}</p>
                 <p>{!! __('return-rules.introduction-2') !!}</p>
@@ -59,7 +59,5 @@
                 <p>{!! __('return-rules.information-5') !!}</p>
                 <p>{!! __('return-rules.information-6') !!}</p>
                 <p>{{ __('return-rules.information-7') }}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

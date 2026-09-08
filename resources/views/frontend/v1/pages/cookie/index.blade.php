@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="cookie-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('cookie.title') }}</h1>
                 <p class="cookie-updated"><em>{{ __('cookie.updated') }}</em></p>
                 <p>{!! __('cookie.intro-1') !!}</p>
@@ -56,7 +56,5 @@
 
                 <h2>7. {{ __('cookie.changes-title') }}</h2>
                 <p>{!! __('cookie.changes-1', ['url' => route('theme.privacy-policy.index')]) !!}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

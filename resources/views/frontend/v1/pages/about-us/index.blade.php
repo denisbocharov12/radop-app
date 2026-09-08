@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="about-us-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('about-us.about-us') }}</h1>
                 <h2>{{ __('about-us.welcome') }}</h2>
                 <p>{{ __('about-us.about') }}</p>
@@ -66,7 +66,5 @@
                 <p>{!!__('about-us.company_details.email') !!}</p>
 
                 <h2>{{ __('about-us.slogan') }}</strong></h2>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection

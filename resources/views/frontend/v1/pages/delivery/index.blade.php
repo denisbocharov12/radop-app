@@ -1,9 +1,9 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="section-page">
-        <div class="delivery-section">
-            <div class="container">
+    <x-sf-page>
                 <h1>{{ __('delivery.delivery') }}</h1>
 {{--                <p>{!! __('delivery.introduction') !!}</p>--}}
 {{--                <p>{!! __('delivery.introduction-1') !!}</p>--}}
@@ -57,7 +57,5 @@
                 <p>{!! __('delivery.information-4') !!}</p>
                 <p>{!! __('delivery.information-5') !!}</p>
                 <p>{!! __('delivery.information-6') !!}</p>
-            </div>
-        </div>
-    </section>
+    </x-sf-page>
 @endsection
