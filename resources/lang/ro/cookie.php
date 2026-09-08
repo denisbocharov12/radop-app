@@ -1,27 +1,85 @@
 <?php
 
-return array(
-    'introduction' => 'Politica de utilizare a cookie-urilor',
-    'introduction-1' => 'Această politică se aplică site-ului Radop.md, al cărui birou este situat la adresa: mun. Chișinău, str. Sarmizegetusa 15.',
-    'information' => '1. Ce sunt cookie-urile?',
-    'information-1' => 'Un cookie este un fișier de dimensiuni mici, format din litere și cifre, care este descărcat pe computerul, telefonul mobil sau alt dispozitiv al utilizatorului atunci când acesta accesează un site web.',
-    'information-2' => 'Serverul Radop.md sau un server terț poate crea cookie-uri la cererea dispozitivului utilizatorului.',
-    'why-we-use' => '2. De ce sunt necesare cookie-urile?',
-    'why-we-use-1' => 'Cookie-urile recunosc dispozitivul utilizatorului și ajută la furnizarea de informații utile, în funcție de preferințele acestuia. Acestea ne ajută să oferim o navigare confortabilă și să faceți vizitarea site-ului Radop.md mai eficientă. De asemenea, cookie-urile permit colectarea de statistici anonime care ne ajută să înțelegem comportamentul utilizatorilor pe site, facilitând îmbunătățirea conținutului și structurii acestuia.',
-    'type' => '3. Ce tipuri de cookie-uri utilizăm?',
-    'type-1' => 'Utilizăm două tipuri de cookie-uri: Cookie-uri permanente: rămân pe dispozitiv pentru o perioadă îndelungată sau până când le ștergeți manual. Cookie-uri de sesiune: sunt temporare și rămân pe dispozitiv până când părăsiți site-ul sau închideți browserul.',
-    'usage' => '4. Cum folosește site-ul cookie-urile?',
-    'usage-1' => 'Vizitarea site-ului poate genera următoarele categorii de cookie-uri:',
-    'usage-2' => '1. Cookie-uri esențiale: necesare pentru funcționarea normală a site-ului;',
-    'usage-3' => '2. Cookie-uri analitice: folosite pentru analiza traficului și a comportamentului utilizatorilor;',
-    'usage-4' => '3. Cookie-uri pentru preferințe: rețin setările personale ale utilizatorilor;',
-    'usage-5' => '4. Cookie-uri publicitare: folosite pentru afișarea de reclame relevante.',
-    'personal-data' => '5. Conțin cookie-urile date personale?',
-    'personal-data-1' => 'Cookie-urile nu conțin informații personale despre dumneavoastră și, de obicei, nu pot fi folosite pentru a vă identifica. În unele cazuri, datele personale pot fi stocate în cookie-uri, dar doar pentru a asigura o experiență mai plăcută pe site. Aceste date sunt protejate și inaccesibile pentru terți.',
-    'block' => '6. Consecințele blocării cookie-urilor',
-    'block-1' => 'Dacă alegeți să blocați cookie-urile, unele funcții ale site-ului nostru pot fi afectate, ceea ce poate duce la erori sau funcționare incorectă. De exemplu, blocarea cookie-urilor poate afecta:',
-    'block-2' => 'Procesul de cumpărare online;',
-    'block-3' => 'Accesul în Contul personal.',
-    'safety' => '7. Aspecte de securitate și confidențialitate',
-    'safety-1' => 'Browserele au, de obicei, setări de confidențialitate predefinite care acceptă cookie-uri, stabilesc durata de stocare și șterg automat cookie-urile după vizitarea unui site.',
-);
+return [
+    'title' => 'Politica de utilizare a cookie-urilor',
+    'updated' => 'Ultima actualizare: 8 septembrie 2026',
+    'intro-1' => 'Prezenta Politică explică modul în care SRL „RĂDOP-OPT” utilizează cookie-uri și tehnologii similare pe site-ul <strong>radop.md</strong>. Ea completează Politica de confidențialitate.',
+
+    // 1. What are cookies
+    'what-title' => 'Ce sunt cookie-urile',
+    'what-1' => 'Cookie-urile sunt fișiere text de mici dimensiuni salvate pe dispozitivul dumneavoastră (computer, telefon, tabletă) atunci când vizitați un site. Ele permit site-ului să rețină acțiunile și preferințele dumneavoastră pe o anumită perioadă de timp. Folosim și tehnologii similare (de exemplu etichete și scripturi), la care ne referim, în mod colectiv, tot ca „cookie-uri”.',
+
+    // 2. Why we use
+    'why-title' => 'De ce folosim cookie-uri',
+    'why-1' => 'Folosim cookie-uri pentru a asigura funcționarea corectă și securitatea site-ului, pentru a reține preferințele dumneavoastră (de exemplu limba) și, cu consimțământul dumneavoastră, pentru a analiza statistic modul de utilizare a site-ului în vederea îmbunătățirii acestuia.',
+
+    // 3. Types (registry table)
+    'types-title' => 'Ce cookie-uri folosim',
+    'types-intro' => 'Mai jos sunt prezentate principalele cookie-uri utilizate. Cookie-urile strict necesare asigură funcționarea site-ului și nu pot fi dezactivate; celelalte sunt activate doar cu consimțământul dumneavoastră.',
+    'th-name' => 'Cookie / tehnologie',
+    'th-provider' => 'Furnizor',
+    'th-purpose' => 'Scop',
+    'th-category' => 'Categorie',
+    'th-duration' => 'Durată',
+    'th-type' => 'Tip',
+
+    'reg-r1-name' => 'laravel_cookie_consent',
+    'reg-r1-provider' => 'radop.md',
+    'reg-r1-purpose' => 'Reține alegerea dumneavoastră privind cookie-urile',
+    'reg-r1-category' => 'Strict necesare',
+    'reg-r1-duration' => '1 an',
+    'reg-r1-type' => 'First-party',
+
+    'reg-r2-name' => 'Cookie de sesiune (…_session)',
+    'reg-r2-provider' => 'radop.md',
+    'reg-r2-purpose' => 'Menținerea sesiunii și a autentificării',
+    'reg-r2-category' => 'Strict necesare',
+    'reg-r2-duration' => 'Sesiune',
+    'reg-r2-type' => 'First-party',
+
+    'reg-r3-name' => 'XSRF-TOKEN',
+    'reg-r3-provider' => 'radop.md',
+    'reg-r3-purpose' => 'Protecție împotriva atacurilor CSRF (securitate)',
+    'reg-r3-category' => 'Strict necesare',
+    'reg-r3-duration' => 'Sesiune',
+    'reg-r3-type' => 'First-party',
+
+    'reg-r4-name' => 'Cookie de limbă (locale)',
+    'reg-r4-provider' => 'radop.md',
+    'reg-r4-purpose' => 'Reținerea limbii selectate a site-ului',
+    'reg-r4-category' => 'Preferințe',
+    'reg-r4-duration' => 'Până la 1 an',
+    'reg-r4-type' => 'First-party',
+
+    'reg-r5-name' => '_ga, _ga_*',
+    'reg-r5-provider' => 'Google (Google Analytics)',
+    'reg-r5-purpose' => 'Statistici privind utilizarea site-ului',
+    'reg-r5-category' => 'Analiză',
+    'reg-r5-duration' => 'Până la 2 ani',
+    'reg-r5-type' => 'Third-party',
+
+    'reg-r6-name' => 'Google Tag Manager',
+    'reg-r6-provider' => 'Google',
+    'reg-r6-purpose' => 'Gestionarea etichetelor și a cookie-urilor de analiză',
+    'reg-r6-category' => 'Analiză',
+    'reg-r6-duration' => 'În funcție de etichete',
+    'reg-r6-type' => 'Third-party',
+
+    // 4. Cookies and personal data
+    'personal-title' => 'Cookie-urile și datele cu caracter personal',
+    'personal-1' => 'Unele cookie-uri și identificatori online (de exemplu adresa IP sau identificatorii din cookie-uri) pot constitui date cu caracter personal, în funcție de context, întrucât pot permite identificarea indirectă a utilizatorului. Prelucrăm aceste date în conformitate cu Politica de confidențialitate și cu Legea nr. 195/2024.',
+
+    // 5. Consent management
+    'consent-title' => 'Gestionarea consimțământului',
+    'consent-1' => 'La prima vizită vi se afișează un banner care vă permite să acceptați toate cookie-urile, să acceptați doar pe cele strict necesare sau să vă personalizați alegerea. Refuzul și acceptarea sunt oferite în mod echivalent.',
+    'consent-2' => 'Vă puteți modifica ulterior alegerea oricând, ștergând cookie-urile site-ului din browser (după care bannerul va reapărea) sau modificând setările din browserul dumneavoastră.',
+
+    // 6. Blocking
+    'block-title' => 'Cum să blocați sau să ștergeți cookie-urile',
+    'block-1' => 'Majoritatea browserelor vă permit să blocați sau să ștergeți cookie-urile din setări (secțiunea „Confidențialitate” sau „Cookie-uri”). Puteți seta browserul să vă avertizeze înainte de a accepta cookie-uri sau să le refuze automat.',
+    'block-2' => 'Rețineți că blocarea cookie-urilor strict necesare poate afecta funcționarea corectă a site-ului (de exemplu autentificarea sau finalizarea comenzii).',
+
+    // 7. Changes
+    'changes-title' => 'Modificări',
+    'changes-1' => 'Putem actualiza periodic prezenta Politică de cookie-uri. Pentru informații generale despre prelucrarea datelor, consultați <a href=":url">Politica de confidențialitate</a>.',
+];

@@ -76,6 +76,8 @@ class PermissionSeeder extends Seeder
         'banner.delete',
         'banner.banner-settings.edit',
         'banner.banner-settings.update',
+        'setting.delivery.edit',
+        'setting.delivery.update',
         'import-export-data.descriptions.reset',
         'category.select.category',
         'category.sort.products.order.index',

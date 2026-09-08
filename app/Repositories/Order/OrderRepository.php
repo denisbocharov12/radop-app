@@ -24,6 +24,8 @@ final class OrderRepository
             ->leftJoin('profiles', 'orders.user_id', '=', 'profiles.user_id')
             ->leftJoin('users as managers', 'orders.manager_id', '=', 'managers.id')
             ->leftJoin('profiles as manager_profile', 'managers.id', '=', 'manager_profile.user_id')
+            ->leftJoin('filials as order_filials', 'orders.filial_id', '=', 'order_filials.id')
+            ->leftJoin('cities as order_cities', 'orders.city', '=', 'order_cities.id')
             ->select('orders.*')
             ->withCount('supplements');
 
@@ -41,6 +43,23 @@ final class OrderRepository
         }
         return QueryBuilder::for($query)
             ->allowedFilters([
+                AllowedFilter::callback('search', function ($query, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $like = "%{$value}%";
+                    $query->where(function ($q) use ($like) {
+                        $q->where('orders.fio', 'like', $like)
+                            ->orWhere('orders.email', 'like', $like)
+                            ->orWhere('orders.phone', 'like', $like)
+                            ->orWhere('orders.order_number', 'like', $like)
+                            ->orWhere('orders.address', 'like', $like)
+                            ->orWhere('profiles.first_name', 'like', $like)
+                            ->orWhere('profiles.last_name', 'like', $like)
+                            ->orWhere('profiles.organization_name', 'like', $like)
+                            ->orWhere('profiles.cod_fiscal', 'like', $like)
+                            ->orWhere('order_filials.address', 'like', $like)
+                            ->orWhere('order_cities.name', 'like', $like);
+                    });
+                }),
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('city'),
                 AllowedFilter::exact('status'),

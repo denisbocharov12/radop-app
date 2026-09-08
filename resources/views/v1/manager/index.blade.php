@@ -3,7 +3,7 @@
 @section('content')
 <div x-data="{ createOpen: false }">
     <x-page-header title="Менеджеры"
-                   description="Всего: {{ $managers->total() }} @choice('менеджер|менеджеров', $managers->total())">
+                   description="Всего: {{ $managers->total() }} {{ trans_choice('менеджер|менеджеров', $managers->total()) }}">
         <x-slot:actions>
             <button type="button" class="btn-primary btn-sm" @click="createOpen = true">
                 <i data-lucide="plus" class="w-4 h-4"></i> Добавить менеджера

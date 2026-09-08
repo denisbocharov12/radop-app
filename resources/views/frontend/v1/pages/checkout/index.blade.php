@@ -8,6 +8,12 @@
         if (auth()->guard('user')->user()) {
             $sessionId = auth()->guard('user')->user()->id;
         }
+
+        $minSum = $user->minOrderSum();
+        $isSupplement = $user->isSupplementWindowOpen();
+        $cartTotal = \Cart::session($sessionId)->getTotal();
+        $belowMin = !$isSupplement && $cartTotal < $minSum;
+        $cartRemaining = max($minSum - $cartTotal, 0);
     @endphp
     @if (!Cart::session($sessionId)->isEmpty())
         <section class="section-content section-checkout padding-y bg" id="checkout-page">
@@ -23,6 +29,25 @@
                         {{--                                ></a> --}}
                         {{--                        </div> --}}
                         <hr />
+                    </div>
+                    <style>
+                        .min-order-banner{display:flex;align-items:center;gap:12px;background:#FCE9D4;border:1px solid #F4C88A;border-radius:12px;padding:14px 18px;margin-bottom:20px;color:#8A5518;font-size:15px;line-height:1.45;}
+                        .min-order-banner-icon{flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:#F5A623;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;}
+                        .min-order-banner-text b{color:#7A4A12;font-weight:700;}
+                        .min-order-banner-add{margin-left:4px;white-space:nowrap;}
+                        .min-order-banner-link{display:inline-flex;align-items:center;gap:4px;margin-left:8px;color:#8A5518;text-decoration:underline;font-size:13px;opacity:.85;}
+                        .min-order-banner-link:hover{opacity:1;color:#7A4A12;}
+                        .min-order-banner-ico{width:1em;height:1em;flex:0 0 auto;}
+                    </style>
+                    <div class="col-12">
+                        <div class="min-order-banner" id="checkout-min-banner" @if(!$belowMin) style="display:none;" @endif role="alert">
+                            <span class="min-order-banner-icon">!</span>
+                            <span class="min-order-banner-text">
+                                {{ __('theme.min_order_sum_warning_message') }} <b><span class="cmb-min">{{ number_format($minSum, 2, '.', '') }}</span> {{ __('theme.MDL') }}</b>.
+                                <b class="min-order-banner-add">{{ __('theme.min_order_add_more') }} <span class="cmb-remaining">{{ number_format($cartRemaining, 2, '.', '') }}</span> {{ __('theme.MDL') }}</b>
+                                <a href="{{ route('theme.delivery.index') }}" class="min-order-banner-link"><svg class="min-order-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>{{ __('theme.min_order_delivery_link') }}</a>
+                            </span>
+                        </div>
                     </div>
                     <div class="col-lg-8 col-xl-9 col-checkout-form">
                         <div class="checkout-form-wrap">
@@ -257,12 +282,6 @@
                                                 data-total="{{ \Cart::session($sessionId)->getTotal() }}">{{ number_format(\Cart::session($sessionId)->getTotal() + (float) $user?->city?->delivery_sum, 2, '.', '') }}</span>
                                         {{ __('theme.MDL') }}</span>
                                 </div>
-                                @php
-                                    $minSum = $user->minOrderSum();
-                                    $isSupplement = $user->isSupplementWindowOpen();
-                                    $cartTotal = \Cart::session($sessionId)->getTotal();
-                                    $belowMin = !$isSupplement && $cartTotal < $minSum;
-                                @endphp
                                 <div class="sc-buttons-wrap">
                                     @if ($isSupplement)
                                         <p class="supplement-order-note show">
@@ -270,12 +289,6 @@
                                             <span class="sum">{{ $user->supplementParentNumber() }}</span>
                                         </p>
                                     @endif
-                                    <p
-                                        class="min-order-sum-warning-text {{ $belowMin ? 'show' : '' }}">
-                                        {{ __('theme.min_order_sum_warning_message') }} <span
-                                            class="sum">{{ $minSum }}</span>
-                                        {{ __('theme.MDL') }}
-                                    </p>
                                     <a href="#"
                                        class="sc-btn-checkout sc-btn sc-btn-submit {{ $belowMin ? 'hide-important' : '' }}">{{ __('theme.place-order') }}</a>
                                     <a href="{{ route('theme.shop.catalog') }}"
@@ -345,19 +358,23 @@
             var isSupplementOrder = {{ $isSupplement ? 'true' : 'false' }};
             $('#city_id').change(function() {
                 var total = $('#checkout-final-price').data('total');
-                $('#delivery-charge').text($(this).find(':selected').data('delivery-charge').toFixed(2));
-                if (!isSupplementOrder && total < $(this).find(':selected').data('required-sum')) {
+                var requiredSum = parseFloat($(this).find(':selected').data('required-sum')) || 0;
+                var deliveryCharge = parseFloat($(this).find(':selected').data('delivery-charge')) || 0;
+                $('#delivery-charge').text(deliveryCharge.toFixed(2));
+
+                var belowMin = !isSupplementOrder && total < requiredSum;
+                if (belowMin) {
+                    // Same widget as in the cart: min sum for the selected region + how much to add.
+                    $('#checkout-min-banner .cmb-min').text(requiredSum.toFixed(2));
+                    $('#checkout-min-banner .cmb-remaining').text((requiredSum - total).toFixed(2));
+                    $('#checkout-min-banner').show();
                     $('.sc-btn-submit').addClass('hide').addClass('hide-important');
-                    $('.min-order-sum-warning-text').addClass('show');
-                    $('.min-order-sum-warning-text').find('.sum').text($(this).find(':selected').data(
-                        'required-sum'));
                 } else {
+                    $('#checkout-min-banner').hide();
                     $('.sc-btn-submit').removeClass('hide').removeClass('hide-important');
-                    $('.min-order-sum-warning-text').removeClass('show');
                 }
 
-                $('#checkout-final-price').text((total + $(this).find(':selected').data('delivery-charge'))
-                    .toFixed(2));
+                $('#checkout-final-price').text((total + deliveryCharge).toFixed(2));
             });
 
             // $('#filial_id').change(function() {

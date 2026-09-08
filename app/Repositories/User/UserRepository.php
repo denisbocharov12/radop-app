@@ -13,6 +13,7 @@ use App\Models\UserType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class UserRepository
@@ -96,16 +97,64 @@ final class UserRepository
 
     public function getUsersPaginatedWithFilters(): LengthAwarePaginator
     {
-        $query = User::query()->role('user');
+        $query = User::query()->role('user')
+            ->with(['profile', 'type', 'manager.profile', 'city'])
+            ->leftJoin('profiles', 'users.id', '=', 'profiles.user_id')
+            ->leftJoin('users as managers', 'users.manager_id', '=', 'managers.id')
+            ->leftJoin('profiles as manager_profile', 'managers.id', '=', 'manager_profile.user_id')
+            ->leftJoin('cities', 'users.city_id', '=', 'cities.id')
+            ->select('users.*');
 
         return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::custom('search', new ClientSearchFilter()),
                 AllowedFilter::custom('with_trashed', new ClientWithTrashedFilter()),
+                AllowedFilter::callback('id', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where('users.id', $value);
+                }),
+                AllowedFilter::callback('client', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where(function ($sub) use ($value) {
+                        $sub->where('profiles.first_name', 'like', "%{$value}%")
+                            ->orWhere('profiles.last_name', 'like', "%{$value}%")
+                            ->orWhere('profiles.organization_name', 'like', "%{$value}%")
+                            ->orWhere('users.email', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('cod_fiscal', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where('profiles.cod_fiscal', 'like', "%{$value}%");
+                }),
+                AllowedFilter::callback('manager', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where(function ($sub) use ($value) {
+                        $sub->where('manager_profile.first_name', 'like', "%{$value}%")
+                            ->orWhere('manager_profile.last_name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('status', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where('users.status', (int) $value);
+                }),
+                AllowedFilter::callback('phone', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where('profiles.phone', 'like', "%{$value}%");
+                }),
+                AllowedFilter::callback('city', function ($q, $value) {
+                    if ($value === '' || $value === null) { return; }
+                    $q->where('users.city_id', $value);
+                }),
             ])
             ->defaultSort('-id')
             ->allowedSorts([
                 'id',
+                'status',
+                AllowedSort::field('client', 'profiles.organization_name'),
+                AllowedSort::field('cod_fiscal', 'profiles.cod_fiscal'),
+                AllowedSort::field('manager', 'manager_profile.first_name'),
+                AllowedSort::field('phone', 'profiles.phone'),
+                AllowedSort::field('city', 'cities.name'),
             ])
             ->paginate(self::COUNT_OF_PAGINATION)
             ->withQueryString()
