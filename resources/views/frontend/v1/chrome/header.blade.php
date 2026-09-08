@@ -6,7 +6,9 @@
         $cartSession = $user->id;
     }
     $cartTotal = \Cart::session($cartSession)->getTotal();
-    $cartCount = \Cart::session($cartSession)->getTotalQuantity();
+    // Distinct lines, not units — this is what addToCart returns as
+    // `cart_count`, so the badge stays consistent after an AJAX update.
+    $cartCount = \Cart::session($cartSession)->getContent()->count();
 
     $locales = collect(LaravelLocalization::getSupportedLocales())
         ->map(fn ($props, $code) => [
@@ -156,14 +158,16 @@
                 >
                     <span class="relative">
                         <x-sf-icon name="cart" :size="21" />
-                        @if($cartCount > 0)
-                            <span class="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold text-white">
-                                {{ $cartCount > 99 ? '99+' : $cartCount }}
-                            </span>
-                        @endif
+                        {{-- Kept in the DOM even when empty so the cart islands
+                             can reveal it without re-rendering the header. --}}
+                        <span
+                            class="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold text-white"
+                            data-sf-cart-count
+                            @if($cartCount <= 0) hidden @endif
+                        >{{ $cartCount > 99 ? '99+' : $cartCount }}</span>
                     </span>
                     <span class="hidden whitespace-nowrap text-sm font-bold sm:inline">
-                        {{ number_format($cartTotal, 2, ',', ' ') }} {{ __('theme.MDL') }}
+                        <span data-sf-cart-total>{{ number_format($cartTotal, 2, ',', '') }}</span> {{ __('theme.MDL') }}
                     </span>
                 </a>
             </div>

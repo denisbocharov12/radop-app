@@ -1,22 +1,26 @@
 {
-  "_SfIcon-BsI3KEVi.js": {
-    "file": "assets/SfIcon-BsI3KEVi.js",
+  "_SfIcon-BqZeMxBG.js": {
+    "file": "assets/SfIcon-BqZeMxBG.js",
     "name": "SfIcon",
     "imports": [
-      "_vue-DB0ehBFa.js"
+      "_vue-f0NOlEuo.js"
     ]
   },
-  "_vue-DB0ehBFa.js": {
-    "file": "assets/vue-DB0ehBFa.js",
+  "_cart-DYgLm8uz.js": {
+    "file": "assets/cart-DYgLm8uz.js",
+    "name": "cart"
+  },
+  "_vue-f0NOlEuo.js": {
+    "file": "assets/vue-f0NOlEuo.js",
     "name": "vue"
   },
   "resources/css/admin.css": {
-    "file": "assets/admin-DGTpTUVc.css",
+    "file": "assets/admin-eoL8APcC.css",
     "src": "resources/css/admin.css",
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-C6jSgSWG.css",
+    "file": "assets/storefront-BHtUM4Ww.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -27,47 +31,82 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-CqdRWGR_.js",
+    "file": "assets/storefront-QEhU88EJ.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
     "imports": [
-      "_vue-DB0ehBFa.js"
+      "_vue-f0NOlEuo.js"
     ],
     "dynamicImports": [
       "resources/js/storefront/components/MegaMenu.vue",
       "resources/js/storefront/components/SiteSearch.vue",
-      "resources/js/storefront/components/MobileNav.vue"
+      "resources/js/storefront/components/MobileNav.vue",
+      "resources/js/storefront/components/HeroSlider.vue",
+      "resources/js/storefront/components/AddToCart.vue",
+      "resources/js/storefront/components/WishlistButton.vue"
+    ]
+  },
+  "resources/js/storefront/components/AddToCart.vue": {
+    "file": "assets/AddToCart-B-UmVEnv.js",
+    "name": "AddToCart",
+    "src": "resources/js/storefront/components/AddToCart.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_SfIcon-BqZeMxBG.js",
+      "_cart-DYgLm8uz.js",
+      "_vue-f0NOlEuo.js"
+    ]
+  },
+  "resources/js/storefront/components/HeroSlider.vue": {
+    "file": "assets/HeroSlider-B1rtLXAf.js",
+    "name": "HeroSlider",
+    "src": "resources/js/storefront/components/HeroSlider.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_SfIcon-BqZeMxBG.js",
+      "_vue-f0NOlEuo.js"
     ]
   },
   "resources/js/storefront/components/MegaMenu.vue": {
-    "file": "assets/MegaMenu-B5QaeZSt.js",
+    "file": "assets/MegaMenu-Ekt7IrKu.js",
     "name": "MegaMenu",
     "src": "resources/js/storefront/components/MegaMenu.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vue-DB0ehBFa.js",
-      "_SfIcon-BsI3KEVi.js"
+      "_vue-f0NOlEuo.js",
+      "_SfIcon-BqZeMxBG.js"
     ]
   },
   "resources/js/storefront/components/MobileNav.vue": {
-    "file": "assets/MobileNav-GxURK3HB.js",
+    "file": "assets/MobileNav-ssfB8pJX.js",
     "name": "MobileNav",
     "src": "resources/js/storefront/components/MobileNav.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vue-DB0ehBFa.js",
-      "_SfIcon-BsI3KEVi.js"
+      "_vue-f0NOlEuo.js",
+      "_SfIcon-BqZeMxBG.js"
     ]
   },
   "resources/js/storefront/components/SiteSearch.vue": {
-    "file": "assets/SiteSearch-nHN9KFtJ.js",
+    "file": "assets/SiteSearch-l5T1Ets7.js",
     "name": "SiteSearch",
     "src": "resources/js/storefront/components/SiteSearch.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vue-DB0ehBFa.js",
-      "_SfIcon-BsI3KEVi.js"
+      "_vue-f0NOlEuo.js",
+      "_SfIcon-BqZeMxBG.js"
+    ]
+  },
+  "resources/js/storefront/components/WishlistButton.vue": {
+    "file": "assets/WishlistButton-GoG3cGMb.js",
+    "name": "WishlistButton",
+    "src": "resources/js/storefront/components/WishlistButton.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vue-f0NOlEuo.js",
+      "_SfIcon-BqZeMxBG.js",
+      "_cart-DYgLm8uz.js"
     ]
   }
 }

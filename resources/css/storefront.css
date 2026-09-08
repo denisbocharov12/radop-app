@@ -36,6 +36,19 @@
         @apply border-ink-200;
     }
 
+    /*
+     * TRANSITIONAL — remove together with the last legacy stylesheet.
+     *
+     * app.min.css resets `border: 0` on a long list of element selectors. That
+     * shorthand also sets `border-style: none`, which silently computes every
+     * Tailwind border width to 0px: the rule is only one element-specificity
+     * point, but preflight's `border-style: solid` sits at zero, so the reset
+     * wins. `body *` outranks a bare element selector and restores it.
+     */
+    body * {
+        border-style: solid;
+    }
+
     html {
         @apply antialiased;
         -webkit-text-size-adjust: 100%;
@@ -198,8 +211,9 @@
     .sf-badge-neutral { @apply sf-badge bg-ink-100 text-ink-600; }
 
     /* ---------------------------------------------------------- product card */
+    /* The markup must also carry `group` — Tailwind refuses to @apply it. */
     .sf-product {
-        @apply group relative flex h-full flex-col overflow-hidden rounded-lg
+        @apply relative flex h-full flex-col overflow-hidden rounded-lg
                border border-ink-200 bg-white
                transition-shadow duration-200 ease-sf hover:shadow-card-hover;
     }

@@ -21,6 +21,9 @@ const registry = {
     'mega-menu': () => import('./storefront/components/MegaMenu.vue'),
     'site-search': () => import('./storefront/components/SiteSearch.vue'),
     'mobile-nav': () => import('./storefront/components/MobileNav.vue'),
+    'hero-slider': () => import('./storefront/components/HeroSlider.vue'),
+    'add-to-cart': () => import('./storefront/components/AddToCart.vue'),
+    'wishlist-button': () => import('./storefront/components/WishlistButton.vue'),
 };
 
 function readProps(el) {

@@ -54,10 +54,34 @@ function accordions() {
     });
 }
 
+/**
+ * Keep the header basket in step with whatever island last changed the cart,
+ * without re-rendering the header from server HTML the way the old code did.
+ */
+function cartBadge() {
+    document.addEventListener('sf:cart-updated', (event) => {
+        const { total, cart_count: count } = event.detail ?? {};
+
+        const totalEl = document.querySelector('[data-sf-cart-total]');
+        if (totalEl && total != null) totalEl.textContent = total;
+
+        const countEl = document.querySelector('[data-sf-cart-count]');
+        if (!countEl) return;
+
+        // `cart_count` arrives pluralised for display ("3 produse"); the badge
+        // wants the bare number.
+        const n = Number.parseInt(String(count ?? '').replace(/\D+/g, ''), 10);
+        if (Number.isNaN(n)) return;
+        countEl.textContent = n > 99 ? '99+' : String(n);
+        countEl.hidden = n === 0;
+    });
+}
+
 function boot() {
     stickyHeaderShadow();
     productRails();
     accordions();
+    cartBadge();
 }
 
 if (document.readyState === 'loading') {
