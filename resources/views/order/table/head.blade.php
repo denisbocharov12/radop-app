@@ -1,7 +1,7 @@
 <div class="px-5 py-4 border-b border-gray-100 space-y-4">
     {{-- Quick search: client, e-mail, phone, order #, filial, city --}}
     <form method="get" class="flex flex-col sm:flex-row sm:items-center gap-2">
-        <div class="search-bar w-full sm:max-w-xl">
+        <div class="search-bar w-full flex-1 min-w-0">
             <i data-lucide="search" class="search-icon"></i>
             <input type="text" name="filter[search]" value="{{ request('filter.search') }}"
                    placeholder="Быстрый поиск: клиент, компания, e-mail, телефон, № заказа, филиал, город…">
