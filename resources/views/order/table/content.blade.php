@@ -54,9 +54,9 @@
             </td>
             <td class="hidden xl:table-cell">{{ $order->user?->profile?->cod_fiscal ?: '—' }}</td>
             <td class="hidden lg:table-cell">{{ trim(($order->manager?->profile?->last_name ?? '') . ' ' . ($order->manager?->profile?->first_name ?? '')) ?: '—' }}</td>
-            <td class="whitespace-nowrap text-gray-500">
-                {{ optional($order->created_at)->format('d.m.Y') }}
-                <span class="block text-xs text-gray-400">{{ optional($order->created_at)->format('H:i') }}</span>
+            <td class="whitespace-nowrap text-base text-gray-900">
+                <span class="font-medium">{{ optional($order->created_at)->format('d.m.Y') }}</span>
+                <span class="block font-normal text-gray-600">{{ optional($order->created_at)->format('H:i') }}</span>
             </td>
             <td class="font-medium text-gray-700">
                 @php
