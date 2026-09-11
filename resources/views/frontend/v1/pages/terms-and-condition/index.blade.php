@@ -50,13 +50,10 @@
                 <p>6.1. {{ __('terms-and-conditions.payment-terms-1') }}</p>
                 <p>6.2. {{ __('terms-and-conditions.payment-terms-2') }}</p>
                 <p>6.3. {{ __('terms-and-conditions.payment-terms-3') }}</p>
+                <p>a) {{ __('terms-and-conditions.payment-terms-3-a') }}</p>
+                <p>b) {{ __('terms-and-conditions.payment-terms-3-b') }}</p>
+                <p>c) {{ __('terms-and-conditions.payment-terms-3-c') }}</p>
                 <p>6.4. {{ __('terms-and-conditions.payment-terms-4') }}</p>
-                <p>6.5. {{ __('terms-and-conditions.payment-terms-5') }}</p>
-                <p>6.6. {{ __('terms-and-conditions.payment-terms-6') }}</p>
-                <p>6.7. {{ __('terms-and-conditions.payment-terms-7') }}</p>
-                <p>6.7.1. {{ __('terms-and-conditions.payment-terms-7-1') }}</p>
-                <p>6.7.2. {{ __('terms-and-conditions.payment-terms-7-2') }}</p>
-                <p>6.7.3. {{ __('terms-and-conditions.payment-terms-7-3') }}</p>
                 <h2>7. {{ __('terms-and-conditions.return-terms') }}</h2>
                 <p>7.1. {{ __('terms-and-conditions.return-terms-1') }}</p>
                 <p>7.1.1. {{ __('terms-and-conditions.return-terms-1-1') }}</p>
