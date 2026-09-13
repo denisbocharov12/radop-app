@@ -25,6 +25,11 @@
             ? route($exportRoute . ($personalizedExport ? '.personalized' : ''))
             : null;
 
+        // Same filter set as the old shop sidebar: price, categories, brand.
+        // It deliberately skipped every other attribute group — on /shop that
+        // is 140 groups — and kept only the "Brand" attribute.
+        $shopGroups = collect($attributes ?? [])->only(['Бренд', 'Brand']);
+
         $ga4ListId = data_get($ga4ItemLists ?? [], '0.item_list_id', '');
         $ga4ListName = data_get($ga4ItemLists ?? [], '0.item_list_name', '');
     @endphp
@@ -42,8 +47,9 @@
         <x-slot:filters>
             <x-sf-catalog-filters
                 :action="url()->current()"
-                :groups="$attributes ?? []"
+                :groups="$shopGroups"
                 :brands="$brands ?? null"
+                :categories="$categories ?? null"
                 :query="$query ?? []"
             />
         </x-slot:filters>

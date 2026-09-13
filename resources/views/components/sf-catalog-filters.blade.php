@@ -4,6 +4,8 @@
     // name is reserved for Blade's own ComponentAttributeBag.
     'groups' => [],
     'brands' => null,
+    /** Leaf categories with `products_count` (shop and brand listings). */
+    'categories' => null,
     'query' => [],
     'priceMax' => 1000,
 ])
@@ -32,9 +34,25 @@
             ->sortBy('value'))
         ->filter(static fn ($values) => $values->count() > 1);
 
+    // filter[category] arrives as "id", "id1,id2" or an array of either.
+    $selectedCategories = collect((array) data_get($query, 'category', []))
+        ->flatMap(static fn ($value) => explode(',', (string) $value))
+        ->filter()
+        ->values()
+        ->all();
+
+    $categoryItems = collect($categories ?? [])->filter(static fn ($category) => ($category->products_count ?? 0) > 0);
+    $brandCount = count((array) data_get($query, 'brand', []));
+
     $activeCount = collect(data_get($query, 'attribute', []))->flatten()->count()
-        + count((array) data_get($query, 'brand', []))
+        + $brandCount
+        + count($selectedCategories)
         + (($priceFrom !== null || $priceTo !== null) ? 1 : 0);
+
+    $countBadge = 'inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white';
+    $summaryClass = 'flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600';
+    $optionClass = 'flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm text-ink-700 hover:bg-ink-50';
+    $checkboxClass = 'h-4 w-4 shrink-0 rounded border-ink-300 text-brand-600 focus:ring-brand-500';
 @endphp
 
 <form
@@ -61,11 +79,39 @@
         @endif
     </div>
 
+    {{-- Price: a two-handle slider for quick ranges plus exact inputs, as on
+         the old site. Only the number inputs carry names; the sliders just
+         drive them. --}}
     <details class="group border-t border-ink-200 py-3" open>
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
+        <summary class="{{ $summaryClass }}">
             {{ __('theme.by-price') }}
             <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
         </summary>
+
+        <div class="mt-4 px-1" data-sf-price-range data-max="{{ (int) $priceMax }}">
+            <div class="sf-range">
+                <div class="sf-range-track"><div class="sf-range-fill" data-sf-range-fill></div></div>
+                <input
+                    type="range"
+                    min="0"
+                    max="{{ (int) $priceMax }}"
+                    step="1"
+                    value="{{ (int) ($priceFrom ?? 0) }}"
+                    aria-label="{{ __('theme.min') }}"
+                    data-sf-range-min
+                >
+                <input
+                    type="range"
+                    min="0"
+                    max="{{ (int) $priceMax }}"
+                    step="1"
+                    value="{{ (int) ($priceTo ?? $priceMax) }}"
+                    aria-label="{{ __('theme.max') }}"
+                    data-sf-range-max
+                >
+            </div>
+        </div>
+
         <div class="mt-3 flex items-center gap-2">
             <label class="flex-1">
                 <span class="sf-sr-only">{{ __('theme.min') }}</span>
@@ -76,6 +122,7 @@
                     placeholder="{{ __('theme.min') }}"
                     min="0"
                     value="{{ $priceFrom }}"
+                    data-sf-price-from
                 />
             </label>
             <span class="text-ink-300">—</span>
@@ -88,10 +135,40 @@
                     placeholder="{{ __('theme.max') }}"
                     min="0"
                     value="{{ $priceTo }}"
+                    data-sf-price-to
                 />
             </label>
         </div>
     </details>
+
+    @if($categoryItems->isNotEmpty())
+        <details class="group border-t border-ink-200 py-3" open>
+            <summary class="{{ $summaryClass }}">
+                <span class="flex items-center gap-2">
+                    {{ __('theme.categories') }}
+                    @if(count($selectedCategories))
+                        <span class="{{ $countBadge }}">{{ count($selectedCategories) }}</span>
+                    @endif
+                </span>
+                <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
+            </summary>
+            <div class="mt-2 max-h-64 space-y-0.5 overflow-y-auto pr-1">
+                @foreach($categoryItems as $category)
+                    <label class="{{ $optionClass }}">
+                        <input
+                            type="checkbox"
+                            class="{{ $checkboxClass }}"
+                            name="filter[category][]"
+                            value="{{ $category->onec_id }}"
+                            @checked(in_array((string) $category->onec_id, $selectedCategories, true))
+                        />
+                        <span class="min-w-0 flex-1 truncate" title="{{ $category->name }}">{{ $category->name }}</span>
+                        <span class="shrink-0 rounded bg-ink-100 px-1.5 text-2xs font-medium tabular-nums text-ink-500">{{ $category->products_count }}</span>
+                    </label>
+                @endforeach
+            </div>
+        </details>
+    @endif
 
     @foreach($attributeGroups as $label => $values)
         @php
@@ -99,11 +176,11 @@
                 ->sum(static fn ($id) => count((array) data_get($query, "attribute.{$id}", [])));
         @endphp
         <details class="group border-t border-ink-200 py-3" @if($groupCount > 0) open @endif>
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
+            <summary class="{{ $summaryClass }}">
                 <span class="flex min-w-0 items-center gap-2">
                     <span class="truncate">{{ $label }}</span>
                     @if($groupCount > 0)
-                        <span class="inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white">{{ $groupCount }}</span>
+                        <span class="{{ $countBadge }}">{{ $groupCount }}</span>
                     @endif
                 </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
@@ -114,10 +191,10 @@
                         $value = str_replace(',', '.', $attribute->value);
                         $checked = in_array($value, (array) data_get($query, "attribute.{$attribute->attribute_onec_id}", []), true);
                     @endphp
-                    <label class="flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm text-ink-700 hover:bg-ink-50">
+                    <label class="{{ $optionClass }}">
                         <input
                             type="checkbox"
-                            class="h-4 w-4 shrink-0 rounded border-ink-300 text-brand-600 focus:ring-brand-500"
+                            class="{{ $checkboxClass }}"
                             name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
                             value="{{ $value }}"
                             @checked($checked)
@@ -130,12 +207,12 @@
     @endforeach
 
     @if($brands && count($brands))
-        <details class="group border-t border-ink-200 py-3" @if(data_get($query, 'brand')) open @endif>
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
+        <details class="group border-t border-ink-200 py-3" @if($brandCount) open @endif>
+            <summary class="{{ $summaryClass }}">
                 <span class="flex items-center gap-2">
                     {{ __('theme.brand') }}
-                    @if($brandCount = count((array) data_get($query, 'brand', [])))
-                        <span class="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white">{{ $brandCount }}</span>
+                    @if($brandCount)
+                        <span class="{{ $countBadge }}">{{ $brandCount }}</span>
                     @endif
                 </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
@@ -143,10 +220,10 @@
             <div class="mt-2 max-h-56 space-y-1 overflow-y-auto pr-1">
                 @foreach($brands as $brand)
                     @continue(! $brand || trim((string) ($brand->title ?? '')) === '')
-                    <label class="flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm text-ink-700 hover:bg-ink-50">
+                    <label class="{{ $optionClass }}">
                         <input
                             type="checkbox"
-                            class="h-4 w-4 shrink-0 rounded border-ink-300 text-brand-600 focus:ring-brand-500"
+                            class="{{ $checkboxClass }}"
                             name="filter[brand][]"
                             value="{{ $brand->onec_id }}"
                             @checked(in_array($brand->onec_id, (array) data_get($query, 'brand', [])))
@@ -158,6 +235,17 @@
         </details>
     @endif
 
+    {{-- Desktop footer reset, like the old sidebar; the phone drawer has its
+         own Reset / Apply bar. --}}
+    @if($activeCount > 0)
+        <div class="hidden border-t border-ink-200 p-4 lg:block">
+            <button type="button" class="sf-btn-secondary sf-btn-block" data-sf-filter-reset>
+                <x-sf-icon name="close" :size="14" />
+                {{ __('theme.reset-filters') }}
+            </button>
+        </div>
+    @endif
+
     <noscript>
         <button type="submit" class="sf-btn-primary sf-btn-block mt-3">{{ __('theme.filter') }}</button>
     </noscript>
@@ -167,8 +255,9 @@
     @push('scripts')
         <script>
             /*
-             * Auto-submit: checkboxes apply immediately, price inputs after a
-             * pause so typing "1250" does not fire four navigations.
+             * Auto-submit: checkboxes apply immediately, price inputs and the
+             * slider after a pause so dragging or typing "1250" does not fire
+             * a navigation per step.
              */
             document.addEventListener('DOMContentLoaded', function () {
                 var form = document.querySelector('[data-sf-filter-form]');
@@ -178,25 +267,74 @@
                    phone drawer each tick would reload the page and close the
                    drawer mid-selection, so there the "Apply" button submits. */
                 var desktop = window.matchMedia('(min-width: 1024px)');
+                var timer = null;
+
+                function submitSoon(delay) {
+                    if (!desktop.matches) return;
+                    clearTimeout(timer);
+                    timer = setTimeout(function () { form.requestSubmit ? form.requestSubmit() : form.submit(); }, delay);
+                }
 
                 form.querySelectorAll('input[type=checkbox]').forEach(function (box) {
-                    box.addEventListener('change', function () {
-                        if (desktop.matches) form.submit();
-                    });
+                    box.addEventListener('change', function () { submitSoon(0); });
                 });
 
-                var timer = null;
-                form.querySelectorAll('input[type=number]').forEach(function (input) {
-                    input.addEventListener('input', function () {
-                        if (!desktop.matches) return;
-                        clearTimeout(timer);
-                        timer = setTimeout(function () { form.submit(); }, 700);
-                    });
-                });
+                /* Two-handle price slider bound to the number inputs. */
+                var range = form.querySelector('[data-sf-price-range]');
+                var fromInput = form.querySelector('[data-sf-price-from]');
+                var toInput = form.querySelector('[data-sf-price-to]');
 
-                /* Empty price bounds would otherwise travel as filter[price][from]= */
+                if (range && fromInput && toInput) {
+                    var max = Number(range.dataset.max) || 1000;
+                    var minHandle = range.querySelector('[data-sf-range-min]');
+                    var maxHandle = range.querySelector('[data-sf-range-max]');
+                    var fill = range.querySelector('[data-sf-range-fill]');
+
+                    var paint = function () {
+                        var lo = Math.min(Number(minHandle.value), Number(maxHandle.value));
+                        var hi = Math.max(Number(minHandle.value), Number(maxHandle.value));
+                        fill.style.left = (lo / max * 100) + '%';
+                        fill.style.right = (100 - hi / max * 100) + '%';
+                    };
+
+                    var fromHandles = function (event) {
+                        var lo = Number(minHandle.value);
+                        var hi = Number(maxHandle.value);
+                        if (lo > hi) {
+                            if (event.target === minHandle) minHandle.value = hi; else maxHandle.value = lo;
+                        }
+                        fromInput.value = Number(minHandle.value) > 0 ? minHandle.value : '';
+                        toInput.value = Number(maxHandle.value) < max ? maxHandle.value : '';
+                        paint();
+                        submitSoon(700);
+                    };
+
+                    var fromNumbers = function () {
+                        minHandle.value = Math.min(Number(fromInput.value) || 0, max);
+                        maxHandle.value = toInput.value === '' ? max : Math.min(Number(toInput.value), max);
+                        paint();
+                        submitSoon(700);
+                    };
+
+                    minHandle.addEventListener('input', fromHandles);
+                    maxHandle.addEventListener('input', fromHandles);
+                    fromInput.addEventListener('input', fromNumbers);
+                    toInput.addEventListener('input', fromNumbers);
+                    paint();
+                }
+
+                /* Empty price bounds and an unset sort would otherwise travel as
+                   filter[price][from]= and sort= in the address. */
                 form.addEventListener('submit', function () {
-                    form.querySelectorAll('input[type=number]').forEach(function (input) {
+                    /* A typed "from 400 to 250" would match nothing; read it as 250–400. */
+                    if (fromInput && toInput && fromInput.value !== '' && toInput.value !== ''
+                        && Number(fromInput.value) > Number(toInput.value)) {
+                        var swap = fromInput.value;
+                        fromInput.value = toInput.value;
+                        toInput.value = swap;
+                    }
+
+                    form.querySelectorAll('input[type=number], input[name=sort]').forEach(function (input) {
                         if (input.value === '') input.disabled = true;
                     });
                 });

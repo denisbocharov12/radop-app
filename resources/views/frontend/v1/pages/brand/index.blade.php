@@ -32,8 +32,11 @@
         <x-slot:filters>
             <x-sf-catalog-filters
                 :action="route('theme.brand.index', $existedBrand->onec_id)"
-                :groups="$attributes ?? []"
+                {{-- As on the old brand sidebar: price and categories; attribute
+                     groups other than "Brand" were not offered here. --}}
+                :groups="collect($attributes ?? [])->only(['Бренд', 'Brand'])"
                 :brands="null"
+                :categories="$categories ?? null"
                 :query="$query ?? []"
             />
         </x-slot:filters>
