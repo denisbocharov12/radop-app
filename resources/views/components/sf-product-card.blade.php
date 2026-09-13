@@ -139,36 +139,39 @@
             @if($card['personalPercent'])
                 <li class="font-semibold text-brand-700">
                     <x-sf-icon name="star" :size="12" style="fill: currentColor" />
-                    {{ __('theme.sf-personal-price') }} −{{ $card['personalPercent'] }}%
+                    <span>{{ __('theme.sf-personal-price') }} −{{ $card['personalPercent'] }}%</span>
                 </li>
             @endif
             @if($card['minOrder'])
                 <li>
                     <x-sf-icon name="box" :size="12" />
-                    {{ __('theme.package-min-to-order') }}: {{ $card['minOrder'] }} {{ __('theme.min_order_unit') }}
-                    <span class="text-ink-400">· {{ number_format($card['unitPrice'], 2, ',', ' ') }} {{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
+                    <span>
+                        {{ __('theme.package-min-to-order') }}: {{ $card['minOrder'] }}&nbsp;{{ __('theme.min_order_unit') }}
+                        <span class="whitespace-nowrap text-ink-400">· {{ number_format($card['unitPrice'], 2, ',', ' ') }}&nbsp;{{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
+                    </span>
                 </li>
             @endif
             @if($card['packages'])
                 <li>
                     <x-sf-icon name="grid" :size="12" />
-                    {{ __('theme.package') }}: {{ $card['packages'] }} {{ __('theme.package_unit') }}
+                    <span>{{ __('theme.package') }}: {{ $card['packages'] }}&nbsp;{{ __('theme.package_unit') }}</span>
                 </li>
             @endif
             @if($card['stock'] <= 0)
                 <li class="font-medium text-ink-500">
-                    <x-sf-icon name="info" :size="12" />{{ __('theme.out-of-stock') }}
+                    <x-sf-icon name="info" :size="12" /><span>{{ __('theme.out-of-stock') }}</span>
                 </li>
             @elseif($card['lowStock'])
                 <li class="font-medium text-accent-700">
-                    <x-sf-icon name="clock" :size="12" />{{ __('theme.sf-low-stock', ['qty' => $card['lowStock']]) }}
+                    <x-sf-icon name="clock" :size="12" /><span>{{ __('theme.sf-low-stock', ['qty' => $card['lowStock']]) }}</span>
                 </li>
             @endif
         </ul>
 
-        {{-- The cart control sits above the card's stretched link. --}}
+        {{-- The cart control sits above the card's stretched link and is pushed
+             to the bottom (mt-auto), so steppers line up across a row. --}}
         <div
-            class="sf-product-cart relative z-10"
+            class="sf-product-cart relative z-10 mt-auto pt-1"
             data-sf-island="add-to-cart"
             data-sf-props="{{ $json([
                 'productId' => $card['id'],

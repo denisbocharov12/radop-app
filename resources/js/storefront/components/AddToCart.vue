@@ -110,6 +110,13 @@ onBeforeUnmount(() => {
             <span class="shrink-0 whitespace-nowrap font-semibold text-ink-800">{{ formatted }} {{ currency }}</span>
         </p>
 
+        <!-- Above the row, not below it: the stepper row stays the last line of
+             every card, so rows align whether or not a product is in the cart. -->
+        <p v-if="cartQty > 0" class="flex items-center gap-1.5 text-xs font-medium text-success-600">
+            <SfIcon name="check" :size="13" />
+            {{ labelInCart }} {{ cartQty }}
+        </p>
+
         <!-- In a card the row is sized by the card, not the viewport (the same
              card is 165px wide in a phone grid and 300px in a home rail), so
              the compact layout is driven by a container query in
@@ -163,10 +170,5 @@ onBeforeUnmount(() => {
                 <span class="sf-atc-label truncate">{{ labelAdd }}</span>
             </button>
         </div>
-
-        <p v-if="cartQty > 0" class="flex items-center gap-1.5 text-xs font-medium text-success-600">
-            <SfIcon name="check" :size="13" />
-            {{ labelInCart }} {{ cartQty }}
-        </p>
     </div>
 </template>

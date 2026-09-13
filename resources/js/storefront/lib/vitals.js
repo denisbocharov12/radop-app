@@ -339,7 +339,9 @@ function tableOfContents() {
         const list = scope.querySelector('[data-sf-toc-list]');
         const headings = [...scope.querySelectorAll('.sf-prose h2')];
         if (!aside || !list || headings.length < 4) {
+            // No contents column: drop the grid and restore the prose measure.
             scope.classList.remove('lg:grid');
+            scope.querySelector('.sf-prose')?.classList.remove('lg:max-w-none');
             return;
         }
 

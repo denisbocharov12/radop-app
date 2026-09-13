@@ -28,8 +28,10 @@
         <p class="-mt-2 mb-8 max-w-[65ch] text-md text-ink-600">{{ $lead }}</p>
     @endif
 
-    <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-start lg:gap-14" data-sf-toc-scope>
-        <div class="sf-prose sf-prose-page">
+    {{-- Text column capped at a readable measure with the contents right beside
+         it; a 1fr column left a wide empty gap between the two. --}}
+    <div class="lg:grid lg:grid-cols-[minmax(0,52rem)_16rem] lg:items-start lg:justify-start lg:gap-12 xl:gap-16" data-sf-toc-scope>
+        <div class="sf-prose sf-prose-page lg:max-w-none">
             {{ $slot }}
         </div>
 

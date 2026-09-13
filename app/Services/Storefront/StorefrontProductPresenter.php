@@ -80,8 +80,10 @@ final class StorefrontProductPresenter
             'brand' => $product->brand && trim((string) $product->brand->title) !== ''
                 ? ['title' => $product->brand->title, 'url' => route('theme.brand.index', $product->brand->onec_id)]
                 : null,
+            // `value` is a string column: sortBy('value') ordered "4000" before
+            // "50". Sort numerically so the smallest pack comes first.
             'packages' => $product->packages->isNotEmpty()
-                ? $product->packages->sortBy('value')->pluck('value')->implode('/')
+                ? $product->packages->sortBy(static fn ($pack) => (float) $pack->value)->pluck('value')->implode('/')
                 : null,
         ];
     }

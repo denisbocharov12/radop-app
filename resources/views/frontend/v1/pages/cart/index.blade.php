@@ -34,7 +34,11 @@
                     'qty' => (int) $item->quantity,
                     'step' => (int) ($product->min_order ?: 1),
                     'stock' => (int) $product->stock,
-                    'price' => (float) ThemeProductManager::getProductTotalSum($product),
+                    // The price stored on the cart line (fixed when it was added)
+                    // is what the order is charged at and what the cart total
+                    // sums; recomputing it here showed line totals that did not
+                    // add up to the total whenever the customer's price changed.
+                    'price' => (float) $item->price,
                 ];
             })
             ->values()

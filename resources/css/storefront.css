@@ -223,8 +223,11 @@
 
     /* ---------------------------------------------------------- product card */
     /* The markup must also carry `group` — Tailwind refuses to @apply it. */
+    /* No `h-full`: a percentage height inside a flex row or grid track is not
+       `auto`, which switches off stretching — cards in one row ended up with
+       different heights. Stretch gives every card the tallest card's height. */
     .sf-product {
-        @apply relative flex h-full flex-col overflow-hidden rounded-lg
+        @apply relative flex flex-col overflow-hidden rounded-lg
                border border-ink-200 bg-white
                transition-shadow duration-200 ease-sf hover:shadow-card-hover;
     }
@@ -443,11 +446,11 @@
     }
 
     .sf-product-meta > li {
-        @apply flex items-center gap-1;
+        @apply flex items-start gap-1;
     }
 
     .sf-product-meta svg {
-        @apply shrink-0 opacity-70;
+        @apply mt-0.5 shrink-0 opacity-70;
     }
 
     [data-sf-view="list"] .sf-product-meta {

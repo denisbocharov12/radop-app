@@ -5,7 +5,7 @@
         @if($product->packages->isNotEmpty())
             <p>
                 {{ __('theme.package') }}:
-                {{ $product->packages->sortBy('value')->pluck('value')->implode('/') }}
+                {{ $product->packages->sortBy(static fn ($pack) => (float) $pack->value)->pluck('value')->implode('/') }}
                 {{ __('theme.package_unit') }}
             </p>
         @endif
