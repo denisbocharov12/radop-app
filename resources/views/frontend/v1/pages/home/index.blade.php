@@ -101,37 +101,7 @@
         </section>
     @endforeach
 
-    @if(!empty($themeBrands) && count($themeBrands))
-        <section class="sf-section" id="brands-home-anchor">
-            <div class="sf-container">
-                <div class="sf-section-head">
-                    <h2 class="sf-section-title">
-                        <a href="{{ route('theme.brand.catalog') }}" class="hover:text-brand-600">{{ __('theme.home-brands') }}</a>
-                    </h2>
-                    <a href="{{ route('theme.brand.catalog') }}" class="sf-section-link">{{ __('theme.view-all') }}</a>
-                </div>
-
-                <ul class="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-                    @foreach($themeBrands as $brand)
-                        <li>
-                            <a
-                                href="{{ route('theme.brand.index', $brand->onec_id) }}"
-                                class="flex h-20 items-center justify-center rounded-lg border border-ink-200 bg-white p-3 transition-all duration-200 hover:border-brand-300 hover:shadow-card"
-                                title="{{ $brand->title }}"
-                            >
-                                <img
-                                    src="{{ $brand->getFirstMediaUrl('media', 'thumb') }}"
-                                    alt="{{ $brand->title }}"
-                                    class="max-h-12 w-auto object-contain opacity-80 transition-opacity hover:opacity-100"
-                                    loading="lazy"
-                                />
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </section>
-    @endif
+    <x-sf-brand-rail :brands="$themeBrands ?? []" id="brands-home-anchor" />
 @endsection
 
 @section('scripts')

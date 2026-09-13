@@ -153,6 +153,10 @@
         #cookies-policy .cookies__details:hover,
         #cookies-policy .cookies__intro a:focus,
         #cookies-policy .cookies__intro a:hover { color: #0068a7 !important; }
+        /* Phones: sit above the fixed tab bar instead of covering it. */
+        @media (max-width: 1023px) {
+            #cookies-policy.cookies { bottom: calc(3.5rem + env(safe-area-inset-bottom)) !important; }
+        }
     </style>
 
     @stack('head')

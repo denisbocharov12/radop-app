@@ -38,6 +38,32 @@ function productRails() {
         rail.addEventListener('scroll', sync, { passive: true });
         window.addEventListener('resize', sync, { passive: true });
         sync();
+
+        // Optional autoplay (`data-sf-rail-autoplay="ms"`): one item at a time,
+        // back to the start at the end. Pauses while the visitor is pointing
+        // at, focused in or touching the rail, and never runs for visitors
+        // who prefer reduced motion.
+        const delay = Number(wrapper.dataset.sfRailAutoplay || 0);
+        if (!delay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        let paused = false;
+        const pause = () => { paused = true; };
+        const resume = () => { paused = false; };
+        wrapper.addEventListener('mouseenter', pause);
+        wrapper.addEventListener('mouseleave', resume);
+        wrapper.addEventListener('focusin', pause);
+        wrapper.addEventListener('focusout', resume);
+        rail.addEventListener('touchstart', pause, { passive: true });
+        rail.addEventListener('touchend', () => setTimeout(resume, 4000), { passive: true });
+
+        setInterval(() => {
+            if (paused || document.hidden) return;
+            const item = rail.firstElementChild;
+            const gap = Number.parseFloat(getComputedStyle(rail).columnGap) || 0;
+            const itemStep = item ? item.getBoundingClientRect().width + gap : step();
+            const atEnd = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2;
+            rail.scrollTo({ left: atEnd ? 0 : rail.scrollLeft + itemStep, behavior: 'smooth' });
+        }, delay);
     });
 }
 

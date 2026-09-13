@@ -37,10 +37,10 @@
 
 @if(! empty($navItems))
     <nav class="sf-nav" aria-label="{{ __('theme.navigation-menu') }}">
-        <div class="sf-container">
+        <div class="sf-container relative">
             <ul class="flex items-stretch">
                 @foreach($navItems as $item)
-                    <li class="group/nav relative">
+                    <li class="group/nav">
                         <a
                             href="{{ $item['url'] }}"
                             target="{{ $item['target'] }}"
@@ -54,7 +54,10 @@
 
                         @if(! empty($item['children']))
                             <div class="sf-nav-panel">
-                                <ul class="columns-2 gap-6 xl:columns-3">
+                                <p class="mb-3 text-md font-bold text-ink-900">
+                                    <a href="{{ $item['url'] }}" class="hover:text-brand-600">{{ $item['title'] }}</a>
+                                </p>
+                                <ul class="columns-2 gap-8 md:columns-3 xl:columns-4">
                                     @foreach($item['children'] as $child)
                                         <li class="mb-1 break-inside-avoid">
                                             <a href="{{ $child['url'] }}" class="sf-mega-leaf">{{ $child['title'] }}</a>

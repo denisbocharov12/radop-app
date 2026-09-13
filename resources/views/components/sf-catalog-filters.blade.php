@@ -40,8 +40,9 @@
 <form action="{{ $action }}" method="GET" id="filterForm" class="space-y-1" data-sf-filter-form>
     <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
 
-    <div class="flex items-center justify-between px-1 pb-2">
-        <h2 class="text-sm font-bold uppercase tracking-wide text-ink-900">{{ __('theme.filters') }}</h2>
+    {{-- The phone drawer has its own title bar, so this heading is desktop-only. --}}
+    <div class="flex items-center justify-between px-1 pb-2 empty:hidden lg:min-h-[1.75rem]">
+        <h2 class="hidden text-sm font-bold uppercase tracking-wide text-ink-900 lg:block">{{ __('theme.filters') }}</h2>
         @if($activeCount > 0)
             <button type="button" id="filterResetBtn" class="text-xs font-medium text-brand-600 hover:text-brand-700">
                 {{ __('theme.reset-filters') }} ({{ $activeCount }})

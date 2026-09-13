@@ -104,15 +104,11 @@ function show() {
  * reflows (mobile search row, promo bar, sticky shrink).
  */
 function syncPanelTop() {
-    const trigger = triggerEl.value?.getBoundingClientRect().bottom ?? 0;
-
-    // When the category strip is on screen the panel hangs below it rather than
-    // across it, so the strip stays readable while the menu is open.
-    const nav = document.querySelector('.sf-nav');
-    const navBottom = nav && nav.offsetParent !== null ? nav.getBoundingClientRect().bottom : 0;
-
-    const top = Math.max(trigger + 12, navBottom);
-    document.documentElement.style.setProperty('--sf-mega-top', `${Math.round(top)}px`);
+    // The catalogue opens as a full-window layer directly under the sticky
+    // header (covering the category strip), down to the bottom of the viewport.
+    const header = document.querySelector('[data-sf-header]');
+    const bottom = header?.getBoundingClientRect().bottom ?? triggerEl.value?.getBoundingClientRect().bottom ?? 0;
+    document.documentElement.style.setProperty('--sf-mega-top', `${Math.round(Math.max(bottom, 0))}px`);
 }
 
 function close({ restoreFocus = false } = {}) {
@@ -153,7 +149,8 @@ function onKeydown(event) {
 
 function onPointerDown(event) {
     if (!open.value) return;
-    if (!rootEl.value?.contains(event.target)) close();
+    // The panel lives outside rootEl (teleported), so check both.
+    if (!rootEl.value?.contains(event.target) && !panelEl.value?.contains(event.target)) close();
 }
 
 // Lock the page behind the panel without the layout shifting as the scrollbar
@@ -202,15 +199,19 @@ onBeforeUnmount(() => {
             <span class="uppercase tracking-wide">{{ label }}</span>
         </button>
 
-        <!-- Panel -->
+        <!-- Panel. Teleported to <body>: the sticky header uses backdrop-filter,
+             which makes it the containing block for position:fixed children, so
+             inside the header `bottom: 0` meant the header's bottom and the
+             full-window panel collapsed to ~1px. -->
+        <Teleport to="body">
         <Transition
             enter-active-class="transition duration-200 ease-sf"
             enter-from-class="opacity-0 -translate-y-1"
             leave-active-class="transition duration-150 ease-sf"
             leave-to-class="opacity-0 -translate-y-1"
         >
-            <div v-if="open" class="sf-mega-panel" @mouseleave="close">
-                <div class="sf-container">
+            <div v-if="open" ref="panelEl" class="sf-mega-panel">
+                <div class="sf-container h-full">
                     <div v-if="loading" class="grid gap-4 py-6 lg:grid-cols-[minmax(0,17rem)_1fr]">
                         <div class="space-y-2">
                             <div v-for="n in 8" :key="n" class="sf-skeleton h-9 w-full"></div>
@@ -228,7 +229,7 @@ onBeforeUnmount(() => {
                         {{ $sf.t.menuError }}
                     </p>
 
-                    <div v-else class="grid lg:grid-cols-[minmax(0,18rem)_1fr]">
+                    <div v-else class="grid h-full lg:grid-cols-[minmax(0,18rem)_1fr]">
                         <!-- Root column -->
                         <nav
                             data-roots
@@ -310,5 +311,6 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </Transition>
+        </Teleport>
     </div>
 </template>

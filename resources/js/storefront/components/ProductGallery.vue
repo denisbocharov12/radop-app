@@ -44,7 +44,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="flex gap-3">
+    <!-- Phones: full-width image with the thumbnails in a row underneath;
+         from `sm` the thumbnails become a column beside it. -->
+    <div class="flex flex-col gap-3 sm:flex-row">
         <!-- Thumbnails: a column on desktop, a row under the image on mobile -->
         <div
             v-if="hasMany"

@@ -134,7 +134,9 @@
 
             {{-- Buy box --}}
             <div class="lg:col-span-3">
-                <div class="sf-card sticky top-24 space-y-4 p-4" id="buy-box">
+                {{-- Sticky only beside the gallery on desktop; on phones it must
+                     scroll away so the bottom buy bar can take over. --}}
+                <div class="sf-card space-y-4 p-4 lg:sticky lg:top-24" id="buy-box">
                     <div class="flex flex-wrap items-baseline gap-2">
                         <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $hasSale])>
                             {{ number_format($displayPrice, 2, ',', ' ') }}
