@@ -135,6 +135,15 @@
                 </a>
             </h3>
 
+            {{-- Brand link, as the old card's "Brand: MONDI"; above the card's
+                 stretched link so it opens the brand, not the product. --}}
+            @if($card['brand'])
+                <p class="sf-product-brand">
+                    <span>{{ __('theme.brand') }}:</span>
+                    <a href="{{ $card['brand']['url'] }}">{{ $card['brand']['title'] }}</a>
+                </p>
+            @endif
+
             @if($card['barcode'])
                 <p class="sf-product-codes">
                     <span>{{ __('theme.barcode') }}: {{ $card['barcode'] }}</span>
@@ -169,7 +178,7 @@
                     <x-sf-icon name="box" :size="12" />
                     <span>
                         {{ __('theme.package-min-to-order') }}: {{ $card['minOrder'] }}&nbsp;{{ __('theme.min_order_unit') }}
-                        <span class="whitespace-nowrap text-ink-400">· {{ number_format($card['unitPrice'], 2, ',', ' ') }}&nbsp;{{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
+                        <span class="block whitespace-nowrap text-ink-400">{{ number_format($card['unitPrice'], 2, ',', ' ') }}&nbsp;{{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
                     </span>
                 </li>
             @endif
