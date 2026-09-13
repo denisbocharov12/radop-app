@@ -102,16 +102,32 @@
 
     <div class="sf-product-body">
         <div class="sf-product-info">
-            <p class="text-2xs text-ink-400">
-                {{ __('theme.code') }}:
+            {{-- Code and article as the old card's two framed chips, left and
+                 right; each copies its value on click. --}}
+            <div class="sf-product-codes-row">
                 <button
                     type="button"
-                    class="relative z-10 font-medium text-ink-500 hover:text-brand-600"
+                    class="sf-code-chip sf-code-chip-code"
                     data-copy-value="{{ $card['code'] }}"
                     data-copy-message="{{ __('theme.product_code_copied') }}"
                     title="{{ __('theme.product_code_copied') }}"
-                >{{ $card['code'] }}</button>
-            </p>
+                >
+                    <span>{{ __('theme.code') }}:</span>
+                    <b>{{ $card['code'] }}</b>
+                </button>
+                @if($card['article'])
+                    <button
+                        type="button"
+                        class="sf-code-chip sf-code-chip-article"
+                        data-copy-value="{{ $card['article'] }}"
+                        data-copy-message="{{ __('theme.product_code_copied') }}"
+                        title="{{ __('theme.product_code_copied') }}"
+                    >
+                        <span>{{ __('theme.article') }}:</span>
+                        <b>{{ $card['article'] }}</b>
+                    </button>
+                @endif
+            </div>
 
             <h3 class="sf-product-title">
                 <a href="{{ $card['url'] }}" class="after:absolute after:inset-0 after:content-['']">
@@ -119,14 +135,9 @@
                 </a>
             </h3>
 
-            @if($card['article'] || $card['barcode'])
+            @if($card['barcode'])
                 <p class="sf-product-codes">
-                    @if($card['article'])
-                        <span>{{ __('theme.article') }}: {{ $card['article'] }}</span>
-                    @endif
-                    @if($card['barcode'])
-                        <span>{{ __('theme.barcode') }}: {{ $card['barcode'] }}</span>
-                    @endif
+                    <span>{{ __('theme.barcode') }}: {{ $card['barcode'] }}</span>
                 </p>
             @endif
         </div>

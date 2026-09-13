@@ -41,9 +41,10 @@
                 ])>{{ $logo['wordmark'] }}</span>
                 @if($tagline)
                     <span @class([
-                        'mt-1 font-medium text-ink-500',
-                        'hidden text-2xs xl:block' => ! $isFooter,
-                        'text-xs' => $isFooter,
+                        'font-medium text-ink-500',
+                        // Phones too, one size down so the header row still fits at 360 px.
+                        'mt-0.5 whitespace-nowrap text-[0.625rem] leading-none sm:text-2xs' => ! $isFooter,
+                        'mt-1 text-xs' => $isFooter,
                     ])>{{ $tagline }}</span>
                 @endif
             </span>

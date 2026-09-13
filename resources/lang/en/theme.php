@@ -77,6 +77,9 @@ return [
     'sf-per-unit' => 'unit',
     'sf-price-for' => 'Price for :qty pcs.',
     'sf-your-discount' => 'Your discount is applied automatically to every price shown.',
+    'sf-company' => 'Company',
+    'sf-shop' => 'Shop',
+    'sf-back' => 'Back',
     'sf-wishlist-empty' => 'Your wishlist is empty',
     'sf-wishlist-empty-hint' => 'Tap the heart on a product card to save it here and come back to it later.',
 ];

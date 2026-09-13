@@ -536,6 +536,9 @@ return array (
     'sf-per-unit' => 'bucata',
     'sf-price-for' => 'Prețul pentru :qty buc.',
     'sf-your-discount' => 'Reducerea dvs. se aplică automat la toate prețurile afișate.',
+    'sf-company' => 'Companie',
+    'sf-shop' => 'Magazin',
+    'sf-back' => 'Înapoi',
     'sf-wishlist-empty' => 'Lista de favorite este goală',
     'sf-wishlist-empty-hint' => 'Apăsați pe inimioara de pe cardul produsului pentru a-l salva aici și a reveni la el mai târziu.',
 );

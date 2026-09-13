@@ -18,11 +18,37 @@
         ])
         ->values();
 
-    $mobileLinks = [
-        ['label' => __('theme.about-us'), 'url' => route('theme.about-us')],
-        ['label' => __('theme.delivery'), 'url' => route('theme.delivery.index')],
-        ['label' => __('theme.how-to-order'), 'url' => route('theme.order-guide.index')],
-        ['label' => __('theme.contact'), 'url' => route('theme.contacts.index')],
+    // Burger menu sections: the old mobile "Other" tab's shop, company and
+    // information pages.
+    $mobileGroups = [
+        [
+            'title' => __('theme.sf-shop'),
+            'links' => [
+                ['label' => __('theme.show-all-categories'), 'url' => route('theme.shop.catalog')],
+                ['label' => __('theme.new-products'), 'url' => route('theme.shop.new')],
+                ['label' => __('theme.popular-products'), 'url' => route('theme.shop.popular')],
+                ['label' => __('theme.on-discount'), 'url' => route('theme.shop.sale')],
+                ['label' => __('theme.home-brands'), 'url' => route('theme.brand.catalog')],
+            ],
+        ],
+        [
+            'title' => __('theme.sf-company'),
+            'links' => [
+                ['label' => __('theme.about-us'), 'url' => route('theme.about-us')],
+                ['label' => __('theme.delivery'), 'url' => route('theme.delivery.index')],
+                ['label' => __('theme.how-to-order'), 'url' => route('theme.order-guide.index')],
+                ['label' => __('theme.contact'), 'url' => route('theme.contacts.index')],
+            ],
+        ],
+        [
+            'title' => __('theme.information'),
+            'links' => [
+                ['label' => __('theme.terms-of-use'), 'url' => route('theme.terms-and-conditions.index')],
+                ['label' => __('theme.privacy-policy'), 'url' => route('theme.privacy-policy.index')],
+                ['label' => __('theme.cookie'), 'url' => route('theme.cookie.index')],
+                ['label' => __('theme.return_and_exchange_products'), 'url' => route('theme.return-rules.index')],
+            ],
+        ],
     ];
 
     // Island props are encoded here rather than inline: Blade's @json directive
@@ -46,10 +72,22 @@
     $mobileNavProps = $sfProps([
         'code' => 'main_menu',
         'label' => __('theme.header-catalog-text'),
-        'links' => $mobileLinks,
+        'groups' => $mobileGroups,
+        'account' => [
+            'authenticated' => $user !== null,
+            'url' => route('theme.user.orders.index'),
+            'label' => __('theme.account_text'),
+            'signInLabel' => __('theme.login_register'),
+        ],
         'locales' => $locales,
-        'phone' => '079 782 112',
+        'phones' => ['079 782 112', '022 782 112'],
         'email' => 'support@radop.md',
+        't' => [
+            'menu' => __('theme.sf-menu'),
+            'close' => __('theme.notification_close_btn_text'),
+            'back' => __('theme.sf-back'),
+            'viewAll' => __('theme.view-all'),
+        ],
     ]);
 @endphp
 

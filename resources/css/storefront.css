@@ -453,8 +453,43 @@
         @apply mt-0.5 shrink-0 opacity-70;
     }
 
-    /* Article and barcode: only in the list layout, where the old site's
-       list rows printed them and wholesale buyers match orders by them. */
+    /* Code (left) and article (right) as framed chips, like the old card.
+       They sit above the card's stretched link so a click copies instead of
+       opening the product. */
+    .sf-product-codes-row {
+        @apply relative z-10 flex min-w-0 items-center justify-between gap-1.5 text-ink-400;
+    }
+
+    /* 10px: the eight-digit code must fit whole in a six-up rail card, so only
+       the article (free-length) is allowed to shorten. */
+    .sf-code-chip {
+        @apply inline-flex min-w-0 cursor-copy items-center gap-0.5 rounded border border-solid bg-white px-1 py-0.5
+               text-[0.625rem] leading-3 transition-colors duration-150 ease-sf
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500;
+    }
+
+    .sf-code-chip b {
+        @apply truncate font-semibold tabular-nums text-ink-700;
+    }
+
+    .sf-code-chip-code {
+        @apply shrink-0 border-accent-300 hover:border-accent-500 hover:bg-accent-50;
+    }
+
+    .sf-code-chip-article {
+        @apply shrink border-brand-200 hover:border-brand-500 hover:bg-brand-50;
+    }
+
+    .sf-code-chip:hover b {
+        @apply text-ink-900;
+    }
+
+    [data-sf-view="list"] .sf-product-codes-row {
+        @apply justify-start gap-3;
+    }
+
+    /* Barcode: only in the list layout, where the old site's list rows
+       printed it and wholesale buyers match orders by it. */
     .sf-product-codes {
         @apply hidden gap-x-3 gap-y-0.5 text-2xs text-ink-400;
     }
@@ -505,22 +540,33 @@
         container-type: inline-size;
     }
 
+    /* Three widths, measured on the card rather than the viewport:
+       - under 10.5rem (two-up phone grid, ~140 px): stepper and button each
+         take the full width, stacked — side by side the "+" was cut off;
+       - 10.5–14.5rem (six-up desktop rail): stepper + square icon button;
+       - from 14.5rem: stepper + labelled button. */
     .sf-atc {
-        @apply flex items-stretch gap-2;
+        @apply flex flex-col items-stretch gap-2;
     }
 
     .sf-atc .sf-atc-stepper {
-        flex: 1 1 auto;
-        min-width: 0;
+        width: 100%;
+    }
+
+    .sf-atc .sf-atc-stepper > button {
+        @apply w-10;
     }
 
     .sf-atc .sf-atc-button {
-        flex: 0 0 2.5rem;
-        @apply px-0;
+        @apply w-full px-2;
     }
 
-    .sf-atc .sf-atc-label {
-        @apply sf-sr-only;
+    @container (min-width: 10.5rem) {
+        .sf-atc { flex-direction: row; }
+        .sf-atc .sf-atc-stepper { flex: 1 1 auto; width: auto; min-width: 0; }
+        .sf-atc .sf-atc-stepper > button { width: 2.25rem; }
+        .sf-atc .sf-atc-button { flex: 0 0 2.5rem; width: 2.5rem; @apply px-0; }
+        .sf-atc .sf-atc-label { @apply sf-sr-only; }
     }
 
     @container (min-width: 14.5rem) {
