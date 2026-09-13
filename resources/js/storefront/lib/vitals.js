@@ -298,7 +298,38 @@ function formHelpers() {
     });
 }
 
+/**
+ * Category strip dropdowns open under their own item; when that would push
+ * the panel past the strip container's right edge, slide it left just enough.
+ * Runs on hover/focus, when the panel is displayed and measurable.
+ */
+function navPanels() {
+    const nav = document.querySelector('.sf-nav');
+    if (!nav) return;
+    const container = nav.querySelector('.sf-container');
+
+    const place = (item) => {
+        const panel = item.querySelector('.sf-nav-panel');
+        if (!panel || !container) return;
+        panel.style.left = '0px';
+        requestAnimationFrame(() => {
+            const bounds = container.getBoundingClientRect();
+            const gutter = Number.parseFloat(getComputedStyle(container).paddingRight) || 0;
+            const limit = bounds.right - gutter;
+            const rect = panel.getBoundingClientRect();
+            const overflow = rect.right - limit;
+            if (overflow > 0) panel.style.left = `${-Math.ceil(overflow)}px`;
+        });
+    };
+
+    nav.querySelectorAll('[data-sf-nav-item]').forEach((item) => {
+        item.addEventListener('mouseenter', () => place(item));
+        item.addEventListener('focusin', () => place(item));
+    });
+}
+
 function boot() {
+    navPanels();
     formHelpers();
     stickyWhenHidden();
     stickyHeaderShadow();

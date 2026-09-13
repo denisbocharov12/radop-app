@@ -26,6 +26,11 @@ let lastFocus = null;
 const money = new Intl.NumberFormat('ro-MD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const price = computed(() => (product.value ? money.format(product.value.displayPrice) : ''));
 const oldPrice = computed(() => (product.value?.oldPrice ? money.format(product.value.oldPrice) : null));
+const badges = computed(() => [
+    product.value?.salePercent ? { label: `-${product.value.salePercent}%`, class: 'sf-badge-sale' } : null,
+    product.value?.condition === 'new' ? { label: 'NEW', class: 'sf-badge-new' } : null,
+    product.value?.condition === 'popular' ? { label: 'HIT', class: 'sf-badge-hit' } : null,
+].filter(Boolean));
 
 async function load(id) {
     lastFocus = document.activeElement;
@@ -118,11 +123,12 @@ onBeforeUnmount(() => {
 
                         <div v-else-if="product" class="grid gap-6 md:grid-cols-2">
                             <div class="relative">
-                                <div class="sf-product-flags">
-                                    <span v-if="product.salePercent" class="sf-badge-sale">-{{ product.salePercent }}%</span>
-                                    <span v-if="product.condition === 'new'" class="sf-badge-new">NEW</span>
-                                </div>
-                                <ProductGallery v-if="product.images.length" :images="product.images.map((url) => ({ url, thumb: url }))" :alt="product.title" />
+                                <ProductGallery
+                                    v-if="product.images.length"
+                                    :images="product.images.map((url) => ({ url, thumb: url }))"
+                                    :alt="product.title"
+                                    :badges="badges"
+                                />
                                 <div v-else class="flex aspect-square items-center justify-center rounded-lg border border-ink-200 text-ink-300">
                                     <SfIcon name="box" :size="48" />
                                 </div>

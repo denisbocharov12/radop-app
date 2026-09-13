@@ -327,16 +327,21 @@
                xl:px-3;
     }
 
-    /* Anchored to the strip's container, not to its item: a panel hanging off
-       an item near the right edge used to extend past the viewport and gave
-       every page a horizontal scrollbar (hidden panels still count toward
-       scrollWidth). */
+    /* Opens under the hovered item. Two rules keep it from widening the page:
+       closed panels are display:none (visibility:hidden still counted toward
+       scrollWidth and caused a horizontal scrollbar), and vitals.js shifts an
+       open panel left when it would cross the container's right edge. */
     .sf-nav-panel {
-        @apply invisible absolute left-[var(--sf-gutter)] right-[var(--sf-gutter)] top-full z-menu translate-y-1
-               rounded-b-lg border border-t-0 border-ink-200 bg-white p-5 opacity-0 shadow-pop
-               transition-all duration-150 ease-sf
-               group-hover/nav:visible group-hover/nav:translate-y-0 group-hover/nav:opacity-100
-               group-focus-within/nav:visible group-focus-within/nav:translate-y-0 group-focus-within/nav:opacity-100;
+        @apply absolute left-0 top-full z-menu hidden w-[min(38rem,calc(100vw-2*var(--sf-gutter)))]
+               rounded-b-lg border border-t-0 border-ink-200 bg-white p-5 shadow-pop
+               group-focus-within/nav:block group-hover/nav:block
+               animate-sf-slide-down;
+    }
+
+    /* Hover/focus highlight on the item whose panel is open. */
+    .sf-nav li:hover > .sf-nav-link,
+    .sf-nav li:focus-within > .sf-nav-link {
+        @apply bg-brand-700;
     }
 
     /* ---------------------------------------------------------- mega menu */

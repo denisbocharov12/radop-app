@@ -84,21 +84,26 @@
         <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
             {{-- Gallery --}}
             <div class="relative lg:col-span-5">
-                <div class="sf-product-flags">
-                    @if($hasSale)
-                        <span class="sf-badge-sale">-{{ ThemeProductManager::getProductSaleForLabel($product) }}%</span>
-                    @endif
-                    @if($condition === 'new')
-                        <span class="sf-badge-new">{{ __('theme.label_new') }}</span>
-                    @elseif($condition === 'popular')
-                        <span class="sf-badge-hit">{{ __('theme.label_popular') }}</span>
-                    @endif
-                </div>
+                @php
+                    // Badges are handed to the gallery so they sit on the main
+                    // image, not on the thumbnail column beside it.
+                    $galleryBadges = array_values(array_filter([
+                        $hasSale ? ['label' => '-' . ThemeProductManager::getProductSaleForLabel($product) . '%', 'class' => 'sf-badge-sale'] : null,
+                        match ($condition) {
+                            'new' => ['label' => __('theme.label_new'), 'class' => 'sf-badge-new'],
+                            'popular' => ['label' => __('theme.label_popular'), 'class' => 'sf-badge-hit'],
+                            'hot' => ['label' => __('theme.label_hot'), 'class' => 'sf-badge-sale'],
+                            'featured' => ['label' => __('theme.label_featured'), 'class' => 'sf-badge-hit'],
+                            'winter' => ['label' => __('theme.label_winter'), 'class' => 'sf-badge-neutral'],
+                            default => null,
+                        },
+                    ]));
+                @endphp
 
                 @if(! empty($galleryImages))
                     <div
                         data-sf-island="product-gallery"
-                        data-sf-props="{{ $sfJson(['images' => $galleryImages, 'alt' => $product->title]) }}"
+                        data-sf-props="{{ $sfJson(['images' => $galleryImages, 'alt' => $product->title, 'badges' => $galleryBadges]) }}"
                         v-cloak
                     >
                         <img

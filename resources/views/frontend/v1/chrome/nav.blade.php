@@ -40,7 +40,7 @@
         <div class="sf-container relative">
             <ul class="flex items-stretch">
                 @foreach($navItems as $item)
-                    <li class="group/nav">
+                    <li class="group/nav relative" data-sf-nav-item>
                         <a
                             href="{{ $item['url'] }}"
                             target="{{ $item['target'] }}"
@@ -57,7 +57,7 @@
                                 <p class="mb-3 text-md font-bold text-ink-900">
                                     <a href="{{ $item['url'] }}" class="hover:text-brand-600">{{ $item['title'] }}</a>
                                 </p>
-                                <ul class="columns-2 gap-8 md:columns-3 xl:columns-4">
+                                <ul class="columns-2 gap-8">
                                     @foreach($item['children'] as $child)
                                         <li class="mb-1 break-inside-avoid">
                                             <a href="{{ $child['url'] }}" class="sf-mega-leaf">{{ $child['title'] }}</a>
