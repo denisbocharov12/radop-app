@@ -637,10 +637,17 @@
         display: none;
     }
 
-    /* ---------------------------------------------------------- toastr */
-    /* Notifications (toastr, also used by php-flasher for server flashes)
-       restyled as design-system cards: white surface, coloured status disc,
-       quiet close button. Id selectors match toastr's own specificity. */
+}
+
+/* ---------------------------------------------------------- toastr */
+/* Notifications (toastr, also used by php-flasher for server flashes)
+   restyled as design-system cards: white surface, coloured status disc,
+   quiet close button. Id selectors match toastr's own specificity.
+
+   Deliberately outside `@layer components`: Tailwind drops layered rules
+   whose classes never appear in scanned files, and `toast-success`,
+   `toast-error`… are only added by toastr's own script — the per-type
+   colour and icon rules were silently missing, leaving a blank disc. */
     #toast-container {
         z-index: 100 !important;
     }
@@ -736,6 +743,7 @@
         }
     }
 
+@layer components {
     /* ---------------------------------------------------------- cookie reset */
     /* @cookieconsentbutton renders <form class="X"><button class="X__link">. */
     .sf-cookie-settings-form {
