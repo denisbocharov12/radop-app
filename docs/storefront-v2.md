@@ -96,6 +96,80 @@ page (the test account has no orders).
 2. Move the analytics helpers out of `scripts/scripts.blade.php` into
    `storefront/lib/`, then drop the jQuery / Slick / Select2 / Fancybox bundle.
 
+## Audit (2026-09-14) — findings and recommendations
+
+Method: 45 URLs (ro + ru, guest and signed-in customer with a 10 % personal
+discount) parsed server-side for status, title/description/canonical/hreflang,
+`h1` count, leaked translation keys, images without `alt`, controls without an
+accessible name, unlabeled fields, duplicate ids; SQL counts from debugbar;
+failed resources in the browser on home, category, product, cart, checkout;
+`laravel.log` during the run.
+
+Clean: no leaked keys, every page has one `h1`, description, canonical and
+three hreflang links; no images without `alt`, no duplicate ids, no legacy CSS
+on storefront pages, no failed resources on the key pages.
+
+### Fix on `master` as well (shared code, already fixed on this branch)
+
+- `LocalizationPermanentRedirect` turned **every** 302 into a 301 (guest
+  `/checkout` → `/`, `/cart/destroy` → `/cart`, redirect-after-login). Browsers
+  cache 301s, so a customer could keep being bounced after signing in.
+  Commit `df9f8a02`.
+- `ProductRepository::getAllSimilarProducts()` read `->onec_id` off a null
+  category: a product without a category answered 500. Commit `0c5aeb02`.
+
+### Performance
+
+| Page (local data) | SQL before | after |
+|---|---|---|
+| category | 114 | 30 |
+| product | 86 | 29 |
+| brand | 91 | 13 |
+| home (warm cache) | 72 | 5 |
+
+Still to do:
+1. Stop loading jQuery, Select2, Slick, hoverDelay, `scripts.js` and
+   `mega-menu.js` on storefront pages, and the ~74 KB of inline JS from
+   `scripts/scripts.blade.php` that every page carries (clean-up item 2).
+2. Icons are inlined per use (57–93 `<svg>` per page, 30–45 KB). A `<symbol>`
+   sprite referenced with `<use>` would cut that to one copy each.
+3. Product page: spec table still loads `attributes` one by one (×6) — eager
+   load `values.attribute`.
+4. Home rails and the brand list are cached for 2 h; clear those keys after a
+   1C import so stock and new arrivals are not stale.
+5. Production must run with debugbar off — locally it adds 50–210 KB per page.
+
+### SEO
+
+1. Titles run 71–111 characters and repeat the brand:
+   `… | Radop.md - Radop - Magazin online`. `seotools.defaults.title` is
+   appended to page titles that already end in "Radop.md"; set it to `false`
+   (or a bare "Radop") and keep page titles ≤ 60 characters.
+2. `/ro`, `/index.php` and trailing-slash URLs answer 200 with duplicate
+   content. The canonical redirects exist as uncommitted work on `v2-admin`
+   (`CanonicalPathRedirect`) — finish and merge them.
+
+### Data and content (admin, not code)
+
+1. CMS menu items are saved with absolute `http://localhost:8888/…` links. The
+   storefront keeps only the path, but other consumers will not — store
+   relative paths.
+2. Only 3 of 107 active brands have a logo; the brand rail falls back to the
+   name.
+3. `ro`/`ru` `pagination.next`/`previous` are empty strings (the storefront
+   uses its own keys now; anything else using the defaults has unnamed links).
+
+### Behaviour
+
+1. A guest opening `/checkout` is sent to the home page and the exception is
+   logged as `ERROR` on every visit. Send them to `/cart?auth=login` (opens the
+   sign-in dialog) and add `UserIsNotAuthenticatedException` to `$dontReport`.
+2. Not exercised locally: placing an order (would create a real order and
+   1C export), e-mail delivery (mailer is `log`), wholesale (`with_sale`)
+   pricing and catalogue sale prices (no such data locally). Run these on
+   staging with real data before release.
+3. Remove the local test customer `sf.test.fiz@example.com` when done.
+
 ## Notes
 
 - `backdrop-filter` on the sticky header makes it the containing block for
@@ -122,6 +196,17 @@ page (the test account has no orders).
 - Breadcrumbs drew a separator only after linkable items, and category entries
   carried no URL, so the middle of a product trail was dead text.
 - The delivery page used four `<h1>` elements.
+- Toast status icons were blank: the per-type rules sat in `@layer components`,
+  and Tailwind drops layered rules whose classes (added by toastr's script)
+  never appear in scanned files. The toastr block is unlayered now.
+- php-flasher titled flashes "success": the package ships only ar/en/fr
+  translations; ro/ru files added under `resources/lang/vendor/flasher`.
+- Favorites rendered an empty grid: the wishlist stores the product in the
+  cart item's `conditions`, not `associatedModel`.
+- Error pages and the paginator lived outside Tailwind's `content` globs, so
+  their utility classes were missing from the build.
+- Search suggestions came back empty for a term in the other language
+  ("руч" on the Romanian site): titles were matched in the current locale only.
 
 ## Running it
 
