@@ -785,16 +785,25 @@ final class ProductRepository
 
     public function getAllSimilarProducts(Product $product): Collection
     {
-        $productCategoryId = $product->categories->first()->onec_id;
+        // A product without a category has no "similar" list; reading
+        // ->onec_id off null used to end the product page in a 500.
+        $productCategoryId = $product->categories->first()?->onec_id;
+
+        if ($productCategoryId === null) {
+            return new Collection();
+        }
 
         $similarProductCategory = ProductCategory::where('category_id', $productCategoryId)->get();
 
         $productIds = $similarProductCategory->pluck('product_id');
 
+        // Same relations as the other card lists: the rail renders brand,
+        // image, pack sizes and the condition badge for every product.
         return Product::whereIn('onec_id', $productIds)
             ->where('status', true)
             ->where('site_status', true)
             ->whereNotNull('price_koef')
+            ->with(['brand:id,onec_id,title', 'media', 'packages', 'data'])
             ->take(self::COUNT_OF_PRODUCTS_FOR_FRONTEND)
             ->get();
     }

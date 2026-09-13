@@ -23,13 +23,18 @@
     $priceFrom = data_get($query, 'price.from');
     $priceTo = data_get($query, 'price.to');
 
+    $attributeId = static fn ($attribute) => (int) (is_array($attribute) ? ($attribute['id'] ?? 0) : ($attribute->id ?? 0));
+
+    // One query for every value in every group; the legacy lookup ran
+    // AttributeValue::find() per value (27 queries on a pen category).
+    $valueIds = collect($groups ?? [])->flatten(1)->map($attributeId)->filter()->unique()->values();
+    $valuesById = $valueIds->isEmpty()
+        ? collect()
+        : \App\Models\AttributeValue::query()->whereIn('id', $valueIds)->get()->keyBy('id');
+
     $attributeGroups = collect($groups ?? [])
         ->map(static fn ($values) => collect($values)
-            ->map(static function ($attribute) {
-                $id = is_array($attribute) ? ($attribute['id'] ?? null) : ($attribute->id ?? null);
-
-                return $id ? app(AttributeRepository::class)->getAttributeValueById((int) $id) : null;
-            })
+            ->map(static fn ($attribute) => $valuesById->get($attributeId($attribute)))
             ->filter()
             ->sortBy('value'))
         ->filter(static fn ($values) => $values->count() > 1);

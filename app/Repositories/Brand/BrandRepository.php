@@ -99,10 +99,13 @@ final class BrandRepository
      */
     public function getLimited()
     {
-        $cacheKey = 'brands_limited_' . app()->getLocale();
+        // v2: logos are eager-loaded now (the brand rail read each one with its
+        // own media query); the new key keeps a cached copy without them out.
+        $cacheKey = 'brands_limited_v2_' . app()->getLocale();
 
         return Cache::remember($cacheKey, 7200, function () {
             return Brand::where('status', true)
+                ->with('media')
                 ->orderBy('order')
                 ->take(30)
                 ->get();
