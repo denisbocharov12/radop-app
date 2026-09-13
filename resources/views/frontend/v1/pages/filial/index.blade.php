@@ -1,62 +1,57 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="my-account" style="margin-bottom: 100px">
-        <div class="container">
-            <h1 class="my-account__title title">{{__('theme.my-account')}}</h1>
-            <div class="my-account__wrapper">
-                @include('frontend.v1.pages.account.sidebar')
-                <div class="my-filials">
-                    <div class="col-md-12 col-filial-heading">
-                        <h1 class="heading">{{__('theme.my_filials')}}</h1>
-                    </div>
-                    <hr>
-                    <div class="filials-action-wrap">
-                        <a class="btn-add-filial" href="{{route('theme.user.filial.create')}}">{{__('theme.filial_store')}}</a>
-                    </div>
-                    <ul class="my-filials__list">
-                        @if(!$user->filials->count())
-                            <div class="no-orders text-center">
-                                <p>{{__('theme.no_filials')}}</p>
-                                <a href="{{ route('theme.shop.catalog') }}"
-                                   class="btn btn-primary mt-3">{{__('theme.go-to-catalog')}}</a>
-                            </div>
-                        @else
-                            @foreach($filials as $filial)
-                                <li class="item filial-item">
-                                    <div class="wrap">
-                                        <div class="wrap-meta">
-                                            <ul class="ul-meta" style="margin-bottom: 15px">
-                                                <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_input_city')}}:</span> <p class="theme-text">{{$filial?->city?->name}}</p>
-                                                </li>
-                                            </ul>
-                                            <ul class="ul-meta">
-                                                <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_input_address')}}:</span> <p class="theme-text">{{$filial->address}}</p>
-                                                </li>
-                                                <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_input_phone')}}:</span> <p class="theme-text">{{$filial->phone}}</p>
-                                                </li>
-                                                <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_count_orders')}}:</span> <p class="theme-text">{{$filial->orders->count()}}</p>
-                                                </li>
-                                                <li class="meta-item">
-                                                    <span class="theme-bold">{{__('theme.filial_price_total')}}:</span> <p class="theme-text">{{number_format($filial->orders->sum('total'), 2, '.', '')}} {{__('theme.MDL')}}</p>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="action-wrap">
-                                            <a class="btn-filial btn-filial-edit" href="{{route('theme.user.filial.edit', $filial)}}">{{__('theme.edit_btn_text')}}</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                            {{$filials->links()}}
-                        @endif
-                    </ul>
-                </div>
+    <x-sf-account-shell :title="__('theme.my_filials')">
+        <x-slot:actions>
+            <a class="sf-btn-primary" href="{{ route('theme.user.filial.create') }}">
+                <x-sf-icon name="plus" :size="16" />{{ __('theme.filial_store') }}
+            </a>
+        </x-slot:actions>
+
+        @if(! $user->filials->count())
+            <div class="sf-card px-6 py-14 text-center">
+                <x-sf-icon name="building" :size="40" class="mx-auto mb-3 text-ink-300" />
+                <p class="text-md font-medium text-ink-700">{{ __('theme.no_filials') }}</p>
+                <a href="{{ route('theme.user.filial.create') }}" class="sf-btn-primary mt-5 inline-flex">
+                    <x-sf-icon name="plus" :size="16" />{{ __('theme.filial_store') }}
+                </a>
             </div>
-        </div>
-    </section>
+        @else
+            <ul class="grid gap-3 md:grid-cols-2">
+                @foreach($filials as $filial)
+                    <li class="sf-card flex flex-col p-4">
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                                <x-sf-icon name="building" :size="19" />
+                            </span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-semibold text-ink-900">{{ $filial->address }}</p>
+                                <p class="mt-0.5 text-sm text-ink-500">{{ $filial?->city?->name }}</p>
+                            </div>
+                            <a href="{{ route('theme.user.filial.edit', $filial) }}" class="sf-btn-ghost sf-btn-sm shrink-0">{{ __('theme.edit_btn_text') }}</a>
+                        </div>
+
+                        <dl class="mt-4 grid grid-cols-3 gap-2 border-t border-ink-100 pt-3 text-sm">
+                            <div>
+                                <dt class="text-2xs text-ink-500">{{ __('theme.filial_input_phone') }}</dt>
+                                <dd class="mt-0.5 font-medium text-ink-800">{{ $filial->phone ?: '—' }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-2xs text-ink-500">{{ __('theme.filial_count_orders') }}</dt>
+                                <dd class="mt-0.5 font-medium text-ink-800">{{ $filial->orders->count() }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-2xs text-ink-500">{{ __('theme.filial_price_total') }}</dt>
+                                <dd class="mt-0.5 font-medium text-ink-800">{{ number_format((float) $filial->orders->sum('total'), 2, ',', ' ') }} {{ __('theme.MDL') }}</dd>
+                            </div>
+                        </dl>
+                    </li>
+                @endforeach
+            </ul>
+
+            {{ $filials->links('vendor.pagination.sf') }}
+        @endif
+    </x-sf-account-shell>
 @endsection

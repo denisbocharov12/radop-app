@@ -57,7 +57,10 @@ onBeforeUnmount(stop);
 </script>
 
 <template>
+    <!-- `#main-banner` is the hook scripts.blade.php uses to report GA4
+         promotion clicks; keep the id. -->
     <section
+        id="main-banner"
         class="relative"
         @mouseenter="paused = true"
         @mouseleave="paused = false"

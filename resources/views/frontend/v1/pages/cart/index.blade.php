@@ -52,6 +52,7 @@
             'checkoutUrl' => route('theme.checkout.index'),
             'continueUrl' => route('theme.shop.catalog'),
             'destroyUrl' => route('theme.cart.destroy'),
+            'deliveryUrl' => route('theme.delivery.index'),
             'authenticated' => $user !== null,
             't' => [
                 'code' => __('theme.code'),
@@ -63,6 +64,8 @@
                 'summary' => __('theme.summary'),
                 'forPayment' => __('theme.for-payment'),
                 'minOrder' => __('theme.min_order_sum_warning_message'),
+                'minOrderAddMore' => __('theme.min_order_add_more'),
+                'deliveryLink' => __('theme.min_order_delivery_link'),
                 'checkout' => __('theme.place-order'),
                 'continue' => __('theme.сontinue-shopping'),
             ],

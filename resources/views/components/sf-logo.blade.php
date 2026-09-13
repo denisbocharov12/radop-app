@@ -1,0 +1,52 @@
+@props([
+    /** `header` scales for the sticky bar; `footer` is larger and always shows the tagline. */
+    'variant' => 'header',
+])
+
+@php
+    /*
+     * The shipped mark is a 40×35 pentagon whose "RĂDOP" lettering is ~4px
+     * tall at header size — illegible. The lockup pairs that mark with a
+     * typeset wordmark so the name reads at any size, and the whole thing is
+     * configured in config/storefront.php so a new logo is a config change,
+     * not a template hunt.
+     */
+    $logo = config('storefront.logo');
+    $tagline = $logo['tagline'][app()->getLocale()] ?? $logo['tagline']['ro'] ?? null;
+    $isFooter = $variant === 'footer';
+@endphp
+
+<span {{ $attributes->class(['inline-flex shrink-0 items-center', 'gap-2' => ! $isFooter, 'gap-3' => $isFooter]) }}>
+    @if(! empty($logo['full']))
+        <img
+            src="{{ asset($logo['full']) }}"
+            alt="Radop"
+            @class(['w-auto', 'h-9 lg:h-11' => ! $isFooter, 'h-12' => $isFooter])
+        />
+    @else
+        <img
+            src="{{ asset($logo['mark']) }}"
+            alt="{{ $logo['wordmark'] ? '' : 'Radop' }}"
+            width="40"
+            height="35"
+            @class(['w-auto', 'h-9 lg:h-10' => ! $isFooter, 'h-12' => $isFooter])
+        />
+
+        @if($logo['wordmark'])
+            <span class="flex flex-col leading-none">
+                <span @class([
+                    'font-extrabold tracking-[0.12em] text-brand-600',
+                    'text-lg lg:text-xl' => ! $isFooter,
+                    'text-2xl' => $isFooter,
+                ])>{{ $logo['wordmark'] }}</span>
+                @if($tagline)
+                    <span @class([
+                        'mt-1 font-medium text-ink-500',
+                        'hidden text-2xs xl:block' => ! $isFooter,
+                        'text-xs' => $isFooter,
+                    ])>{{ $tagline }}</span>
+                @endif
+            </span>
+        @endif
+    @endif
+</span>

@@ -20,6 +20,7 @@ const props = defineProps({
     checkoutUrl: { type: String, default: '' },
     continueUrl: { type: String, default: '' },
     destroyUrl: { type: String, default: '' },
+    deliveryUrl: { type: String, default: '' },
     authenticated: { type: Boolean, default: false },
     t: { type: Object, default: () => ({}) },
 });
@@ -31,6 +32,7 @@ const money = new Intl.NumberFormat('ro-MD', { minimumFractionDigits: 2, maximum
 
 const totalNumber = computed(() => Number.parseFloat(String(total.value).replace(/\s/g, '').replace(',', '.')) || 0);
 const belowMinimum = computed(() => props.minOrderSum > 0 && totalNumber.value < props.minOrderSum);
+const remaining = computed(() => money.format(Math.max(props.minOrderSum - totalNumber.value, 0)));
 const empty = computed(() => rows.value.length === 0);
 
 function lineTotal(row) {
@@ -179,9 +181,16 @@ async function remove(row) {
                 <span class="text-xl font-bold text-ink-900">{{ total }} {{ currency }}</span>
             </div>
 
-            <p v-if="belowMinimum" class="rounded-md bg-accent-50 p-2.5 text-xs text-accent-700">
-                {{ t.minOrder }} {{ minOrderSum }} {{ currency }}
-            </p>
+            <!-- Minimum order: how much is missing, not just the threshold
+                 (ported from upstream's cart banner). -->
+            <div v-if="belowMinimum" class="flex gap-2.5 rounded-lg border border-accent-200 bg-accent-50 p-3 text-xs text-accent-800" role="alert">
+                <SfIcon name="info" :size="16" class="mt-0.5 shrink-0" />
+                <div class="space-y-1">
+                    <p>{{ t.minOrder }} <b>{{ money.format(minOrderSum) }} {{ currency }}</b></p>
+                    <p class="font-semibold">{{ t.minOrderAddMore }} {{ remaining }} {{ currency }}</p>
+                    <a v-if="deliveryUrl" :href="deliveryUrl" class="inline-block underline underline-offset-2 hover:text-accent-900">{{ t.deliveryLink }}</a>
+                </div>
+            </div>
 
             <a
                 v-if="!belowMinimum"

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('frontend.v1.head.head')
-<body class="min-h-screen bg-white">
+{{-- Bottom padding on phones reserves room for the fixed tab bar. --}}
+<body class="min-h-screen bg-white pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
 @php($gtmId = config('analytics.gtm_container_id'))
 @if(is_string($gtmId) && $gtmId !== '')
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
@@ -37,6 +38,7 @@
 </main>
 
 @include('frontend.v1.chrome.footer')
+@include('frontend.v1.chrome.overlays')
 @include('frontend.v1.scripts.scripts')
 {{-- Components push their own behaviour here (catalogue toolbar, filters). --}}
 @stack('scripts')

@@ -26,6 +26,9 @@ const registry = {
     'add-to-cart': () => import('./storefront/components/AddToCart.vue'),
     'cart-table': () => import('./storefront/components/CartTable.vue'),
     'auth-modal': () => import('./storefront/components/AuthModal.vue'),
+    'mini-cart': () => import('./storefront/components/MiniCart.vue'),
+    'quick-view': () => import('./storefront/components/QuickView.vue'),
+    'bottom-nav': () => import('./storefront/components/BottomNav.vue'),
     'wishlist-button': () => import('./storefront/components/WishlistButton.vue'),
 };
 

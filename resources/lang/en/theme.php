@@ -47,5 +47,26 @@ return [
     'footer_usp_support_title' => 'Advice',
     'footer_usp_support_text' => 'Mon–Fri, 08:30–17:30',
     'menu-load-error' => 'The catalogue could not be loaded. Please try again.',
+
+    // Storefront v2 — auth dialog, mini-cart, quick view, catalogue views.
+    'password-recovery-sent' => 'If the address is registered, you will receive an e-mail with instructions to reset your password.',
+    'sf-added-to-cart' => 'Added to cart',
+    'sf-go-to-cart' => 'Go to cart',
+    'sf-open-product' => 'Product page',
+    'sf-quick-view' => 'Quick view',
+    'sf-view-grid' => 'Grid',
+    'sf-view-list' => 'List',
+    'sf-menu' => 'Menu',
+    'sf-order-thanks' => 'Thank you for your order!',
+    'sf-subcategories' => 'Subcategories',
+
+    // Storefront v2 — error pages.
+    'sf-error-404-title' => 'Page not found',
+    'sf-error-404-text' => 'The address may be wrong or the product is no longer available. Search by name or code, or open the catalogue.',
+    'sf-error-403-title' => 'Sign-in required',
+    'sf-error-403-text' => 'This page is only available to signed-in customers with an activated account. Sign in or create an account.',
+    'sf-error-419-title' => 'Session expired',
+    'sf-error-419-text' => 'The page was open for too long. Go back and submit the form again.',
+    'sf-error-back' => 'Back',
 ];
 

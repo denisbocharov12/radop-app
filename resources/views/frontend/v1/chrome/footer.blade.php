@@ -23,13 +23,9 @@
 
     <div class="sf-container grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-            <img
-                src="{{ asset('/v1/frontend/assets') }}/images/logo.svg"
-                alt="Radop Moldova"
-                width="120"
-                height="40"
-                class="mb-4 h-10 w-auto"
-            />
+            <a href="{{ route('theme.home') }}" class="mb-4 inline-block" aria-label="Radop">
+                <x-sf-logo variant="footer" />
+            </a>
             <p class="text-sm leading-relaxed text-ink-600">{{ __('theme.footer_site_desc') }}</p>
             <address class="mt-4 space-y-2 text-sm not-italic text-ink-600">
                 <p>{{ __('theme.footer_info_address') }}</p>
@@ -72,6 +68,13 @@
                     @foreach($links as [$label, $url])
                         <li><a href="{{ $url }}" class="text-sm text-ink-600 hover:text-brand-600">{{ $label }}</a></li>
                     @endforeach
+                    @if($loop->last)
+                        {{-- Reopens the cookie consent manager (resets the stored
+                             choice). Ported from the legacy footer. --}}
+                        <li class="sf-cookie-settings">
+                            @cookieconsentbutton('reset', __('theme.cookie_settings'), ['class' => 'sf-cookie-settings-form'])
+                        </li>
+                    @endif
                 </ul>
             </nav>
         @endforeach

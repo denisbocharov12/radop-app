@@ -77,15 +77,21 @@ function back() {
 
 watch(open, (isOpen) => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
+    // The bottom tab bar highlights "Catalogue" while the drawer is open.
+    document.dispatchEvent(new CustomEvent('sf:mobile-nav-state', { detail: { open: isOpen } }));
 });
 
 function onKeydown(event) {
     if (event.key === 'Escape' && open.value) close();
 }
 
-onMounted(() => document.addEventListener('keydown', onKeydown));
+onMounted(() => {
+    document.addEventListener('keydown', onKeydown);
+    document.addEventListener('sf:open-mobile-nav', show);
+});
 onBeforeUnmount(() => {
     document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('sf:open-mobile-nav', show);
     document.body.style.overflow = '';
 });
 </script>

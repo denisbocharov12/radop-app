@@ -134,7 +134,7 @@
 
             {{-- Buy box --}}
             <div class="lg:col-span-3">
-                <div class="sf-card sticky top-24 space-y-4 p-4">
+                <div class="sf-card sticky top-24 space-y-4 p-4" id="buy-box">
                     <div class="flex flex-wrap items-baseline gap-2">
                         <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $hasSale])>
                             {{ number_format($displayPrice, 2, ',', ' ') }}
@@ -174,6 +174,18 @@
 
                     @include('frontend.v1.components.packages_card_wrap')
 
+                    <div
+                        data-sf-island="wishlist-button"
+                        data-sf-props="{{ $sfJson([
+                            'productId' => $product->id,
+                            'active' => app('wishlist')->get($product->id) !== null,
+                            'labelAdd' => __('theme.add-to-wishlist'),
+                            'labelRemove' => __('theme.remove-from-wishlist'),
+                            'variant' => 'inline',
+                        ]) }}"
+                        v-cloak
+                    ></div>
+
                     <div class="space-y-2 border-t border-ink-100 pt-3 text-xs text-ink-500">
                         <p class="flex items-center gap-2">
                             <x-sf-icon name="truck" :size="15" class="text-brand-600" />
@@ -196,6 +208,27 @@
                 <div class="sf-prose">{!! $summary !!}</div>
             @endif
         </section>
+    </div>
+
+    {{-- Phones: once the buy box scrolls away, keep price + CTA under the thumb,
+         just above the tab bar. Tapping it brings the buy box back. --}}
+    <div
+        class="fixed inset-x-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-header translate-y-full border-t border-ink-200 bg-white/95 px-4 py-2.5 opacity-0 shadow-pop backdrop-blur transition-all duration-200 ease-sf data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 lg:hidden"
+        data-sf-sticky-when-hidden="#buy-box"
+        data-visible="false"
+        aria-hidden="true"
+    >
+        <div class="mx-auto flex max-w-lg items-center gap-3">
+            <div class="min-w-0 flex-1">
+                <p class="truncate text-xs text-ink-500">{{ $product->title }}</p>
+                <p class="text-lg font-bold leading-tight {{ $hasSale ? 'text-accent-600' : 'text-ink-900' }}">
+                    {{ number_format($displayPrice, 2, ',', ' ') }} <span class="text-xs font-medium text-ink-500">{{ __('theme.MDL') }}</span>
+                </p>
+            </div>
+            <a href="#buy-box" class="sf-btn-primary h-11 shrink-0 px-5" tabindex="-1">
+                <x-sf-icon name="cart" :size="17" />{{ __('theme.add-to-cart') }}
+            </a>
+        </div>
     </div>
 
     @include('frontend.v1.pages.product.components.reviews')

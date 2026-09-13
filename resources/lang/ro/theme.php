@@ -506,4 +506,25 @@ return array (
     'footer_usp_support_title' => 'Consultanță',
     'footer_usp_support_text' => 'Luni–Vineri, 08:30–17:30',
     'menu-load-error' => 'Nu am putut încărca catalogul. Reîncercați.',
+
+    // Storefront v2 — auth dialog, mini-cart, quick view, catalogue views.
+    'password-recovery-sent' => 'Dacă adresa este înregistrată, veți primi un e-mail cu instrucțiuni pentru resetarea parolei.',
+    'sf-added-to-cart' => 'Adăugat în coș',
+    'sf-go-to-cart' => 'Spre coș',
+    'sf-open-product' => 'Pagina produsului',
+    'sf-quick-view' => 'Vizualizare rapidă',
+    'sf-view-grid' => 'Grilă',
+    'sf-view-list' => 'Listă',
+    'sf-menu' => 'Meniu',
+    'sf-order-thanks' => 'Mulțumim pentru comandă!',
+    'sf-subcategories' => 'Subcategorii',
+
+    // Storefront v2 — error pages.
+    'sf-error-404-title' => 'Pagina nu a fost găsită',
+    'sf-error-404-text' => 'Este posibil ca adresa să fie greșită sau produsul să nu mai fie disponibil. Căutați după nume sau cod ori deschideți catalogul.',
+    'sf-error-403-title' => 'Autentificare necesară',
+    'sf-error-403-text' => 'Această pagină este disponibilă doar clienților autentificați cu un cont activat. Autentificați-vă sau creați un cont.',
+    'sf-error-419-title' => 'Sesiunea a expirat',
+    'sf-error-419-text' => 'Pagina a stat deschisă prea mult timp. Reveniți și trimiteți formularul din nou.',
+    'sf-error-back' => 'Înapoi',
 );

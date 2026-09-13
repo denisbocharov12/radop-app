@@ -64,6 +64,27 @@
         $sfBootstrap = [
             'locale' => app()->getLocale(),
             'currency' => __('theme.MDL'),
+            'authenticated' => auth()->guard('user')->check(),
+            /*
+             * Localised endpoints. Hard-coded paths resolve to the default
+             * locale, so on /ru pages the server would answer (and toast) in
+             * Romanian — the legacy scripts avoided that by using route().
+             */
+            'routes' => [
+                'cartAdd' => route('theme.product.store'),
+                'cartUpdate' => route('theme.product.update'),
+                'cartRemove' => route('theme.product.delete'),
+                'cartSummary' => route('theme.sf.cart.summary'),
+                'cart' => route('theme.cart.index'),
+                'checkout' => route('theme.checkout.index'),
+                'wishlistAdd' => route('theme.wishlist.store'),
+                'wishlistRemove' => route('theme.wishlist.delete'),
+                'productPreview' => route('theme.sf.product.preview', ['product' => '__ID__']),
+                'searchHistory' => route('theme.search.history.get'),
+                'searchSuggestions' => route('theme.search.suggestions.get'),
+                'searchHistoryClear' => route('theme.search.history.clear'),
+                'searchHistoryDelete' => route('theme.search.history.delete'),
+            ],
             't' => [
                 'search' => __('theme.search'),
                 'searchHistory' => __('theme.search_history'),
@@ -71,6 +92,27 @@
                 'viewAll' => __('theme.view-all'),
                 'close' => __('theme.notification_close_btn_text'),
                 'menuError' => __('theme.menu-load-error'),
+                'addedToCart' => __('theme.sf-added-to-cart'),
+                'goToCart' => __('theme.sf-go-to-cart'),
+                'checkout' => __('theme.place-order'),
+                'emptyCart' => __('theme.empty-cart'),
+                'total' => __('theme.for-payment'),
+                'minOrder' => __('theme.min_order_sum_warning_message'),
+                'minOrderAddMore' => __('theme.min_order_add_more'),
+                'code' => __('theme.code'),
+                'inStock' => __('theme.in-stock'),
+                'outOfStock' => __('theme.out-of-stock'),
+                'addToCart' => __('theme.add-to-cart'),
+                'inCart' => __('theme.in-cart'),
+                'details' => __('theme.product-details'),
+                'openProduct' => __('theme.sf-open-product'),
+                'addToWishlist' => __('theme.add-to-wishlist'),
+                'removeFromWishlist' => __('theme.remove-from-wishlist'),
+                'package' => __('theme.package'),
+                'packageUnit' => __('theme.package_unit'),
+                'exportStarted' => __('theme.export-download-started'),
+                'exportError' => __('theme.export-error'),
+                'exportPersonalized' => __('theme.personalized-export-started'),
             ],
         ];
     @endphp

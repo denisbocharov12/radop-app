@@ -68,14 +68,8 @@
             ></div>
 
             {{-- Logo --}}
-            <a href="{{ route('theme.home') }}" class="shrink-0" aria-label="Radop">
-                <img
-                    src="{{ asset('/v1/frontend/assets') }}/images/logo.svg"
-                    alt="Radop Moldova"
-                    width="132"
-                    height="44"
-                    class="h-9 w-auto lg:h-11"
-                />
+            <a href="{{ route('theme.home') }}" class="shrink-0 rounded-md" aria-label="Radop — {{ __('theme.home') }}">
+                <x-sf-logo />
             </a>
 
             {{-- Catalogue + mega menu --}}
@@ -154,25 +148,28 @@
                     </a>
                 @endif
 
-                <a
-                    href="{{ route('theme.cart.index') }}"
-                    class="relative ml-1 inline-flex h-11 items-center gap-2.5 rounded-md bg-brand-50 px-3.5 text-brand-700 transition-colors hover:bg-brand-100"
-                    aria-label="{{ __('theme.cart') }}"
+                {{-- Basket link + hover preview (MiniCart.vue). The server-rendered
+                     link is the pre-hydration and no-JS state. --}}
+                <div
+                    class="ml-1"
+                    data-sf-island="mini-cart"
+                    data-sf-props="{{ $sfProps([
+                        'count' => $cartCount,
+                        'total' => number_format($cartTotal, 2, ',', ''),
+                        'authenticated' => $user !== null,
+                    ]) }}"
                 >
-                    <span class="relative">
+                    <a
+                        href="{{ route('theme.cart.index') }}"
+                        class="relative inline-flex h-11 items-center gap-2.5 rounded-md bg-brand-50 px-3 text-brand-700 sm:px-3.5"
+                        aria-label="{{ __('theme.cart') }}"
+                    >
                         <x-sf-icon name="cart" :size="21" />
-                        {{-- Kept in the DOM even when empty so the cart islands
-                             can reveal it without re-rendering the header. --}}
-                        <span
-                            class="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold text-white"
-                            data-sf-cart-count
-                            @if($cartCount <= 0) hidden @endif
-                        >{{ $cartCount > 99 ? '99+' : $cartCount }}</span>
-                    </span>
-                    <span class="hidden whitespace-nowrap text-sm font-bold sm:inline">
-                        <span data-sf-cart-total>{{ number_format($cartTotal, 2, ',', '') }}</span> {{ __('theme.MDL') }}
-                    </span>
-                </a>
+                        <span class="hidden whitespace-nowrap text-sm font-bold sm:inline">
+                            {{ number_format($cartTotal, 2, ',', '') }} {{ __('theme.MDL') }}
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
 

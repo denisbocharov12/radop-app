@@ -1,74 +1,72 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="my-account" style="margin-bottom: 100px">
-        <div class="container">
-            <h1 class="my-account__title title">{{__('theme.my-account')}}</h1>
-            <div class="my-account__wrapper">
-                @include('frontend.v1.pages.account.sidebar')
-                <div class="my-orders">
-                    <ul class="my-orders__list">
-                        @if(!$user->orders->count())
-                            <div class="no-orders text-center">
-                                <p>{{__('theme.no-orders')}}</p>
-                                <a href="{{ route('theme.shop.catalog') }}"
-                                   class="btn btn-primary mt-3">{{__('theme.go-to-catalog')}}</a>
-                            </div>
-                        @else
-                            @foreach($orders as $order)
-                                <li class="my-orders__item order">
-                                    <div class="order__block">
-                                        <p class="order__number">{{__('theme.order-number')}}{{$order->order_number}}</p>
-                                        <p class="order__product">
-                                        <span
-                                            style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                            {{$products->where('id',$order->products->first()->product_id)->first()?->title}} ...
-                                        </span>
-                                        </p>
-                                        <p class="order__date">
-                                            {{__('theme.from')}}
-                                            <time
-                                            >{{$order->created_at}}</time
-                                            >
-                                        </p>
-                                    </div>
-                                    <div class="order__block">
-                                        <div class="order__box">
-                                            <p class="order__stat">
-                                                @foreach($orderStatus as $status => $key)
-                                                    @if($order->status == $status)
-                                                        {{__('theme.order-status')}} {{$key}}
-                                                    @endif
-                                                @endforeach
-                                            </p>
-                                        </div>
-                                        <div class="order__box"  style="max-width: 100%">
-                                            <button class="order__button" type="button">
-                                                <i class="icon-cart"></i>
-                                            </button>
-                                            <div class="order__options d-flex align-items-center">
-                                                <a class="order-dropdown__link"
-                                                   data-id="{{$order->id}}"
-                                                   href="{{route('theme.user.orders.repeat', $order)}}">{{__('theme.order-repeat')}}
-                                                </a>
-                                                <a class="order-dropdown__link"
-                                                   data-id="{{$order->id}}"
-                                                   href="{{route('theme.user.orders.view.invoice', $order)}}">{{__('theme.order-view-invoice')}}
-                                                </a>
-                                                <a class="order-dropdown__link"
-                                                   data-id="{{$order->id}}"
-                                                   href="{{route('theme.user.orders.download.invoice', $order)}}">{{__('theme.order-download-invoice')}}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                            {{$orders->links()}}
-                        @endif
-                    </ul>
-                </div>
+    @php
+        $statusTone = static fn (?string $status): string => match (true) {
+            $status === null => 'bg-ink-100 text-ink-600',
+            str_contains($status, 'cancel') => 'bg-danger-50 text-danger-600',
+            str_contains($status, 'complet'), str_contains($status, 'deliver'), str_contains($status, 'done') => 'bg-success-50 text-success-600',
+            default => 'bg-brand-50 text-brand-700',
+        };
+    @endphp
+
+    <x-sf-account-shell :title="__('theme.my-orders')">
+        @if(! $user->orders->count())
+            <div class="sf-card px-6 py-14 text-center">
+                <x-sf-icon name="receipt" :size="40" class="mx-auto mb-3 text-ink-300" />
+                <p class="text-md font-medium text-ink-700">{{ __('theme.no-orders') }}</p>
+                <a href="{{ route('theme.shop.catalog') }}" class="sf-btn-primary mt-5 inline-flex">{{ __('theme.go-to-catalog') }}</a>
             </div>
-        </div>
-    </section>
+        @else
+            <ul class="space-y-3">
+                @foreach($orders as $order)
+                    @php
+                        $firstLine = $order->products->first();
+                        $firstTitle = $firstLine ? $products->where('id', $firstLine->product_id)->first()?->title : null;
+                        $statusLabel = $orderStatus[$order->status] ?? $order->status;
+                    @endphp
+                    <li class="sf-card p-4">
+                        <div class="flex flex-wrap items-start justify-between gap-3">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h2 class="text-md font-bold text-ink-900">{{ __('theme.order-number') }}{{ $order->order_number }}</h2>
+                                    <span class="rounded-full px-2.5 py-0.5 text-2xs font-semibold {{ $statusTone($order->status) }}">{{ $statusLabel }}</span>
+                                </div>
+                                <p class="mt-1 text-xs text-ink-500">
+                                    {{ __('theme.from') }} <time datetime="{{ $order->created_at?->toIso8601String() }}">{{ $order->created_at?->format('d.m.Y H:i') }}</time>
+                                    · {{ $order->products->count() }} {{ __('theme.sort-products') }}
+                                </p>
+                                @if($firstTitle)
+                                    <p class="mt-2 line-clamp-1 text-sm text-ink-700">
+                                        {{ $firstTitle }}@if($order->products->count() > 1) <span class="text-ink-400">+{{ $order->products->count() - 1 }}</span>@endif
+                                    </p>
+                                @endif
+                            </div>
+
+                            <p class="text-right">
+                                <span class="block text-lg font-bold text-ink-900">{{ number_format((float) $order->total, 2, ',', ' ') }}</span>
+                                <span class="text-xs text-ink-500">{{ __('theme.MDL') }}</span>
+                            </p>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2 border-t border-ink-100 pt-3">
+                            <a href="{{ route('theme.user.orders.repeat', $order) }}" class="sf-btn-primary sf-btn-sm">
+                                <x-sf-icon name="cart" :size="15" />{{ __('theme.order-repeat') }}
+                            </a>
+                            <a href="{{ route('theme.user.orders.view.invoice', $order) }}" class="sf-btn-secondary sf-btn-sm">
+                                <x-sf-icon name="receipt" :size="15" />{{ __('theme.order-view-invoice') }}
+                            </a>
+                            <a href="{{ route('theme.user.orders.download.invoice', $order) }}" class="sf-btn-ghost sf-btn-sm">
+                                <x-sf-icon name="download" :size="15" />{{ __('theme.order-download-invoice') }}
+                            </a>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            {{ $orders->links('vendor.pagination.sf') }}
+        @endif
+    </x-sf-account-shell>
 @endsection

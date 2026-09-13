@@ -153,15 +153,30 @@
                 var form = document.querySelector('[data-sf-filter-form]');
                 if (!form) return;
 
+                /* Auto-apply only where the form is a permanent sidebar. In the
+                   phone drawer each tick would reload the page and close the
+                   drawer mid-selection, so there the "Apply" button submits. */
+                var desktop = window.matchMedia('(min-width: 1024px)');
+
                 form.querySelectorAll('input[type=checkbox]').forEach(function (box) {
-                    box.addEventListener('change', function () { form.submit(); });
+                    box.addEventListener('change', function () {
+                        if (desktop.matches) form.submit();
+                    });
                 });
 
                 var timer = null;
                 form.querySelectorAll('input[type=number]').forEach(function (input) {
                     input.addEventListener('input', function () {
+                        if (!desktop.matches) return;
                         clearTimeout(timer);
                         timer = setTimeout(function () { form.submit(); }, 700);
+                    });
+                });
+
+                /* Empty price bounds would otherwise travel as filter[price][from]= */
+                form.addEventListener('submit', function () {
+                    form.querySelectorAll('input[type=number]').forEach(function (input) {
+                        if (input.value === '') input.disabled = true;
                     });
                 });
 

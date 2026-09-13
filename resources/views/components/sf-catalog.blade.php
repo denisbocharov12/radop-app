@@ -4,6 +4,9 @@
     'defaultSort' => 'price',
     'filters' => null,
     'heading' => null,
+    /** Excel export endpoint for this listing, if it has one. */
+    'exportUrl' => null,
+    'exportPersonalized' => false,
 ])
 
 {{--
@@ -12,22 +15,41 @@
     same markup, moved by CSS, so the form exists once in the DOM.
 --}}
 <div class="sf-container">
-    @if($heading)
-        <h1 class="mt-4 text-2xl font-bold text-ink-900 lg:text-3xl">{{ $heading }}</h1>
+    @if($heading || $exportUrl)
+        <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
+            @if($heading)
+                <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ $heading }}</h1>
+            @endif
+            @if($exportUrl)
+                <x-sf-export-button :url="$exportUrl" :personalized="$exportPersonalized" />
+            @endif
+        </div>
     @endif
 
     <div class="flex gap-6 lg:gap-8">
         @if($filters)
             <div
-                class="fixed inset-y-0 left-0 z-modal w-[min(20rem,88vw)] -translate-x-full overflow-y-auto overscroll-contain bg-white p-4 shadow-pop transition-transform duration-200 ease-sf
-                       lg:sticky lg:top-24 lg:z-0 lg:block lg:h-fit lg:max-h-[calc(100vh-8rem)] lg:w-64 lg:shrink-0 lg:translate-x-0 lg:p-0 lg:shadow-none"
+                class="fixed inset-y-0 left-0 z-modal flex w-[min(21rem,90vw)] -translate-x-full flex-col bg-white shadow-pop transition-transform duration-200 ease-sf
+                       lg:sticky lg:top-24 lg:z-0 lg:h-fit lg:max-h-[calc(100vh-8rem)] lg:w-64 lg:shrink-0 lg:translate-x-0 lg:bg-transparent lg:shadow-none"
                 data-sf-drawer="catalog-filters"
             >
-                <button type="button" class="sf-icon-btn absolute right-2 top-2 lg:hidden" data-sf-drawer-close aria-label="×">
-                    <x-sf-icon name="close" />
-                </button>
+                <div class="flex items-center justify-between border-b border-ink-100 px-4 py-3 lg:hidden">
+                    <span class="text-md font-semibold text-ink-900">{{ __('theme.filters') }}</span>
+                    <button type="button" class="sf-icon-btn" data-sf-drawer-close aria-label="{{ __('theme.notification_close_btn_text') }}">
+                        <x-sf-icon name="close" />
+                    </button>
+                </div>
 
-                {{ $filters }}
+                <div class="flex-1 overflow-y-auto overscroll-contain p-4 lg:p-0 lg:pr-1">
+                    {{ $filters }}
+                </div>
+
+                {{-- On phones filters apply on demand: auto-submitting on every
+                     tick reloads the page and closes the drawer mid-selection. --}}
+                <div class="grid grid-cols-2 gap-2 border-t border-ink-100 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden">
+                    <button type="button" class="sf-btn-secondary" data-sf-filter-reset>{{ __('theme.reset-filters') }}</button>
+                    <button type="submit" form="filterForm" class="sf-btn-primary">{{ __('theme.filter') }}</button>
+                </div>
             </div>
 
             <div class="sf-overlay lg:hidden" data-sf-drawer-overlay="catalog-filters" hidden></div>
@@ -43,9 +65,12 @@
                         {{ request()->has('filter') ? __('theme.products_not_found_for_query') : __('theme.missing-category') }}
                     </p>
                     <p class="mt-2 text-sm text-ink-500">{!! __('theme.not-found-product') !!}</p>
+                    @if(request()->has('filter'))
+                        <a href="{{ $action }}" class="sf-btn-secondary mt-5 inline-flex">{{ __('theme.reset-filters') }}</a>
+                    @endif
                 </div>
             @else
-                <div class="sf-grid-products py-5">
+                <div class="sf-grid-products py-5" data-sf-view="grid">
                     {{ $slot }}
                 </div>
 

@@ -138,13 +138,151 @@ function copyButtons() {
     });
 }
 
+function toast(type, message) {
+    if (!message) return;
+    if (window.toastr?.[type]) window.toastr[type](message);
+}
+
+/**
+ * "Download catalogue" links (`<x-sf-export-button>`). The endpoint builds the
+ * workbook and answers JSON: either the file URL, or — for personalised
+ * price lists, which are generated in the background — a notice.
+ */
+function exportLinks() {
+    document.addEventListener('click', async (event) => {
+        const link = event.target.closest('[data-sf-export]');
+        if (!link) return;
+        event.preventDefault();
+        if (link.dataset.busy) return;
+
+        const t = window.__SF__?.t ?? {};
+        link.dataset.busy = '1';
+        link.setAttribute('aria-busy', 'true');
+        link.classList.add('pointer-events-none', 'opacity-60');
+
+        try {
+            const res = await fetch(link.href, {
+                credentials: 'same-origin',
+                headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            });
+            const data = await res.json().catch(() => ({}));
+
+            if (data.success && data.url) {
+                window.location.href = data.url;
+                toast('success', data.message || t.exportStarted);
+            } else if (data.success) {
+                toast('info', data.message || t.exportPersonalized);
+            } else {
+                toast('error', data.message || t.exportError);
+            }
+        } catch {
+            toast('error', t.exportError);
+        } finally {
+            delete link.dataset.busy;
+            link.removeAttribute('aria-busy');
+            link.classList.remove('pointer-events-none', 'opacity-60');
+        }
+    });
+}
+
+/** Grid / list switch on catalogue pages; remembered per visitor. */
+function catalogView() {
+    const grid = document.querySelector('.sf-grid-products[data-sf-view]');
+    const buttons = document.querySelectorAll('[data-sf-view-set]');
+    if (!grid || !buttons.length) return;
+
+    const apply = (view) => {
+        grid.dataset.sfView = view;
+        buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.sfViewSet === view)));
+        try { localStorage.setItem('sf.catalog.view', view); } catch { /* storage blocked */ }
+    };
+
+    let saved = 'grid';
+    try { saved = localStorage.getItem('sf.catalog.view') || 'grid'; } catch { /* storage blocked */ }
+    // Lists are a desktop/tablet affordance; phones always get the grid.
+    apply(window.matchMedia('(min-width: 640px)').matches ? saved : 'grid');
+
+    buttons.forEach((button) => button.addEventListener('click', () => apply(button.dataset.sfViewSet)));
+}
+
+/** "Reset" in the mobile filter drawer drops every filter but keeps search. */
+function filterReset() {
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('[data-sf-filter-reset]')) return;
+        const form = document.getElementById('filterForm');
+        const url = new URL(form?.action || window.location.href, window.location.origin);
+        const search = new URL(window.location.href).searchParams.get('filter[search]');
+        url.search = '';
+        if (search) url.searchParams.set('filter[search]', search);
+        window.location.href = url.toString();
+    });
+}
+
+/**
+ * `[data-sf-sticky-when-hidden="#target"]` shows itself (data-visible=true)
+ * only while #target is out of the viewport — the product page's mobile buy
+ * bar appears once the real buy box has scrolled away.
+ */
+function stickyWhenHidden() {
+    document.querySelectorAll('[data-sf-sticky-when-hidden]').forEach((bar) => {
+        const target = document.querySelector(bar.dataset.sfStickyWhenHidden);
+        if (!target || !('IntersectionObserver' in window)) return;
+
+        new IntersectionObserver(([entry]) => {
+            const visible = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+            bar.dataset.visible = String(visible);
+            bar.setAttribute('aria-hidden', String(!visible));
+        }).observe(target);
+
+        bar.querySelector('a[href^="#"]')?.addEventListener('click', (event) => {
+            event.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.querySelector('button:not([disabled])')?.focus({ preventScroll: true });
+        });
+    });
+}
+
+/**
+ * Form helpers shared by registration and the account page:
+ *  - `[data-sf-reveal="inputId"]` toggles a password field's visibility;
+ *  - `[data-sf-password-rule="inputId"]` turns green once the length rule
+ *    (8–20 characters, the server's validation) is met.
+ */
+function formHelpers() {
+    document.addEventListener('click', (event) => {
+        const toggle = event.target.closest('[data-sf-reveal]');
+        if (!toggle) return;
+        const input = document.getElementById(toggle.dataset.sfReveal);
+        if (!input) return;
+        input.type = input.type === 'password' ? 'text' : 'password';
+        toggle.classList.toggle('text-brand-600', input.type === 'text');
+        toggle.setAttribute('aria-pressed', String(input.type === 'text'));
+    });
+
+    document.querySelectorAll('[data-sf-password-rule]').forEach((rule) => {
+        const input = document.getElementById(rule.dataset.sfPasswordRule);
+        if (!input) return;
+        const check = () => {
+            const ok = input.value.length >= 8 && input.value.length <= 20;
+            rule.classList.toggle('text-success-600', ok);
+            rule.classList.toggle('text-ink-500', !ok);
+        };
+        input.addEventListener('input', check);
+        check();
+    });
+}
+
 function boot() {
+    formHelpers();
+    stickyWhenHidden();
     stickyHeaderShadow();
     productRails();
     accordions();
-    cartBadge();
     drawers();
     copyButtons();
+    exportLinks();
+    catalogView();
+    filterReset();
 }
 
 if (document.readyState === 'loading') {

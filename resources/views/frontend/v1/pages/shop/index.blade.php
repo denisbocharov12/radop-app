@@ -12,6 +12,19 @@
             default => __('theme.shop'),
         };
 
+        // Excel export exists for the new / popular / sale listings only —
+        // the same three the legacy header offered it on.
+        $personalizedExport = (bool) auth('user')->user()?->sale;
+        $exportRoute = match (request()->route()?->getName()) {
+            'theme.shop.new' => 'theme.shop.new.export',
+            'theme.shop.popular' => 'theme.shop.popular.export',
+            'theme.shop.sale' => 'theme.shop.sale.export',
+            default => null,
+        };
+        $exportUrl = $exportRoute
+            ? route($exportRoute . ($personalizedExport ? '.personalized' : ''))
+            : null;
+
         $ga4ListId = data_get($ga4ItemLists ?? [], '0.item_list_id', '');
         $ga4ListName = data_get($ga4ItemLists ?? [], '0.item_list_name', '');
     @endphp
@@ -23,6 +36,8 @@
         :action="url()->current()"
         :default-sort="$defaultSort ?? 'price'"
         :heading="$heading"
+        :export-url="$exportUrl"
+        :export-personalized="$personalizedExport"
     >
         <x-slot:filters>
             <x-sf-catalog-filters

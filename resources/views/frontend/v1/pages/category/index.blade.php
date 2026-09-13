@@ -42,6 +42,10 @@
         :action="route('theme.category.index', $existedCategory->onec_id)"
         :default-sort="$defaultSort ?? 'price'"
         :heading="$existedCategory->children->isEmpty() ? $title : null"
+        :export-url="auth('user')->user()?->sale
+            ? route('theme.category.export.personalized', $existedCategory->onec_id)
+            : route('theme.category.export', $existedCategory->onec_id)"
+        :export-personalized="(bool) auth('user')->user()?->sale"
     >
         <x-slot:filters>
             <x-sf-catalog-filters

@@ -63,31 +63,8 @@
             };
             window.IMask ? applyMasks() : window.addEventListener('load', applyMasks);
 
-            /* Password reveal: one handler for every field, toggling the input
-               type rather than swapping between two inputs. */
-            document.addEventListener('click', function (event) {
-                var toggle = event.target.closest('[data-sf-reveal]');
-                if (!toggle) return;
-                var input = document.getElementById(toggle.dataset.sfReveal);
-                if (!input) return;
-                input.type = input.type === 'password' ? 'text' : 'password';
-                toggle.classList.toggle('text-brand-600', input.type === 'text');
-            });
-
-            /* Live length rule. */
-            document.querySelectorAll('[data-sf-password-rule]').forEach(function (rule) {
-                var input = document.getElementById(rule.dataset.sfPasswordRule);
-                if (!input) return;
-
-                var check = function () {
-                    var ok = input.value.length >= 8 && input.value.length <= 20;
-                    rule.classList.toggle('text-success-600', ok);
-                    rule.classList.toggle('text-ink-500', !ok);
-                };
-
-                input.addEventListener('input', check);
-                check();
-            });
+            /* Password reveal and the live length rule are shared with the
+               account page, so they live in storefront/lib/vitals.js. */
         });
     </script>
 @endsection

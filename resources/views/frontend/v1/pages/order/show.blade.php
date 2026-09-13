@@ -1,102 +1,105 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="my-account" style="margin-bottom: 100px">
-        <div class="container">
-            <h1 class="my-account__title title">{{__('theme.my-account')}}</h1>
-            <div class="my-account__wrapper">
-                @include('frontend.v1.pages.account.sidebar')
-                <div class="order-parameters__body">
-                    <div class="order-parameters__wrapper">
-                        <div class="wrap-heading">
-                            <h2 class="heading">{{__('theme.order-number')}}{{$order->order_number}}</h2>
-                            <span class="order-status @if($order->status === 'canceled')canceled @endif">
-                            @foreach($orderStatus as $status => $key)
-                                    @if($order->status == $status)
-                                        {{$key}}
-                                    @endif
-                            @endforeach
-                        </span>
-                        </div>
-                        <div class="wrap-meta">
-                            <p class="order-address"><span class="meta-title">{{__('theme.address')}}:</span> <span>Address</span></p>
-                            <p class="order-phone"><span class="meta-title">{{__('theme.phone-number')}}:</span> <span>{{$order->phone}}</span></p>
-                            <p class="order-date">
-                                <span class="meta-title">{{__('theme.data')}}</span>
-                                <time>{{$order->created_at}}</time>
-                            </p>
-                            <p class="payment-method">
-                                <span class="meta-title">{{__('theme.order_payment_method')}}:</span>
-                                <span>
-                                    @if($order->payment_method === 'cash')
-                                        {{__('theme.cash')}}
-                                    @elseif($order->payment_method === 'card')
-                                        {{__('theme.card')}}
-                                    @endif
-                                </span>
-                            </p>
-                        </div>
-                        <div class="order-parameters-table-responsive">
-                            <table class="order-parameters-table">
-                                <thead>
-                                <tr>
-                                    <th>{{__('theme.code')}}</th>
-                                    <th>{{__('theme.product-name')}}</th>
-                                    <th>{{__('theme.price')}}</th>
-                                    <th>{{__('theme.order_show_qty')}}</th>
-                                    <th>{{__('theme.order_sum')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody class="order-parameters-table__tbody">
-                                @foreach($order->products as $item)
-{{--                                    @php--}}
-{{--                                        $productPrice = 0;--}}
-{{--                                        if(Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0 && $product->sale_price === '') {--}}
-{{--                                           $productPrice = number_format((float)$product->price - (float)$product->price * (Auth::guard('user')->user()->sale / 100), 2, ',', '');--}}
-{{--                                        } elseif($product->sale_price !== '' || Auth::guard('user')->user() && Auth::guard('user')->user()->sale !== null && Auth::guard('user')->user()->sale !== 0.0) {--}}
-{{--                                            $productPrice = number_format($product->sale_price, 2, ',', '');--}}
-{{--                                        } else {--}}
-{{--                                            $productPrice = number_format($product->price * (float)$product->price_koef, 2, ',', '');--}}
-{{--                                        }--}}
-{{--                                    @endphp--}}
-                                    <tr>
-                                        <td>{{\App\Models\Product::where('id', $item->product_id)->first() !== null ? \App\Models\Product::where('id', $item->product_id)->first()->onec_id : ''}}</td>
-                                        <td>{{\App\Models\Product::where('id', $item->product_id)->first() !== null ? \App\Models\Product::where('id', $item->product_id)->first()->title : ''}}</td>
-                                        <td>{{$item->price}} {{__('theme.MDL')}}</td>
-                                        <td>{{$item->quantity}}</td>
-                                        <td>{{number_format((float)$item->price * $item->quantity, 2, '.', '')}}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                                <tfoot class="order-parameters-table__tfoot">
-                                <tr></tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="2">{{__('theme.order_for_payment')}}</td>
-                                    <td>{{number_format($order->subtotal, 2, '.', '')}} {{__('theme.MDL')}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="2">{{__('theme.discount')}} {{__('theme.MDL')}}</td>
-                                    <td>0.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"></td>
-                                    <td colspan="2">{{__('theme.for-payment')}}</td>
-                                    <td>{{number_format($order->total, 2, '.', '')}} {{__('theme.MDL')}}</td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="order-actions-wrap">
-                            <a href="{{route('theme.user.orders.repeat', $order)}}" class="btn-repeat-order">
-                                <i class="icon-arrows-cw"></i>
-                                {{__('theme.order-repeat')}}
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    @php
+        /*
+         * The legacy view ran two Product queries per line (and printed the
+         * literal word "Address" instead of the order's address). Products are
+         * loaded once here.
+         */
+        $productsById = \App\Models\Product::whereIn('id', $order->products->pluck('product_id'))->get()->keyBy('id');
+        $statusLabel = $orderStatus[$order->status] ?? $order->status;
+        $canceled = $order->status === 'canceled';
+    @endphp
+
+    <x-sf-account-shell :title="__('theme.order-number') . $order->order_number">
+        <x-slot:actions>
+            <a href="{{ route('theme.user.orders.repeat', $order) }}" class="sf-btn-primary">
+                <x-sf-icon name="cart" :size="16" />{{ __('theme.order-repeat') }}
+            </a>
+        </x-slot:actions>
+
+        <div class="sf-card mb-4 grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+                <p class="text-xs text-ink-500">{{ __('theme.order-status') }}</p>
+                <span @class([
+                    'mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                    'bg-danger-50 text-danger-600' => $canceled,
+                    'bg-brand-50 text-brand-700' => ! $canceled,
+                ])>{{ $statusLabel }}</span>
             </div>
+            <div>
+                <p class="text-xs text-ink-500">{{ __('theme.data') }}</p>
+                <p class="mt-1 text-sm font-medium text-ink-800">{{ $order->created_at?->format('d.m.Y H:i') }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-ink-500">{{ __('theme.phone-number') }}</p>
+                <p class="mt-1 text-sm font-medium text-ink-800">{{ $order->phone ?: '—' }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-ink-500">{{ __('theme.order_payment_method') }}</p>
+                <p class="mt-1 text-sm font-medium text-ink-800">
+                    {{ match ($order->payment_method) { 'cash' => __('theme.cash'), 'card' => __('theme.card'), default => '—' } }}
+                </p>
+            </div>
+            @if($order->address)
+                <div class="sm:col-span-2 lg:col-span-4">
+                    <p class="text-xs text-ink-500">{{ __('theme.address') }}</p>
+                    <p class="mt-1 text-sm font-medium text-ink-800">{{ $order->address }}</p>
+                </div>
+            @endif
         </div>
-    </section>
+
+        {{-- Table on wide screens, stacked rows on phones. --}}
+        <div class="sf-card overflow-hidden">
+            <table class="hidden w-full text-sm md:table">
+                <thead class="bg-ink-50 text-left text-xs uppercase tracking-wide text-ink-500">
+                    <tr>
+                        <th class="px-4 py-3 font-semibold">{{ __('theme.code') }}</th>
+                        <th class="px-4 py-3 font-semibold">{{ __('theme.product-name') }}</th>
+                        <th class="px-4 py-3 text-right font-semibold">{{ __('theme.price') }}</th>
+                        <th class="px-4 py-3 text-right font-semibold">{{ __('theme.order_show_qty') }}</th>
+                        <th class="px-4 py-3 text-right font-semibold">{{ __('theme.order_sum') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-ink-100">
+                    @foreach($order->products as $item)
+                        @php($product = $productsById->get($item->product_id))
+                        <tr>
+                            <td class="whitespace-nowrap px-4 py-3 text-ink-500">{{ $product?->onec_id }}</td>
+                            <td class="px-4 py-3">
+                                @if($product)
+                                    <a href="{{ route('theme.product.index', $product->slug) }}" class="font-medium text-ink-800 hover:text-brand-600">{{ $product->title }}</a>
+                                @endif
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3 text-right text-ink-700">{{ number_format((float) $item->price, 2, ',', ' ') }}</td>
+                            <td class="px-4 py-3 text-right text-ink-700">{{ $item->quantity }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-right font-semibold text-ink-900">{{ number_format((float) $item->price * $item->quantity, 2, ',', ' ') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <ul class="divide-y divide-ink-100 md:hidden">
+                @foreach($order->products as $item)
+                    @php($product = $productsById->get($item->product_id))
+                    <li class="flex gap-3 p-3 text-sm">
+                        <div class="min-w-0 flex-1">
+                            <p class="font-medium text-ink-800">{{ $product?->title }}</p>
+                            <p class="mt-0.5 text-xs text-ink-500">{{ $product?->onec_id }} · {{ $item->quantity }} × {{ number_format((float) $item->price, 2, ',', ' ') }}</p>
+                        </div>
+                        <p class="shrink-0 font-semibold text-ink-900">{{ number_format((float) $item->price * $item->quantity, 2, ',', ' ') }}</p>
+                    </li>
+                @endforeach
+            </ul>
+
+            <dl class="space-y-1.5 border-t border-ink-200 bg-ink-50 p-4 text-sm">
+                <div class="flex justify-between"><dt class="text-ink-500">{{ __('theme.order_for_payment') }}</dt><dd class="font-medium">{{ number_format((float) $order->subtotal, 2, ',', ' ') }} {{ __('theme.MDL') }}</dd></div>
+                <div class="flex justify-between"><dt class="text-ink-500">{{ __('theme.discount') }}</dt><dd class="font-medium">0,00 {{ __('theme.MDL') }}</dd></div>
+                <div class="flex items-baseline justify-between border-t border-ink-200 pt-2"><dt class="font-semibold text-ink-800">{{ __('theme.for-payment') }}</dt><dd class="text-lg font-bold text-ink-900">{{ number_format((float) $order->total, 2, ',', ' ') }} {{ __('theme.MDL') }}</dd></div>
+            </dl>
+        </div>
+    </x-sf-account-shell>
 @endsection

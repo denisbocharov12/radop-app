@@ -394,6 +394,119 @@
     .sf-prose :where(td) { @apply border border-ink-200 p-2 align-top; }
 }
 
+@layer components {
+    /* ---------------------------------------------------------- card parts */
+    .sf-product-info {
+        @apply flex flex-col gap-1;
+    }
+
+    .sf-product-pricing {
+        @apply flex flex-wrap items-baseline gap-x-2 gap-y-0.5;
+    }
+
+    /* Quick-view pill: only rendered for precise pointers, where hover exists. */
+    .sf-product-quick {
+        @apply absolute inset-x-3 bottom-3 z-10 hidden items-center justify-center gap-1.5
+               rounded-md bg-white/95 py-2 text-xs font-semibold text-ink-800 shadow-card backdrop-blur
+               transition-all duration-150 ease-sf hover:text-brand-600;
+        opacity: 0;
+        transform: translateY(0.25rem);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .sf-product-quick { display: flex; }
+        .sf-product:hover .sf-product-quick,
+        .sf-product-quick:focus-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ---------------------------------------------------------- card cart row */
+    .sf-product-cart {
+        container-type: inline-size;
+    }
+
+    .sf-atc {
+        @apply flex items-stretch gap-2;
+    }
+
+    .sf-atc .sf-atc-stepper {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .sf-atc .sf-atc-button {
+        flex: 0 0 2.5rem;
+        @apply px-0;
+    }
+
+    .sf-atc .sf-atc-label {
+        @apply sf-sr-only;
+    }
+
+    @container (min-width: 14.5rem) {
+        .sf-atc .sf-atc-stepper { flex: 0 0 auto; }
+        .sf-atc .sf-atc-input { width: 2.75rem; flex: 0 0 2.75rem; }
+        .sf-atc .sf-atc-button { flex: 1 1 auto; @apply px-3; }
+        .sf-atc .sf-atc-label {
+            position: static;
+            width: auto;
+            height: auto;
+            clip: auto;
+            white-space: nowrap;
+        }
+    }
+
+    /* ---------------------------------------------------------- list layout */
+    .sf-view-toggle {
+        @apply flex w-10 items-center justify-center text-ink-400 transition-colors
+               hover:bg-ink-50 hover:text-ink-700 aria-pressed:bg-brand-50 aria-pressed:text-brand-600;
+    }
+
+    /* The same card markup, laid out as a row: image | name | price | cart.
+       Denser, and the layout wholesale buyers asked for in the old site's
+       table view. */
+    .sf-grid-products[data-sf-view="list"] {
+        grid-template-columns: minmax(0, 1fr);
+        @apply gap-2;
+    }
+
+    [data-sf-view="list"] .sf-product {
+        @apply flex-row items-stretch;
+    }
+
+    [data-sf-view="list"] .sf-product-media {
+        @apply aspect-auto w-24 shrink-0 p-2 sm:w-28;
+    }
+
+    [data-sf-view="list"] .sf-product-flags {
+        @apply left-1 top-1 origin-top-left scale-90;
+    }
+
+    [data-sf-view="list"] .sf-product-body {
+        @apply min-w-0 flex-1 border-l border-t-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,16rem)] sm:items-center sm:gap-5;
+    }
+
+    [data-sf-view="list"] .sf-product-pricing {
+        @apply sm:flex-col sm:items-end;
+    }
+
+    [data-sf-view="list"] .sf-product-quick {
+        display: none;
+    }
+
+    /* ---------------------------------------------------------- cookie reset */
+    /* @cookieconsentbutton renders <form class="X"><button class="X__link">. */
+    .sf-cookie-settings-form {
+        @apply inline;
+    }
+
+    .sf-cookie-settings-form__link {
+        @apply cursor-pointer border-0 bg-transparent p-0 text-left text-sm text-ink-600 hover:text-brand-600;
+    }
+}
+
 @layer utilities {
     /* Hide until the Vue island that owns the node has mounted. */
     [v-cloak] { @apply invisible; }

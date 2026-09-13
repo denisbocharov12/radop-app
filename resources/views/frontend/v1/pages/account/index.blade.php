@@ -1,254 +1,122 @@
 @extends('frontend.v1.layouts.layout')
 
+@section('sf-page', 1)
+
 @section('content')
-    <section class="my-account" style="margin-bottom: 100px">
-        <div class="container">
-            <h1 class="my-account__title title">{{__('theme.my-account')}}</h1>
-            <div class="my-account__wrapper">
-                @include('frontend.v1.pages.account.sidebar')
-                <div class="my-account-details">
-                    <h2 class="my-account-details__title">{{__('theme.account-details')}}</h2>
-                    <ul class="my-account-details__list">
-                        <li class="my-account-details__item">
-                            <h3 class="my-account-details__name">
-                                {{__('theme.personal-information')}}
-                            </h3>
-                            <div class="my-account-details__inner">
-                                <div class="my-account-details__text">
-                                    {{__('theme.personal-information-save')}}
-                                </div>
-                                <form class="my-account-details-form" action="{{route('theme.user.account.update', auth()->guard('user')->user())}}" method="POST">
-                                    @csrf
-                                    <ul class="my-account-details-form__list">
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="first_name"
-                                            >{{__('theme.first-name')}}</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="text"
-                                                name="first_name"
-                                                id="first_name"
-                                                placeholder="{{__('theme.first-name')}}"
-                                                value="{{$user->profile->first_name}}"
-                                                required
-                                            />
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="last_name"
-                                            >{{__('theme.second-name')}}</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="text"
-                                                name="last_name"
-                                                id="last_name"
-                                                placeholder="{{__('theme.second-name')}}"
-                                                value="{{$user->profile->last_name}}"
-                                                required
-                                            />
-                                        </li>
-                                        <li class="my-account-details-form__item select-2-container-wrap">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="city_id"
-                                            >{{__('theme.city-label')}}</label
-                                            >
-                                            <select name="city_id" id="city_id" class="select-2-container my-account-details-form__input">
-                                                @foreach($cities as $city)
-                                                    <option value="{{$city->id}}" {{$user->city_id === $city->id ? 'selected' : ''}}>{{$city->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="address"
-                                            >{{__('theme.address')}}</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="text"
-                                                name="address"
-                                                id="address"
-                                                placeholder="{{__('theme.address')}}"
-                                                value="{{$user->profile->address}}"
-                                                required
-                                            />
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="phone"
-                                            >{{__('theme.phone-number')}}</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="tel"
-                                                name="phone"
-                                                id="phone"
-                                                placeholder="{{__('theme.phone-number')}}"
-                                                value="{{$user->profile->phone}}"
-                                                required
-                                            />
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="email"
-                                            >Email</label
-                                            >
-                                            <input
-                                                class="my-account-details-form__input"
-                                                type="email"
-                                                name="email"
-                                                id="email"
-                                                placeholder="example@mail.ru"
-                                                value="{{$user->email}}"
-                                                required
-                                            />
-                                        </li>
-                                        @if($user->type->key_name == 'iur')
-                                            <li class="my-account-details-form__item">
-                                                <label
-                                                    class="my-account-details-form__label"
-                                                    for="organization_name"
-                                                >Название компании</label
-                                                >
-                                                <input
-                                                    class="my-account-details-form__input"
-                                                    type="text"
-                                                    name="organization_name"
-                                                    id="organization_name"
-                                                    placeholder="Название компании"
-                                                    value="{{$user->profile->organization_name}}"
-                                                />
-                                            </li>
-                                            <li class="my-account-details-form__item">
-                                                <label
-                                                    class="my-account-details-form__label"
-                                                    for="cod_fiscal"
-                                                >{{__('theme.cod-fiscal')}}</label
-                                                >
-                                                <input
-                                                    class="my-account-details-form__input"
-                                                    type="text"
-                                                    name="cod_fiscal"
-                                                    id="cod_fiscal"
-                                                    placeholder="{{__('theme.cod-fiscal')}}"
-                                                    value="{{$user->profile->cod_fiscal}}"
-                                                />
-                                            </li>
-                                            <li class="my-account-details-form__item">
-                                                <label
-                                                    class="my-account-details-form__label"
-                                                    for="contact_name"
-                                                >Контактное лицо</label
-                                                >
-                                                <input
-                                                    class="my-account-details-form__input"
-                                                    type="text"
-                                                    name="contact_name"
-                                                    id="contact_name"
-                                                    placeholder="Контактное лицо"
-                                                    value="{{$user->profile->contact_name}}"
-                                                />
-                                            </li>
-                                        @endif
-                                    </ul>
-                                    <button
-                                        class="my-account-details-form__button"
-                                        type="submit"
-                                    >
-                                        {{__('theme.save')}}
-                                    </button>
-                                </form>
-                            </div>
-                        </li>
-                            <h3 class="my-account-details__name">{{__('theme.password')}}</h3>
-                            <div class="my-account-details__inner">
-                                <div class="my-account-details__text">
-                                    {{__('theme.personal-information-save')}}
-                                </div>
-                                <form class="my-account-details-form" action="{{route('theme.user.account.password.update')}}" method="POST">
-                                    @csrf
-                                    <div class="password-requirements">
-                                        <h3>{{__('theme.password-recommendations')}}:</h3>
-                                        <ul class="mt-3">
-                                            <li>
-                                                {{__('theme.password-recommendations-uppercase')}}
-                                            </li>
-                                            <li>
-                                                {{__('theme.password-recommendations-lowercase')}}
-                                            </li>
-                                            <li>
-                                                {{__('theme.password-recommendations-numbers')}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <ul class="my-account-details-form__list mt-3">
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="current_password"
-                                            >{{__('theme.current-password')}}</label
-                                            >
-                                            <input
-                                                required
-                                                class="my-account-details-form__input my-account-details-form-password"
-                                                type="password"
-                                                name="current_password"
-                                                id="current_password"
-                                            />
-                                            <i class="icon-eye-off togglePassword"></i>
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="password"
-                                            >{{__('theme.new-password')}}</label
-                                            >
-                                            <input
-                                                required
-                                                class="my-account-details-form__input my-account-details-form-password"
-                                                type="password"
-                                                name="password"
-                                                id="password"
-                                            />
-                                            <i class="icon-eye-off togglePassword"></i>
-                                        </li>
-                                        <li class="my-account-details-form__item">
-                                            <label
-                                                class="my-account-details-form__label"
-                                                for="confirm_password"
-                                            >{{__('theme.confirm-password')}}</label
-                                            >
-                                            <input
-                                                required
-                                                class="my-account-details-form__input my-account-details-form-password"
-                                                type="password"
-                                                name="confirm_password"
-                                                id="confirm_password"
-                                            />
-                                            <i class="icon-eye-off togglePassword"></i>
-                                        </li>
-                                    </ul>
-                                    <button
-                                        class="my-account-details-form__button"
-                                        type="submit"
-                                    >
-                                        {{__('theme.save')}}
-                                    </button>
-                                </form>
-                            </div>
-                        </li>
+    @php
+        $isBusiness = $user->type->key_name === 'iur';
+
+        /* Field names, routes and validation are unchanged; only the markup is new. */
+        $profileFields = array_values(array_filter([
+            $isBusiness ? ['organization_name', __('theme.company-name'), 'text', $user->profile->organization_name, false, 'organization'] : null,
+            $isBusiness ? ['cod_fiscal', __('theme.cod-fiscal'), 'text', $user->profile->cod_fiscal, false, 'off'] : null,
+            ['first_name', __('theme.first-name'), 'text', $user->profile->first_name, true, 'given-name'],
+            ['last_name', __('theme.second-name'), 'text', $user->profile->last_name, true, 'family-name'],
+            $isBusiness ? ['contact_name', __('theme.contact-person'), 'text', $user->profile->contact_name, false, 'name'] : null,
+            ['phone', __('theme.phone-number'), 'tel', $user->profile->phone, true, 'tel'],
+            ['email', 'Email', 'email', $user->email, true, 'email'],
+            ['address', __('theme.address'), 'text', $user->profile->address, true, 'street-address'],
+        ]));
+    @endphp
+
+    <x-sf-account-shell :title="__('theme.account-details')" :subtitle="__('theme.personal-information-save')">
+        <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_22rem] xl:items-start">
+            <form
+                action="{{ route('theme.user.account.update', auth()->guard('user')->user()) }}"
+                method="POST"
+                class="sf-card p-5"
+            >
+                @csrf
+                <h2 class="mb-4 text-md font-bold text-ink-900">{{ __('theme.personal-information') }}</h2>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    @foreach($profileFields as [$name, $label, $type, $value, $required, $autocomplete])
+                        <label class="block">
+                            <span class="sf-label">{{ $label }}@if($required)<span class="text-danger-500">*</span>@endif</span>
+                            <input
+                                type="{{ $type }}"
+                                name="{{ $name }}"
+                                id="{{ $name }}"
+                                value="{{ old($name, $value) }}"
+                                autocomplete="{{ $autocomplete }}"
+                                class="sf-field @error($name) sf-field-error @enderror"
+                                @required($required)
+                            />
+                            @error($name)<span class="sf-error">{{ $message }}</span>@enderror
+                        </label>
+                    @endforeach
+
+                    <label class="block">
+                        <span class="sf-label">{{ __('theme.city-label') }}</span>
+                        <select name="city_id" id="city_id" class="sf-field pr-8 @error('city_id') sf-field-error @enderror">
+                            @foreach($cities as $city)
+                                <option value="{{ $city->id }}" @selected((int) old('city_id', $user->city_id) === $city->id)>{{ $city->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('city_id')<span class="sf-error">{{ $message }}</span>@enderror
+                    </label>
+                </div>
+
+                <button type="submit" class="sf-btn-primary mt-5">
+                    <x-sf-icon name="check" :size="16" />{{ __('theme.save') }}
+                </button>
+            </form>
+
+            <form action="{{ route('theme.user.account.password.update') }}" method="POST" class="sf-card p-5">
+                @csrf
+                <h2 class="mb-1 text-md font-bold text-ink-900">{{ __('theme.password') }}</h2>
+
+                <div class="mb-4 mt-3 rounded-lg bg-ink-50 p-3 text-xs text-ink-600">
+                    <p class="mb-1.5 font-semibold text-ink-800">{{ __('theme.password-recommendations') }}:</p>
+                    <ul class="space-y-1">
+                        @foreach(['uppercase', 'lowercase', 'numbers'] as $rule)
+                            <li class="flex items-start gap-1.5">
+                                <x-sf-icon name="check" :size="13" class="mt-0.5 text-brand-600" />
+                                {{ __('theme.password-recommendations-' . $rule) }}
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
-            </div>
+
+                <div class="space-y-3">
+                    @foreach([
+                        ['current_password', __('theme.current-password'), 'current-password'],
+                        ['password', __('theme.new-password'), 'new-password'],
+                        ['confirm_password', __('theme.confirm-password'), 'new-password'],
+                    ] as [$name, $label, $autocomplete])
+                        <label class="block">
+                            <span class="sf-label">{{ $label }}</span>
+                            <span class="relative block">
+                                <input
+                                    type="password"
+                                    name="{{ $name }}"
+                                    id="{{ $name }}"
+                                    autocomplete="{{ $autocomplete }}"
+                                    class="sf-field pr-11 @error($name) sf-field-error @enderror"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    class="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-ink-400 hover:text-ink-700"
+                                    data-sf-reveal="{{ $name }}"
+                                    aria-pressed="false"
+                                    aria-label="{{ $label }}"
+                                >
+                                    <x-sf-icon name="eye" :size="17" />
+                                </button>
+                            </span>
+                            @error($name)<span class="sf-error">{{ $message }}</span>@enderror
+                        </label>
+                    @endforeach
+
+                    <p class="flex items-center gap-2 text-xs text-ink-500" data-sf-password-rule="password">
+                        <x-sf-icon name="info" :size="14" />
+                        <span>{{ __('theme.password-rule-length') }}</span>
+                    </p>
+                </div>
+
+                <button type="submit" class="sf-btn-secondary sf-btn-block mt-5">{{ __('theme.save') }}</button>
+            </form>
         </div>
-    </section>
+    </x-sf-account-shell>
 @endsection
