@@ -92,6 +92,11 @@ function pick(item) {
     nextTick(() => formEl.value?.requestSubmit());
 }
 
+function submitQuery() {
+    open.value = false;
+    nextTick(() => formEl.value?.requestSubmit());
+}
+
 async function clearHistory() {
     history.value = [];
     try {
@@ -199,7 +204,7 @@ onBeforeUnmount(() => {
             leave-to-class="opacity-0"
         >
             <div
-                v-if="open && (items.length || busy)"
+                v-if="open && (items.length || busy || !showingHistory)"
                 class="absolute inset-x-0 top-full z-menu mt-2 overflow-hidden rounded-lg border border-ink-200 bg-white shadow-pop"
             >
                 <div
@@ -246,6 +251,19 @@ onBeforeUnmount(() => {
                 <div v-if="busy && !items.length" class="space-y-2 p-3">
                     <div v-for="n in 3" :key="n" class="sf-skeleton h-4 w-full"></div>
                 </div>
+
+                <!-- Always offer the full search: suggestions are only a shortcut,
+                     and a term with no suggestion ("pixuri") still has results. -->
+                <button
+                    v-if="!showingHistory"
+                    type="button"
+                    class="flex w-full items-center gap-2.5 border-t border-ink-100 bg-ink-50/60 px-3 py-2.5 text-left text-sm font-medium text-brand-700 hover:bg-brand-50"
+                    @click="submitQuery"
+                >
+                    <SfIcon name="search" :size="15" />
+                    <span class="min-w-0 flex-1 truncate">{{ $sf.t.search }}: „{{ query.trim() }}"</span>
+                    <SfIcon name="chevronRight" :size="15" class="text-brand-400" />
+                </button>
             </div>
         </Transition>
     </div>

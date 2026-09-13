@@ -118,6 +118,17 @@
                     {{ Str::limit($card['title'], 80) }}
                 </a>
             </h3>
+
+            @if($card['article'] || $card['barcode'])
+                <p class="sf-product-codes">
+                    @if($card['article'])
+                        <span>{{ __('theme.article') }}: {{ $card['article'] }}</span>
+                    @endif
+                    @if($card['barcode'])
+                        <span>{{ __('theme.barcode') }}: {{ $card['barcode'] }}</span>
+                    @endif
+                </p>
+            @endif
         </div>
 
         <div class="sf-product-pricing">

@@ -261,31 +261,44 @@ final class ThemeSearchManager
             ->values();
     }
 
+    /**
+     * Titles containing the term, in the visitor's locale first. A term typed
+     * in the other language ("руч" on the Romanian site) matches that
+     * translation instead of returning nothing — the candidate query already
+     * searches every locale. When no title contains the term at all (a plural
+     * such as "pixuri"), the candidates the search query found are offered.
+     */
     private function buildTitleSuggestions(Collection $products, string $locale, string $lowerQuery): Collection
     {
-        return $products
-            ->map(function (Product $product) use ($locale) {
-                $title = $product->getTranslation('title', $locale) ?? $product->title;
+        $locales = array_values(array_unique(array_merge(
+            [$locale],
+            array_keys((array) config('laravellocalization.supportedLocales', []))
+        )));
 
-                return [
-                    'title' => $title,
-                ];
-            })
-            ->filter(function (array $data) use ($lowerQuery) {
-                $title = $data['title'];
+        $matched = $products
+            ->map(function (Product $product) use ($locales, $lowerQuery) {
+                foreach ($locales as $candidate) {
+                    $title = $product->getTranslation('title', $candidate, false);
 
-                if ($title === null) {
-                    return false;
+                    if (is_string($title) && $title !== ''
+                        && ($lowerQuery === '' || mb_stripos($title, $lowerQuery) !== false)) {
+                        return $title;
+                    }
                 }
 
-                if ($lowerQuery === '') {
-                    return true;
-                }
-
-                return mb_stripos(mb_strtolower($title), $lowerQuery) !== false;
+                return null;
             })
-            ->map(fn(array $data) => [
-                'text' => $data['title'],
+            ->filter();
+
+        if ($matched->isEmpty()) {
+            $matched = $products
+                ->map(fn(Product $product) => $product->getTranslation('title', $locale) ?: $product->title)
+                ->filter(fn($title) => is_string($title) && $title !== '');
+        }
+
+        return $matched
+            ->map(fn(string $title) => [
+                'text' => $title,
                 'type' => 'product',
             ])
             ->values();

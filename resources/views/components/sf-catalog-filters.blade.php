@@ -37,12 +37,23 @@
         + (($priceFrom !== null || $priceTo !== null) ? 1 : 0);
 @endphp
 
-<form action="{{ $action }}" method="GET" id="filterForm" class="space-y-1" data-sf-filter-form>
+<form
+    action="{{ $action }}"
+    method="GET"
+    id="filterForm"
+    class="[&>details:first-of-type]:border-t-0 lg:[&>details]:px-4"
+    data-sf-filter-form
+>
     <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
 
-    {{-- The phone drawer has its own title bar, so this heading is desktop-only. --}}
-    <div class="flex items-center justify-between px-1 pb-2 empty:hidden lg:min-h-[1.75rem]">
-        <h2 class="hidden text-sm font-bold uppercase tracking-wide text-ink-900 lg:block">{{ __('theme.filters') }}</h2>
+    {{-- The phone drawer has its own title bar, so the title is desktop-only.
+         On desktop the row is 4rem tall, like the catalogue toolbar, and
+         stays pinned while a long filter list scrolls. --}}
+    <div class="flex items-center justify-between gap-3 px-1 pb-2 lg:sticky lg:top-0 lg:z-10 lg:h-16 lg:border-b lg:border-ink-200 lg:bg-white lg:px-4 lg:pb-0">
+        <h2 class="hidden items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink-900 lg:flex">
+            <x-sf-icon name="filter" :size="15" class="text-brand-600" />
+            {{ __('theme.filters') }}
+        </h2>
         @if($activeCount > 0)
             <button type="button" id="filterResetBtn" class="text-xs font-medium text-brand-600 hover:text-brand-700">
                 {{ __('theme.reset-filters') }} ({{ $activeCount }})
@@ -51,7 +62,7 @@
     </div>
 
     <details class="group border-t border-ink-200 py-3" open>
-        <summary class="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-ink-900">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
             {{ __('theme.by-price') }}
             <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
         </summary>
@@ -84,13 +95,17 @@
 
     @foreach($attributeGroups as $label => $values)
         @php
-            $groupActive = collect($values)->contains(
-                static fn ($v) => isset($query['attribute'][$v->attribute_onec_id])
-            );
+            $groupCount = collect($values)->pluck('attribute_onec_id')->unique()
+                ->sum(static fn ($id) => count((array) data_get($query, "attribute.{$id}", [])));
         @endphp
-        <details class="group border-t border-ink-200 py-3" @if($groupActive) open @endif>
-            <summary class="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-ink-900">
-                {{ $label }}
+        <details class="group border-t border-ink-200 py-3" @if($groupCount > 0) open @endif>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
+                <span class="flex min-w-0 items-center gap-2">
+                    <span class="truncate">{{ $label }}</span>
+                    @if($groupCount > 0)
+                        <span class="inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white">{{ $groupCount }}</span>
+                    @endif
+                </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
             </summary>
             <div class="mt-2 max-h-56 space-y-1 overflow-y-auto pr-1">
@@ -116,8 +131,13 @@
 
     @if($brands && count($brands))
         <details class="group border-t border-ink-200 py-3" @if(data_get($query, 'brand')) open @endif>
-            <summary class="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-ink-900">
-                {{ __('theme.brand') }}
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
+                <span class="flex items-center gap-2">
+                    {{ __('theme.brand') }}
+                    @if($brandCount = count((array) data_get($query, 'brand', [])))
+                        <span class="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white">{{ $brandCount }}</span>
+                    @endif
+                </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
             </summary>
             <div class="mt-2 max-h-56 space-y-1 overflow-y-auto pr-1">

@@ -13,6 +13,10 @@ export default {
     content: [
         './resources/views/frontend/**/*.blade.php',
         './resources/views/components/sf-*.blade.php',
+        // Error pages and the paginator live outside frontend/; without these
+        // globs their utility classes were silently missing from the build.
+        './resources/views/errors/*.blade.php',
+        './resources/views/vendor/pagination/sf.blade.php',
         './resources/js/storefront.js',
         './resources/js/storefront/**/*.{js,vue}',
     ],

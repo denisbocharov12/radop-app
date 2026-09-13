@@ -453,8 +453,14 @@
         @apply mt-0.5 shrink-0 opacity-70;
     }
 
-    [data-sf-view="list"] .sf-product-meta {
-        @apply sm:col-start-1;
+    /* Article and barcode: only in the list layout, where the old site's
+       list rows printed them and wholesale buyers match orders by them. */
+    .sf-product-codes {
+        @apply hidden gap-x-3 gap-y-0.5 text-2xs text-ink-400;
+    }
+
+    [data-sf-view="list"] .sf-product-codes {
+        @apply flex flex-wrap;
     }
 
     /* ---------------------------------------------------------- static pages */
@@ -536,12 +542,13 @@
                hover:bg-ink-50 hover:text-ink-700 aria-pressed:bg-brand-50 aria-pressed:text-brand-600;
     }
 
-    /* The same card markup, laid out as a row: image | name | price | cart.
-       Denser, and the layout wholesale buyers asked for in the old site's
-       table view. */
+    /* The same card markup, laid out as the old site's list row:
+       image | name, codes, buying conditions | price and full cart control.
+       The buy column is a fixed width so prices and steppers form one
+       straight column down the page. */
     .sf-grid-products[data-sf-view="list"] {
         grid-template-columns: minmax(0, 1fr);
-        @apply gap-2;
+        @apply gap-3;
     }
 
     [data-sf-view="list"] .sf-product {
@@ -549,19 +556,40 @@
     }
 
     [data-sf-view="list"] .sf-product-media {
-        @apply aspect-auto w-24 shrink-0 p-2 sm:w-28;
+        @apply aspect-auto w-28 shrink-0 p-3 sm:w-40 lg:w-44;
     }
 
     [data-sf-view="list"] .sf-product-flags {
-        @apply left-1 top-1 origin-top-left scale-90;
+        @apply left-2 top-2;
     }
 
     [data-sf-view="list"] .sf-product-body {
-        @apply min-w-0 flex-1 border-l border-t-0 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,16rem)] sm:items-center sm:gap-5;
+        @apply min-w-0 flex-1 border-l border-t-0 sm:grid sm:grid-cols-[minmax(0,1fr)_16rem]
+               sm:grid-rows-[auto_1fr] sm:gap-x-6 sm:gap-y-0 sm:p-4 lg:grid-cols-[minmax(0,1fr)_18rem];
+    }
+
+    [data-sf-view="list"] .sf-product-info {
+        @apply sm:col-start-1 sm:row-start-1;
+    }
+
+    [data-sf-view="list"] .sf-product-title {
+        @apply sm:text-md;
+    }
+
+    [data-sf-view="list"] .sf-product-meta {
+        @apply sm:col-start-1 sm:row-start-2 sm:mt-2 sm:self-start sm:text-xs;
     }
 
     [data-sf-view="list"] .sf-product-pricing {
-        @apply sm:flex-col sm:items-end;
+        @apply sm:col-start-2 sm:row-start-1 sm:border-l sm:border-ink-100 sm:pb-3 sm:pl-6;
+    }
+
+    [data-sf-view="list"] .sf-product-price {
+        @apply sm:text-xl;
+    }
+
+    [data-sf-view="list"] .sf-product-cart {
+        @apply sm:col-start-2 sm:row-start-2 sm:mt-0 sm:flex sm:flex-col sm:justify-end sm:border-l sm:border-ink-100 sm:pl-6 sm:pt-0;
     }
 
     [data-sf-view="list"] .sf-product-quick {
