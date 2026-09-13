@@ -456,8 +456,10 @@
     /* Code (left) and article (right) as framed chips, like the old card.
        They sit above the card's stretched link so a click copies instead of
        opening the product. */
+    /* Wraps rather than squeezes: in a two-up phone card the article drops
+       under the code instead of shrinking to "Art: …". */
     .sf-product-codes-row {
-        @apply relative z-10 flex min-w-0 items-center justify-between gap-1.5 text-ink-400;
+        @apply relative z-10 flex min-w-0 flex-wrap items-center justify-between gap-x-1.5 gap-y-1 text-ink-400;
     }
 
     /* 10px: the eight-digit code must fit whole in a six-up rail card, so only
@@ -477,7 +479,7 @@
     }
 
     .sf-code-chip-article {
-        @apply shrink border-brand-200 hover:border-brand-500 hover:bg-brand-50;
+        @apply max-w-full shrink-0 border-brand-200 hover:border-brand-500 hover:bg-brand-50;
     }
 
     .sf-code-chip:hover b {
