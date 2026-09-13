@@ -114,7 +114,12 @@ final class StorefrontProductPresenter
     public function images(Product $product): array
     {
         if ($product->hasMedia('products')) {
+            // Media reached through $product->media does not know its owner, and
+            // ProductPathGenerator reads $media->model for the onec_id — so every
+            // image URL loaded the product again (46 of 114 queries on a category
+            // page). Hand the already-loaded product to each media item.
             return $product->getMedia('products')
+                ->each(static fn ($file) => $file->setRelation('model', $product))
                 ->map(static fn ($file) => $file->getUrl())
                 ->values()
                 ->all();

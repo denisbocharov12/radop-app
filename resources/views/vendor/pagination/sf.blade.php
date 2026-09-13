@@ -1,11 +1,11 @@
 @if ($paginator->hasPages())
-    <nav class="mt-8 flex items-center justify-center gap-1" role="navigation" aria-label="{{ __('Pagination Navigation') }}">
+    <nav class="mt-8 flex items-center justify-center gap-1" role="navigation" aria-label="{{ __('theme.sf-pagination') }}">
         @if ($paginator->onFirstPage())
             <span class="sf-icon-btn cursor-not-allowed opacity-40" aria-disabled="true">
                 <x-sf-icon name="chevronLeft" :size="18" />
             </span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="sf-icon-btn border border-ink-200" aria-label="{{ __('pagination.previous') }}">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="sf-icon-btn border border-ink-200" aria-label="{{ __('theme.sf-page-prev') }}" title="{{ __('theme.sf-page-prev') }}">
                 <x-sf-icon name="chevronLeft" :size="18" />
             </a>
         @endif
@@ -33,7 +33,9 @@
         @endforeach
 
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="sf-icon-btn border border-ink-200" aria-label="{{ __('pagination.next') }}">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="sf-icon-btn border border-ink-200" {{-- Not pagination.next/previous: the ro/ru files set those to '' for the
+                 old arrow buttons, which left these links without a name. --}}
+            aria-label="{{ __('theme.sf-page-next') }}" title="{{ __('theme.sf-page-next') }}">
                 <x-sf-icon name="chevronRight" :size="18" />
             </a>
         @else
