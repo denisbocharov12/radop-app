@@ -13,13 +13,16 @@ use Illuminate\Support\Str;
  * Single source of truth for how a product is shown on the storefront.
  *
  * The effective price (customer discount, sale coefficient, minimum-order
- * multiplier), the image fallback chain and the badge were previously
+ * multiplier), the image fallback chain and the badges were previously
  * re-derived in every card partial, the cart table, the mini-cart and the
  * product page. The product card, quick view, mini-cart and basket all read
  * from here now, so the rules cannot drift between them.
  */
 final class StorefrontProductPresenter
 {
+    /** Stock at or below which the card warns that few units are left. */
+    private const LOW_STOCK = 10;
+
     /**
      * Card-level data: everything a listing, quick view or basket line needs.
      *
@@ -29,13 +32,29 @@ final class StorefrontProductPresenter
     {
         $user = auth()->guard('user')->user();
 
+        // Effective unit price for this visitor: sale price, personal discount
+        // and per-customer category/product discounts are all applied here.
         $unitPrice = (float) ThemeProductManager::getProductTotalSum($product);
         $multiplier = ThemeProductManager::getMinOrderDisplayMultiplier($product);
 
-        $hasSale = $product->sale_price !== '' && $product->price_koef !== null;
-        $oldPrice = $user && $user->with_sale
-            ? round((float) $product->price, 2) * $multiplier
-            : round((float) $product->price * (float) $product->price_koef, 2) * $multiplier;
+        $onSale = $product->sale_price !== null && $product->sale_price !== '';
+
+        // The visitor's list price before any discount. Wholesale customers
+        // (`with_sale`) are priced from `price`, everyone else from price × koef
+        // — the same bases the legacy templates used for the struck-out price.
+        $listUnit = $user && $user->with_sale
+            ? round((float) $product->price, 2)
+            : round((float) $product->price * (float) $product->price_koef, 2);
+
+        $discounted = $listUnit > 0 && $unitPrice < $listUnit - 0.004;
+
+        // A discount that is not the catalogue sale is the customer's own
+        // (personal percentage or a customer-specific category/product rate).
+        // The legacy card showed only the reduced number, so customers could
+        // not tell they were getting their price.
+        $personal = $discounted && ! $onSale && $user !== null;
+
+        $stock = (int) $product->stock;
 
         return [
             'id' => (int) $product->id,
@@ -46,12 +65,18 @@ final class StorefrontProductPresenter
             'url' => route('theme.product.index', $product->slug),
             'image' => $this->images($product)[0] ?? null,
             'unitPrice' => $unitPrice,
+            // Shown price covers the minimum order quantity, as before.
             'displayPrice' => $unitPrice * $multiplier,
-            'oldPrice' => $hasSale ? $oldPrice : null,
-            'salePercent' => $hasSale ? ThemeProductManager::getProductSaleForLabel($product) : null,
+            'oldPrice' => $discounted ? $listUnit * $multiplier : null,
+            'salePercent' => $onSale && $product->price_koef !== null
+                ? ThemeProductManager::getProductSaleForLabel($product)
+                : null,
+            'personalPercent' => $personal ? (int) round((1 - $unitPrice / $listUnit) * 100) : null,
             'condition' => $product?->data?->condition,
             'step' => max(1, (int) ($product->min_order ?: 1)),
-            'stock' => (int) $product->stock,
+            'minOrder' => $multiplier > 1 ? $multiplier : null,
+            'stock' => $stock,
+            'lowStock' => $stock > 0 && $stock <= self::LOW_STOCK ? $stock : null,
             'brand' => $product->brand && trim((string) $product->brand->title) !== ''
                 ? ['title' => $product->brand->title, 'url' => route('theme.brand.index', $product->brand->onec_id)]
                 : null,

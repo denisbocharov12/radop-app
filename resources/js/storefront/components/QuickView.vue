@@ -26,6 +26,7 @@ let lastFocus = null;
 const money = new Intl.NumberFormat('ro-MD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const price = computed(() => (product.value ? money.format(product.value.displayPrice) : ''));
 const oldPrice = computed(() => (product.value?.oldPrice ? money.format(product.value.oldPrice) : null));
+const unitPrice = computed(() => (product.value ? money.format(product.value.unitPrice) : ''));
 const badges = computed(() => [
     product.value?.salePercent ? { label: `-${product.value.salePercent}%`, class: 'sf-badge-sale' } : null,
     product.value?.condition === 'new' ? { label: 'NEW', class: 'sf-badge-new' } : null,
@@ -143,10 +144,25 @@ onBeforeUnmount(() => {
                                     </p>
                                 </div>
 
-                                <div class="flex flex-wrap items-baseline gap-2">
-                                    <span class="text-2xl font-bold leading-none" :class="oldPrice ? 'text-accent-600' : 'text-ink-900'">{{ price }}</span>
-                                    <span class="text-sm text-ink-500">{{ $sf.currency }}</span>
-                                    <span v-if="oldPrice" class="sf-product-price-old">{{ oldPrice }}</span>
+                                <div>
+                                    <div class="flex flex-wrap items-baseline gap-2">
+                                        <span class="text-2xl font-bold leading-none" :class="oldPrice ? 'text-accent-600' : 'text-ink-900'">{{ price }}</span>
+                                        <span class="text-sm text-ink-500">
+                                            {{ $sf.currency }}<template v-if="product.minOrder"> / {{ product.minOrder }} {{ $sf.t.unit }}</template>
+                                        </span>
+                                        <span v-if="oldPrice" class="sf-product-price-old">{{ oldPrice }}</span>
+                                    </div>
+                                    <ul class="mt-2 flex flex-wrap gap-1.5 text-xs">
+                                        <li v-if="product.personalPercent" class="rounded-full bg-brand-50 px-2.5 py-1 font-semibold text-brand-700">
+                                            {{ $sf.t.personalPrice }} −{{ product.personalPercent }}%
+                                        </li>
+                                        <li v-if="product.minOrder" class="rounded-full bg-ink-100 px-2.5 py-1 text-ink-700">
+                                            {{ $sf.t.minOrder }}: {{ product.minOrder }} {{ $sf.t.unit }} · {{ unitPrice }} {{ $sf.currency }}/{{ $sf.t.unit }}
+                                        </li>
+                                        <li v-if="product.lowStock" class="rounded-full bg-accent-50 px-2.5 py-1 font-medium text-accent-700">
+                                            {{ $sf.t.lowStock.replace(':qty', product.lowStock) }}
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 <p class="flex items-center gap-1.5 text-sm">

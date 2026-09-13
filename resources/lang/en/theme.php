@@ -69,5 +69,13 @@ return [
     'sf-error-419-text' => 'The page was open for too long. Go back and submit the form again.',
     'sf-error-back' => 'Back',
     'sf-profile-saved' => 'Your profile has been saved.',
+
+    // Storefront v2 — buying conditions, personal price, contents.
+    'sf-personal-price' => 'Personal price',
+    'sf-low-stock' => 'Only :qty left',
+    'sf-toc' => 'Contents',
+    'sf-per-unit' => 'unit',
+    'sf-price-for' => 'Price for :qty pcs.',
+    'sf-your-discount' => 'Your discount is applied automatically to every price shown.',
 ];
 

@@ -34,8 +34,8 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('delivery.delivery')]]" />
 
-    <div class="sf-container pb-16">
-        <h1 class="mb-6 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('delivery.delivery') }}</h1>
+    <div class="sf-container sf-page-body">
+        <h1 class="sf-page-title">{{ __('delivery.delivery') }}</h1>
 
         <section>
             <h2 class="sf-section-title mb-3">{{ __('delivery.rules') }}</h2>

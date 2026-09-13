@@ -549,4 +549,12 @@ return array (
     'sf-error-419-text' => 'Страница была открыта слишком долго. Вернитесь назад и отправьте форму ещё раз.',
     'sf-error-back' => 'Назад',
     'sf-profile-saved' => 'Данные профиля сохранены.',
+
+    // Storefront v2 — buying conditions, personal price, contents.
+    'sf-personal-price' => 'Персональная цена',
+    'sf-low-stock' => 'Осталось :qty шт.',
+    'sf-toc' => 'Содержание',
+    'sf-per-unit' => 'штука',
+    'sf-price-for' => 'Цена за :qty шт.',
+    'sf-your-discount' => 'Ваша скидка автоматически применяется ко всем показанным ценам.',
 );

@@ -142,18 +142,39 @@
                 {{-- Sticky only beside the gallery on desktop; on phones it must
                      scroll away so the bottom buy bar can take over. --}}
                 <div class="sf-card space-y-4 p-4 lg:sticky lg:top-24" id="buy-box">
-                    <div class="flex flex-wrap items-baseline gap-2">
-                        <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $hasSale])>
-                            {{ number_format($displayPrice, 2, ',', ' ') }}
-                        </span>
-                        <span class="text-sm text-ink-500">{{ __('theme.MDL') }}</span>
-                        @if($hasSale)
-                            <span class="sf-product-price-old">{{ number_format($oldPrice, 2, ',', ' ') }}</span>
+                    @php($card = app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product))
+                    <div>
+                        <div class="flex flex-wrap items-baseline gap-2">
+                            <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
+                                {{ number_format($card['displayPrice'], 2, ',', ' ') }}
+                            </span>
+                            <span class="text-sm text-ink-500">
+                                {{ __('theme.MDL') }}@if($card['minOrder']) / {{ $card['minOrder'] }} {{ __('theme.min_order_unit') }}@endif
+                            </span>
+                            @if($card['oldPrice'])
+                                <span class="sf-product-price-old">{{ number_format($card['oldPrice'], 2, ',', ' ') }}</span>
+                            @endif
+                        </div>
+
+                        @if($card['minOrder'])
+                            <p class="mt-1 text-xs text-ink-500">
+                                {{ number_format($card['unitPrice'], 2, ',', ' ') }} {{ __('theme.MDL') }} / {{ __('theme.min_order_unit') }}
+                            </p>
+                        @endif
+
+                        @if($card['personalPercent'])
+                            <p class="mt-2 inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
+                                <x-sf-icon name="star" :size="13" style="fill: currentColor" />
+                                {{ __('theme.sf-personal-price') }} −{{ $card['personalPercent'] }}%
+                            </p>
                         @endif
                     </div>
 
                     <p class="flex items-center gap-1.5 text-sm">
-                        @if($product->stock > 0)
+                        @if($product->stock > 0 && $card['lowStock'])
+                            <x-sf-icon name="clock" :size="15" class="text-accent-600" />
+                            <span class="font-medium text-accent-700">{{ __('theme.sf-low-stock', ['qty' => $card['lowStock']]) }}</span>
+                        @elseif($product->stock > 0)
                             <x-sf-icon name="check" :size="15" class="text-success-500" />
                             <span class="font-medium text-success-600">{{ __('theme.in-stock') }}</span>
                         @else

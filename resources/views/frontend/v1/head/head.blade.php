@@ -113,6 +113,10 @@
                 'exportStarted' => __('theme.export-download-started'),
                 'exportError' => __('theme.export-error'),
                 'exportPersonalized' => __('theme.personalized-export-started'),
+                'personalPrice' => __('theme.sf-personal-price'),
+                'minOrder' => __('theme.package-min-to-order'),
+                'unit' => __('theme.min_order_unit'),
+                'lowStock' => __('theme.sf-low-stock'),
             ],
         ];
     @endphp

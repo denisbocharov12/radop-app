@@ -328,7 +328,46 @@ function navPanels() {
     });
 }
 
+/**
+ * Table of contents for long-form pages (<x-sf-page>): built from the `h2`
+ * headings when there are at least four, shown on desktop, with the section
+ * currently in view highlighted.
+ */
+function tableOfContents() {
+    document.querySelectorAll('[data-sf-toc-scope]').forEach((scope) => {
+        const aside = scope.querySelector('[data-sf-toc]');
+        const list = scope.querySelector('[data-sf-toc-list]');
+        const headings = [...scope.querySelectorAll('.sf-prose h2')];
+        if (!aside || !list || headings.length < 4) {
+            scope.classList.remove('lg:grid');
+            return;
+        }
+
+        const links = headings.map((heading, index) => {
+            if (!heading.id) heading.id = `section-${index + 1}`;
+            const link = document.createElement('a');
+            link.href = `#${heading.id}`;
+            link.textContent = heading.textContent.trim();
+            list.append(link);
+            return link;
+        });
+
+        aside.classList.remove('hidden');
+        aside.classList.add('hidden', 'lg:block');
+
+        if (!('IntersectionObserver' in window)) return;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                links.forEach((link) => link.setAttribute('aria-current', String(link.hash === `#${entry.target.id}`)));
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        headings.forEach((heading) => observer.observe(heading));
+    });
+}
+
 function boot() {
+    tableOfContents();
     navPanels();
     formHelpers();
     stickyWhenHidden();

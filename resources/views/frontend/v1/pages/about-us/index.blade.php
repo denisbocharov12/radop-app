@@ -29,8 +29,8 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('about-us.about-us')]]" />
 
-    <div class="sf-container pb-16">
-        <h1 class="mb-2 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('about-us.about-us') }}</h1>
+    <div class="sf-container sf-page-body">
+        <h1 class="sf-page-title mb-2 lg:mb-3">{{ __('about-us.about-us') }}</h1>
         <p class="mb-6 max-w-[70ch] text-md text-ink-600">{{ __('about-us.welcome') }}</p>
 
         <div class="sf-prose max-w-none">

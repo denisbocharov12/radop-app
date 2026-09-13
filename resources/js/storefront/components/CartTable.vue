@@ -21,6 +21,8 @@ const props = defineProps({
     continueUrl: { type: String, default: '' },
     destroyUrl: { type: String, default: '' },
     deliveryUrl: { type: String, default: '' },
+    /** Customer's personal discount in percent; prices are already reduced. */
+    personalDiscount: { type: Number, default: 0 },
     authenticated: { type: Boolean, default: false },
     t: { type: Object, default: () => ({}) },
 });
@@ -175,6 +177,11 @@ async function remove(row) {
                     <dd class="font-medium text-ink-800">{{ total }} {{ currency }}</dd>
                 </div>
             </dl>
+
+            <p v-if="personalDiscount > 0" class="flex items-start gap-2 rounded-md bg-brand-50 p-2.5 text-xs text-brand-700">
+                <SfIcon name="star" :size="14" class="mt-0.5 shrink-0" style="fill: currentColor" />
+                <span><b>{{ t.personalPrice }} −{{ personalDiscount }}%.</b> {{ t.yourDiscount }}</span>
+            </p>
 
             <div class="flex items-baseline justify-between border-t border-ink-100 pt-3">
                 <span class="text-sm font-semibold text-ink-700">{{ t.forPayment }}</span>

@@ -528,4 +528,12 @@ return array (
     'sf-error-419-text' => 'Pagina a stat deschisă prea mult timp. Reveniți și trimiteți formularul din nou.',
     'sf-error-back' => 'Înapoi',
     'sf-profile-saved' => 'Datele profilului au fost salvate.',
+
+    // Storefront v2 — buying conditions, personal price, contents.
+    'sf-personal-price' => 'Preț personal',
+    'sf-low-stock' => 'Doar :qty buc. în stoc',
+    'sf-toc' => 'Cuprins',
+    'sf-per-unit' => 'bucata',
+    'sf-price-for' => 'Prețul pentru :qty buc.',
+    'sf-your-discount' => 'Reducerea dvs. se aplică automat la toate prețurile afișate.',
 );
