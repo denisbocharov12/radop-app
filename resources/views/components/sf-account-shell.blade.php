@@ -20,11 +20,15 @@
         ['theme.user.account.*', route('theme.user.account.index'), 'user', __('theme.account')],
     ]));
 
-    $displayName = $user
-        ? ($isBusiness
-            ? ($user->profile->organization_name ?? $user->email)
-            : trim(($user->profile->first_name ?? '') . ' ' . ($user->profile->last_name ?? '')) ?: $user->email)
-        : '';
+    // Nested ternaries with `?:` must be parenthesised on PHP 8, so this is
+    // spelled out rather than chained.
+    $displayName = '';
+    if ($user) {
+        $fullName = trim(($user->profile->first_name ?? '') . ' ' . ($user->profile->last_name ?? ''));
+        $displayName = $isBusiness
+            ? ($user->profile->organization_name ?: $user->email)
+            : ($fullName !== '' ? $fullName : $user->email);
+    }
 @endphp
 
 <x-sf-breadcrumbs :with-shop="false" :items="[['url' => route('theme.user.orders.index'), 'name' => __('theme.my-account')], ['url' => null, 'name' => $title]]" />

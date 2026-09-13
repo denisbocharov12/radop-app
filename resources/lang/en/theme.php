@@ -68,5 +68,6 @@ return [
     'sf-error-419-title' => 'Session expired',
     'sf-error-419-text' => 'The page was open for too long. Go back and submit the form again.',
     'sf-error-back' => 'Back',
+    'sf-profile-saved' => 'Your profile has been saved.',
 ];
 

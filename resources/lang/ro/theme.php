@@ -527,4 +527,5 @@ return array (
     'sf-error-419-title' => 'Sesiunea a expirat',
     'sf-error-419-text' => 'Pagina a stat deschisă prea mult timp. Reveniți și trimiteți formularul din nou.',
     'sf-error-back' => 'Înapoi',
+    'sf-profile-saved' => 'Datele profilului au fost salvate.',
 );

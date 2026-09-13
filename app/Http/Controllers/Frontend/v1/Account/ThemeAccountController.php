@@ -71,7 +71,8 @@ final class ThemeAccountController extends Controller
         try {
             $this->themeAccountManager->update($clientData, $user);
 
-            return redirect()->route('theme.user.account.index');
+            // The page gave no feedback at all after a successful save.
+            return redirect()->route('theme.user.account.index')->with('success', __('theme.sf-profile-saved'));
 
         } catch (DuplicatedUserEmailException $e) {
             throw new DuplicatedUserEmailValidationException();
