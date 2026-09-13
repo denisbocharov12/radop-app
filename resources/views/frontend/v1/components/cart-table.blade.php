@@ -4,7 +4,37 @@
     if (auth()->guard('user')->user()) {
         $sessionId = auth()->guard('user')->user()->id;
     }
+
+    $cartAuthUser = auth()->guard('user')->user();
+    // Minimum for the authenticated user is the selected city's required_sum;
+    // guests fall back to the global minimum.
+    $cartMinSum = $cartAuthUser ? $cartAuthUser->minOrderSum() : (float) config('app.min_delivery_sum');
+    $cartIsSupplement = $cartAuthUser ? $cartAuthUser->isSupplementWindowOpen() : false;
+    $cartTotal = \Cart::session($sessionId)->getTotal();
+    $cartBelowMin = !$cartIsSupplement && $cartTotal < $cartMinSum;
+    $cartRemaining = max($cartMinSum - $cartTotal, 0);
 @endphp
+<style>
+    .min-order-banner{display:flex;align-items:center;gap:12px;background:#FCE9D4;border:1px solid #F4C88A;border-radius:12px;padding:14px 18px;margin-bottom:20px;color:#8A5518;font-size:15px;line-height:1.45;}
+    .min-order-banner-icon{flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:#F5A623;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;}
+    .min-order-banner-text b{color:#7A4A12;font-weight:700;}
+    .min-order-banner-add{margin-left:4px;white-space:nowrap;}
+    .min-order-banner-link{display:inline-flex;align-items:center;gap:4px;margin-left:8px;color:#8A5518;text-decoration:underline;font-size:13px;opacity:.85;}
+    .min-order-banner-link:hover{opacity:1;color:#7A4A12;}
+    .min-order-banner-ico{width:1em;height:1em;flex:0 0 auto;}
+</style>
+@if($cartBelowMin)
+    <div class="col-12 col-cart-min-banner">
+        <div class="min-order-banner" role="alert">
+            <span class="min-order-banner-icon">!</span>
+            <span class="min-order-banner-text">
+                {{ __('theme.min_order_sum_warning_message') }} <b>{{ number_format($cartMinSum, 2, '.', '') }} {{ __('theme.MDL') }}</b>.
+                <b class="min-order-banner-add">{{ __('theme.min_order_add_more') }} {{ number_format($cartRemaining, 2, '.', '') }} {{ __('theme.MDL') }}</b>
+                <a href="{{ route('theme.delivery.index') }}" class="min-order-banner-link"><svg class="min-order-banner-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>{{ __('theme.min_order_delivery_link') }}</a>
+            </span>
+        </div>
+    </div>
+@endif
 <div class="col-lg-9 col-cart-contents">
     <div class="table-responsive">
         <table class="theme-cart-table">
@@ -153,15 +183,6 @@
 {{--                @endif--}}
                 <span>{{number_format(\Cart::session($sessionId)->getTotal(), 2, ',', '')}} {{__('theme.MDL')}}</span>
             </div>
-            @php
-                $cartAuthUser = auth()->guard('user')->user();
-                $cartMinSum = $cartAuthUser ? $cartAuthUser->minOrderSum() : (float) config('app.min_delivery_sum');
-                $cartIsSupplement = $cartAuthUser ? $cartAuthUser->isSupplementWindowOpen() : false;
-                $cartBelowMin = !$cartIsSupplement && \Cart::session($sessionId)->getTotal() < $cartMinSum;
-            @endphp
-            <p class="min-order-sum-warning-text {{ $cartBelowMin ? 'show' : '' }}">
-                {{__('theme.min_order_sum_warning_message')}} <span class="sum">{{ $cartMinSum }}</span> {{__('theme.MDL')}}
-            </p>
             <div class="sc-buttons-wrap">
                 @if($cartAuthUser)
                     <a href="{{route('theme.checkout.index')}}" class="sc-btn-checkout sc-btn {{ $cartBelowMin ? 'hide-important' : '' }}">{{__('theme.place-order')}}</a>

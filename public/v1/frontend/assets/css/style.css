@@ -9395,6 +9395,7 @@ hr.product-card-item{
 }
 .section-page .container p, li{
     margin: 0.5em 0;
+    line-height: 1.1;
 }
 .section-page .theme-bold,
 .theme-bold{

@@ -9,7 +9,12 @@ return [
 
     // 1. Operator
     's1-title' => 'Operatorul de date',
-    's1-1' => 'Operatorul care stabilește scopurile și mijloacele de prelucrare a datelor cu caracter personal prin intermediul site-ului radop.md este:<br><strong>SRL „RĂDOP-OPT”</strong><br>Adresa juridică: [adresa juridică — de completat]<br>IDNO: [IDNO — de completat]<br>E-mail: support@radop.md<br>Telefon: 079 782 112, 022 782 112',
+    's1-1' => 'Operatorul care stabilește scopurile și mijloacele de prelucrare a datelor cu caracter personal prin intermediul site-ului radop.md este:',
+    's1-name' => 'SRL „RĂDOP-OPT”',
+    's1-address' => 'Adresa juridică: [adresa juridică — de completat]',
+    's1-idno' => 'IDNO: [IDNO — de completat]',
+    's1-email' => 'E-mail: support@radop.md',
+    's1-phone' => 'Telefon: 079 782 112, 022 782 112',
     's1-2' => 'Pentru orice întrebare sau solicitare privind datele cu caracter personal și exercitarea drepturilor dumneavoastră, ne puteți contacta la adresa de e-mail <strong>support@radop.md</strong>, cu mențiunea „Date cu caracter personal”.',
 
     // 2. Definitions
@@ -26,38 +31,38 @@ return [
 
     // 4. Purposes & legal bases
     's4-title' => 'Scopurile și temeiurile juridice ale prelucrării',
-    's4-intro' => 'Prelucrăm datele dumneavoastră numai pentru scopuri determinate, având la bază unul dintre temeiurile prevăzute la art. 5 din Legea nr. 195/2024:',
+    's4-intro' => 'Prelucrăm datele dumneavoastră numai pentru scopuri determinate, având la bază unul dintre temeiurile prevăzute la art. 6 din Legea nr. 195/2024:',
     's4-th-purpose' => 'Scopul prelucrării',
     's4-th-data' => 'Categorii de date',
     's4-th-basis' => 'Temeiul juridic',
 
     's4-r1-p' => 'Crearea și administrarea contului de utilizator',
     's4-r1-d' => 'Date de cont',
-    's4-r1-b' => 'Executarea contractului (art. 5 lit. b) — utilizarea contului la cererea dumneavoastră',
+    's4-r1-b' => 'Executarea contractului (art. 6 lit. b) — utilizarea contului la cererea dumneavoastră',
 
     's4-r2-p' => 'Procesarea, confirmarea și livrarea comenzilor',
     's4-r2-d' => 'Date de comandă și livrare',
-    's4-r2-b' => 'Executarea contractului (art. 5 lit. b)',
+    's4-r2-b' => 'Executarea contractului (art. 6 lit. b)',
 
     's4-r3-p' => 'Îndeplinirea obligațiilor contabile și fiscale (facturare)',
     's4-r3-d' => 'Date de identificare și de facturare',
-    's4-r3-b' => 'Obligație legală (art. 5 lit. c)',
+    's4-r3-b' => 'Obligație legală (art. 6 lit. c)',
 
     's4-r4-p' => 'Răspuns la solicitări, reclamații și asistență clienți',
     's4-r4-d' => 'Date de comunicare',
-    's4-r4-b' => 'Interes legitim / măsuri precontractuale (art. 5 lit. b și f)',
+    's4-r4-b' => 'Interes legitim / măsuri precontractuale (art. 6 lit. b și f)',
 
     's4-r5-p' => 'Securitatea site-ului, prevenirea fraudelor și jurnalele tehnice',
     's4-r5-d' => 'Date tehnice, adresa IP, jurnale',
-    's4-r5-b' => 'Interes legitim (art. 5 lit. f)',
+    's4-r5-b' => 'Interes legitim (art. 6 lit. f)',
 
     's4-r6-p' => 'Analiza statistică și îmbunătățirea site-ului (Google Analytics)',
     's4-r6-d' => 'Identificatori cookie, date de utilizare',
-    's4-r6-b' => 'Consimțământ (art. 5 lit. a)',
+    's4-r6-b' => 'Consimțământ (art. 6 lit. a)',
 
     's4-r7-p' => 'Comunicări de marketing (dacă vă abonați)',
     's4-r7-d' => 'Nume, e-mail și/sau telefon',
-    's4-r7-b' => 'Consimțământ (art. 5 lit. a)',
+    's4-r7-b' => 'Consimțământ (art. 6 lit. a)',
 
     's4-note' => 'În prezent, plata comenzilor nu se efectuează online pe site; nu colectăm și nu stocăm date ale cardurilor bancare. Achitarea se realizează la livrare sau prin transfer bancar, conform Termenilor și condițiilor.',
 
@@ -107,7 +112,9 @@ return [
 
     // 11. Complaint
     's11-title' => 'Dreptul de a depune plângere',
-    's11-1' => 'Dacă considerați că prelucrarea datelor dumneavoastră încalcă legea, aveți dreptul de a depune o plângere la <strong>Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP)</strong>:<br>mun. Chișinău, str. Serghei Lazo 48, MD-2004<br>Telefon: +373 22 811 807 · E-mail: centru@datepersonale.md · Web: datepersonale.md',
+    's11-1' => 'Dacă considerați că prelucrarea datelor dumneavoastră încalcă legea, aveți dreptul de a depune o plângere la <strong>Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP)</strong>:',
+    's11-address' => 'mun. Chișinău, str. Serghei Lazo 48, MD-2004',
+    's11-contacts' => 'Telefon: +373 22 811 807 · E-mail: centru@datepersonale.md · Web: datepersonale.md',
 
     // 12. Minors
     's12-title' => 'Protecția minorilor',

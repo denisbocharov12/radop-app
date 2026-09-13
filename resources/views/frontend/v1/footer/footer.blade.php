@@ -1,5 +1,20 @@
 <footer>
     @include('frontend.v1.components.auth')
+    <style>
+        /* Cookie settings link in the footer menu: render the consent-reset form
+           as a plain link matching the sibling <a> items (14px, not the 12px li default) */
+        .cookie-settings-btn{display:inline;margin:0;padding:0;}
+        .footer-menu .item .cookie-settings-btn__link,
+        .footer-menu .item .cookie-settings-btn__label{
+            font-family:inherit;
+            font-size:14px;
+            line-height:14px;
+            font-weight:400;
+            color:inherit;
+        }
+        .cookie-settings-btn__link{background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left;}
+        .cookie-settings-btn__link:hover{text-decoration:underline;}
+    </style>
     <section class="section-footer">
         <div class="container position-relative">
             <button type="button" class="scroll_to_top_btn" id="scroll_to_top_btn"><i class="icon-arrow-radop-right"></i>{{__('theme.scroll_to_top_btn')}}</button>
@@ -47,6 +62,8 @@
                             <li class="item"><a href="{{route('theme.terms-and-conditions.index')}}">{{__('theme.conditions-of-use')}}</a></li>
                             <li class="item"><a href="{{route('theme.privacy-policy.index')}}">{{__('theme.confidentiality-policy')}}</a></li>
                             <li class="item"><a href="{{route('theme.cookie.index')}}">{{__('theme.cookie')}}</a></li>
+                            {{-- Reopens the cookie consent manager (resets the stored choice) --}}
+                            <li class="item">@cookieconsentbutton('reset', __('theme.cookie_settings'), ['class' => 'cookie-settings-btn'])</li>
                             <li class="item"><a href="{{route('theme.return-rules.index')}}">{{__('theme.return_and_exchange_products')}}</a></li>
                         </ul>
                     </div>

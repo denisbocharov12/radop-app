@@ -4,6 +4,12 @@
 
 @section('content')
     <x-sf-page>
+                <style>
+                    .cookie-table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px;}
+                    .cookie-table th,.cookie-table td{border:1px solid #e2e6ee;padding:8px 10px;text-align:left;vertical-align:top;}
+                    .cookie-table thead th{background:#f5f7fa;font-weight:600;}
+                    .table-responsive{overflow-x:auto;}
+                </style>
                 <h1>{{ __('cookie.title') }}</h1>
                 <p class="cookie-updated"><em>{{ __('cookie.updated') }}</em></p>
                 <p>{!! __('cookie.intro-1') !!}</p>

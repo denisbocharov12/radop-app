@@ -4,13 +4,24 @@
 
 @section('content')
     <x-sf-page>
+                <style>
+                    .privacy-table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px;}
+                    .privacy-table th,.privacy-table td{border:1px solid #e2e6ee;padding:8px 10px;text-align:left;vertical-align:top;}
+                    .privacy-table thead th{background:#f5f7fa;font-weight:600;}
+                    .table-responsive{overflow-x:auto;}
+                </style>
                 <h1>{{ __('privacy-policy.title') }}</h1>
                 <p class="privacy-updated"><em>{{ __('privacy-policy.updated') }}</em></p>
                 <p>{!! __('privacy-policy.intro-1') !!}</p>
                 <p>{!! __('privacy-policy.intro-2') !!}</p>
 
                 <h2>1. {{ __('privacy-policy.s1-title') }}</h2>
-                <p>{!! __('privacy-policy.s1-1') !!}</p>
+                <p>{{ __('privacy-policy.s1-1') }}</p>
+                <p><strong>{{ __('privacy-policy.s1-name') }}</strong></p>
+                <p>{{ __('privacy-policy.s1-address') }}</p>
+                <p>{{ __('privacy-policy.s1-idno') }}</p>
+                <p>{{ __('privacy-policy.s1-email') }}</p>
+                <p>{{ __('privacy-policy.s1-phone') }}</p>
                 <p>{!! __('privacy-policy.s1-2') !!}</p>
 
                 <h2>2. {{ __('privacy-policy.s2-title') }}</h2>
@@ -50,11 +61,11 @@
                 <h2>5. {{ __('privacy-policy.s5-title') }}</h2>
                 <p>{{ __('privacy-policy.s5-intro') }}</p>
                 <ul>
-                    <li>{!! __('privacy-policy.s5-1') !!}</li>
-                    <li>{!! __('privacy-policy.s5-2') !!}</li>
-                    <li>{!! __('privacy-policy.s5-3') !!}</li>
-                    <li>{!! __('privacy-policy.s5-4') !!}</li>
-                    <li>{!! __('privacy-policy.s5-5') !!}</li>
+                    <li><p>{!! __('privacy-policy.s5-1') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s5-2') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s5-3') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s5-4') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s5-5') !!}</p></li>
                 </ul>
                 <p>{{ __('privacy-policy.s5-note') }}</p>
 
@@ -65,11 +76,11 @@
                 <h2>7. {{ __('privacy-policy.s7-title') }}</h2>
                 <p>{{ __('privacy-policy.s7-intro') }}</p>
                 <ul>
-                    <li>{!! __('privacy-policy.s7-1') !!}</li>
-                    <li>{!! __('privacy-policy.s7-2') !!}</li>
-                    <li>{!! __('privacy-policy.s7-3') !!}</li>
-                    <li>{!! __('privacy-policy.s7-4') !!}</li>
-                    <li>{!! __('privacy-policy.s7-5') !!}</li>
+                    <li><p>{!! __('privacy-policy.s7-1') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s7-2') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s7-3') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s7-4') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s7-5') !!}</p></li>
                 </ul>
 
                 <h2>8. {{ __('privacy-policy.s8-title') }}</h2>
@@ -81,18 +92,20 @@
                 <h2>10. {{ __('privacy-policy.s10-title') }}</h2>
                 <p>{{ __('privacy-policy.s10-intro') }}</p>
                 <ul>
-                    <li>{!! __('privacy-policy.s10-access') !!}</li>
-                    <li>{!! __('privacy-policy.s10-rectify') !!}</li>
-                    <li>{!! __('privacy-policy.s10-erase') !!}</li>
-                    <li>{!! __('privacy-policy.s10-restrict') !!}</li>
-                    <li>{!! __('privacy-policy.s10-object') !!}</li>
-                    <li>{!! __('privacy-policy.s10-portability') !!}</li>
-                    <li>{!! __('privacy-policy.s10-withdraw') !!}</li>
+                    <li><p>{!! __('privacy-policy.s10-access') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-rectify') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-erase') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-restrict') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-object') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-portability') !!}</p></li>
+                    <li><p>{!! __('privacy-policy.s10-withdraw') !!}</p></li>
                 </ul>
                 <p>{!! __('privacy-policy.s10-how') !!}</p>
 
                 <h2>11. {{ __('privacy-policy.s11-title') }}</h2>
                 <p>{!! __('privacy-policy.s11-1') !!}</p>
+                <p>{{ __('privacy-policy.s11-address') }}</p>
+                <p>{{ __('privacy-policy.s11-contacts') }}</p>
 
                 <h2>12. {{ __('privacy-policy.s12-title') }}</h2>
                 <p>{{ __('privacy-policy.s12-1') }}</p>
