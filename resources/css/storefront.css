@@ -115,11 +115,11 @@
     }
 
     .sf-section {
-        @apply py-8 lg:py-12;
+        @apply py-5 lg:py-7;
     }
 
     .sf-section-head {
-        @apply mb-4 flex items-baseline justify-between gap-4 lg:mb-6;
+        @apply mb-3 flex items-center justify-between gap-4 lg:mb-4;
     }
 
     .sf-section-title {
@@ -289,8 +289,13 @@
         @apply w-[40%] sm:w-[23%] md:w-[18%] lg:w-[14%] xl:w-[12%];
     }
 
+    /* Cards per view: 2 (+peek) on phones, 3 on tablets, 4 / 5 / 6 on wider
+       screens. Widths subtract the gaps so a full row fits exactly. */
     .sf-rail > * {
-        @apply w-[46%] shrink-0 snap-start sm:w-[31%] lg:w-[23%] xl:w-[19%];
+        @apply w-[46%] shrink-0 snap-start sm:w-[31%]
+               md:w-[calc((100%-3*0.75rem)/4)]
+               lg:w-[calc((100%-4*1rem)/5)]
+               xl:w-[calc((100%-5*1rem)/6)];
     }
 
     /* ---------------------------------------------------------- header */

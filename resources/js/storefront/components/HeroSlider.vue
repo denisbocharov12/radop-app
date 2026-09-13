@@ -35,6 +35,18 @@ function onScroll() {
     index.value = Math.round(track.scrollLeft / track.clientWidth);
 }
 
+/** GA4 promotion click — same event and parameters scripts.blade.php sent. */
+function onSlideClick(slide) {
+    const events = window.radopAnalyticsDataLayerEventNames ?? {};
+    if (typeof window.radopGa4EventPush !== 'function' || !events.homepage_promotion_banner_clicked) return;
+    window.radopGa4EventPush(events.homepage_promotion_banner_clicked, {
+        promotion_id: String(slide.id),
+        promotion_name: 'homepage_banner',
+        creative_name: 'homepage_banner',
+        creative_slot: 'main_banner',
+    });
+}
+
 function start() {
     if (!props.autoplay || props.slides.length < 2) return;
     stop();
@@ -57,10 +69,10 @@ onBeforeUnmount(stop);
 </script>
 
 <template>
-    <!-- `#main-banner` is the hook scripts.blade.php uses to report GA4
-         promotion clicks; keep the id. -->
+    <!-- No `#main-banner` id here: the legacy scripts.js initialises Slick on
+         that id, which injected its unstyled dots ("1") under the banner.
+         The GA4 promotion click is pushed by `onSlideClick` instead. -->
     <section
-        id="main-banner"
         class="relative"
         @mouseenter="paused = true"
         @mouseleave="paused = false"
@@ -80,6 +92,7 @@ onBeforeUnmount(stop);
                 :data-promotion-id="slide.id"
                 data-promotion-name="homepage_banner"
                 data-creative-slot="main_banner"
+                @click="onSlideClick(slide)"
             >
                 <img
                     :src="slide.image"

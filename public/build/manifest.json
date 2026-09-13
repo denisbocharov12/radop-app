@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-NEDfL3lA.css",
+    "file": "assets/storefront-_lMmwTNl.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-CyWLDvo0.js",
+    "file": "assets/storefront-BpJGcLZc.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -98,7 +98,7 @@
     ]
   },
   "resources/js/storefront/components/HeroSlider.vue": {
-    "file": "assets/HeroSlider-7ZjPNFQA.js",
+    "file": "assets/HeroSlider-C974UqpK.js",
     "name": "HeroSlider",
     "src": "resources/js/storefront/components/HeroSlider.vue",
     "isDynamicEntry": true,
