@@ -44,6 +44,11 @@
                 <div class="col-6 col-sm-5 col-md-3">
                     @include('frontend.v1.pages.category.parts.export-excel')
                 </div>
+            @else
+                {{-- Parent categories render a column grid without a heading: give the page its H1 here. --}}
+                <div class="col-12">
+                    <h1 class="breadcrumb-h1">{{ $existedCategory->name }}</h1>
+                </div>
             @endif
         </div>
     </div>

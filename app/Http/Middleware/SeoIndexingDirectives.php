@@ -48,6 +48,10 @@ final class SeoIndexingDirectives
         // Only HTML page requests are relevant — skip API and AJAX.
         $isPageRequest = $request->isMethod('GET') && !$request->expectsJson();
 
+        if ($isPageRequest && $this->isPrivatePage($request)) {
+            view()->share('seoRobots', 'noindex, follow');
+        }
+
         if ($isPageRequest) {
             $params = $request->query();
             if (is_array($params) && $params !== [] && $this->hasNoindexParam(array_keys($params))) {
@@ -57,6 +61,21 @@ final class SeoIndexingDirectives
         }
 
         return $next($request);
+    }
+
+    /**
+     * Cart, checkout, auth, account and search pages carry no indexable content.
+     */
+    private function isPrivatePage(Request $request): bool
+    {
+        $segments = $request->segments();
+        $locales = array_keys((array) config('laravellocalization.supportedLocales', []));
+        if ($segments !== [] && in_array($segments[0], $locales, true)) {
+            array_shift($segments);
+        }
+
+        return $segments !== []
+            && in_array($segments[0], ['search', 'cart', 'wishlist', 'checkout', 'login', 'registration', 'reset-password', 'user'], true);
     }
 
     /**

@@ -11,9 +11,8 @@ use App\Http\Middleware\CheckUserPermissions;
 use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\ExecuteWriteRequestInTransaction;
 use App\Http\Middleware\Localization;
-use App\Http\Middleware\LocalizationPermanentRedirect;
+use App\Http\Middleware\CanonicalPathRedirect;
 use App\Http\Middleware\SeoIndexingDirectives;
-use App\Http\Middleware\SetDefaultSeoTitleFromLocalize;
 use App\Http\Middleware\ViewCountMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -29,13 +28,12 @@ class Kernel extends HttpKernel
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
-        LocalizationPermanentRedirect::class,
+        CanonicalPathRedirect::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        SetDefaultSeoTitleFromLocalize::class,
         SeoIndexingDirectives::class,
     ];
 

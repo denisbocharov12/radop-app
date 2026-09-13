@@ -9,7 +9,7 @@ return [
          * The default configurations to be used by the meta generator.
          */
         'defaults'       => [
-            'title'        => 'Radop - Magazin online', // set false to total remove
+            'title'        => false, // no site-name suffix on page titles; fallback title is set in head/seo-directives
             'titleBefore'  => false, // Put defaults.title before page title, like 'It's Over 9000! - Dashboard'
             'description'  => 'Avem 30 ani de activitate in domeniu și suntem una dintre cele mai mari companii de rechizite de birou de pe piata moldoveneasca.', // set false to total remove
             'separator'    => ' - ',
