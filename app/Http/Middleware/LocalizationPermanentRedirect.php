@@ -14,14 +14,28 @@ use Symfony\Component\HttpFoundation\Response;
  * so that requests to hidden-default-locale prefixed URLs (e.g. `/ro/*` when
  * Romanian is the default) consolidate cleanly onto their canonical
  * non-prefixed counterparts for search engines.
+ *
+ * Only the filter's own redirect is promoted. When no locale redirect is
+ * needed the parent passes the request on and returns the application's
+ * response — promoting that as well turned every ordinary 302 into a 301:
+ * a guest opening /checkout was sent "permanently" to the home page, and the
+ * browser kept replaying that cached redirect after the visitor signed in.
  */
 final class LocalizationPermanentRedirect extends LaravelLocalizationRedirectFilter
 {
     public function handle($request, Closure $next): Response
     {
-        $response = parent::handle($request, $next);
+        $reachedApplication = false;
 
-        if ($response instanceof RedirectResponse && $response->getStatusCode() === 302) {
+        $response = parent::handle($request, function ($request) use ($next, &$reachedApplication) {
+            $reachedApplication = true;
+
+            return $next($request);
+        });
+
+        if (! $reachedApplication
+            && $response instanceof RedirectResponse
+            && $response->getStatusCode() === 302) {
             $response->setStatusCode(301);
         }
 
