@@ -76,19 +76,36 @@ Converted views declare `@section('sf-page')` and `head/head.blade.php` skips
 the ~1.2 MB legacy block for them, so every public page ships the 50 KB design
 system on its own.
 
-## Still on the legacy stylesheet
+## Customer area and checkout
 
-Checkout and the account area (orders, profile, branches). Both sit behind a
-login and could not be exercised here; converting them without being able to
-place a test order would risk the transactional flow. To finish:
+Converted and exercised end to end on a local test account: registration
+(fiz), activation link, sign-in on `/login` and in the dialog (wrong password
+keeps the dialog open with an inline error), orders, discount, profile save,
+add to cart as a customer, checkout (render, delivery recalculation, minimum
+order rule — the order itself was not submitted), logout.
 
-1. Create a test customer of each type (`fiz`, `iur`).
-2. Convert `checkout/` and `account/`, reusing
-   `registration/components/form.blade.php` for the field vocabulary.
-3. Delete the legacy `<link>` block in `head/head.blade.php`, the `body *`
-   border-style workaround in `storefront.css`, the unused part trees under
-   `pages/*/parts/`, and the legacy script bundle — once the analytics helpers
-   it defines have moved into `storefront/lib/`.
+Not exercised: a business (`iur`) account with branches, and an order detail
+page (the test account has no orders).
+
+## Remaining clean-up
+
+1. Delete the legacy `<link>` block in `head/head.blade.php`, the `body *`
+   border-style workaround in `storefront.css`, and the unused part trees under
+   `pages/*/parts/` (keep `brand/parts/list*.blade.php` — the AJAX filter
+   endpoints render them).
+2. Move the analytics helpers out of `scripts/scripts.blade.php` into
+   `storefront/lib/`, then drop the jQuery / Slick / Select2 / Fancybox bundle.
+
+## Notes
+
+- `backdrop-filter` on the sticky header makes it the containing block for
+  `position: fixed` children. Full-window layers opened from the header
+  (catalogue) must be teleported to `<body>`.
+- Closed dropdowns must be `display: none`, not `visibility: hidden` — hidden
+  boxes still count toward `scrollWidth` and cause horizontal scrolling.
+- Never give storefront markup a selector legacy `scripts.js` acts on
+  (`#main-banner`, `#partners-slider`, `.select-2-container`, …): jQuery
+  plugins initialise on it without their CSS.
 
 ## Fixes made along the way
 
