@@ -48,11 +48,13 @@
         $summary = $product->data?->getTranslation('summary', app()->getLocale());
         $condition = $product?->data?->condition;
 
-        $codes = array_filter([
-            __('theme.code') => $product->onec_id,
-            __('theme.barcode') => $product->shtrih_code,
-            __('theme.article') => $product->article,
-        ], static fn ($value) => $value !== null && $value !== '');
+        // Same framed chips as the product card (code orange, article blue),
+        // plus the barcode, which only the product page shows in full.
+        $codes = array_values(array_filter([
+            ['label' => __('theme.code'), 'value' => $product->onec_id, 'variant' => 'sf-code-chip-code'],
+            ['label' => __('theme.barcode'), 'value' => $product->shtrih_code, 'variant' => 'sf-code-chip-barcode'],
+            ['label' => __('theme.article'), 'value' => $product->article, 'variant' => 'sf-code-chip-article'],
+        ], static fn ($code) => $code['value'] !== null && $code['value'] !== ''));
     @endphp
 
     <x-sf-breadcrumbs :items="collect($breadcrumbs ?? [])->push(['url' => null, 'name' => $product->title])" />
@@ -61,23 +63,25 @@
     <div class="sf-container pb-10">
         <h1 class="mb-3 mt-2 text-xl font-bold leading-snug text-ink-900 lg:text-2xl">{{ $product->title }}</h1>
 
-        <div class="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-ink-500">
-            @foreach($codes as $label => $value)
-                <span>
-                    {{ $label }}:
-                    <button
-                        type="button"
-                        class="font-medium text-ink-700 hover:text-brand-600"
-                        data-copy-value="{{ $value }}"
-                        data-copy-message="{{ __('theme.product_code_copied') }}"
-                    >{{ $value }}</button>
-                </span>
+        <div class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-2">
+            @foreach($codes as $code)
+                <button
+                    type="button"
+                    class="sf-code-chip sf-code-chip-lg {{ $code['variant'] }}"
+                    data-copy-value="{{ $code['value'] }}"
+                    data-copy-message="{{ __('theme.product_code_copied') }}"
+                    title="{{ __('theme.product_code_copied') }}"
+                >
+                    <span>{{ $code['label'] }}:</span>
+                    <b>{{ $code['value'] }}</b>
+                </button>
             @endforeach
 
             @if($product->brand && trim((string) ($product->brand->title ?? '')) !== '')
-                <a href="{{ route('theme.brand.index', $product->brand->onec_id) }}" class="font-medium text-brand-600 hover:text-brand-700">
-                    {{ $product->brand->title }}
-                </a>
+                <p class="sf-product-brand sf-product-brand-lg sm:ml-2">
+                    <span>{{ __('theme.brand') }}:</span>
+                    <a href="{{ route('theme.brand.index', $product->brand->onec_id) }}">{{ $product->brand->title }}</a>
+                </p>
             @endif
         </div>
 
