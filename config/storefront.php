@@ -25,4 +25,11 @@ return [
         ],
     ],
 
+    /*
+     * Local development with a production database dump: missing /media and
+     * /storage files are redirected to this host (e.g. https://radop.md).
+     * Only honoured when APP_ENV=local; leave empty everywhere else.
+     */
+    'media_fallback_url' => env('STOREFRONT_MEDIA_FALLBACK_URL'),
+
 ];

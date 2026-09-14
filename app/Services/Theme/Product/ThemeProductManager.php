@@ -430,26 +430,33 @@ final class ThemeProductManager
         $price = (float)$product->price;
         $priceKoef = (float)$product->price_koef;
 
+        // Rounded as numbers. The previous number_format(…, ',', '') produced
+        // "17,50", which (float) truncated to 17: a guest saw -34 % for a 36 %
+        // reduction, and customers with a personal discount got "-2 %".
         if ($user !== null && $user->with_sale) {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price - $price * ($user->sale / 100), 2, ',', '');
+                $price = round($price - $price * ($user->sale / 100), 2);
             } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, ',', '');
+                $price = round((float)$product->sale_price, 2);
             }
             else{
-                $price = number_format($price, 2, ',', '');
+                $price = round($price, 2);
             }
         } else {
             if($user && $user->sale !== null && $user->sale !== 0.0 && $product->sale_price === '') {
-                $price = number_format($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2, ',', '');
+                $price = round($price * $priceKoef - $price * $priceKoef * ($user->sale / 100), 2);
             } elseif($product->sale_price !== '' && $user && $user->sale !== null && $user->sale !== 0.0) {
-                $price = number_format((float)$product->sale_price, 2, ',', '');
+                $price = round((float)$product->sale_price, 2);
             } else{
-                $price = number_format($price * $priceKoef, 2, ',', '');
+                $price = round($price * $priceKoef, 2);
             }
         }
 
-        return round((((float)$price - (float)$product->sale_price) / (float)$price) * 100);
+        if ($price <= 0) {
+            return 0;
+        }
+
+        return round((($price - (float)$product->sale_price) / $price) * 100);
     }
 
     /**

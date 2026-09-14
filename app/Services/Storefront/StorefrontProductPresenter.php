@@ -68,8 +68,13 @@ final class StorefrontProductPresenter
             // Shown price covers the minimum order quantity, as before.
             'displayPrice' => $unitPrice * $multiplier,
             'oldPrice' => $discounted ? $listUnit * $multiplier : null,
-            'salePercent' => $onSale && $product->price_koef !== null
-                ? ThemeProductManager::getProductSaleForLabel($product)
+            // Computed from the two prices the card shows. The legacy label
+            // helper compares the sale price with a different base for signed-in
+            // customers and returned -2 % there (and 34 % for a guest looking at
+            // 11,20 instead of 17,50). A badge that disagrees with the numbers
+            // next to it, or is not a reduction, is not shown.
+            'salePercent' => $onSale && $discounted
+                ? (($percent = (int) round((1 - $unitPrice / $listUnit) * 100)) > 0 ? $percent : null)
                 : null,
             'personalPercent' => $personal ? (int) round((1 - $unitPrice / $listUnit) * 100) : null,
             'condition' => $product?->data?->condition,

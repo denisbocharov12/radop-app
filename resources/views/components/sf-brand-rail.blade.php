@@ -45,14 +45,16 @@
                                 <img
                                     src="{{ $logo }}"
                                     alt="{{ $brand->title }}"
-                                    class="max-h-12 w-auto max-w-full object-contain opacity-80 grayscale transition duration-200 group-hover/brand:opacity-100 group-hover/brand:grayscale-0"
+                                    class="max-h-12 w-auto max-w-full object-contain opacity-80 grayscale transition duration-200 group-hover/brand:opacity-100 group-hover/brand:grayscale-0 [&[hidden]]:hidden"
                                     loading="lazy"
                                     decoding="async"
                                     onerror="this.hidden=true;this.nextElementSibling.hidden=false"
                                 />
                             @endif
+                            {{-- `[&[hidden]]:hidden`: line-clamp sets display:-webkit-box, which
+                                 beat the plain [hidden] rule — the name showed beside every logo. --}}
                             <span
-                                class="line-clamp-2 text-center text-sm font-bold uppercase tracking-wide text-ink-500 transition-colors group-hover/brand:text-brand-600"
+                                class="line-clamp-2 text-center text-sm font-bold uppercase tracking-wide text-ink-500 transition-colors group-hover/brand:text-brand-600 [&[hidden]]:hidden"
                                 @if($logo) hidden @endif
                             >{{ $brand->title }}</span>
                         </a>

@@ -87,8 +87,11 @@
                 @php
                     // Badges are handed to the gallery so they sit on the main
                     // image, not on the thumbnail column beside it.
+                    // Percentage from the presenter, i.e. from the prices shown in
+                    // the buy box beside it (the legacy label helper disagreed).
+                    $card ??= app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product);
                     $galleryBadges = array_values(array_filter([
-                        $hasSale ? ['label' => '-' . ThemeProductManager::getProductSaleForLabel($product) . '%', 'class' => 'sf-badge-sale'] : null,
+                        $card['salePercent'] ? ['label' => '-' . $card['salePercent'] . '%', 'class' => 'sf-badge-sale'] : null,
                         match ($condition) {
                             'new' => ['label' => __('theme.label_new'), 'class' => 'sf-badge-new'],
                             'popular' => ['label' => __('theme.label_popular'), 'class' => 'sf-badge-hit'],
@@ -142,7 +145,7 @@
                 {{-- Sticky only beside the gallery on desktop; on phones it must
                      scroll away so the bottom buy bar can take over. --}}
                 <div class="sf-card space-y-4 p-4 lg:sticky lg:top-24" id="buy-box">
-                    @php($card = app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product))
+                    @php($card ??= app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product))
                     <div>
                         <div class="flex flex-wrap items-baseline gap-2">
                             <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
