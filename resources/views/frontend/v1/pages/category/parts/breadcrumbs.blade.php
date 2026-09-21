@@ -47,7 +47,13 @@
             @else
                 {{-- Parent categories render a column grid without a heading: give the page its H1 here. --}}
                 <div class="col-12">
-                    <h1 class="breadcrumb-h1">{{ $existedCategory->name }}</h1>
+                    <nav class=" mb-3">
+                        <ol class="breadcrumb text-white d-flex mb-0">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <h1 class="breadcrumb-h1">{{ $existedCategory->name }}</h1>
+                            </li>
+                        </ol>
+                    </nav>
                 </div>
             @endif
         </div>
