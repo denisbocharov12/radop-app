@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\SitemapController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -24,6 +25,13 @@ class RouteServiceProvider extends ServiceProvider
 
     public function map(): void
     {
+        // Generated sitemaps live in storage (persistent across deploys). They are
+        // served here, without session middleware, before the localized groups.
+        Route::get('sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+        Route::get('sitemap-{section}.xml', [SitemapController::class, 'section'])
+            ->whereIn('section', SitemapController::SECTIONS)
+            ->name('sitemap.section');
+
         Route::prefix('api/v1')
             ->as('api.')
             ->middleware('api')
