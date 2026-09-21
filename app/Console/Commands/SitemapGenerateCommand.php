@@ -40,13 +40,15 @@ final class SitemapGenerateCommand extends Command
         $this->generator = new LocalizedThemeUrlGenerator($laravelLocalization);
         $this->locales   = $this->generator->supportedLocaleKeys();
 
+        \Illuminate\Support\Facades\File::ensureDirectoryExists(storage_path('app/sitemap'));
+
         $this->writePagesSitemap();
         $this->writeCategoriesSitemap();
         $this->writeBrandsSitemap();
         $this->writeProductsSitemap();
         $this->writeIndex();
 
-        $this->info('Sitemap index written to public/sitemap.xml');
+        $this->info('Sitemaps written to storage/app/sitemap (served at /sitemap.xml)');
         return self::SUCCESS;
     }
 
@@ -66,7 +68,7 @@ final class SitemapGenerateCommand extends Command
                 );
             }
         }
-        $sitemap->writeToFile(public_path('sitemap-pages.xml'));
+        $sitemap->writeToFile($this->outputPath('sitemap-pages.xml'));
     }
 
     private function writeCategoriesSitemap(): void
@@ -88,7 +90,7 @@ final class SitemapGenerateCommand extends Command
                     }
                 }
             });
-        $sitemap->writeToFile(public_path('sitemap-categories.xml'));
+        $sitemap->writeToFile($this->outputPath('sitemap-categories.xml'));
     }
 
     private function writeBrandsSitemap(): void
@@ -110,7 +112,7 @@ final class SitemapGenerateCommand extends Command
                     }
                 }
             });
-        $sitemap->writeToFile(public_path('sitemap-brands.xml'));
+        $sitemap->writeToFile($this->outputPath('sitemap-brands.xml'));
     }
 
     private function writeProductsSitemap(): void
@@ -133,7 +135,17 @@ final class SitemapGenerateCommand extends Command
                     }
                 }
             });
-        $sitemap->writeToFile(public_path('sitemap-products.xml'));
+        $sitemap->writeToFile($this->outputPath('sitemap-products.xml'));
+    }
+
+    /**
+     * Sitemaps are written to storage (a persistent volume in production), not
+     * public/, which is rebuilt from git on every deploy. SitemapController
+     * serves them at the same public URLs.
+     */
+    private function outputPath(string $file): string
+    {
+        return storage_path('app/sitemap/' . $file);
     }
 
     private function writeIndex(): void
@@ -143,7 +155,7 @@ final class SitemapGenerateCommand extends Command
             ->add('/sitemap-categories.xml')
             ->add('/sitemap-brands.xml')
             ->add('/sitemap-products.xml')
-            ->writeToFile(public_path('sitemap.xml'));
+            ->writeToFile($this->outputPath('sitemap.xml'));
     }
 
     /**
