@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-LIyW1ziB.css",
+    "file": "assets/storefront-BQqXbup0.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-BPiapUab.js",
+    "file": "assets/storefront-BQuWO8MC.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -87,7 +87,7 @@
     ]
   },
   "resources/js/storefront/components/CartTable.vue": {
-    "file": "assets/CartTable-d3yN0zYb.js",
+    "file": "assets/CartTable-rK1hIOr9.js",
     "name": "CartTable",
     "src": "resources/js/storefront/components/CartTable.vue",
     "isDynamicEntry": true,

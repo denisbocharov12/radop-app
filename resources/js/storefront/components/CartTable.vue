@@ -98,24 +98,24 @@ async function remove(row) {
                 <li
                     v-for="row in rows"
                     :key="row.id"
-                    class="flex flex-wrap items-center gap-3 p-3 transition-opacity sm:flex-nowrap"
+                    class="grid grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 p-3 transition-opacity sm:grid-cols-[4rem_minmax(0,1fr)_8.5rem_7rem_2.25rem] sm:gap-x-4"
                     :class="{ 'opacity-50': row.busy }"
                 >
-                    <a :href="row.url" class="h-16 w-16 shrink-0 rounded-md border border-ink-100 p-1">
+                    <a :href="row.url" class="row-span-2 h-16 w-16 shrink-0 rounded-md border border-ink-100 p-1 sm:row-span-1">
                         <img v-if="row.image" :src="row.image" :alt="row.title" class="h-full w-full object-contain" loading="lazy" />
                         <span v-else class="flex h-full w-full items-center justify-center text-ink-300">
                             <SfIcon name="box" :size="22" />
                         </span>
                     </a>
 
-                    <div class="min-w-0 flex-1 basis-full sm:basis-auto">
+                    <div class="col-span-2 col-start-2 row-start-1 min-w-0 sm:col-span-1">
                         <a :href="row.url" class="line-clamp-2 text-sm font-medium text-ink-800 hover:text-brand-600">
                             {{ row.title }}
                         </a>
                         <p class="mt-0.5 text-2xs text-ink-400">{{ t.code }}: {{ row.code }}</p>
                     </div>
 
-                    <div class="flex items-stretch overflow-hidden rounded-md border border-ink-200">
+                    <div class="col-start-2 row-start-2 flex w-[8.5rem] items-stretch overflow-hidden rounded-md border border-ink-200 sm:col-start-3 sm:row-start-1 sm:justify-self-center">
                         <button
                             type="button"
                             class="px-2 transition-colors disabled:opacity-40"
@@ -131,7 +131,7 @@ async function remove(row) {
                             :value="row.qty"
                             type="number"
                             inputmode="numeric"
-                            class="w-12 border-x border-ink-200 text-center text-sm font-semibold focus:outline-none"
+                            class="w-full min-w-0 flex-1 border-x border-ink-200 text-center font-num text-sm font-semibold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                             :min="row.step"
                             :max="row.stock || undefined"
                             :step="row.step"
@@ -149,20 +149,21 @@ async function remove(row) {
                         </button>
                     </div>
 
-                    <p class="w-24 shrink-0 text-right text-sm font-bold text-ink-900">
+                    <p class="col-start-3 row-start-2 whitespace-nowrap text-right font-num text-sm font-bold text-ink-900 sm:col-start-4 sm:row-start-1">
                         {{ lineTotal(row) }} <span class="text-2xs font-normal text-ink-500">{{ currency }}</span>
                     </p>
 
                     <button
                         v-if="!atMinimum(row)"
                         type="button"
-                        class="sf-icon-btn h-8 w-8 shrink-0 hover:text-danger-600"
+                        class="hidden h-8 w-8 shrink-0 sf-icon-btn hover:text-danger-600 sm:col-start-5 sm:row-start-1 sm:inline-flex"
                         :disabled="row.busy"
                         :aria-label="t.remove"
                         @click="remove(row)"
                     >
                         <SfIcon name="trash" :size="16" />
                     </button>
+                    <span v-else class="hidden h-8 w-8 sm:col-start-5 sm:row-start-1 sm:block" aria-hidden="true"></span>
                 </li>
             </ul>
 
