@@ -516,7 +516,9 @@ function catalogLiveFilter() {
         });
 
         form.addEventListener('input', (event) => {
-            if (!desktop.matches || event.target.type !== 'number') return;
+            // Ползунок цены пишет значения в числовые поля сам, события они не
+            // получают, поэтому слушаем и сам ползунок.
+            if (!desktop.matches || ! ['number', 'range'].includes(event.target.type)) return;
             clearTimeout(priceTimer);
             priceTimer = setTimeout(() => apply(buildUrl()), 700);
         });

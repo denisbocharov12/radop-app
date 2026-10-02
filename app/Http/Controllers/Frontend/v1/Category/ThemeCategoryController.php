@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Category;
 
 use App\Support\Catalog\FacetProductIds;
+use App\Support\Catalog\PriceBounds;
 use App\Enums\PageTypes;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
@@ -127,6 +128,13 @@ final class ThemeCategoryController extends Controller
             $request,
             fn (Request $scoped) => $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd($existedCategory, $scoped)
         );
+        // Границы ползунка считаем без условия цены, иначе он сжимался бы до выбора.
+        $priceBounds = PriceBounds::for(
+            $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd(
+                $existedCategory,
+                FacetProductIds::requestWithoutGroup($request, 'price')
+            )
+        );
         $brandCounts = $this->brandRepository->getBrandProductCounts(
             $brands,
             $facetProductIds['brand'] ?? $filteredProductIds
@@ -148,6 +156,7 @@ final class ThemeCategoryController extends Controller
             'attributes',
             'filteredProductIds',
             'facetProductIds',
+            'priceBounds',
             'defaultSort',
             'ga4ItemLists',
             'seoContent',
@@ -324,6 +333,13 @@ final class ThemeCategoryController extends Controller
 
         $brands = $this->brandRepository->getAllBrandsByProductsIdsToFrontEnd($allCategoryProducts);
         $productOnecIds = $allCategoryProducts->pluck('onec_id')->toArray();
+        // Границы ползунка считаем без условия цены, иначе он сжимался бы до выбора.
+        $priceBounds = PriceBounds::for(
+            $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd(
+                $existedCategory,
+                FacetProductIds::requestWithoutGroup($request, 'price')
+            )
+        );
         $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $productOnecIds);
 
         $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);

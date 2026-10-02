@@ -36,7 +36,12 @@
         $rest = $filter;
         unset($rest['price']);
         $chips[] = [
-            'label' => __('theme.by-price') . ': ' . ($from !== null ? $from : '0') . ' – ' . ($to !== null ? $to : '∞'),
+            // Односторонняя вилка читается как «от» или «до», а не «0 – 1760».
+            'label' => __('theme.by-price') . ': ' . match (true) {
+                $from !== null && $to !== null => $from . ' – ' . $to,
+                $from !== null => __('theme.sf-price-from') . ' ' . $from,
+                default => __('theme.sf-price-to') . ' ' . $to,
+            },
             'url' => $without($rest),
         ];
     }

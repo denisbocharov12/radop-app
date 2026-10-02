@@ -53,6 +53,8 @@
                 :categories="$categories ?? null"
                 :filtered-ids="$filteredProductIds ?? null"
                 :facet-ids="$facetProductIds ?? []"
+                :price-min="$priceBounds['min'] ?? 0"
+                :price-max="$priceBounds['max'] ?? 1000"
                 :query="$query ?? []"
             />
         </x-slot:filters>

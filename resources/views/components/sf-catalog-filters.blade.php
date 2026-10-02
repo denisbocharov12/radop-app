@@ -11,6 +11,8 @@
     /** Leaf categories with `products_count` (shop and brand listings). */
     'categories' => null,
     'query' => [],
+    /** Нижняя граница цены в текущей выборке. */
+    'priceMin' => 0,
     'priceMax' => 1000,
 ])
 
@@ -144,21 +146,21 @@
             <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
         </summary>
 
-        <div class="mt-4 px-1" data-sf-price-range data-max="{{ (int) $priceMax }}">
+        <div class="mt-4 px-1" data-sf-price-range data-min="{{ (int) $priceMin }}" data-max="{{ (int) $priceMax }}">
             <div class="sf-range">
                 <div class="sf-range-track"><div class="sf-range-fill" data-sf-range-fill></div></div>
                 <input
                     type="range"
-                    min="0"
+                    min="{{ (int) $priceMin }}"
                     max="{{ (int) $priceMax }}"
                     step="1"
-                    value="{{ (int) ($priceFrom ?? 0) }}"
+                    value="{{ (int) ($priceFrom ?? $priceMin) }}"
                     aria-label="{{ __('theme.min') }}"
                     data-sf-range-min
                 >
                 <input
                     type="range"
-                    min="0"
+                    min="{{ (int) $priceMin }}"
                     max="{{ (int) $priceMax }}"
                     step="1"
                     value="{{ (int) ($priceTo ?? $priceMax) }}"
@@ -174,9 +176,10 @@
                 <input
                     type="number"
                     name="filter[price][from]"
-                    class="sf-field py-2 text-sm"
-                    placeholder="{{ __('theme.min') }}"
-                    min="0"
+                    class="sf-field py-2 font-num text-sm"
+                    placeholder="{{ (int) $priceMin }}"
+                    min="{{ (int) $priceMin }}"
+                    max="{{ (int) $priceMax }}"
                     value="{{ $priceFrom }}"
                     data-sf-price-from
                 />
@@ -187,9 +190,10 @@
                 <input
                     type="number"
                     name="filter[price][to]"
-                    class="sf-field py-2 text-sm"
-                    placeholder="{{ __('theme.max') }}"
-                    min="0"
+                    class="sf-field py-2 font-num text-sm"
+                    placeholder="{{ (int) $priceMax }}"
+                    min="{{ (int) $priceMin }}"
+                    max="{{ (int) $priceMax }}"
                     value="{{ $priceTo }}"
                     data-sf-price-to
                 />
@@ -401,7 +405,9 @@
                 var toInput = form.querySelector('[data-sf-price-to]');
 
                 if (range && fromInput && toInput) {
+                    var min = Number(range.dataset.min) || 0;
                     var max = Number(range.dataset.max) || 1000;
+                    var span = Math.max(1, max - min);
                     var minHandle = range.querySelector('[data-sf-range-min]');
                     var maxHandle = range.querySelector('[data-sf-range-max]');
                     var fill = range.querySelector('[data-sf-range-fill]');
@@ -409,8 +415,8 @@
                     var paint = function () {
                         var lo = Math.min(Number(minHandle.value), Number(maxHandle.value));
                         var hi = Math.max(Number(minHandle.value), Number(maxHandle.value));
-                        fill.style.left = (lo / max * 100) + '%';
-                        fill.style.right = (100 - hi / max * 100) + '%';
+                        fill.style.left = ((lo - min) / span * 100) + '%';
+                        fill.style.right = (100 - (hi - min) / span * 100) + '%';
                     };
 
                     var fromHandles = function (event) {
@@ -419,15 +425,15 @@
                         if (lo > hi) {
                             if (event.target === minHandle) minHandle.value = hi; else maxHandle.value = lo;
                         }
-                        fromInput.value = Number(minHandle.value) > 0 ? minHandle.value : '';
+                        fromInput.value = Number(minHandle.value) > min ? minHandle.value : '';
                         toInput.value = Number(maxHandle.value) < max ? maxHandle.value : '';
                         paint();
                         submitSoon(700);
                     };
 
                     var fromNumbers = function () {
-                        minHandle.value = Math.min(Number(fromInput.value) || 0, max);
-                        maxHandle.value = toInput.value === '' ? max : Math.min(Number(toInput.value), max);
+                        minHandle.value = Math.min(Math.max(Number(fromInput.value) || min, min), max);
+                        maxHandle.value = toInput.value === '' ? max : Math.min(Math.max(Number(toInput.value), min), max);
                         paint();
                         submitSoon(700);
                     };

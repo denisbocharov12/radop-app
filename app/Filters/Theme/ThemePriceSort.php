@@ -2,6 +2,7 @@
 
 namespace App\Filters\Theme;
 
+use App\Support\Catalog\DisplayPrice;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Sorts\Sort;
 
@@ -11,13 +12,8 @@ final class ThemePriceSort implements Sort
     {
         $direction = $descending ? 'DESC' : 'ASC';
 
-        $query->orderByRaw("
-            CASE
-                WHEN sale_price IS NOT NULL AND sale_price != ''
-                THEN CAST(REPLACE(sale_price, ',', '.') AS DECIMAL(10,2))
-                ELSE CAST(REPLACE(price, ',', '.') AS DECIMAL(10,2))
-            END $direction
-        ")
+        // Сортируем по той же цене, что показана в карточке.
+        $query->orderByRaw(DisplayPrice::sql() . " $direction")
         ->orderBy('products.onec_id');
     }
 }

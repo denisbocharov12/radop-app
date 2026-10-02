@@ -569,6 +569,8 @@ return array (
     'sf-search-in-category' => 'Искать в разделе',
     'sf-sort-relevance' => 'по релевантности',
     'sf-qty-increase' => 'Увеличить количество',
+    'sf-price-from' => 'от',
+    'sf-price-to' => 'до',
     'sf-copy-code' => 'Скопировать код',
     'sf-qty-decrease' => 'Уменьшить количество',
     'sf-download-section-xlsx' => 'Скачать товары раздела в Excel',

@@ -548,6 +548,8 @@ return array (
     'sf-search-in-category' => 'Căutați în secțiune',
     'sf-sort-relevance' => 'după relevanță',
     'sf-qty-increase' => 'Măriți cantitatea',
+    'sf-price-from' => 'de la',
+    'sf-price-to' => 'până la',
     'sf-copy-code' => 'Copiați codul',
     'sf-qty-decrease' => 'Micșorați cantitatea',
     'sf-download-section-xlsx' => 'Descarcă produsele secțiunii în XLSX',

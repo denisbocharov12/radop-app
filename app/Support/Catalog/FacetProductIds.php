@@ -30,27 +30,36 @@ final class FacetProductIds
         $sets = [];
 
         foreach ($groups as $group) {
-            $scoped = $filter;
-
-            if ($group === 'brand') {
-                unset($scoped['brand']);
-            } else {
-                unset($scoped['attribute'][$group]);
-
-                if ($scoped['attribute'] === []) {
-                    unset($scoped['attribute']);
-                }
-            }
-
-            $query = $request->except('filter');
-
-            if ($scoped !== []) {
-                $query['filter'] = $scoped;
-            }
-
-            $sets[(string) $group] = $resolver(Request::create($request->url(), 'GET', $query));
+            $sets[(string) $group] = $resolver(self::requestWithoutGroup($request, (string) $group));
         }
 
         return $sets;
+    }
+
+    /**
+     * Тот же запрос, но без условия одной группы: 'brand', 'price' или код
+     * характеристики.
+     */
+    public static function requestWithoutGroup(Request $request, string $group): Request
+    {
+        $filter = (array) $request->input('filter', []);
+
+        if ($group === 'brand' || $group === 'price') {
+            unset($filter[$group]);
+        } else {
+            unset($filter['attribute'][$group]);
+
+            if (($filter['attribute'] ?? null) === []) {
+                unset($filter['attribute']);
+            }
+        }
+
+        $query = $request->except('filter');
+
+        if ($filter !== []) {
+            $query['filter'] = $filter;
+        }
+
+        return Request::create($request->url(), 'GET', $query);
     }
 }

@@ -89,6 +89,8 @@ return [
     'sf-search-in-category' => 'Search in section',
     'sf-sort-relevance' => 'by relevance',
     'sf-qty-increase' => 'Increase quantity',
+    'sf-price-from' => 'from',
+    'sf-price-to' => 'up to',
     'sf-copy-code' => 'Copy the code',
     'sf-qty-decrease' => 'Decrease quantity',
     'sf-download-section-xlsx' => 'Download section products as Excel',

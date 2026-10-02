@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Frontend\v1\Shop;
 
 use App\Support\Catalog\FacetProductIds;
+use App\Support\Catalog\PriceBounds;
 use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
 use App\Services\Analytics\Ga4EcommercePayloadBuilder;
@@ -70,6 +71,11 @@ final class ThemeShopController extends Controller
             $request,
             fn (Request $scoped) => $this->productRepository->getFilteredProductOnecIdsToFrontEnd($scoped)
         );
+        $priceBounds = PriceBounds::for(
+            $this->productRepository->getFilteredProductOnecIdsToFrontEnd(
+                FacetProductIds::requestWithoutGroup($request, 'price')
+            )
+        );
         $brandCounts = $this->brandRepository->getBrandProductCounts(
             $brands,
             $facetProductIds['brand'] ?? $filteredProductIds
@@ -102,6 +108,7 @@ final class ThemeShopController extends Controller
             'attributes',
             'filteredProductIds',
             'facetProductIds',
+            'priceBounds',
             'allProducts',
             'defaultSort',
             'ga4ItemLists',
