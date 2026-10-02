@@ -62,7 +62,7 @@
             't' => [
                 'code' => __('theme.code'),
                 'empty' => __('theme.empty-cart'),
-                'remove' => __('theme.cart-destroy'),
+                'remove' => __('theme.sf-remove-from-cart'),
                 'destroy' => __('theme.cart-destroy'),
                 'payable' => __('theme.invoice-payable'),
                 'quantity' => __('theme.quantity-shortly'),

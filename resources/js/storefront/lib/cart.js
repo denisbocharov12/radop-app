@@ -105,7 +105,7 @@ export async function updateCart(productId, quantity) {
 }
 
 export async function removeFromCart(productId) {
-    const response = await postJson(route('cartRemove', '/product/deleteCartItem'), { product_id: productId });
+    const response = await postJson(route('cartRemove', '/product/deleteCartItem'), { product_id: String(productId) });
     if (response?.status === true) {
         pushEcommerce('cart_line_item_removed', response);
         broadcast({ ...response, action: 'remove', product_id: productId });

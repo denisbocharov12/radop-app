@@ -11,7 +11,9 @@
     the `[data-sf-export]` delegate in storefront/lib/vitals.js.
 --}}
 @php
-    $label = $personalized ? __('theme.download-personalized-catalog') : __('theme.download-catalog');
+    $label = $personalized ? __('theme.download-personalized-catalog') : __('theme.sf-download-xlsx');
+    // Иконка у подраздела: подсказка объясняет, что скачается.
+    $tooltip = $compact ? __('theme.sf-download-section-xlsx') : $label;
 @endphp
 
 @if($url)
@@ -19,8 +21,8 @@
         href="{{ $url }}"
         data-sf-export
         data-sf-export-personalized="{{ $personalized ? '1' : '0' }}"
-        title="{{ $label }}"
-        aria-label="{{ $label }}"
+        title="{{ $tooltip }}"
+        aria-label="{{ $tooltip }}"
         {{ $attributes->class([
             'group/export inline-flex shrink-0 items-center gap-2 rounded-md font-medium transition-colors',
             'h-9 w-9 justify-center text-success-600 hover:bg-success-50' => $compact,

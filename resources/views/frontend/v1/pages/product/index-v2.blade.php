@@ -152,7 +152,7 @@
                     @php($card ??= app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product))
                     <div>
                         <div class="flex flex-wrap items-baseline gap-2">
-                            <span @class(['text-2xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
+                            <span @class(['font-num text-3xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
                                 {{ number_format($card['displayPrice'], 2, ',', ' ') }}
                             </span>
                             <span class="text-sm text-ink-500">
@@ -177,18 +177,20 @@
                         @endif
                     </div>
 
-                    <p class="flex items-center gap-1.5 text-sm">
-                        @if($product->stock > 0 && $card['lowStock'])
+                    {{-- Витрина показывает только товары с положительным остатком,
+                         поэтому отдельная строка «в наличии» не нужна (ТЗ 29, 65, 66).
+                         Остаётся предупреждение, когда остаток заканчивается. --}}
+                    @if($product->stock > 0 && $card['lowStock'])
+                        <p class="flex items-center gap-1.5 text-sm">
                             <x-sf-icon name="clock" :size="15" class="text-accent-600" />
                             <span class="font-medium text-accent-700">{{ __('theme.sf-low-stock', ['qty' => $card['lowStock']]) }}</span>
-                        @elseif($product->stock > 0)
-                            <x-sf-icon name="check" :size="15" class="text-success-500" />
-                            <span class="font-medium text-success-600">{{ __('theme.in-stock') }}</span>
-                        @else
+                        </p>
+                    @elseif($product->stock <= 0)
+                        <p class="flex items-center gap-1.5 text-sm">
                             <x-sf-icon name="info" :size="15" class="text-ink-400" />
-                            <span class="text-ink-500">{{ __('theme.out-of-stock') }}</span>
-                        @endif
-                    </p>
+                            <span class="text-ink-600">{{ __('theme.out-of-stock') }}</span>
+                        </p>
+                    @endif
 
                     <div
                         data-sf-island="add-to-cart"
@@ -235,14 +237,13 @@
             </div>
         </div>
 
-        <section class="sf-section">
-            <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
-            @if($summary === null || empty(strip_tags($summary)))
-                <p class="text-sm text-ink-500">{{ __('theme.no-description') }}</p>
-            @else
+        {{-- Пустое описание прячем целиком, без заглушки (ТЗ 34). --}}
+        @if($summary !== null && ! empty(strip_tags($summary)))
+            <section class="sf-section">
+                <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
                 <div class="sf-prose">{!! $summary !!}</div>
-            @endif
-        </section>
+            </section>
+        @endif
     </div>
 
     {{-- Phones: once the buy box scrolls away, keep price + CTA under the thumb,
@@ -256,7 +257,7 @@
         <div class="mx-auto flex max-w-lg items-center gap-3">
             <div class="min-w-0 flex-1">
                 <p class="truncate text-xs text-ink-500">{{ $product->title }}</p>
-                <p class="text-lg font-bold leading-tight {{ $hasSale ? 'text-accent-600' : 'text-ink-900' }}">
+                <p class="font-num text-lg font-bold leading-tight {{ $hasSale ? 'text-accent-600' : 'text-ink-900' }}">
                     {{ number_format($displayPrice, 2, ',', ' ') }} <span class="text-xs font-medium text-ink-500">{{ __('theme.MDL') }}</span>
                 </p>
             </div>

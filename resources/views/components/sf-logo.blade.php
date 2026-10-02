@@ -12,7 +12,10 @@
      * not a template hunt.
      */
     $logo = config('storefront.logo');
-    $tagline = $logo['tagline'][app()->getLocale()] ?? $logo['tagline']['ro'] ?? null;
+    // ТЗ 7: в шапке пока без подзаголовка, в подвале оставляем.
+    $tagline = $variant === 'footer'
+        ? ($logo['tagline'][app()->getLocale()] ?? $logo['tagline']['ro'] ?? null)
+        : null;
     $isFooter = $variant === 'footer';
 @endphp
 

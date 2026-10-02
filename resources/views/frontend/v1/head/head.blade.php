@@ -26,7 +26,7 @@
     {{-- Four weights instead of the previous eighteen (ital × 9 weights): the
          design system only ever asks for 400/500/600/700. --}}
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
         rel="stylesheet"
     >
 

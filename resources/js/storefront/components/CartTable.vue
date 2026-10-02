@@ -11,6 +11,9 @@ import { computed, ref } from 'vue';
 import SfIcon from './SfIcon.vue';
 import { notify, removeFromCart, updateCart } from '../lib/cart.js';
 
+/** На минимуме «−» превращается в удаление строки — как в привычных корзинах. */
+const atMinimum = (row) => row.qty <= Math.max(row.step, 1);
+
 const props = defineProps({
     lines: { type: Array, default: () => [] },
     total: { type: String, default: '0,00' },
@@ -115,12 +118,14 @@ async function remove(row) {
                     <div class="flex items-stretch overflow-hidden rounded-md border border-ink-200">
                         <button
                             type="button"
-                            class="px-2 text-ink-500 hover:bg-ink-100 disabled:opacity-40"
-                            :disabled="row.busy || row.qty <= row.step"
-                            aria-label="−"
-                            @click="setQty(row, row.qty - row.step)"
+                            class="px-2 transition-colors disabled:opacity-40"
+                            :class="atMinimum(row) ? 'text-danger-600 hover:bg-danger-50' : 'text-ink-500 hover:bg-ink-100'"
+                            :disabled="row.busy"
+                            :aria-label="atMinimum(row) ? t.remove : '−'"
+                            :title="atMinimum(row) ? t.remove : null"
+                            @click="atMinimum(row) ? remove(row) : setQty(row, row.qty - row.step)"
                         >
-                            <SfIcon name="minus" :size="14" />
+                            <SfIcon :name="atMinimum(row) ? 'trash' : 'minus'" :size="14" />
                         </button>
                         <input
                             :value="row.qty"
@@ -148,6 +153,7 @@ async function remove(row) {
                     </p>
 
                     <button
+                        v-if="!atMinimum(row)"
                         type="button"
                         class="sf-icon-btn h-8 w-8 shrink-0 hover:text-danger-600"
                         :disabled="row.busy"
@@ -174,7 +180,7 @@ async function remove(row) {
                 </div>
                 <div class="flex justify-between">
                     <dt class="text-ink-500">{{ t.summary }}</dt>
-                    <dd class="font-medium text-ink-800">{{ total }} {{ currency }}</dd>
+                    <dd class="font-num font-medium text-ink-800">{{ total }} {{ currency }}</dd>
                 </div>
             </dl>
 
@@ -185,7 +191,7 @@ async function remove(row) {
 
             <div class="flex items-baseline justify-between border-t border-ink-100 pt-3">
                 <span class="text-sm font-semibold text-ink-700">{{ t.forPayment }}</span>
-                <span class="text-xl font-bold text-ink-900">{{ total }} {{ currency }}</span>
+                <span class="font-num text-xl font-bold text-ink-900">{{ total }} {{ currency }}</span>
             </div>
 
             <!-- Minimum order: how much is missing, not just the threshold

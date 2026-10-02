@@ -69,7 +69,10 @@ export default {
                 danger: { 50: '#fef2f2', 500: '#e11d48', 600: '#be123c' },
             },
             fontFamily: {
-                sans: ['Montserrat', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+                // Roboto — весь интерфейс; Aptos Narrow — только числовые значения
+                // (цены, суммы, коды, артикулы, штрихкоды, упаковка).
+                sans: ['Roboto', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+                num: ['Aptos Narrow', 'Roboto', 'system-ui', 'sans-serif'],
             },
             fontSize: {
                 // Compact e-commerce scale — dense catalogues need small steps.

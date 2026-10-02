@@ -152,7 +152,8 @@ final class ThemeProductController extends Controller
     public function deleteCartItem(Request $request)
     {
         try {
-            $response = $this->themeProductManager->deleteCartItem($request->input('product_id'), $request);
+            // JSON-запросы витрины шлют id числом, формы — строкой; метод ждёт строку.
+            $response = $this->themeProductManager->deleteCartItem((string) $request->input('product_id'), $request);
 
             return response()->json($response);
 

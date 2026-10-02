@@ -4,6 +4,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Aptos Narrow — только для числовых значений (цены, суммы, коды, артикулы,
+   штрихкоды, упаковка). Подписи и остальной интерфейс — Roboto. */
+@font-face {
+    font-family: "Aptos Narrow";
+    src: url("/fonts/aptos-narrow/Aptos-Narrow.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Aptos Narrow";
+    src: url("/fonts/aptos-narrow/Aptos-Narrow-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ==================================================================
    Radop storefront — design system
    ------------------------------------------------------------------
@@ -255,11 +273,11 @@
     }
 
     .sf-product-price {
-        @apply text-lg font-bold leading-none text-ink-900;
+        @apply font-num text-lg font-bold leading-none text-ink-900;
     }
 
     .sf-product-price-old {
-        @apply text-sm font-medium leading-none text-ink-400 line-through;
+        @apply font-num text-sm font-medium leading-none text-ink-500 line-through;
     }
 
     /* ---------------------------------------------------------- grids */
@@ -393,7 +411,7 @@
        can otherwise take four lines before the visitor reaches the title. */
     .sf-breadcrumb {
         @apply sf-scrollbar-none flex flex-nowrap items-center gap-x-1.5 gap-y-1
-               overflow-x-auto whitespace-nowrap py-3 text-xs text-ink-500
+               overflow-x-auto whitespace-nowrap py-3 text-xs text-ink-600
                lg:flex-wrap lg:overflow-visible;
     }
 
@@ -442,7 +460,7 @@
     }
 
     .sf-product-meta {
-        @apply space-y-0.5 text-2xs leading-4 text-ink-500 empty:hidden;
+        @apply space-y-0.5 text-2xs leading-4 text-ink-600 empty:hidden;
     }
 
     .sf-product-meta > li {
@@ -459,7 +477,7 @@
     /* One line, always: the code stays whole and the article, the only
        free-length value, shortens when the card is narrow. */
     .sf-product-codes-row {
-        @apply relative z-10 flex min-w-0 flex-nowrap items-center justify-between gap-1.5 text-ink-400;
+        @apply relative z-10 flex min-w-0 flex-nowrap items-center justify-between gap-1.5 text-ink-600;
     }
 
     /* In a two-up phone card (~130 px) "Cod:" and "Art:" leave no room for
@@ -476,11 +494,11 @@
     }
 
     .sf-product-brand {
-        @apply relative z-10 flex min-w-0 items-baseline gap-1 text-2xs text-ink-400;
+        @apply relative z-10 flex min-w-0 items-baseline gap-1 text-2xs text-ink-500;
     }
 
     .sf-product-brand a {
-        @apply truncate font-semibold uppercase tracking-wide text-brand-600 hover:text-brand-700 hover:underline;
+        @apply truncate font-medium text-brand-600 hover:text-brand-700 hover:underline;
     }
 
     /* 10px: the eight-digit code must fit whole in a six-up rail card, so only
@@ -492,7 +510,7 @@
     }
 
     .sf-code-chip b {
-        @apply truncate font-semibold tabular-nums text-ink-700;
+        @apply truncate font-num font-bold tabular-nums text-ink-800;
     }
 
     .sf-code-chip-code {

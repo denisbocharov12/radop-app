@@ -155,7 +155,7 @@
             <span @class(['sf-product-price', 'text-accent-600' => $card['oldPrice']])>
                 {{ number_format($card['displayPrice'], 2, ',', ' ') }}
             </span>
-            <span class="text-xs text-ink-500">
+            <span class="text-xs text-ink-600">
                 {{ __('theme.MDL') }}@if($card['minOrder']) / {{ $card['minOrder'] }} {{ __('theme.min_order_unit') }}@endif
             </span>
             @if($card['oldPrice'])
@@ -213,6 +213,7 @@
                 'currency' => __('theme.MDL'),
                 'labelAdd' => __('theme.add-to-cart'),
                 'labelInCart' => __('theme.in-cart'),
+                'labelRemove' => __('theme.sf-remove-from-cart'),
                 'labelTotal' => __('theme.total'),
                 'disabled' => $card['stock'] <= 0,
                 'compact' => true,

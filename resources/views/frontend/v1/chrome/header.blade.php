@@ -205,7 +205,7 @@
                         aria-label="{{ __('theme.cart') }}"
                     >
                         <x-sf-icon name="cart" :size="21" />
-                        <span class="hidden whitespace-nowrap text-sm font-bold sm:inline">
+                        <span class="hidden whitespace-nowrap font-num text-sm font-bold sm:inline">
                             {{ number_format($cartTotal, 2, ',', '') }} {{ __('theme.MDL') }}
                         </span>
                     </a>

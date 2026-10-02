@@ -142,7 +142,7 @@ onBeforeUnmount(() => {
                     <div class="space-y-3 border-t border-ink-100 bg-ink-50 p-4">
                         <p class="flex items-baseline justify-between">
                             <span class="text-sm text-ink-600">{{ $sf.t.total }}</span>
-                            <span class="text-lg font-bold text-ink-900">{{ summary.total }} {{ $sf.currency }}</span>
+                            <span class="font-num text-lg font-bold text-ink-900">{{ summary.total }} {{ $sf.currency }}</span>
                         </p>
                         <p v-if="summary.belowMinimum" class="rounded-md bg-accent-50 px-2.5 py-2 text-xs text-accent-700">
                             {{ $sf.t.minOrderAddMore }} <b>{{ summary.remaining }} {{ $sf.currency }}</b>

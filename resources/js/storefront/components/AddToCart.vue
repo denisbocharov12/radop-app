@@ -13,7 +13,7 @@
  */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import SfIcon from './SfIcon.vue';
-import { addToCart, notify } from '../lib/cart.js';
+import { addToCart, notify, removeFromCart } from '../lib/cart.js';
 
 const props = defineProps({
     productId: { type: Number, required: true },
@@ -26,6 +26,7 @@ const props = defineProps({
     currency: { type: String, default: 'MDL' },
     labelAdd: { type: String, default: 'Add to cart' },
     labelInCart: { type: String, default: 'In cart' },
+    labelRemove: { type: String, default: 'Remove' },
     labelTotal: { type: String, default: 'Total' },
     disabled: { type: Boolean, default: false },
     compact: { type: Boolean, default: false },
@@ -41,6 +42,8 @@ let addedTimer = null;
 const step = computed(() => Math.max(props.step, 1));
 const maxQty = computed(() => (props.stock > 0 ? props.stock : Number.MAX_SAFE_INTEGER));
 const lineTotal = computed(() => qty.value * props.price);
+/* Товар уже в корзине и количество на минимуме — «−» становится удалением. */
+const showRemove = computed(() => cartQty.value > 0 && qty.value <= step.value);
 
 const formatted = computed(() =>
     new Intl.NumberFormat('ro-MD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -60,6 +63,20 @@ function onInput(event) {
     const parsed = Number.parseInt(event.target.value, 10);
     qty.value = Number.isNaN(parsed) ? step.value : clamp(parsed);
     event.target.value = qty.value;
+}
+
+async function removeLine() {
+    if (busy.value) return;
+    busy.value = true;
+    try {
+        const response = await removeFromCart(props.productId);
+        if (response?.status === true) cartQty.value = 0;
+        else notify(response?.msg, 'warning');
+    } catch {
+        notify(window.__SF__?.t?.menuError, 'error');
+    } finally {
+        busy.value = false;
+    }
 }
 
 async function submit() {
@@ -126,12 +143,14 @@ onBeforeUnmount(() => {
             <div class="sf-atc-stepper flex h-10 items-stretch overflow-hidden rounded-md border border-ink-200 bg-white">
                 <button
                     type="button"
-                    class="flex w-9 shrink-0 items-center justify-center text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-40"
-                    :disabled="qty <= step || disabled"
-                    :aria-label="`−${step}`"
-                    @click="bump(-1)"
+                    class="flex w-9 shrink-0 items-center justify-center transition-colors disabled:opacity-40"
+                    :class="showRemove ? 'text-danger-600 hover:bg-danger-50' : 'text-ink-500 hover:bg-ink-100 hover:text-ink-900'"
+                    :disabled="disabled || busy || (!showRemove && qty <= step)"
+                    :aria-label="showRemove ? labelRemove : `−${step}`"
+                    :title="showRemove ? labelRemove : null"
+                    @click="showRemove ? removeLine() : bump(-1)"
                 >
-                    <SfIcon name="minus" :size="14" />
+                    <SfIcon :name="showRemove ? 'trash' : 'minus'" :size="14" />
                 </button>
                 <input
                     :value="qty"
