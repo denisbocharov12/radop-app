@@ -78,6 +78,7 @@ final class StorefrontProductPresenter
                 : null,
             'personalPercent' => $personal ? (int) round((1 - $unitPrice / $listUnit) * 100) : null,
             'condition' => $product?->data?->condition,
+            'photoBadges' => $this->photoBadges($product),
             'step' => max(1, (int) ($product->min_order ?: 1)),
             'minOrder' => $multiplier > 1 ? $multiplier : null,
             'stock' => $stock,
@@ -109,6 +110,38 @@ final class StorefrontProductPresenter
                 ->values()
                 ->all(),
         ];
+    }
+
+    /**
+     * Informational badges drawn in the photo's top-right corner (BPA FREE,
+     * FSC, ECO…). Which specifications count as a badge is configured in
+     * config/storefront.php, so marketing can add one without a deploy.
+     *
+     * @return list<string>
+     */
+    private function photoBadges(Product $product): array
+    {
+        $map = (array) config('storefront.photo_badges.attributes', []);
+
+        if ($map === [] || ! $product->relationLoaded('values') && $product->values === null) {
+            return [];
+        }
+
+        $truthy = ['da', 'yes', 'да', '1', 'true'];
+
+        return $product->values
+            ->filter(static function ($value) use ($map, $truthy) {
+                $name = $value->attribute?->name;
+
+                return $name !== null
+                    && isset($map[$name])
+                    && in_array(mb_strtolower(trim((string) $value->value)), $truthy, true);
+            })
+            ->map(static fn ($value) => (string) $map[$value->attribute->name])
+            ->unique()
+            ->take((int) config('storefront.photo_badges.limit', 2))
+            ->values()
+            ->all();
     }
 
     /**

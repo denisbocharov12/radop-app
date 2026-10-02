@@ -110,7 +110,7 @@
                 @if(! empty($galleryImages))
                     <div
                         data-sf-island="product-gallery"
-                        data-sf-props="{{ $sfJson(['images' => $galleryImages, 'alt' => $product->title, 'badges' => $galleryBadges]) }}"
+                        data-sf-props="{{ $sfJson(['images' => $galleryImages, 'alt' => $product->title, 'badges' => $galleryBadges, 'infoBadges' => $card['photoBadges'] ?? []]) }}"
                         v-cloak
                     >
                         <img

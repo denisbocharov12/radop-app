@@ -238,6 +238,8 @@
     .sf-badge-sale    { @apply sf-badge bg-accent-500 text-white; }
     .sf-badge-hit     { @apply sf-badge bg-brand-600 text-white; }
     .sf-badge-neutral { @apply sf-badge bg-ink-100 text-ink-600; }
+    /* ТЗ 57: информационные бейджи мельче ярлыков NEW/SALE и не перекрывают товар. */
+    .sf-badge-info    { @apply inline-flex items-center rounded border border-ink-200 bg-white/95 px-1.5 py-0.5 text-[0.625rem] font-bold uppercase leading-4 tracking-wide text-ink-600 shadow-sm; }
 
     /* ---------------------------------------------------------- product card */
     /* The markup must also carry `group` — Tailwind refuses to @apply it. */

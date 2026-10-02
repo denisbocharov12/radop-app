@@ -7,12 +7,13 @@
 @php
     $current = request()->query('sort') ?? $defaultSort;
 
+    // Порядок по ТЗ 50: популярность, новинки, цена вверх/вниз, название.
     $sortOptions = [
+        'popular_order' => __('theme.sort-popular'),
+        'condition' => __('theme.sort-new'),
         'price' => __('theme.sort-price-asc'),
         '-price' => __('theme.sort-price-desc'),
         'title' => __('theme.sort-title'),
-        'popular_order' => __('theme.sort-popular'),
-        'condition' => __('theme.sort-new'),
     ];
 
     $perPageOptions = [24, 48, 72, 96];

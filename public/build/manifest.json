@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-B4EN1Wvw.css",
+    "file": "assets/storefront-DSdD2s6V.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-maBH2NnS.js",
+    "file": "assets/storefront-zxqoK-3i.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -139,7 +139,7 @@
     ]
   },
   "resources/js/storefront/components/ProductGallery.vue": {
-    "file": "assets/ProductGallery-kOJzrprj.js",
+    "file": "assets/ProductGallery-C9uB4F5I.js",
     "name": "ProductGallery",
     "src": "resources/js/storefront/components/ProductGallery.vue",
     "isDynamicEntry": true,
@@ -149,7 +149,7 @@
     ]
   },
   "resources/js/storefront/components/QuickView.vue": {
-    "file": "assets/QuickView-CUZLGx1i.js",
+    "file": "assets/QuickView-tBBkzgEE.js",
     "name": "QuickView",
     "src": "resources/js/storefront/components/QuickView.vue",
     "isDynamicEntry": true,

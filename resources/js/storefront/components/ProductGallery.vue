@@ -14,6 +14,8 @@ const props = defineProps({
     alt: { type: String, default: '' },
     /** [{ label, class }] — drawn on the main image, never over the thumbnails. */
     badges: { type: Array, default: () => [] },
+    /** ТЗ 56: свойства товара — правый верхний угол фото. */
+    infoBadges: { type: Array, default: () => [] },
 });
 
 const index = ref(0);
@@ -79,12 +81,16 @@ onBeforeUnmount(() => {
                     v-if="current"
                     :src="current.url"
                     :alt="alt"
-                    class="aspect-square w-full object-contain p-6"
+                    class="aspect-square w-full object-contain p-2 sm:p-3"
                     fetchpriority="high"
                     decoding="async"
                 />
                 <span v-if="badges.length" class="sf-product-flags left-3 top-3">
                     <span v-for="badge in badges" :key="badge.label" :class="badge.class">{{ badge.label }}</span>
+                </span>
+                <!-- ТЗ 56: свойства товара — правый верхний угол, не больше двух. -->
+                <span v-if="infoBadges.length" class="pointer-events-none absolute right-3 top-3 z-10 flex flex-col items-end gap-1">
+                    <span v-for="badge in infoBadges" :key="badge" class="sf-badge-info">{{ badge }}</span>
                 </span>
                 <span class="absolute bottom-3 right-3 rounded-md bg-white/90 p-1.5 text-ink-500 opacity-0 shadow-card transition-opacity group-hover:opacity-100">
                     <SfIcon name="search" :size="16" />
