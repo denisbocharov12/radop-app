@@ -102,6 +102,16 @@ final class SeoFallbackGenerator
         };
     }
 
+    /**
+     * Clip free-form text (for example a product summary) to meta-description length.
+     */
+    public function clipDescription(string $text, int $max = 160): string
+    {
+        $text = trim((string) preg_replace('/\s+/u', ' ', $text));
+
+        return $this->clip($text, $max);
+    }
+
     private function safeName(?string $raw): string
     {
         if ($raw === null) {

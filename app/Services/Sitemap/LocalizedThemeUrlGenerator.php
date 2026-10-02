@@ -31,7 +31,7 @@ final class LocalizedThemeUrlGenerator
         }
         $normalizedPath = trim($path, '/');
         if ($normalizedPath === '') {
-            return $base . $localeSegment . '/';
+            return $localeSegment === '' ? $base . '/' : $base . $localeSegment;
         }
 
         return $base . $localeSegment . '/' . $normalizedPath;

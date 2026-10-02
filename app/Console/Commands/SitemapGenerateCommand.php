@@ -59,7 +59,7 @@ final class SitemapGenerateCommand extends Command
                     $this->urlWithAlternates(
                         $locale,
                         $item['path'],
-                        Carbon::now(),
+                        null,
                         (float) $item['priority'],
                         (string) $item['frequency'],
                     )
@@ -154,22 +154,28 @@ final class SitemapGenerateCommand extends Command
     private function urlWithAlternates(
         string $locale,
         string $path,
-        Carbon $lastmod,
+        ?Carbon $lastmod,
         float $priority,
         string $frequency
     ): Url {
         $url = Url::create($this->generator->absolute($locale, $path))
-            ->setLastModificationDate($lastmod)
             ->setChangeFrequency($frequency)
             ->setPriority($priority);
 
+        if ($lastmod !== null) {
+            $url->setLastModificationDate($lastmod);
+        } else {
+            // No trustworthy modification date (static pages): omit <lastmod>
+            // instead of reporting the generation time as a change.
+            unset($url->lastModificationDate);
+        }
+
+        // List every language version, the URL itself included, plus x-default.
         foreach ($this->locales as $alt) {
-            if ($alt === $locale) {
-                continue;
-            }
             $hreflang = self::HREFLANG_MAP[$alt] ?? $alt;
             $url->addAlternate($this->generator->absolute($alt, $path), $hreflang);
         }
+        $url->addAlternate($this->generator->absolute((string) config('app.fallback_locale'), $path), 'x-default');
 
         return $url;
     }

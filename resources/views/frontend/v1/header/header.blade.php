@@ -132,7 +132,7 @@
                 <div class="language-switch-mobile col-auto d-flex d-lg-none">
                     <div class="language-switcher">
                         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                            <a href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                            <a href="{{ \App\Support\LocaleUrl::canonical($localeCode) }}"
                                class="lang-option @if(LaravelLocalization::getCurrentLocale() == $localeCode) active @endif">
                                 {{ strtoupper($localeCode) }}
                             </a>

@@ -66,9 +66,11 @@ final class ThemeProductController extends Controller
         $productSummary = strip_tags((string) $product?->data?->summary);
         $seoDescription = ($seo?->description !== null && $seo->description !== '')
             ? $seo->description
-            : ($productSummary !== '' ? $productSummary : $this->seoFallback->productDescription($product, $locale));
+            : ($productSummary !== '' ? $this->seoFallback->clipDescription($productSummary) : $this->seoFallback->productDescription($product, $locale));
 
         $this->seo()->setTitle($seoTitle);
+        // Search engines truncate snippets at about 160 characters; clip manual (admin) texts too.
+        $seoDescription = $this->seoFallback->clipDescription((string) $seoDescription);
         $this->seo()->setDescription($seoDescription);
 
         $imageUrl = config('seotools.meta.defaults.default_image');
