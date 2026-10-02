@@ -86,6 +86,8 @@ return [
     'sf-brands-show-all' => 'Show all',
     'sf-brands-collapse' => 'Collapse',
     'sf-brand-search' => 'Search brand',
+    'sf-search-in-category' => 'Search in section',
+    'sf-sort-relevance' => 'by relevance',
     'sf-download-section-xlsx' => 'Download section products as Excel',
     'sf-page-prev' => 'Previous page',
     'sf-page-next' => 'Next page',

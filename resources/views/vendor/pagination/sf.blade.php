@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <nav class="mt-8 flex items-center justify-center gap-1" role="navigation" aria-label="{{ __('theme.sf-pagination') }}">
+    <nav class="mt-8 flex flex-wrap items-center justify-center gap-1" role="navigation" aria-label="{{ __('theme.sf-pagination') }}">
         @if ($paginator->onFirstPage())
             <span class="sf-icon-btn cursor-not-allowed opacity-40" aria-disabled="true">
                 <x-sf-icon name="chevronLeft" :size="18" />

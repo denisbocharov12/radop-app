@@ -566,6 +566,8 @@ return array (
     'sf-brands-show-all' => 'Показать все',
     'sf-brands-collapse' => 'Свернуть',
     'sf-brand-search' => 'Поиск бренда',
+    'sf-search-in-category' => 'Искать в разделе',
+    'sf-sort-relevance' => 'по релевантности',
     'sf-download-section-xlsx' => 'Скачать товары раздела в Excel',
     'sf-page-prev' => 'Предыдущая страница',
     'sf-page-next' => 'Следующая страница',

@@ -545,6 +545,8 @@ return array (
     'sf-brands-show-all' => 'Arată toate',
     'sf-brands-collapse' => 'Restrânge',
     'sf-brand-search' => 'Căutare brand',
+    'sf-search-in-category' => 'Căutați în secțiune',
+    'sf-sort-relevance' => 'după relevanță',
     'sf-download-section-xlsx' => 'Descarcă produsele secțiunii în XLSX',
     'sf-page-prev' => 'Pagina anterioară',
     'sf-page-next' => 'Pagina următoare',

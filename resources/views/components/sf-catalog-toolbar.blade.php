@@ -2,6 +2,8 @@
     'products',
     'action',
     'defaultSort' => 'price',
+    /** На странице поиска слева нет колонки фильтров — кнопка не нужна. */
+    'withFilters' => true,
 ])
 
 @php
@@ -48,6 +50,7 @@
         @endif
     @endforeach
 
+    @if($withFilters)
     <button
         type="button"
         class="sf-btn-secondary h-10 px-3 text-sm lg:hidden"
@@ -59,6 +62,7 @@
             <span class="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-brand-600 px-1 text-2xs font-bold text-white">{{ $activeFilters }}</span>
         @endif
     </button>
+    @endif
 
     <p class="hidden text-sm text-ink-500 sm:block">
         <b class="font-semibold text-ink-800">{{ $products->total() }}</b> {{ __('theme.sort-products') }}
@@ -68,6 +72,9 @@
         <label class="flex min-w-0 items-center gap-2">
             <span class="hidden text-xs text-ink-500 md:inline">{{ __('theme.sort-label') }}</span>
             <select name="sort" class="sf-field h-10 w-auto min-w-0 max-w-[11rem] py-0 pr-8 text-sm sm:max-w-none">
+                @if($defaultSort === '')
+                    <option value="" @selected($current === '')>{{ __('theme.sf-sort-relevance') }}</option>
+                @endif
                 @foreach($sortOptions as $key => $label)
                     <option value="{{ $key }}" @selected($current === $key)>{{ $label }}</option>
                 @endforeach

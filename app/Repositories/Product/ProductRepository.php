@@ -831,10 +831,28 @@ final class ProductRepository
      */
     public function getAllBySearch(string $value): LengthAwarePaginator
     {
-        $query = $this->buildSearchQuery($value);
+        // Те же связи, что и в остальных списках: карточка показывает бренд,
+        // фото, упаковки и ярлык состояния — без этого выходит запрос на товар.
+        $query = $this->buildSearchQuery($value)
+            ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data']);
+
+        // По умолчанию порядок выдачи поиска (релевантность), остальное — как в каталоге.
+        $locale = app()->getLocale();
+        $titleExpr = "JSON_UNQUOTE(JSON_EXTRACT(products.title, '$." . $locale . "'))";
+
+        match ((string) request()->query('sort', '')) {
+            'price' => $query->orderByRaw('CAST(products.price AS DECIMAL(12,2)) asc'),
+            '-price' => $query->orderByRaw('CAST(products.price AS DECIMAL(12,2)) desc'),
+            'title' => $query->orderByRaw($titleExpr . ' asc'),
+            'popular_order' => $query->orderByRaw('products.popular_order is null, products.popular_order asc'),
+            'condition' => $query->orderByDesc('products.created_at'),
+            default => $query,
+        };
+
+        $perPage = (int) request()->query('perPage', 24);
 
         return $query
-            ->paginate(15)
+            ->paginate(in_array($perPage, [24, 48, 72, 96], true) ? $perPage : 24)
             ->appends(request()->query());
     }
 
