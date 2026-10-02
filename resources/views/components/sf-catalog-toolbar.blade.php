@@ -126,7 +126,11 @@
                 var toolbar = document.querySelector('[data-sf-toolbar]');
                 if (!toolbar) return;
                 toolbar.querySelectorAll('select').forEach(function (select) {
-                    select.addEventListener('change', function () { toolbar.submit(); });
+                    select.addEventListener('change', function () {
+                        /* Живое обновление берёт это на себя (ТЗ 48). */
+                        if (document.documentElement.dataset.sfLiveFilter === '1') return;
+                        toolbar.submit();
+                    });
                 });
             });
         </script>

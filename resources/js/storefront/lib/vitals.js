@@ -368,6 +368,143 @@ function tableOfContents() {
     });
 }
 
+/**
+ * Фильтры, сортировка и размер страницы без перезагрузки (ТЗ 48).
+ *
+ * Запрашиваем ту же страницу и подменяем три куска: сетку товаров,
+ * чипсы выбранных фильтров и пагинацию, плюс счётчик найденного в панели.
+ * Боковую колонку не трогаем — её обработчики (раскрытие брендов, поиск по
+ * ним) остаются живыми, а состояние раскрытых блоков не сбрасывается.
+ */
+function catalogLiveFilter() {
+    const grid = document.querySelector('.sf-grid-products');
+    const form = document.querySelector('[data-sf-filter-form]');
+    const toolbar = document.querySelector('[data-sf-toolbar]');
+
+    if (!grid || (!form && !toolbar)) return;
+
+    // Инлайновые скрипты страницы видят флаг и не делают обычный submit.
+    document.documentElement.dataset.sfLiveFilter = '1';
+
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    let controller = null;
+    let priceTimer = null;
+
+    const buildUrl = () => {
+        const params = new URLSearchParams();
+
+        if (form) {
+            new FormData(form).forEach((value, key) => {
+                if (String(value).trim() !== '') params.append(key, value);
+            });
+        } else if (toolbar) {
+            // На поиске колонки фильтров нет — параметры лежат в скрытых полях панели.
+            toolbar.querySelectorAll('input[type=hidden]').forEach((input) => {
+                if (String(input.value).trim() !== '') params.append(input.name, input.value);
+            });
+        }
+
+        if (toolbar) {
+            toolbar.querySelectorAll('select').forEach((select) => {
+                params.delete(select.name);
+                if (String(select.value).trim() !== '') params.set(select.name, select.value);
+            });
+        }
+
+        const action = form?.getAttribute('action') || toolbar?.getAttribute('action') || window.location.pathname;
+        const query = params.toString();
+
+        return query ? `${action}?${query}` : action;
+    };
+
+    const swapChips = (doc) => {
+        const next = doc.querySelector('[data-sf-filter-chips]');
+        const current = document.querySelector('[data-sf-filter-chips]');
+
+        if (next && current) current.replaceWith(next);
+        else if (next) grid.parentElement.insertBefore(next, grid);
+        else if (current) current.remove();
+    };
+
+    const swapPagination = (doc) => {
+        const next = doc.querySelector('nav[role="navigation"]');
+        const current = document.querySelector('nav[role="navigation"]');
+
+        if (next && current) current.replaceWith(next);
+        else if (next) grid.parentElement.insertBefore(next, grid.nextSibling);
+        else if (current) current.remove();
+    };
+
+    const swapCount = (doc) => {
+        const next = doc.querySelector('[data-sf-toolbar] b');
+        const current = document.querySelector('[data-sf-toolbar] b');
+
+        if (next && current) current.textContent = next.textContent;
+    };
+
+    const apply = async (url, push = true) => {
+        controller?.abort();
+        controller = new AbortController();
+        grid.setAttribute('aria-busy', 'true');
+        grid.classList.add('opacity-50', 'transition-opacity');
+
+        try {
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'fetch' },
+                credentials: 'same-origin',
+                signal: controller.signal,
+            });
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            const nextGrid = doc.querySelector('.sf-grid-products');
+
+            grid.innerHTML = nextGrid ? nextGrid.innerHTML : '';
+            swapChips(doc);
+            swapPagination(doc);
+            swapCount(doc);
+
+            if (push) window.history.pushState({ sfFilter: true }, '', url);
+
+            grid.dispatchEvent(new CustomEvent('sf:mount', { bubbles: true }));
+            window.scrollTo({ top: Math.max(0, grid.getBoundingClientRect().top + window.scrollY - 140), behavior: 'smooth' });
+        } catch (error) {
+            if (error.name !== 'AbortError') window.location.href = url;
+        } finally {
+            grid.classList.remove('opacity-50');
+            grid.removeAttribute('aria-busy');
+        }
+    };
+
+    if (form) {
+        form.addEventListener('change', (event) => {
+            // На телефоне фильтры применяются кнопкой в выезжающей панели.
+            if (!desktop.matches || event.target.type !== 'checkbox') return;
+            apply(buildUrl());
+        });
+
+        form.addEventListener('input', (event) => {
+            if (!desktop.matches || event.target.type !== 'number') return;
+            clearTimeout(priceTimer);
+            priceTimer = setTimeout(() => apply(buildUrl()), 700);
+        });
+    }
+
+    if (toolbar) {
+        toolbar.addEventListener('change', (event) => {
+            if (event.target.tagName !== 'SELECT') return;
+            apply(buildUrl());
+        });
+    }
+
+    // Пагинация и чипсы — обычные ссылки, перехватываем их тут же.
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('nav[role="navigation"] a, [data-sf-filter-chips] a');
+        if (!link || event.metaKey || event.ctrlKey || event.shiftKey) return;
+        event.preventDefault();
+        apply(link.href);
+    });
+
+    window.addEventListener('popstate', () => apply(window.location.href, false));
+}
 function boot() {
     tableOfContents();
     navPanels();
@@ -380,6 +517,7 @@ function boot() {
     copyButtons();
     exportLinks();
     catalogView();
+    catalogLiveFilter();
     filterReset();
 }
 

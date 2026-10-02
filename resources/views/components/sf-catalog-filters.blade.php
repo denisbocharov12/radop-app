@@ -315,6 +315,8 @@
                 var timer = null;
 
                 function submitSoon(delay) {
+                    /* Живое обновление выдачи берёт это на себя (ТЗ 48). */
+                    if (document.documentElement.dataset.sfLiveFilter === '1') return;
                     if (!desktop.matches) return;
                     clearTimeout(timer);
                     timer = setTimeout(function () { form.requestSubmit ? form.requestSubmit() : form.submit(); }, delay);
