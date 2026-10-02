@@ -4,6 +4,10 @@
     // name is reserved for Blade's own ComponentAttributeBag.
     'groups' => [],
     'brands' => null,
+    /** Количество товаров по бренду в текущей выборке: [onec_id => int]. */
+    'brandCounts' => [],
+    /** Коды товаров текущей выборки — по ним считаем значения характеристик. */
+    'filteredIds' => null,
     /** Leaf categories with `products_count` (shop and brand listings). */
     'categories' => null,
     'query' => [],
@@ -48,6 +52,31 @@
 
     $categoryItems = collect($categories ?? [])->filter(static fn ($category) => ($category->products_count ?? 0) > 0);
     $brandCount = count((array) data_get($query, 'brand', []));
+
+    /*
+     * ТЗ 49: сколько товаров стоит за каждым значением характеристики в текущей
+     * выборке. Один сгруппированный запрос на всю колонку фильтров.
+     *
+     * Значения внутри группы, где уже что-то выбрано, не гасим: выборка их
+     * исключила бы, а покупателю нужно оставить возможность сменить вариант.
+     */
+    $valueCounts = [];
+    if (is_array($filteredIds) && $filteredIds !== []) {
+        // value — переводимая колонка (JSON), поэтому достаём строку текущего языка.
+        $localised = "COALESCE(JSON_UNQUOTE(JSON_EXTRACT(value, '$." . app()->getLocale() . "')), value)";
+
+        $valueCounts = \Illuminate\Support\Facades\DB::table('attribute_values')
+            ->whereIn('product_onec_id', $filteredIds)
+            ->selectRaw("attribute_onec_id, $localised as localized_value, count(distinct product_onec_id) as total")
+            ->groupBy('attribute_onec_id', \Illuminate\Support\Facades\DB::raw($localised))
+            ->get()
+            ->mapWithKeys(static fn ($row) => [
+                $row->attribute_onec_id . '|' . str_replace(',', '.', (string) $row->localized_value) => (int) $row->total,
+            ])
+            ->all();
+    }
+
+    $hasFacets = $valueCounts !== [];
 
     $activeCount = collect(data_get($query, 'attribute', []))->flatten()->count()
         + $brandCount
@@ -195,16 +224,24 @@
                     @php
                         $value = str_replace(',', '.', $attribute->value);
                         $checked = in_array($value, (array) data_get($query, "attribute.{$attribute->attribute_onec_id}", []), true);
+                        $valueTotal = $valueCounts[$attribute->attribute_onec_id . '|' . $value] ?? null;
+                        // Гасим только там, где в группе ничего не выбрано — иначе
+                        // покупатель не сможет сменить уже выбранный вариант.
+                        $muted = $hasFacets && ! $checked && $groupCount === 0 && ($valueTotal ?? 0) === 0;
                     @endphp
-                    <label class="{{ $optionClass }}">
+                    <label @class([$optionClass, 'cursor-not-allowed opacity-45' => $muted])>
                         <input
                             type="checkbox"
                             class="{{ $checkboxClass }}"
                             name="filter[attribute][{{ $attribute->attribute_onec_id }}][]"
                             value="{{ $value }}"
                             @checked($checked)
+                            @disabled($muted)
                         />
                         <span class="min-w-0 flex-1 truncate">{{ $attribute->value }}</span>
+                        @if($valueTotal !== null)
+                            <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $valueTotal }}</span>
+                        @endif
                     </label>
                 @endforeach
             </div>
@@ -263,6 +300,10 @@
                                 @checked($checked)
                             />
                             <span class="min-w-0 flex-1 truncate">{{ $brand->title }}</span>
+                            @php($brandTotal = $brandCounts[$brand->onec_id] ?? ($brandCounts[$brand->id] ?? null))
+                            @if($brandTotal !== null)
+                                <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $brandTotal }}</span>
+                            @endif
                         </label>
                     @endforeach
                 </div>

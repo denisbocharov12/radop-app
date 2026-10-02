@@ -98,24 +98,24 @@ async function remove(row) {
                 <li
                     v-for="row in rows"
                     :key="row.id"
-                    class="grid grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 p-3 transition-opacity sm:grid-cols-[4rem_minmax(0,1fr)_8.5rem_7rem_2.25rem] sm:gap-x-4"
+                    class="grid grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 p-3 transition-opacity sm:grid-cols-[4rem_minmax(0,1fr)_7rem_7rem_2.25rem] sm:gap-x-4"
                     :class="{ 'opacity-50': row.busy }"
                 >
-                    <a :href="row.url" class="row-span-2 h-16 w-16 shrink-0 rounded-md border border-ink-100 p-1 sm:row-span-1">
+                    <a :href="row.url" class="col-start-1 row-span-2 row-start-1 h-16 w-16 shrink-0 rounded-md border border-ink-100 p-1 sm:row-span-1">
                         <img v-if="row.image" :src="row.image" :alt="row.title" class="h-full w-full object-contain" loading="lazy" />
                         <span v-else class="flex h-full w-full items-center justify-center text-ink-300">
                             <SfIcon name="box" :size="22" />
                         </span>
                     </a>
 
-                    <div class="col-span-2 col-start-2 row-start-1 min-w-0 sm:col-span-1">
+                    <div class="col-span-2 col-start-2 row-start-1 min-w-0 sm:col-span-1 sm:col-start-2">
                         <a :href="row.url" class="line-clamp-2 text-sm font-medium text-ink-800 hover:text-brand-600">
                             {{ row.title }}
                         </a>
                         <p class="mt-0.5 text-2xs text-ink-400">{{ t.code }}: {{ row.code }}</p>
                     </div>
 
-                    <div class="col-start-2 row-start-2 flex w-[8.5rem] items-stretch overflow-hidden rounded-md border border-ink-200 sm:col-start-3 sm:row-start-1 sm:justify-self-center">
+                    <div class="col-start-2 row-start-2 flex w-[7rem] items-stretch overflow-hidden rounded-md border border-ink-200 sm:col-start-3 sm:row-start-1 sm:w-full">
                         <button
                             type="button"
                             class="px-2 transition-colors disabled:opacity-40"
@@ -131,7 +131,7 @@ async function remove(row) {
                             :value="row.qty"
                             type="number"
                             inputmode="numeric"
-                            class="w-full min-w-0 flex-1 border-x border-ink-200 text-center font-num text-sm font-semibold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            class="w-10 min-w-0 flex-1 border-x border-ink-200 px-0 text-center font-num text-sm font-semibold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                             :min="row.step"
                             :max="row.stock || undefined"
                             :step="row.step"

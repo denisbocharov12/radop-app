@@ -120,6 +120,8 @@ final class ThemeCategoryController extends Controller
 
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);
+        $filteredProductIds = $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd($existedCategory, $request);
+        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $filteredProductIds);
 
         $listId = 'category_' . $existedCategory->onec_id;
         $listName = $this->categoryListDisplayName($existedCategory);
@@ -133,7 +135,9 @@ final class ThemeCategoryController extends Controller
             'breadcrumbs',
             'query',
             'brands',
+            'brandCounts',
             'attributes',
+            'filteredProductIds',
             'defaultSort',
             'ga4ItemLists',
             'seoContent',

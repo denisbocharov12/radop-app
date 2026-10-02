@@ -52,6 +52,8 @@
                 :action="route('theme.category.index', $existedCategory->onec_id)"
                 :groups="$attributes ?? []"
                 :brands="$displayedBrands"
+                :brand-counts="$brandCounts ?? []"
+                :filtered-ids="$filteredProductIds ?? null"
                 :query="$query ?? []"
             />
         </x-slot:filters>

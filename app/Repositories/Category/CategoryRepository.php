@@ -49,6 +49,31 @@ class CategoryRepository
      * @param string $defaultSort
      * @return LengthAwarePaginator
      */
+    /**
+     * Коды товаров текущей выборки — по ним считаем, сколько товаров стоит за
+     * каждым значением фильтра (ТЗ 49). Те же фильтры, что и у списка, но без
+     * сортировки и постраничности.
+     *
+     * @return array<int, string>
+     */
+    public function getFilteredProductOnecIdsToFrontEnd(Category $category, Request $request): array
+    {
+        $query = $category->products()
+            ->select('products.onec_id')
+            ->groupBy('products.onec_id');
+
+        return QueryBuilder::for($query, $request)
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+            ])
+            ->where('stock', '!=', 0)
+            ->pluck('onec_id')
+            ->all();
+    }
+
     public function getAllPaginatedWithFiltersToFrontEnd(Category $category, Request $request, string $defaultSort): LengthAwarePaginator
     {
         $query = $category->products()
