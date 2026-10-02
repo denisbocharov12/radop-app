@@ -232,6 +232,8 @@
 
     @foreach($attributeGroups as $label => $values)
         @php
+            // ТЗ 27: единица стоит в названии характеристики — показываем её у значений.
+            [$label, $unit] = array_values(\App\Support\Catalog\SpecUnits::split($label));
             $groupCount = collect($values)->pluck('attribute_onec_id')->unique()
                 ->sum(static fn ($id) => count((array) data_get($query, "attribute.{$id}", [])));
         @endphp
@@ -266,7 +268,7 @@
                             @checked($checked)
                             @disabled($muted)
                         />
-                        <span class="min-w-0 flex-1 truncate">{{ $attribute->value }}</span>
+                        <span class="min-w-0 flex-1 truncate">{{ \App\Support\Catalog\SpecUnits::value($attribute->value, $unit) }}</span>
                         @if($valueTotal !== null)
                             <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $valueTotal }}</span>
                         @endif

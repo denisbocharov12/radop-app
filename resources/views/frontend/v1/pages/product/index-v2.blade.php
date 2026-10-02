@@ -133,9 +133,11 @@
                 @if($product->values->isNotEmpty())
                     <dl class="divide-y divide-ink-100 rounded-lg border border-ink-200">
                         @foreach($product->values as $value)
+                            {{-- ТЗ 27: «Diametrul gaurii, mm» + «8» → «Diametrul gaurii» и «8 mm». --}}
+                            @php($spec = \App\Support\Catalog\SpecUnits::split($value->attribute?->name))
                             <div class="flex gap-3 px-3 py-2 text-sm">
-                                <dt class="w-1/2 shrink-0 text-ink-500">{{ $value->attribute?->name }}</dt>
-                                <dd class="min-w-0 flex-1 font-medium text-ink-800">{{ $value->value }}</dd>
+                                <dt class="w-1/2 shrink-0 text-ink-500">{{ $spec['name'] }}</dt>
+                                <dd class="min-w-0 flex-1 font-medium text-ink-800">{{ \App\Support\Catalog\SpecUnits::value($value->value, $spec['unit']) }}</dd>
                             </div>
                         @endforeach
                     </dl>

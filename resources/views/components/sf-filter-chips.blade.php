@@ -70,7 +70,16 @@
         }
     }
 
+    // Единица измерения стоит в названии характеристики (ТЗ 27), поэтому имена
+    // нужны и здесь — одним запросом на все выбранные характеристики.
+    $attributeIds = array_keys((array) data_get($filter, 'attribute', []));
+    $attributeNames = $attributeIds === []
+        ? collect()
+        : \App\Models\Attribute::query()->whereIn('onec_id', $attributeIds)->get()->pluck('name', 'onec_id');
+
     foreach ((array) data_get($filter, 'attribute', []) as $attributeId => $values) {
+        $unit = \App\Support\Catalog\SpecUnits::split($attributeNames[$attributeId] ?? null)['unit'];
+
         foreach ((array) $values as $value) {
             $rest = $filter;
             $rest['attribute'][$attributeId] = array_values(array_diff((array) $values, [$value]));
@@ -80,7 +89,7 @@
             if (($rest['attribute'] ?? []) === []) {
                 unset($rest['attribute']);
             }
-            $chips[] = ['label' => $value, 'url' => $without($rest)];
+            $chips[] = ['label' => \App\Support\Catalog\SpecUnits::value($value, $unit), 'url' => $without($rest)];
         }
     }
 @endphp
