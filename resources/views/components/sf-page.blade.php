@@ -19,7 +19,7 @@
 
 {{-- Without a title prop the page's own <h1> is the first thing under the
      header, so the top gap comes from padding instead of the breadcrumb. --}}
-<article @class(['sf-container sf-page-body', 'pt-8 lg:pt-14' => ! ($breadcrumb && $title)])>
+<article @class(['sf-container', 'pt-8 lg:pt-14' => ! ($breadcrumb && $title)])>
     @if($title)
         <h1 class="sf-page-title">{{ $title }}</h1>
     @endif

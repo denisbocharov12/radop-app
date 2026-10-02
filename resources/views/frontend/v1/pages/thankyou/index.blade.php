@@ -3,7 +3,7 @@
 @section('sf-page', 1)
 
 @section('content')
-    <div class="sf-container py-10 lg:py-16">
+    <div class="sf-container pt-6 lg:pt-10">
         <div class="sf-card mx-auto max-w-xl px-6 py-10 text-center">
             <span class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-success-50 text-success-600">
                 <x-sf-icon name="check" :size="34" stroke-width="2.25" />

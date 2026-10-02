@@ -18,7 +18,7 @@
     @if($heading || $exportUrl)
         <div class="mt-1 flex flex-wrap items-end justify-between gap-3">
             @if($heading)
-                <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ $heading }}</h1>
+                <h1 class="sf-page-title">{{ $heading }}</h1>
             @endif
             @if($exportUrl)
                 <x-sf-export-button :url="$exportUrl" :personalized="$exportPersonalized" />

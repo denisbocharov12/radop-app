@@ -581,12 +581,21 @@
     /* ---------------------------------------------------------- static pages */
     /* Long-form pages breathe more than catalogue pages: extra room under the
        header and above the footer. */
+    /* ТЗ 5: единственный нижний отступ страницы. Всё, что заканчивает
+       страницу — каталог, карточка товара, корзина, статика, личный
+       кабинет, — берёт его, а не свой pb-8 / pb-10 / pb-16. */
     .sf-page-body {
-        @apply pb-20 lg:pb-28;
+        @apply pb-8 lg:pb-12;
     }
 
+    /* ТЗ 5: ритм заголовка один на все страницы — от крошек до H1 и от H1
+       до содержимого. Длинные названия товаров берут -sm на размер меньше. */
     .sf-page-title {
-        @apply mb-5 mt-5 text-2xl font-bold text-ink-900 lg:mb-8 lg:mt-8 lg:text-3xl;
+        @apply mb-4 mt-3 text-2xl font-bold text-ink-900 lg:mb-5 lg:mt-4 lg:text-3xl;
+    }
+
+    .sf-page-title-sm {
+        @apply text-xl leading-snug lg:text-2xl;
     }
 
     .sf-toc a {

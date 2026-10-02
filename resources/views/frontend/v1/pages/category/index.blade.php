@@ -21,7 +21,7 @@
 
     @if($existedCategory->children->isNotEmpty())
         <div class="sf-container">
-            <h1 class="mb-4 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ $title }}</h1>
+            <h1 class="sf-page-title">{{ $title }}</h1>
             <ul class="mb-6 flex flex-wrap gap-2">
                 @foreach($existedCategory->children as $child)
                     <li>

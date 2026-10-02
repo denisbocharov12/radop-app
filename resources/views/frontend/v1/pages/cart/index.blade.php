@@ -81,8 +81,8 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.cart')]]" />
 
-    <div class="sf-container pb-12">
-        <h1 class="mb-5 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.cart') }}</h1>
+    <div class="sf-container">
+        <h1 class="sf-page-title">{{ __('theme.cart') }}</h1>
 
         <div data-sf-island="cart-table" data-sf-props="{{ $props }}" v-cloak>
             {{-- Pre-hydration placeholder keeps the page from jumping. --}}

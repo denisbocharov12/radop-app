@@ -172,6 +172,10 @@ Still to do:
 
 ## Notes
 
+- Page rhythm: `.sf-section` (20/28 px) between sections, `.sf-page-title`
+  for every page H1 (12 px above, 16 px below; `-sm` for long product
+  names), and one bottom gap for the whole storefront — `.sf-page-body` on
+  `<main>`, not per page.
 - Three text levels (`.sf-text-primary` / `-secondary` / `-muted` →
   ink-900 / ink-600 / ink-500). Nothing lighter than ink-500 carries text:
   ink-400 and ink-300 are for icons, dividers and placeholders. White text

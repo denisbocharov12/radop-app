@@ -17,7 +17,8 @@
 @include('frontend.v1.chrome.header')
 @include('frontend.v1.chrome.nav')
 
-<main id="main" class="min-h-[50vh]">
+{{-- ТЗ 5: один нижний отступ на всю витрину, см. .sf-page-body --}}
+<main id="main" class="min-h-[50vh] sf-page-body">
     <div class="sf-container">
         @include('frontend.v1.errors.registration-errors')
     </div>

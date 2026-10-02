@@ -60,8 +60,8 @@
     <x-sf-breadcrumbs :items="collect($breadcrumbs ?? [])->push(['url' => null, 'name' => $product->title])" />
     @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs ?? [], 'leaf' => $product])
 
-    <div class="sf-container pb-10">
-        <h1 class="mb-3 mt-2 text-xl font-bold leading-snug text-ink-900 lg:text-2xl">{{ $product->title }}</h1>
+    <div class="sf-container">
+        <h1 class="sf-page-title sf-page-title-sm">{{ $product->title }}</h1>
 
         <div class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-2">
             @foreach($codes as $code)

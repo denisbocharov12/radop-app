@@ -5,7 +5,7 @@
 @section('content')
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.shop')]]" />
 
-    <section class="sf-container pb-12">
+    <section class="sf-container">
         <h1 class="mb-6 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.show-all-categories') }}</h1>
 
         {{--

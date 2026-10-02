@@ -28,7 +28,7 @@
     <x-sf-breadcrumbs :items="$trail" />
     @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs])
 
-    <div class="sf-container pb-8">
+    <div class="sf-container">
         <div class="mb-6 mt-2 flex flex-wrap items-end justify-between gap-3">
             <div>
                 <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ $title }}</h1>

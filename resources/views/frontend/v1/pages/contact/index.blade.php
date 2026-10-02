@@ -54,7 +54,7 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('contact.our_contacts')]]" />
 
-    <div class="sf-container sf-page-body">
+    <div class="sf-container">
         <h1 class="sf-page-title">{{ __('contact.our_contacts') }}</h1>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

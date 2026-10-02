@@ -37,7 +37,7 @@
         :items="[['url' => route('theme.cart.index'), 'name' => __('theme.cart')], ['url' => null, 'name' => __('theme.order-placement')]]"
     />
 
-    <div class="sf-container pb-16">
+    <div class="sf-container">
         <h1 class="mb-5 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.order-placement') }}</h1>
 
         @if($cart->isEmpty())

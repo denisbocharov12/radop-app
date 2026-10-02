@@ -33,7 +33,7 @@
 
 <x-sf-breadcrumbs :with-shop="false" :items="[['url' => route('theme.user.orders.index'), 'name' => __('theme.my-account')], ['url' => null, 'name' => $title]]" />
 
-<div class="sf-container pb-16">
+<div class="sf-container">
     <div class="grid gap-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8">
         <aside class="min-w-0">
             <div class="mb-4 hidden items-center gap-3 lg:flex">

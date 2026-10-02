@@ -11,7 +11,7 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.registration')]]" />
 
-    <div class="sf-container pb-16">
+    <div class="sf-container">
         <h1 class="mb-1 mt-2 text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.registration') }}</h1>
         <p class="mb-6 text-sm text-ink-500">
             {{ __('theme.log-in-account') }}?

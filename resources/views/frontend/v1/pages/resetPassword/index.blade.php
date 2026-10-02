@@ -3,7 +3,7 @@
 @section('sf-page', 1)
 
 @section('content')
-    <div class="sf-container flex justify-center py-12 lg:py-20">
+    <div class="sf-container flex justify-center pt-8 lg:pt-12">
         <div class="sf-card w-full max-w-sm p-6">
             <h1 class="mb-6 text-center text-lg font-bold text-ink-900">{{ __('theme.reset-password') }}</h1>
 

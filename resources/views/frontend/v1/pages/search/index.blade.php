@@ -35,10 +35,10 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.search')]]" />
 
-    <div class="sf-container sf-page-body pb-10">
+    <div class="sf-container">
         {{-- Шапка выдачи: запрос и количество в одной строке, без лишней высоты. --}}
         <div class="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h1 class="text-xl font-bold text-ink-900 lg:text-2xl">
+            <h1 class="sf-page-title sf-page-title-sm">
                 {{ __('theme.search') }}:
                 <span class="text-brand-600">«{{ $term }}»</span>
             </h1>

@@ -27,9 +27,9 @@
 
     <x-sf-breadcrumbs :with-shop="false" :items="[['url' => null, 'name' => __('theme.wishlist')]]" />
 
-    <div class="sf-container sf-page-body">
+    <div class="sf-container">
         <div class="mb-5 mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 lg:mb-6">
-            <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ __('theme.wishlist') }}</h1>
+            <h1 class="sf-page-title">{{ __('theme.wishlist') }}</h1>
             @if($products->isNotEmpty())
                 <span class="text-sm text-ink-500">
                     <b class="font-semibold text-ink-800">{{ $products->count() }}</b> {{ __('theme.sort-products') }}
