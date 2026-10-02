@@ -26,7 +26,7 @@
         {{ $attributes->class([
             'group/export inline-flex shrink-0 items-center gap-2 rounded-md font-medium transition-colors',
             'h-9 w-9 justify-center text-success-600 hover:bg-success-50' => $compact,
-            'h-10 border border-success-500/40 bg-success-50 px-3 text-sm text-success-600 hover:bg-success-500 hover:text-white' => ! $compact,
+            'h-10 border border-success-500/40 bg-success-50 px-3 text-sm text-success-600 hover:bg-success-600 hover:text-white' => ! $compact,
         ]) }}
     >
         {{-- Spreadsheet glyph, drawn on the shared 24px grid. --}}

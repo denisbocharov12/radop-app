@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
                 <SfIcon name="cart" :size="21" />
                 <span
                     v-show="summary.count > 0"
-                    class="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold text-white"
+                    class="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-700 px-1 text-2xs font-bold text-white"
                     data-sf-cart-count
                 >{{ badge }}</span>
             </span>
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div v-else-if="!summary.lines.length" class="p-6 text-center">
-                    <SfIcon name="cart" :size="32" class="mx-auto mb-2 text-ink-300" />
+                    <SfIcon name="cart" :size="32" class="mx-auto mb-2 text-ink-500" />
                     <p class="text-sm text-ink-600">{{ $sf.t.emptyCart }}</p>
                 </div>
 

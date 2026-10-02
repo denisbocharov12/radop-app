@@ -172,6 +172,10 @@ Still to do:
 
 ## Notes
 
+- Three text levels (`.sf-text-primary` / `-secondary` / `-muted` →
+  ink-900 / ink-600 / ink-500). Nothing lighter than ink-500 carries text:
+  ink-400 and ink-300 are for icons, dividers and placeholders. White text
+  only on the 600/700 shades of accent, success and danger.
 - One corner radius for the whole storefront: every `rounded*` utility
   resolves to 8 px in `tailwind.storefront.config.js`, so cards, buttons,
   fields, chips and pop-ups match. Anything genuinely round (counter bubble,

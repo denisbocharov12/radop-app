@@ -166,7 +166,7 @@
         </div>
 
         <div class="sf-product-pricing">
-            <span @class(['sf-product-price', 'text-accent-600' => $card['oldPrice']])>
+            <span @class(['sf-product-price', 'text-accent-700' => $card['oldPrice']])>
                 {{ number_format($card['displayPrice'], 2, ',', ' ') }}
             </span>
             <span class="text-xs text-ink-600">
@@ -192,7 +192,7 @@
                     <x-sf-icon name="box" :size="12" />
                     <span>
                         {{ __('theme.package-min-to-order') }}: {{ $card['minOrder'] }}&nbsp;{{ __('theme.min_order_unit') }}
-                        <span class="block whitespace-nowrap text-ink-400">{{ number_format($card['unitPrice'], 2, ',', ' ') }}&nbsp;{{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
+                        <span class="block whitespace-nowrap text-ink-500">{{ number_format($card['unitPrice'], 2, ',', ' ') }}&nbsp;{{ __('theme.MDL') }}/{{ __('theme.min_order_unit') }}</span>
                     </span>
                 </li>
             @endif

@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 
                                 <div>
                                     <div class="flex flex-wrap items-baseline gap-2">
-                                        <span class="text-2xl font-bold leading-none" :class="oldPrice ? 'text-accent-600' : 'text-ink-900'">{{ price }}</span>
+                                        <span class="text-2xl font-bold leading-none" :class="oldPrice ? 'text-accent-700' : 'text-ink-900'">{{ price }}</span>
                                         <span class="text-sm text-ink-500">
                                             {{ $sf.currency }}<template v-if="product.minOrder"> / {{ product.minOrder }} {{ $sf.t.unit }}</template>
                                         </span>

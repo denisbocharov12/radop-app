@@ -92,7 +92,7 @@ const accountAttrs = computed(() => (props.authenticated
                     <SfIcon name="heart" :size="22" />
                     <span
                         v-if="wishlistCount > 0"
-                        class="absolute -right-2.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-danger-500 px-1 text-2xs font-bold leading-none text-white"
+                        class="absolute -right-2.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-danger-600 px-1 text-2xs font-bold leading-none text-white"
                     >{{ badge(wishlistCount) }}</span>
                 </span>
                 <span class="truncate">{{ t.wishlist }}</span>
@@ -103,7 +103,7 @@ const accountAttrs = computed(() => (props.authenticated
                     <SfIcon name="cart" :size="22" />
                     <span
                         v-if="cartCount > 0"
-                        class="absolute -right-2.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-500 px-1 text-2xs font-bold leading-none text-white"
+                        class="absolute -right-2.5 -top-1.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent-700 px-1 text-2xs font-bold leading-none text-white"
                     >{{ badge(cartCount) }}</span>
                 </span>
                 <span class="truncate">{{ t.cart }}</span>

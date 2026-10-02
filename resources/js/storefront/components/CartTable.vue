@@ -87,7 +87,7 @@ async function remove(row) {
 
 <template>
     <div v-if="empty" class="py-20 text-center">
-        <SfIcon name="cart" :size="48" class="mx-auto mb-3 text-ink-300" />
+        <SfIcon name="cart" :size="48" class="mx-auto mb-3 text-ink-500" />
         <p class="text-lg font-semibold text-ink-800">{{ t.empty }}</p>
         <a :href="continueUrl" class="sf-btn-primary mt-5 inline-flex">{{ t.continue }}</a>
     </div>
@@ -103,7 +103,7 @@ async function remove(row) {
                 >
                     <a :href="row.url" class="col-start-1 row-span-2 row-start-1 h-16 w-16 shrink-0 rounded-md border border-ink-100 p-1 sm:row-span-1">
                         <img v-if="row.image" :src="row.image" :alt="row.title" class="h-full w-full object-contain" loading="lazy" />
-                        <span v-else class="flex h-full w-full items-center justify-center text-ink-300">
+                        <span v-else class="flex h-full w-full items-center justify-center text-ink-500">
                             <SfIcon name="box" :size="22" />
                         </span>
                     </a>
@@ -112,7 +112,7 @@ async function remove(row) {
                         <a :href="row.url" class="line-clamp-2 text-sm font-medium text-ink-800 hover:text-brand-600">
                             {{ row.title }}
                         </a>
-                        <p class="mt-0.5 text-2xs text-ink-400">{{ t.code }}: {{ row.code }}</p>
+                        <p class="mt-0.5 text-2xs text-ink-500">{{ t.code }}: {{ row.code }}</p>
                     </div>
 
                     <div class="col-start-2 row-start-2 flex w-[7rem] items-stretch overflow-hidden rounded-md border border-ink-200 sm:col-start-3 sm:row-start-1 sm:w-full">

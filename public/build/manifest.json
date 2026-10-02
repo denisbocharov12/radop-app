@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-BKeVIYDG.css",
+    "file": "assets/storefront-92JWq60A.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-B8DbWve7.js",
+    "file": "assets/storefront-C7ImHqhy.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -54,7 +54,7 @@
     ]
   },
   "resources/js/storefront/components/AddToCart.vue": {
-    "file": "assets/AddToCart-DiwoVgXs.js",
+    "file": "assets/AddToCart-HWHnuw30.js",
     "name": "AddToCart",
     "src": "resources/js/storefront/components/AddToCart.vue",
     "isDynamicEntry": true,
@@ -76,7 +76,7 @@
     ]
   },
   "resources/js/storefront/components/BottomNav.vue": {
-    "file": "assets/BottomNav-DR2M9dGn.js",
+    "file": "assets/BottomNav-BeTdDsmr.js",
     "name": "BottomNav",
     "src": "resources/js/storefront/components/BottomNav.vue",
     "isDynamicEntry": true,
@@ -87,7 +87,7 @@
     ]
   },
   "resources/js/storefront/components/CartTable.vue": {
-    "file": "assets/CartTable-AC3ccM78.js",
+    "file": "assets/CartTable-CFpz8BWV.js",
     "name": "CartTable",
     "src": "resources/js/storefront/components/CartTable.vue",
     "isDynamicEntry": true,
@@ -118,7 +118,7 @@
     ]
   },
   "resources/js/storefront/components/MiniCart.vue": {
-    "file": "assets/MiniCart-DGiwpf9o.js",
+    "file": "assets/MiniCart-CZMy51Hb.js",
     "name": "MiniCart",
     "src": "resources/js/storefront/components/MiniCart.vue",
     "isDynamicEntry": true,
@@ -149,7 +149,7 @@
     ]
   },
   "resources/js/storefront/components/QuickView.vue": {
-    "file": "assets/QuickView-DrKoQ80Z.js",
+    "file": "assets/QuickView-D8IgjMfo.js",
     "name": "QuickView",
     "src": "resources/js/storefront/components/QuickView.vue",
     "isDynamicEntry": true,

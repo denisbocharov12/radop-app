@@ -184,7 +184,7 @@
                     data-sf-price-from
                 />
             </label>
-            <span class="text-ink-300">—</span>
+            <span class="text-ink-500">—</span>
             <label class="flex-1">
                 <span class="sf-sr-only">{{ __('theme.max') }}</span>
                 <input
@@ -270,7 +270,7 @@
                         />
                         <span class="min-w-0 flex-1 truncate">{{ \App\Support\Catalog\SpecUnits::value($attribute->value, $unit) }}</span>
                         @if($valueTotal !== null)
-                            <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $valueTotal }}</span>
+                            <span class="shrink-0 font-num text-2xs tabular-nums text-ink-500">{{ $valueTotal }}</span>
                         @endif
                     </label>
                 @endforeach
@@ -338,7 +338,7 @@
                             />
                             <span class="min-w-0 flex-1 truncate">{{ $brand->title }}</span>
                             @if($brandTotal !== null)
-                                <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $brandTotal }}</span>
+                                <span class="shrink-0 font-num text-2xs tabular-nums text-ink-500">{{ $brandTotal }}</span>
                             @endif
                         </label>
                     @endforeach

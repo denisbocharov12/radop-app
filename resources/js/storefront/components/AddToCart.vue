@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
                 class="sf-atc-button sf-btn min-w-0 flex-1 px-3"
                 :class="[
                     compact ? 'h-10 text-sm' : 'h-12 text-md font-semibold',
-                    justAdded ? 'bg-success-500 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700',
+                    justAdded ? 'bg-success-600 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700',
                 ]"
                 :disabled="busy || disabled"
                 :aria-label="disabled ? $sf.t.outOfStock : labelAdd"

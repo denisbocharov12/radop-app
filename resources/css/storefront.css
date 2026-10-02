@@ -162,8 +162,8 @@
     }
 
     .sf-btn-accent {
-        @apply sf-btn bg-accent-500 text-white shadow-card
-               hover:bg-accent-600 hover:shadow-card-hover active:bg-accent-700;
+        @apply sf-btn bg-accent-700 text-white shadow-card
+               hover:bg-accent-800 hover:shadow-card-hover active:bg-accent-800;
     }
 
     .sf-btn-secondary {
@@ -228,14 +228,25 @@
 
     .sf-divider { @apply h-px w-full bg-ink-200; }
 
+    /* ------------------------------------------------- уровни текста
+       ТЗ 3: три уровня на всю витрину. Primary — заголовки и цены,
+       secondary — обычный текст и подписи характеристик, muted — коды,
+       упаковка, служебные подписи. Ниже muted текста быть не должно:
+       ink-400 остаётся иконкам и разделителям. */
+    .sf-text-primary   { @apply text-ink-900; }
+    .sf-text-secondary { @apply text-ink-600; }
+    .sf-text-muted     { @apply text-ink-500; }
+
     /* ---------------------------------------------------------- badges */
     .sf-badge {
         @apply inline-flex items-center rounded px-1.5 py-0.5
                text-2xs font-bold uppercase leading-4 tracking-wide;
     }
 
-    .sf-badge-new     { @apply sf-badge bg-success-500 text-white; }
-    .sf-badge-sale    { @apply sf-badge bg-accent-500 text-white; }
+    /* Плашки держат белый текст, поэтому фон на тон темнее базового:
+       на 500 белый давал 3.3 вместо 4.5 (ТЗ 3). */
+    .sf-badge-new     { @apply sf-badge bg-success-600 text-white; }
+    .sf-badge-sale    { @apply sf-badge bg-accent-700 text-white; }
     .sf-badge-hit     { @apply sf-badge bg-brand-600 text-white; }
     .sf-badge-neutral { @apply sf-badge bg-ink-100 text-ink-600; }
     /* ТЗ 57: информационные бейджи мельче ярлыков NEW/SALE и не перекрывают товар. */

@@ -156,7 +156,7 @@
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
                         <div class="flex flex-wrap items-baseline gap-2">
-                            <span @class(['font-num text-3xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
+                            <span @class(['font-num text-3xl font-bold leading-none text-ink-900', 'text-accent-700' => $card['oldPrice']])>
                                 {{ number_format($card['displayPrice'], 2, ',', ' ') }}
                             </span>
                             <span class="text-sm text-ink-500">
@@ -200,7 +200,7 @@
                          Остаётся предупреждение, когда остаток заканчивается. --}}
                     @if($product->stock > 0 && $card['lowStock'])
                         <p class="flex items-center gap-1.5 text-sm">
-                            <x-sf-icon name="clock" :size="15" class="text-accent-600" />
+                            <x-sf-icon name="clock" :size="15" class="text-accent-700" />
                             <span class="font-medium text-accent-700">{{ __('theme.sf-low-stock', ['qty' => $card['lowStock']]) }}</span>
                         </p>
                     @elseif($product->stock <= 0)
@@ -263,7 +263,7 @@
         <div class="mx-auto flex max-w-lg items-center gap-3">
             <div class="min-w-0 flex-1">
                 <p class="truncate text-xs text-ink-500">{{ $product->title }}</p>
-                <p class="font-num text-lg font-bold leading-tight {{ $hasSale ? 'text-accent-600' : 'text-ink-900' }}">
+                <p class="font-num text-lg font-bold leading-tight {{ $hasSale ? 'text-accent-700' : 'text-ink-900' }}">
                     {{ number_format($displayPrice, 2, ',', ' ') }} <span class="text-xs font-medium text-ink-500">{{ __('theme.MDL') }}</span>
                 </p>
             </div>
