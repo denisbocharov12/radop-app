@@ -13,7 +13,9 @@
     $locales = collect(LaravelLocalization::getSupportedLocales())
         ->map(fn ($props, $code) => [
             'code' => strtoupper($code),
-            'url' => LaravelLocalization::getLocalizedURL($code, null, [], true),
+            // Canonical spelling of this page in the other locale (hidden default
+            // locale prefix, no query string) — same helper the hreflang tags use.
+            'url' => \App\Support\LocaleUrl::canonical($code),
             'active' => LaravelLocalization::getCurrentLocale() === $code,
         ])
         ->values();

@@ -26,9 +26,9 @@
             <div class="flex items-center gap-1" role="group" aria-label="Limba">
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                     <a
-                        rel="alternate"
-                        hreflang="{{ $localeCode }}"
-                        href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                        {{-- hreflang belongs in <head>; these are plain links to the
+                             canonical URL of this page in the other locale. --}}
+                        href="{{ \App\Support\LocaleUrl::canonical($localeCode) }}"
                         @class([
                             'rounded px-1.5 py-0.5 text-2xs font-bold uppercase transition-colors',
                             'bg-brand-600 text-white' => LaravelLocalization::getCurrentLocale() === $localeCode,
