@@ -34,20 +34,31 @@ final class ImportProductImagesJob implements ShouldQueue
     {
         $products = Product::whereIn('id', $this->productIds)->get();
 
+        $skipped = 0;
+        $updated = 0;
+
         foreach ($products as $product) {
             try {
-                if ($this->force) {
+                /*
+                 * Полная перезаливка меняет id медиафайлов, а значит и адреса
+                 * картинок: поисковик теряет уже проиндексированные снимки.
+                 * Поэтому товары, где количество исходников совпадает с
+                 * количеством загруженных, пропускаем, а остальным доливаем
+                 * недостающее — с очисткой только по явному требованию.
+                 */
+                if (ProductImagesManager::imagesAreUpToDate($product)) {
+                    $skipped++;
 
-                    ProductImagesManager::clearProductImages($product);
-
-                    ProductImagesManager::importProductImagesSafe($product);
+                    continue;
                 }
 
-//                if (!ProductImagesManager::hasProductImages($product)) {
-//                    ProductImagesManager::importProductImagesSafe($product);
-//                } else {
-//                    ProductImagesManager::updateProductImages($product);
-//                }
+                if ($this->force && ! ProductImagesManager::hasProductImages($product)) {
+                    ProductImagesManager::importProductImagesSafe($product);
+                } else {
+                    ProductImagesManager::updateProductImages($product);
+                }
+
+                $updated++;
             } catch (\Exception $e) {
                 Log::error("Ошибка при импорте изображений для товара {$product->onec_id}: {$e->getMessage()}", [
                     'product_id' => $product->id,
@@ -56,5 +67,7 @@ final class ImportProductImagesJob implements ShouldQueue
                 ]);
             }
         }
+
+        Log::info('Импорт изображений: обновлено ' . $updated . ', пропущено ' . $skipped);
     }
 }

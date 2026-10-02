@@ -129,6 +129,15 @@ final class ProductImportJsonJob implements ShouldQueue
             }
         }
 
+        /*
+         * Раньше каждый импорт номенклатуры пере-хешировал все файлы всех
+         * товаров. Если количество исходников совпало с количеством уже
+         * загруженных — товар не трогаем вовсе.
+         */
+        if (ProductImagesManager::imagesAreUpToDate($productModel)) {
+            return;
+        }
+
         if (!ProductImagesManager::hasProductImages($productModel)) {
             ProductImagesManager::importProductImagesSafe($productModel);
         } else {

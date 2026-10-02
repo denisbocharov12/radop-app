@@ -11,8 +11,7 @@ final class ProductImagesManager
 {
     public static function getProductImagesFromAbsolutePath(string $onecId): ?array
     {
-        $dir = public_path() . config('media-files.DIR_PATH');
-        $files = glob($dir . "$onecId*");
+        $files = self::getProductImagesFiles($onecId);
 
         $imagesArray = [];
 
@@ -24,20 +23,44 @@ final class ProductImagesManager
     }
 
     /**
-     * @param string $onecId
-     * @return array
+     * Файлы товара в папке-источнике.
+     *
+     * Маска раньше была `<код>*`, поэтому товару с кодом 100 доставались
+     * файлы товара 1000. Берём только `<код>_N.<ext>` и `<код>.<ext>`.
+     *
+     * @return array<int, string>
      */
     public static function getProductImagesFiles(string $onecId): array
     {
         $dir = public_path() . config('media-files.DIR_PATH');
-        $files = glob($dir . "$onecId*");
+        $files = glob($dir . $onecId . '{_[0-9]*,.*}', GLOB_BRACE);
 
-        return $files;
+        return $files === false ? [] : array_values(array_filter($files, 'is_file'));
     }
 
     /**
-     * @param string $filePath
-     * @return string
+     * Нужно ли вообще трогать товар: количество исходников и количество уже
+     * загруженных файлов. Совпало — при импорте номенклатуры товар пропускаем.
+     */
+    public static function sourceImagesCount(string $onecId): int
+    {
+        return count(self::getProductImagesFiles($onecId));
+    }
+
+    public static function mediaImagesCount(Product $product): int
+    {
+        return $product->getMedia('products')->count();
+    }
+
+    public static function imagesAreUpToDate(Product $product): bool
+    {
+        $sources = self::sourceImagesCount((string) $product->onec_id);
+
+        return $sources > 0 && $sources === self::mediaImagesCount($product);
+    }
+
+    /**
+     * Сжимает файл на месте: возвращать путь незачем, он не меняется.
      */
     private static function optimizeImage(string $filePath): void
     {
@@ -213,17 +236,23 @@ final class ProductImagesManager
             return;
         }
 
+        /*
+         * Раньше результат optimizeImage() (который ничего не возвращает)
+         * использовался как путь: команда products:optimize-images падала, а
+         * при удачном стечении обстоятельств плодила копии медиафайлов.
+         * Сжимаем файл на месте и перегенерируем конверсии.
+         */
         foreach ($media as $mediaItem) {
             $originalPath = $mediaItem->getPath();
 
-            if (File::exists($originalPath)) {
-                $optimizedPath = self::optimizeImage($originalPath);
-
-                $mediaItem->copyMedia($optimizedPath)
-                    ->toMediaCollection('products', 'media');
-
-                File::delete($optimizedPath);
+            if (! File::exists($originalPath)) {
+                continue;
             }
+
+            self::optimizeImage($originalPath);
+
+            $mediaItem->size = filesize($originalPath);
+            $mediaItem->save();
         }
     }
 }
