@@ -267,8 +267,9 @@
         @apply flex flex-1 flex-col gap-2 border-t border-ink-100 p-3;
     }
 
+    /* ТЗ 15: три строки названия, дальше многоточие. */
     .sf-product-title {
-        @apply line-clamp-2 text-sm font-medium text-ink-800
+        @apply line-clamp-3 text-sm font-medium text-ink-800
                transition-colors group-hover:text-brand-600;
     }
 
@@ -411,7 +412,7 @@
        can otherwise take four lines before the visitor reaches the title. */
     .sf-breadcrumb {
         @apply sf-scrollbar-none flex flex-nowrap items-center gap-x-1.5 gap-y-1
-               overflow-x-auto whitespace-nowrap py-3 text-xs text-ink-600
+               overflow-x-auto whitespace-nowrap py-2.5 text-xs text-ink-600
                lg:flex-wrap lg:overflow-visible;
     }
 

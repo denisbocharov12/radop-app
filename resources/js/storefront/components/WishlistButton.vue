@@ -62,8 +62,22 @@ onBeforeUnmount(() => document.removeEventListener('sf:wishlist-updated', onSync
 </script>
 
 <template>
+    <!-- ТЗ 58-59: в блоке покупки — только сердечко, без рамки и подписи. -->
     <button
-        v-if="variant === 'inline'"
+        v-if="variant === 'icon'"
+        type="button"
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-400 transition-colors hover:bg-ink-50 hover:text-danger-500"
+        :class="{ 'text-danger-500': on }"
+        :aria-pressed="on"
+        :aria-label="on ? labelRemove : labelAdd"
+        :title="on ? labelRemove : labelAdd"
+        @click.prevent="toggle"
+    >
+        <SfIcon name="heart" :size="22" :stroke-width="on ? 2 : 1.6" :style="on ? { fill: 'currentColor' } : null" />
+    </button>
+
+    <button
+        v-else-if="variant === 'inline'"
         type="button"
         class="sf-btn-secondary w-full"
         :class="{ 'border-danger-500/40 text-danger-600': on }"

@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
                     data-sf-cart-count
                 >{{ badge }}</span>
             </span>
-            <span class="hidden whitespace-nowrap text-sm font-bold sm:inline">
+            <span class="hidden whitespace-nowrap font-num text-sm font-bold sm:inline">
                 {{ summary.total }} {{ $sf.currency }}
             </span>
         </a>
@@ -127,15 +127,15 @@ onBeforeUnmount(() => {
 
                 <template v-else>
                     <ul class="max-h-80 divide-y divide-ink-100 overflow-y-auto">
-                        <li v-for="line in summary.lines" :key="line.id" class="flex items-center gap-3 px-4 py-2.5">
-                            <a :href="line.url" class="h-12 w-12 shrink-0 rounded-md border border-ink-100 p-1">
+                        <li v-for="line in summary.lines" :key="line.id" class="flex items-center gap-3 px-4 py-2">
+                            <a :href="line.url" class="h-11 w-11 shrink-0 rounded-md border border-ink-100 p-1">
                                 <img v-if="line.image" :src="line.image" :alt="line.title" class="h-full w-full object-contain" loading="lazy" />
                             </a>
                             <div class="min-w-0 flex-1">
                                 <a :href="line.url" class="line-clamp-2 text-xs font-medium text-ink-800 hover:text-brand-600">{{ line.title }}</a>
-                                <p class="mt-0.5 text-2xs text-ink-400">{{ line.qty }} × · {{ $sf.t.code }} {{ line.code }}</p>
+                                <p class="mt-0.5 text-2xs text-ink-500"><span class="font-num">{{ line.qty }}</span> × · {{ $sf.t.code }} <span class="font-num">{{ line.code }}</span></p>
                             </div>
-                            <span class="shrink-0 whitespace-nowrap text-xs font-bold text-ink-900">{{ line.lineTotal }}</span>
+                            <span class="shrink-0 whitespace-nowrap font-num text-xs font-bold text-ink-900">{{ line.lineTotal }}</span>
                         </li>
                     </ul>
 

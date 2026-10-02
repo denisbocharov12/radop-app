@@ -184,7 +184,7 @@
             @endif
             @if($card['packages'])
                 <li>
-                    <x-sf-icon name="grid" :size="12" />
+                    <x-sf-icon name="box" :size="12" />
                     <span>{{ __('theme.package') }}: {{ $card['packages'] }}&nbsp;{{ __('theme.package_unit') }}</span>
                 </li>
             @endif

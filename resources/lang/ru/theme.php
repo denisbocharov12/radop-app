@@ -531,7 +531,7 @@ return array (
     // Storefront v2 — auth dialog, mini-cart, quick view, catalogue views.
     'password-recovery-sent' => 'Если адрес зарегистрирован, вы получите письмо с инструкциями по сбросу пароля.',
     'sf-added-to-cart' => 'Добавлено в корзину',
-    'sf-go-to-cart' => 'В корзину',
+    'sf-go-to-cart' => 'Перейти в корзину',
     'sf-open-product' => 'Страница товара',
     'sf-quick-view' => 'Быстрый просмотр',
     'sf-view-grid' => 'Плитка',

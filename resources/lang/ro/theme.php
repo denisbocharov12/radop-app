@@ -510,7 +510,7 @@ return array (
     // Storefront v2 — auth dialog, mini-cart, quick view, catalogue views.
     'password-recovery-sent' => 'Dacă adresa este înregistrată, veți primi un e-mail cu instrucțiuni pentru resetarea parolei.',
     'sf-added-to-cart' => 'Adăugat în coș',
-    'sf-go-to-cart' => 'Spre coș',
+    'sf-go-to-cart' => 'Mergeți la coș',
     'sf-open-product' => 'Pagina produsului',
     'sf-quick-view' => 'Vizualizare rapidă',
     'sf-view-grid' => 'Grilă',

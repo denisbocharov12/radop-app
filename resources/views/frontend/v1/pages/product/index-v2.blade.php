@@ -150,7 +150,9 @@
                      scroll away so the bottom buy bar can take over. --}}
                 <div class="sf-card space-y-4 p-4 lg:sticky lg:top-24" id="buy-box">
                     @php($card ??= app(\App\Services\Storefront\StorefrontProductPresenter::class)->present($product))
-                    <div>
+                    {{-- ТЗ 61, 64: цена слева, сердечко справа на её уровне. --}}
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
                         <div class="flex flex-wrap items-baseline gap-2">
                             <span @class(['font-num text-3xl font-bold leading-none text-ink-900', 'text-accent-600' => $card['oldPrice']])>
                                 {{ number_format($card['displayPrice'], 2, ',', ' ') }}
@@ -175,6 +177,20 @@
                                 {{ __('theme.sf-personal-price') }} −{{ $card['personalPercent'] }}%
                             </p>
                         @endif
+                        </div>
+
+                        <div
+                            class="shrink-0"
+                            data-sf-island="wishlist-button"
+                            data-sf-props="{{ $sfJson([
+                                'productId' => $product->id,
+                                'active' => app('wishlist')->get($product->id) !== null,
+                                'labelAdd' => __('theme.add-to-wishlist'),
+                                'labelRemove' => __('theme.remove-from-wishlist'),
+                                'variant' => 'icon',
+                            ]) }}"
+                            v-cloak
+                        ></div>
                     </div>
 
                     {{-- Витрина показывает только товары с положительным остатком,
@@ -211,19 +227,7 @@
 
                     @include('frontend.v1.components.packages_card_wrap')
 
-                    <div
-                        data-sf-island="wishlist-button"
-                        data-sf-props="{{ $sfJson([
-                            'productId' => $product->id,
-                            'active' => app('wishlist')->get($product->id) !== null,
-                            'labelAdd' => __('theme.add-to-wishlist'),
-                            'labelRemove' => __('theme.remove-from-wishlist'),
-                            'variant' => 'inline',
-                        ]) }}"
-                        v-cloak
-                    ></div>
-
-                    <div class="space-y-2 border-t border-ink-100 pt-3 text-xs text-ink-500">
+                    <div class="space-y-2 border-t border-ink-100 pt-3 text-xs text-ink-600">
                         <p class="flex items-center gap-2">
                             <x-sf-icon name="truck" :size="15" class="text-brand-600" />
                             {{ __('theme.footer_usp_delivery_text') }}

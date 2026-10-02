@@ -140,7 +140,10 @@ onBeforeUnmount(() => {
              storefront.css: narrow cards get stepper + square icon button,
              wider ones the labelled button. -->
         <div :class="compact ? 'sf-atc' : 'flex items-stretch gap-2'">
-            <div class="sf-atc-stepper flex h-10 items-stretch overflow-hidden rounded-md border border-ink-200 bg-white">
+            <div
+                class="sf-atc-stepper flex items-stretch overflow-hidden rounded-md border border-ink-200 bg-white"
+                :class="compact ? 'h-10' : 'h-12'"
+            >
                 <button
                     type="button"
                     class="flex w-9 shrink-0 items-center justify-center transition-colors disabled:opacity-40"
@@ -178,8 +181,11 @@ onBeforeUnmount(() => {
 
             <button
                 type="button"
-                class="sf-atc-button sf-btn h-10 min-w-0 flex-1 px-3 text-sm"
-                :class="justAdded ? 'bg-success-500 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700'"
+                class="sf-atc-button sf-btn min-w-0 flex-1 px-3"
+                :class="[
+                    compact ? 'h-10 text-sm' : 'h-12 text-md font-semibold',
+                    justAdded ? 'bg-success-500 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700',
+                ]"
                 :disabled="busy || disabled"
                 :aria-label="labelAdd"
                 :title="labelAdd"

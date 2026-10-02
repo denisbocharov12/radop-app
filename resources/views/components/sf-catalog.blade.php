@@ -16,7 +16,7 @@
 --}}
 <div class="sf-container">
     @if($heading || $exportUrl)
-        <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
+        <div class="mt-1 flex flex-wrap items-end justify-between gap-3">
             @if($heading)
                 <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ $heading }}</h1>
             @endif
@@ -28,7 +28,7 @@
 
     {{-- Room under the page title, so the filter card and toolbar read as the
          start of the listing rather than hanging off the heading. --}}
-    <div @class(['flex gap-6 lg:gap-8', 'mt-4 lg:mt-6' => $heading || $exportUrl])>
+    <div @class(['flex gap-6 lg:gap-8', 'mt-3 lg:mt-4' => $heading || $exportUrl])>
         @if($filters)
             <div
                 class="fixed inset-y-0 left-0 z-modal flex w-[min(21rem,90vw)] -translate-x-full flex-col bg-white shadow-pop transition-transform duration-200 ease-sf
