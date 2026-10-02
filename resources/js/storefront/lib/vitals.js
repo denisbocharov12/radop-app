@@ -442,6 +442,39 @@ function catalogLiveFilter() {
         if (next && current) current.textContent = next.textContent;
     };
 
+    /*
+     * Счётчики у значений и серые пустые значения (ТЗ 49) приходят с ответом,
+     * но саму колонку не подменяем: иначе закроются раскрытые группы и список
+     * брендов. Переносим только число и блокировку по имени и значению поля.
+     */
+    const swapFacets = (doc) => {
+        if (!form) return;
+
+        const nextForm = doc.querySelector('[data-sf-filter-form]');
+
+        if (!nextForm) return;
+
+        form.querySelectorAll('input[type=checkbox]').forEach((input) => {
+            const next = nextForm.querySelector(
+                `input[name="${CSS.escape(input.name)}"][value="${CSS.escape(input.value)}"]`
+            );
+            const label = input.closest('label');
+
+            if (!next || !label) return;
+
+            input.disabled = next.disabled;
+            label.classList.toggle('cursor-not-allowed', next.disabled);
+            label.classList.toggle('opacity-45', next.disabled);
+
+            const nextBadge = next.closest('label')?.querySelector('.tabular-nums');
+            const badge = label.querySelector('.tabular-nums');
+
+            if (nextBadge && badge) badge.textContent = nextBadge.textContent;
+            else if (nextBadge) label.append(nextBadge.cloneNode(true));
+            else if (badge) badge.remove();
+        });
+    };
+
     const apply = async (url, push = true) => {
         controller?.abort();
         controller = new AbortController();
@@ -459,6 +492,7 @@ function catalogLiveFilter() {
 
             grid.innerHTML = nextGrid ? nextGrid.innerHTML : '';
             swapChips(doc);
+            swapFacets(doc);
             swapPagination(doc);
             swapCount(doc);
 

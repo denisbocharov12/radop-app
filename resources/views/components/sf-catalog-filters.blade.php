@@ -60,20 +60,42 @@
      * Значения внутри группы, где уже что-то выбрано, не гасим: выборка их
      * исключила бы, а покупателю нужно оставить возможность сменить вариант.
      */
-    $valueCounts = [];
-    if (is_array($filteredIds) && $filteredIds !== []) {
-        // value — переводимая колонка (JSON), поэтому достаём строку текущего языка.
-        $localised = "COALESCE(JSON_UNQUOTE(JSON_EXTRACT(value, '$." . app()->getLocale() . "')), value)";
+    // value — переводимая колонка (JSON), поэтому достаём строку текущего языка.
+    $localised = "COALESCE(JSON_UNQUOTE(JSON_EXTRACT(value, '$." . app()->getLocale() . "')), value)";
 
-        $valueCounts = \Illuminate\Support\Facades\DB::table('attribute_values')
-            ->whereIn('product_onec_id', $filteredIds)
+    $countValues = static function (array $ids, ?string $onlyAttribute = null) use ($localised): array {
+        // Выборка повторяется у многих посетителей, поэтому считаем один раз на состав.
+        $cacheKey = 'sf_value_counts_' . app()->getLocale() . '_' . ($onlyAttribute ?? 'all') . '_' . md5(implode(',', $ids));
+
+        return \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, static fn () => \Illuminate\Support\Facades\DB::table('attribute_values')
+            ->whereIn('product_onec_id', $ids)
+            ->when($onlyAttribute !== null, fn ($query) => $query->where('attribute_onec_id', $onlyAttribute))
             ->selectRaw("attribute_onec_id, $localised as localized_value, count(distinct product_onec_id) as total")
             ->groupBy('attribute_onec_id', \Illuminate\Support\Facades\DB::raw($localised))
             ->get()
             ->mapWithKeys(static fn ($row) => [
                 $row->attribute_onec_id . '|' . str_replace(',', '.', (string) $row->localized_value) => (int) $row->total,
             ])
-            ->all();
+            ->all());
+    };
+
+    $valueCounts = [];
+
+    if (is_array($filteredIds) && $filteredIds !== []) {
+        $valueCounts = $countValues($filteredIds);
+
+        /*
+         * В группе, где выбор уже сделан, остальные значения при текущей выборке
+         * дали бы 0. Поэтому такую группу считаем по набору без её собственного
+         * условия — число показывает, сколько товаров даст другой вариант.
+         */
+        foreach ((array) $facetIds as $group => $groupIds) {
+            if ($group === 'brand' || ! is_array($groupIds) || $groupIds === []) {
+                continue;
+            }
+
+            $valueCounts = $countValues($groupIds, (string) $group) + $valueCounts;
+        }
     }
 
     $hasFacets = $valueCounts !== [];
@@ -227,7 +249,7 @@
                         $valueTotal = $valueCounts[$attribute->attribute_onec_id . '|' . $value] ?? null;
                         // Гасим только там, где в группе ничего не выбрано — иначе
                         // покупатель не сможет сменить уже выбранный вариант.
-                        $muted = $hasFacets && ! $checked && $groupCount === 0 && ($valueTotal ?? 0) === 0;
+                        $muted = $hasFacets && ! $checked && ($valueTotal ?? 0) === 0;
                     @endphp
                     <label @class([$optionClass, 'cursor-not-allowed opacity-45' => $muted])>
                         <input
@@ -283,11 +305,17 @@
 
                 <div class="max-h-56 space-y-1 overflow-y-auto pr-1" data-sf-brand-list>
                     @foreach($brandList as $index => $brand)
-                        @php($checked = in_array($brand->onec_id, $selectedBrands))
+                        @php
+                            $checked = in_array($brand->onec_id, $selectedBrands);
+                            // Карта счётчиков отдаёт только ненулевые бренды — остальные в выборке пусты.
+                            $brandTotal = $brandCounts === [] ? null : (int) ($brandCounts[$brand->onec_id] ?? $brandCounts[$brand->id] ?? 0);
+                            $brandMuted = ! $checked && $brandTotal === 0;
+                        @endphp
                         <label
                             @class([
                                 $optionClass,
                                 'hidden' => $index >= $visibleLimit && ! $checked,
+                                'cursor-not-allowed opacity-45' => $brandMuted,
                             ])
                             data-sf-brand-option="{{ mb_strtolower($brand->title) }}"
                             @if($index >= $visibleLimit && ! $checked) data-sf-brand-extra @endif
@@ -298,9 +326,9 @@
                                 name="filter[brand][]"
                                 value="{{ $brand->onec_id }}"
                                 @checked($checked)
+                                @disabled($brandMuted)
                             />
                             <span class="min-w-0 flex-1 truncate">{{ $brand->title }}</span>
-                            @php($brandTotal = $brandCounts[$brand->onec_id] ?? ($brandCounts[$brand->id] ?? null))
                             @if($brandTotal !== null)
                                 <span class="shrink-0 font-num text-2xs tabular-nums text-ink-400">{{ $brandTotal }}</span>
                             @endif

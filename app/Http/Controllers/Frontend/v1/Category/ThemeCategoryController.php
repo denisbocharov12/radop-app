@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Category;
 
+use App\Support\Catalog\FacetProductIds;
 use App\Enums\PageTypes;
 use App\Exceptions\Category\CategoryNotFoundValidationException;
 use App\Exceptions\Category\ThemeCategoryNotFoundException;
@@ -121,7 +122,15 @@ final class ThemeCategoryController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllByCategoryIdSortedForFrontEnd($existedCategory->onec_id);
         $filteredProductIds = $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd($existedCategory, $request);
-        $brandCounts = $this->brandRepository->getBrandProductCounts($brands, $filteredProductIds);
+        // Группы, в которых выбор уже сделан, считаются без своего условия (ТЗ 49).
+        $facetProductIds = FacetProductIds::forSelectedGroups(
+            $request,
+            fn (Request $scoped) => $this->categoryRepository->getFilteredProductOnecIdsToFrontEnd($existedCategory, $scoped)
+        );
+        $brandCounts = $this->brandRepository->getBrandProductCounts(
+            $brands,
+            $facetProductIds['brand'] ?? $filteredProductIds
+        );
 
         $listId = 'category_' . $existedCategory->onec_id;
         $listName = $this->categoryListDisplayName($existedCategory);
@@ -138,6 +147,7 @@ final class ThemeCategoryController extends Controller
             'brandCounts',
             'attributes',
             'filteredProductIds',
+            'facetProductIds',
             'defaultSort',
             'ga4ItemLists',
             'seoContent',
@@ -342,4 +352,5 @@ final class ThemeCategoryController extends Controller
             ],
         ]);
     }
+
 }

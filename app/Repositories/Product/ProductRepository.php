@@ -106,6 +106,32 @@ final class ProductRepository
             ->get();
     }
 
+    /**
+     * Коды товаров текущей выборки каталога — по ним считаем значения фильтров (ТЗ 49).
+     *
+     * @return array<int, string>
+     */
+    public function getFilteredProductOnecIdsToFrontEnd(Request $request): array
+    {
+        $query = Product::query()
+            ->select('products.onec_id')
+            ->groupBy('products.onec_id');
+
+        return QueryBuilder::for($query, $request)
+            ->allowedFilters([
+                AllowedFilter::custom('price', new ThemePriceFilter()),
+                AllowedFilter::custom('search', new ThemeProductSearchFilter()),
+                AllowedFilter::custom('brand', new ThemeBrandsFilter()),
+                AllowedFilter::custom('attribute', new ThemeAttributeFilter()),
+                AllowedFilter::custom('category', new ThemeCategoryFilter()),
+            ])
+            ->where('stock', '!=', 0)
+            ->where('status', true)
+            ->where('site_status', true)
+            ->pluck('onec_id')
+            ->all();
+    }
+
     public function getAllPaginatedWithFiltersToFrontEnd(Request $request): LengthAwarePaginator
     {
         $query = Product::query()

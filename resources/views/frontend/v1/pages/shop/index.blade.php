@@ -49,7 +49,10 @@
                 :action="url()->current()"
                 :groups="$shopGroups"
                 :brands="$brands ?? null"
+                :brand-counts="$brandCounts ?? []"
                 :categories="$categories ?? null"
+                :filtered-ids="$filteredProductIds ?? null"
+                :facet-ids="$facetProductIds ?? []"
                 :query="$query ?? []"
             />
         </x-slot:filters>

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Frontend\v1\Shop;
 
+use App\Support\Catalog\FacetProductIds;
 use App\Enums\PageTypes;
 use App\Http\Controllers\Controller;
 use App\Services\Analytics\Ga4EcommercePayloadBuilder;
@@ -63,6 +64,17 @@ final class ThemeShopController extends Controller
         $brands = $this->brandRepository->getAllToFrontEnd();
         $attributes = $this->attributeRepository->getAllToShop();
 
+        // Количество товаров у значений фильтра; группы с выбором — без своего условия (ТЗ 49).
+        $filteredProductIds = $this->productRepository->getFilteredProductOnecIdsToFrontEnd($request);
+        $facetProductIds = FacetProductIds::forSelectedGroups(
+            $request,
+            fn (Request $scoped) => $this->productRepository->getFilteredProductOnecIdsToFrontEnd($scoped)
+        );
+        $brandCounts = $this->brandRepository->getBrandProductCounts(
+            $brands,
+            $facetProductIds['brand'] ?? $filteredProductIds
+        );
+
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getShopType(), app()->getLocale());
 
         if ($seo !== null) {
@@ -86,7 +98,10 @@ final class ThemeShopController extends Controller
             'products',
             'query',
             'brands',
+            'brandCounts',
             'attributes',
+            'filteredProductIds',
+            'facetProductIds',
             'allProducts',
             'defaultSort',
             'ga4ItemLists',

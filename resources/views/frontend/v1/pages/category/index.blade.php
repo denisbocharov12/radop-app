@@ -54,6 +54,7 @@
                 :brands="$displayedBrands"
                 :brand-counts="$brandCounts ?? []"
                 :filtered-ids="$filteredProductIds ?? null"
+                :facet-ids="$facetProductIds ?? []"
                 :query="$query ?? []"
             />
         </x-slot:filters>
