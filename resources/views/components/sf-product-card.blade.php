@@ -144,6 +144,20 @@
                 </p>
             @endif
 
+            {{-- ТЗ 17: в виде «список» слева остаётся место — заполняем его
+                 характеристиками товара. Значения уже загружены вместе с товаром,
+                 названия характеристик не тянем, чтобы не плодить запросы. --}}
+            @php($specs = $product->values
+                ->pluck('value')
+                ->map(static fn ($v) => trim((string) $v))
+                // «Da»/«Nu» и одиночные цифры без названия характеристики ничего не говорят.
+                ->reject(static fn ($v) => $v === '' || preg_match('/^(da|nu|да|нет|yes|no|\d{1,2})$/iu', $v))
+                ->unique()
+                ->take(4))
+            @if($specs->isNotEmpty())
+                <p class="sf-product-specs">{{ $specs->implode(' · ') }}</p>
+            @endif
+
             @if($card['barcode'])
                 <p class="sf-product-codes">
                     <span>{{ __('theme.barcode') }}: {{ $card['barcode'] }}</span>
