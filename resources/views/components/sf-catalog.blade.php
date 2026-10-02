@@ -63,6 +63,9 @@
         <div class="min-w-0 flex-1">
             <x-sf-catalog-toolbar :products="$products" :action="$action" :default-sort="$defaultSort" />
 
+            {{-- ТЗ 45, 46: выбранные фильтры отдельными чипсами. --}}
+            <x-sf-filter-chips :action="$action" />
+
             @if($products->isEmpty())
                 <div class="py-16 text-center">
                     <x-sf-icon name="search" :size="40" class="mx-auto mb-3 text-ink-300" />

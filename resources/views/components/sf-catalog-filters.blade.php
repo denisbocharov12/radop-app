@@ -222,20 +222,60 @@
                 </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
             </summary>
-            <div class="mt-2 max-h-56 space-y-1 overflow-y-auto pr-1">
-                @foreach($brands as $brand)
-                    @continue(! $brand || trim((string) ($brand->title ?? '')) === '')
-                    <label class="{{ $optionClass }}">
+            @php
+                $brandList = collect($brands)->filter(static fn ($b) => $b && trim((string) ($b->title ?? '')) !== '')->values();
+                // Отмеченные бренды всегда видны, даже если они в конце списка.
+                $selectedBrands = (array) data_get($query, 'brand', []);
+                $visibleLimit = 7;
+            @endphp
+
+            <div class="mt-2" data-sf-brand-filter>
+                @if($brandList->count() > 10)
+                    <label class="relative mb-2 block">
+                        <span class="sf-sr-only">{{ __('theme.sf-brand-search') }}</span>
                         <input
-                            type="checkbox"
-                            class="{{ $checkboxClass }}"
-                            name="filter[brand][]"
-                            value="{{ $brand->onec_id }}"
-                            @checked(in_array($brand->onec_id, (array) data_get($query, 'brand', [])))
+                            type="search"
+                            class="sf-field h-9 py-0 pl-8 text-sm"
+                            placeholder="{{ __('theme.sf-brand-search') }}"
+                            data-sf-brand-search
+                            autocomplete="off"
                         />
-                        <span class="min-w-0 flex-1 truncate">{{ $brand->title }}</span>
+                        <x-sf-icon name="search" :size="15" class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-400" />
                     </label>
-                @endforeach
+                @endif
+
+                <div class="max-h-56 space-y-1 overflow-y-auto pr-1" data-sf-brand-list>
+                    @foreach($brandList as $index => $brand)
+                        @php($checked = in_array($brand->onec_id, $selectedBrands))
+                        <label
+                            @class([
+                                $optionClass,
+                                'hidden' => $index >= $visibleLimit && ! $checked,
+                            ])
+                            data-sf-brand-option="{{ mb_strtolower($brand->title) }}"
+                            @if($index >= $visibleLimit && ! $checked) data-sf-brand-extra @endif
+                        >
+                            <input
+                                type="checkbox"
+                                class="{{ $checkboxClass }}"
+                                name="filter[brand][]"
+                                value="{{ $brand->onec_id }}"
+                                @checked($checked)
+                            />
+                            <span class="min-w-0 flex-1 truncate">{{ $brand->title }}</span>
+                        </label>
+                    @endforeach
+                </div>
+
+                @if($brandList->count() > $visibleLimit)
+                    <button
+                        type="button"
+                        class="mt-1 px-1 text-xs font-semibold text-brand-600 hover:text-brand-700"
+                        data-sf-brand-toggle
+                        data-label-more="{{ __('theme.sf-brands-show-all') }} ({{ $brandList->count() }})"
+                        data-label-less="{{ __('theme.sf-brands-collapse') }}"
+                    >{{ __('theme.sf-brands-show-all') }} ({{ $brandList->count() }})</button>
+                @endif
             </div>
         </details>
     @endif
@@ -343,6 +383,35 @@
                         if (input.value === '') input.disabled = true;
                     });
                 });
+
+                /* ТЗ 42, 43: первые семь брендов, остальное по кнопке; поиск по списку. */
+                var brandBox = form.querySelector('[data-sf-brand-filter]');
+                if (brandBox) {
+                    var toggle = brandBox.querySelector('[data-sf-brand-toggle]');
+                    var extras = brandBox.querySelectorAll('[data-sf-brand-extra]');
+                    var expanded = false;
+
+                    if (toggle) {
+                        toggle.addEventListener('click', function () {
+                            expanded = !expanded;
+                            extras.forEach(function (el) { el.classList.toggle('hidden', !expanded); });
+                            toggle.textContent = expanded ? toggle.dataset.labelLess : toggle.dataset.labelMore;
+                        });
+                    }
+
+                    var search = brandBox.querySelector('[data-sf-brand-search]');
+                    if (search) {
+                        search.addEventListener('input', function () {
+                            var term = search.value.trim().toLowerCase();
+                            if (toggle) { toggle.classList.toggle('hidden', term !== ''); }
+                            brandBox.querySelectorAll('[data-sf-brand-option]').forEach(function (option) {
+                                var matches = option.dataset.sfBrandOption.indexOf(term) !== -1;
+                                var hiddenByCollapse = option.hasAttribute('data-sf-brand-extra') && !expanded;
+                                option.classList.toggle('hidden', term === '' ? hiddenByCollapse : !matches);
+                            });
+                        });
+                    }
+                }
 
                 var reset = document.getElementById('filterResetBtn');
                 if (reset) {
