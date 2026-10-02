@@ -235,7 +235,9 @@
             $groupCount = collect($values)->pluck('attribute_onec_id')->unique()
                 ->sum(static fn ($id) => count((array) data_get($query, "attribute.{$id}", [])));
         @endphp
-        <details class="group border-t border-ink-200 py-3" @if($groupCount > 0) open @endif>
+        {{-- ТЗ 52: цена, категории и бренды раскрыты всегда, из характеристик —
+             первые две, остальные свёрнуты, чтобы колонка не стала стеной параметров. --}}
+        <details class="group border-t border-ink-200 py-3" @if($groupCount > 0 || $loop->index < 2) open @endif>
             <summary class="{{ $summaryClass }}">
                 <span class="flex min-w-0 items-center gap-2">
                     <span class="truncate">{{ $label }}</span>
@@ -275,7 +277,7 @@
     @endforeach
 
     @if($brands && count($brands))
-        <details class="group border-t border-ink-200 py-3" @if($brandCount) open @endif>
+        <details class="group border-t border-ink-200 py-3" open>
             <summary class="{{ $summaryClass }}">
                 <span class="flex items-center gap-2">
                     {{ __('theme.brand') }}
