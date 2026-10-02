@@ -110,7 +110,7 @@
                     class="sf-code-chip sf-code-chip-code"
                     data-copy-value="{{ $card['code'] }}"
                     data-copy-message="{{ __('theme.product_code_copied') }}"
-                    title="{{ __('theme.product_code_copied') }}"
+                    title="{{ __('theme.sf-copy-code') }}"
                 >
                     <span>{{ __('theme.code') }}:</span>
                     <b>{{ $card['code'] }}</b>
@@ -121,7 +121,7 @@
                         class="sf-code-chip sf-code-chip-article"
                         data-copy-value="{{ $card['article'] }}"
                         data-copy-message="{{ __('theme.product_code_copied') }}"
-                        title="{{ __('theme.product_code_copied') }}"
+                        title="{{ __('theme.sf-copy-code') }}"
                     >
                         <span>{{ __('theme.article') }}:</span>
                         <b>{{ $card['article'] }}</b>

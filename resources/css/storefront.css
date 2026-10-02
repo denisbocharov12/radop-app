@@ -349,8 +349,10 @@
 
     /* Long category names wrap rather than overflow; `items-stretch` on the row
        keeps every cell the same height once one of them takes two lines. */
+    /* Пункты верхнего меню центрируются в своей колонке, в том числе
+       когда название переносится на две строки. */
     .sf-nav-link {
-        @apply flex h-full min-h-[2.5rem] items-center gap-1 px-2.5 py-1.5
+        @apply flex h-full min-h-[2.5rem] items-center justify-center gap-1 px-2.5 py-1.5 text-center
                text-[0.6875rem] font-semibold uppercase leading-[1.2] tracking-[0.02em] text-white/95
                transition-colors hover:bg-brand-700 hover:text-white
                xl:px-3;

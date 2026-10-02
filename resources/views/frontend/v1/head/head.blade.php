@@ -100,6 +100,8 @@
                 'minOrder' => __('theme.min_order_sum_warning_message'),
                 'minOrderAddMore' => __('theme.min_order_add_more'),
                 'code' => __('theme.code'),
+                'qtyIncrease' => __('theme.sf-qty-increase'),
+                'qtyDecrease' => __('theme.sf-qty-decrease'),
                 'inStock' => __('theme.in-stock'),
                 'outOfStock' => __('theme.out-of-stock'),
                 'addToCart' => __('theme.add-to-cart'),

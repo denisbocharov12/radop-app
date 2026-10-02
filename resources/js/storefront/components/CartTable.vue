@@ -121,8 +121,8 @@ async function remove(row) {
                             class="px-2 transition-colors disabled:opacity-40"
                             :class="atMinimum(row) ? 'text-danger-600 hover:bg-danger-50' : 'text-ink-500 hover:bg-ink-100'"
                             :disabled="row.busy"
-                            :aria-label="atMinimum(row) ? t.remove : '−'"
-                            :title="atMinimum(row) ? t.remove : null"
+                            :aria-label="atMinimum(row) ? t.remove : $sf.t.qtyDecrease"
+                            :title="atMinimum(row) ? t.remove : $sf.t.qtyDecrease"
                             @click="atMinimum(row) ? remove(row) : setQty(row, row.qty - row.step)"
                         >
                             <SfIcon :name="atMinimum(row) ? 'trash' : 'minus'" :size="14" />
@@ -141,7 +141,8 @@ async function remove(row) {
                             type="button"
                             class="px-2 text-ink-500 hover:bg-ink-100 disabled:opacity-40"
                             :disabled="row.busy || (row.stock > 0 && row.qty >= row.stock)"
-                            aria-label="+"
+                            :aria-label="$sf.t.qtyIncrease"
+                            :title="$sf.t.qtyIncrease"
                             @click="setQty(row, row.qty + row.step)"
                         >
                             <SfIcon name="plus" :size="14" />

@@ -36,8 +36,19 @@ const qty = ref(Math.max(props.step, 1));
 const cartQty = ref(props.inCart);
 const busy = ref(false);
 const justAdded = ref(false);
+/* ТЗ 67: короткое предупреждение прямо у счётчика вместо большого уведомления. */
+const hint = ref('');
+let hintTimer = null;
 
 let addedTimer = null;
+
+/** Оставляем одну строку: «Минимальный заказ: 10 шт.» вместо абзаца текста. */
+function showHint(message) {
+    const text = String(message ?? '').replace(/\s+/g, ' ').trim();
+    hint.value = text.length > 80 ? `${text.slice(0, 77)}…` : text;
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => { hint.value = ''; }, 4000);
+}
 
 const step = computed(() => Math.max(props.step, 1));
 const maxQty = computed(() => (props.stock > 0 ? props.stock : Number.MAX_SAFE_INTEGER));
@@ -90,7 +101,7 @@ async function submit() {
             clearTimeout(addedTimer);
             addedTimer = setTimeout(() => { justAdded.value = false; }, 1600);
         } else {
-            notify(response?.msg, 'warning');
+            showHint(response?.msg);
         }
     } catch {
         notify(window.__SF__?.t?.menuError, 'error');
@@ -115,6 +126,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
     document.removeEventListener('sf:cart-updated', onCartUpdated);
     clearTimeout(addedTimer);
+    clearTimeout(hintTimer);
 });
 </script>
 
@@ -134,6 +146,20 @@ onBeforeUnmount(() => {
             {{ labelInCart }} {{ cartQty }}
         </p>
 
+        <!-- ТЗ 67: подсказка висит над счётчиком и уходит сама. -->
+        <Transition
+            enter-active-class="transition duration-150 ease-sf"
+            enter-from-class="translate-y-1 opacity-0"
+            leave-active-class="transition duration-150"
+            leave-to-class="opacity-0"
+        >
+            <p
+                v-if="hint"
+                class="rounded-md border border-accent-200 bg-accent-50 px-2 py-1 text-2xs leading-4 text-accent-800"
+                role="status"
+            >{{ hint }}</p>
+        </Transition>
+
         <!-- In a card the row is sized by the card, not the viewport (the same
              card is 165px wide in a phone grid and 300px in a home rail), so
              the compact layout is driven by a container query in
@@ -149,8 +175,8 @@ onBeforeUnmount(() => {
                     class="flex w-9 shrink-0 items-center justify-center transition-colors disabled:opacity-40"
                     :class="showRemove ? 'text-danger-600 hover:bg-danger-50' : 'text-ink-500 hover:bg-ink-100 hover:text-ink-900'"
                     :disabled="disabled || busy || (!showRemove && qty <= step)"
-                    :aria-label="showRemove ? labelRemove : `−${step}`"
-                    :title="showRemove ? labelRemove : null"
+                    :aria-label="showRemove ? labelRemove : $sf.t.qtyDecrease"
+                    :title="showRemove ? labelRemove : $sf.t.qtyDecrease"
                     @click="showRemove ? removeLine() : bump(-1)"
                 >
                     <SfIcon :name="showRemove ? 'trash' : 'minus'" :size="14" />
@@ -172,7 +198,8 @@ onBeforeUnmount(() => {
                     type="button"
                     class="flex w-9 shrink-0 items-center justify-center text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-40"
                     :disabled="qty >= maxQty || disabled"
-                    :aria-label="`+${step}`"
+                    :aria-label="$sf.t.qtyIncrease"
+                    :title="$sf.t.qtyIncrease"
                     @click="bump(1)"
                 >
                     <SfIcon name="plus" :size="14" />
@@ -187,8 +214,8 @@ onBeforeUnmount(() => {
                     justAdded ? 'bg-success-500 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700',
                 ]"
                 :disabled="busy || disabled"
-                :aria-label="labelAdd"
-                :title="labelAdd"
+                :aria-label="disabled ? $sf.t.outOfStock : labelAdd"
+                :title="disabled ? $sf.t.outOfStock : labelAdd"
                 @click="submit"
             >
                 <SfIcon :name="justAdded ? 'check' : busy ? 'clock' : 'cart'" :size="16" :class="{ 'animate-spin': busy }" />

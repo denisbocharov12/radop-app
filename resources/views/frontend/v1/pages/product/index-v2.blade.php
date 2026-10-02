@@ -70,7 +70,7 @@
                     class="sf-code-chip sf-code-chip-lg {{ $code['variant'] }}"
                     data-copy-value="{{ $code['value'] }}"
                     data-copy-message="{{ __('theme.product_code_copied') }}"
-                    title="{{ __('theme.product_code_copied') }}"
+                    title="{{ __('theme.sf-copy-code') }}"
                 >
                     <span>{{ $code['label'] }}:</span>
                     <b>{{ $code['value'] }}</b>
