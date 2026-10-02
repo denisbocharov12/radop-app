@@ -87,12 +87,17 @@ export default {
                 '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
                 '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
             },
+            // Один радиус на всю витрину: карточки, кнопки, поля, лэйблы и
+            // всплывающие панели скругляются одинаково. Круглое (аватар,
+            // ручка ползунка, счётчик) берёт rounded-full.
             borderRadius: {
                 DEFAULT: '0.5rem',
-                sm: '0.375rem',
+                sm: '0.5rem',
                 md: '0.5rem',
-                lg: '0.75rem',
-                xl: '1rem',
+                lg: '0.5rem',
+                xl: '0.5rem',
+                '2xl': '0.5rem',
+                '3xl': '0.5rem',
             },
             boxShadow: {
                 // Two elevations only. Anything deeper is a modal/overlay.

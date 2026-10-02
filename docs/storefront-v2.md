@@ -172,6 +172,10 @@ Still to do:
 
 ## Notes
 
+- One corner radius for the whole storefront: every `rounded*` utility
+  resolves to 8 px in `tailwind.storefront.config.js`, so cards, buttons,
+  fields, chips and pop-ups match. Anything genuinely round (counter bubble,
+  slider handle, avatar) uses `rounded-full`.
 - `backdrop-filter` on the sticky header makes it the containing block for
   `position: fixed` children. Full-window layers opened from the header
   (catalogue) must be teleported to `<body>`.
