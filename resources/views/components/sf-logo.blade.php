@@ -21,11 +21,17 @@
 
 <span {{ $attributes->class(['inline-flex shrink-0 items-center', 'gap-2' => ! $isFooter, 'gap-3' => $isFooter]) }}>
     @if(! empty($logo['full']))
+        {{-- Готовый локап: знак и надпись уже внутри картинки. Подпись в
+             подвале выводим рядом, иначе она пропадает вместе с версткой. --}}
         <img
             src="{{ asset($logo['full']) }}"
             alt="Radop"
-            @class(['w-auto', 'h-9 lg:h-11' => ! $isFooter, 'h-12' => $isFooter])
+            @class(['w-auto', 'h-10 lg:h-12' => ! $isFooter, 'h-14' => $isFooter])
         />
+
+        @if($tagline)
+            <span class="text-xs font-medium text-ink-500">{{ $tagline }}</span>
+        @endif
     @else
         <img
             src="{{ asset($logo['mark']) }}"
