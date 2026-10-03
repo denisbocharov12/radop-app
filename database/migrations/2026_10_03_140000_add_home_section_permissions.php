@@ -17,6 +17,7 @@ return new class extends Migration
         'home-section.edit',
         'home-section.update',
         'home-section.delete',
+        'home-section.sort.index',
         'home-section.sort.order',
     ];
 

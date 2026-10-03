@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Enums\ProductConditions;
 use App\Http\Requests\HomeSection\HomeSectionRequest;
 use App\Models\HomeSection;
+use App\Services\Home\HomeSectionsRenderer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,8 +22,10 @@ use Illuminate\View\View;
  */
 final class HomeSectionController extends Controller
 {
-    public function __construct(private readonly ProductConditions $conditions)
-    {
+    public function __construct(
+        private readonly ProductConditions $conditions,
+        private readonly HomeSectionsRenderer $renderer,
+    ) {
     }
 
     public function index(): View
@@ -35,6 +38,18 @@ final class HomeSectionController extends Controller
 
         return view('home-section.index', [
             'sections' => $sections,
+            'types' => HomeSection::types(),
+            'sources' => $this->sources(),
+            // Показываем, сколько товаров найдёт секция: пустая не выводится
+            // на сайт, и из списка видно почему.
+            'counts' => $this->counts($sections),
+        ]);
+    }
+
+    public function sortIndex(): View
+    {
+        return view('home-section.sort', [
+            'sections' => HomeSection::query()->orderBy('order')->orderBy('id')->get(),
             'types' => HomeSection::types(),
         ]);
     }
@@ -91,10 +106,27 @@ final class HomeSectionController extends Controller
      */
     public function sortOrder(Request $request): JsonResponse
     {
-        $ids = array_values(array_filter((array) $request->input('ids', []), 'is_numeric'));
+        /*
+         * Общий скрипт сортировки шлёт order[] = {id, position}; свой список
+         * идентификаторов остаётся для простых вызовов.
+         */
+        $rows = (array) $request->input('order', []);
 
-        foreach ($ids as $position => $id) {
-            HomeSection::whereKey((int) $id)->update(['order' => ($position + 1) * 10]);
+        if ($rows !== []) {
+            foreach ($rows as $row) {
+                $id = (int) ($row['id'] ?? 0);
+                $position = (int) ($row['position'] ?? 0);
+
+                if ($id > 0) {
+                    HomeSection::whereKey($id)->update(['order' => $position * 10]);
+                }
+            }
+        } else {
+            $ids = array_values(array_filter((array) $request->input('ids', []), 'is_numeric'));
+
+            foreach ($ids as $position => $id) {
+                HomeSection::whereKey((int) $id)->update(['order' => ($position + 1) * 10]);
+            }
         }
 
         $this->forgetCache();
@@ -164,6 +196,27 @@ final class HomeSectionController extends Controller
     private function forgetCache(): void
     {
         Cache::flush();
+    }
+
+    /**
+     * Сколько товаров найдёт каждая секция прямо сейчас.
+     *
+     * @param  \Illuminate\Support\Collection<int, HomeSection>  $sections
+     * @return array<int, int>
+     */
+    private function counts($sections): array
+    {
+        $counts = [];
+
+        foreach ($sections as $section) {
+            if (! in_array($section->type, [HomeSection::TYPE_PRODUCT_RAIL, HomeSection::TYPE_SEASONAL], true)) {
+                continue;
+            }
+
+            $counts[$section->id] = $this->renderer->productsFor($section)->count();
+        }
+
+        return $counts;
     }
 
     /**

@@ -6,6 +6,9 @@
 @section('content')
     <x-page-header title="Секции главной" description="Порядок, видимость и состав блоков главной страницы">
         <x-slot:actions>
+            <a href="{{ route('home-section.sort.index') }}" class="btn-secondary btn-sm">
+                <i data-lucide="arrow-up-down" class="w-4 h-4"></i> Сортировка
+            </a>
             <a href="{{ route('home-section.create') }}" class="btn-primary btn-sm">
                 <i data-lucide="plus" class="w-4 h-4"></i> Добавить секцию
             </a>
@@ -21,89 +24,65 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th class="w-10"></th>
+                        <th>ID</th>
+                        <th class="text-center">Порядок</th>
                         <th>Заголовок</th>
                         <th>Тип</th>
-                        <th>Товары</th>
-                        <th>Видна</th>
-                        <th class="w-28"></th>
+                        <th class="hidden lg:table-cell">Товары</th>
+                        <th>Статус</th>
+                        <th class="text-right">Действия</th>
                     </tr>
                 </thead>
-                <tbody id="home-sections-rows">
+                <tbody>
                     @forelse($sections as $section)
-                        <tr data-id="{{ $section->id }}" class="cursor-move">
-                            <td class="text-gray-400"><i data-lucide="grip-vertical" class="w-4 h-4"></i></td>
+                        <tr id="home-section-id-{{ $section->id }}">
+                            <td class="font-medium text-gray-500">#{{ $section->id }}</td>
+                            <td class="text-center">{{ $section->order }}</td>
                             <td>
                                 <div class="font-medium text-gray-800">
                                     {{ $section->getTranslation('title', 'ru', false) ?: $section->getTranslation('title', 'ro', false) ?: '—' }}
                                 </div>
                                 @if($section->link)
-                                    <div class="text-xs text-gray-500">{{ $section->link }}</div>
+                                    <div class="text-xs text-gray-400">{{ $section->link }}</div>
                                 @endif
                             </td>
-                            <td>{{ $types[$section->type] ?? $section->type }}</td>
-                            <td class="text-sm text-gray-600">
+                            <td class="text-gray-600">{{ $types[$section->type] ?? $section->type }}</td>
+                            <td class="hidden lg:table-cell text-gray-500">
                                 @php($source = $section->setting('source'))
-                                {{ $source ? $source : '—' }}
-                                @if($source === 'manual')
-                                    <span class="text-gray-400">({{ count((array) $section->setting('product_ids', [])) }} шт.)</span>
+                                @if($source)
+                                    {{ $sources[$source] ?? $source }}
+                                    @if(($counts[$section->id] ?? null) === 0)
+                                        <div class="text-xs text-amber-600">нет подходящих товаров — секция скрыта</div>
+                                    @elseif(isset($counts[$section->id]))
+                                        <div class="text-xs text-gray-400">найдено: {{ $counts[$section->id] }}</div>
+                                    @endif
+                                @else
+                                    <span class="text-gray-300">—</span>
                                 @endif
                             </td>
                             <td>
                                 @if($section->is_active)
-                                    <span class="badge badge-success">да</span>
+                                    <x-badge type="success">Активная</x-badge>
                                 @else
-                                    <span class="badge badge-gray">нет</span>
+                                    <x-badge type="danger">Скрытая</x-badge>
                                 @endif
                             </td>
                             <td class="text-right">
-                                <a href="{{ route('home-section.edit', $section) }}" class="btn-ghost btn-xs">
-                                    <i data-lucide="pencil" class="w-4 h-4"></i>
-                                </a>
-                                <form method="POST" action="{{ route('home-section.delete', $section) }}" class="inline"
-                                      onsubmit="return confirm('Удалить секцию?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-ghost btn-xs text-red-600">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    </button>
-                                </form>
+                                <x-table-actions :editUrl="route('home-section.edit', $section)"
+                                                 :deleteUrl="route('home-section.delete', $section)"
+                                                 :deleteName="'секцию #' . $section->id" />
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="text-center text-gray-500 py-6">Секций пока нет</td></tr>
+                        <tr>
+                            <td colspan="7">
+                                <x-empty-state icon="layout-grid" title="Секций пока нет"
+                                               text="Добавьте секцию, чтобы она появилась на главной странице." />
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
-
-    <p class="mt-3 text-sm text-gray-500">Порядок меняется перетаскиванием строки — он сохраняется сразу.</p>
-
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-    <script>
-        (function () {
-            var rows = document.getElementById('home-sections-rows');
-            if (!rows || typeof Sortable === 'undefined') return;
-
-            Sortable.create(rows, {
-                animation: 150,
-                onEnd: function () {
-                    var ids = Array.from(rows.querySelectorAll('tr[data-id]')).map(function (tr) {
-                        return tr.dataset.id;
-                    });
-
-                    fetch(@json(route('home-section.sort.order')), {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': @json(csrf_token()),
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ ids: ids })
-                    });
-                }
-            });
-        })();
-    </script>
 @endsection

@@ -101,7 +101,7 @@ final class HomeSectionsRenderer
     /**
      * @return Collection<int, Product>
      */
-    private function productsFor(HomeSection $section): Collection
+    public function productsFor(HomeSection $section): Collection
     {
         $source = (string) $section->setting('source', 'new');
         $limit = (int) $section->setting('limit', self::DEFAULT_LIMIT);

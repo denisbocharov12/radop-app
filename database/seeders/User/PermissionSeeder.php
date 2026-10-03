@@ -82,6 +82,7 @@ class PermissionSeeder extends Seeder
         'home-section.edit',
         'home-section.update',
         'home-section.delete',
+        'home-section.sort.index',
         'home-section.sort.order',
         'setting.delivery.edit',
         'setting.delivery.update',

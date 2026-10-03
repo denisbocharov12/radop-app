@@ -35,6 +35,10 @@ Route::prefix('home-sections')->name('home-section.')->group(function () {
         ->name('delete');
 
     Route::middleware(['app.permissions'])
+        ->get('/sorts', [HomeSectionController::class, 'sortIndex'])
+        ->name('sort.index');
+
+    Route::middleware(['app.permissions'])
         ->post('/sorts/order', [HomeSectionController::class, 'sortOrder'])
         ->name('sort.order');
 });
