@@ -6,6 +6,8 @@ return [
     'gtm_container_id' => env('GTM_CONTAINER_ID', 'GTM-MB99NNLC'),
     'ga4_measurement_id' => env('GA4_MEASUREMENT_ID'),
     'currency' => env('GA4_CURRENCY', 'MDL'),
+    // affiliation в составе товара: кто продал. Для одного магазина — его имя.
+    'affiliation' => env('GA4_AFFILIATION', 'Radop'),
 
     'data_layer_event_names' => [
         'frontend_page_context_reported' => 'radop_frontend_page_context_reported',

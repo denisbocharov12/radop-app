@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-hMlmwFea.css",
+    "file": "assets/storefront-ZI4BfuUH.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-C7ImHqhy.js",
+    "file": "assets/storefront-BPSfY1Ou.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -108,7 +108,7 @@
     ]
   },
   "resources/js/storefront/components/MegaMenu.vue": {
-    "file": "assets/MegaMenu-VF9eWQNZ.js",
+    "file": "assets/MegaMenu-UmrL4tjQ.js",
     "name": "MegaMenu",
     "src": "resources/js/storefront/components/MegaMenu.vue",
     "isDynamicEntry": true,

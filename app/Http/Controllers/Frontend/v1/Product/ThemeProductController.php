@@ -35,6 +35,7 @@ final class ThemeProductController extends Controller
         private readonly ViewCountManager $viewCountManager,
         private readonly ProductSchemaOrgBuilder $productSchemaOrgBuilder,
         private readonly SeoFallbackGenerator $seoFallback,
+        private readonly \App\Services\Analytics\Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
     ) {
     }
 
@@ -99,16 +100,12 @@ final class ThemeProductController extends Controller
 
         $this->viewCountManager->incrementProductViewCount($product, $request);
 
-        $priceFloat = (float) ThemeProductManager::getProductTotalSum($product);
+        $priceFloat = round((float) ThemeProductManager::getProductTotalSum($product), 2);
+        $product->loadMissing(['brand:id,onec_id,title', 'categories:onec_id,name']);
         $ga4ViewItem = [
             'currency' => (string) config('analytics.currency', 'MDL'),
             'value' => $priceFloat,
-            'items' => [[
-                'item_id' => (string) ($product->onec_id ?? $product->id),
-                'item_name' => $this->productDisplayName($product),
-                'price' => $priceFloat,
-                'quantity' => 1,
-            ]],
+            'items' => [$this->ga4EcommercePayloadBuilder->buildItem($product)],
         ];
 
         return view('frontend.v1.pages.product.index-v2', compact([

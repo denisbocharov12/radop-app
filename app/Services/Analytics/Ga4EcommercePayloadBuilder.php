@@ -75,14 +75,12 @@ final class Ga4EcommercePayloadBuilder
                 continue;
             }
             $quantity = (int) $row->quantity;
-            $price = (float) $row->price;
+            $price = $this->money((float) $row->price);
             $value += $price * $quantity;
-            $items[] = [
-                'item_id' => (string) ($model->onec_id ?? $model->id),
-                'item_name' => $this->productTitle($model),
+            $items[] = $this->buildItem($model, [
                 'price' => $price,
                 'quantity' => $quantity,
-            ];
+            ]);
         }
         if ($items === []) {
             return null;
@@ -90,9 +88,82 @@ final class Ga4EcommercePayloadBuilder
 
         return [
             'currency' => $currencyCode,
-            'value' => $value,
+            'value' => $this->money($value),
             'items' => $items,
         ];
+    }
+
+    /**
+     * Состав товара для любого события электронной торговли.
+     *
+     * Справочник Google (reference/events) ждёт у каждого item кроме кода и
+     * названия ещё бренд, категорию и affiliation — без них отчёты по брендам
+     * и категориям в GA4 пустые. Собираем это в одном месте, чтобы состав не
+     * расходился между страницей товара, списками и корзиной.
+     *
+     * @param  array<string, mixed>  $extra
+     * @return array<string, mixed>
+     */
+    public function buildItem(Product $product, array $extra = []): array
+    {
+        $row = [
+            'item_id' => (string) ($product->onec_id ?? $product->id),
+            'item_name' => $this->productTitle($product),
+            'affiliation' => (string) config('analytics.affiliation', 'Radop'),
+            'price' => $this->money((float) ThemeProductManager::getProductTotalSum($product)),
+            'quantity' => 1,
+        ];
+
+        $brand = $this->brandName($product);
+
+        if ($brand !== null) {
+            $row['item_brand'] = $brand;
+        }
+
+        $category = $this->categoryName($product);
+
+        if ($category !== null) {
+            $row['item_category'] = $category;
+        }
+
+        return array_merge($row, $extra);
+    }
+
+    public function money(float $value): float
+    {
+        return round($value, 2);
+    }
+
+    private function brandName(Product $product): ?string
+    {
+        // Связь грузится списками заранее; на одиночном товаре допускаем
+        // ленивую подгрузку — это один запрос на страницу.
+        $brand = $product->brand;
+
+        if ($brand === null) {
+            return null;
+        }
+
+        $title = $brand->getTranslation('title', app()->getLocale(), false);
+
+        return is_string($title) && $title !== '' ? strip_tags($title) : null;
+    }
+
+    private function categoryName(Product $product): ?string
+    {
+        if (! $product->relationLoaded('categories')) {
+            return null;
+        }
+
+        $category = $product->categories->first();
+
+        if ($category === null) {
+            return null;
+        }
+
+        $name = $category->getTranslation('name', app()->getLocale(), false);
+
+        return is_string($name) && $name !== '' ? strip_tags($name) : null;
     }
 
     /**
@@ -100,22 +171,7 @@ final class Ga4EcommercePayloadBuilder
      */
     private function buildListItemRow(Product $product, int $position): array
     {
-        $price = (float) ThemeProductManager::getProductTotalSum($product);
-        $row = [
-            'item_id' => (string) ($product->onec_id ?? $product->id),
-            'item_name' => $this->productTitle($product),
-            'price' => $price,
-            'index' => $position + 1,
-            'quantity' => 1,
-        ];
-        if ($product->relationLoaded('brand') && $product->brand !== null) {
-            $brandTitle = $product->brand->getTranslation('title', app()->getLocale(), false);
-            if (is_string($brandTitle) && $brandTitle !== '') {
-                $row['item_brand'] = strip_tags($brandTitle);
-            }
-        }
-
-        return $row;
+        return $this->buildItem($product, ['index' => $position + 1]);
     }
 
     private function productTitle(Product $product): string

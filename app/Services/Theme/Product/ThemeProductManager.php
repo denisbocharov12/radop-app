@@ -97,12 +97,12 @@ final class ThemeProductManager
                 $response['in-cart'] = view('frontend.v1.components.product-card-summary-in-cart-content', ['product' => $existedProduct])->render();
             }
 
-            $response[(string) config('analytics.json_payload_keys.cart_line_item_added')] = [
-                'item_id' => (string) ($existedProduct->onec_id ?? $existedProduct->id),
-                'item_name' => $this->resolveGa4ItemName($existedProduct),
-                'price' => (float) $price,
-                'quantity' => $productQty,
-            ];
+            $existedProduct->loadMissing(['brand:id,onec_id,title', 'categories:onec_id,name']);
+            $response[(string) config('analytics.json_payload_keys.cart_line_item_added')] = app(\App\Services\Analytics\Ga4EcommercePayloadBuilder::class)
+                ->buildItem($existedProduct, [
+                    'price' => round((float) $price, 2),
+                    'quantity' => $productQty,
+                ]);
         }
 
         return $response;
