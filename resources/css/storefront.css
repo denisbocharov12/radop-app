@@ -269,7 +269,8 @@
 
     /* ---------------------------------------------------------- badges */
     .sf-badge {
-        @apply inline-flex items-center rounded px-1.5 py-0.5
+        /* Те же соображения, что у лэйблов кодов: плашка низкая. */
+        @apply inline-flex items-center rounded-[0.25rem] px-1.5 py-0.5
                text-2xs font-bold uppercase leading-4 tracking-wide;
     }
 
@@ -393,9 +394,9 @@
     /* Пункты верхнего меню центрируются в своей колонке, в том числе
        когда название переносится на две строки. */
     .sf-nav-link {
-        /* Сверху чуть больше воздуха, чем снизу: текст в две строки
-           садится ровнее по центру синей полосы. */
-        @apply flex h-full min-h-[2.5rem] items-center justify-center gap-1 px-2.5 pb-1.5 pt-[0.55rem] text-center
+        /* Одинаковый отступ сверху и снизу: текст в две строки стоит ровно
+           по центру синей полосы. */
+        @apply flex h-full min-h-[2.5rem] items-center justify-center gap-1 px-2.5 py-[0.55rem] text-center
                text-[0.6875rem] font-semibold uppercase leading-[1.2] tracking-[0.02em] text-white/95
                transition-colors hover:bg-brand-700 hover:text-white
                xl:px-3;
@@ -552,7 +553,10 @@
     /* 10px: the eight-digit code must fit whole in a six-up rail card, so only
        the article (free-length) is allowed to shorten. */
     .sf-code-chip {
-        @apply inline-flex min-w-0 cursor-copy items-center gap-0.5 rounded border border-solid bg-white px-1 py-0.5
+        /* Высота лэйбла 18 px: общий радиус 8 px скругляет его в таблетку.
+           Берём 4 px — та же кривизна угла, что у кнопки «Каталог» (8 px
+           при высоте 44 px). */
+        @apply inline-flex min-w-0 cursor-copy items-center gap-0.5 rounded-[0.25rem] border border-solid bg-white px-1 py-0.5
                text-[0.625rem] leading-3 transition-colors duration-150 ease-sf
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500;
     }
@@ -580,7 +584,8 @@
     /* Product page: the same chips and brand line one size up, beside a
        2xl title instead of inside a 200 px card. */
     .sf-code-chip-lg {
-        @apply gap-1 rounded-md px-2 py-1 text-xs leading-4;
+        /* На странице товара лэйбл вдвое выше — и радиус вдвое больше. */
+        @apply gap-1 rounded-[0.375rem] px-2 py-1 text-xs leading-4;
     }
 
     .sf-product-brand-lg {
