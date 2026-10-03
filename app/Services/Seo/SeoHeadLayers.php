@@ -228,6 +228,17 @@ final class SeoHeadLayers
         OpenGraph::setUrl($canonical);
         OpenGraph::setType($type);
         OpenGraph::setSiteName('Radop');
+
+        /*
+         * Без картинки ссылка в соцсетях и мессенджерах выглядит пустой, а
+         * часть страниц её не задаёт. Общую добавляем последней: читатели
+         * берут первую, поэтому собственная картинка страницы не теряется.
+         */
+        $default = (string) config('seotools.meta.defaults.default_image');
+
+        if ($default !== '') {
+            OpenGraph::addImage($default);
+        }
         OpenGraph::addProperty('locale', $locale === 'ru' ? 'ru_MD' : 'ro_MD');
         OpenGraph::addProperty('locale:alternate', $locale === 'ru' ? 'ro_MD' : 'ru_MD');
 
