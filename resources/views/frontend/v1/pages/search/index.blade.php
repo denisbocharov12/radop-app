@@ -96,6 +96,8 @@
             @endif
 
             @if($products->isNotEmpty())
+                @include('frontend.v1.components.item-list-schema', ['products' => $products])
+
                 {{-- Та же панель, что в каталоге: сортировка, размер страницы, вид. --}}
                 <x-sf-catalog-toolbar
                     :products="$products"

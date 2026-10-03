@@ -48,3 +48,25 @@
   }
 }
 </script>
+
+{{-- WebSite + SearchAction: поисковая строка сайта в выдаче Google.
+     Адрес совпадает с реальным поиском витрины (?search=). --}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "{{ url('/') }}#website",
+  "url": "{{ url('/') }}",
+  "name": "Radop",
+  "publisher": { "@id": "{{ url('/') }}#organization" },
+  "inLanguage": "{{ app()->getLocale() === 'ru' ? 'ru-MD' : 'ro-MD' }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ route('theme.search.index') }}?search={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>

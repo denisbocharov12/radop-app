@@ -9,6 +9,11 @@
     'exportPersonalized' => false,
 ])
 
+{{-- Перечень товаров страницы для поисковика (ItemList). --}}
+@include('frontend.v1.components.item-list-schema', ['products' => $products])
+
+
+
 {{--
     Catalogue shell shared by category, shop, brand and search results.
     The filter column is a sidebar from `lg` up and a slide-over below it —
