@@ -16,10 +16,9 @@ on:
         default: '400'
         required: false
 
+# Статика уезжает в ветку gh-pages, поэтому нужна запись в репозиторий
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 # Параллельные выкладки не нужны, но начатую не обрываем
 concurrency:
@@ -96,7 +95,9 @@ jobs:
       - name: База из среза
         run: |
           php artisan migrate --force
-          gunzip -c database/pages/dataset.sql.gz | mysql -h 127.0.0.1 -u root -psecret radop
+          # Заливаем своей командой: консольного клиента mysql на раннере
+          # может не оказаться, а дамп у нас простой.
+          php artisan db:import-dump database/pages/dataset.sql.gz
 
       - name: Сборка фронтенда
         run: npm run build
@@ -124,21 +125,25 @@ jobs:
             --out=dist \
             --urls="--max-products=${MAX_PRODUCTS} --products-per-category=4 --max-categories=120 --max-brands=24"
 
-      - uses: actions/configure-pages@v5
+      # Готовую статику кладём в ветку gh-pages: именно её отдаёт Pages
+      # в режиме «Deploy from a branch». Историю не копим — каждый выкат
+      # перезаписывает ветку целиком.
+      - name: Публикация в ветку gh-pages
+        run: |
+          cd dist
+          git init -q
+          git checkout -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Витрина: статика от $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-pages-artifact@v3
+      # Копия выгрузки остаётся в артефактах — удобно смотреть, что уехало
+      - uses: actions/upload-artifact@v4
         with:
+          name: dist
           path: dist
-
-  deploy:
-    name: Публикация
-    needs: build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          retention-days: 7
