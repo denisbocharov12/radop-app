@@ -48,4 +48,23 @@ return [
         'limit' => 2,
     ],
 
+
+    /*
+     * Условия доставки и возврата для разметки товара (Offer). Их читает
+     * Google Merchant Center, поэтому значения держим здесь, а не в коде:
+     * сроки совпадают с тем, что обещано покупателю на сайте.
+     */
+    'schema' => [
+        'shipping' => [
+            'country' => 'MD',
+            'handling_min_days' => 0,
+            'handling_max_days' => 1,
+            'transit_min_days' => 1,
+            'transit_max_days' => 3,
+        ],
+        'returns' => [
+            'country' => 'MD',
+            'days' => 14,
+        ],
+    ],
 ];

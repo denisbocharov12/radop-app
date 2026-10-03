@@ -83,7 +83,82 @@ final class ProductSchemaOrgBuilder
             'priceValidUntil' => now()->addYear()->format('Y-m-d'),
             'availability' => $this->resolveAvailability($product),
         ];
+
+        $shipping = $this->buildShippingDetails();
+
+        if ($shipping !== null) {
+            $offer['shippingDetails'] = $shipping;
+        }
+
+        $returns = $this->buildReturnPolicy();
+
+        if ($returns !== null) {
+            $offer['hasMerchantReturnPolicy'] = $returns;
+        }
+
         return $offer;
+    }
+
+    /**
+     * Сроки доставки — те же, что обещаны покупателю в карточке товара и на
+     * странице доставки (config/storefront.php).
+     *
+     * @return array<string, mixed>|null
+     */
+    private function buildShippingDetails(): ?array
+    {
+        $shipping = (array) config('storefront.schema.shipping', []);
+
+        if ($shipping === []) {
+            return null;
+        }
+
+        return [
+            '@type' => 'OfferShippingDetails',
+            'shippingDestination' => [
+                '@type' => 'DefinedRegion',
+                'addressCountry' => (string) ($shipping['country'] ?? 'MD'),
+            ],
+            'deliveryTime' => [
+                '@type' => 'ShippingDeliveryTime',
+                'handlingTime' => [
+                    '@type' => 'QuantitativeValue',
+                    'minValue' => (int) ($shipping['handling_min_days'] ?? 0),
+                    'maxValue' => (int) ($shipping['handling_max_days'] ?? 1),
+                    'unitCode' => 'DAY',
+                ],
+                'transitTime' => [
+                    '@type' => 'QuantitativeValue',
+                    'minValue' => (int) ($shipping['transit_min_days'] ?? 1),
+                    'maxValue' => (int) ($shipping['transit_max_days'] ?? 3),
+                    'unitCode' => 'DAY',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Условия возврата со страницы «Возврат и обмен»: 14 дней по закону.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function buildReturnPolicy(): ?array
+    {
+        $returns = (array) config('storefront.schema.returns', []);
+
+        if ($returns === []) {
+            return null;
+        }
+
+        return [
+            '@type' => 'MerchantReturnPolicy',
+            'applicableCountry' => (string) ($returns['country'] ?? 'MD'),
+            'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            'merchantReturnDays' => (int) ($returns['days'] ?? 14),
+            'returnMethod' => 'https://schema.org/ReturnInStore',
+            'returnFees' => 'https://schema.org/FreeReturn',
+            'merchantReturnLink' => $returns['url'] ?? url('/return-rules'),
+        ];
     }
 
     private function resolvePrice(Product $product): float

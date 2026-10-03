@@ -74,8 +74,10 @@
 - На списках (раздел, бренд, каталог, поиск) выводится `ItemList` со сквозной
   нумерацией: на второй странице позиции продолжаются с 25-й, `numberOfItems`
   равен общему числу товаров выборки.
-- Осталось: `shippingDetails` и `hasMerchantReturnPolicy` в `Offer`, схема для
-  страниц филиалов.
+- В `Offer` добавлены `shippingDetails` (доставка по Молдове, 0–1 день сборки
+  и 1–3 дня в пути) и `hasMerchantReturnPolicy` (14 дней по закону) — их читает
+  Google Merchant Center. Сроки лежат в `config/storefront.php`, а не в коде.
+- Осталось: схема для страниц филиалов.
 
 5. **OG и Twitter.** `og:type` заполнен несуществующими значениями (`category`, `articles`, `page`, `search`),
    `og:site_name` выключен, нет `og:locale` и `og:locale:alternate`, нет `twitter:card` — карточка в Twitter
