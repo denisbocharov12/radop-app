@@ -5,6 +5,9 @@ declare(strict_types=1);
 return [
     'gtm_container_id' => env('GTM_CONTAINER_ID', 'GTM-MB99NNLC'),
     'ga4_measurement_id' => env('GA4_MEASUREMENT_ID'),
+    // Ключ для отправки событий с сервера (возвраты, ТЗ 17):
+    // GA4 → Администратор → Потоки данных → Measurement Protocol API secrets.
+    'ga4_api_secret' => env('GA4_API_SECRET'),
     'currency' => env('GA4_CURRENCY', 'MDL'),
     // affiliation в составе товара: кто продал. Для одного магазина — его имя.
     'affiliation' => env('GA4_AFFILIATION', 'Radop'),

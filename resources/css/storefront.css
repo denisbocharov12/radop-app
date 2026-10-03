@@ -885,16 +885,40 @@
         }
     }
 
-@layer components {
-    /* ---------------------------------------------------------- cookie reset */
-    /* @cookieconsentbutton renders <form class="X"><button class="X__link">. */
-    .sf-cookie-settings-form {
-        @apply inline;
-    }
+/* ---------------------------------------------------------- cookie reset */
+/*
+ * @cookieconsentbutton печатает <form class="X"><button class="X__link">
+ * <span class="X__label">. Этих имён нет в шаблонах, поэтому внутри
+ * @layer components правила вырезались сборкой, и ссылка «Настройки cookie»
+ * доставалась браузеру в виде обычной кнопки — крупнее и темнее соседних
+ * ссылок подвала. Держим их вне слоя и описываем свойствами, а не @apply.
+ */
+.sf-cookie-settings-form {
+    display: inline;
+}
 
-    .sf-cookie-settings-form__link {
-        @apply cursor-pointer border-0 bg-transparent p-0 text-left text-sm text-ink-600 hover:text-brand-600;
-    }
+.sf-cookie-settings-form__link {
+    cursor: pointer;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: none;
+    text-align: left;
+    font: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    color: theme(colors.ink.600);
+    transition: color 0.15s ease;
+}
+
+.sf-cookie-settings-form__link:hover,
+.sf-cookie-settings-form__link:focus-visible {
+    color: theme(colors.brand.600);
+}
+
+.sf-cookie-settings-form__label {
+    font: inherit;
+    color: inherit;
 }
 
 @layer utilities {

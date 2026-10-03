@@ -78,4 +78,5 @@ return [
     'checkout' => [
         'city_or_filial_required' => 'Необходимо выбрать город или филиал доставки.',
     ],
+    'required_without' => 'Укажите телефон или почту.',
 ];

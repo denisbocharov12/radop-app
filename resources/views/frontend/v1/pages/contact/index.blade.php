@@ -147,4 +147,120 @@
             </div>
         </div>
     </div>
+    {{-- ТЗ 16: форма заявки. Событие generate_lead шлём только после успешного
+         ответа сервера, а не по клику на кнопку. --}}
+    <div class="sf-container">
+        <div class="sf-card mt-6 p-5 lg:p-6">
+            <h2 class="text-lg font-bold text-ink-900">{{ __('contact.form_title') }}</h2>
+            <p class="mt-1 text-sm text-ink-600">{{ __('contact.form_lead') }}</p>
+
+            <form
+                class="mt-4 grid gap-4 sm:grid-cols-2"
+                method="POST"
+                action="{{ route('theme.contacts.lead') }}"
+                data-sf-lead-form
+                novalidate
+            >
+                @csrf
+                <input type="hidden" name="page" value="{{ url()->current() }}">
+
+                <label class="block">
+                    <span class="sf-label">{{ __('contact.form_name') }}<span class="text-danger-600">*</span></span>
+                    <input type="text" name="name" required maxlength="120" autocomplete="name" class="sf-field">
+                </label>
+
+                <label class="block">
+                    <span class="sf-label">{{ __('contact.form_phone') }}</span>
+                    <input type="tel" name="phone" maxlength="40" autocomplete="tel" class="sf-field">
+                </label>
+
+                <label class="block">
+                    <span class="sf-label">{{ __('contact.form_email') }}</span>
+                    <input type="email" name="email" maxlength="150" autocomplete="email" class="sf-field">
+                </label>
+
+                {{-- Ловушка для роботов: поле скрыто от человека и остаётся пустым. --}}
+                <label class="hidden" aria-hidden="true">
+                    <span>Company</span>
+                    <input type="text" name="company" tabindex="-1" autocomplete="off">
+                </label>
+
+                <label class="block sm:col-span-2">
+                    <span class="sf-label">{{ __('contact.form_message') }}<span class="text-danger-600">*</span></span>
+                    <textarea name="message" rows="4" required maxlength="2000" class="sf-field"></textarea>
+                </label>
+
+                <div class="flex flex-wrap items-center gap-3 sm:col-span-2">
+                    <button type="submit" class="sf-btn-primary h-11 px-5" data-sf-lead-submit>
+                        {{ __('contact.form_submit') }}
+                    </button>
+                    <p class="text-sm" data-sf-lead-message role="status" aria-live="polite"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        (function () {
+            var form = document.querySelector('[data-sf-lead-form]');
+            if (!form) return;
+
+            var button = form.querySelector('[data-sf-lead-submit]');
+            var note = form.querySelector('[data-sf-lead-message]');
+
+            function say(text, ok) {
+                if (!note) return;
+                note.textContent = text;
+                note.className = 'text-sm ' + (ok ? 'text-success-600' : 'text-danger-600');
+            }
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                if (!form.reportValidity()) return;
+
+                button.disabled = true;
+                say('', true);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                    body: new FormData(form),
+                    credentials: 'same-origin'
+                })
+                    .then(function (response) {
+                        return response.json().then(function (body) { return { ok: response.ok, body: body }; });
+                    })
+                    .then(function (result) {
+                        if (!result.ok || !result.body || result.body.status !== true) {
+                            var errors = result.body && result.body.errors ? Object.values(result.body.errors).flat() : [];
+                            say(errors.length ? errors.join(' ') : (result.body && result.body.message) || @json(__('contact.form_error')), false);
+
+                            return;
+                        }
+
+                        form.reset();
+                        say(result.body.message, true);
+
+                        var names = window.radopAnalyticsDataLayerEventNames || {};
+                        if (typeof window.radopGa4EventPush === 'function' && names.contact_lead_submitted) {
+                            window.radopGa4EventPush(names.contact_lead_submitted, {
+                                currency: window.radopGaCurrency || 'MDL',
+                                value: 0,
+                                lead_source: (result.body.lead && result.body.lead.lead_source) || 'contact_form',
+                                form_location: (result.body.lead && result.body.lead.form_location) || window.location.pathname
+                            });
+                        }
+                    })
+                    .catch(function () {
+                        say(@json(__('contact.form_error')), false);
+                    })
+                    .finally(function () {
+                        button.disabled = false;
+                    });
+            });
+        })();
+    </script>
 @endsection

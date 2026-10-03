@@ -78,4 +78,5 @@ return [
     'checkout' => [
         'city_or_filial_required' => 'Trebuie să selectați orașul sau filiala de livrare.',
     ],
+    'required_without' => 'Indicați telefonul sau e-mailul.',
 ];
