@@ -1,0 +1,144 @@
+name: GitHub Pages
+
+# Витрина выкладывается статикой: workflow поднимает Laravel на срезе базы,
+# обходит его по списку публичных адресов и публикует готовый HTML.
+#
+# Запускается только с ветки pages — в master и в рабочую ветку ничего не
+# сливается.
+
+on:
+  push:
+    branches: [pages]
+  workflow_dispatch:
+    inputs:
+      products:
+        description: 'Сколько карточек товаров выгружать'
+        default: '400'
+        required: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Параллельные выкладки не нужны, но начатую не обрываем
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Сборка статики
+    runs-on: ubuntu-latest
+
+    env:
+      SITE_ORIGIN: ${{ format('https://{0}.github.io', github.repository_owner) }}
+      BASE_PATH: ${{ github.event.repository.name }}
+      # Фотографии товаров в репозитории не хранятся — берём их с боевого сайта
+      MEDIA_ORIGIN: https://radop.md
+      MAX_PRODUCTS: ${{ github.event.inputs.products || '400' }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: radop
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -psecret"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, gd, intl, zip, pdo_mysql, exif
+          coverage: none
+
+      - run: composer install --no-interaction --prefer-dist --no-progress --no-dev --optimize-autoloader
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Окружение
+        run: |
+          cp .env.example .env
+          {
+            echo "APP_ENV=production"
+            echo "APP_DEBUG=false"
+            # Подкаталог в APP_URL Laravel отрезает от пути запроса и перестаёт
+            # находить маршруты — его дописывает статический экспорт
+            echo "APP_URL=${SITE_ORIGIN}"
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=127.0.0.1"
+            echo "DB_PORT=3306"
+            echo "DB_DATABASE=radop"
+            echo "DB_USERNAME=root"
+            echo "DB_PASSWORD=secret"
+            echo "CACHE_DRIVER=file"
+            echo "SESSION_DRIVER=file"
+            echo "QUEUE_CONNECTION=sync"
+          } >> .env
+          php artisan key:generate
+
+      - name: База из среза
+        run: |
+          php artisan migrate --force
+          gunzip -c database/pages/dataset.sql.gz | mysql -h 127.0.0.1 -u root -psecret radop
+
+      - name: Сборка фронтенда
+        run: npm run build
+
+      - name: Запуск приложения
+        run: |
+          php artisan optimize:clear
+          php artisan serve --host=127.0.0.1 --port=8000 &
+          for attempt in $(seq 1 30); do
+            if curl -sf -o /dev/null "http://127.0.0.1:8000/"; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Приложение не поднялось"
+          exit 1
+
+      - name: Статический экспорт
+        run: |
+          node tools/static-export.mjs \
+            --origin=http://127.0.0.1:8000 \
+            --base="${BASE_PATH}" \
+            --site="${SITE_ORIGIN}" \
+            --media="${MEDIA_ORIGIN}" \
+            --out=dist \
+            --urls="--max-products=${MAX_PRODUCTS} --products-per-category=4 --max-categories=120 --max-brands=24"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Публикация
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
