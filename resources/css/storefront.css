@@ -140,6 +140,36 @@
         @apply mb-3 flex items-center justify-between gap-4 lg:mb-4;
     }
 
+    /* ------------------------------------------------- сезонная секция
+       Фото на фоне + сплошная маска заданного цвета: заголовок и карточки
+       читаются на любом снимке, а белый фон карточек не даёт маске
+       просвечивать сквозь товар. */
+    .sf-season {
+        @apply relative isolate overflow-hidden bg-ink-900 bg-cover bg-center py-7 lg:py-10;
+    }
+
+    .sf-season-mask {
+        @apply pointer-events-none absolute inset-0 -z-10;
+    }
+
+    .sf-season .sf-product {
+        @apply bg-white shadow-card;
+    }
+
+    /* Внутри секции с фото заголовок и ссылка светлые; правила вложены в
+       .sf-season, иначе базовый .sf-section-title перебивает их по порядку. */
+    .sf-season .sf-section-title-onimage {
+        @apply text-white [text-shadow:0_1px_2px_rgb(0_0_0/0.35)];
+    }
+
+    .sf-season .sf-section-title-onimage a {
+        @apply text-white;
+    }
+
+    .sf-season .sf-section-link-onimage {
+        @apply text-white/90 hover:text-white;
+    }
+
     .sf-section-title {
         @apply text-xl font-bold tracking-tight text-ink-900 lg:text-2xl;
     }

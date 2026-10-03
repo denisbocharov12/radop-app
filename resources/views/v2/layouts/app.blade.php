@@ -37,6 +37,7 @@
             ]],
             ['label' => 'Контент', 'roles' => ['admin'], 'items' => [
                 ['Баннеры',         'banner.index',              'image',     'banner.index'],
+                ['Секции главной',  'home-section.index',        'layout-grid', 'home-section.*'],
                 ['Меню',            'admin.menus.index',         'list-tree', 'admin.menus.*'],
                 ['Шапка-меню',      'admin.header-menus.index',  'panel-top', 'admin.header-menus.*'],
                 ['SEO',             'seo_meta.index',            'search',    'seo_meta.*'],

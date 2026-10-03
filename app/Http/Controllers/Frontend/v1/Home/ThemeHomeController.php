@@ -13,6 +13,7 @@ use App\Services\Analytics\Ga4EcommercePayloadBuilder;
 use App\Repositories\Brand\BrandRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\SeoMetaRepository;
+use App\Services\Home\HomeSectionsRenderer;
 use App\Services\Seo\SeoFallbackGenerator;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
@@ -30,6 +31,7 @@ final class ThemeHomeController extends Controller
         private readonly PageTypes $pageTypes,
         private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
         private readonly SeoFallbackGenerator $seoFallback,
+        private readonly HomeSectionsRenderer $homeSections,
     ) {
     }
 
@@ -54,9 +56,8 @@ final class ThemeHomeController extends Controller
         $popularSliderSpeed = $speeds['popular'];
         $saleSliderSpeed = $speeds['sale'];
 
-        $popularProducts = $this->productRepository->getPopularProductsForHomePage();
-        $newProducts = $this->productRepository->getNewProductsForHomePage();
-        $discountProducts = $this->productRepository->getDiscountProductsForHomePage();
+        // Состав и порядок блоков задаются в админке, а не в шаблоне.
+        $homeSections = $this->homeSections->sections();
         $banners = $this->bannerRepository->getAllActiveForFront();
         $themeBrands = $this->brandRepository->getLimited();
 
@@ -77,17 +78,21 @@ final class ThemeHomeController extends Controller
         $this->seo()->opengraph()->addProperty('type', 'page');
         $this->seo()->jsonLd()->setType('WebPage');
 
-        $ga4ItemLists = array_values(array_filter([
-            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($popularProducts, 'home_popular', 'Home popular'),
-            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($newProducts, 'home_new', 'Home new'),
-            $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection($discountProducts, 'home_sale', 'Home sale'),
-        ]));
+        // Списки для аналитики — по тем же секциям, что увидит посетитель.
+        $ga4ItemLists = $homeSections
+            ->filter(static fn (array $section) => $section['products']->isNotEmpty())
+            ->map(fn (array $section) => $this->ga4EcommercePayloadBuilder->buildViewItemListFromCollection(
+                $section['products'],
+                (string) ($section['settings']['list_id'] ?? 'home_' . $section['id']),
+                (string) ($section['settings']['list_name'] ?? ($section['title'] ?? 'Home')),
+            ))
+            ->filter()
+            ->values()
+            ->all();
 
         return view('frontend.v1.pages.home.index', compact([
             'themeBrands',
-            'popularProducts',
-            'newProducts',
-            'discountProducts',
+            'homeSections',
             'banners',
             'locale',
             'autoplaySpeed',
