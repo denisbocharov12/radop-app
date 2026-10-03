@@ -21,7 +21,7 @@ final class RedirectRoPrefixTest extends TestCase
         $response = $this->get('/ro');
 
         $response->assertStatus(301);
-        $this->assertSame(url('/'), $response->headers->get('Location'));
+        $this->assertSameUrl(url('/'), $response->headers->get('Location'));
     }
 
     public function test_trailing_slash_ro_redirects_with_301(): void
@@ -29,7 +29,7 @@ final class RedirectRoPrefixTest extends TestCase
         $response = $this->get('/ro/');
 
         $response->assertStatus(301);
-        $this->assertSame(url('/'), $response->headers->get('Location'));
+        $this->assertSameUrl(url('/'), $response->headers->get('Location'));
     }
 
     public function test_nested_ro_path_redirects_with_301_to_non_prefixed_path(): void
@@ -48,7 +48,7 @@ final class RedirectRoPrefixTest extends TestCase
         $response = $this->get('/ro/category/2?sort=price&page=3');
 
         $response->assertStatus(301);
-        $this->assertSame(
+        $this->assertSameUrl(
             url('/category/2') . '?sort=price&page=3',
             $response->headers->get('Location'),
         );
@@ -78,5 +78,28 @@ final class RedirectRoPrefixTest extends TestCase
         $response = $this->get('/category/test-ro-slug');
 
         $this->assertNotSame(301, $response->getStatusCode());
+    }
+    /**
+     * Адреса равны по сути: завершающий слеш у корня и порядок параметров
+     * (Symfony их нормализует) для браузера и поисковика ничего не меняют.
+     */
+    private function assertSameUrl(string $expected, ?string $actual): void
+    {
+        $this->assertNotNull($actual);
+        $this->assertSame($this->normalizeUrl($expected), $this->normalizeUrl($actual));
+    }
+
+    private function normalizeUrl(string $url): string
+    {
+        $parts = parse_url($url);
+        $path = rtrim($parts['path'] ?? '', '/');
+
+        parse_str($parts['query'] ?? '', $query);
+        ksort($query);
+
+        return ($parts['scheme'] ?? '') . '://' . ($parts['host'] ?? '')
+            . (isset($parts['port']) ? ':' . $parts['port'] : '')
+            . $path
+            . ($query === [] ? '' : '?' . http_build_query($query));
     }
 }

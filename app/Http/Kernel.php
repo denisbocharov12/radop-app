@@ -12,7 +12,6 @@ use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\ExecuteWriteRequestInTransaction;
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\CanonicalPathRedirect;
-use App\Http\Middleware\SeoIndexingDirectives;
 use App\Http\Middleware\ViewCountMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -34,7 +33,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        SeoIndexingDirectives::class,
     ];
 
     /**
