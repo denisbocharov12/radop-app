@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SeoMeta;
+use App\Services\Seo\SeoHeadLayers;
 use Illuminate\Support\Facades\Cache;
 
 class SeoMetaRepository
@@ -19,10 +20,12 @@ class SeoMetaRepository
     {
         $locale = $locale ?? app()->getLocale();
 
-        return SeoMeta::where('page_type', $type)
+        $meta = SeoMeta::where('page_type', $type)
             ->where('page_id', $pageId)
             ->where('locale', $locale)
             ->first();
+
+        return $this->shareCanonical($meta);
     }
 
     /**
@@ -37,10 +40,25 @@ class SeoMetaRepository
         $locale = $locale ?? app()->getLocale();
         $cacheKey = 'seo_meta_static_' . $slug . '_' . $locale;
 
-        return Cache::remember($cacheKey, 7200, function () use ($slug, $locale) {
+        $meta = Cache::remember($cacheKey, 7200, function () use ($slug, $locale) {
             return SeoMeta::where('page_type', $slug)
                 ->where('locale', $locale)
                 ->first();
         });
+
+        return $this->shareCanonical($meta);
+    }
+
+    /**
+     * Колонка canonical в админке есть, но на витрину не попадала. Передаём её
+     * слою сборки head — там она перекрывает адрес, собранный из маршрута.
+     */
+    private function shareCanonical(?SeoMeta $meta): ?SeoMeta
+    {
+        if ($meta !== null && is_string($meta->canonical) && trim($meta->canonical) !== '') {
+            SeoHeadLayers::overrideCanonical(trim($meta->canonical));
+        }
+
+        return $meta;
     }
 }

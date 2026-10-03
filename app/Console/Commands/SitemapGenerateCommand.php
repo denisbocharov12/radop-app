@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SeoMeta;
 use App\Services\Sitemap\LocalizedThemeUrlGenerator;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -55,13 +56,25 @@ final class SitemapGenerateCommand extends Command
     private function writePagesSitemap(): void
     {
         $sitemap = Sitemap::create();
+
+        /*
+         * У статических страниц нет своей таблицы, зато есть запись в
+         * seo_metas — её правят вместе с текстом страницы, поэтому дата
+         * оттуда честнее, чем «сегодня» или пустой lastmod.
+         */
+        $pageDates = SeoMeta::query()
+            ->select('page_type', 'updated_at')
+            ->get()
+            ->groupBy('page_type')
+            ->map(static fn ($rows) => Carbon::make($rows->max('updated_at')));
+
         foreach ($this->locales as $locale) {
             foreach ($this->staticPaths() as $item) {
                 $sitemap->add(
                     $this->urlWithAlternates(
                         $locale,
                         $item['path'],
-                        null,
+                        $pageDates[$item['seo_type'] ?? ''] ?? null,
                         (float) $item['priority'],
                         (string) $item['frequency'],
                     )
@@ -119,6 +132,7 @@ final class SitemapGenerateCommand extends Command
     {
         $sitemap = Sitemap::create();
         Product::query()
+            ->with('media')
             ->where('site_status', true)
             ->whereNotNull('slug')
             ->where('slug', '!=', '')
@@ -128,10 +142,18 @@ final class SitemapGenerateCommand extends Command
                     assert($product instanceof Product);
                     $path = 'product/' . $product->slug;
                     $lastmod = Carbon::make($product->updated_at) ?? Carbon::now();
+                    // Фото товара — чтобы снимки попадали в поиск по картинкам.
+                    $image = $product->getFirstMediaUrl('products');
+                    $caption = strip_tags((string) $product->title);
+
                     foreach ($this->locales as $locale) {
-                        $sitemap->add(
-                            $this->urlWithAlternates($locale, $path, $lastmod, 0.85, Url::CHANGE_FREQUENCY_WEEKLY)
-                        );
+                        $url = $this->urlWithAlternates($locale, $path, $lastmod, 0.85, Url::CHANGE_FREQUENCY_WEEKLY);
+
+                        if ($image !== '') {
+                            $url->addImage($image, $caption);
+                        }
+
+                        $sitemap->add($url);
                     }
                 }
             });
@@ -202,21 +224,21 @@ final class SitemapGenerateCommand extends Command
     private function staticPaths(): array
     {
         return [
-            ['path' => '',                       'priority' => 1.0,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'about-us',               'priority' => 0.6,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['path' => 'contacts',               'priority' => 0.65, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['path' => 'delivery',               'priority' => 0.6,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['path' => 'privacy-policy',         'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['path' => 'terms-and-conditions',   'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['path' => 'cookie',                 'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
-            ['path' => 'return-rules',           'priority' => 0.5,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['path' => 'how-to-order',           'priority' => 0.55, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
-            ['path' => 'shop',                   'priority' => 0.9,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'shop/new',               'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'shop/popular',           'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'shop/sale',              'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'shop/catalog',           'priority' => 0.85, 'frequency' => Url::CHANGE_FREQUENCY_DAILY],
-            ['path' => 'brand/catalog',          'priority' => 0.85, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+            ['path' => '',                       'seo_type' => 'home',                 'priority' => 1.0,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'about-us',               'seo_type' => 'about',             'priority' => 0.6,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => 'contacts',               'seo_type' => 'contact',              'priority' => 0.65, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => 'delivery',               'seo_type' => 'delivery',             'priority' => 0.6,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => 'privacy-policy',         'seo_type' => 'privacy_policy',       'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
+            ['path' => 'terms-and-conditions',   'seo_type' => 'terms_conditions', 'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
+            ['path' => 'cookie',                 'seo_type' => 'cookie',               'priority' => 0.4,  'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
+            ['path' => 'return-rules',           'seo_type' => 'return_rules',         'priority' => 0.5,  'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => 'how-to-order',           'seo_type' => 'order-guide',          'priority' => 0.55, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => 'shop',                   'seo_type' => 'shop',                 'priority' => 0.9,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'shop/new',               'seo_type' => 'new_products',         'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'shop/popular',           'seo_type' => 'popular_products',     'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'shop/sale',              'seo_type' => 'sale_products',        'priority' => 0.8,  'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'shop/catalog',           'seo_type' => 'shop_catalog',         'priority' => 0.85, 'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => 'brand/catalog',          'seo_type' => 'brands_catalog',       'priority' => 0.85, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
         ];
     }
 }

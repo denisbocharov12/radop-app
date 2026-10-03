@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Frontend\v1\Seo\RobotsController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -27,6 +28,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         // Generated sitemaps live in storage (persistent across deploys). They are
         // served here, without session middleware, before the localized groups.
+        // robots.txt собирается из тех же списков, что и директивы индексации,
+        // поэтому отдаётся маршрутом, а не файлом в public.
+        Route::get('robots.txt', RobotsController::class)->name('robots');
+
         Route::get('sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
         Route::get('sitemap-{section}.xml', [SitemapController::class, 'section'])
             ->whereIn('section', SitemapController::SECTIONS)

@@ -34,12 +34,23 @@ final class SeoHeadLayers
      * канонический адрес. Всё остальное — дубль: noindex и канонический адрес
      * без параметров.
      */
-    private const INDEXABLE_PARAMS = ['page'];
+    public const INDEXABLE_PARAMS = ['page'];
 
     /** Разделы без индексируемого содержимого. */
-    private const PRIVATE_SECTIONS = [
+    public const PRIVATE_SECTIONS = [
         'search', 'cart', 'wishlist', 'checkout', 'login',
         'registration', 'reset-password', 'user', 'thank-you',
+    ];
+
+    /**
+     * Параметры, которые чаще всего плодят дубли. Полный запрет описать в
+     * robots.txt нельзя (там нет «всё, кроме page»), поэтому перечисляем шумные
+     * — этим же списком пользуется robots.txt.
+     */
+    public const NOISY_PARAMS = [
+        'sort', 'order', 'perPage', 'per_page', 'filter',
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+        'fbclid', 'gclid', 'yclid', 'msclkid', 'mc_eid', '_ga',
     ];
 
     private const BRAND_SUFFIX = 'Radop.md';
@@ -56,12 +67,23 @@ final class SeoHeadLayers
         'wishlist' => 'theme.wishlist',
     ];
 
+    /** Адрес из seo_metas.canonical для текущей страницы, если он задан. */
+    private static ?string $canonicalOverride = null;
+
+    public static function overrideCanonical(?string $url): void
+    {
+        self::$canonicalOverride = $url;
+    }
+
     public function apply(Request $request): void
     {
         $locale = app()->getLocale();
         $page = $this->pageNumber($request);
 
-        $canonical = $this->canonical($request, $page);
+        $canonical = $this->canonicalOverride($request) ?? $this->canonical($request, $page);
+        // Переопределение живёт ровно один рендер — иначе в долгоживущем
+        // процессе оно утекло бы на следующую страницу.
+        self::$canonicalOverride = null;
 
         SEOMeta::setCanonical($canonical);
         SEOMeta::setRobots($this->robots($request));
@@ -101,6 +123,46 @@ final class SeoHeadLayers
         }
 
         return $keep === [] ? $base : $base . '?' . http_build_query($keep);
+    }
+
+    /**
+     * Переопределение из админки принимаем только внутри того же языка: в базе
+     * есть русские записи с адресом без префикса /ru, и такой canonical увёл бы
+     * русскую страницу на румынскую.
+     */
+    private function canonicalOverride(Request $request): ?string
+    {
+        $url = self::$canonicalOverride;
+
+        if ($url === null || $url === '') {
+            return null;
+        }
+
+        $path = (string) (parse_url($url, PHP_URL_PATH) ?: '/');
+        $locale = app()->getLocale();
+        $default = (string) config('app.fallback_locale', 'ro');
+        $prefixed = str_starts_with($path, '/' . $locale . '/') || $path === '/' . $locale;
+
+        if ($locale !== $default && ! $prefixed) {
+            return null;
+        }
+
+        if ($locale === $default && $this->hasLocalePrefix($path)) {
+            return null;
+        }
+
+        return $url;
+    }
+
+    private function hasLocalePrefix(string $path): bool
+    {
+        foreach (array_keys((array) config('laravellocalization.supportedLocales', [])) as $locale) {
+            if (str_starts_with($path, '/' . $locale . '/') || $path === '/' . $locale) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function robots(Request $request): string
