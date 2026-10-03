@@ -155,4 +155,5 @@
 
 @section('scripts')
     @include('frontend.v1.analytics.ga4-item-lists')
+    @include('frontend.v1.analytics.ga4-search')
 @endsection

@@ -311,6 +311,43 @@
                 }
             });
 
+            /*
+             * Шаги воронки: доставка и оплата. Шлём один раз на шаг и только
+             * когда значение выбрано — состав корзины берём из того же набора,
+             * что ушёл в begin_checkout.
+             */
+            @if(!empty($ga4Checkout))
+            var checkoutEcommerce = @json($ga4Checkout);
+            var sentSteps = {};
+
+            function pushCheckoutStep(key, extra) {
+                if (sentSteps[key] || typeof window.radopGa4EcommercePush !== 'function' || !events[key]) return;
+                sentSteps[key] = true;
+                var payload = Object.assign({}, checkoutEcommerce, extra || {});
+                window.radopGa4EcommercePush(events[key], payload);
+            }
+
+            function labelOf(select) {
+                var option = select.options[select.selectedIndex];
+                return option ? (option.textContent || '').replace(/\s+/g, ' ').trim() : '';
+            }
+
+            document.querySelectorAll('[data-sf-delivery-select]').forEach(function (select) {
+                select.addEventListener('change', function () {
+                    if (!select.value) return;
+                    pushCheckoutStep('checkout_shipping_info_added', { shipping_tier: labelOf(select) });
+                });
+            });
+
+            var paymentSelect = document.getElementById('payment_method');
+            if (paymentSelect) {
+                paymentSelect.addEventListener('change', function () {
+                    if (!paymentSelect.value) return;
+                    pushCheckoutStep('checkout_payment_info_added', { payment_type: labelOf(paymentSelect) });
+                });
+            }
+            @endif
+
             // One order per click: disable the button once the browser accepts
             // the submission (invalid forms never reach this event).
             var submitButton = document.querySelector('[data-sf-checkout-submit]');

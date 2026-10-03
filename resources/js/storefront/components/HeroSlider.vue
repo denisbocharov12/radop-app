@@ -35,16 +35,49 @@ function onScroll() {
     index.value = Math.round(track.scrollLeft / track.clientWidth);
 }
 
-/** GA4 promotion click — same event and parameters scripts.blade.php sent. */
-function onSlideClick(slide) {
-    const events = window.radopAnalyticsDataLayerEventNames ?? {};
-    if (typeof window.radopGa4EventPush !== 'function' || !events.homepage_promotion_banner_clicked) return;
-    window.radopGa4EventPush(events.homepage_promotion_banner_clicked, {
+/*
+ * GA4 требует промо-события в объекте ecommerce (view_promotion и
+ * select_promotion), иначе в отчётах по акциям пусто. Показ считаем по факту
+ * появления баннера на экране и ровно один раз на слайд, а не весь список при
+ * загрузке страницы.
+ */
+function promotionPayload(slide) {
+    return {
         promotion_id: String(slide.id),
         promotion_name: 'homepage_banner',
         creative_name: 'homepage_banner',
         creative_slot: 'main_banner',
-    });
+    };
+}
+
+function pushPromotion(key, slide) {
+    const events = window.radopAnalyticsDataLayerEventNames ?? {};
+    if (typeof window.radopGa4EcommercePush !== 'function' || !events[key]) return;
+    window.radopGa4EcommercePush(events[key], promotionPayload(slide));
+}
+
+function onSlideClick(slide) {
+    pushPromotion('homepage_promotion_banner_clicked', slide);
+}
+
+const seenSlides = new Set();
+let slideObserver = null;
+
+function watchSlides() {
+    const track = trackEl.value;
+    if (!track || typeof IntersectionObserver !== 'function') return;
+
+    slideObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const id = entry.target.dataset.promotionId;
+            if (!id || seenSlides.has(id)) return;
+            seenSlides.add(id);
+            pushPromotion('homepage_promotion_banner_viewed', { id });
+        });
+    }, { threshold: 0.5 });
+
+    track.querySelectorAll('[data-promotion-id]').forEach((el) => slideObserver.observe(el));
 }
 
 function start() {
@@ -63,9 +96,13 @@ function stop() {
 onMounted(() => {
     // Respect the visitor's motion preference rather than autoplaying anyway.
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+    watchSlides();
 });
 
-onBeforeUnmount(stop);
+onBeforeUnmount(() => {
+    stop();
+    slideObserver?.disconnect();
+});
 </script>
 
 <template>

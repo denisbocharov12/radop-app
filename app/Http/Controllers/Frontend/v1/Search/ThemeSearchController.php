@@ -78,12 +78,19 @@ final class ThemeSearchController extends Controller
         $ga4ItemList = $this->ga4EcommercePayloadBuilder->buildViewItemListFromPaginator($products, 'search_results', $listName);
         $ga4ItemLists = $ga4ItemList !== null ? [$ga4ItemList] : [];
 
+        // Поисковый запрос и состав выдачи (события search и view_search_results).
+        $ga4Search = $searchLabel === '' ? null : [
+            'search_term' => $searchLabel,
+            'ecommerce' => $ga4ItemList === null ? null : $ga4ItemList + ['search_term' => $searchLabel],
+        ];
+
         return view('frontend.v1.pages.search.index', compact([
             'products',
             'themeSearchData',
             'categories',
             'relatedProducts',
             'ga4ItemLists',
+            'ga4Search',
         ]));
     }
 

@@ -13,6 +13,7 @@
     $registrationFlash = session()->pull($registrationFlashKey);
 @endphp
     window.radopGaCurrency = @json((string) config('analytics.currency', 'MDL'));
+    window.radopGaAffiliation = @json((string) config('analytics.affiliation', 'Radop'));
     window.radopAnalyticsDataLayerEventNames = @json(config('analytics.data_layer_event_names'));
     window.radopAnalyticsJsonPayloadKeys = @json(config('analytics.json_payload_keys'));
     // Maps custom radop_* event names → standard GA4 event names (for Google Ads)
@@ -74,13 +75,8 @@
 @endif
         }
     });
-    $(document).on('submit', 'form[action*="search"]', function () {
-        var $inp = $(this).find('input[name="search"]');
-        var q = ($inp.val() || '').toString().trim();
-        if (q && typeof window.radopGa4EventPush === 'function' && window.radopAnalyticsDataLayerEventNames) {
-            window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.frontend_site_search_submitted, { search_term: q });
-        }
-    });
+    /* Событие поиска шлёт страница результатов: отправку формы перехватывать
+       не нужно — браузер уходит со страницы, и часть событий терялась. */
     $(document).on('click', 'a[href*="/product/"]', function () {
         var $a = $(this);
         var href = ($a.attr('href') || '').toString();
@@ -102,10 +98,32 @@
         if (typeof window.radopGa4EcommercePush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
             return;
         }
+        var item = {
+            item_id: itemId,
+            item_name: name,
+            affiliation: window.radopGaAffiliation || 'Radop',
+            price: price,
+            quantity: 1
+        };
+        var brand = ($card.attr('data-ga4-item-brand') || '').toString();
+        if (brand) {
+            item.item_brand = brand;
+        }
+        var category = ($card.attr('data-ga4-item-category') || '').toString();
+        if (category) {
+            item.item_category = category;
+        }
+        /* Позиция в списке: Google ждёт index, по нему видно, с какого места
+           сетки чаще уходят в карточку. */
+        var siblings = $card.parent().children('[data-ga4-item-id]');
+        var position = siblings.index($card);
+        if (position >= 0) {
+            item.index = position + 1;
+        }
         var payload = {
             currency: window.radopGaCurrency || 'MDL',
             value: price,
-            items: [{ item_id: itemId, item_name: name, price: price, quantity: 1 }]
+            items: [item]
         };
         if (listId) {
             payload.item_list_id = listId;

@@ -117,7 +117,7 @@ class CategoryRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data']);
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data', 'categories:onec_id,name']);
 
         $effectiveSort = $request->filled('sort') ? $request->query('sort') : $defaultSort;
         $isTitleSort = $defaultSortIsTitle && ($effectiveSort === 'title' || $effectiveSort === '-title');

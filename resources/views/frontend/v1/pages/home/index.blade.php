@@ -106,21 +106,6 @@
 
 @section('scripts')
     @include('frontend.v1.analytics.ga4-item-lists')
-    @if(isset($banners) && $banners->isNotEmpty())
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                if (typeof window.radopGa4EventPush !== 'function' || !window.radopAnalyticsDataLayerEventNames) {
-                    return;
-                }
-                @foreach($banners as $banner)
-                window.radopGa4EventPush(window.radopAnalyticsDataLayerEventNames.homepage_promotion_banner_viewed, {
-                    promotion_id: @json((string) $banner->id),
-                    promotion_name: 'homepage_banner',
-                    creative_name: 'homepage_banner',
-                    creative_slot: 'main_banner'
-                });
-                @endforeach
-            });
-        </script>
-    @endif
+    {{-- Показ баннеров считает сам слайдер — по факту появления на экране,
+         один раз на баннер (см. HeroSlider.vue). --}}
 @endsection

@@ -171,7 +171,7 @@ final class BrandRepository
             ])
             ->where('status', true)
             ->where('site_status', true)
-            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data'])
+            ->with(['brand:id,onec_id,title', 'values:id,product_onec_id,attribute_onec_id,value', 'media', 'packages', 'data', 'categories:onec_id,name'])
             ->groupBy('products.onec_id');
 
         $queryBuilder = $queryBuilder->orderByRaw("

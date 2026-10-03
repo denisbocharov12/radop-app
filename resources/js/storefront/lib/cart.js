@@ -67,16 +67,13 @@ export function pushEcommerce(key, response, { quantityPayload = true } = {}) {
 
     // Cart payloads arrive as a single line; wishlist payloads are already a
     // complete ecommerce object.
+    // Состав товара приходит с сервера целиком (бренд, категория,
+    // affiliation) — пересобирать его здесь и терять поля незачем.
     const ecommerce = quantityPayload
         ? {
             currency: window.radopGaCurrency || 'MDL',
-            value: Number(data.price) * Number(data.quantity),
-            items: [{
-                item_id: String(data.item_id),
-                item_name: String(data.item_name),
-                price: Number(data.price),
-                quantity: Number(data.quantity),
-            }],
+            value: Math.round(Number(data.price) * Number(data.quantity) * 100) / 100,
+            items: [{ ...data, price: Number(data.price), quantity: Number(data.quantity) }],
         }
         : data;
 

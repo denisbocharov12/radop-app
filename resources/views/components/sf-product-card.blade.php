@@ -45,6 +45,7 @@
     data-ga4-item-id="{{ $card['code'] ?: $card['id'] }}"
     data-ga4-item-name="{{ $card['title'] }}"
     data-ga4-price="{{ $card['unitPrice'] }}"
+    @if($card['brand'] ?? null) data-ga4-item-brand="{{ $card['brand']['title'] ?? $card['brand'] }}" @endif
     @if($listId) data-ga4-item-list-id="{{ $listId }}" @endif
     @if($listName) data-ga4-item-list-name="{{ $listName }}" @endif
 >

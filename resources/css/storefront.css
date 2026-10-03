@@ -363,7 +363,9 @@
     /* Пункты верхнего меню центрируются в своей колонке, в том числе
        когда название переносится на две строки. */
     .sf-nav-link {
-        @apply flex h-full min-h-[2.5rem] items-center justify-center gap-1 px-2.5 py-1.5 text-center
+        /* Сверху чуть больше воздуха, чем снизу: текст в две строки
+           садится ровнее по центру синей полосы. */
+        @apply flex h-full min-h-[2.5rem] items-center justify-center gap-1 px-2.5 pb-1.5 pt-[0.55rem] text-center
                text-[0.6875rem] font-semibold uppercase leading-[1.2] tracking-[0.02em] text-white/95
                transition-colors hover:bg-brand-700 hover:text-white
                xl:px-3;
@@ -652,15 +654,18 @@
 
     @container (min-width: 10.5rem) {
         .sf-atc { flex-direction: row; }
+        /* Счётчик ужимаем, кнопку корзины делаем заметнее: в карточке
+           главное действие — положить товар, а не менять количество. */
         .sf-atc .sf-atc-stepper { flex: 1 1 auto; width: auto; min-width: 0; }
-        .sf-atc .sf-atc-stepper > button { width: 2.25rem; }
-        .sf-atc .sf-atc-button { flex: 0 0 2.5rem; width: 2.5rem; @apply px-0; }
+        .sf-atc .sf-atc-stepper > button { width: 2rem; }
+        .sf-atc .sf-atc-input { min-width: 1.75rem; }
+        .sf-atc .sf-atc-button { flex: 0 0 3.25rem; width: 3.25rem; @apply px-0; }
         .sf-atc .sf-atc-label { @apply sf-sr-only; }
     }
 
     @container (min-width: 14.5rem) {
         .sf-atc .sf-atc-stepper { flex: 0 0 auto; }
-        .sf-atc .sf-atc-input { width: 2.75rem; flex: 0 0 2.75rem; }
+        .sf-atc .sf-atc-input { width: 2.25rem; flex: 0 0 2.25rem; min-width: 2.25rem; }
         .sf-atc .sf-atc-button { flex: 1 1 auto; @apply px-3; }
         .sf-atc .sf-atc-label {
             position: static;
