@@ -21,6 +21,13 @@ return [
         'full' => env('STOREFRONT_LOGO_FULL', '/brand/radop-logo-blue.svg'),
         // Тот же локап в белом — для тёмных подложек (<x-sf-logo tone="light">).
         'full_light' => env('STOREFRONT_LOGO_FULL_LIGHT', '/brand/radop-logo-white.svg'),
+        /*
+         * Квадратный знак: иконка вкладки, плитка на телефоне и поле `logo`
+         * в микроразметке организации. Локап 4,4:1 туда не годится — Google
+         * ждёт картинку, читаемую в маленьком квадрате, поэтому это отдельный
+         * файл, а не обрезанный логотип.
+         */
+        'square' => env('STOREFRONT_LOGO_SQUARE', '/v1/frontend/assets/images/logo-512.png'),
         'wordmark' => 'RADOP',
         'tagline' => [
             'ro' => 'rechizite de birou și școlare',

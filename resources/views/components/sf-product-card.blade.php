@@ -155,7 +155,9 @@
                     class="after:absolute after:inset-0 after:content-['']"
                     title="{{ $card['title'] }}"
                 >
-                    {{ Str::limit($card['title'], 80) }}
+                    {{-- Обрезку по длине оставляем страховкой от совсем длинных
+                         названий: три строки отмеряет сама вёрстка. --}}
+                    {{ Str::limit($card['title'], 120) }}
                 </a>
             </h3>
 

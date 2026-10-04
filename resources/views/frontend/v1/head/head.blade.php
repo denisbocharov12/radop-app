@@ -21,7 +21,11 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="google-site-verification" content="3My3vefe3bpPRhRn3Uc-1dyuMkVifBzg3frP8RzcBoM" />
+    {{-- Иконка вкладки и плитка на телефоне: тот же квадратный знак, что и в
+         микроразметке, задаётся в config/storefront.php. --}}
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" href="{{ asset(config('storefront.logo.square')) }}" sizes="512x512">
+    <link rel="apple-touch-icon" href="{{ asset(config('storefront.logo.square')) }}">
 
     {{-- Four weights instead of the previous eighteen (ital × 9 weights): the
          design system only ever asks for 400/500/600/700. --}}
