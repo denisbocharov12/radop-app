@@ -15,8 +15,10 @@
   "name": "RĂDOP-OPT SRL",
   "alternateName": "Radop",
   "url": "{{ url('/') }}",
-  "logo": "{{ url('v1/frontend/assets/images/logo-512.png') }}",
-  "image": "{{ url('v1/frontend/assets/images/logo-512.png') }}",
+  {{-- Квадратный знак задаётся в config/storefront.php: Google ждёт здесь
+       картинку, читаемую в маленьком квадрате, а не широкий локап. --}}
+  "logo": "{{ url(config('storefront.logo.square')) }}",
+  "image": "{{ url(config('storefront.logo.square')) }}",
   "description": @json($orgDescription),
   "telephone": ["+37322782112", "+37379782112"],
   "email": "support@radop.md",
