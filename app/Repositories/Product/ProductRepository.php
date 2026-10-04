@@ -905,6 +905,19 @@ final class ProductRepository
     }
 
     /**
+     * ТЗ 69: в подсказках поиска показываем сами товары — с фото, названием и
+     * ценой. Берём их той же выборкой, что и текстовые подсказки, но сразу со
+     * связями, которые нужны карточке.
+     */
+    public function getSuggestionProducts(string $value, int $limit = 5): Collection
+    {
+        return $this->buildSearchQuery($value)
+            ->with(['brand:id,onec_id,title', 'media', 'packages', 'values', 'data'])
+            ->take($limit)
+            ->get();
+    }
+
+    /**
      * Related products for a narrow search result: first by the found products'
      * categories, then topped up by their brands. Found products are excluded.
      *

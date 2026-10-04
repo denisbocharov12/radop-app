@@ -41,6 +41,7 @@
                 ['Меню',            'admin.menus.index',         'list-tree', 'admin.menus.*'],
                 ['Шапка-меню',      'admin.header-menus.index',  'panel-top', 'admin.header-menus.*'],
                 ['SEO',             'seo_meta.index',            'search',    'seo_meta.*'],
+                ['Популярные запросы', 'search-popular-critery.index', 'trending-up', 'search-popular-critery.*'],
                 ['Языки',           'languages.index',           'languages', 'languages.*'],
                 ['Экспорт страниц', 'active-pages-export.index', 'file-down', 'active-pages-export.*'],
             ]],

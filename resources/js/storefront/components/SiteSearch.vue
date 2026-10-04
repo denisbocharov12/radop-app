@@ -23,7 +23,11 @@ const props = defineProps({
 
 const query = ref(props.value);
 const suggestions = ref([]);
+/** ТЗ 69: сами товары — с фото, названием и ценой. */
+const products = ref([]);
 const history = ref([]);
+/** ТЗ 68: популярные запросы — их видно, пока поле пустое. */
+const popular = ref([]);
 const open = ref(false);
 const busy = ref(false);
 const cursor = ref(-1);
@@ -36,6 +40,10 @@ let debounce = null;
 let controller = null;
 
 const showingHistory = computed(() => query.value.trim().length < 2);
+/* Популярное показываем только при пустом поле и не дублируем историю. */
+const popularVisible = computed(() =>
+    showingHistory.value ? popular.value.filter((term) => !history.value.includes(term)) : [],
+);
 const items = computed(() => (showingHistory.value ? history.value : suggestions.value));
 
 const labelOf = (item) => (typeof item === 'string' ? item : item.text ?? item.query ?? '');
@@ -44,8 +52,10 @@ async function loadHistory() {
     try {
         const body = await getJson(route('searchHistory', '/search/history'));
         history.value = (body?.data ?? []).map(labelOf).filter(Boolean);
+        popular.value = (body?.popular ?? []).map(labelOf).filter(Boolean);
     } catch {
         history.value = [];
+        popular.value = [];
     }
 }
 
@@ -63,8 +73,12 @@ async function loadSuggestions(term) {
         });
         const body = await res.json();
         suggestions.value = (body?.data ?? []).slice(0, 8);
+        products.value = body?.products ?? [];
     } catch (error) {
-        if (error.name !== 'AbortError') suggestions.value = [];
+        if (error.name !== 'AbortError') {
+            suggestions.value = [];
+            products.value = [];
+        }
     } finally {
         busy.value = false;
     }
@@ -76,14 +90,19 @@ watch(query, (term) => {
     const trimmed = term.trim();
     if (trimmed.length < 2) {
         suggestions.value = [];
+        products.value = [];
         return;
     }
     debounce = setTimeout(() => loadSuggestions(trimmed), 220);
 });
 
+let listsLoaded = false;
+
 function focus() {
     open.value = true;
-    if (!history.value.length) loadHistory();
+    if (listsLoaded) return;
+    listsLoaded = true;
+    loadHistory();
 }
 
 function pick(item) {
@@ -204,9 +223,28 @@ onBeforeUnmount(() => {
             leave-to-class="opacity-0"
         >
             <div
-                v-if="open && (items.length || busy || !showingHistory)"
+                v-if="open && (items.length || popularVisible.length || busy || !showingHistory)"
                 class="absolute inset-x-0 top-full z-menu mt-2 overflow-hidden rounded-lg border border-ink-200 bg-white shadow-pop"
             >
+                <!-- ТЗ 68: популярные запросы — пока поле пустое, это самый
+                     короткий путь к тому, что ищут чаще всего. -->
+                <div v-if="popularVisible.length" class="border-b border-ink-100 px-3 py-2">
+                    <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                        {{ $sf.t.popularSearches }}
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button
+                            v-for="term in popularVisible"
+                            :key="term"
+                            type="button"
+                            class="rounded-md border border-ink-200 px-2 py-1 text-xs text-ink-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
+                            @click="pick(term)"
+                        >
+                            {{ term }}
+                        </button>
+                    </div>
+                </div>
+
                 <div
                     v-if="showingHistory && history.length"
                     class="flex items-center justify-between border-b border-ink-100 px-3 py-2"
@@ -222,6 +260,43 @@ onBeforeUnmount(() => {
                         <SfIcon name="trash" :size="14" />
                         {{ $sf.t.clearAll }}
                     </button>
+                </div>
+
+                <!-- ТЗ 69: сами товары — фото, название, код и цена. Человек чаще
+                     ищет товар, а не слово, поэтому они стоят первыми. -->
+                <div v-if="products.length" class="border-b border-ink-100">
+                    <p class="px-3 pt-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                        {{ $sf.t.suggestedProducts }}
+                    </p>
+                    <ul class="py-1">
+                        <li v-for="product in products" :key="product.id">
+                            <a :href="product.url" class="flex items-center gap-3 px-3 py-2 hover:bg-ink-50">
+                                <img
+                                    v-if="product.image"
+                                    :src="product.image"
+                                    :alt="product.title"
+                                    class="h-10 w-10 shrink-0 rounded border border-ink-100 bg-white object-contain"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                                <span
+                                    v-else
+                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-ink-100 text-ink-300"
+                                >
+                                    <SfIcon name="box" :size="18" />
+                                </span>
+                                <span class="min-w-0 flex-1">
+                                    <span class="line-clamp-2 text-sm text-ink-800">{{ product.title }}</span>
+                                    <span class="mt-0.5 block text-xs text-ink-500">
+                                        {{ $sf.t.code }}: {{ product.code }}
+                                    </span>
+                                </span>
+                                <span class="shrink-0 whitespace-nowrap text-sm font-semibold text-ink-900">
+                                    {{ product.price }} {{ $sf.t.currency }}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
                 <ul class="max-h-80 overflow-y-auto py-1">
