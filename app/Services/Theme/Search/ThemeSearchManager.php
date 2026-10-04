@@ -8,15 +8,54 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepository;
+use App\Services\Storefront\StorefrontProductPresenter;
 use Illuminate\Support\Collection;
 
 final class ThemeSearchManager
 {
     private const MAX_SUGGESTIONS = 10;
 
+    /** Сколько товаров показываем в подсказках поиска (ТЗ 69). */
+    private const MAX_SUGGESTION_PRODUCTS = 5;
+
     public function __construct(
-        private readonly ProductRepository $productRepository
+        private readonly ProductRepository $productRepository,
+        private readonly StorefrontProductPresenter $presenter,
     ) {
+    }
+
+    /**
+     * ТЗ 69: товары для выпадающих подсказок — фото, название, код и цена.
+     * Фото берём из уменьшенной копии: в списке оно размером с ноготь.
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function getSuggestionProducts(string $query): Collection
+    {
+        $query = trim($query);
+
+        if (mb_strlen($query) < 2) {
+            return collect();
+        }
+
+        return $this->productRepository
+            ->getSuggestionProducts($query, self::MAX_SUGGESTION_PRODUCTS)
+            ->map(function (Product $product): array {
+                $card = $this->presenter->present($product);
+
+                return [
+                    'id' => $card['id'],
+                    'title' => $card['title'],
+                    'url' => $card['url'],
+                    'code' => $card['code'],
+                    'image' => $this->presenter->images($product, 'thumb')[0] ?? null,
+                    'price' => number_format($card['displayPrice'], 2, ',', ' '),
+                    'oldPrice' => $card['oldPrice'] !== null
+                        ? number_format($card['oldPrice'], 2, ',', ' ')
+                        : null,
+                ];
+            })
+            ->values();
     }
 
     public function index(ThemeSearchData $themeSearchData)

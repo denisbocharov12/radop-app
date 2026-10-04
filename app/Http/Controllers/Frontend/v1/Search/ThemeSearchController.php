@@ -9,6 +9,7 @@ use App\Http\Mappers\Theme\ThemeSearchDataMapper;
 use App\Http\Requests\Theme\Search\ThemeSearchRequest;
 use App\Repositories\SeoMetaRepository;
 use App\Services\Analytics\Ga4EcommercePayloadBuilder;
+use App\Services\Search\SearchPopularCriteryManager;
 use App\Services\Theme\Search\ThemeSearchManager;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Traits\SEOTools;
@@ -28,6 +29,7 @@ final class ThemeSearchController extends Controller
         private readonly SeoMetaRepository $seoMetaRepository,
         private readonly PageTypes $pageTypes,
         private readonly Ga4EcommercePayloadBuilder $ga4EcommercePayloadBuilder,
+        private readonly SearchPopularCriteryManager $searchPopularCriteryManager,
     )
     {
     }
@@ -50,6 +52,8 @@ final class ThemeSearchController extends Controller
         $searchQuery = $request->get('search');
         if (!empty($searchQuery)) {
             $this->saveSearchQuery($searchQuery);
+            // ТЗ 68: копим популярные запросы — только те, что что-то нашли.
+            $this->searchPopularCriteryManager->record($searchQuery, app()->getLocale(), $foundTotal);
         }
 
         $seo = $this->seoMetaRepository->getStatic($this->pageTypes->getSearchType(), app()->getLocale());
@@ -126,7 +130,10 @@ final class ThemeSearchController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => array_values($history)
+            'data' => array_values($history),
+            // ТЗ 68: популярное отдаём вместе с историей — поле пустое, список
+            // нужен сразу, и лишний запрос здесь ни к чему.
+            'popular' => $this->searchPopularCriteryManager->top(app()->getLocale())->all(),
         ]);
     }
 
@@ -150,7 +157,9 @@ final class ThemeSearchController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $suggestions->values()->toArray()
+            'data' => $suggestions->values()->toArray(),
+            // ТЗ 69: рядом с текстовыми подсказками — сами товары с фото.
+            'products' => $this->themeSearchManager->getSuggestionProducts($query)->toArray(),
         ]);
     }
 

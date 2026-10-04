@@ -119,6 +119,9 @@
                 'minOrder' => __('theme.package-min-to-order'),
                 'unit' => __('theme.min_order_unit'),
                 'lowStock' => __('theme.sf-low-stock'),
+                'currency' => __('theme.MDL'),
+                'popularSearches' => __('theme.sf-popular-searches'),
+                'suggestedProducts' => __('theme.sf-suggested-products'),
             ],
         ];
     @endphp
