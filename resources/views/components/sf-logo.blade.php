@@ -1,6 +1,8 @@
 @props([
     /** `header` scales for the sticky bar; `footer` is larger and always shows the tagline. */
     'variant' => 'header',
+    /** `light` — белый локап для тёмной подложки; по умолчанию цветной. */
+    'tone' => 'dark',
 ])
 
 @php
@@ -12,6 +14,9 @@
      * not a template hunt.
      */
     $logo = config('storefront.logo');
+    $full = $tone === 'light'
+        ? ($logo['full_light'] ?? $logo['full'] ?? null)
+        : ($logo['full'] ?? null);
     // ТЗ 7: в шапке пока без подзаголовка, в подвале оставляем.
     $tagline = $variant === 'footer'
         ? ($logo['tagline'][app()->getLocale()] ?? $logo['tagline']['ro'] ?? null)
@@ -20,11 +25,11 @@
 @endphp
 
 <span {{ $attributes->class(['inline-flex shrink-0 items-center', 'gap-2' => ! $isFooter, 'gap-3' => $isFooter]) }}>
-    @if(! empty($logo['full']))
+    @if(! empty($full))
         {{-- Готовый локап: знак и надпись уже внутри картинки. Подпись в
              подвале выводим рядом, иначе она пропадает вместе с версткой. --}}
         <img
-            src="{{ asset($logo['full']) }}"
+            src="{{ asset($full) }}"
             alt="Radop"
             @class(['w-auto', 'h-10 lg:h-12' => ! $isFooter, 'h-14' => $isFooter])
         />

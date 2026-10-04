@@ -11,12 +11,16 @@ return [
      *
      *  - replace the mark only: point `mark` at a new square-ish SVG;
      *  - use a finished horizontal lockup: set `full` to its path — it then
-     *    replaces the mark + wordmark pair entirely;
+     *    replaces the mark + wordmark pair entirely, and `full_light` is its
+     *    white twin for dark surfaces;
      *  - hide the typeset wordmark: set `wordmark` to null.
      */
     'logo' => [
         'mark' => '/v1/frontend/assets/images/logo.svg',
-        'full' => env('STOREFRONT_LOGO_FULL'),
+        // Оригинальный локап: знак и надпись уже внутри картинки.
+        'full' => env('STOREFRONT_LOGO_FULL', '/brand/radop-logo-blue.svg'),
+        // Тот же локап в белом — для тёмных подложек (<x-sf-logo tone="light">).
+        'full_light' => env('STOREFRONT_LOGO_FULL_LIGHT', '/brand/radop-logo-white.svg'),
         'wordmark' => 'RADOP',
         'tagline' => [
             'ro' => 'rechizite de birou și școlare',
