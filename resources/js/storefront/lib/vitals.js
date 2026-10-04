@@ -164,6 +164,52 @@ function copyButtons() {
     });
 }
 
+/**
+ * ТЗ 70: фото в карточке переключаются по наведению на точки.
+ *
+ * Слушаем на документе, а не на каждой карточке: сетку товаров перерисовывает
+ * живой фильтр, и привязки к элементам после этого пропали бы. Первый снимок
+ * карточки запоминаем, чтобы вернуть его, когда указатель уходит.
+ */
+function cardPhotoDots() {
+    const mediaOf = (dot) => dot.closest('.sf-product-media');
+
+    const show = (media, src, dot) => {
+        const image = media?.querySelector('[data-sf-card-image]');
+        if (!image || !src || image.src === src) return;
+
+        if (!image.dataset.sfFirst) image.dataset.sfFirst = image.src;
+        image.src = src;
+
+        media.querySelectorAll('.sf-product-dot').forEach((el) => el.classList.toggle('is-active', el === dot));
+    };
+
+    document.addEventListener(
+        'pointerover',
+        (event) => {
+            const dot = event.target.closest('.sf-product-dot');
+            if (dot) {
+                show(mediaOf(dot), dot.dataset.src, dot);
+                return;
+            }
+
+            // Ушли с карточки — возвращаем первый снимок.
+            const media = event.target.closest('.sf-product-media');
+            if (media) return;
+
+            document.querySelectorAll('[data-sf-card-image][data-sf-first]').forEach((image) => {
+                image.src = image.dataset.sfFirst;
+                delete image.dataset.sfFirst;
+                image
+                    .closest('.sf-product-media')
+                    ?.querySelectorAll('.sf-product-dot')
+                    .forEach((el, i) => el.classList.toggle('is-active', i === 0));
+            });
+        },
+        { passive: true },
+    );
+}
+
 function toast(type, message) {
     if (!message) return;
     if (window.toastr?.[type]) window.toastr[type](message);
@@ -551,6 +597,7 @@ function boot() {
     accordions();
     drawers();
     copyButtons();
+    cardPhotoDots();
     exportLinks();
     catalogView();
     catalogLiveFilter();

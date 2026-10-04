@@ -80,6 +80,7 @@
                     decoding="async"
                     width="240"
                     height="240"
+                    data-sf-card-image
                 />
             @else
                 <span class="flex h-full w-full items-center justify-center text-ink-300">
@@ -87,6 +88,22 @@
                 </span>
             @endif
         </a>
+
+        {{-- ТЗ 70: точки под снимком переключают фото прямо в карточке — наводим
+             на точку, снимок меняется; высота карточки при этом не меняется.
+             Точки появляются только там, где есть наведение (см. css). --}}
+        @if(count($card['gallery'] ?? []) > 1)
+            <div class="sf-product-dots" data-sf-card-dots>
+                @foreach($card['gallery'] as $i => $src)
+                    <button
+                        type="button"
+                        @class(['sf-product-dot', 'is-active' => $i === 0])
+                        data-src="{{ $src }}"
+                        aria-label="{{ __('theme.sf-photo-n', ['n' => $i + 1]) }}"
+                    ></button>
+                @endforeach
+            </div>
+        @endif
 
         {{-- Quick view: revealed on hover/focus on pointer devices; on touch
              the card's own link is the faster path, so it stays hidden. --}}
@@ -130,8 +147,14 @@
                 @endif
             </div>
 
+            {{-- ТЗ 16: название в карточке обрезано, полное показываем подсказкой
+                 при наведении — высота карточки от этого не меняется. --}}
             <h3 class="sf-product-title">
-                <a href="{{ $card['url'] }}" class="after:absolute after:inset-0 after:content-['']">
+                <a
+                    href="{{ $card['url'] }}"
+                    class="after:absolute after:inset-0 after:content-['']"
+                    title="{{ $card['title'] }}"
+                >
                     {{ Str::limit($card['title'], 80) }}
                 </a>
             </h3>
