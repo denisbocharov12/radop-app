@@ -31,7 +31,9 @@
         <img
             src="{{ asset($full) }}"
             alt="Radop"
-            @class(['w-auto', 'h-10 lg:h-12' => ! $isFooter, 'h-14' => $isFooter])
+            {{-- Локап широкий (4,4:1), поэтому по высоте он ниже кнопки каталога:
+                 иначе надпись уезжает на половину строки поиска. --}}
+            @class(['w-auto', 'h-8 lg:h-9' => ! $isFooter, 'h-10' => $isFooter])
         />
 
         @if($tagline)
