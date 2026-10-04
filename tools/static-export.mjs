@@ -16,6 +16,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 
 const args = Object.fromEntries(
     process.argv.slice(2).map((item) => {
@@ -43,6 +44,7 @@ const urlsArgs = (args.urls || '').split(' ').filter(Boolean)
 */
 const assetDirs = [
     'build',
+    'brand',
     'fonts',
     'images',
     'v1/frontend/assets/js',
@@ -59,7 +61,7 @@ const assetFiles = ['favicon.ico', 'default.png']
 | живёт в подкаталоге, поэтому /build/app.css превращается в
 | /radop-app/build/app.css.
 */
-const rootPrefixes = ['/build/', '/v1/', '/fonts/', '/images/', '/favicon.ico', '/default.png']
+const rootPrefixes = ['/build/', '/brand/', '/v1/', '/fonts/', '/images/', '/favicon.ico', '/default.png']
 
 /** Пути, которые отдаёт приложение, а не репозиторий: фото товаров и баннеров. */
 const remotePrefixes = ['/media/', '/storage/', '/cert/']
@@ -197,13 +199,121 @@ async function rewriteTree(dir) {
     }
 }
 
-/** Витрина на Pages только показывает: корзина и формы без сервера не работают. */
+/*
+| Витрина на Pages только показывает: корзина и формы без сервера не работают.
+|
+| Кнопку выгрузки каталога в Excel убираем совсем: файл собирает сервер, а на
+| статике ссылка вела бы на 404 — это единственное место, где такие ссылки
+| оставались.
+*/
 function withStaticNotice(html) {
     const notice = `<script>window.__radopStatic = true;</script>`
 
-    return html.replace('</head>', `${notice}</head>`)
+    return html
+        .replace(/<a\b[^>]*\bdata-sf-export\b[\s\S]*?<\/a>/g, '')
+        // Скрипт согласия на cookie отдаёт сервер: на статике браузер получал
+        // бы вместо него страницу 404 и ругался на разметку в консоли.
+        .replace(/<script\b[^>]*src="[^"]*\/cookie-consent\/[^"]*"[^>]*><\/script>/g, '')
+        .replace('</head>', `${notice}</head>`)
 }
 
+/*
+| Повторяющиеся встроенные скрипты — в общий файл.
+|
+| Один и тот же код шапки, аналитики и подсказок повторяется на каждой
+| странице и занимает около 100 КБ. На тысяче страниц это больше сотни
+| мегабайт выгрузки, поэтому одинаковые блоки выносим в отдельные файлы и
+| подключаем ссылкой: порядок выполнения тот же, зато браузер берёт их из
+| кеша.
+*/
+async function hoistInlineScripts() {
+    const inlineScript = /<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g
+    const minLength = 2000
+    const minPages = 10
+
+    const pages = []
+    const counts = new Map()
+
+    async function walk(dir) {
+        const entries = await fs.readdir(dir, { withFileTypes: true })
+
+        for (const entry of entries) {
+            const target = path.join(dir, entry.name)
+
+            if (entry.isDirectory()) {
+                await walk(target)
+            } else if (entry.name.endsWith('.html')) {
+                pages.push(target)
+            }
+        }
+    }
+
+    await walk(outDir)
+
+    // Первый проход: считаем, сколько страниц делят каждый блок
+    for (const page of pages) {
+        const html = await fs.readFile(page, 'utf8')
+        const seen = new Set()
+
+        for (const match of html.matchAll(inlineScript)) {
+            const body = match[2]
+
+            if (body.length < minLength) {
+                continue
+            }
+
+            const key = hashOf(body)
+
+            if (seen.has(key)) {
+                continue
+            }
+
+            seen.add(key)
+            counts.set(key, (counts.get(key) ?? 0) + 1)
+        }
+    }
+
+    const shared = new Map()
+
+    // Второй проход: заменяем общие блоки ссылкой на файл
+    let saved = 0
+
+    for (const page of pages) {
+        const html = await fs.readFile(page, 'utf8')
+        let changed = false
+
+        const next = html.replace(inlineScript, (full, attrs, body) => {
+            const key = hashOf(body)
+
+            if (body.length < minLength || (counts.get(key) ?? 0) < minPages) {
+                return full
+            }
+
+            if (! shared.has(key)) {
+                shared.set(key, body)
+            }
+
+            changed = true
+            saved += full.length
+
+            return `<script${attrs} src="${publicRoot}/assets/inline-${key}.js"></script>`
+        })
+
+        if (changed) {
+            await fs.writeFile(page, next)
+        }
+    }
+
+    for (const [key, body] of shared) {
+        await writeFile(path.join('assets', `inline-${key}.js`), body)
+    }
+
+    console.log(`  вынесено блоков: ${shared.size}, из страниц убрано ~${Math.round(saved / 1048576)} МБ`)
+}
+
+function hashOf(text) {
+    return createHash('sha1').update(text).digest('hex').slice(0, 12)
+}
 async function main() {
     try {
         await fs.access(path.resolve('public/hot'))
@@ -263,6 +373,9 @@ async function main() {
 
     // Иначе Pages прогоняет выгрузку через Jekyll и режет служебные файлы
     await writeFile('.nojekyll', '')
+
+    console.log('Вынос повторяющихся скриптов…')
+    await hoistInlineScripts()
 
     console.log('Копирование файлов…')
     await copyAssets()

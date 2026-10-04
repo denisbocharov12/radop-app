@@ -22,6 +22,7 @@ use Illuminate\Console\Command;
 final class ListPublicUrlsCommand extends Command
 {
     protected $signature = 'site:urls
+        {--all : Выгрузить всё, что есть в базе: каждый раздел, товар и бренд}
         {--products-per-category=4 : Сколько товаров брать из каждого раздела}
         {--max-products=600 : Предел по товарам на всю выгрузку}
         {--max-categories=120 : Предел по разделам}
@@ -84,6 +85,12 @@ final class ListPublicUrlsCommand extends Command
             '/privacy-policy',
             '/cookie',
             '/return-rules',
+            // Служебные страницы тоже выгружаем: на них ведут шапка и карточки,
+            // а без файла статика отдаёт 404.
+            '/cart',
+            '/wishlist',
+            '/login',
+            '/registration',
         ];
     }
 
@@ -92,10 +99,17 @@ final class ListPublicUrlsCommand extends Command
      */
     private function categories()
     {
-        return Category::query()
+        $query = Category::query()
             ->where('status', true)
             ->whereNotNull('onec_id')
-            ->withCount('products')
+            ->withCount('products');
+
+        if ($this->option('all')) {
+            // Пустые разделы тоже нужны: на них ведут меню и хлебные крошки.
+            return $query->orderBy('onec_id')->get();
+        }
+
+        return $query
             ->having('products_count', '>', 0)
             ->orderByDesc('products_count')
             ->take((int) $this->option('max-categories'))
@@ -107,10 +121,11 @@ final class ListPublicUrlsCommand extends Command
      */
     private function brands()
     {
-        return Brand::query()
-            ->whereNotNull('onec_id')
-            ->take((int) $this->option('max-brands'))
-            ->get();
+        $query = Brand::query()->whereNotNull('onec_id');
+
+        return $this->option('all')
+            ? $query->orderBy('onec_id')->get()
+            : $query->take((int) $this->option('max-brands'))->get();
     }
 
     /**
@@ -122,6 +137,17 @@ final class ListPublicUrlsCommand extends Command
      */
     private function products($categories): array
     {
+        if ($this->option('all')) {
+            return Product::query()
+                ->where('status', true)
+                ->where('site_status', true)
+                ->whereNotNull('slug')
+                ->where('slug', '!=', '')
+                ->orderBy('id')
+                ->pluck('slug')
+                ->all();
+        }
+
         $perCategory = max(1, (int) $this->option('products-per-category'));
         $max = max(1, (int) $this->option('max-products'));
 

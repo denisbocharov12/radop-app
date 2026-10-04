@@ -26,12 +26,10 @@ $out = (string) ($options['out'] ?? 'database/pages/dataset.sql.gz');
 
 /** Таблицы, которые уезжают целиком: без них витрина не соберётся. */
 $whole = [
-    'categories',
     'brands',
     'attributes',
     'attribute_category',
     'menus',
-    'menu_items',
     'header_menus',
     'header_menu_items',
     'banners',
@@ -65,6 +63,70 @@ $productCodes = DB::table('products as p')
     ->all();
 
 echo 'товаров в срезе: ', count($productCodes), "\n";
+
+/*
+ * Разделы берём только те, где есть выбранные товары, и достраиваем цепочку
+ * родителей: иначе меню и хлебные крошки ведут в пустоту.
+ */
+$categoryCodes = DB::table('product_categories')
+    ->whereIn('product_id', $productCodes)
+    ->distinct()
+    ->pluck('category_id')
+    ->filter()
+    ->all();
+
+$kept = array_flip($categoryCodes);
+$queue = $categoryCodes;
+
+while ($queue !== []) {
+    $parents = DB::table('categories')
+        ->whereIn('onec_id', $queue)
+        ->whereNotNull('parent_id')
+        ->pluck('parent_id')
+        ->unique()
+        ->all();
+
+    $queue = [];
+
+    foreach ($parents as $parent) {
+        if ($parent !== null && ! isset($kept[$parent])) {
+            $kept[$parent] = true;
+            $queue[] = $parent;
+        }
+    }
+}
+
+$categoryCodes = array_keys($kept);
+
+echo 'разделов в срезе: ', count($categoryCodes), "\n";
+
+/*
+ * Пункты меню: оставляем ведущие на сохранённые разделы и те, что вообще не
+ * про разделы (ссылки, тексты). Пункт без родителя в срезе тоже убираем.
+ */
+$menuItems = DB::table('menu_items')->get();
+$keptMenu = [];
+
+foreach ($menuItems as $item) {
+    if ($item->type === 'category' && ! isset($kept[$item->category_id])) {
+        continue;
+    }
+
+    $keptMenu[$item->id] = $item;
+}
+
+do {
+    $removed = 0;
+
+    foreach ($keptMenu as $id => $item) {
+        if ($item->parent_id !== null && ! isset($keptMenu[$item->parent_id])) {
+            unset($keptMenu[$id]);
+            $removed++;
+        }
+    }
+} while ($removed > 0);
+
+echo 'пунктов меню в срезе: ', count($keptMenu), ' из ', count($menuItems), "\n";
 
 $productIds = DB::table('products')->whereIn('onec_id', $productCodes)->pluck('id')->all();
 
@@ -146,6 +208,9 @@ $dumpRows = static function (string $table, callable $query) use ($write): int {
 foreach ($whole as $table) {
     $dumpRows($table, static fn () => DB::table($table));
 }
+
+$related['categories'] = ['onec_id', $categoryCodes];
+$related['menu_items'] = ['id', array_keys($keptMenu)];
 
 foreach ($related as $table => [$column, $values]) {
     $dumpRows($table, static fn () => DB::table($table)->whereIn($column, $values));

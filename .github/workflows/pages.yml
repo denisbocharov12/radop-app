@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       products:
-        description: 'Сколько карточек товаров выгружать'
+        description: 'Не используется: состав демонстрации задаётся срезом базы'
         default: '400'
         required: false
 
@@ -123,7 +123,7 @@ jobs:
             --site="${SITE_ORIGIN}" \
             --media="${MEDIA_ORIGIN}" \
             --out=dist \
-            --urls="--max-products=${MAX_PRODUCTS} --products-per-category=4 --max-categories=120 --max-brands=24"
+            --urls="--all"
 
       # Готовую статику кладём в ветку gh-pages: именно её отдаёт Pages
       # в режиме «Deploy from a branch». Историю не копим — каждый выкат
