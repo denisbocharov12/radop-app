@@ -678,7 +678,6 @@
         content: '';
     }
 
-    .sf-product-dot:hover::after,
     .sf-product-dot.is-active::after {
         @apply bg-brand-600;
     }
@@ -686,10 +685,7 @@
     @media (hover: hover) and (pointer: fine) {
         .sf-product-dots { display: flex; }
 
-        .sf-product:hover .sf-product-dots {
-            @apply pointer-events-auto;
-            opacity: 1;
-        }
+        .sf-product:hover .sf-product-dots { opacity: 1; }
     }
 
     /* ---------------------------------------------------------- card cart row */
