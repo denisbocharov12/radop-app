@@ -15,12 +15,14 @@
      * Callers pass either arrays or Eloquent models; normalise once here rather
      * than re-checking the shape at every use site as the old partials did.
      * Category models carry no `url`, so derive it from `onec_id` — otherwise
-     * the middle of a product's trail renders as dead text.
+     * the middle of a product's trail renders as dead text. Only categories:
+     * other models have their own numbering, and a link built from their
+     * `onec_id` would point at a foreign section or at nothing at all.
      */
     foreach ($items as $item) {
         $url = data_get($item, 'url');
 
-        if (! $url && ($onecId = data_get($item, 'onec_id'))) {
+        if (! $url && $item instanceof \App\Models\Category && ($onecId = $item->onec_id)) {
             $url = route('theme.category.index', $onecId);
         }
 

@@ -9,18 +9,18 @@ use Illuminate\Support\Collection;
 
 final class ThemeBrandManager
 {
-    public function getBreadcrumbsForBrand(Brand $brand): ?Collection
+    /**
+     * Хлебные крошки страницы бренда: каталог брендов, а название самого бренда
+     * страница добавляет последним пунктом.
+     *
+     * Сам бренд в список не кладём: крошки получают ссылку из `onec_id`, и у
+     * бренда она ведёт на раздел с тем же номером — нумерация у разделов своя,
+     * так что ссылка либо не туда, либо в никуда.
+     */
+    public function getBreadcrumbsForBrand(Brand $brand): Collection
     {
-        $breadcrumbsCollection = collect();
-        $breadcrumbsCollection->add($brand);
-
-        $parentCategory = $brand->parent;
-
-        while ($parentCategory !== null) {
-            $breadcrumbsCollection->add($parentCategory);
-            $parentCategory = $parentCategory->parent;
-        }
-
-        return $breadcrumbsCollection->reverse();
+        return collect([
+            ['url' => route('theme.brand.catalog'), 'name' => __('theme.brands-catalog')],
+        ]);
     }
 }

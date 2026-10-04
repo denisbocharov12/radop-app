@@ -23,7 +23,9 @@
         $name = (string) ($item->name ?? $item->title ?? '');
         if (isset($item->slug) && $item->slug !== '') {
             $url = route('theme.product.index', $item->slug);
-        } elseif (isset($item->onec_id)) {
+        } elseif ($item instanceof \App\Models\Category && isset($item->onec_id)) {
+            // Только разделы: у остальных моделей своя нумерация, и ссылка на
+            // раздел с их кодом ведёт не туда.
             $url = route('theme.category.index', $item->onec_id);
         } else {
             $url = '';

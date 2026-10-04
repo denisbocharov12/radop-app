@@ -9,7 +9,10 @@
     @endphp
 
     <x-sf-breadcrumbs :items="collect($breadcrumbs ?? [])->push(['url' => null, 'name' => $existedBrand->title])" />
-    @include('frontend.v1.components.breadcrumb-schema', ['items' => $breadcrumbs])
+    @include('frontend.v1.components.breadcrumb-schema', [
+        'items' => $breadcrumbs,
+        'leaf' => ['name' => $existedBrand->title, 'url' => route('theme.brand.index', $existedBrand->onec_id)],
+    ])
 
     <div class="sf-container">
         <div class="mt-2 flex items-center gap-4">
