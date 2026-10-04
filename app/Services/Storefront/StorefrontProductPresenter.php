@@ -23,6 +23,9 @@ final class StorefrontProductPresenter
     /** Stock at or below which the card warns that few units are left. */
     private const LOW_STOCK = 10;
 
+    /** Сколько снимков показывает карточка точками: больше пяти не читается. */
+    private const CARD_GALLERY = 5;
+
     /**
      * Card-level data: everything a listing, quick view or basket line needs.
      *
@@ -56,6 +59,13 @@ final class StorefrontProductPresenter
 
         $stock = (int) $product->stock;
 
+        /*
+         * ТЗ 70: в мини-окне карточки фото переключаются по точкам, поэтому
+         * карточке нужен не один снимок, а короткая галерея. Снимки уже
+         * загружены вместе с товаром, лишних запросов это не добавляет.
+         */
+        $images = $this->images($product);
+
         return [
             'id' => (int) $product->id,
             'code' => (string) $product->onec_id,
@@ -63,7 +73,8 @@ final class StorefrontProductPresenter
             'barcode' => $product->shtrih_code ?: null,
             'title' => $this->title($product),
             'url' => route('theme.product.index', $product->slug),
-            'image' => $this->images($product)[0] ?? null,
+            'image' => $images[0] ?? null,
+            'gallery' => array_slice($images, 0, self::CARD_GALLERY),
             'unitPrice' => $unitPrice,
             // Shown price covers the minimum order quantity, as before.
             'displayPrice' => $unitPrice * $multiplier,
@@ -149,7 +160,7 @@ final class StorefrontProductPresenter
      *
      * @return list<string>
      */
-    public function images(Product $product): array
+    public function images(Product $product, string $conversion = ''): array
     {
         if ($product->hasMedia('products')) {
             // Media reached through $product->media does not know its owner, and
@@ -158,7 +169,11 @@ final class StorefrontProductPresenter
             // page). Hand the already-loaded product to each media item.
             return $product->getMedia('products')
                 ->each(static fn ($file) => $file->setRelation('model', $product))
-                ->map(static fn ($file) => $file->getUrl())
+                // Уменьшенная копия делается в очереди, поэтому она есть не у
+                // каждого снимка: когда её нет, отдаём оригинал.
+                ->map(static fn ($file) => $conversion !== '' && $file->hasGeneratedConversion($conversion)
+                    ? $file->getUrl($conversion)
+                    : $file->getUrl())
                 ->values()
                 ->all();
         }

@@ -661,6 +661,37 @@
         }
     }
 
+    /* ТЗ 70: точки переключения фото в мини-окне карточки. Живут над плашкой
+       быстрого просмотра и появляются там же, где есть наведение. */
+    .sf-product-dots {
+        @apply pointer-events-none absolute inset-x-3 bottom-12 z-10 hidden items-center justify-center gap-1
+               transition-opacity duration-150 ease-sf;
+        opacity: 0;
+    }
+
+    .sf-product-dot {
+        @apply flex h-4 w-4 items-center justify-center rounded-full;
+    }
+
+    .sf-product-dot::after {
+        @apply block h-1.5 w-1.5 rounded-full bg-ink-300 transition-colors duration-150;
+        content: '';
+    }
+
+    .sf-product-dot:hover::after,
+    .sf-product-dot.is-active::after {
+        @apply bg-brand-600;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .sf-product-dots { display: flex; }
+
+        .sf-product:hover .sf-product-dots {
+            @apply pointer-events-auto;
+            opacity: 1;
+        }
+    }
+
     /* ---------------------------------------------------------- card cart row */
     .sf-product-cart {
         container-type: inline-size;
@@ -812,6 +843,11 @@
 
     [data-sf-view="list"] .sf-product-quick {
         display: none;
+    }
+
+    /* В списке плашки быстрого просмотра нет — точки опускаем к низу снимка. */
+    [data-sf-view="list"] .sf-product-dots {
+        @apply bottom-2;
     }
 
 }
