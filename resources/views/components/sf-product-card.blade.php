@@ -89,18 +89,14 @@
             @endif
         </a>
 
-        {{-- ТЗ 70: точки под снимком переключают фото прямо в карточке — наводим
-             на точку, снимок меняется; высота карточки при этом не меняется.
-             Точки появляются только там, где есть наведение (см. css). --}}
+        {{-- ТЗ 70: фото меняется, пока указатель идёт по снимку: ширина поделена
+             на столько зон, сколько фотографий. Точки — только индикатор, они
+             ничего не перехватывают, поэтому клик по карточке по-прежнему
+             открывает товар. Высота карточки не меняется. --}}
         @if(count($card['gallery'] ?? []) > 1)
-            <div class="sf-product-dots" data-sf-card-dots>
+            <div class="sf-product-dots" data-sf-card-dots aria-hidden="true">
                 @foreach($card['gallery'] as $i => $src)
-                    <button
-                        type="button"
-                        @class(['sf-product-dot', 'is-active' => $i === 0])
-                        data-src="{{ $src }}"
-                        aria-label="{{ __('theme.sf-photo-n', ['n' => $i + 1]) }}"
-                    ></button>
+                    <span @class(['sf-product-dot', 'is-active' => $i === 0]) data-src="{{ $src }}"></span>
                 @endforeach
             </div>
         @endif

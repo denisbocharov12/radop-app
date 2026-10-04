@@ -165,51 +165,118 @@ function copyButtons() {
 }
 
 /**
- * ТЗ 70: фото в карточке переключаются по наведению на точки.
+ * ТЗ 70: фото в карточке переключаются по наведению, точки под снимком
+ * показывают, какое по счёту сейчас видно.
  *
- * Слушаем на документе, а не на каждой карточке: сетку товаров перерисовывает
- * живой фильтр, и привязки к элементам после этого пропали бы. Первый снимок
- * карточки запоминаем, чтобы вернуть его, когда указатель уходит.
+ * Ведём переключение по положению указателя над снимком, а не по наведению на
+ * саму точку: точка — кружок в восемь пикселей, попасть в неё трудно, и, пока
+ * карточка не под указателем, она и вовсе не принимает события. Снимок делим
+ * по ширине на столько зон, сколько фотографий, — так же это сделано на
+ * office-planet. Точки при этом ничего не перехватывают, и клик по карточке
+ * по-прежнему открывает товар.
+ *
+ * Слушаем на документе: сетку товаров перерисовывает живой фильтр, и привязки
+ * к отдельным карточкам после этого пропали бы.
  */
 function cardPhotoDots() {
-    const mediaOf = (dot) => dot.closest('.sf-product-media');
+    const show = (media, index) => {
+        const image = media.querySelector('[data-sf-card-image]');
+        const dots = media.querySelectorAll('.sf-product-dot');
+        if (!image || !dots.length) return;
 
-    const show = (media, src, dot) => {
-        const image = media?.querySelector('[data-sf-card-image]');
-        if (!image || !src || image.src === src) return;
+        const dot = dots[index];
+        if (!dot) return;
 
-        if (!image.dataset.sfFirst) image.dataset.sfFirst = image.src;
+        dots.forEach((el) => el.classList.toggle('is-active', el === dot));
+
+        const src = dot.dataset.src;
+        if (!src || image.getAttribute('src') === src) return;
+
+        if (!image.dataset.sfFirst) image.dataset.sfFirst = image.getAttribute('src');
         image.src = src;
+    };
 
-        media.querySelectorAll('.sf-product-dot').forEach((el) => el.classList.toggle('is-active', el === dot));
+    const restore = (media) => {
+        const image = media.querySelector('[data-sf-card-image][data-sf-first]');
+
+        if (image) {
+            image.src = image.dataset.sfFirst;
+            delete image.dataset.sfFirst;
+        }
+
+        media.querySelectorAll('.sf-product-dot').forEach((el, i) => el.classList.toggle('is-active', i === 0));
+    };
+
+    /** Остальные снимки подгружаем, как только карточка попала под указатель. */
+    const preload = (media) => {
+        if (media.dataset.sfPreloaded) return;
+        media.dataset.sfPreloaded = '1';
+
+        media.querySelectorAll('.sf-product-dot').forEach((dot) => {
+            if (dot.dataset.src) new Image().src = dot.dataset.src;
+        });
+    };
+
+    /*
+     * Карточку ищем от её корня, а не от мини-окна: поверх снимка лежит
+     * растянутая ссылка названия, и события над картинкой приходят ей. Поэтому
+     * положение сверяем с прямоугольником самого снимка.
+     */
+    const mediaUnder = (event) => {
+        const card = event.target.closest?.('.sf-product');
+        const media = card?.querySelector('.sf-product-media');
+
+        if (!media || !media.querySelector('[data-sf-card-dots]')) return null;
+
+        const rect = media.getBoundingClientRect();
+        const inside =
+            event.clientX >= rect.left &&
+            event.clientX <= rect.right &&
+            event.clientY >= rect.top &&
+            event.clientY <= rect.bottom;
+
+        return { media, rect, inside };
     };
 
     document.addEventListener(
-        'pointerover',
+        'pointermove',
         (event) => {
-            const dot = event.target.closest('.sf-product-dot');
-            if (dot) {
-                show(mediaOf(dot), dot.dataset.src, dot);
+            if (event.pointerType === 'touch') return;
+
+            const found = mediaUnder(event);
+            if (!found) return;
+
+            // Ушли со снимка вниз, к названию и цене, — возвращаем первое фото.
+            if (! found.inside) {
+                restore(found.media);
                 return;
             }
 
-            // Ушли с карточки — возвращаем первый снимок.
-            const media = event.target.closest('.sf-product-media');
-            if (media) return;
+            preload(found.media);
 
-            document.querySelectorAll('[data-sf-card-image][data-sf-first]').forEach((image) => {
-                image.src = image.dataset.sfFirst;
-                delete image.dataset.sfFirst;
-                image
-                    .closest('.sf-product-media')
-                    ?.querySelectorAll('.sf-product-dot')
-                    .forEach((el, i) => el.classList.toggle('is-active', i === 0));
-            });
+            const count = found.media.querySelectorAll('.sf-product-dot').length;
+            const ratio = (event.clientX - found.rect.left) / found.rect.width;
+            const index = Math.min(count - 1, Math.max(0, Math.floor(ratio * count)));
+
+            show(found.media, index);
+        },
+        { passive: true },
+    );
+
+    // Возвращаем первый снимок только той карточке, с которой ушли: сосед,
+    // на который указатель перешёл, должен остаться на своём фото.
+    document.addEventListener(
+        'pointerout',
+        (event) => {
+            const card = event.target.closest?.('.sf-product');
+            if (!card || card.contains(event.relatedTarget)) return;
+
+            const media = card.querySelector('.sf-product-media');
+            if (media) restore(media);
         },
         { passive: true },
     );
 }
-
 function toast(type, message) {
     if (!message) return;
     if (window.toastr?.[type]) window.toastr[type](message);
