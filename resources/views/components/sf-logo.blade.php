@@ -1,5 +1,5 @@
 @props([
-    /** `header` scales for the sticky bar; `footer` is larger and always shows the tagline. */
+    /** `header` подгоняет логотип под липкую шапку, `footer` — крупнее. */
     'variant' => 'header',
     /** `light` — белый локап для тёмной подложки; по умолчанию цветной. */
     'tone' => 'dark',
@@ -17,7 +17,8 @@
     $full = $tone === 'light'
         ? ($logo['full_light'] ?? $logo['full'] ?? null)
         : ($logo['full'] ?? null);
-    // ТЗ 7: в шапке пока без подзаголовка, в подвале оставляем.
+    // Подпись осталась только у запасного знака: рядом с готовым локапом её
+    // не выводим — в подвале то же самое говорит строка описания.
     $tagline = $variant === 'footer'
         ? ($logo['tagline'][app()->getLocale()] ?? $logo['tagline']['ro'] ?? null)
         : null;
@@ -35,10 +36,6 @@
                  иначе надпись уезжает на половину строки поиска. --}}
             @class(['w-auto', 'h-8 lg:h-9' => ! $isFooter, 'h-10' => $isFooter])
         />
-
-        @if($tagline)
-            <span class="text-xs font-medium text-ink-500">{{ $tagline }}</span>
-        @endif
     @else
         <img
             src="{{ asset($logo['mark']) }}"
