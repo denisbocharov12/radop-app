@@ -110,13 +110,17 @@
             </a>
         @endforeach
 
-        <a
-            href="{{ $action }}"
-            class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-ink-600 underline-offset-2 transition-colors hover:bg-ink-100 hover:text-ink-900 hover:underline"
-            rel="nofollow"
-            data-sf-filter-reset-all
-        >
-            {{ __('theme.sf-filters-reset-all') }}
-        </a>
+        {{-- Сброс всего набора нужен, когда фильтров несколько: один снимается
+             своим же крестиком. --}}
+        @if(count($chips) > 1)
+            <a
+                href="{{ $action }}"
+                class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-ink-600 underline-offset-2 transition-colors hover:bg-ink-100 hover:text-ink-900 hover:underline"
+                rel="nofollow"
+                data-sf-filter-reset-all
+            >
+                {{ __('theme.sf-filters-reset-all') }}
+            </a>
+        @endif
     </div>
 @endif

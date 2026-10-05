@@ -35,10 +35,13 @@
          start of the listing rather than hanging off the heading. --}}
     <div @class(['flex gap-6 lg:gap-8', 'mt-3 lg:mt-4' => $heading || $exportUrl])>
         @if($filters)
+            {{-- На десктопе колонка едет вместе со страницей: своя прокрутка и
+                 закрепление прятали часть фильтров и спорили с прокруткой
+                 страницы. На телефоне это по-прежнему шторка. --}}
             <div
                 class="fixed inset-y-0 left-0 z-modal flex w-[min(21rem,90vw)] -translate-x-full flex-col bg-white shadow-pop transition-transform duration-200 ease-sf
-                       lg:sticky lg:top-24 lg:z-0 lg:h-fit lg:max-h-[calc(100vh-7rem)] lg:w-64 lg:shrink-0 lg:translate-x-0
-                       lg:overflow-hidden lg:rounded-lg lg:border lg:border-ink-200 lg:shadow-none"
+                       lg:static lg:z-0 lg:h-fit lg:w-64 lg:shrink-0 lg:translate-x-0
+                       lg:rounded-lg lg:border lg:border-ink-200 lg:shadow-none"
                 data-sf-drawer="catalog-filters"
             >
                 <div class="flex items-center justify-between border-b border-ink-100 px-4 py-3 lg:hidden">
@@ -48,9 +51,7 @@
                     </button>
                 </div>
 
-                {{-- Desktop: a card whose header row is the same height as the
-                     toolbar beside it, so the two dividers form one line. --}}
-                <div class="flex-1 overflow-y-auto overscroll-contain p-4 lg:p-0 lg:pb-1">
+                <div class="flex-1 overflow-y-auto overscroll-contain p-4 lg:overflow-visible lg:p-0 lg:pb-1">
                     {{ $filters }}
                 </div>
 
