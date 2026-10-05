@@ -323,9 +323,9 @@
 
     /* Плашки держат белый текст, поэтому фон на тон темнее базового:
        на 500 белый давал 3.3 вместо 4.5 (ТЗ 3). */
-    .sf-badge-new     { @apply sf-badge bg-success-600 text-white; }
-    .sf-badge-sale    { @apply sf-badge bg-accent-700 text-white; }
-    .sf-badge-hit     { @apply sf-badge bg-brand-600 text-white; }
+    .sf-badge-new     { @apply sf-badge bg-success-600/90 text-white; }
+    .sf-badge-sale    { @apply sf-badge bg-accent-700/90 text-white; }
+    .sf-badge-hit     { @apply sf-badge bg-brand-600/90 text-white; }
     .sf-badge-neutral { @apply sf-badge bg-ink-100 text-ink-600; }
     /* ТЗ 57: информационные бейджи мельче ярлыков NEW/SALE и не перекрывают товар. */
     .sf-badge-info    { @apply inline-flex items-center rounded border border-ink-200 bg-white/95 px-1.5 py-0.5 text-[0.625rem] font-bold uppercase leading-4 tracking-wide text-ink-600 shadow-sm; }
@@ -358,9 +358,10 @@
         @apply flex flex-1 flex-col gap-2 border-t border-ink-100 p-3;
     }
 
-    /* ТЗ 15: три строки названия, дальше многоточие. */
+    /* ТЗ 15: три строки названия, дальше многоточие. Высота зоны постоянная,
+       иначе цена и кнопка в соседних карточках стоят на разной высоте. */
     .sf-product-title {
-        @apply line-clamp-3 text-sm font-medium text-ink-800
+        @apply line-clamp-3 min-h-[3.75rem] text-sm font-medium text-ink-800
                transition-colors group-hover:text-brand-600;
     }
 
@@ -548,11 +549,11 @@
 @layer components {
     /* ---------------------------------------------------------- card parts */
     .sf-product-info {
-        @apply flex flex-col gap-1;
+        @apply flex flex-1 flex-col gap-1;
     }
 
     .sf-product-pricing {
-        @apply flex flex-wrap items-baseline gap-x-2 gap-y-0.5;
+        @apply flex items-center justify-between gap-2;
     }
 
     .sf-product-meta {
@@ -864,8 +865,10 @@
         @apply sm:col-start-1 sm:row-span-3 sm:row-start-1;
     }
 
+    /* В списке на название отведены две строки: строки товаров выстраиваются
+       по одной сетке независимо от длины названия. */
     [data-sf-view="list"] .sf-product-title {
-        @apply sm:text-md;
+        @apply line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] sm:text-md;
     }
 
     [data-sf-view="list"] .sf-product-meta {
