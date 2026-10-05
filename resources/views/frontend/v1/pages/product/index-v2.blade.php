@@ -91,7 +91,7 @@
             {{-- Gallery --}}
             {{-- min-w-0: без него колонка сетки раздувается до ширины
                  содержимого, и лента миниатюр вылезала за край экрана. --}}
-            <div class="relative min-w-0 lg:col-span-5 lg:row-span-2">
+            <div class="relative order-1 min-w-0 lg:order-none lg:col-span-5 lg:row-span-2">
                 @php
                     // Badges are handed to the gallery so they sit on the main
                     // image, not on the thumbnail column beside it.
@@ -133,7 +133,9 @@
 
             {{-- Характеристики: заголовок внутри рамки, и сама рамка начинается
                  на одном уровне с фотографией и блоком покупки. --}}
-            <div class="min-w-0 lg:col-span-4">
+            {{-- На телефоне характеристики уходят под блок покупки: сначала
+                 цена и кнопка, потом подробности (order-3). --}}
+            <div class="order-3 min-w-0 lg:order-none lg:col-span-4">
                 @if($product->values->isNotEmpty())
                     <dl class="divide-y divide-ink-100 rounded-lg border border-ink-200">
                         <div class="px-3 py-2">
@@ -152,7 +154,7 @@
             </div>
 
             {{-- Buy box --}}
-            <div class="min-w-0 lg:col-span-3">
+            <div class="order-2 min-w-0 lg:order-none lg:col-span-3">
                 {{-- Sticky only beside the gallery on desktop; on phones it must
                      scroll away so the bottom buy bar can take over. --}}
                 <div class="sf-card space-y-4 p-4 lg:sticky lg:top-24" id="buy-box">
@@ -251,7 +253,7 @@
                  экрана, а страница тянется вниз. Пустое описание прячем
                  целиком, без заглушки (ТЗ 34). --}}
             @if($summary !== null && ! empty(strip_tags($summary)))
-                <section class="min-w-0 lg:col-span-7">
+                <section class="order-4 min-w-0 lg:order-none lg:col-span-7">
                     <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
                     <div class="sf-prose">{!! $summary !!}</div>
                 </section>
