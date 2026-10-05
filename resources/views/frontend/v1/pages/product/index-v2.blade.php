@@ -127,11 +127,14 @@
                 @endif
             </div>
 
-            {{-- Specifications --}}
+            {{-- Характеристики: заголовок внутри рамки, и сама рамка начинается
+                 на одном уровне с фотографией и блоком покупки. --}}
             <div class="lg:col-span-4">
-                <h2 class="mb-3 text-md font-bold text-ink-900">{{ __('theme.product-details') }}</h2>
                 @if($product->values->isNotEmpty())
                     <dl class="divide-y divide-ink-100 rounded-lg border border-ink-200">
+                        <div class="px-3 py-2">
+                            <h2 class="text-md font-bold text-ink-900">{{ __('theme.product-details') }}</h2>
+                        </div>
                         @foreach($product->values as $value)
                             {{-- ТЗ 27: «Diametrul gaurii, mm» + «8» → «Diametrul gaurii» и «8 mm». --}}
                             @php($spec = \App\Support\Catalog\SpecUnits::split($value->attribute?->name))
@@ -141,8 +144,6 @@
                             </div>
                         @endforeach
                     </dl>
-                @else
-                    <p class="text-sm text-ink-500">{{ __('theme.no-description') }}</p>
                 @endif
             </div>
 

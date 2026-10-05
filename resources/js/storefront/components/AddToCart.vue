@@ -1,19 +1,22 @@
 <script setup>
 /**
- * Quantity stepper + add-to-cart button.
+ * Кнопка покупки и счётчик количества.
  *
- * Replaces the legacy pairing of `add_to_cart_widget_v2.blade.php` and the
- * delegated jQuery handlers in scripts.blade.php, which addressed inputs by
- * `name="product-{id}-qty"` and re-rendered the header by injecting server
- * HTML. The component owns its own quantity; the header, mini-cart and tab bar
- * listen for one `sf:cart-updated` event.
+ * Общая механика витрины: пока товара нет в корзине, видна одна кнопка
+ * «Добавить». После добавления на её месте появляется счётчик строки корзины —
+ * слева корзина (переход к оформлению), дальше количество и «+». Как только
+ * количество больше минимального, слева встаёт «−». Количество правится и
+ * руками, ноль убирает строку.
  *
- * `compact` is the product-card layout: on narrow cards (two-up on phones) the
- * stepper and button stack instead of squeezing the button label to "În…".
+ * Счётчик работает прямо по корзине: каждое изменение уходит на сервер, а
+ * шапка, мини-корзина и нижняя панель слушают одно событие `sf:cart-updated`.
+ *
+ * `compact` — раскладка карточки товара: на узких карточках кнопка и счётчик
+ * занимают всю ширину (см. контейнерные запросы в storefront.css).
  */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import SfIcon from './SfIcon.vue';
-import { addToCart, notify, removeFromCart } from '../lib/cart.js';
+import { addToCart, notify, removeFromCart, route, updateCart } from '../lib/cart.js';
 
 const props = defineProps({
     productId: { type: Number, required: true },
@@ -32,14 +35,12 @@ const props = defineProps({
     compact: { type: Boolean, default: false },
 });
 
-const qty = ref(Math.max(props.step, 1));
-const cartQty = ref(props.inCart);
+const cartQty = ref(Math.max(0, Number(props.inCart) || 0));
 const busy = ref(false);
 const justAdded = ref(false);
 /* ТЗ 67: короткое предупреждение прямо у счётчика вместо большого уведомления. */
 const hint = ref('');
 let hintTimer = null;
-
 let addedTimer = null;
 
 /** Оставляем одну строку: «Минимальный заказ: 10 шт.» вместо абзаца текста. */
@@ -52,9 +53,11 @@ function showHint(message) {
 
 const step = computed(() => Math.max(props.step, 1));
 const maxQty = computed(() => (props.stock > 0 ? props.stock : Number.MAX_SAFE_INTEGER));
-const lineTotal = computed(() => qty.value * props.price);
-/* Товар уже в корзине и количество на минимуме — «−» становится удалением. */
-const showRemove = computed(() => cartQty.value > 0 && qty.value <= step.value);
+const inCartNow = computed(() => cartQty.value > 0);
+/** На минимальном количестве слева стоит корзина, дальше — «−». */
+const atMinimum = computed(() => cartQty.value <= step.value);
+const lineTotal = computed(() => cartQty.value * props.price);
+const cartUrl = computed(() => route('cart', '/cart'));
 
 const formatted = computed(() =>
     new Intl.NumberFormat('ro-MD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -66,23 +69,21 @@ function clamp(value) {
     return Math.min(Math.max(rounded, s), maxQty.value);
 }
 
-function bump(delta) {
-    qty.value = clamp(qty.value + delta * step.value);
-}
-
-function onInput(event) {
-    const parsed = Number.parseInt(event.target.value, 10);
-    qty.value = Number.isNaN(parsed) ? step.value : clamp(parsed);
-    event.target.value = qty.value;
-}
-
-async function removeLine() {
-    if (busy.value) return;
+async function add() {
+    if (busy.value || props.disabled) return;
     busy.value = true;
+
     try {
-        const response = await removeFromCart(props.productId);
-        if (response?.status === true) cartQty.value = 0;
-        else notify(response?.msg, 'warning');
+        const response = await addToCart(props.productId, step.value);
+
+        if (response?.status === true) {
+            cartQty.value = Number(response.product_quantity ?? step.value);
+            justAdded.value = true;
+            clearTimeout(addedTimer);
+            addedTimer = setTimeout(() => { justAdded.value = false; }, 1600);
+        } else {
+            showHint(response?.msg);
+        }
     } catch {
         notify(window.__SF__?.t?.menuError, 'error');
     } finally {
@@ -90,19 +91,66 @@ async function removeLine() {
     }
 }
 
-async function submit() {
+/** Новое количество строки корзины; ноль и меньше убирают её целиком. */
+async function setQty(value) {
     if (busy.value || props.disabled) return;
+
+    if (value < step.value) {
+        await removeLine();
+        return;
+    }
+
+    const next = clamp(value);
+    const previous = cartQty.value;
+
+    // Счётчик отзывается сразу, а при отказе сервера возвращается как было.
+    cartQty.value = next;
     busy.value = true;
+
     try {
-        const response = await addToCart(props.productId, qty.value);
-        if (response?.status === true) {
-            cartQty.value = Number(response.product_quantity ?? cartQty.value + qty.value);
-            justAdded.value = true;
-            clearTimeout(addedTimer);
-            addedTimer = setTimeout(() => { justAdded.value = false; }, 1600);
-        } else {
+        const response = await updateCart(props.productId, next);
+
+        if (response?.status !== true) {
+            cartQty.value = previous;
             showHint(response?.msg);
+        } else if (response.product_quantity != null) {
+            cartQty.value = Number(response.product_quantity);
         }
+    } catch {
+        cartQty.value = previous;
+        notify(window.__SF__?.t?.menuError, 'error');
+    } finally {
+        busy.value = false;
+    }
+}
+
+function bump(delta) {
+    setQty(cartQty.value + delta * step.value);
+}
+
+function onInput(event) {
+    const parsed = Number.parseInt(event.target.value, 10);
+
+    if (Number.isNaN(parsed) || parsed <= 0) {
+        event.target.value = cartQty.value;
+        setQty(0);
+        return;
+    }
+
+    const next = clamp(parsed);
+    event.target.value = next;
+    setQty(next);
+}
+
+async function removeLine() {
+    if (busy.value) return;
+    busy.value = true;
+
+    try {
+        const response = await removeFromCart(props.productId);
+
+        if (response?.status === true) cartQty.value = 0;
+        else notify(response?.msg, 'warning');
     } catch {
         notify(window.__SF__?.t?.menuError, 'error');
     } finally {
@@ -118,10 +166,7 @@ function onCartUpdated(event) {
     else if (detail.product_quantity != null) cartQty.value = Number(detail.product_quantity);
 }
 
-onMounted(() => {
-    qty.value = clamp(qty.value);
-    document.addEventListener('sf:cart-updated', onCartUpdated);
-});
+onMounted(() => document.addEventListener('sf:cart-updated', onCartUpdated));
 
 onBeforeUnmount(() => {
     document.removeEventListener('sf:cart-updated', onCartUpdated);
@@ -132,18 +177,11 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="mt-auto space-y-2">
-        <!-- Only worth showing once the quantity is more than one pack; at the
-             default it just repeats the unit price next to it. -->
-        <p v-if="price > 0 && qty > step" class="flex items-baseline justify-between gap-2 text-xs text-ink-500">
+        <!-- Сумма строки нужна, когда набрано больше одной упаковки: на минимуме
+             она просто повторяет цену рядом. -->
+        <p v-if="price > 0 && cartQty > step" class="flex items-baseline justify-between gap-2 text-xs text-ink-500">
             <span class="truncate">{{ labelTotal }}</span>
             <span class="shrink-0 whitespace-nowrap font-semibold text-ink-800">{{ formatted }} {{ currency }}</span>
-        </p>
-
-        <!-- Above the row, not below it: the stepper row stays the last line of
-             every card, so rows align whether or not a product is in the cart. -->
-        <p v-if="cartQty > 0" class="flex items-center gap-1.5 text-xs font-medium text-success-600">
-            <SfIcon name="check" :size="13" />
-            {{ labelInCart }} {{ cartQty }}
         </p>
 
         <!-- ТЗ 67: подсказка висит над счётчиком и уходит сама. -->
@@ -160,55 +198,12 @@ onBeforeUnmount(() => {
             >{{ hint }}</p>
         </Transition>
 
-        <!-- In a card the row is sized by the card, not the viewport (the same
-             card is 165px wide in a phone grid and 300px in a home rail), so
-             the compact layout is driven by a container query in
-             storefront.css: narrow cards get stepper + square icon button,
-             wider ones the labelled button. -->
         <div :class="compact ? 'sf-atc' : 'flex items-stretch gap-2'">
-            <div
-                class="sf-atc-stepper flex items-stretch overflow-hidden rounded-md border border-ink-200 bg-white"
-                :class="compact ? 'h-10' : 'h-12'"
-            >
-                <button
-                    type="button"
-                    class="flex w-9 shrink-0 items-center justify-center transition-colors disabled:opacity-40"
-                    :class="showRemove ? 'text-danger-600 hover:bg-danger-50' : 'text-ink-500 hover:bg-ink-100 hover:text-ink-900'"
-                    :disabled="disabled || busy || (!showRemove && qty <= step)"
-                    :aria-label="showRemove ? labelRemove : $sf.t.qtyDecrease"
-                    :title="showRemove ? labelRemove : $sf.t.qtyDecrease"
-                    @click="showRemove ? removeLine() : bump(-1)"
-                >
-                    <SfIcon :name="showRemove ? 'trash' : 'minus'" :size="14" />
-                </button>
-                <input
-                    :value="qty"
-                    type="number"
-                    inputmode="numeric"
-                    class="sf-atc-input w-full min-w-[2.5rem] flex-1 border-x border-ink-200 bg-white text-center text-sm font-semibold text-ink-900 [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    :class="compact ? '' : 'max-w-[3.5rem]'"
-                    :min="step"
-                    :max="stock || undefined"
-                    :step="step"
-                    :disabled="disabled"
-                    :aria-label="labelAdd"
-                    @change="onInput"
-                />
-                <button
-                    type="button"
-                    class="flex w-9 shrink-0 items-center justify-center text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-40"
-                    :disabled="qty >= maxQty || disabled"
-                    :aria-label="$sf.t.qtyIncrease"
-                    :title="$sf.t.qtyIncrease"
-                    @click="bump(1)"
-                >
-                    <SfIcon name="plus" :size="14" />
-                </button>
-            </div>
-
+            <!-- Товара ещё нет в корзине: одна кнопка на всю ширину. -->
             <button
+                v-if="!inCartNow"
                 type="button"
-                class="sf-atc-button sf-btn min-w-0 flex-1 px-3"
+                class="sf-atc-button sf-btn w-full min-w-0 flex-1 px-3"
                 :class="[
                     compact ? 'h-10 text-sm' : 'h-12 text-md font-semibold',
                     justAdded ? 'bg-success-600 text-white' : 'bg-brand-600 text-white shadow-card hover:bg-brand-700',
@@ -216,11 +211,64 @@ onBeforeUnmount(() => {
                 :disabled="busy || disabled"
                 :aria-label="disabled ? $sf.t.outOfStock : labelAdd"
                 :title="disabled ? $sf.t.outOfStock : labelAdd"
-                @click="submit"
+                @click="add"
             >
-                <SfIcon :name="justAdded ? 'check' : busy ? 'clock' : 'cart'" :size="16" :class="{ 'animate-spin': busy }" />
+                <SfIcon :name="justAdded ? 'check' : busy ? 'clock' : 'plus'" :size="16" :class="{ 'animate-spin': busy }" />
                 <span class="sf-atc-label truncate">{{ labelAdd }}</span>
             </button>
+
+            <!-- Товар в корзине: счётчик правит строку корзины напрямую. -->
+            <div
+                v-else
+                class="sf-atc-stepper flex w-full items-stretch overflow-hidden rounded-md border border-ink-200 bg-white"
+                :class="compact ? 'h-10' : 'h-12'"
+            >
+                <a
+                    v-if="atMinimum"
+                    :href="cartUrl"
+                    class="flex w-9 shrink-0 items-center justify-center text-brand-600 transition-colors hover:bg-brand-50"
+                    :aria-label="labelInCart"
+                    :title="labelInCart"
+                >
+                    <SfIcon name="cart" :size="15" />
+                </a>
+                <button
+                    v-else
+                    type="button"
+                    class="flex w-9 shrink-0 items-center justify-center text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-40"
+                    :disabled="busy || disabled"
+                    :aria-label="$sf.t.qtyDecrease"
+                    :title="$sf.t.qtyDecrease"
+                    @click="bump(-1)"
+                >
+                    <SfIcon name="minus" :size="14" />
+                </button>
+
+                <input
+                    :value="cartQty"
+                    type="number"
+                    inputmode="numeric"
+                    class="sf-atc-input w-full min-w-[2.5rem] flex-1 border-x border-ink-200 bg-white text-center text-sm font-semibold text-ink-900 [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    :class="compact ? '' : 'max-w-[4rem]'"
+                    min="0"
+                    :max="stock || undefined"
+                    :step="step"
+                    :disabled="disabled"
+                    :aria-label="labelInCart"
+                    @change="onInput"
+                />
+
+                <button
+                    type="button"
+                    class="flex w-9 shrink-0 items-center justify-center text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-40"
+                    :disabled="busy || disabled || cartQty >= maxQty"
+                    :aria-label="$sf.t.qtyIncrease"
+                    :title="$sf.t.qtyIncrease"
+                    @click="bump(1)"
+                >
+                    <SfIcon name="plus" :size="14" />
+                </button>
+            </div>
         </div>
     </div>
 </template>
