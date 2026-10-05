@@ -44,9 +44,23 @@ const showingHistory = computed(() => query.value.trim().length < 2);
 const popularVisible = computed(() =>
     showingHistory.value ? popular.value.filter((term) => !history.value.includes(term)) : [],
 );
-const items = computed(() => (showingHistory.value ? history.value : suggestions.value));
+/*
+ * Текстовые подсказки повторяют названия найденных товаров, поэтому показываем
+ * их только там, где товаров нет: иначе один и тот же список идёт дважды — с
+ * фотографиями и без.
+ */
+const textSuggestions = computed(() => (products.value.length ? [] : suggestions.value));
 
-const labelOf = (item) => (typeof item === 'string' ? item : item.text ?? item.query ?? '');
+const items = computed(() => {
+    if (showingHistory.value) return history.value;
+
+    return products.value.length ? products.value : suggestions.value;
+});
+
+/** Что показывает нижний список: история при пустом поле, иначе — подсказки. */
+const listItems = computed(() => (showingHistory.value ? history.value : textSuggestions.value));
+
+const labelOf = (item) => (typeof item === 'string' ? item : item.text ?? item.query ?? item.title ?? '');
 
 async function loadHistory() {
     try {
@@ -106,6 +120,13 @@ function focus() {
 }
 
 function pick(item) {
+    // У товара есть своя страница — ведём сразу на неё, а не в выдачу поиска.
+    if (item && typeof item === 'object' && item.url) {
+        open.value = false;
+        window.location.href = item.url;
+        return;
+    }
+
     query.value = labelOf(item);
     open.value = false;
     nextTick(() => formEl.value?.requestSubmit());
@@ -269,8 +290,13 @@ onBeforeUnmount(() => {
                         {{ $sf.t.suggestedProducts }}
                     </p>
                     <ul class="py-1">
-                        <li v-for="product in products" :key="product.id">
-                            <a :href="product.url" class="flex items-center gap-3 px-3 py-2 hover:bg-ink-50">
+                        <li v-for="(product, i) in products" :key="product.id">
+                            <a
+                                :href="product.url"
+                                class="flex items-center gap-3 px-3 py-2"
+                                :class="i === cursor ? 'bg-brand-50' : 'hover:bg-ink-50'"
+                                @mouseenter="cursor = i"
+                            >
                                 <img
                                     v-if="product.image"
                                     :src="product.image"
@@ -299,8 +325,8 @@ onBeforeUnmount(() => {
                     </ul>
                 </div>
 
-                <ul class="max-h-80 overflow-y-auto py-1">
-                    <li v-for="(item, i) in items" :key="labelOf(item) + i" class="group/item flex items-center">
+                <ul v-if="listItems.length" class="max-h-80 overflow-y-auto py-1">
+                    <li v-for="(item, i) in listItems" :key="labelOf(item) + i" class="group/item flex items-center">
                         <button
                             type="button"
                             class="flex min-w-0 flex-1 items-center gap-2.5 px-3 py-2.5 text-left text-sm"

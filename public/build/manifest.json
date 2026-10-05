@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-OOPR_64s.js",
+    "file": "assets/storefront-B3gzSxfw.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -163,7 +163,7 @@
     ]
   },
   "resources/js/storefront/components/SiteSearch.vue": {
-    "file": "assets/SiteSearch-JOhue8K7.js",
+    "file": "assets/SiteSearch-DgvXoS7H.js",
     "name": "SiteSearch",
     "src": "resources/js/storefront/components/SiteSearch.vue",
     "isDynamicEntry": true,
