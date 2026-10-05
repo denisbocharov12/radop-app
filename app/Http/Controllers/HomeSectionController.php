@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ProductConditions;
 use App\Http\Requests\HomeSection\HomeSectionRequest;
+use App\Models\Category;
 use App\Models\HomeSection;
 use App\Services\Home\HomeSectionsRenderer;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,13 @@ use Illuminate\View\View;
  */
 final class HomeSectionController extends Controller
 {
+    /**
+     * Сколько разделов помещается в одну строку топ-категорий: при ширине
+     * блока от 9.5rem на экране 1440 их восемь, дальше строка ломается и
+     * секция перестаёт быть «быстрым входом».
+     */
+    public const MAX_TOP_CATEGORIES = 8;
+
     public function __construct(
         private readonly ProductConditions $conditions,
         private readonly HomeSectionsRenderer $renderer,
@@ -60,6 +68,7 @@ final class HomeSectionController extends Controller
             'section' => new HomeSection(['type' => HomeSection::TYPE_PRODUCT_RAIL, 'is_active' => true]),
             'types' => HomeSection::types(),
             'sources' => $this->sources(),
+            'rootCategories' => $this->rootCategories(),
         ]);
     }
 
@@ -79,6 +88,7 @@ final class HomeSectionController extends Controller
             'section' => $homeSection,
             'types' => HomeSection::types(),
             'sources' => $this->sources(),
+            'rootCategories' => $this->rootCategories(),
         ]);
     }
 
@@ -156,6 +166,16 @@ final class HomeSectionController extends Controller
             }
         }
 
+        if ($type === HomeSection::TYPE_TOP_CATEGORIES) {
+            // Коды вводятся построчно или через запятую, порядок — как введены.
+            $codes = preg_split('/[\s,;]+/', (string) $request->input('category_codes', '')) ?: [];
+            $settings['category_ids'] = array_slice(
+                array_values(array_filter(array_map('trim', $codes))),
+                0,
+                self::MAX_TOP_CATEGORIES
+            );
+        }
+
         if ($type === HomeSection::TYPE_SEASONAL) {
             $settings['overlay_color'] = (string) $request->input('overlay_color', '#0b2a4a');
             $settings['overlay_opacity'] = (int) $request->input('overlay_opacity', 55);
@@ -172,6 +192,28 @@ final class HomeSectionController extends Controller
             'order' => (int) $request->input('order', 100),
             'settings' => $settings,
         ];
+    }
+
+    /**
+     * Справочник к полю топ-категорий: верхние разделы каталога с их кодами,
+     * чтобы код не искать в другом разделе админки.
+     *
+     * @return array<int, array{code: string, name: string}>
+     */
+    private function rootCategories(): array
+    {
+        return Category::query()
+            ->where('status', true)
+            ->whereNull('parent_id')
+            ->whereNotNull('onec_id')
+            ->orderBy('catalog_order')
+            ->orderBy('order')
+            ->get(['onec_id', 'name'])
+            ->map(static fn (Category $category) => [
+                'code' => (string) $category->onec_id,
+                'name' => (string) $category->name,
+            ])
+            ->all();
     }
 
     private function syncBackground(HomeSection $section, HomeSectionRequest $request): void

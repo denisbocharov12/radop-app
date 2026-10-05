@@ -15,7 +15,8 @@
 
 @include('frontend.v1.chrome.topbar')
 @include('frontend.v1.chrome.header')
-@include('frontend.v1.chrome.nav')
+{{-- Полоса разделов под шапкой переехала на главную секцией «Топ-категории»;
+     каталог целиком открывается кнопкой «Каталог» в шапке. --}}
 
 {{-- ТЗ 5: один нижний отступ на всю витрину, см. .sf-page-body --}}
 <main id="main" class="min-h-[50vh] sf-page-body">

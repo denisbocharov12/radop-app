@@ -34,6 +34,7 @@ final class HomeSection extends Model implements HasMedia
     public const TYPE_PRODUCT_RAIL = 'product_rail';
     public const TYPE_SEASONAL = 'seasonal';
     public const TYPE_BRANDS = 'brands';
+    public const TYPE_TOP_CATEGORIES = 'top_categories';
 
     /** @var array<int, string> */
     public array $translatable = ['title', 'subtitle', 'link_title'];
@@ -60,6 +61,7 @@ final class HomeSection extends Model implements HasMedia
     {
         return [
             self::TYPE_BANNERS => 'Баннеры',
+            self::TYPE_TOP_CATEGORIES => 'Топ-категории',
             self::TYPE_PRODUCT_RAIL => 'Лента товаров',
             self::TYPE_SEASONAL => 'Сезонные новинки',
             self::TYPE_BRANDS => 'Бренды',
