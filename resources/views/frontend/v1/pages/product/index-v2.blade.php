@@ -89,7 +89,7 @@
              заканчиваются там, где кончается их содержимое. --}}
         <div class="grid items-start gap-5 lg:grid-cols-12 lg:gap-6">
             {{-- Gallery --}}
-            <div class="relative lg:col-span-5 lg:max-w-[28rem]">
+            <div class="relative lg:col-span-5 lg:row-span-2">
                 @php
                     // Badges are handed to the gallery so they sit on the main
                     // image, not on the thumbnail column beside it.
@@ -244,15 +244,17 @@
                     </div>
                 </div>
             </div>
+            {{-- Описание — вторая строка сетки, справа от галереи: иначе под
+                 характеристиками и блоком покупки остаётся пустое поле в треть
+                 экрана, а страница тянется вниз. Пустое описание прячем
+                 целиком, без заглушки (ТЗ 34). --}}
+            @if($summary !== null && ! empty(strip_tags($summary)))
+                <section class="lg:col-span-7">
+                    <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
+                    <div class="sf-prose">{!! $summary !!}</div>
+                </section>
+            @endif
         </div>
-
-        {{-- Пустое описание прячем целиком, без заглушки (ТЗ 34). --}}
-        @if($summary !== null && ! empty(strip_tags($summary)))
-            <section class="sf-section">
-                <h2 class="sf-section-title mb-3">{{ __('theme.description') }}</h2>
-                <div class="sf-prose">{!! $summary !!}</div>
-            </section>
-        @endif
     </div>
 
     {{-- Phones: once the buy box scrolls away, keep price + CTA under the thumb,
