@@ -14,16 +14,18 @@
         'leaf' => ['name' => $existedBrand->title, 'url' => route('theme.brand.index', $existedBrand->onec_id)],
     ])
 
+    {{-- Название бренда — обычный заголовок страницы, как на разделах каталога:
+         отдельной надписи над колонкой фильтров больше нет. --}}
     <div class="sf-container">
-        <div class="mt-2 flex items-center gap-4">
+        <div class="flex items-center gap-3">
             @if($existedBrand->hasMedia('media'))
                 <img
                     src="{{ $existedBrand->getFirstMediaUrl('media', 'thumb') }}"
                     alt="{{ $existedBrand->title }}"
-                    class="h-14 w-auto max-w-[8rem] object-contain"
+                    class="h-10 w-auto max-w-[7rem] object-contain"
                 />
             @endif
-            <h1 class="text-2xl font-bold text-ink-900 lg:text-3xl">{{ $existedBrand->title }}</h1>
+            <h1 class="sf-page-title">{{ $existedBrand->title }}</h1>
         </div>
     </div>
 

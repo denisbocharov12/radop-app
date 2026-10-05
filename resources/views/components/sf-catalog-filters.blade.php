@@ -108,9 +108,12 @@
         + (($priceFrom !== null || $priceTo !== null) ? 1 : 0);
 
     $countBadge = 'inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white';
-    $summaryClass = 'flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600';
+    $summaryClass = 'flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium text-ink-900 hover:text-brand-600';
     $optionClass = 'flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm text-ink-700 hover:bg-ink-50';
     $checkboxClass = 'h-4 w-4 shrink-0 rounded border-ink-300 text-brand-600 focus:ring-brand-500';
+    // Сколько значений показываем в группе сразу: остальные раскрываются кнопкой,
+    // чтобы у группы не было собственной полосы прокрутки.
+    $optionLimit = 8;
 @endphp
 
 <form
@@ -122,20 +125,11 @@
 >
     <input type="hidden" name="sort" id="sortInput" value="{{ request('sort') }}">
 
-    {{-- The phone drawer has its own title bar, so the title is desktop-only.
-         On desktop the row is 4rem tall, like the catalogue toolbar, and
-         stays pinned while a long filter list scrolls. --}}
-    <div class="flex items-center justify-between gap-3 px-1 pb-2 lg:sticky lg:top-0 lg:z-10 lg:h-16 lg:border-b lg:border-ink-200 lg:bg-white lg:px-4 lg:pb-0">
-        <h2 class="hidden items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink-900 lg:flex">
-            <x-sf-icon name="filter" :size="15" class="text-brand-600" />
-            {{ __('theme.filters') }}
-        </h2>
-        @if($activeCount > 0)
-            <button type="button" id="filterResetBtn" class="text-xs font-medium text-brand-600 hover:text-brand-700">
-                {{ __('theme.reset-filters') }} ({{ $activeCount }})
-            </button>
-        @endif
-    </div>
+    {{-- У телефонной шторки свой заголовок, а на десктопе слово «Фильтры» не
+         нужно: колонка с ценой, категориями и чекбоксами и так читается как
+         фильтры. Колонка начинается сразу с «Цены» — на одной высоте с
+         панелью сортировки справа; сброс лежит под списком групп и
+         продублирован метками над товарами. --}}
 
     {{-- Price: a two-handle slider for quick ranges plus exact inputs, as on
          the old site. Only the number inputs carry names; the sliders just
@@ -212,9 +206,9 @@
                 </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
             </summary>
-            <div class="mt-2 max-h-64 space-y-0.5 overflow-y-auto pr-1">
+            <div class="mt-2 space-y-0.5">
                 @foreach($categoryItems as $category)
-                    <label class="{{ $optionClass }}">
+                    <label @class([$optionClass, 'hidden' => $loop->index >= $optionLimit]) @if($loop->index >= $optionLimit) data-sf-more-item @endif>
                         <input
                             type="checkbox"
                             class="{{ $checkboxClass }}"
@@ -227,6 +221,9 @@
                     </label>
                 @endforeach
             </div>
+            @if($categoryItems->count() > $optionLimit)
+                <x-sf-more-toggle :total="$categoryItems->count()" />
+            @endif
         </details>
     @endif
 
@@ -249,7 +246,7 @@
                 </span>
                 <x-sf-icon name="chevronDown" :size="16" class="text-ink-400 transition-transform group-open:rotate-180" />
             </summary>
-            <div class="mt-2 max-h-56 space-y-1 overflow-y-auto pr-1">
+            <div class="mt-2 space-y-1">
                 @foreach($values as $attribute)
                     @php
                         $value = str_replace(',', '.', $attribute->value);
@@ -259,7 +256,14 @@
                         // покупатель не сможет сменить уже выбранный вариант.
                         $muted = $hasFacets && ! $checked && ($valueTotal ?? 0) === 0;
                     @endphp
-                    <label @class([$optionClass, 'cursor-not-allowed opacity-45' => $muted])>
+                    <label
+                        @class([
+                            $optionClass,
+                            'cursor-not-allowed opacity-45' => $muted,
+                            'hidden' => $loop->index >= $optionLimit && ! $checked,
+                        ])
+                        @if($loop->index >= $optionLimit && ! $checked) data-sf-more-item @endif
+                    >
                         <input
                             type="checkbox"
                             class="{{ $checkboxClass }}"
@@ -275,6 +279,9 @@
                     </label>
                 @endforeach
             </div>
+            @if($values->count() > $optionLimit)
+                <x-sf-more-toggle :total="$values->count()" />
+            @endif
         </details>
     @endforeach
 
@@ -311,7 +318,7 @@
                     </label>
                 @endif
 
-                <div class="max-h-56 space-y-1 overflow-y-auto pr-1" data-sf-brand-list>
+                <div class="space-y-1" data-sf-brand-list>
                     @foreach($brandList as $index => $brand)
                         @php
                             $checked = in_array($brand->onec_id, $selectedBrands);
@@ -465,10 +472,26 @@
                     });
                 });
 
+                /* Длинные группы (категории, характеристики) раскрываются по
+                   месту: своя прокрутка внутри группы прячет часть значений и
+                   спорит с прокруткой страницы. */
+                form.querySelectorAll('[data-sf-more-toggle]').forEach(function (button) {
+                    var group = button.closest('details');
+                    if (!group) return;
+
+                    var extras = group.querySelectorAll('[data-sf-more-item]');
+                    var open = false;
+
+                    button.addEventListener('click', function () {
+                        open = !open;
+                        extras.forEach(function (item) { item.classList.toggle('hidden', !open); });
+                        button.textContent = open ? button.dataset.labelLess : button.dataset.labelMore;
+                    });
+                });
                 /* ТЗ 42, 43: первые семь брендов, остальное по кнопке; поиск по списку. */
                 var brandBox = form.querySelector('[data-sf-brand-filter]');
                 if (brandBox) {
-                    var toggle = brandBox.querySelector('[data-sf-brand-toggle]');
+                var toggle = brandBox.querySelector('[data-sf-brand-toggle]');
                     var extras = brandBox.querySelectorAll('[data-sf-brand-extra]');
                     var expanded = false;
 

@@ -604,13 +604,16 @@
         /* Высота лэйбла 18 px: общий радиус 8 px скругляет его в таблетку.
            Берём 4 px — та же кривизна угла, что у кнопки «Каталог» (8 px
            при высоте 44 px). */
-        @apply inline-flex min-w-0 cursor-copy items-center gap-0.5 rounded-[0.25rem] border border-solid bg-white px-1 py-0.5
+        /* items-baseline: подпись «Cod:» и само значение стоят на одной
+           линии — при разных начертаниях цифры иначе уезжают выше. */
+        @apply inline-flex min-w-0 cursor-copy items-baseline gap-0.5 rounded-[0.25rem] border border-solid bg-white px-1 py-0.5
                text-[0.625rem] leading-3 transition-colors duration-150 ease-sf
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500;
     }
 
+    /* Значение не выделяем: код и артикул — справочная мелочь, а не акцент. */
     .sf-code-chip b {
-        @apply truncate font-num font-bold tabular-nums text-ink-800;
+        @apply truncate font-num font-normal tabular-nums text-ink-600;
     }
 
     .sf-code-chip-code {
@@ -622,7 +625,7 @@
     }
 
     .sf-code-chip:hover b {
-        @apply text-ink-900;
+        @apply text-ink-800;
     }
 
     .sf-code-chip-barcode {
@@ -676,7 +679,7 @@
     /* ТЗ 5: ритм заголовка один на все страницы — от крошек до H1 и от H1
        до содержимого. Длинные названия товаров берут -sm на размер меньше. */
     .sf-page-title {
-        @apply mb-4 mt-3 text-2xl font-bold text-ink-900 lg:mb-5 lg:mt-4 lg:text-3xl;
+        @apply mb-3 mt-2 text-2xl font-bold text-ink-900 lg:mb-4 lg:mt-3 lg:text-3xl;
     }
 
     .sf-page-title-sm {
