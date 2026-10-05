@@ -19,6 +19,8 @@ on:
 # Статика уезжает в ветку gh-pages, поэтому нужна запись в репозиторий
 permissions:
   contents: write
+  # pages: write нужен, чтобы попросить пересборку страниц (см. последний шаг)
+  pages: write
 
 # Параллельные выкладки не нужны, но начатую не обрываем
 concurrency:
@@ -138,6 +140,19 @@ jobs:
           git add -A
           git commit -q -m "Витрина: статика от $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Пуш, сделанный токеном workflow, GitHub Pages сам не разворачивает:
+      # такие пуши не запускают сборку страниц, и ветка обновляется, а сайт
+      # остаётся прежним. Поэтому просим сборку явно.
+      - name: Просим GitHub пересобрать страницы
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds")
+          echo "запрос сборки страниц: ${code}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
