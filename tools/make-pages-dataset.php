@@ -75,6 +75,18 @@ $categoryCodes = DB::table('product_categories')
     ->filter()
     ->all();
 
+/*
+ * Разделы из секции «Топ-категории» на главной нужны всегда: без них на
+ * демонстрационной витрине блок быстрых входов окажется наполовину пустым.
+ */
+foreach (DB::table('home_sections')->where('type', 'top_categories')->pluck('settings') as $settings) {
+    foreach ((array) (json_decode((string) $settings, true)['category_ids'] ?? []) as $code) {
+        $categoryCodes[] = (string) $code;
+    }
+}
+
+$categoryCodes = array_values(array_unique(array_map('strval', $categoryCodes)));
+
 $kept = array_flip($categoryCodes);
 $queue = $categoryCodes;
 
