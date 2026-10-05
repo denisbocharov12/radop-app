@@ -10,7 +10,9 @@
        (the form for signed-in customers, a sign-in prompt for guests);
      - with reviews: the list, and beside it the form or the sign-in prompt.
 --}}
-<section class="sf-section pt-0 lg:pt-2" id="reviews">
+{{-- Отступ сверху — обычный для секции: описание переехало в сетку выше и
+     больше не отбивает отзывы своим нижним полем. --}}
+<section class="sf-section pt-8 lg:pt-10" id="reviews">
     <div class="sf-container">
         <div class="sf-section-head mb-4">
             <h2 class="sf-section-title">
