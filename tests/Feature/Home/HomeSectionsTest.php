@@ -45,6 +45,49 @@ final class HomeSectionsTest extends TestCase
         }
     }
 
+    public function test_top_categories_section_renders_chosen_categories(): void
+    {
+        $section = HomeSection::query()->where('type', HomeSection::TYPE_TOP_CATEGORIES)->first();
+
+        if ($section === null) {
+            $this->markTestSkipped('Секции топ-категорий нет');
+        }
+
+        $codes = (array) $section->setting('category_ids', []);
+        $this->assertNotEmpty($codes, 'в секции не выбрано ни одного раздела');
+
+        $response = $this->get('/');
+        $response->assertOk();
+
+        // Разделы ведут в каталог, а полосы меню под шапкой больше нет.
+        $response->assertSee(route('theme.category.index', $codes[0]), false);
+        $response->assertDontSee('class="sf-nav"', false);
+    }
+
+    public function test_admin_edits_the_list_of_top_categories(): void
+    {
+        $admin = $this->admin();
+        $section = HomeSection::query()->where('type', HomeSection::TYPE_TOP_CATEGORIES)->firstOrFail();
+        $before = (array) $section->setting('category_ids', []);
+
+        try {
+            $this->actingAs($admin)
+                ->post(route('home-section.update', $section), [
+                    'type' => HomeSection::TYPE_TOP_CATEGORIES,
+                    'order' => $section->order,
+                    'is_active' => 1,
+                    'category_codes' => implode(', ', array_reverse($before)),
+                ])
+                ->assertRedirect(route('home-section.index'));
+
+            $section->refresh();
+
+            $this->assertSame(array_reverse($before), (array) $section->setting('category_ids'));
+        } finally {
+            $section->update(['settings' => array_merge((array) $section->settings, ['category_ids' => $before])]);
+        }
+    }
+
     public function test_admin_opens_the_list_and_the_form(): void
     {
         $admin = $this->admin();

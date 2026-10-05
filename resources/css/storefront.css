@@ -133,11 +133,58 @@
     }
 
     .sf-section {
-        @apply py-5 lg:py-7;
+        @apply py-4 lg:py-5;
     }
 
     .sf-section-head {
         @apply mb-3 flex items-center justify-between gap-4 lg:mb-4;
+    }
+
+    /* ------------------------------------------------- топ-категории
+       Быстрый вход в каталог вместо прежней полосы меню в шапке. Сетка
+       подбирает число колонок сама: при ширине блока от 9.5rem в строку
+       помещается до восьми разделов, на телефоне — три. Блок намеренно
+       невысокий, чтобы баннер и категории попадали в первый экран. */
+    .sf-top-cats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        @apply gap-2;
+    }
+
+    @screen sm {
+        .sf-top-cats {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            @apply gap-3;
+        }
+    }
+
+    /* На десктопе разделы всегда в одну строку: число колонок равно числу
+       выбранных разделов (их не больше восьми, см. HomeSectionController). */
+    @screen lg {
+        .sf-top-cats {
+            grid-template-columns: repeat(var(--sf-top-cats, 6), minmax(0, 1fr));
+        }
+    }
+
+    .sf-top-cats-section {
+        @apply pt-2 lg:pt-3;
+    }
+
+    .sf-top-cat {
+        @apply flex h-full flex-col items-center gap-1.5 rounded-lg border border-ink-200 bg-white px-2 py-2.5
+               text-center transition-colors hover:border-brand-300 hover:bg-brand-50;
+    }
+
+    .sf-top-cat-icon {
+        @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50;
+    }
+
+    .sf-top-cat:hover .sf-top-cat-icon {
+        @apply bg-white;
+    }
+
+    .sf-top-cat-name {
+        @apply line-clamp-2 text-2xs font-medium leading-tight text-ink-800 sm:text-xs;
     }
 
     /* ------------------------------------------------- сезонная секция
@@ -145,7 +192,7 @@
        читаются на любом снимке, а белый фон карточек не даёт маске
        просвечивать сквозь товар. */
     .sf-season {
-        @apply relative isolate overflow-hidden bg-ink-900 bg-cover bg-center py-7 lg:py-10;
+        @apply relative isolate overflow-hidden bg-ink-900 bg-cover bg-center py-6 lg:py-8;
     }
 
     .sf-season-mask {

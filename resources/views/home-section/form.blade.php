@@ -133,6 +133,31 @@
             </x-card>
         </template>
 
+        <template x-if="type === 'top_categories'">
+            <x-card>
+                <h3 class="text-sm font-semibold text-gray-700 mb-4">Разделы в блоке</h3>
+
+                <div>
+                    <label class="form-label" for="category_codes">Коды разделов 1С</label>
+                    <textarea name="category_codes" id="category_codes" rows="3" class="form-input"
+                              placeholder="1112, 1110, 10004">{{ old('category_codes', implode(', ', (array) $section->setting('category_ids', []))) }}</textarea>
+                    <p class="form-hint">
+                        Через запятую или с новой строки, порядок сохраняется.
+                        В строку помещается до {{ \App\Http\Controllers\HomeSectionController::MAX_TOP_CATEGORIES }} разделов — лишние не выводятся.
+                    </p>
+                </div>
+
+                <details class="mt-4">
+                    <summary class="cursor-pointer text-sm text-gray-600">Коды верхних разделов каталога</summary>
+                    <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-gray-600">
+                        @foreach($rootCategories ?? [] as $row)
+                            <li><span class="font-mono text-gray-500">{{ $row['code'] }}</span> — {{ $row['name'] }}</li>
+                        @endforeach
+                    </ul>
+                </details>
+            </x-card>
+        </template>
+
         <template x-if="type === 'seasonal'">
             <x-card>
                 <h3 class="text-sm font-semibold text-gray-700 mb-4">Фон и заголовок</h3>

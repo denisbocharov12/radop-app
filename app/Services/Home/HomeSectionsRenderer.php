@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Home;
 
 use App\Enums\ProductConditions;
+use App\Models\Category;
 use App\Models\HomeSection;
 use App\Models\Product;
 use App\Models\ProductProfile;
@@ -61,6 +62,7 @@ final class HomeSectionsRenderer
             'anchor' => (string) $section->setting('anchor', 'home-section-' . $section->id),
             'settings' => (array) ($section->settings ?? []),
             'products' => collect(),
+            'categories' => collect(),
             'background' => null,
             'ready' => true,
         ];
@@ -69,6 +71,12 @@ final class HomeSectionsRenderer
             $data['products'] = $this->productsFor($section);
             // Пустую ленту не показываем: заголовок без товаров выглядит сбоем.
             $data['ready'] = $data['products']->isNotEmpty();
+        }
+
+        if ($section->type === HomeSection::TYPE_TOP_CATEGORIES) {
+            $data['categories'] = $this->categoriesFor($section);
+            // Секция без категорий — пустая полоса на главной, не показываем.
+            $data['ready'] = $data['categories']->isNotEmpty();
         }
 
         if ($section->type === HomeSection::TYPE_SEASONAL) {
@@ -96,6 +104,42 @@ final class HomeSectionsRenderer
         $fallback = $section->getTranslation($field, (string) config('app.fallback_locale'), false);
 
         return is_string($fallback) && trim($fallback) !== '' ? $fallback : null;
+    }
+
+    /**
+     * Топ-категории: берём ровно те разделы и в том порядке, который задали в
+     * админке. Иконку раздела отдаём вместе с ним, чтобы шаблон не ходил в базу.
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function categoriesFor(HomeSection $section): Collection
+    {
+        $codes = array_values(array_filter(array_map(
+            'strval',
+            (array) $section->setting('category_ids', [])
+        )));
+
+        if ($codes === []) {
+            return collect();
+        }
+
+        $categories = Category::query()
+            ->where('status', true)
+            ->whereIn('onec_id', $codes)
+            ->with('media')
+            ->get()
+            ->keyBy(static fn (Category $category) => (string) $category->onec_id);
+
+        return collect($codes)
+            ->map(static fn (string $code) => $categories->get($code))
+            ->filter()
+            ->map(static fn (Category $category) => [
+                'id' => (string) $category->onec_id,
+                'name' => $category->name,
+                'url' => route('theme.category.index', $category->onec_id),
+                'icon' => $category->getFirstMediaUrl('media') ?: null,
+            ])
+            ->values();
     }
 
     /**
