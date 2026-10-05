@@ -342,7 +342,7 @@
     }
 
     .sf-product-media {
-        @apply relative aspect-square overflow-hidden bg-white p-3;
+        @apply relative aspect-square overflow-hidden bg-white p-2.5;
     }
 
     .sf-product-img {
@@ -355,13 +355,14 @@
     }
 
     .sf-product-body {
-        @apply flex flex-1 flex-col gap-2 border-t border-ink-100 p-3;
+        @apply flex flex-1 flex-col gap-1.5 border-t border-ink-100 p-2.5;
     }
 
-    /* ТЗ 15: три строки названия, дальше многоточие. Высота зоны постоянная,
-       иначе цена и кнопка в соседних карточках стоят на разной высоте. */
+    /* Две строки названия, дальше многоточие; полное имя — подсказкой при
+       наведении. Высота зоны постоянная, иначе цена и кнопка в соседних
+       карточках стоят на разной высоте. */
     .sf-product-title {
-        @apply line-clamp-3 min-h-[3.75rem] text-sm font-medium text-ink-800
+        @apply line-clamp-2 min-h-[2.5rem] text-sm font-medium text-ink-800
                transition-colors group-hover:underline;
     }
 
@@ -548,8 +549,10 @@
 
 @layer components {
     /* ---------------------------------------------------------- card parts */
+    /* Без flex-1: пустое место карточки собирается над кнопкой, а не
+       дырой между брендом и ценой. Нижний ряд всё равно прижат (mt-auto). */
     .sf-product-info {
-        @apply flex flex-1 flex-col gap-1;
+        @apply flex flex-col gap-0.5;
     }
 
     .sf-product-pricing {
@@ -765,16 +768,28 @@
         @apply w-full px-2;
     }
 
-    /* Кнопка «Добавить» и счётчик строки корзины сменяют друг друга, поэтому
-       каждый занимает всю ширину карточки. На совсем узкой карточке подпись
-       кнопки прячем — остаётся плюс. */
-    @container (max-width: 8.5rem) {
+    @container (min-width: 10.5rem) {
+        .sf-atc { flex-direction: row; }
+        /* Счётчик ужимаем, кнопку корзины делаем заметнее: в карточке
+           главное действие — положить товар, а не менять количество. */
+        .sf-atc .sf-atc-stepper { flex: 1 1 auto; width: auto; min-width: 0; }
+        .sf-atc .sf-atc-stepper > button { width: 2rem; }
+        .sf-atc .sf-atc-input { min-width: 1.75rem; }
+        .sf-atc .sf-atc-button { flex: 0 0 3.25rem; width: 3.25rem; @apply px-0; }
         .sf-atc .sf-atc-label { @apply sf-sr-only; }
     }
 
-    @container (min-width: 10.5rem) {
-        .sf-atc .sf-atc-stepper > button,
-        .sf-atc .sf-atc-stepper > a { width: 2.25rem; }
+    @container (min-width: 14.5rem) {
+        .sf-atc .sf-atc-stepper { flex: 0 0 auto; }
+        .sf-atc .sf-atc-input { width: 2.25rem; flex: 0 0 2.25rem; min-width: 2.25rem; }
+        .sf-atc .sf-atc-button { flex: 1 1 auto; @apply px-3; }
+        .sf-atc .sf-atc-label {
+            position: static;
+            width: auto;
+            height: auto;
+            clip: auto;
+            white-space: nowrap;
+        }
     }
 
     /* ---------------------------------------------------------- price slider */

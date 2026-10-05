@@ -19,6 +19,8 @@ const props = defineProps({
     labelRemove: { type: String, default: '' },
     /** `overlay` sits on a card image; `inline` is a labelled button. */
     variant: { type: String, default: 'overlay' },
+    /** Уменьшенный вариант: в карточке сердечко стоит у цены и не спорит с ней. */
+    small: { type: Boolean, default: false },
 });
 
 const on = ref(props.active);
@@ -66,14 +68,14 @@ onBeforeUnmount(() => document.removeEventListener('sf:wishlist-updated', onSync
     <button
         v-if="variant === 'icon'"
         type="button"
-        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink-400 transition-colors hover:bg-ink-50 hover:text-danger-500"
-        :class="{ 'text-danger-500': on }"
+        class="flex shrink-0 items-center justify-center rounded-md text-ink-400 transition-colors hover:bg-ink-50 hover:text-danger-500"
+        :class="[small ? 'h-8 w-8' : 'h-10 w-10', { 'text-danger-500': on }]"
         :aria-pressed="on"
         :aria-label="on ? labelRemove : labelAdd"
         :title="on ? labelRemove : labelAdd"
         @click.prevent="toggle"
     >
-        <SfIcon name="heart" :size="22" :stroke-width="on ? 2 : 1.6" :style="on ? { fill: 'currentColor' } : null" />
+        <SfIcon name="heart" :size="small ? 17 : 22" :stroke-width="on ? 2 : 1.6" :style="on ? { fill: 'currentColor' } : null" />
     </button>
 
     <button
