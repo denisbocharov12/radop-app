@@ -59,16 +59,15 @@
             @endif
         </div>
 
-        <div
-            data-sf-island="wishlist-button"
-            data-sf-props="{{ $json([
-                'productId' => $card['id'],
-                'active' => $inWishlist,
-                'labelAdd' => __('theme.add-to-wishlist'),
-                'labelRemove' => __('theme.remove-from-wishlist'),
-            ]) }}"
-            v-cloak
-        ></div>
+        {{-- Правый верхний угол снимка — свойства товара (BPA FREE, FSC, ECO):
+             сердечко переехало отсюда к цене. --}}
+        @if(! empty($card['photoBadges']))
+            <span class="pointer-events-none absolute right-2 top-2 z-10 flex flex-col items-end gap-1">
+                @foreach($card['photoBadges'] as $photoBadge)
+                    <span class="sf-badge-info">{{ $photoBadge }}</span>
+                @endforeach
+            </span>
+        @endif
 
         <a href="{{ $card['url'] }}" tabindex="-1" aria-hidden="true" class="block h-full">
             @if($card['image'])
@@ -187,16 +186,33 @@
             @endif
         </div>
 
+        {{-- Цена и избранное в одной строке: сердечко ушло с фотографии, но
+             осталось на виду и не мешает снимку. --}}
         <div class="sf-product-pricing">
-            <span @class(['sf-product-price', 'text-accent-700' => $card['oldPrice']])>
-                {{ number_format($card['displayPrice'], 2, ',', ' ') }}
-            </span>
-            <span class="text-xs text-ink-600">
-                {{ __('theme.MDL') }}@if($card['minOrder']) / {{ $card['minOrder'] }} {{ __('theme.min_order_unit') }}@endif
-            </span>
-            @if($card['oldPrice'])
-                <span class="sf-product-price-old">{{ number_format($card['oldPrice'], 2, ',', ' ') }}</span>
-            @endif
+            <div class="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span @class(['sf-product-price', 'text-accent-700' => $card['oldPrice']])>
+                    {{ number_format($card['displayPrice'], 2, ',', ' ') }}
+                </span>
+                <span class="text-xs text-ink-600">
+                    {{ __('theme.MDL') }}@if($card['minOrder']) / {{ $card['minOrder'] }} {{ __('theme.min_order_unit') }}@endif
+                </span>
+                @if($card['oldPrice'])
+                    <span class="sf-product-price-old">{{ number_format($card['oldPrice'], 2, ',', ' ') }}</span>
+                @endif
+            </div>
+
+            <div
+                class="relative z-10 -my-1.5 shrink-0"
+                data-sf-island="wishlist-button"
+                data-sf-props="{{ $json([
+                    'productId' => $card['id'],
+                    'active' => $inWishlist,
+                    'labelAdd' => __('theme.add-to-wishlist'),
+                    'labelRemove' => __('theme.remove-from-wishlist'),
+                    'variant' => 'icon',
+                ]) }}"
+                v-cloak
+            ></div>
         </div>
 
         {{-- Buying conditions: personal price, minimum order, pack size, stock.
