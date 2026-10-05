@@ -207,13 +207,31 @@ function cardPhotoDots() {
         media.querySelectorAll('.sf-product-dot').forEach((el, i) => el.classList.toggle('is-active', i === 0));
     };
 
-    /** Остальные снимки подгружаем, как только карточка попала под указатель. */
+    /*
+     * Остальные снимки подгружаем, как только карточка попала под указатель, и
+     * только один раз: дальше их отдаёт кеш браузера — на сервере у /media/
+     * стоит год с immutable (docker/common/nginx/nginx-site.conf).
+     *
+     * Грузим с низким приоритетом, чтобы не отнимать канал у видимой части
+     * страницы, и молчим при включённой экономии трафика или медленной сети.
+     */
+    const thrifty = () => {
+        const link = navigator.connection;
+
+        return Boolean(link && (link.saveData || /2g/.test(link.effectiveType ?? '')));
+    };
+
     const preload = (media) => {
-        if (media.dataset.sfPreloaded) return;
+        if (media.dataset.sfPreloaded || thrifty()) return;
         media.dataset.sfPreloaded = '1';
 
         media.querySelectorAll('.sf-product-dot').forEach((dot) => {
-            if (dot.dataset.src) new Image().src = dot.dataset.src;
+            if (!dot.dataset.src) return;
+
+            const image = new Image();
+            image.decoding = 'async';
+            image.fetchPriority = 'low';
+            image.src = dot.dataset.src;
         });
     };
 

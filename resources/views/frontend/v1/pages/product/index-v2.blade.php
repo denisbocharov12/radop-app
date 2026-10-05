@@ -85,9 +85,11 @@
             @endif
         </div>
 
-        <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
+        {{-- items-start: колонки не растягиваются под самую высокую, рамки
+             заканчиваются там, где кончается их содержимое. --}}
+        <div class="grid items-start gap-5 lg:grid-cols-12 lg:gap-6">
             {{-- Gallery --}}
-            <div class="relative lg:col-span-5">
+            <div class="relative lg:col-span-5 lg:max-w-[28rem]">
                 @php
                     // Badges are handed to the gallery so they sit on the main
                     // image, not on the thumbnail column beside it.
@@ -116,7 +118,7 @@
                         <img
                             src="{{ $galleryImages[0]['url'] }}"
                             alt="{{ $product->title }}"
-                            class="aspect-square w-full rounded-lg border border-ink-200 object-contain p-6"
+                            class="aspect-square w-full rounded-lg border border-ink-200 object-contain p-4"
                             fetchpriority="high"
                         />
                     </div>

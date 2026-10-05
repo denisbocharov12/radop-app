@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
                     v-if="current"
                     :src="current.url"
                     :alt="alt"
-                    class="aspect-square w-full object-contain p-2 sm:p-3"
+                    class="aspect-square w-full object-contain p-2"
                     fetchpriority="high"
                     decoding="async"
                 />
