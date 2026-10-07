@@ -107,9 +107,9 @@
         + count($selectedCategories)
         + (($priceFrom !== null || $priceTo !== null) ? 1 : 0);
 
-    $countBadge = 'inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-bold text-white';
-    $summaryClass = 'flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium text-ink-900 hover:text-brand-600';
-    $optionClass = 'flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm text-ink-700 hover:bg-ink-50';
+    $countBadge = 'inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-brand-600 px-1.5 text-2xs font-medium text-white';
+    $summaryClass = 'flex cursor-pointer list-none items-center justify-between gap-2 text-md font-medium text-ink-900 hover:text-brand-600';
+    $optionClass = 'flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-sm font-normal text-ink-700 hover:bg-ink-50';
     $checkboxClass = 'h-4 w-4 shrink-0 rounded border-ink-300 text-brand-600 focus:ring-brand-500';
     // Сколько значений показываем в группе сразу: остальные раскрываются кнопкой,
     // чтобы у группы не было собственной полосы прокрутки.
@@ -217,7 +217,7 @@
                             @checked(in_array((string) $category->onec_id, $selectedCategories, true))
                         />
                         <span class="min-w-0 flex-1 truncate" title="{{ $category->name }}">{{ $category->name }}</span>
-                        <span class="shrink-0 rounded bg-ink-100 px-1.5 text-2xs font-medium tabular-nums text-ink-500">{{ $category->products_count }}</span>
+                        <span class="shrink-0 rounded bg-ink-100 px-1.5 text-2xs font-normal tabular-nums text-ink-500">{{ $category->products_count }}</span>
                     </label>
                 @endforeach
             </div>
@@ -354,7 +354,7 @@
                 @if($brandList->count() > $visibleLimit)
                     <button
                         type="button"
-                        class="mt-1 px-1 text-xs font-semibold text-brand-600 hover:text-brand-700"
+                        class="mt-1 px-1 text-xs font-medium text-brand-600 hover:text-brand-700"
                         data-sf-brand-toggle
                         data-label-more="{{ __('theme.sf-brands-show-all') }} ({{ $brandList->count() }})"
                         data-label-less="{{ __('theme.sf-brands-collapse') }}"

@@ -8,9 +8,9 @@
                 <a href="{{ $category['url'] }}" class="sf-top-cat" title="{{ $category['name'] }}">
                     <span class="sf-top-cat-icon">
                         @if($category['icon'])
-                            <img src="{{ $category['icon'] }}" alt="" class="h-6 w-6 object-contain" loading="lazy" decoding="async" />
+                            <img src="{{ $category['icon'] }}" alt="" class="h-5 w-5 object-contain" loading="lazy" decoding="async" />
                         @else
-                            <x-sf-icon name="grid" :size="20" class="text-brand-600" />
+                            <x-sf-icon name="grid" :size="18" class="text-brand-600" />
                         @endif
                     </span>
                     <span class="sf-top-cat-name">{{ $category['name'] }}</span>

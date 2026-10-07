@@ -59,9 +59,10 @@ export default {
                     200: '#dfe3ea',
                     300: '#c6ccd8',
                     // ТЗ 3: 400 — иконки и разделители (3:1 к белому),
-                    // 500 — приглушённый текст, читается и на светлой подложке.
-                    400: '#8b94a5',
-                    500: '#646e7c',
+                    // 500 — приглушённый текст. Оба на тон темнее прежних: серый
+                    // второго плана читался слабее, чем на действующем сайте.
+                    400: '#7d8697',
+                    500: '#5a6475',
                     600: '#4d5768',
                     700: '#3a4354',
                     800: '#252d3b',
@@ -77,14 +78,15 @@ export default {
                 num: ['Aptos Narrow', 'Roboto', 'system-ui', 'sans-serif'],
             },
             fontSize: {
-                // Compact e-commerce scale — dense catalogues need small steps.
-                '2xs': ['0.6875rem', { lineHeight: '1rem' }],
-                xs: ['0.75rem', { lineHeight: '1.125rem' }],
-                sm: ['0.8125rem', { lineHeight: '1.25rem' }],
-                base: ['0.875rem', { lineHeight: '1.375rem' }],
-                md: ['0.9375rem', { lineHeight: '1.5rem' }],
-                lg: ['1.0625rem', { lineHeight: '1.625rem' }],
-                xl: ['1.25rem', { lineHeight: '1.75rem' }],
+                // Шкала плотная — каталог густой, — но на пиксель крупнее прежней:
+                // с ноутбука прежний набор читался мельче, чем на radop.md.
+                '2xs': ['0.75rem', { lineHeight: '1.125rem' }],
+                xs: ['0.8125rem', { lineHeight: '1.25rem' }],
+                sm: ['0.875rem', { lineHeight: '1.375rem' }],
+                base: ['0.9375rem', { lineHeight: '1.5rem' }],
+                md: ['1rem', { lineHeight: '1.5rem' }],
+                lg: ['1.125rem', { lineHeight: '1.75rem' }],
+                xl: ['1.3125rem', { lineHeight: '1.875rem' }],
                 '2xl': ['1.5rem', { lineHeight: '2rem' }],
                 '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
                 '4xl': ['2.25rem', { lineHeight: '2.5rem' }],

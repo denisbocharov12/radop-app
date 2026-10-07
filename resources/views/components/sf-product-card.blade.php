@@ -28,6 +28,9 @@
         JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE
     );
 
+    // Больше одного снимка — показываем индикатор фотографий.
+    $hasGallery = count($card['gallery'] ?? []) > 1;
+
     $badge = match ($card['condition']) {
         'new' => ['sf-badge-new', __('theme.label_new')],
         'popular' => ['sf-badge-hit', __('theme.label_popular')],
@@ -88,17 +91,6 @@
             @endif
         </a>
 
-        {{-- ТЗ 70: фото меняется, пока указатель идёт по снимку: ширина поделена
-             на столько зон, сколько фотографий. Точки — только индикатор, они
-             ничего не перехватывают, поэтому клик по карточке по-прежнему
-             открывает товар. Высота карточки не меняется. --}}
-        @if(count($card['gallery'] ?? []) > 1)
-            <div class="sf-product-dots" data-sf-card-dots aria-hidden="true">
-                @foreach($card['gallery'] as $i => $src)
-                    <span @class(['sf-product-dot', 'is-active' => $i === 0]) data-src="{{ $src }}"></span>
-                @endforeach
-            </div>
-        @endif
 
         {{-- Quick view: revealed on hover/focus on pointer devices; on touch
              the card's own link is the faster path, so it stays hidden. --}}
@@ -113,7 +105,18 @@
         </button>
     </div>
 
-    <div class="sf-product-body">
+    {{-- Индикатор фотографий: виден всегда и заменяет собой серый разделитель.
+         Фото меняется, пока указатель идёт по снимку — ширина поделена на
+         столько зон, сколько фотографий; точки ничего не перехватывают. --}}
+    @if($hasGallery)
+        <div class="sf-product-dots" data-sf-card-dots aria-hidden="true">
+            @foreach($card['gallery'] as $i => $src)
+                <span @class(['sf-product-dot', 'is-active' => $i === 0]) data-src="{{ $src }}"></span>
+            @endforeach
+        </div>
+    @endif
+
+    <div @class(['sf-product-body', 'border-t border-ink-100' => ! $hasGallery])>
         <div class="sf-product-info">
             {{-- Code and article as the old card's two framed chips, left and
                  right; each copies its value on click. --}}

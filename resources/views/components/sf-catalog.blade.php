@@ -45,7 +45,7 @@
                 data-sf-drawer="catalog-filters"
             >
                 <div class="flex items-center justify-between border-b border-ink-100 px-4 py-3 lg:hidden">
-                    <span class="text-md font-semibold text-ink-900">{{ __('theme.filters') }}</span>
+                    <span class="text-md font-medium text-ink-900">{{ __('theme.filters') }}</span>
                     <button type="button" class="sf-icon-btn" data-sf-drawer-close aria-label="{{ __('theme.notification_close_btn_text') }}">
                         <x-sf-icon name="close" />
                     </button>

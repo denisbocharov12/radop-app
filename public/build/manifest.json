@@ -15,12 +15,12 @@
     "name": "vue"
   },
   "resources/css/admin.css": {
-    "file": "assets/admin-MC5RCYRM.css",
+    "file": "assets/admin-CD2m8y_P.css",
     "src": "resources/css/admin.css",
     "isEntry": true
   },
   "resources/css/storefront.css": {
-    "file": "assets/storefront-BxJwnXiJ.css",
+    "file": "assets/storefront-CYd8xl2j.css",
     "src": "resources/css/storefront.css",
     "isEntry": true
   },
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "resources/js/storefront.js": {
-    "file": "assets/storefront-IyB-VYhC.js",
+    "file": "assets/storefront-B6P2tsoY.js",
     "name": "storefront",
     "src": "resources/js/storefront.js",
     "isEntry": true,
@@ -54,7 +54,7 @@
     ]
   },
   "resources/js/storefront/components/AddToCart.vue": {
-    "file": "assets/AddToCart-CCsdlvwe.js",
+    "file": "assets/AddToCart-Dkp4ddBf.js",
     "name": "AddToCart",
     "src": "resources/js/storefront/components/AddToCart.vue",
     "isDynamicEntry": true,
@@ -149,7 +149,7 @@
     ]
   },
   "resources/js/storefront/components/QuickView.vue": {
-    "file": "assets/QuickView-DJmvjlao.js",
+    "file": "assets/QuickView-DgFFNolU.js",
     "name": "QuickView",
     "src": "resources/js/storefront/components/QuickView.vue",
     "isDynamicEntry": true,
