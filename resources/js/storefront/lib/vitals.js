@@ -179,9 +179,9 @@ function copyButtons() {
  * к отдельным карточкам после этого пропали бы.
  */
 function cardPhotoDots() {
-    const show = (media, index) => {
-        const image = media.querySelector('[data-sf-card-image]');
-        const dots = media.querySelectorAll('.sf-product-dot');
+    const show = (card, index) => {
+        const image = card.querySelector('[data-sf-card-image]');
+        const dots = card.querySelectorAll('.sf-product-dot');
         if (!image || !dots.length) return;
 
         const dot = dots[index];
@@ -196,15 +196,15 @@ function cardPhotoDots() {
         image.src = src;
     };
 
-    const restore = (media) => {
-        const image = media.querySelector('[data-sf-card-image][data-sf-first]');
+    const restore = (card) => {
+        const image = card.querySelector('[data-sf-card-image][data-sf-first]');
 
         if (image) {
             image.src = image.dataset.sfFirst;
             delete image.dataset.sfFirst;
         }
 
-        media.querySelectorAll('.sf-product-dot').forEach((el, i) => el.classList.toggle('is-active', i === 0));
+        card.querySelectorAll('.sf-product-dot').forEach((el, i) => el.classList.toggle('is-active', i === 0));
     };
 
     /*
@@ -221,11 +221,11 @@ function cardPhotoDots() {
         return Boolean(link && (link.saveData || /2g/.test(link.effectiveType ?? '')));
     };
 
-    const preload = (media) => {
-        if (media.dataset.sfPreloaded || thrifty()) return;
-        media.dataset.sfPreloaded = '1';
+    const preload = (card) => {
+        if (card.dataset.sfPreloaded || thrifty()) return;
+        card.dataset.sfPreloaded = '1';
 
-        media.querySelectorAll('.sf-product-dot').forEach((dot) => {
+        card.querySelectorAll('.sf-product-dot').forEach((dot) => {
             if (!dot.dataset.src) return;
 
             const image = new Image();
@@ -244,7 +244,7 @@ function cardPhotoDots() {
         const card = event.target.closest?.('.sf-product');
         const media = card?.querySelector('.sf-product-media');
 
-        if (!media || !media.querySelector('[data-sf-card-dots]')) return null;
+        if (!media || !card.querySelector('[data-sf-card-dots]')) return null;
 
         const rect = media.getBoundingClientRect();
         const inside =
@@ -253,7 +253,7 @@ function cardPhotoDots() {
             event.clientY >= rect.top &&
             event.clientY <= rect.bottom;
 
-        return { media, rect, inside };
+        return { card, rect, inside };
     };
 
     document.addEventListener(
@@ -266,17 +266,17 @@ function cardPhotoDots() {
 
             // Ушли со снимка вниз, к названию и цене, — возвращаем первое фото.
             if (! found.inside) {
-                restore(found.media);
+                restore(found.card);
                 return;
             }
 
-            preload(found.media);
+            preload(found.card);
 
-            const count = found.media.querySelectorAll('.sf-product-dot').length;
+            const count = found.card.querySelectorAll('.sf-product-dot').length;
             const ratio = (event.clientX - found.rect.left) / found.rect.width;
             const index = Math.min(count - 1, Math.max(0, Math.floor(ratio * count)));
 
-            show(found.media, index);
+            show(found.card, index);
         },
         { passive: true },
     );
@@ -289,8 +289,7 @@ function cardPhotoDots() {
             const card = event.target.closest?.('.sf-product');
             if (!card || card.contains(event.relatedTarget)) return;
 
-            const media = card.querySelector('.sf-product-media');
-            if (media) restore(media);
+            restore(card);
         },
         { passive: true },
     );
