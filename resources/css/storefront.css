@@ -375,10 +375,12 @@
 
     .sf-product-price {
         @apply font-num text-lg font-bold leading-none text-ink-900;
+        font-size: 24px;
     }
 
     .sf-product-price-old {
         @apply font-num text-sm font-medium leading-none text-ink-500 line-through;
+        font-size: 24px;
     }
 
     /* ---------------------------------------------------------- grids */
@@ -609,6 +611,7 @@
 
     .sf-product-brand a {
         @apply truncate font-medium text-brand-600 hover:text-brand-700 hover:underline;
+        font-weight: 400;
     }
 
     /* 10px: the eight-digit code must fit whole in a six-up rail card, so only
@@ -779,17 +782,11 @@
         .sf-atc .sf-atc-label { @apply sf-sr-only; }
     }
 
+    /* На широкой карточке подпись к кнопке не возвращаем: значок корзины
+       понятен и без слов, а строка остаётся спокойной. Полная кнопка с
+       подписью живёт на странице товара и в быстром просмотре. */
     @container (min-width: 14.5rem) {
-        .sf-atc .sf-atc-stepper { flex: 0 0 auto; }
-        .sf-atc .sf-atc-input { width: 2.25rem; flex: 0 0 2.25rem; min-width: 2.25rem; }
-        .sf-atc .sf-atc-button { flex: 1 1 auto; @apply px-3; }
-        .sf-atc .sf-atc-label {
-            position: static;
-            width: auto;
-            height: auto;
-            clip: auto;
-            white-space: nowrap;
-        }
+        .sf-atc .sf-atc-input { width: 2.5rem; flex: 0 0 2.5rem; min-width: 2.5rem; }
     }
 
     /* ---------------------------------------------------------- price slider */
