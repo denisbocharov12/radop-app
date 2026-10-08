@@ -1,0 +1,66 @@
+User-agent: *
+
+# Разделы без индексируемого содержимого
+Disallow: /search
+Disallow: /ru/search
+Disallow: /cart
+Disallow: /ru/cart
+Disallow: /wishlist
+Disallow: /ru/wishlist
+Disallow: /checkout
+Disallow: /ru/checkout
+Disallow: /login
+Disallow: /ru/login
+Disallow: /registration
+Disallow: /ru/registration
+Disallow: /reset-password
+Disallow: /ru/reset-password
+Disallow: /user
+Disallow: /ru/user
+Disallow: /thank-you
+Disallow: /ru/thank-you
+Disallow: /admin
+Disallow: /dashboard
+
+# Параметры, которые плодят дубли. Индексируем только page
+Disallow: /*?sort=
+Disallow: /*&sort=
+Disallow: /*?order=
+Disallow: /*&order=
+Disallow: /*?perPage=
+Disallow: /*&perPage=
+Disallow: /*?per_page=
+Disallow: /*&per_page=
+Disallow: /*?filter
+Disallow: /*&filter
+Disallow: /*?utm_source=
+Disallow: /*&utm_source=
+Disallow: /*?utm_medium=
+Disallow: /*&utm_medium=
+Disallow: /*?utm_campaign=
+Disallow: /*&utm_campaign=
+Disallow: /*?utm_term=
+Disallow: /*&utm_term=
+Disallow: /*?utm_content=
+Disallow: /*&utm_content=
+Disallow: /*?fbclid=
+Disallow: /*&fbclid=
+Disallow: /*?gclid=
+Disallow: /*&gclid=
+Disallow: /*?yclid=
+Disallow: /*&yclid=
+Disallow: /*?msclkid=
+Disallow: /*&msclkid=
+Disallow: /*?mc_eid=
+Disallow: /*&mc_eid=
+Disallow: /*?_ga=
+Disallow: /*&_ga=
+
+# Обработчики фильтров отвечают только на POST
+Disallow: /filter
+Disallow: /*/filter
+Disallow: /*/filter-by-category
+
+Allow: /
+
+Sitemap: http://127.0.0.1:8000/sitemap.xml
